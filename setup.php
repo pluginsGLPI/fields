@@ -1,7 +1,17 @@
 <?php
 // Init the hooks of the plugins -Needed
 function plugin_init_fields() {
+   global $PLUGIN_HOOKS;
+   
+   $menu_entry   = "front/config.php";
+   if ((!isset($_SESSION['glpiactiveprofile']['config']) 
+      || $_SESSION['glpiactiveprofile']['config'] != "w")
+   ) $menu_entry  = false;
 
+   $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
+   $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
+
+   $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
 }
 
 
@@ -12,7 +22,7 @@ function plugin_version_fields() {
                  'version'        => '1.0',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
-                 'license'        => 'GPLv2+',
+                 'license'        => 'restricted',
                  'minGlpiVersion' => '0.83.3');
 }
 
