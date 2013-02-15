@@ -23,13 +23,43 @@ class PluginFieldsField extends CommonDBTM {
 
       return true;
    }
-
    
    static function uninstall() {
       global $DB;
 
       $obj = new self();
       $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
+
+      return true;
+   }
+
+   static function getTypeName() {
+      global $LANG;
+
+      return $LANG['fields']['type'][0];
+   }
+
+   public function canCreate() {
+      return true;
+   }
+
+   public function canView() {
+      return true;
+   }
+
+   public function showForm($ID, $options=array()) {
+      global $LANG;
+
+      if ($ID > 0) {
+         $this->check($ID,'r');
+      } else {
+         // Create item
+         $this->check(-1,'w');
+      }
+
+      $this->showFormHeader($options);
+
+      $this->showFormButtons($options);
 
       return true;
    }
