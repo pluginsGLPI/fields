@@ -14,6 +14,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`           INT(11)        NOT NULL auto_increment,
                   `name`         VARCHAR(255)   DEFAULT NULL,
+                  `label`         VARCHAR(255)   DEFAULT NULL,
                   `itemtype`     VARCHAR(255)   DEFAULT NULL,
                   `type`         VARCHAR(255)   DEFAULT NULL,
                   `entities_id`  INT(11)        NOT NULL DEFAULT '0',
@@ -62,6 +63,33 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $this->showFormHeader($options);
+
+      echo "<tr>";
+      echo "<td>".$LANG['common'][16]." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
+      echo "</td>";
+      echo "<td>".$LANG['mailing'][139]." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
+      echo "</td>";
+      echo "</tr>";
+
+      echo "<tr>";
+      echo "<td>".$LANG['common'][17]." : </td>";
+      echo "<td>";
+      Dropdown::showFromArray('type', array(
+            'tab' => $LANG['fields']['container']['type']['tab'],
+            'dom' => $LANG['fields']['container']['type']['dom']
+         ), 
+         array('value' => $this->fields["type"]));
+      echo "</td>";
+      echo "<td>".$LANG['common'][90]." : </td>";
+      echo "<td>";
+      Dropdown::showFromArray('itemtype', PluginFieldsConfig::getItemtypes(), 
+         array('value' => $this->fields["itemtype"]));
+      echo "</td>";
+      echo "</tr>";
 
       $this->showFormButtons($options);
 

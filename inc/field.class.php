@@ -59,9 +59,42 @@ class PluginFieldsField extends CommonDBTM {
 
       $this->showFormHeader($options);
 
+      echo "<tr>";
+      echo "<td>".$LANG['common'][16]." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
+      echo "</td>";
+      echo "<td>".$LANG['mailing'][139]." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
+      echo "</td>";
+      echo "</tr>";
+
+      echo "<tr>";
+      echo "<td>".$LANG['common'][17]." : </td>";
+      echo "<td>";
+      Dropdown::showFromArray('type', self::getTypes(), 
+         array('value' => $this->fields["type"]));
+      echo "</td>";
+      echo "</tr>";
+
       $this->showFormButtons($options);
 
       return true;
+   }
+
+   static function getTypes() {
+      global $LANG;
+      
+      return array(
+         'header'   => $LANG['fields']['field']['type']['header'],
+         'text'     => $LANG['fields']['field']['type']['text'],
+         'textarea' => $LANG['fields']['field']['type']['textarea'],
+         'number'   => $LANG['fields']['field']['type']['number'],
+         'dropdown' => $LANG['fields']['field']['type']['dropdown'],
+         'yesno'    => $LANG['fields']['field']['type']['yesno'],
+         'date'     => $LANG['fields']['field']['type']['date']
+      );
    }
 
 }

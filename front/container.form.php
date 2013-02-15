@@ -30,7 +30,8 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else {
-   Html::header($LANG['fields']["title"][1], $_SERVER['PHP_SELF'], "plugins", "container");
+   Html::header($LANG['fields']["title"][1], 
+      $_SERVER['PHP_SELF'], "plugins", "fields", "container");
    $container->showForm($_GET["id"]);
    Html::footer();
 }
