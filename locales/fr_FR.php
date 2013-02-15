@@ -12,6 +12,8 @@ $LANG['fields']['config']['containers'] = "Configurer les blocs";
 $LANG['fields']['type'][0] = "Champ";
 $LANG['fields']['type'][1] = "Bloc";
 
+$LANG['fields']['types'][0] = "Champs";
+
 $LANG['fields']['container']['type']['tab'] = "Ajout d'un onglet";
 $LANG['fields']['container']['type']['dom'] = "Insertion dans le formulaire (avant le boutton sauvegarder)";
 

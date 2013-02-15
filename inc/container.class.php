@@ -38,6 +38,15 @@ class PluginFieldsContainer extends CommonDBTM {
       return true;
    }
 
+   function defineTabs($options=array()) {
+      global $LANG, $CFG_GLPI;
+
+      $ong = array();
+      $this->addStandardTab('PluginFieldsContainer_Field', $ong, $options);
+
+      return $ong;
+   }
+
    static function getTypeName() {
       global $LANG;
 
@@ -62,6 +71,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $this->check(-1,'w');
       }
 
+      $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr>";
@@ -92,6 +102,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</tr>";
 
       $this->showFormButtons($options);
+      $this->addDivForTabs();
 
       return true;
    }

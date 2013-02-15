@@ -37,4 +37,24 @@ class PluginFieldsContainer_Field extends CommonDBTM {
       return true;
    }
 
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      return self::createTabEntry($LANG['fields']['types'][0],
+                   countElementsInTable($this->getTable(),
+                                        "`plugin_fields_containers_id` = '".$item->getID()."'"));
+
+   }
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+      $fup = new self();
+      $fup->showSummary($item);
+      return true;
+   }
+
+   function showSummary($container) {
+      echo "test";
+   }
+
 }
