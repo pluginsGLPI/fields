@@ -12,10 +12,11 @@ class PluginFieldsContainer_Field extends CommonDBTM {
          $migration->displayMessage("Installing $table");
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                INT(11)  NOT NULL auto_increment,
-                  `plugin_fields_containers_id`       INT(11)  NOT NULL DEFAULT '0',
-                  `plugin_fields_fields_id`           INT(11)  NOT NULL DEFAULT '0',
-                  `ranking`                           INT(11)  NOT NULL DEFAULT '0',
+                  `id`                                INT(11)        NOT NULL auto_increment,
+                  `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
+                  `plugin_fields_fields_id`           INT(11)        NOT NULL DEFAULT '0',
+                  `ranking`                           INT(11)        NOT NULL DEFAULT '0',
+                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `plugin_fields_fields_id`       (`plugin_fields_fields_id`)
