@@ -12,11 +12,15 @@ class PluginFieldsField extends CommonDBTM {
          $migration->displayMessage("Installing $table");
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`        INT(11)        NOT NULL auto_increment,
-                  `name`      VARCHAR(255)   DEFAULT NULL,
-                  `label`     VARCHAR(255)   DEFAULT NULL,
-                  `type`      VARCHAR(25)    DEFAULT NULL,
-                  PRIMARY KEY  (`id`)
+                  `id`                                INT(11)        NOT NULL auto_increment,
+                  `name`                              VARCHAR(255)   DEFAULT NULL,
+                  `label`                             VARCHAR(255)   DEFAULT NULL,
+                  `type`                              VARCHAR(25)    DEFAULT NULL,
+                  `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
+                  `ranking`                           INT(11)        NOT NULL DEFAULT '0',
+                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
+                  PRIMARY KEY                         (`id`),
+                  KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
             $DB->query($query) or die ($DB->error());
       }
@@ -47,41 +51,26 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
-   public function showForm($ID, $options=array()) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
 
-      if ($ID > 0) {
-         $this->check($ID,'r');
-      } else {
-         // Create item
-         $this->check(-1,'w');
-      }
+      return self::createTabEntry($LANG['fields']['types'][0],
+                   countElementsInTable($this->getTable(),
+                                        "`plugin_fields_containers_id` = '".$item->getID()."'"));
 
-      $this->showFormHeader($options);
+   }
 
-      echo "<tr>";
-      echo "<td>".$LANG['common'][16]." : </td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
-      echo "</td>";
-      echo "<td>".$LANG['mailing'][139]." : </td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
-      echo "</td>";
-      echo "</tr>";
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
 
-      echo "<tr>";
-      echo "<td>".$LANG['common'][17]." : </td>";
-      echo "<td>";
-      Dropdown::showFromArray('type', self::getTypes(), 
-         array('value' => $this->fields["type"]));
-      echo "</td>";
-      echo "</tr>";
-
-      $this->showFormButtons($options);
-
+      $fup = new self();
+      $fup->showSummary($item);
       return true;
    }
+
+   function showSummary($container) {
+      echo "test";
+   }
+
 
    static function getTypes() {
       global $LANG;

@@ -3,7 +3,7 @@
 function plugin_init_fields() {
    global $PLUGIN_HOOKS, $LANG;
 
-   $menu_entry   = "front/config.php";
+   $menu_entry   = "front/container.php";
    if ((!isset($_SESSION['glpiactiveprofile']['config']) 
       || $_SESSION['glpiactiveprofile']['config'] != "w")
    ) $menu_entry  = false;
@@ -13,26 +13,8 @@ function plugin_init_fields() {
 
    $PLUGIN_HOOKS['submenu_entry']['fields']['options']['config'] = array(
       'title' => $LANG['fields']['title'][2],
-      'page'  =>'/plugins/fields/front/config.php',
+      'page'  => "/plugins/fields/$menu_entry",
    );
-
-   $PLUGIN_HOOKS['submenu_entry']['fields']['options']['field'] = array(
-      'title' => $LANG['fields']['config']['fields'],
-      'page'  =>'/plugins/fields/front/field.php',
-      'links' => array(
-         'search' => '/plugins/fields/front/field.php',
-         'add'    =>'/plugins/fields/front/field.form.php',
-         'config'    =>'/plugins/fields/front/config.php'
-   ));
-
-   $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
-      'title' => $LANG['fields']['config']['containers'],
-      'page'  =>'/plugins/fields/front/container.php',
-      'links' => array(
-         'search' => '/plugins/fields/front/container.php',
-         'add'    =>'/plugins/fields/front/container.form.php',
-         'config'    =>'/plugins/fields/front/config.php'
-   ));
 
    $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
 }

@@ -42,7 +42,7 @@ class PluginFieldsContainer extends CommonDBTM {
       global $LANG, $CFG_GLPI;
 
       $ong = array();
-      $this->addStandardTab('PluginFieldsContainer_Field', $ong, $options);
+      $this->addStandardTab('PluginFieldsField', $ong, $options);
 
       return $ong;
    }
@@ -96,7 +96,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</td>";
       echo "<td>".$LANG['common'][90]." : </td>";
       echo "<td>";
-      Dropdown::showFromArray('itemtype', PluginFieldsConfig::getItemtypes(), 
+      Dropdown::showFromArray('itemtype', self::getItemtypes(), 
          array('value' => $this->fields["itemtype"]));
       echo "</td>";
       echo "</tr>";
@@ -105,6 +105,32 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->addDivForTabs();
 
       return true;
+   }
+
+
+   static function getItemtypes() {
+      global $LANG;
+
+      return array(
+         'computer'           => $LANG['Menu'][0],
+         'networkequipment'   => $LANG['Menu'][1],
+         'printer'            => $LANG['Menu'][2],
+         'monitor'            => $LANG['Menu'][3],
+         'software'           => $LANG['Menu'][4],
+         'ticket'             => $LANG['Menu'][5],
+         'user'               => $LANG['Menu'][14],
+         'cartridgeitem'      => $LANG['Menu'][21],
+         'contact'            => $LANG['Menu'][22],
+         'supplier'           => $LANG['Menu'][23],
+         'contract'           => $LANG['Menu'][25],
+         'document'           => $LANG['Menu'][27],
+         'state'              => $LANG['Menu'][28],
+         'consumableitem'     => $LANG['Menu'][32],
+         'phone'              => $LANG['Menu'][34],
+         'profile'            => $LANG['Menu'][35],
+         'group'              => $LANG['Menu'][36],
+         'entity'             => $LANG['Menu'][37]
+      );
    }
 
 }
