@@ -51,6 +51,32 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
+   function prepareInputForAdd($input) {
+
+      // Before adding, add the ranking of the new field
+      $input["ranking"] = $this->getNextRanking();
+      return $input;
+   }
+
+   /**
+    * Get the next ranking for a specified field
+   **/
+   function getNextRanking() {
+      global $DB;
+
+      $sql = "SELECT max(`ranking`) AS rank
+              FROM `".$this->getTable()."`
+              WHERE `plugin_fields_containers_id` = '".
+                  $this->fields['plugin_fields_containers_id']."'";
+      $result = $DB->query($sql);
+
+      if ($DB->numrows($result) > 0) {
+         $datas = $DB->fetch_assoc($result);
+         return $datas["rank"] + 1;
+      }
+      return 0;
+   }
+
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
 
