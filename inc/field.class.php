@@ -245,6 +245,11 @@ class PluginFieldsField extends CommonDBTM {
                $value = $tmp_v['value'];
             }
 
+            //get default value
+            if (empty($value) && !empty($field['default_value'])) {
+               $value = $field['default_value'];
+            }
+
             //show field
             if ($odd%2 == 0)  echo "<tr class='tab_bg_2'>";
             echo "<td>".$field['label']." : </td>";
