@@ -4,12 +4,12 @@ Features :
  ✔ Config Page for containers and fields @done (13-02-18 10:00)
  ✔ Tab insertion @done (13-02-18 11:00)
  ✔ add and update values (for tabs) @done (13-02-18 14:00)
+ ☐ dom insertions
+ ☐ add and update values (for dom)
  ☐ searchOptions
      ☐ Search
      ☐ Massive Actions
      ☐ GiveItem
- ☐ dom insertions
- ☐ add and update values (for dom)
  ☐ Profiles
  ☐ Migration scripts from customfields plugin
 
