@@ -24,3 +24,6 @@ $LANG['fields']['field']['type']['number'] = "Nombre";
 $LANG['fields']['field']['type']['dropdown'] = "Intitulés";
 $LANG['fields']['field']['type']['yesno'] = "Oui/Non";
 $LANG['fields']['field']['type']['date'] = "date";
+
+$LANG['fields']['field']['label']['add'] = "Ajouter un nouveau champ";
+$LANG['fields']['field']['label']['no_fields'] = "Pas de champs pour ce bloc";

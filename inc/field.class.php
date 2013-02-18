@@ -68,7 +68,119 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function showSummary($container) {
-      echo "test";
+      global $DB, $LANG, $CFG_GLPI;
+
+
+      $cID = $container->fields['id'];
+
+      // Display existing Fields
+      $tmp           = array('plugin_fields_containers_id' => $cID);
+      $canadd        = $this->can(-1, 'w', $tmp);
+
+      $query = "SELECT `id`, `label`
+                FROM `".$this->getTable()."`
+                WHERE `plugin_fields_containers_id` = '$cID'
+                ORDER BY `ranking` DESC";
+      $result = $DB->query($query);
+
+      $rand = mt_rand();
+
+      echo "<div id='viewField" . $cID . "$rand'></div>\n";
+         echo "<script type='text/javascript' >\n";
+         echo "function viewAddField" . $cID . "$rand() {\n";
+         $params = array('type'                        => __CLASS__,
+                         'parenttype'                  => 'PluginFieldsContainer',
+                         'plugin_fields_containers_id' => $cID,
+                         'id'                          => -1);
+         Ajax::updateItemJsCode("viewField" . $cID . "$rand",
+                                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
+         echo "};";
+         echo "</script>\n";
+         echo "<div class='center'>".
+              "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
+         echo $LANG['fields']['field']['label']['add']."</a></div><br>\n";
+      
+
+      if ($DB->numrows($result) == 0) {
+         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
+         echo "<th class='b'>".$LANG['fields']['field']['label']['no_fields']."</th></tr></table>";
+      } else {
+         echo "<table class='tab_cadre_fixehov'>";
+         echo "<tr>";
+         echo "<th>" . $LANG['common'][16] . "</th>";
+         echo "<th>" . $LANG['mailing'][139] . "</th>";
+         echo "<th>" . $LANG['common'][17] . "</th>";
+         echo "</tr>\n";
+
+         $fields_type = self::getTypes();
+
+         while ($data = $DB->fetch_array($result)) {
+            if ($this->getFromDB($data['id'])) {
+               echo "<tr class='tab_bg_2' style='cursor:pointer' onClick=\"viewEditField$cID". 
+                  $this->fields['id']."$rand();\">";
+
+               echo "<td>";
+               echo "\n<script type='text/javascript' >\n";
+               echo "function viewEditField" . $cID . $this->fields["id"] . "$rand() {\n";
+               $params = array('type'                        => __CLASS__,
+                               'parenttype'                  => 'PluginFieldsContainer',
+                               'plugin_fields_containers_id' => $cID,
+                               'id'                          => $this->fields["id"]);
+               Ajax::updateItemJsCode("viewField" . $cID . "$rand",
+                                      $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
+               echo "};";
+               echo "</script>\n";
+               echo $this->fields['name']."</td>";
+               echo "<td>".$this->fields['label']."</td>";
+               echo "<td>".$fields_type[$this->fields['type']]."</td>";
+               echo "</tr>\n";
+            }
+         }
+      }
+   }
+
+
+   function showForm($ID, $options=array()) {
+      global $LANG;
+
+      if (isset($options['parent']) && !empty($options['parent'])) {
+         $container = $options['parent'];
+      }
+
+      if ($ID > 0) {
+         $this->check($ID,'r');
+      } else {
+         // Create item
+         $input = array('plugin_fields_containers_id' => $container->getField('id'));
+         $this->check(-1,'w',$input);
+      }
+
+      $this->showFormHeader($options);
+
+
+      echo "<tr>";
+      echo "<td>".$LANG['common'][16]." : </td>";
+      echo "<td>";
+      echo "<input type='hidden' name='plugin_fields_containers_id' value='".
+         $container->getField('id')."'>";
+      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
+      echo "</td>";
+      echo "<td>".$LANG['mailing'][139]." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
+      echo "</td>";
+      echo "</tr>";
+
+      echo "<tr>";
+      echo "<td>".$LANG['common'][17]." : </td>";
+      echo "<td>";
+      Dropdown::showFromArray('type', self::getTypes(), 
+         array('value' => $this->fields["type"]));
+      echo "</td>";
+      echo "</tr>";
+
+      $this->showFormButtons($options);
+
    }
 
 
