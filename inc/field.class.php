@@ -263,25 +263,39 @@ class PluginFieldsField extends CommonDBTM {
       //if no dom containers defined for this itemtype, do nothing
       if (!isset($itemtypes[$current_itemtype])) return false;
 
+
+      echo "Ext.onReady(function() {\n
+         Ext.select('#page form tr:last').each(function(el){
+            el.insertHtml('beforeBegin', '<tr><td colspan=\"4\" id=\"dom_container\"></td></tr>');
+            Ext.get('dom_container').load({
+               url: '../plugins/fields/ajax/load_dom_fields.php',
+               params: {
+                  itemtype: '$current_itemtype',
+                  items_id: '$items_id'
+               }
+            });
+         });
+
+         
+      ";
+
+      echo "});\n";
+   }
+
+   static function AjaxForDomContainer($itemtype, $items_id) {
       //retieve dom containers associated to this itemtype
       $field_obj = new self;
       $field_value_obj = new PluginFieldsValue;
       $container = new PluginFieldsContainer;
-      $found_c = $container->find("`type` = 'dom' AND `itemtype` = '$current_itemtype'");
+      $found_c = $container->find("`type` = 'dom' AND `itemtype` = '$itemtype'");
       $tmp = array_shift($found_c);
       $c_id = $tmp['id'];
 
       //get fields for this container
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
-      $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
-
-      echo "Ext.onReady(function() {\n
-         Ext.select('#page form tr:last').each(function(el){
-            el.insertHtml('beforeBegin', \"$html_fields\");
-         });
-      ";
-
-      echo "});\n";
+      echo "<table class='tab_cadre_fixe'>";
+      echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
+       echo "</table>";
    }
 
    static function prepareHtmlFields($fields, $items_id) {
@@ -317,7 +331,7 @@ class PluginFieldsField extends CommonDBTM {
                case 'number':
                case 'text':
                   $value = Html::cleanInputText($value);
-                  $html.= "<input type='text' name='".$field['name']."' value=\'$value\' />";
+                  $html.= "<input type='text' name='".$field['name']."' value=\"$value\" />";
                   break;
                case 'textarea':
                   $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
