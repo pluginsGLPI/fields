@@ -11,10 +11,13 @@ function plugin_init_fields() {
    $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
    $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
 
-   $PLUGIN_HOOKS['submenu_entry']['fields']['options']['config'] = array(
-      'title' => $LANG['fields']['title'][2],
+   $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
+      'title' => $LANG['fields']['config']['containers'],
       'page'  => "/plugins/fields/$menu_entry",
-   );
+      'links' => array(
+         'search' => "/plugins/fields/$menu_entry",
+         'add'    => "/plugins/fields/front/container.form.php"
+   ));
 
    $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
 }
