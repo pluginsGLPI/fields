@@ -1,0 +1,19 @@
+New plugin fields for glpi 0.83
+
+Features : 
+ ☐ add and update values (for tabs)
+ ☐ searchOptions
+     ☐ Search
+     ☐ Massive Actions
+     ☐ GiveItem
+ ☐ dom insertions
+ ☐ add and update values (for dom)
+ ☐ Profiles
+ ☐ Migration scripts from customfields plugin
+
+
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ Config Page for containers and fields @done (13-02-18 10:00)
+ ✔ Tab insertion @done (13-02-18 11:00)
