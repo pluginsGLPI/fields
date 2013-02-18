@@ -256,7 +256,7 @@ class PluginFieldsField extends CommonDBTM {
                   echo "<input type='text' name='".$field['name']."' value=\"$value\" />";
                   break;
                case 'textarea':
-                  echo "<textarea name='".$field['name']."'>$value</textarea>";
+                  echo "<textarea cols='50' rows='4' name='".$field['name']."'>$value</textarea>";
                   break;
                case 'dropdown':
 
