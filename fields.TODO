@@ -4,8 +4,9 @@ Features :
  ✔ Config Page for containers and fields @done (13-02-18 10:00)
  ✔ Tab insertion @done (13-02-18 11:00)
  ✔ add and update values (for tabs) @done (13-02-18 14:00)
- ☐ dom insertions
+ ✔ dom insertions @done (13-02-18 17:32)
  ☐ add and update values (for dom)
+ ☐ add is_active fields to container
  ☐ Dynamic dropdowns 
  ☐ searchOptions
      ☐ Search
