@@ -169,9 +169,52 @@ class PluginFieldsContainer extends CommonDBTM {
       $tmp = array_shift($found_c);
       $c_id = $tmp['id'];
 
-      PluginFieldsField::showForTabContainer($c_id);
+      return PluginFieldsField::showForTabContainer($c_id, $item->fields['id']);
+   }
 
-      return true;
+   function updateFieldsValues($datas) {
+      global $DB;
+
+      $c_id     = $datas['plugin_fields_containers_id'];
+      $items_id = $datas['items_id'];
+
+      unset(
+         $datas['plugin_fields_containers_id'], 
+         $datas['items_id'], 
+         $datas['update_fields_values']
+      );
+
+      $field_obj = new PluginFieldsField;
+      $field_value_obj = new PluginFieldsValue;
+      foreach($datas as $field => $value) {
+         //find field
+         $found_f = $field_obj->find(
+            "`plugin_fields_containers_id` = $c_id AND `name` = '".$field."'");
+         $tmp_f = array_shift($found_f);
+         $fields_id = $tmp_f['id'];
+
+         //find existing values
+         $found_v = $field_value_obj->find(
+            "`plugin_fields_fields_id` = $fields_id AND `items_id` = '".$items_id."'");
+         if (count($found_v) > 0) {
+            //update
+            $tmp_v = array_shift($found_v);
+            $values_id = $tmp_v['id'];
+            $field_value_obj->update(array(
+               'id'    => $values_id,
+               'value' => $value
+            ));
+         } else {
+            // add
+            $field_value_obj->add(array(
+               'items_id'                    => $items_id,
+               'value'                       => $value,
+               'plugin_fields_containers_id' => $c_id,
+               'plugin_fields_fields_id'     => $fields_id
+            ));
+         }
+      }
+
    }
 
 }

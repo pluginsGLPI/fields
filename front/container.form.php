@@ -9,7 +9,6 @@ if (empty($_GET["id"])) {
 $container = new PluginFieldsContainer;
 
 if (isset($_POST["add"])) {
-
    $container->check(-1,'w',$_POST);
    $newID = $container->add($_POST);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.form.php?id=$newID");
@@ -27,6 +26,10 @@ if (isset($_POST["add"])) {
 } elseif (isset($_POST["update"])) {
    $container->check($_POST['id'],'w');
    $container->update($_POST);
+   Html::back();
+
+} elseif (isset($_POST["update_fields_values"])) {
+   $container->updateFieldsValues($_REQUEST);
    Html::back();
 
 } else {

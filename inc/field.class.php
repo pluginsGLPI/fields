@@ -185,7 +185,6 @@ class PluginFieldsField extends CommonDBTM {
 
       $this->showFormHeader($options);
 
-
       echo "<tr>";
       echo "<td>".$LANG['common'][16]." : </td>";
       echo "<td>";
@@ -216,11 +215,19 @@ class PluginFieldsField extends CommonDBTM {
 
    }
 
-   static function showForTabContainer($c_id) {
-      //get fields for this container
+   static function showForTabContainer($c_id, $items_id) {
+      global $CFG_GLPI, $LANG;
+
       $field_obj = new PluginFieldsField;
+      $field_value_obj = new PluginFieldsValue;
+
+      //get fields for this container
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       $odd = 0;
+      echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
+         "/plugins/fields/front/container.form.php'>";
+      echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
+      echo "<input type='hidden' name='items_id' value='$items_id'>";
       echo "<table class='tab_cadre_fixe'>";
       foreach($fields as $field) {
          if ($field['type'] === 'header') {
@@ -229,27 +236,36 @@ class PluginFieldsField extends CommonDBTM {
             echo "</tr>";
             $odd = 0;
          } else {
+            //get value
+            $value = "";
+            $found_v = $field_value_obj->find(
+            "`plugin_fields_fields_id` = ".$field['id']." AND `items_id` = '".$items_id."'");
+            if (count($found_v) > 0) {
+               $tmp_v = array_shift($found_v);
+               $value = $tmp_v['value'];
+            }
+
+            //show field
             if ($odd%2 == 0)  echo "<tr class='tab_bg_2'>";
             echo "<td>".$field['label']." : </td>";
             echo "<td>";
             switch ($field['type']) {
+               case 'number':
                case 'text':
-                  echo "<input type='text' name='".$field['name']."' value='' />";
+                  $value = Html::cleanInputText($value);
+                  echo "<input type='text' name='".$field['name']."' value=\"$value\" />";
                   break;
                case 'textarea':
-                  echo "<textarea name='".$field['name']."'></textarea>";
-                  break;
-               case 'number':
-                  echo "<input type='text' name='".$field['name']."' value='' />";
+                  echo "<textarea name='".$field['name']."'>$value</textarea>";
                   break;
                case 'dropdown':
 
                   break;
                case 'yesno':
-                  Dropdown::showYesNo($field['name']);
+                  Dropdown::showYesNo($field['name'], $value);
                   break;
                case 'date':
-                  Html::showDateTimeFormItem($field['name']);
+                  Html::showDateTimeFormItem($field['name'], $value);
                   break;
 
             }
@@ -259,7 +275,13 @@ class PluginFieldsField extends CommonDBTM {
          }         
       }
       if ($odd%2 == 0)  echo "</tr>";
-      echo "</table>";
+      echo "<tr><td class='tab_bg_2 center' colspan='4'>";
+      echo "<input type='submit' name='update_fields_values' value=\"".
+         $LANG['buttons'][7]."\" class='submit'>";
+      echo "</td></tr>";
+      echo "</table></form>";
+
+      return true;
    }
 
 
