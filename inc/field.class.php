@@ -110,6 +110,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<th>" . $LANG['common'][16] . "</th>";
          echo "<th>" . $LANG['mailing'][139] . "</th>";
          echo "<th>" . $LANG['common'][17] . "</th>";
+         echo "<th>" . $LANG['common'][44] . "</th>";
          echo "</tr>\n";
 
          $fields_type = self::getTypes();
@@ -133,6 +134,7 @@ class PluginFieldsField extends CommonDBTM {
                echo $this->fields['name']."</td>";
                echo "<td>".$this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
+               echo "<td>".$this->fields['default_value']."</td>";
                echo "</tr>\n";
             }
          }
@@ -176,6 +178,11 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Dropdown::showFromArray('type', self::getTypes(), 
          array('value' => $this->fields["type"]));
+      echo "</td>";
+      echo "<td>".$LANG['common'][44]." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, 'default_value', 
+                                    array('value' => $this->fields["default_value"]));
       echo "</td>";
       echo "</tr>";
 
