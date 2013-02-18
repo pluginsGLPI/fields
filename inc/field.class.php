@@ -219,21 +219,80 @@ class PluginFieldsField extends CommonDBTM {
       global $CFG_GLPI, $LANG;
 
       $field_obj = new PluginFieldsField;
-      $field_value_obj = new PluginFieldsValue;
-
+      
       //get fields for this container
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
-      $odd = 0;
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
          "/plugins/fields/front/container.form.php'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
       echo "<input type='hidden' name='items_id' value='$items_id'>";
       echo "<table class='tab_cadre_fixe'>";
+      echo self::prepareHtmlFields($fields, $items_id);
+      echo "<tr><td class='tab_bg_2 center' colspan='4'>";
+      echo "<input type='submit' name='update_fields_values' value=\"".
+         $LANG['buttons'][7]."\" class='submit'>";
+      echo "</td></tr>";
+      echo "</table></form>";
+
+      return true;
+   }
+
+
+   static function showForDomContainer() {
+
+      //parse http_referer to get current url (this code is loaded by javacript)
+      $current_url = $_SERVER['HTTP_REFERER'];
+      if (strpos($current_url, ".form.php") === false) return false;
+      $expl_url = explode("?", $current_url);
+
+      //if add item form, do nothing
+      if (!isset($expl_url[1]) || strpos($expl_url[1], "id=") === false) return false;
+
+      //get current id
+      parse_str($expl_url[1], $params);
+      $items_id = $params['id'];
+
+      //get itemtype
+      $tmp = explode("/", $expl_url[0]);
+      $script_name = array_pop($tmp);
+      $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+
+      //Retrieve dom container 
+      $itemtypes = PluginFieldsContainer::getEntries('dom', true);
+
+      //if no dom containers defined for this itemtype, do nothing
+      if (!isset($itemtypes[$current_itemtype])) return false;
+
+      //retieve dom containers associated to this itemtype
+      $field_obj = new self;
+      $field_value_obj = new PluginFieldsValue;
+      $container = new PluginFieldsContainer;
+      $found_c = $container->find("`type` = 'dom' AND `itemtype` = '$current_itemtype'");
+      $tmp = array_shift($found_c);
+      $c_id = $tmp['id'];
+
+      //get fields for this container
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
+      $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
+
+      echo "Ext.onReady(function() {\n
+         Ext.select('#page form tr:last').each(function(el){
+            el.insertHtml('beforeBegin', \"$html_fields\");
+         });
+      ";
+
+      echo "});\n";
+   }
+
+   static function prepareHtmlFields($fields, $items_id) {
+      $html = "";
+      $field_value_obj = new PluginFieldsValue;
+      $odd = 0;
       foreach($fields as $field) {
          if ($field['type'] === 'header') {
-            echo "<tr class='tab_bg_2'>";
-            echo "<th colspan='4'>".$field['label']."</td>";
-            echo "</tr>";
+            $html.= "<tr class='tab_bg_2'>";
+            $html.= "<th colspan='4'>".$field['label']."</td>";
+            $html.= "</tr>";
             $odd = 0;
          } else {
             //get value
@@ -251,44 +310,44 @@ class PluginFieldsField extends CommonDBTM {
             }
 
             //show field
-            if ($odd%2 == 0)  echo "<tr class='tab_bg_2'>";
-            echo "<td>".$field['label']." : </td>";
-            echo "<td>";
+            if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
+            $html.= "<td>".$field['label']." : </td>";
+            $html.= "<td>";
             switch ($field['type']) {
                case 'number':
                case 'text':
                   $value = Html::cleanInputText($value);
-                  echo "<input type='text' name='".$field['name']."' value=\"$value\" />";
+                  $html.= "<input type='text' name='".$field['name']."' value=\'$value\' />";
                   break;
                case 'textarea':
-                  echo "<textarea cols='50' rows='4' name='".$field['name']."'>$value</textarea>";
+                  $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
+                     "$value</textarea>";
                   break;
                case 'dropdown':
 
                   break;
                case 'yesno':
+                  ob_start();
                   Dropdown::showYesNo($field['name'], $value);
+                  $html.= ob_get_contents();
+                  ob_end_clean();
                   break;
                case 'date':
+                  ob_start();
                   Html::showDateTimeFormItem($field['name'], $value);
+                  $html.= ob_get_contents();
+                  ob_end_clean();
                   break;
 
             }
-            echo "</td>";
-            if ($odd%2 == 1)  echo "</tr>";
+            $html.= "</td>";
+            if ($odd%2 == 1)  $html.= "</tr>";
             $odd++;
          }         
       }
-      if ($odd%2 == 0)  echo "</tr>";
-      echo "<tr><td class='tab_bg_2 center' colspan='4'>";
-      echo "<input type='submit' name='update_fields_values' value=\"".
-         $LANG['buttons'][7]."\" class='submit'>";
-      echo "</td></tr>";
-      echo "</table></form>";
-
-      return true;
+      if ($odd%2 == 1)  $html.= "</tr>";
+      return $html;
    }
-
 
    static function getTypes() {
       global $LANG;

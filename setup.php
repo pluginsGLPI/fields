@@ -4,7 +4,7 @@ function plugin_init_fields() {
    global $PLUGIN_HOOKS, $LANG;
 
    Plugin::registerClass('PluginFieldsContainer',
-                         array('addtabon' => PluginFieldsContainer::getTabEntries()));
+                         array('addtabon' => PluginFieldsContainer::getEntries()));
 
    $menu_entry   = "front/container.php";
    if ((!isset($_SESSION['glpiactiveprofile']['config']) 
@@ -23,6 +23,7 @@ function plugin_init_fields() {
    ));
 
    $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
+   $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 }
 
 

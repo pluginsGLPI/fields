@@ -133,10 +133,10 @@ class PluginFieldsContainer extends CommonDBTM {
       );
    }
 
-   static function getTabEntries($full = false) {
+   static function getEntries($type = 'tab', $full = false) {
       $itemtypes = array();
       $container = new self;
-      $found = $container->find("`type` = 'tab'", "`label`");
+      $found = $container->find("`type` = '$type'", "`label`");
       foreach($found as $item) {
          if ($full) {
             $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
@@ -150,7 +150,7 @@ class PluginFieldsContainer extends CommonDBTM {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
       
-      $itemtypes = self::getTabEntries(true);
+      $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();
          foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) { 
@@ -214,7 +214,6 @@ class PluginFieldsContainer extends CommonDBTM {
             ));
          }
       }
-
    }
 
 }
