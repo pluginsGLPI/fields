@@ -112,25 +112,66 @@ class PluginFieldsContainer extends CommonDBTM {
       global $LANG;
 
       return array(
-         'computer'           => $LANG['Menu'][0],
-         'networkequipment'   => $LANG['Menu'][1],
-         'printer'            => $LANG['Menu'][2],
-         'monitor'            => $LANG['Menu'][3],
-         'software'           => $LANG['Menu'][4],
-         'ticket'             => $LANG['Menu'][5],
-         'user'               => $LANG['Menu'][14],
-         'cartridgeitem'      => $LANG['Menu'][21],
-         'contact'            => $LANG['Menu'][22],
-         'supplier'           => $LANG['Menu'][23],
-         'contract'           => $LANG['Menu'][25],
-         'document'           => $LANG['Menu'][27],
-         'state'              => $LANG['Menu'][28],
-         'consumableitem'     => $LANG['Menu'][32],
-         'phone'              => $LANG['Menu'][34],
-         'profile'            => $LANG['Menu'][35],
-         'group'              => $LANG['Menu'][36],
-         'entity'             => $LANG['Menu'][37]
+         'Computer'           => $LANG['Menu'][0],
+         'Networkequipment'   => $LANG['Menu'][1],
+         'Printer'            => $LANG['Menu'][2],
+         'Monitor'            => $LANG['Menu'][3],
+         'Software'           => $LANG['Menu'][4],
+         'Ticket'             => $LANG['Menu'][5],
+         'User'               => $LANG['Menu'][14],
+         'Cartridgeitem'      => $LANG['Menu'][21],
+         'Contact'            => $LANG['Menu'][22],
+         'Supplier'           => $LANG['Menu'][23],
+         'Contract'           => $LANG['Menu'][25],
+         'Document'           => $LANG['Menu'][27],
+         'State'              => $LANG['Menu'][28],
+         'Consumableitem'     => $LANG['Menu'][32],
+         'Phone'              => $LANG['Menu'][34],
+         'Profile'            => $LANG['Menu'][35],
+         'Group'              => $LANG['Menu'][36],
+         'Entity'             => $LANG['Menu'][37]
       );
+   }
+
+   static function getTabEntries($full = false) {
+      $itemtypes = array();
+      $container = new self;
+      $found = $container->find("`type` = 'tab'", "`label`");
+      foreach($found as $item) {
+         if ($full) {
+            $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
+         } else {
+            $itemtypes[] = $item['itemtype'];
+         }
+      }
+      return $itemtypes;
+   }
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+      
+      $itemtypes = self::getTabEntries(true);
+      if (isset($itemtypes[$item->getType()])) {
+         $tabs_entries = array();
+         foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) { 
+            $tabs_entries[$tab_name] = $tab_label;
+         }
+         return $tabs_entries;
+      }
+   }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+      //retrieve container for current tab
+      $container = new self;
+      $found_c = $container->find("`type` = 'tab' AND `name` = '$tabnum'");
+      $tmp = array_shift($found_c);
+      $c_id = $tmp['id'];
+
+      PluginFieldsField::showForTabContainer($c_id);
+
+      return true;
    }
 
 }

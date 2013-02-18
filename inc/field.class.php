@@ -106,7 +106,7 @@ class PluginFieldsField extends CommonDBTM {
       $query = "SELECT `id`, `label`
                 FROM `".$this->getTable()."`
                 WHERE `plugin_fields_containers_id` = '$cID'
-                ORDER BY `ranking` DESC";
+                ORDER BY `ranking` ASC";
       $result = $DB->query($query);
 
       $rand = mt_rand();
@@ -214,6 +214,52 @@ class PluginFieldsField extends CommonDBTM {
 
       $this->showFormButtons($options);
 
+   }
+
+   static function showForTabContainer($c_id) {
+      //get fields for this container
+      $field_obj = new PluginFieldsField;
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
+      $odd = 0;
+      echo "<table class='tab_cadre_fixe'>";
+      foreach($fields as $field) {
+         if ($field['type'] === 'header') {
+            echo "<tr class='tab_bg_2'>";
+            echo "<th colspan='4'>".$field['label']."</td>";
+            echo "</tr>";
+            $odd = 0;
+         } else {
+            if ($odd%2 == 0)  echo "<tr class='tab_bg_2'>";
+            echo "<td>".$field['label']." : </td>";
+            echo "<td>";
+            switch ($field['type']) {
+               case 'text':
+                  echo "<input type='text' name='".$field['name']."' value='' />";
+                  break;
+               case 'textarea':
+                  echo "<textarea name='".$field['name']."'></textarea>";
+                  break;
+               case 'number':
+                  echo "<input type='text' name='".$field['name']."' value='' />";
+                  break;
+               case 'dropdown':
+
+                  break;
+               case 'yesno':
+                  Dropdown::showYesNo($field['name']);
+                  break;
+               case 'date':
+                  Html::showDateTimeFormItem($field['name']);
+                  break;
+
+            }
+            echo "</td>";
+            if ($odd%2 == 1)  echo "</tr>";
+            $odd++;
+         }         
+      }
+      if ($odd%2 == 0)  echo "</tr>";
+      echo "</table>";
    }
 
 

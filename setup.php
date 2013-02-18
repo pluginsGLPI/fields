@@ -3,6 +3,9 @@
 function plugin_init_fields() {
    global $PLUGIN_HOOKS, $LANG;
 
+   Plugin::registerClass('PluginFieldsContainer',
+                         array('addtabon' => PluginFieldsContainer::getTabEntries()));
+
    $menu_entry   = "front/container.php";
    if ((!isset($_SESSION['glpiactiveprofile']['config']) 
       || $_SESSION['glpiactiveprofile']['config'] != "w")
