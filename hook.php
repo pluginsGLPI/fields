@@ -74,6 +74,19 @@ function plugin_fields_uninstall() {
 }
 
 
+function plugin_fields_getAddSearchOptions($itemtype) {
+   global $LANG;
+
+   $itemtypes = PluginFieldsContainer::getEntries('all');
+
+   if (in_array($itemtype, $itemtypes)) {
+      return PluginFieldsContainer::getAddSearchOptions($itemtype);
+   }
+
+   return null;  
+}
+
+
 function plugin_fields_searchOptionsValues($options=array()) {
    global $LANG;
 
@@ -96,8 +109,6 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val) {
    $searchopt = &Search::getOptions($type);
    $table     = $searchopt[$ID]["table"];
    $field     = $searchopt[$ID]["field"];
-
-   Toolbox::logDebug($link,$nott,$type,$ID,$val);
 
    switch ($table.".".$field) {
       case "glpi_plugin_fields_containers.type" :

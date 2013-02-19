@@ -10,7 +10,7 @@ Features :
  ✔ add display preferences for container(label, itemtype, type, active) @done (13-02-19 15:50)
  ☐ Dynamic dropdowns 
  ☐ searchOptions
-     ☐ Search
+     ✔ Search @done (13-02-19 17:11)
      ☐ Massive Actions
      ☐ GiveItem
  ☐ Profiles

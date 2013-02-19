@@ -14,7 +14,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`           INT(11)        NOT NULL auto_increment,
                   `name`         VARCHAR(255)   DEFAULT NULL,
-                  `label`         VARCHAR(255)   DEFAULT NULL,
+                  `label`        VARCHAR(255)   DEFAULT NULL,
                   `itemtype`     VARCHAR(255)   DEFAULT NULL,
                   `type`         VARCHAR(255)   DEFAULT NULL,
                   `entities_id`  INT(11)        NOT NULL DEFAULT '0',
@@ -220,9 +220,14 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    static function getEntries($type = 'tab', $full = false) {
+      $sql_type = "1=1";
+      if ($type !== "all") {
+         $sql_type = "`type` = '$type'";
+      }
+
       $itemtypes = array();
       $container = new self;
-      $found = $container->find("`type` = '$type' AND is_active = 1", "`label`");
+      $found = $container->find("$sql_type AND is_active = 1", "`label`");
       foreach($found as $item) {
          if ($full) {
             $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
@@ -264,6 +269,13 @@ class PluginFieldsContainer extends CommonDBTM {
       $c_id     = $datas['plugin_fields_containers_id'];
       $items_id = $datas['items_id'];
 
+      //get itemtype
+      $container = new self;
+      $container->getFromDB($c_id);
+      $itemtype = $container->fields['itemtype'];
+      Toolbox::logDebug($itemtype);
+
+      //unset unused datas
       unset(
          $datas['plugin_fields_containers_id'], 
          $datas['items_id'], 
@@ -294,6 +306,7 @@ class PluginFieldsContainer extends CommonDBTM {
             // add
             $field_value_obj->add(array(
                'items_id'                    => $items_id,
+               'itemtype'                    => $itemtype,
                'value'                       => $value,
                'plugin_fields_containers_id' => $c_id,
                'plugin_fields_fields_id'     => $fields_id
@@ -367,6 +380,52 @@ class PluginFieldsContainer extends CommonDBTM {
             'id' => $values_id
          ), 1);
       }
+   }
+
+   static function getAddSearchOptions($itemtype) {
+      global $DB;
+
+      $opt = array();
+
+      $i = 76665;
+      $query = "SELECT fields.name, fields.label, fields.type
+         FROM glpi_plugin_fields_containers containers
+         INNER JOIN glpi_plugin_fields_fields fields
+            ON containers.id = fields.plugin_fields_containers_id
+         WHERE containers.itemtype = '$itemtype'
+            AND fields.type != 'header'
+            ORDER BY fields.id ASC";
+      $res = $DB->query($query);
+      while ($datas = $DB->fetch_assoc($res)) {
+         $opt[$i]['table']      = 'glpi_plugin_fields_values';
+         $opt[$i]['field']      = 'value';
+         //$opt[$i]['linkfield']  = $datas['name'];
+         $opt[$i]['name']       = $datas['label'];
+         $opt[$i]['joinparams'] = array(
+            /*'beforejoin' => array(
+               'table' => 'glpi_plugin_fields_fields'
+            ),*/
+            'jointype' => "itemtype_item",
+            'condition' => "AND 2=2"
+         );
+
+
+         switch ($datas['type']) {
+            case 'dropdown':
+               break;
+             
+            case 'yesno':
+               $opt[$i]['datatype'] = "bool";
+               break;
+             
+            case 'date':
+            case 'datetime':
+               $opt[$i]['datatype'] = $datas['type'];
+          } 
+         $i++;
+      }
+
+      return $opt;
    }
 
 }
