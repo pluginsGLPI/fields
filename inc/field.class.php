@@ -284,19 +284,17 @@ class PluginFieldsField extends CommonDBTM {
 
    static function AjaxForDomContainer($itemtype, $items_id) {
       //retieve dom containers associated to this itemtype
-      $field_obj = new self;
-      $field_value_obj = new PluginFieldsValue;
-      $container = new PluginFieldsContainer;
-      $found_c = $container->find("`type` = 'dom' AND `itemtype` = '$itemtype'");
-      $tmp = array_shift($found_c);
-      $c_id = $tmp['id'];
+      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, "dom");
 
       //get fields for this container
+      $field_obj = new self;
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo "<table class='tab_cadre_fixe'>";
       echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
        echo "</table>";
    }
+
+   
 
    static function prepareHtmlFields($fields, $items_id) {
       $html = "";

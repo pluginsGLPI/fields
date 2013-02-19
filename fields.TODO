@@ -5,7 +5,7 @@ Features :
  ✔ Tab insertion @done (13-02-18 11:00)
  ✔ add and update values (for tabs) @done (13-02-18 14:00)
  ✔ dom insertions @done (13-02-18 17:32)
- ☐ add and update values (for dom)
+ ✔ add and update values (for dom) @done (13-02-19 11:05)
  ☐ add is_active fields to container
  ☐ Dynamic dropdowns 
  ☐ searchOptions
@@ -13,5 +13,10 @@ Features :
      ☐ Massive Actions
      ☐ GiveItem
  ☐ Profiles
+ ☐ Add prepareInputForAdd in fields to check 
+    ☐ field unicity 
+    ☐ no conflict with itemtype fields
+    ☐ name format (no accents, space, punctuation)
+ ☐ Make dom containers unique by itemtype
  ☐ Migration scripts for customfields plugin
 

@@ -24,6 +24,16 @@ function plugin_init_fields() {
 
    $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
    $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
+
+
+   //Retrieve dom container 
+   $itemtypes = PluginFieldsContainer::getEntries('dom');
+   foreach ($itemtypes as $itemtype) {
+      $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer", 
+                                                                    "preItemUpdate");
+      $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
+                                                                    "preItemPurge");
+   }
 }
 
 

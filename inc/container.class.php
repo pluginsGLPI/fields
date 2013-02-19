@@ -214,6 +214,73 @@ class PluginFieldsContainer extends CommonDBTM {
             ));
          }
       }
+
+      return true;
+   }
+
+
+   static function findContainer($itemtype, $items_id, $type='tab') {
+      $container = new PluginFieldsContainer;
+      $found_c = $container->find("`type` = '$type' AND `itemtype` = '$itemtype'");
+
+      if (count($found_c) == 0) return false;
+      
+      if ($type == "dom") {
+         $tmp = array_shift($found_c);
+         $id = $tmp['id'];
+      } else {
+         $id = array_keys($found_c);
+      }
+
+      return $id;
+   }
+
+
+   static function preItemUpdate(CommonDBTM $item) {
+      //find container (if not exist, do nothing)
+      $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
+      if ($c_id === false) return false;
+
+      //find fields associated to found container
+      $field_obj = new PluginFieldsField;
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", 
+                                 "ranking");
+
+      //prepare datas to update
+      $datas = array(
+         'plugin_fields_containers_id' => $c_id,
+         'items_id'                    =>  $item->fields['id']
+      );
+      foreach($fields as $field) {
+         $datas[$field['name']] = $item->input[$field['name']];
+      }
+
+      //update datas
+      $container = new self;
+      return $container->updateFieldsValues($datas);
+   }
+   
+   static function preItemPurge(CommonDBTM $item) {
+      global $DB;
+
+      $values = new PluginFieldsValue;
+
+      //get all value associated to this item
+      $query = "SELECT glpi_plugin_fields_values.id as values_id
+      FROM glpi_plugin_fields_containers
+      INNER JOIN glpi_plugin_fields_values
+         ON glpi_plugin_fields_values.plugin_fields_containers_id = glpi_plugin_fields_containers.id
+      WHERE glpi_plugin_fields_containers.itemtype = '".get_Class($item)."'
+         AND glpi_plugin_fields_values.items_id = ".$item->fields['id'];
+      $res = $DB->query($query);
+      while ($data = $DB->fetch_assoc($res)) {
+         $values_id = $data['values_id'];
+
+         //remove associated values
+         $values->delete(array(
+            'id' => $values_id
+         ), 1);
+      }
    }
 
 }
