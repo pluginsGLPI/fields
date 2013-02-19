@@ -7,6 +7,7 @@ Features :
  ✔ dom insertions @done (13-02-18 17:32)
  ✔ add and update values (for dom) @done (13-02-19 11:05)
  ✔ add is_active field to container @done (13-02-19 11:33)
+ ✔ add display preferences for container(label, itemtype, type, active) @done (13-02-19 15:50)
  ☐ Dynamic dropdowns 
  ☐ searchOptions
      ☐ Search

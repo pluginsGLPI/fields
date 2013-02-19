@@ -72,3 +72,36 @@ function plugin_fields_uninstall() {
 
    return true;
 }
+
+
+function plugin_fields_searchOptionsValues($options=array()) {
+   global $LANG;
+
+   $table = $options['searchoption']['table'];
+   $field = $options['searchoption']['field'];
+
+   Html::printCleanArray($options);
+
+   switch ($table.".".$field) {
+      case "glpi_plugin_fields_containers.type" :
+         Dropdown::showFromArray('type', PluginFieldsContainer::getTypes(), 
+                                 array('value' => $options['value']));
+         return true;
+   }
+   return false;
+}
+
+function plugin_fields_addWhere($link,$nott,$type,$ID,$val) {
+
+   $searchopt = &Search::getOptions($type);
+   $table     = $searchopt[$ID]["table"];
+   $field     = $searchopt[$ID]["field"];
+
+   Toolbox::logDebug($link,$nott,$type,$ID,$val);
+
+   switch ($table.".".$field) {
+      case "glpi_plugin_fields_containers.type" :
+         return $link." `$table`.`$field` = '$val' ";
+   }
+   return "";
+}

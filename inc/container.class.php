@@ -23,7 +23,17 @@ class PluginFieldsContainer extends CommonDBTM {
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
-            $DB->query($query) or die ($DB->error());
+         $DB->query($query) or die ($DB->error());
+      }
+
+      //add display preferences for this class
+      $d_pref = new DisplayPreference;
+      $found = $d_pref->find("itemtype = '".__CLASS__."'");
+      if (count($found) == 0) {
+         for ($i = 2; $i <= 5; $i++) {
+            $DB->query("INSERT INTO glpi_displaypreferences VALUES 
+               ('', '".__CLASS__."', $i, ".($i-1).", 0)");
+         }
       }
 
       return true;
@@ -36,7 +46,69 @@ class PluginFieldsContainer extends CommonDBTM {
       $obj = new self();
       $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
 
+      //delete display preferences for this item
+      $DB->query("DELETE FROM glpi_displaypreferences WHERE `itemtype` = '".__CLASS__."'");
+
       return true;
+   }
+
+   function getSearchOptions() {
+      global $LANG;
+
+      $tab = array();
+
+      $tab[1]['table']         = $this->getTable();
+      $tab[1]['field']         = 'name';
+      $tab[1]['name']          = $LANG['common'][16];
+      $tab[1]['datatype']      = 'itemlink';
+      $tab[1]['itemlink_type'] = $this->getType();
+      $tab[1]['massiveaction'] = false;
+
+      $tab[2]['table']         = $this->getTable();
+      $tab[2]['field']         = 'label';
+      $tab[2]['name']          = $LANG['mailing'][139];
+      $tab[2]['massiveaction'] = false;
+
+      $tab[3]['table']         = $this->getTable();
+      $tab[3]['field']         = 'itemtype';
+      $tab[3]['name']          = $LANG['common'][90];
+      $tab[3]['datatype']       = 'itemtypename';
+
+      $tab[4]['table']         = $this->getTable();
+      $tab[4]['field']         = 'type';
+      $tab[4]['name']          = $LANG['common'][17];
+      $tab[4]['searchtype']    = 'equals';
+
+      $tab[5]['table']         = $this->getTable();
+      $tab[5]['field']         = 'is_active';
+      $tab[5]['name']          = $LANG['common'][60];
+      $tab[5]['datatype']      = 'bool';
+
+      $tab[6]['table']         = 'glpi_entities';
+      $tab[6]['field']         = 'completename';
+      $tab[6]['name']          = $LANG['entity'][0];
+      $tab[6]['massiveaction'] = false;
+      $tab[6]['datatype']      = 'dropdown';
+
+      $tab[7]['table']         = $this->getTable();
+      $tab[7]['field']         = 'is_recursive';
+      $tab[7]['name']          = $LANG['entity'][9];
+      $tab[6]['massiveaction'] = false;
+      $tab[7]['datatype']      = 'bool';
+
+      return $tab;
+   }
+
+   static function getSpecificValueToDisplay($field, $values, $options=array()) {
+      if (!is_array($values)) {
+         $values = array($field => $values);
+      }
+      switch ($field) {
+         case 'type':
+            $types = self::getTypes();
+            return $types[$values[$field]];
+            break;
+      }
    }
 
    function defineTabs($options=array()) {
@@ -89,10 +161,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<tr>";
       echo "<td>".$LANG['common'][17]." : </td>";
       echo "<td>";
-      Dropdown::showFromArray('type', array(
-            'tab' => $LANG['fields']['container']['type']['tab'],
-            'dom' => $LANG['fields']['container']['type']['dom']
-         ), 
+      Dropdown::showFromArray('type', self::getTypes(), 
          array('value' => $this->fields["type"]));
       echo "</td>";
       echo "<td>".$LANG['common'][90]." : </td>";
@@ -138,6 +207,15 @@ class PluginFieldsContainer extends CommonDBTM {
          'Profile'            => $LANG['Menu'][35],
          'Group'              => $LANG['Menu'][36],
          'Entity'             => $LANG['Menu'][37]
+      );
+   }
+
+   static function getTypes() {
+      global $LANG;
+
+      return array(
+         'tab' => $LANG['fields']['container']['type']['tab'],
+         'dom' => $LANG['fields']['container']['type']['dom']
       );
    }
 
