@@ -6,7 +6,7 @@ Features :
  ✔ add and update values (for tabs) @done (13-02-18 14:00)
  ✔ dom insertions @done (13-02-18 17:32)
  ✔ add and update values (for dom) @done (13-02-19 11:05)
- ☐ add is_active fields to container
+ ✔ add is_active field to container @done (13-02-19 11:33)
  ☐ Dynamic dropdowns 
  ☐ searchOptions
      ☐ Search

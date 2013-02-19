@@ -19,6 +19,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   `type`         VARCHAR(255)   DEFAULT NULL,
                   `entities_id`  INT(11)        NOT NULL DEFAULT '0',
                   `is_recursive` TINYINT(1)     NOT NULL DEFAULT '0',
+                  `is_active`    TINYINT(1)     NOT NULL DEFAULT '0',
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
@@ -101,6 +102,13 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</td>";
       echo "</tr>";
 
+      echo "<tr>";
+      echo "<td>".$LANG['common'][60]." : </td>";
+      echo "<td>";
+      Dropdown::showYesNo("is_active", $this->fields["is_active"]);
+      echo "</td>";
+      echo "</tr>";
+
       $this->showFormButtons($options);
       $this->addDivForTabs();
 
@@ -136,7 +144,7 @@ class PluginFieldsContainer extends CommonDBTM {
    static function getEntries($type = 'tab', $full = false) {
       $itemtypes = array();
       $container = new self;
-      $found = $container->find("`type` = '$type'", "`label`");
+      $found = $container->find("`type` = '$type' AND is_active = 1", "`label`");
       foreach($found as $item) {
          if ($full) {
             $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
