@@ -350,7 +350,11 @@ class PluginFieldsField extends CommonDBTM {
                   $html.= ob_get_contents();
                   ob_end_clean();
                   break;
-
+               case 'datetime':
+                  ob_start();
+                  Html::showDateFormItem($field['name'], $value);
+                  $html.= ob_get_contents();
+                  ob_end_clean();
             }
             $html.= "</td>";
             if ($odd%2 == 1)  $html.= "</tr>";
@@ -371,7 +375,8 @@ class PluginFieldsField extends CommonDBTM {
          'number'   => $LANG['fields']['field']['type']['number'],
          'dropdown' => $LANG['fields']['field']['type']['dropdown'],
          'yesno'    => $LANG['fields']['field']['type']['yesno'],
-         'date'     => $LANG['fields']['field']['type']['date']
+         'date'     => $LANG['fields']['field']['type']['date'],
+         'datetime' => $LANG['fields']['field']['type']['datetime']
       );
    }
 
