@@ -396,12 +396,11 @@ class PluginFieldsContainer extends CommonDBTM {
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
-         $opt[$i]['table']      = 'glpi_plugin_fields_values';
-         $opt[$i]['field']      = 'value';
-         //$opt[$i]['linkfield']  = $datas['name'];
-         $opt[$i]['name']       = $datas['label'];
-         $opt[$i]['condition']  = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
-
+         $opt[$i]['table']         = 'glpi_plugin_fields_values';
+         $opt[$i]['field']         = 'value';
+         $opt[$i]['name']          = $datas['label'];
+         $opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
+         $opt[$i]['massiveaction'] = false;
 
          switch ($datas['type']) {
             case 'dropdown':
@@ -418,8 +417,16 @@ class PluginFieldsContainer extends CommonDBTM {
                $opt[$i]['datatype'] = $datas['type'];
                break;
             default:
-                $opt[$i]['datatype'] = "string";
+               $opt[$i]['datatype'] = "string";
           } 
+
+          //massive action searchoption
+          $opt[$i+100000]                  = $opt[$i];
+          $opt[$i+100000]['linkfield']     = "value";
+          $opt[$i+100000]['massiveaction'] = true;
+          $opt[$i+100000]['nosearch'] = true;
+
+
          $i++;
       }
 

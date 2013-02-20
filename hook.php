@@ -104,7 +104,9 @@ function plugin_fields_searchOptionsValues($options=array()) {
    return false;
 }
 
-function plugin_fields_addWhere($link,$nott,$type,$ID,$val) {
+function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
+
+   //Toolbox::logDebug($link,$nott,$type,$ID,$val,$searchtype);
 
    $searchopt = &Search::getOptions($type);
    $table     = $searchopt[$ID]["table"];
@@ -116,10 +118,17 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val) {
    }
 
    //for itemtype search options
-   if ($table === "glpi_plugin_fields_values") {
+   if ($table === "glpi_plugin_fields_values" && !isset($_SESSION['pass_addwhere_fields'])) {
+      $_SESSION['pass_addwhere_fields'] = true;
+      
       $condition = $searchopt[$ID]["condition"];
-      return $condition;
+      $where     = Search::addWhere($link, $nott, $type, $ID, $searchtype, $val);
+      unset($_SESSION['pass_addwhere_fields']);
+      
+      return "$condition AND $where";
    }
+
+   unset($_SESSION['pass_addwhere_fields']);
 
    return "";
 }
