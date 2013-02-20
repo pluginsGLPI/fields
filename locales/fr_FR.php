@@ -6,6 +6,8 @@ $LANG['fields']['title'][2] = "Configuration";
 $LANG['fields']['install'][0]   = "Installation des tables MySQL";
 $LANG['fields']['uninstall'][0] = "Désinstallation des tables MySQL";
 
+$LANG['fields']['error']['dir_write'] = "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger.";
+
 $LANG['fields']['config']['fields']     = "Configurer les champs";
 $LANG['fields']['config']['containers'] = "Configurer les blocs";
 

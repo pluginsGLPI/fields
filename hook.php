@@ -4,6 +4,7 @@ function plugin_fields_install() {
    global $LANG;
 
    $classesToInstall = array(
+      'PluginFieldsDropdown',
       'PluginFieldsField',
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
