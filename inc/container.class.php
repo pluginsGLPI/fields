@@ -273,7 +273,6 @@ class PluginFieldsContainer extends CommonDBTM {
       $container = new self;
       $container->getFromDB($c_id);
       $itemtype = $container->fields['itemtype'];
-      Toolbox::logDebug($itemtype);
 
       //unset unused datas
       unset(
@@ -401,13 +400,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['field']      = 'value';
          //$opt[$i]['linkfield']  = $datas['name'];
          $opt[$i]['name']       = $datas['label'];
-         $opt[$i]['joinparams'] = array(
-            /*'beforejoin' => array(
-               'table' => 'glpi_plugin_fields_fields'
-            ),*/
-            'jointype' => "itemtype_item",
-            'condition' => "AND 2=2"
-         );
+         $opt[$i]['condition']  = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
 
 
          switch ($datas['type']) {
@@ -417,10 +410,15 @@ class PluginFieldsContainer extends CommonDBTM {
             case 'yesno':
                $opt[$i]['datatype'] = "bool";
                break;
-             
+            case 'textarea':
+               $opt[$i]['datatype'] = "text";
+               break;
             case 'date':
             case 'datetime':
                $opt[$i]['datatype'] = $datas['type'];
+               break;
+            default:
+                $opt[$i]['datatype'] = "string";
           } 
          $i++;
       }

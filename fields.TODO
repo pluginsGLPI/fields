@@ -12,7 +12,7 @@ Features :
  ☐ searchOptions
      ✔ Search @done (13-02-19 17:11)
      ☐ Massive Actions
-     ☐ GiveItem
+     ✔ GiveItem @done (13-02-20 08:55)
  ☐ Profiles
  ☐ Add prepareInputForAdd in fields to check 
     ☐ field unicity 

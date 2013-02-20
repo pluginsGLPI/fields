@@ -109,10 +109,29 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val) {
    $searchopt = &Search::getOptions($type);
    $table     = $searchopt[$ID]["table"];
    $field     = $searchopt[$ID]["field"];
-
+   
    switch ($table.".".$field) {
       case "glpi_plugin_fields_containers.type" :
          return $link." `$table`.`$field` = '$val' ";
+   }
+
+   //for itemtype search options
+   if ($table === "glpi_plugin_fields_values") {
+      $condition = $searchopt[$ID]["condition"];
+      return $condition;
+   }
+
+   return "";
+}
+
+function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
+   switch ($new_table) {
+      //for itemtype search options
+      case "glpi_plugin_fields_values" :
+         return " LEFT JOIN `$new_table` 
+            ON (`$ref_table`.`id` = `$new_table`.`items_id` AND `$new_table`.`itemtype` = '$type')
+         LEFT JOIN `glpi_plugin_fields_fields` 
+            ON (`$new_table`.`plugin_fields_fields_id` = `glpi_plugin_fields_fields`.`id`) ";
    }
    return "";
 }
