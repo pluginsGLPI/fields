@@ -56,6 +56,16 @@ class PluginFieldsField extends CommonDBTM {
       //contruct field name by processing label (remove non alphanumeric char)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
 
+      //check if field name not already exist
+      $field  = new self;
+      $i = 2;
+      $field_name = $input['name'];
+      while (count($field->find("name = '$field_name'")) > 0) {
+         $field_name = $input['name'].$i;
+         $i++;
+      }
+      $input['name'] = $field_name;
+
       // Before adding, add the ranking of the new field
       $input["ranking"] = $this->getNextRanking();
       return $input;
