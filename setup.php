@@ -3,36 +3,42 @@
 function plugin_init_fields() {
    global $PLUGIN_HOOKS, $LANG;
 
-   Plugin::registerClass('PluginFieldsContainer',
-                         array('addtabon' => PluginFieldsContainer::getEntries()));
+   $plugin = new Plugin();
+   if (isset($_SESSION['glpiID']) 
+      && $plugin->isInstalled('fields') 
+      && $plugin->isActivated('fields')) {
+      
+      Plugin::registerClass('PluginFieldsContainer',
+                            array('addtabon' => PluginFieldsContainer::getEntries()));
 
-   $menu_entry   = "front/container.php";
-   if ((!isset($_SESSION['glpiactiveprofile']['config']) 
-      || $_SESSION['glpiactiveprofile']['config'] != "w")
-   ) $menu_entry  = false;
+      $menu_entry   = "front/container.php";
+      if ((!isset($_SESSION['glpiactiveprofile']['config']) 
+         || $_SESSION['glpiactiveprofile']['config'] != "w")
+      ) $menu_entry  = false;
 
-   $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
-   $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
+      $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
+      $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
 
-   $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
-      'title' => $LANG['fields']['config']['containers'],
-      'page'  => "/plugins/fields/$menu_entry",
-      'links' => array(
-         'search' => "/plugins/fields/$menu_entry",
-         'add'    => "/plugins/fields/front/container.form.php"
-   ));
+      $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
+         'title' => $LANG['fields']['config']['containers'],
+         'page'  => "/plugins/fields/$menu_entry",
+         'links' => array(
+            'search' => "/plugins/fields/$menu_entry",
+            'add'    => "/plugins/fields/front/container.form.php"
+      ));
 
-   $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
-   $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
+      $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
+      $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
 
-   //Retrieve dom container 
-   $itemtypes = PluginFieldsContainer::getEntries('dom');
-   foreach ($itemtypes as $itemtype) {
-      $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer", 
-                                                                    "preItemUpdate");
-      $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
-                                                                    "preItemPurge");
+      //Retrieve dom container 
+      $itemtypes = PluginFieldsContainer::getEntries('dom');
+      foreach ($itemtypes as $itemtype) {
+         $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer", 
+                                                                       "preItemUpdate");
+         $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
+                                                                       "preItemPurge");
+      }
    }
 }
 
