@@ -20,7 +20,7 @@ class PluginFieldsValue extends CommonDBTM {
                   `plugin_fields_fields_id`           INT(11)        NOT NULL DEFAULT '0',
                   PRIMARY KEY                         (`id`),
                   KEY `items_id`                      (`items_id`),
-                  KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
+                  KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `plugin_fields_fields_id`       (`plugin_fields_fields_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
             $DB->query($query) or die ($DB->error());
