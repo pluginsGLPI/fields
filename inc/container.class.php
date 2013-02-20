@@ -120,6 +120,13 @@ class PluginFieldsContainer extends CommonDBTM {
       return $ong;
    }
 
+   function prepareInputForAdd($input) {
+      //contruct field name by processing label (remove non alphanumeric char)
+      $input['name'] = preg_replace("/[^\da-z]/i", "", $input['label']);
+
+      return $input;
+   }
+
    static function getTypeName() {
       global $LANG;
 
@@ -148,10 +155,10 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      echo "<td>".$LANG['common'][16]." : </td>";
+      /*echo "<td>".$LANG['common'][16]." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
-      echo "</td>";
+      echo "</td>";*/
       echo "<td>".$LANG['mailing'][139]." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));

@@ -53,6 +53,9 @@ class PluginFieldsField extends CommonDBTM {
 
    function prepareInputForAdd($input) {
 
+      //contruct field name by processing label (remove non alphanumeric char)
+      $input['name'] = preg_replace("/[^\da-z]/i", "", $input['label']);
+
       // Before adding, add the ranking of the new field
       $input["ranking"] = $this->getNextRanking();
       return $input;
@@ -133,7 +136,6 @@ class PluginFieldsField extends CommonDBTM {
       } else {
          echo "<table class='tab_cadre_fixehov'>";
          echo "<tr>";
-         echo "<th>" . $LANG['common'][16] . "</th>";
          echo "<th>" . $LANG['mailing'][139] . "</th>";
          echo "<th>" . $LANG['common'][17] . "</th>";
          echo "<th>" . $LANG['common'][44] . "</th>";
@@ -157,8 +159,7 @@ class PluginFieldsField extends CommonDBTM {
                                       $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
                echo "};";
                echo "</script>\n";
-               echo $this->fields['name']."</td>";
-               echo "<td>".$this->fields['label']."</td>";
+               echo $this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
                echo "</tr>\n";
@@ -186,14 +187,14 @@ class PluginFieldsField extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      echo "<td>".$LANG['common'][16]." : </td>";
+      /*echo "<td>".$LANG['common'][16]." : </td>";
       echo "<td>";
+      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
+      echo "</td>";*/
+      echo "<td>".$LANG['mailing'][139]." : </td>";
+      echo "<td colspan='3'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='".
          $container->getField('id')."'>";
-      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
-      echo "</td>";
-      echo "<td>".$LANG['mailing'][139]." : </td>";
-      echo "<td>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
       echo "</tr>";
