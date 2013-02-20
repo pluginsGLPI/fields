@@ -335,6 +335,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function preItemUpdate(CommonDBTM $item) {
+      //Html::printCleanArray($item);exit;
+
       //find container (if not exist, do nothing)
       $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
       if ($c_id === false) return false;
@@ -422,7 +424,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
           //massive action searchoption
           $opt[$i+100000]                  = $opt[$i];
-          $opt[$i+100000]['linkfield']     = "value";
+          $opt[$i+100000]['linkfield']     = $datas['name'];
           $opt[$i+100000]['massiveaction'] = true;
           $opt[$i+100000]['nosearch'] = true;
 
