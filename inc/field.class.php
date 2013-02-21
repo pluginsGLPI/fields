@@ -68,12 +68,19 @@ class PluginFieldsField extends CommonDBTM {
 
       //dropdowns : create files
       if ($input['type'] === "dropdown") {
-         PluginFieldsDropdown::createFiles($input);
+         PluginFieldsDropdown::create($input);
       }
 
       // Before adding, add the ranking of the new field
       $input["ranking"] = $this->getNextRanking();
       return $input;
+   }
+
+   function pre_deleteItem() {
+      if ($this->fields['type'] === "dropdown") {
+         return PluginFieldsDropdown::destroy($this->fields['name']);
+      }
+      return true;
    }
 
    /**
@@ -118,16 +125,16 @@ class PluginFieldsField extends CommonDBTM {
       $cID = $container->fields['id'];
 
       // Display existing Fields
-      $tmp           = array('plugin_fields_containers_id' => $cID);
-      $canadd        = $this->can(-1, 'w', $tmp);
+      $tmp    = array('plugin_fields_containers_id' => $cID);
+      $canadd = $this->can(-1, 'w', $tmp);
 
-      $query = "SELECT `id`, `label`
+      $query  = "SELECT `id`, `label`
                 FROM `".$this->getTable()."`
                 WHERE `plugin_fields_containers_id` = '$cID'
                 ORDER BY `ranking` ASC";
       $result = $DB->query($query);
 
-      $rand = mt_rand();
+      $rand   = mt_rand();
 
       echo "<div id='viewField" . $cID . "$rand'></div>\n";
          echo "<script type='text/javascript' >\n";

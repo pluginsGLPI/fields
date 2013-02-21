@@ -19,24 +19,22 @@ class PluginFieldsDropdown {
       }
 
       return true;
-
    }
 
    static function uninstall() {
       global $DB;
 
-      //call uninstall method for all dropdown classes
+      //remove dropdown tables and files
       $field = new PluginFieldsField;
       $dropdowns = $field->find("`type` = 'dropdown'");
       foreach ($dropdowns as $dropdown) {
-         $classname = "PluginFields".ucfirst($dropdown['name'])."Dropdown";
-         $classname::uninstall();
+         self::destroy($dropdown['name']);
       }
 
       return true;
    }
    
-   static function createFiles($input) {
+   static function create($input) {
       //get template
       $template = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
       if ($template === false) return false;
@@ -54,5 +52,15 @@ class PluginFieldsDropdown {
       $classname::install(); 
 
       return true;
+   }
+
+   static function destroy($dropdown_name) {
+      //call uninstall method in dropdown class
+      $classname = "PluginFields".ucfirst($dropdown_name)."Dropdown";
+      if ($classname::uninstall() === false) return false;
+
+      //remove class file for this dropdown
+      $filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
+      return unlink($filename);
    }
 }
