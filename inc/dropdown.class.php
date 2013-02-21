@@ -35,18 +35,38 @@ class PluginFieldsDropdown {
    }
    
    static function create($input) {
-      //get template
-      $template = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
-      if ($template === false) return false;
+      //get class template
+      $template_class = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
+      if ($template_class === false) return false;
 
       $classname = "PluginFields".ucfirst($input['name'])."Dropdown";
-      $filename = $input['name']."dropdown.class.php";
-
+      
       //create dropdown class file
-      $template = str_replace("%%CLASSNAME%%", $classname, $template);
-      $template = str_replace("%%FIELDNAME%%", $input['name'], $template);
+      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $template_class = str_replace("%%FIELDNAME%%", $input['name'], $template_class);
+      $filename = $input['name']."dropdown.class.php";
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$filename", 
-                            $template) === false) return false;
+                            $template_class) === false) return false;
+
+      //get front template
+      $template_front = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.tpl");
+      if ($template_front === false) return false;
+
+      //create dropdown front file
+      $template_front = str_replace("%%CLASSNAME%%", $classname, $template_front);
+      $filename = $input['name']."dropdown.php";
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$filename", 
+                            $template_front) === false) return false;
+
+      //get form template
+      $template_form = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.form.tpl");
+      if ($template_form === false) return false;
+
+      //create dropdown form file
+      $template_form = str_replace("%%CLASSNAME%%", $classname, $template_form);
+      $filename = $input['name']."dropdown.form.php";
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$filename", 
+                            $template_form) === false) return false;
 
       //call install method (create table)
       $classname::install(); 
@@ -61,6 +81,14 @@ class PluginFieldsDropdown {
 
       //remove class file for this dropdown
       $filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
+      if (unlink($filename) === false) return false;
+
+      //remove front file for this dropdown
+      $filename = GLPI_ROOT."/plugins/fields/front/".$dropdown_name."dropdown.php";
+      if (unlink($filename) === false) return false;
+
+      //remove front.form file for this dropdown
+      $filename = GLPI_ROOT."/plugins/fields/front/".$dropdown_name."dropdown.form.php";
       return unlink($filename);
    }
 }
