@@ -146,3 +146,16 @@ function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
    }
    return "";
 }
+
+// Define Dropdown tables to be manage in GLPI :
+function plugin_fields_getDropdown() {
+   $dropdowns = array();
+
+   $field_obj = new PluginFieldsField;
+   $fields = $field_obj->find("`type` = 'dropdown'");
+   foreach ($fields as $field) {
+      $dropdowns = array("PluginFields".ucfirst($field['name'])."Dropdown" => $field['label']);
+   }
+
+   return $dropdowns;
+}
