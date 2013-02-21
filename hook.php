@@ -42,6 +42,7 @@ function plugin_fields_uninstall() {
    global $LANG;
 
    $classesToUninstall = array(
+      'PluginFieldsDropdown',
       'PluginFieldsField',
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',

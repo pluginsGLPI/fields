@@ -68,7 +68,7 @@ class PluginFieldsField extends CommonDBTM {
 
       //dropdowns : create files
       if ($input['type'] === "dropdown") {
-         PluginFieldsDropdown::createFilesForField($input);
+         PluginFieldsDropdown::createFiles($input);
       }
 
       // Before adding, add the ranking of the new field
