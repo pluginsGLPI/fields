@@ -291,6 +291,12 @@ class PluginFieldsContainer extends CommonDBTM {
       $field_obj = new PluginFieldsField;
       $field_value_obj = new PluginFieldsValue;
       foreach($datas as $field => $value) {
+         //parse name for dropdown
+         if (strpos($field, "dropdown") !== false) {
+            $field = str_replace("plugin_fields_", "", $field);
+            $field = str_replace("dropdowns_id", "", $field);
+         }
+
          //find field
          $found_f = $field_obj->find(
             "`plugin_fields_containers_id` = $c_id AND `name` = '".$field."'");
