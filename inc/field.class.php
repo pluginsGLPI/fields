@@ -359,7 +359,11 @@ class PluginFieldsField extends CommonDBTM {
                      "$value</textarea>";
                   break;
                case 'dropdown':
-
+                  ob_start();
+                  $dropdown_itemtype = "PluginFields".ucfirst($field['name'])."Dropdown";
+                  Dropdown::show($dropdown_itemtype, array('value' => $value));
+                  $html.= ob_get_contents();
+                  ob_end_clean();
                   break;
                case 'yesno':
                   ob_start();
