@@ -106,8 +106,6 @@ function plugin_fields_searchOptionsValues($options=array()) {
 
 function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
 
-   Toolbox::logDebug($link,$nott,$type,$ID,$val,$searchtype);
-
    $searchopt = &Search::getOptions($type);
    $table     = $searchopt[$ID]["table"];
    $field     = $searchopt[$ID]["field"];
@@ -131,8 +129,6 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
          //dropdown search
 
          $_SESSION['pass_addwhere_fields'] = true;
-
-         Toolbox::logDebug($searchopt[$ID]);
 
          $linkfield = str_replace(array("plugin_fields_", "dropdowns_id"), "", 
                                   $searchopt[$ID]['linkfield']);
