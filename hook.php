@@ -95,8 +95,6 @@ function plugin_fields_searchOptionsValues($options=array()) {
    $table = $options['searchoption']['table'];
    $field = $options['searchoption']['field'];
 
-   Html::printCleanArray($options);
-
    switch ($table.".".$field) {
       case "glpi_plugin_fields_containers.type" :
          Dropdown::showFromArray('type', PluginFieldsContainer::getTypes(), 
@@ -108,7 +106,7 @@ function plugin_fields_searchOptionsValues($options=array()) {
 
 function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
 
-   //Toolbox::logDebug($link,$nott,$type,$ID,$val,$searchtype);
+   Toolbox::logDebug($link,$nott,$type,$ID,$val,$searchtype);
 
    $searchopt = &Search::getOptions($type);
    $table     = $searchopt[$ID]["table"];
@@ -120,14 +118,29 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
    }
 
    //for itemtype search options
-   if ($table === "glpi_plugin_fields_values" && !isset($_SESSION['pass_addwhere_fields'])) {
-      $_SESSION['pass_addwhere_fields'] = true;
-      
-      $condition = $searchopt[$ID]["condition"];
-      $where     = Search::addWhere($link, $nott, $type, $ID, $searchtype, $val);
-      unset($_SESSION['pass_addwhere_fields']);
-      
-      return "$condition AND $where";
+   if (!isset($_SESSION['pass_addwhere_fields'])) {
+      if ($table === "glpi_plugin_fields_values") {
+         $_SESSION['pass_addwhere_fields'] = true;
+         
+         $condition = $searchopt[$ID]["condition"];
+         $where     = Search::addWhere($link, $nott, $type, $ID, $searchtype, $val);
+         unset($_SESSION['pass_addwhere_fields']);
+         return "$condition AND $where";
+
+      } elseif (preg_match("/glpi_plugin_fields_.*dropdowns/", $table)) {
+         //dropdown search
+
+         $_SESSION['pass_addwhere_fields'] = true;
+
+         Toolbox::logDebug($searchopt[$ID]);
+
+         $linkfield = str_replace(array("plugin_fields_", "dropdowns_id"), "", 
+                                  $searchopt[$ID]['linkfield']);
+         
+         $where     = Search::addWhere($link, $nott, $type, $ID, $searchtype, $val);
+         unset($_SESSION['pass_addwhere_fields']);
+         return "$where AND `glpi_plugin_fields_fields`.`name` = '$linkfield'";
+      }
    }
 
    unset($_SESSION['pass_addwhere_fields']);
@@ -136,13 +149,24 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
 }
 
 function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
-   switch ($new_table) {
-      //for itemtype search options
-      case "glpi_plugin_fields_values" :
-         return " LEFT JOIN `$new_table` 
-            ON (`$ref_table`.`id` = `$new_table`.`items_id` AND `$new_table`.`itemtype` = '$type')
-         LEFT JOIN `glpi_plugin_fields_fields` 
-            ON (`$new_table`.`plugin_fields_fields_id` = `glpi_plugin_fields_fields`.`id`) ";
+   //for itemtype search options
+   if ($new_table === "glpi_plugin_fields_values") {
+
+      return " LEFT JOIN `$new_table` 
+         ON (`$ref_table`.`id` = `$new_table`.`items_id` AND `$new_table`.`itemtype` = '$type')
+      LEFT JOIN `glpi_plugin_fields_fields` 
+         ON (`$new_table`.`plugin_fields_fields_id` = `glpi_plugin_fields_fields`.`id`) ";
+
+   } elseif (preg_match("/glpi_plugin_fields_.*dropdowns/", $new_table)) {
+
+      return " LEFT JOIN `glpi_plugin_fields_values`
+         ON (`$ref_table`.`id` = `glpi_plugin_fields_values`.`items_id` 
+            AND `glpi_plugin_fields_values`.`itemtype` = '$type')
+      LEFT JOIN `glpi_plugin_fields_fields`
+         ON (`glpi_plugin_fields_fields`.`id` 
+                                    = `glpi_plugin_fields_values`.`plugin_fields_fields_id`)
+      LEFT JOIN `$new_table`
+         ON (`$new_table`.`id` = `glpi_plugin_fields_values`.`value`)";
    }
    return "";
 }

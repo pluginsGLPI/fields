@@ -417,10 +417,17 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
          $opt[$i]['massiveaction'] = false;
 
+         if ($datas['type'] === "dropdown") {
+            $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
+            $opt[$i]['field']      = 'name';
+            $opt[$i]['searchtype'] = 'equals';
+            unset($opt[$i]['condition']); 
+         }
+
          switch ($datas['type']) {
             case 'dropdown':
+               $opt[$i]['datatype'] = "dropdown";
                break;
-             
             case 'yesno':
                $opt[$i]['datatype'] = "bool";
                break;
