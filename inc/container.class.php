@@ -447,7 +447,6 @@ class PluginFieldsContainer extends CommonDBTM {
          switch ($datas['type']) {
             case 'dropdown':
                $opt[$i]['datatype'] = "dropdown";
-               $opt[$i]['field']    = 'value_int';
                break;
             case 'yesno':
                $opt[$i]['datatype'] = "bool";
