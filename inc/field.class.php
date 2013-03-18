@@ -336,7 +336,9 @@ class PluginFieldsField extends CommonDBTM {
             "`plugin_fields_fields_id` = ".$field['id']." AND `items_id` = '".$items_id."'");
             if (count($found_v) > 0) {
                $tmp_v = array_shift($found_v);
-               $value = $tmp_v['value'];
+               $value = !empty($tmp_v['value_text'])?$tmp_v['value_text']:
+                           !empty($tmp_v['value_varchar'])?$tmp_v['value_varchar']:
+                              $tmp_v['value_int'];
             }
 
             //get default value

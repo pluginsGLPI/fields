@@ -13,7 +13,9 @@ class PluginFieldsValue extends CommonDBTM {
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT(11)        NOT NULL auto_increment,
-                  `value`                             TEXT           DEFAULT NULL,
+                  `value_int`                         INT(11)        NOT NULL DEFAULT '0',
+                  `value_varchar`                     VARCHAR(255)   DEFAULT NULL,
+                  `value_text`                        TEXT           DEFAULT NULL,
                   `items_id`                          INT(11)        NOT NULL DEFAULT '0',
                   `itemtype`                          VARCHAR(255)   DEFAULT NULL,
                   `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',

@@ -306,20 +306,33 @@ class PluginFieldsContainer extends CommonDBTM {
          //find existing values
          $found_v = $field_value_obj->find(
             "`plugin_fields_fields_id` = $fields_id AND `items_id` = '".$items_id."'");
+
+         $value_field = 'value_varchar';
+         switch ($tmp_f['type']) {
+            case 'dropdown':
+               $value_field = 'value_int';
+               break;
+            case 'yesno':
+               $value_field = 'value_int';
+               break;
+            case 'textarea':
+               $value_field = 'value_text';
+         }
+
          if (count($found_v) > 0) {
             //update
             $tmp_v = array_shift($found_v);
             $values_id = $tmp_v['id'];
             $field_value_obj->update(array(
-               'id'    => $values_id,
-               'value' => $value
+               'id'         => $values_id,
+               $value_field => $value
             ));
          } else {
             // add
             $field_value_obj->add(array(
                'items_id'                    => $items_id,
                'itemtype'                    => $itemtype,
-               'value'                       => $value,
+               $value_field                  => $value,
                'plugin_fields_containers_id' => $c_id,
                'plugin_fields_fields_id'     => $fields_id
             ));
@@ -365,7 +378,14 @@ class PluginFieldsContainer extends CommonDBTM {
          'items_id'                    =>  $item->fields['id']
       );
       foreach($fields as $field) {
-         $datas[$field['name']] = $item->input[$field['name']];
+         if (isset($item->input[$field['name']])) {
+            //standard field
+            $input = $field['name'];
+         } else {
+            //dropdown field
+            $input = "plugin_fields_".$field['name']."dropdowns_id";
+         }
+         $datas[$field['name']] = $item->input[$input];
       }
 
       //update datas
@@ -412,7 +432,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
          $opt[$i]['table']         = 'glpi_plugin_fields_values';
-         $opt[$i]['field']         = 'value';
+         $opt[$i]['field']         = 'value_varchar';
          $opt[$i]['name']          = $datas['label'];
          $opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
          $opt[$i]['massiveaction'] = false;
@@ -427,12 +447,15 @@ class PluginFieldsContainer extends CommonDBTM {
          switch ($datas['type']) {
             case 'dropdown':
                $opt[$i]['datatype'] = "dropdown";
+               $opt[$i]['field']    = 'value_int';
                break;
             case 'yesno':
                $opt[$i]['datatype'] = "bool";
+               $opt[$i]['field']    = 'value_int';
                break;
             case 'textarea':
                $opt[$i]['datatype'] = "text";
+               $opt[$i]['field']    = 'value_text';
                break;
             case 'date':
             case 'datetime':

@@ -145,6 +145,8 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
 }
 
 function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
+   Toolbox::logDebug($type, $ref_table, $new_table, $linkfield);
+
    //for itemtype search options
    if ($new_table === "glpi_plugin_fields_values") {
 
