@@ -377,7 +377,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'date':
                   ob_start();
-                  Html::showDateTimeFormItem($field['name'], $value);
+                  Html::showDateFormItem($field['name'], $value);
                   $html.= ob_get_contents();
                   ob_end_clean();
                   break;
