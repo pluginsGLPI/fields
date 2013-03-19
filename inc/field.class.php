@@ -72,7 +72,9 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       // Before adding, add the ranking of the new field
-      $input["ranking"] = $this->getNextRanking();
+      if (empty($input["ranking"])) {
+         $input["ranking"] = $this->getNextRanking();
+      }
       return $input;
    }
 

@@ -3,13 +3,17 @@
 function plugin_fields_install() {
    global $LANG;
 
+   ini_set('memory_limit', '512M');
+   set_time_limit(300);
+
    $classesToInstall = array(
       'PluginFieldsDropdown',
       'PluginFieldsField',
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
-      'PluginFieldsProfile'
+      'PluginFieldsProfile', 
+      'PluginFieldsMigration'   
    );
 
    $migration = new Migration("1.0");
@@ -47,7 +51,8 @@ function plugin_fields_uninstall() {
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
-      'PluginFieldsProfile'
+      'PluginFieldsProfile', 
+      'PluginFieldsMigration' 
    );
 
    echo "<center>";
