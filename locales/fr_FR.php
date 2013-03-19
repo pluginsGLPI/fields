@@ -4,7 +4,7 @@ $LANG['fields']['title'][1] = "Champs supplémentaires";
 $LANG['fields']['title'][2] = "Configuration";
 
 $LANG['fields']['install'][0]   = "Installation des tables MySQL";
-$LANG['fields']['install'][1]   = "The ​​plugin CustomFields values were imported into a dump, go to the \"Administration -> maintenance\" menu to import them";
+$LANG['fields']['install'][1]   = "The ​​plugin CustomFields values were imported into a dump, go to the <a href='backup.php'>\"Administration -> maintenance\"</a> menu to import them";
 $LANG['fields']['uninstall'][0] = "Désinstallation des tables MySQL";
 
 $LANG['fields']['error']['dir_write'] = "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger.";

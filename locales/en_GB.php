@@ -3,7 +3,7 @@
 $LANG['fields']['title'][1]="Additionnal fields";
 
 $LANG['fields']['install'][0] = "MySQL tables installation";
-$LANG['fields']['install'][1]   = "Les valeurs du plugin Customfields ont été importé dans un dumps, rendez vous dans le menu Administration -> maintenance pour l'importer";
+$LANG['fields']['install'][1]   = "Les valeurs du plugin Customfields ont été importé dans un dumps, rendez vous dans le menu <a href='backup.php'>Administration -> maintenance</a> pour l'importer";
 $LANG['fields']['uninstall'][0] = "MySQL tables uninstallation";
 
 $LANG['fields']['error']['dir_write'] = "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger.";
