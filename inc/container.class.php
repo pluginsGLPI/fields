@@ -263,7 +263,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //retrieve container for current tab
       $container = new self;
-      $found_c = $container->find("`type` = 'tab' AND `name` = '$tabnum'");
+      $found_c = $container->find("`itemtype` = '".get_class($item)."' 
+                                  AND `type` = 'tab' AND `name` = '$tabnum'");
+      Html::printCleanArray($found_c);
       $tmp = array_shift($found_c);
       $c_id = $tmp['id'];
 
