@@ -20,5 +20,6 @@ Features :
     ☐ no conflict with itemtype fields
     ✔ name format (no accents, space, punctuation) @done (13-02-21 17:22)
  ☐ Make dom containers unique by itemtype
- ☐ Migration scripts for customfields plugin
-
+☐ Migration scripts for customfields plugin
+     ✔ standard fields
+     ☐ dropdowns
