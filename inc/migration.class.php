@@ -5,8 +5,6 @@ class PluginFieldsMigration {
    static function install(Migration $migration) {
       $fields_migration = new self;
 
-      return true;
-
       if (TableExists("glpi_plugin_customfields_fields")) {
          return $fields_migration->updateFromCustomfields();
       }
@@ -19,7 +17,10 @@ class PluginFieldsMigration {
    }
    
    function updateFromCustomfields($glpi_version = "0.80") {
-      global $DB;
+      global $DB, $LANG;
+
+      $rand = mt_rand();
+      $values_dumped = false;
 
       //alter fields table encoding (avoid sql errors)
       $res = $DB->query("ALTER TABLE glpi_plugin_customfields_fields 
@@ -53,21 +54,16 @@ class PluginFieldsMigration {
 
          //get all fields description for current type (systemname, label, type, etc)
          $query_desc_itemtype = "SELECT 
-               ic.COLUMN_NAME as fieldname, ic.COLUMN_TYPE as fieldtype, 
-               fi.label, fi.data_type, fi.sort_order, fi.default_value, fi.entities
-            FROM INFORMATION_SCHEMA.COLUMNS ic
-            INNER JOIN glpi_plugin_customfields_fields fi
-               ON fi.system_name = ic.COLUMN_NAME
-               AND fi.itemtype = '$itemtype'
+               fi.system_name, fi.label, fi.data_type, 
+               fi.sort_order, fi.default_value, fi.entities
+            FROM glpi_plugin_customfields_fields fi
+            WHERE fi.itemtype = '$itemtype'
                AND fi.deleted = 0
-            WHERE ic.table_schema = '0337-glpi-0.80.2' 
-               AND ic.table_name = '$itemtype_table'
-               AND ic.COLUMN_NAME != 'id'
          ";
          $res_desc_itemtype = $DB->query($query_desc_itemtype);
          $fields = array();
          while ($data_fields = $DB->fetch_assoc($res_desc_itemtype)) { 
-            $fields[$data_fields['fieldname']] = $data_fields;
+            $fields[$data_fields['system_name']] = $data_fields;
          }
 
          //get all values for current type
@@ -77,15 +73,6 @@ class PluginFieldsMigration {
          while ($data_values = $DB->fetch_assoc($res_values_itemtype)) { 
             $values[$data_values['id']] = $data_values;
          }
-
-         /*echo "<h2>Dropdowns</h2>";
-         Html::printCleanArray($dropdowns);
-         echo "<h2>Dropdowns values</h2>";
-         Html::printCleanArray($dropdowns_values);
-         echo "<h2>Fields</h2>";
-         Html::printCleanArray($fields);
-         echo "<h2>Values</h2>";
-         Html::printCleanArray($values);*/
 
          //create a container for this type
          $container = new PluginFieldsContainer;
@@ -104,8 +91,8 @@ class PluginFieldsMigration {
          foreach ($fields as &$field) {
             if ($field['data_type'] === "dropdown") continue;
             $fields_id = $field_obj->add(array(
-               'name'                        => $field['fieldname'],
-               'label'                       => $field['label'],
+               'name'                        => $field['system_name'],
+               'label'                       => mysql_real_escape_string($field['label']),
                'type'                        => $this->migrateCustomfieldTypes($field['data_type']),
                'plugin_fields_containers_id' => $containers_id,
                'ranking'                     => $field['sort_order'],
@@ -116,21 +103,37 @@ class PluginFieldsMigration {
             $field['newId'] = $fields_id;
          }
 
-         //insert values for this type
+         //prepare insert of values for this type
          $value_obj = new PluginFieldsValue;
-         foreach ($values as $old_id => $value_line) {
-            foreach ($value_line as $fieldname => $value) {
-               if ($fieldname === "id") continue;
-               if ($fields[$fieldname]['data_type'] === "dropdown") continue;
-               $values_id = $value_obj->add(array(
-                  $this->migrateCustomfieldValue($fields[$fieldname]['data_type']) => $value,
-                  'items_id' => $old_id,
-                  'itemtype' => $itemtype,
-                  'plugin_fields_containers_id' => $containers_id,
-                  'plugin_fields_fields_id' => $fields[$fieldname]['newId']
-               ));
+         if (count($values) > 0) {
+            $values_dumped = true;
+            foreach ($values as $old_id => $value_line) {
+               foreach ($value_line as $fieldname => $value) {
+                  if ($fieldname === "id") continue;
+                  if ($fields[$fieldname]['data_type'] === "dropdown") continue;
+                  if ($value === "" || $value === "NULL") continue;
+                  
+                  $value_type = $this->migrateCustomfieldValue($fields[$fieldname]['data_type']);
+             
+                  //prepare values insertion sql and dump it into a file .
+                  //(too long to be executed in this script)
+                  $query = "INSERT INTO glpi_plugin_fields_values (
+                        `$value_type`, `items_id`, `itemtype`, 
+                        `plugin_fields_containers_id`, `plugin_fields_fields_id`
+                     ) VALUES (
+                        '".mysql_real_escape_string($value)."', $old_id, '$itemtype', 
+                        $containers_id, ".$fields[$fieldname]['newId']."
+                     );\n";
+                  file_put_contents(GLPI_DUMP_DIR."/customfields_import_values.$rand.sql", 
+                                    $query, FILE_APPEND);
+               }
             }
          }
+      }
+
+      //inform user (his dump is in files/_dumps location)
+      if ($values_dumped) {
+         Session::addMessageAfterRedirect($LANG['fields']['install'][1]);
       }
       
       return true;
