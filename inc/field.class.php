@@ -97,7 +97,6 @@ class PluginFieldsField extends CommonDBTM {
       $container->getFromDB($containers_id);
       $item = new $container->fields['itemtype'];
       $item->getEmpty();
-      Toolbox::logDebug($item->fields);
       $field  = new self;
       $i = 2;
       $field_name = $input['name'];
