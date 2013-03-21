@@ -52,7 +52,42 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function prepareInputForAdd($input) {
+      //parse name
+      $input['name'] = $this->prepareName($input);
 
+      //dropdowns : create files
+      if ($input['type'] === "dropdown") {
+         PluginFieldsDropdown::create($input);
+      }
+
+      // Before adding, add the ranking of the new field
+      if (empty($input["ranking"])) {
+         $input["ranking"] = $this->getNextRanking();
+      }
+      return $input;
+   }
+
+   function prepareInputForUpdate($input) {
+      //parse name
+      $input['name'] = $this->prepareName($input);
+
+      return $input;
+   }
+
+   function pre_deleteItem() {
+      if ($this->fields['type'] === "dropdown") {
+         return PluginFieldsDropdown::destroy($this->fields['name']);
+      }
+      return true;
+   }
+
+
+   /**
+    * parse name for avoid non alphanumeric char in it and conflict with other fields
+    * @param  array $input the field form input
+    * @return string  the parsed name 
+    */
+   function prepareName($input) {
       //contruct field name by processing label (remove non alphanumeric char)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
 
@@ -70,25 +105,7 @@ class PluginFieldsField extends CommonDBTM {
          $field_name = $input['name'].$i;
          $i++;
       }
-      $input['name'] = $field_name;
-
-      //dropdowns : create files
-      if ($input['type'] === "dropdown") {
-         PluginFieldsDropdown::create($input);
-      }
-
-      // Before adding, add the ranking of the new field
-      if (empty($input["ranking"])) {
-         $input["ranking"] = $this->getNextRanking();
-      }
-      return $input;
-   }
-
-   function pre_deleteItem() {
-      if ($this->fields['type'] === "dropdown") {
-         return PluginFieldsDropdown::destroy($this->fields['name']);
-      }
-      return true;
+      return $field_name;
    }
 
    /**
