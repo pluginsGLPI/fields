@@ -338,12 +338,22 @@ class PluginFieldsField extends CommonDBTM {
             "`plugin_fields_fields_id` = ".$field['id']." AND `items_id` = '".$items_id."'");
             if (count($found_v) > 0) {
                $tmp_v = array_shift($found_v);
-               if (!empty($tmp_v['value_text'])) {
-                  $value = $tmp_v['value_text'];
-               } else if (!empty($tmp_v['value_varchar'])) {
-                  $value = $tmp_v['value_varchar'];
-               } else {
-                  $value = $tmp_v['value_int'];
+               switch ($field['type']) {
+                  case 'number':
+                  case 'text':
+                  case 'date':
+                  case 'datetime':
+                     $value = $tmp_v['value_varchar'];
+                     break;
+                  case 'text':
+                     $value = $tmp_v['value_text'];
+                     break;
+                  case 'dropdown':
+                  case 'yesno':
+                     $value = $tmp_v['value_int'];
+                     break;
+                  default:
+                     $value = NULL;
                }
             }
 

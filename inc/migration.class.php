@@ -158,7 +158,7 @@ class PluginFieldsMigration {
             foreach ($values as $old_id => $value_line) {
                foreach ($value_line as $fieldname => $value) {
                   if ($fieldname === "id") continue;
-                  if ($value === "" || $value === "NULL") continue;
+                  if ($value === "" || $value === "NULL" && $value === NULL) continue;
 
                   if ($fields[$fieldname]['data_type'] === "dropdown" && !empty($value)) {
                      //find the new the new id of dropdowns
