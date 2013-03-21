@@ -35,11 +35,16 @@ class PluginFieldsMigration {
       }
 
       //get all dropdowns values
-      $query_dropdown_values = "SELECT * FROM glpi_plugin_customfields_dropdowns";
+      $query_dropdown_values = "SELECT dropdown.system_name, item.* 
+         FROM glpi_plugin_customfields_dropdownsitems item
+         LEFT JOIN glpi_plugin_customfields_dropdowns dropdown
+            ON dropdown.id = item.plugin_customfields_dropdowns_id
+         ORDER BY item.level ASC";
       $res_dropdown_values = $DB->query($query_dropdown_values);
       $dropdowns_values = array();
       while ($data_dropdowns_values = $DB->fetch_assoc($res_dropdown_values)) {
-         $dropdowns_values[$data_dropdowns_values['id']] = $data_dropdowns_values;
+         $dropdowns_values[$data_dropdowns_values['system_name']][$data_dropdowns_values['id']] 
+                  = $data_dropdowns_values;
       }
 
       //get all types enabled
@@ -89,15 +94,55 @@ class PluginFieldsMigration {
          //insert fields for this type
          $field_obj = new PluginFieldsField;
          foreach ($fields as &$field) {
-            if ($field['data_type'] === "dropdown") continue;
+            $systemname = $field['system_name'];
             $fields_id = $field_obj->add(array(
-               'name'                        => $field['system_name'],
+               'name'                        => $systemname,
                'label'                       => mysql_real_escape_string($field['label']),
                'type'                        => $this->migrateCustomfieldTypes($field['data_type']),
                'plugin_fields_containers_id' => $containers_id,
                'ranking'                     => $field['sort_order'],
                'default_value'               => $field['default_value']
             ));
+
+            //get dropdown items and insert them
+            if ($field['data_type'] === "dropdown") {
+               $dropdowns_current_values = $dropdowns_values[$systemname];
+               $dropdown_classname = PluginFieldsDropdown::getClassname($systemname);
+               $dropdown_obj = new $dropdown_classname;
+                  
+               foreach ($dropdowns_current_values as $d_value) {
+
+                  $parents_id = 0;
+                  //try to find parent id
+                  if ($d_value['level'] > 1) {
+                     $tree_parts = explode(" > ", $d_value['completename']);
+                     
+                     //we remove current level
+                     array_pop($tree_parts);
+
+                     //get the parent name
+                     $parent_name = array_pop($tree_parts);
+                     
+                     //search id of the parent
+                     $found = $dropdown_obj->find("`name` = '$parent_name' 
+                                                   AND `level` = '".($d_value['level']-1)."'");
+                     if (!empty($found)) {
+                        $item_found = array_shift($found);
+                        $parents_id = $item_found['id'];
+                     }
+                  }
+
+                  //add current dropdown item
+                  $d_items_id = $dropdown_obj->add(array(
+                     'name'                                      => $d_value['name'],
+                     'comment'                                   => $d_value['comment'],
+                     'plugin_fields_'.$systemname.'dropdowns_id' => $parents_id,
+                     'entities_id'                               => $d_value['entities_id'],
+                     'is_recursive'                              => $d_value['is_recursive']
+                  ));
+               }
+            }
+            
 
             //store id for re-use in values insertion
             $field['newId'] = $fields_id;
