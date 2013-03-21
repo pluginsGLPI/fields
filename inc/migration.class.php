@@ -143,7 +143,6 @@ class PluginFieldsMigration {
                }
             }
             
-
             //store id for re-use in values insertion
             $field['newId'] = $fields_id;
          }
