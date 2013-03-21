@@ -121,6 +121,17 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function prepareInputForAdd($input) {
+      global $LANG;
+      
+      if ($input['type'] === "dom") {
+         //check for already exist dom container with this itemtype
+         $found = $this->find("`type`='dom' AND `itemtype` = '".$input['itemtype']."'");
+         if (!empty($found)) {
+            Session::AddMessageAfterRedirect($LANG['fields']['error']['dom_not_unique']);
+            return false;
+         }
+      }
+
       //contruct field name by processing label (remove non alphanumeric char)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
 

@@ -4,10 +4,11 @@ $LANG['fields']['title'][1] = "Champs supplémentaires";
 $LANG['fields']['title'][2] = "Configuration";
 
 $LANG['fields']['install'][0]   = "Installation des tables MySQL";
-$LANG['fields']['install'][1]   = "The ​​plugin CustomFields values were imported into a dump, go to the <a href='backup.php'>\"Administration -> maintenance\"</a> menu to import them";
+$LANG['fields']['install'][1]   = "Les valeurs du plugin Customfields ont été importé dans un dumps, rendez vous dans le menu <a href='backup.php'>\"Administration -> maintenance\"</a> pour l'importer";
 $LANG['fields']['uninstall'][0] = "Désinstallation des tables MySQL";
 
 $LANG['fields']['error']['dir_write'] = "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger.";
+$LANG['fields']['error']['dom_not_unique'] = "Vous ne pouvez pas créer plusieurs bloc de type 'Insertion dans le formulaire' sur le même objet";
 
 $LANG['fields']['config']['fields']     = "Configurer les champs";
 $LANG['fields']['config']['containers'] = "Configurer les blocs";
