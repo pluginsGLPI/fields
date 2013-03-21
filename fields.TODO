@@ -15,9 +15,9 @@ Features :
      ✔ GiveItem @done (13-02-20 08:55)
      ✔ dropdowns @done (13-03-21 15:26)
  ☐ Profiles
- ☐ Add prepareInputForAdd in containers and fields to check 
+ ✔ Add prepareInputForAdd in containers and fields to check @done (13-03-21 16:19)
     ✔ field unicity @done (13-02-21 17:22)
-    ☐ no conflict with itemtype fields
+    ✔ no conflict with itemtype fields @done (13-03-21 16:18)
     ✔ name format (no accents, space, punctuation) @done (13-02-21 17:22)
     ✔ Make dom containers unique by itemtype @done (13-03-21 15:44)
 ✔ Migration scripts for customfields plugin @done (13-03-21 15:26)
