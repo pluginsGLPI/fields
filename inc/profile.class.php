@@ -36,4 +36,42 @@ class PluginFieldsProfile extends CommonDBTM {
       return true;
    }
 
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      return self::createTabEntry($LANG['Menu'][35]);
+
+   }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      global $LANG;
+
+      $profile = new Profile;
+      $found_profiles = $profile->find();
+
+      $fields_profile = new self;
+      echo "<form name='form' method='post' action='".$fields_profile->getFormURL()."'>";
+      echo "<div class='spaced' id='tabsbody'>";
+      echo "<table class='tab_cadre_fixe'>";
+
+      echo "<tr><th colspan='2'>".$LANG['Menu'][35]."</th></tr>";
+      foreach ($found_profiles as $profile_item) {
+         echo "<tr>";
+         echo "<td>".$profile_item['name']."</td>";
+         echo "<td>";
+         Profile::dropdownNoneReadWrite("rights[".$profile_item['name']."]", 0);
+         echo "</td>";
+         echo "<tr>";
+      }
+      echo "<ul>";
+      echo "<tr><td class='tab_bg_2 center' colspan='2'>";
+      echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
+      echo "</td>";
+      echo "</tr>";
+      echo "</table></div>";
+      Html::closeForm();
+   }
+
 }

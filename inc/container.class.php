@@ -116,6 +116,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $ong = array();
       $this->addStandardTab('PluginFieldsField', $ong, $options);
+      $this->addStandardTab('PluginFieldsProfile', $ong, $options);
 
       return $ong;
    }
