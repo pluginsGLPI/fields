@@ -247,6 +247,18 @@ class PluginFieldsContainer extends CommonDBTM {
       $container = new self;
       $found = $container->find("$sql_type AND is_active = 1", "`label`");
       foreach($found as $item) {
+         //entities restriction
+         if (!in_array($item['entities_id'], $_SESSION['glpiactiveentities'])) {
+            if ($item['is_recursive'] == 1) {
+               $entities = getSonsOf("glpi_entities", $item['entities_id']);
+               if (count(array_intersect($entities, $_SESSION['glpiactiveentities'])) == 0) {
+                  continue;
+               }
+            } else {
+               continue;
+            }
+         }
+
          if ($full) {
             $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
          } else {
