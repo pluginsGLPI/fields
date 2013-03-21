@@ -46,8 +46,8 @@ class PluginFieldsDropdown {
       //create dropdown class file
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%FIELDNAME%%", $input['name'], $template_class);
-      $filename = $input['name']."dropdown.class.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$filename", 
+      $class_filename = $input['name']."dropdown.class.php";
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
                             $template_class) === false) return false;
 
       //get front template
@@ -56,8 +56,8 @@ class PluginFieldsDropdown {
 
       //create dropdown front file
       $template_front = str_replace("%%CLASSNAME%%", $classname, $template_front);
-      $filename = $input['name']."dropdown.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$filename", 
+      $front_filename = $input['name']."dropdown.php";
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$front_filename", 
                             $template_front) === false) return false;
 
       //get form template
@@ -66,9 +66,12 @@ class PluginFieldsDropdown {
 
       //create dropdown form file
       $template_form = str_replace("%%CLASSNAME%%", $classname, $template_form);
-      $filename = $input['name']."dropdown.form.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$filename", 
+      $form_filename = $input['name']."dropdown.form.php";
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$form_filename", 
                             $template_form) === false) return false;
+
+      //load class manually on plugin installation
+      if (!class_exists($classname)) require_once $class_filename;      
 
       //call install method (create table)
       $classname::install(); 
