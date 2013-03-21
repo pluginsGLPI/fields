@@ -56,11 +56,17 @@ class PluginFieldsField extends CommonDBTM {
       //contruct field name by processing label (remove non alphanumeric char)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
 
-      //check if field name not already exist
+      //check if field name not already exist and not in conflict with itemtype fields name
+      $containers_id = $input['plugin_fields_containers_id'];
+      $container = new PluginFieldsContainer;
+      $container->getFromDB($containers_id);
+      $item = new $container->fields['itemtype'];
+      $item->getEmpty();
+      Toolbox::logDebug($item->fields);
       $field  = new self;
       $i = 2;
       $field_name = $input['name'];
-      while (count($field->find("name = '$field_name'")) > 0) {
+      while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
          $field_name = $input['name'].$i;
          $i++;
       }
@@ -202,8 +208,10 @@ class PluginFieldsField extends CommonDBTM {
 
       if ($ID > 0) {
          $this->check($ID,'r');
+         $edit = true;
       } else {
          // Create item
+         $edit = false;
          $input = array('plugin_fields_containers_id' => $container->getField('id'));
          $this->check(-1,'w',$input);
       }
@@ -211,24 +219,22 @@ class PluginFieldsField extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      /*echo "<td>".$LANG['common'][16]." : </td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
-      echo "</td>";*/
       echo "<td>".$LANG['mailing'][139]." : </td>";
-      echo "<td colspan='3'>";
+      echo "<td>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='".
          $container->getField('id')."'>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
-      echo "</tr>";
-
-      echo "<tr>";
-      echo "<td>".$LANG['common'][17]." : </td>";
-      echo "<td>";
-      Dropdown::showFromArray('type', self::getTypes(), 
-         array('value' => $this->fields["type"]));
-      echo "</td>";
+     
+      if (!$edit) {
+         echo "</tr>";
+         echo "<tr>";
+         echo "<td>".$LANG['common'][17]." : </td>";
+         echo "<td>";
+         Dropdown::showFromArray('type', self::getTypes(), 
+            array('value' => $this->fields["type"]));
+         echo "</td>";
+      } 
       echo "<td>".$LANG['common'][44]." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value', 
