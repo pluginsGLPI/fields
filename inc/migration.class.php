@@ -22,7 +22,7 @@ class PluginFieldsMigration {
       $rand = mt_rand();
       $values_dumped = false;
 
-      //alter fields table encoding (avoid sql errors)
+      //alter fields table encoding (avoid randomly sql errors)
       $res = $DB->query("ALTER TABLE glpi_plugin_customfields_fields 
                          CONVERT TO CHARACTER SET utf8;");
 
@@ -93,6 +93,7 @@ class PluginFieldsMigration {
 
          //insert fields for this type
          $field_obj = new PluginFieldsField;
+         $dropdowns_ids = array();
          foreach ($fields as &$field) {
             $systemname = $field['system_name'];
             $fields_id = $field_obj->add(array(
@@ -140,6 +141,9 @@ class PluginFieldsMigration {
                      'entities_id'                               => $d_value['entities_id'],
                      'is_recursive'                              => $d_value['is_recursive']
                   ));
+
+                  //store in an array the correspondance between old id and new id
+                  $dropdowns_ids[$systemname][$d_value['id']] = $d_items_id;
                }
             }
             
@@ -154,9 +158,14 @@ class PluginFieldsMigration {
             foreach ($values as $old_id => $value_line) {
                foreach ($value_line as $fieldname => $value) {
                   if ($fieldname === "id") continue;
-                  if ($fields[$fieldname]['data_type'] === "dropdown") continue;
                   if ($value === "" || $value === "NULL") continue;
+
+                  if ($fields[$fieldname]['data_type'] === "dropdown" && !empty($value)) {
+                     //find the new the new id of dropdowns
+                     $value = $dropdowns_ids[$fieldname][$value];
+                  }                  
                   
+                  //get correct key for storing value
                   $value_type = $this->migrateCustomfieldValue($fields[$fieldname]['data_type']);
              
                   //prepare values insertion sql and dump it into a file .
