@@ -13,13 +13,13 @@ Features :
      ✔ Search @done (13-02-19 17:11)
      ☐ Massive Actions
      ✔ GiveItem @done (13-02-20 08:55)
-     ✔ dropdowns
+     ✔ dropdowns @done (13-03-21 15:26)
  ☐ Profiles
  ☐ Add prepareInputForAdd in fields to check 
     ✔ field unicity @done (13-02-21 17:22)
     ☐ no conflict with itemtype fields
     ✔ name format (no accents, space, punctuation) @done (13-02-21 17:22)
  ☐ Make dom containers unique by itemtype
-☐ Migration scripts for customfields plugin
-     ✔ standard fields
-     ☐ dropdowns
+✔ Migration scripts for customfields plugin @done (13-03-21 15:26)
+     ✔ standard fields @done (13-03-21 15:26)
+     ✔ dropdowns @done (13-03-21 15:26)
