@@ -15,6 +15,7 @@ Features :
      ✔ GiveItem @done (13-02-20 08:55)
      ✔ dropdowns @done (13-03-21 15:26)
  ☐ Profiles
+ ☐ Entité et recursivité
  ✔ Add prepareInputForAdd in containers and fields to check @done (13-03-21 16:19)
     ✔ field unicity @done (13-02-21 17:22)
     ✔ no conflict with itemtype fields @done (13-03-21 16:18)
