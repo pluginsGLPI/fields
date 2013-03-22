@@ -249,6 +249,10 @@ class PluginFieldsContainer extends CommonDBTM {
          $sql_type = "`type` = '$type'";
       }
 
+      if (!TableExists("glpi_plugin_fields_containers")) {
+         return false;
+      }
+
       $itemtypes = array();
       $container = new self;
       $profile = new PluginFieldsProfile;
