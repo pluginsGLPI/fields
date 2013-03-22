@@ -338,6 +338,9 @@ class PluginFieldsContainer extends CommonDBTM {
          //find field
          $found_f = $field_obj->find(
             "`plugin_fields_containers_id` = $c_id AND `name` = '".$field."'");
+         if (count($found_f) == 0) {
+            continue;
+         }
          $tmp_f = array_shift($found_f);
          $fields_id = $tmp_f['id'];
 
@@ -383,7 +386,11 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function findContainer($itemtype, $items_id, $type='tab') {
       $container = new PluginFieldsContainer;
-      $found_c = $container->find("`type` = '$type' AND `itemtype` = '$itemtype'");
+      $sql_type = "1=1";
+      if ($type === 'tab' || $type === 'dom') {
+         $sql_type = "`type` = '$type'";
+      }
+      $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype'");
 
       if (count($found_c) == 0) return false;
       
@@ -392,6 +399,9 @@ class PluginFieldsContainer extends CommonDBTM {
          $id = $tmp['id'];
       } else {
          $id = array_keys($found_c);
+         if (count($id) == 1) {
+            $id = array_shift($id);
+         }
       }
 
       return $id;
@@ -399,10 +409,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function preItemUpdate(CommonDBTM $item) {
-      //Html::printCleanArray($item);exit;
-
       //find container (if not exist, do nothing)
-      $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
+      $c_id = self::findContainer(get_Class($item), $item->fields['id'], "all");
       if ($c_id === false) return false;
 
       //find fields associated to found container
@@ -423,7 +431,9 @@ class PluginFieldsContainer extends CommonDBTM {
             //dropdown field
             $input = "plugin_fields_".$field['name']."dropdowns_id";
          }
-         $datas[$field['name']] = $item->input[$input];
+         if (isset($item->input[$input])) {
+            $datas[$field['name']] = $item->input[$input];
+         }
       }
 
       //update datas
@@ -474,6 +484,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['name']          = $datas['label'];
          $opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
          $opt[$i]['massiveaction'] = false;
+         $opt[$i]['pfields_type']  = $datas['type'];
 
          if ($datas['type'] === "dropdown") {
             $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
@@ -503,10 +514,14 @@ class PluginFieldsContainer extends CommonDBTM {
           } 
 
           //massive action searchoption
-          $opt[$i+100000]                  = $opt[$i];
-          $opt[$i+100000]['linkfield']     = $datas['name'];
-          $opt[$i+100000]['massiveaction'] = true;
-          $opt[$i+100000]['nosearch'] = true;
+         $opt[$i+100000]                  = $opt[$i];
+         $opt[$i+100000]['linkfield']     = $datas['name'];
+         if ($datas['type'] === "dropdown") {
+            $opt[$i+100000]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
+         }
+         $opt[$i+100000]['massiveaction'] = true;
+         $opt[$i+100000]['nosearch'] = true;
+         $opt[$i+100000]['datatype'] = "";
 
 
          $i++;

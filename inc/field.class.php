@@ -357,7 +357,7 @@ class PluginFieldsField extends CommonDBTM {
 
    
 
-   static function prepareHtmlFields($fields, $items_id, $canedit = true) {
+   static function prepareHtmlFields($fields, $items_id, $canedit = true, $show_table = true) {
       $html = "";
       $field_value_obj = new PluginFieldsValue;
       $odd = 0;
@@ -381,7 +381,7 @@ class PluginFieldsField extends CommonDBTM {
                   case 'datetime':
                      $value = $tmp_v['value_varchar'];
                      break;
-                  case 'text':
+                  case 'textarea':
                      $value = $tmp_v['value_text'];
                      break;
                   case 'dropdown':
@@ -399,9 +399,11 @@ class PluginFieldsField extends CommonDBTM {
             }
 
             //show field
-            if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
-            $html.= "<td>".$field['label']." : </td>";
-            $html.= "<td>";
+            if ($show_table) {
+               if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
+               $html.= "<td>".$field['label']." : </td>";
+               $html.= "<td>";
+            }
             switch ($field['type']) {
                case 'number':
                case 'text':
@@ -414,6 +416,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'textarea':
                   if ($canedit) {
+                     echo $value;
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
                         "$value</textarea>";
                   } else {
@@ -423,7 +426,12 @@ class PluginFieldsField extends CommonDBTM {
                case 'dropdown':
                   if ($canedit) {
                      ob_start();
-                     $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
+                     if (strpos($field['name'], "dropdowns_id") !== false) {
+                        $dropdown_itemtype = getItemTypeForTable(
+                                             getTableNameForForeignKeyField($field['name']));
+                     } else {
+                        $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
+                     }
                      Dropdown::show($dropdown_itemtype, array('value' => $value));
                      $html.= ob_get_contents();
                      ob_end_clean();
@@ -462,13 +470,26 @@ class PluginFieldsField extends CommonDBTM {
                      $html.= Html::convDateTime($value);
                   }
             }
-            $html.= "</td>";
-            if ($odd%2 == 1)  $html.= "</tr>";
-            $odd++;
+            if ($show_table) {
+               $html.= "</td>";
+               if ($odd%2 == 1)  $html.= "</tr>";
+               $odd++;
+            }
          }         
       }
-      if ($odd%2 == 1)  $html.= "</tr>";
+      if ($show_table && $odd%2 == 1)  $html.= "</tr>";
       return $html;
+   }
+
+   static function showSingle($itemtype, $searchOption) {
+      $fields = array(array(
+         'id'    => 0,
+         'type'  => $searchOption['pfields_type'],
+         'name'  => $searchOption['linkfield']
+      ));
+
+      echo self::prepareHtmlFields($fields, 0, true, false);
+      return true;
    }
 
    static function getTypes() {

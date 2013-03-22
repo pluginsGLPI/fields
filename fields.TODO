@@ -9,9 +9,9 @@ Features :
  ✔ add is_active field to container @done (13-02-19 11:33)
  ✔ add display preferences for container(label, itemtype, type, active) @done (13-02-19 15:50)
  ✔ Dynamic dropdowns @done (13-02-21 17:22)
- ☐ searchOptions
+ ✔ searchOptions @done (13-03-22 16:30)
      ✔ Search @done (13-02-19 17:11)
-     ☐ Massive Actions
+     ✔ Massive Actions @done (13-03-22 16:30)
      ✔ GiveItem @done (13-02-20 08:55)
      ✔ dropdowns @done (13-03-21 15:26)
  ✔ Profiles @done (13-03-22 11:46)

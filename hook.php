@@ -185,3 +185,20 @@ function plugin_fields_getDropdown() {
 
    return $dropdowns;
 }
+
+
+/**** MASSIVE ACTIONS ****/
+
+
+// Display specific massive actions for plugin fields
+function plugin_fields_MassiveActionsFieldsDisplay($options=array()) {
+   $itemtypes = PluginFieldsContainer::getEntries('all');
+
+   if (in_array($options['itemtype'], $itemtypes)) {
+      PluginFieldsField::showSingle($options['itemtype'], $options['options']);
+      return true;
+   }
+
+   // Need to return false on non display item
+   return false;
+}
