@@ -45,7 +45,8 @@ class PluginFieldsProfile extends CommonDBTM {
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, 
+                                            $withtemplate=0) {
       global $LANG;
 
       $profile = new Profile;
@@ -58,20 +59,65 @@ class PluginFieldsProfile extends CommonDBTM {
 
       echo "<tr><th colspan='2'>".$LANG['Menu'][35]."</th></tr>";
       foreach ($found_profiles as $profile_item) {
+         //get right for current profile
+         $found = $fields_profile->find("`profiles_id` = '".$profile_item['id']."' 
+                         AND `plugin_fields_containers_id` = '".$item->fields['id']."'");
+         $first_found = array_shift($found);
+
+         //display right
          echo "<tr>";
          echo "<td>".$profile_item['name']."</td>";
          echo "<td>";
-         Profile::dropdownNoneReadWrite("rights[".$profile_item['name']."]", 0);
+         Profile::dropdownNoneReadWrite("rights[".$profile_item['id']."]", $first_found['right']);
          echo "</td>";
          echo "<tr>";
       }
       echo "<ul>";
       echo "<tr><td class='tab_bg_2 center' colspan='2'>";
+      echo "<input type='hidden' name='plugin_fields_containers_id' value='".
+            $item->fields['id']."' />";
       echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
       echo "</td>";
       echo "</tr>";
       echo "</table></div>";
       Html::closeForm();
+   }
+
+
+
+   static function updateProfile($input) {
+      $fields_profile = new self;
+      foreach ($input['rights'] as $profiles_id => $right) {
+         $found = $fields_profile->find("`profiles_id` = '$profiles_id' 
+                         AND `plugin_fields_containers_id` = '".
+                           $input['plugin_fields_containers_id']."'");
+         $first_found = array_shift($found);
+
+         $fields_profile->update(array(
+            'id'                          => $first_found['id'],
+            'profiles_id'                 => $profiles_id,
+            'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+            'right'                       => $right
+         ));
+      }
+
+      return true;
+   }
+
+
+   static function createForContainer(PluginFieldsContainer $container) {
+      $profile = new Profile;
+      $found_profiles = $profile->find();
+
+      $fields_profile = new self;
+      foreach ($found_profiles as $profile_item) {
+         $fields_profile->add(array(
+            'profiles_id'                 => $profile_item['id'],
+            'plugin_fields_containers_id' => $container->fields['id'],
+            'right'                       => 'w' 
+         ));
+      }
+      return true;
    }
 
 }

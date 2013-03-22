@@ -139,6 +139,11 @@ class PluginFieldsContainer extends CommonDBTM {
       return $input;
    }
 
+   function post_addItem() {
+      //create profiles associated to this container
+      PluginFieldsProfile::createForContainer($this);
+   }
+
    static function getTypeName() {
       global $LANG;
 
@@ -246,6 +251,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $itemtypes = array();
       $container = new self;
+      $profile = new PluginFieldsProfile;
       $found = $container->find("$sql_type AND is_active = 1", "`label`");
       foreach($found as $item) {
          //entities restriction
@@ -260,6 +266,13 @@ class PluginFieldsContainer extends CommonDBTM {
             }
          }
 
+         //profiles restriction
+         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
+                                 AND `plugin_fields_containers_id` = '".$item['id']."'");
+         $first_found = array_shift($found);
+         if ($first_found['right'] == NULL) continue;
+
+         //show more info or not
          if ($full) {
             $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
          } else {
