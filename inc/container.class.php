@@ -32,7 +32,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (count($found) == 0) {
          for ($i = 2; $i <= 5; $i++) {
             $DB->query("INSERT INTO glpi_displaypreferences VALUES 
-               ('', '".__CLASS__."', $i, ".($i-1).", 0)");
+               (NULL, '".__CLASS__."', $i, ".($i-1).", 0)");
          }
       }
 
