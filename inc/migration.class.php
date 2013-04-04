@@ -19,6 +19,9 @@ class PluginFieldsMigration {
    function updateFromCustomfields($glpi_version = "0.80") {
       global $DB, $LANG;
 
+      set_time_limit(900);
+      ini_set('memory_limit','256M');
+
       $rand = mt_rand();
       $values_dumped = false;
 
