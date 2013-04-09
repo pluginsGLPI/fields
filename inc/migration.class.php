@@ -67,6 +67,7 @@ class PluginFieldsMigration {
             FROM glpi_plugin_customfields_fields fi
             WHERE fi.itemtype = '$itemtype'
                AND fi.deleted = 0
+            GROUP BY fi.system_name, fi.data_type
          ";
          $res_desc_itemtype = $DB->query($query_desc_itemtype);
          $fields = array();
@@ -98,7 +99,11 @@ class PluginFieldsMigration {
          $field_obj = new PluginFieldsField;
          $dropdowns_ids = array();
          foreach ($fields as &$field) {
-            $systemname = $field['system_name'];
+            $systemname = "";
+            if ($field['data_type'] === "dropdown") {
+               $systemname = $field['system_name'];
+            } 
+            
             $fields_id = $field_obj->add(array(
                'name'                        => $systemname,
                'label'                       => mysql_real_escape_string($field['label']),

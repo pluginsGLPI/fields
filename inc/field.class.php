@@ -89,7 +89,9 @@ class PluginFieldsField extends CommonDBTM {
     */
    function prepareName($input) {
       //contruct field name by processing label (remove non alphanumeric char)
-      $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
+      if (empty($input['name'])) {
+         $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
+      }
 
       //check if field name not already exist and not in conflict with itemtype fields name
       $containers_id = $input['plugin_fields_containers_id'];
