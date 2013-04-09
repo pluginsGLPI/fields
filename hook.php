@@ -180,7 +180,7 @@ function plugin_fields_getDropdown() {
    $field_obj = new PluginFieldsField;
    $fields = $field_obj->find("`type` = 'dropdown'");
    foreach ($fields as $field) {
-      $dropdowns = array("PluginFields".ucfirst($field['name'])."Dropdown" => $field['label']);
+      $dropdowns["PluginFields".ucfirst($field['name'])."Dropdown"] = $field['label'];
    }
 
    return $dropdowns;
