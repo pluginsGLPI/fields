@@ -9,6 +9,7 @@ $LANG['fields']['uninstall'][0] = "Désinstallation des tables MySQL";
 
 $LANG['fields']['error']['dir_write'] = "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger.";
 $LANG['fields']['error']['dom_not_unique'] = "Vous ne pouvez pas créer plusieurs bloc de type 'Insertion dans le formulaire' sur le même objet";
+$LANG['fields']['error']['dropdown_unique'] = "Vous ne pouvez pas créer plusieurs fois la même champs 'intitulé' pour le même bloc";
 
 $LANG['fields']['config']['fields']     = "Configurer les champs";
 $LANG['fields']['config']['containers'] = "Configurer les blocs";

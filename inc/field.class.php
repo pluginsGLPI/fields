@@ -52,12 +52,30 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function prepareInputForAdd($input) {
+      global $LANG;
+
       //parse name
       $input['name'] = $this->prepareName($input);
 
       //dropdowns : create files
       if ($input['type'] === "dropdown") {
-         PluginFieldsDropdown::create($input);
+         //search if dropdown already exist in this container 
+         $found = $this->find("name = '".$input['name']."' 
+                              AND plugin_fields_containers_id = '".
+                                 $input['plugin_fields_containers_id']."'");
+
+         //reject adding for same dropdown on same bloc
+         if (!empty($found)) {
+            Session::AddMessageAfterRedirect($LANG['fields']['error']['dropdown_unique']);
+            return false;
+         }
+
+         //search if dropdown already exist in other container 
+         $found = $this->find("name = '".$input['name']."'");
+         //for dropdown, if already exist, don't create files
+         if (empty($found)) {
+            PluginFieldsDropdown::create($input);
+         }
       }
 
       // Before adding, add the ranking of the new field
@@ -66,7 +84,6 @@ class PluginFieldsField extends CommonDBTM {
       }
       return $input;
    }
-
    function prepareInputForUpdate($input) {
       //parse name
       $input['name'] = $this->prepareName($input);
@@ -91,6 +108,12 @@ class PluginFieldsField extends CommonDBTM {
       //contruct field name by processing label (remove non alphanumeric char)
       if (empty($input['name'])) {
          $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
+      }
+
+      //for dropdown, if already exist, link to it
+      if ($input['type'] === "dropdown") {
+         $found = $this->find("name = '".$input['name']."'");
+         if (!empty($found)) return $input['name'];
       }
 
       //check if field name not already exist and not in conflict with itemtype fields name

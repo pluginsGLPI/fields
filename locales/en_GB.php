@@ -12,6 +12,7 @@ $LANG['fields']['error']['dom_not_unique'] = "You cannot add several blocs with 
 
 $LANG['fields']['config']['fields']     = "Configurate the fields";
 $LANG['fields']['config']['containers'] = "Configurate the blocs";
+$LANG['fields']['error']['dropdown_unique'] = "Vou cannot add same field 'dropdown' on same bloc";
 
 $LANG['fields']['type'][0] = "Field";
 $LANG['fields']['type'][1] = "Bloc";
