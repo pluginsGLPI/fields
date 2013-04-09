@@ -91,15 +91,21 @@ class PluginFieldsDropdown {
 
       //remove class file for this dropdown
       $class_filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
-      if (unlink($class_filename) === false) return false;
+      if (file_exists($class_filename)) {
+         if (unlink($class_filename) === false) return false;
+      }
 
       //remove front file for this dropdown
       $front_filename = GLPI_ROOT."/plugins/fields/front/".$dropdown_name."dropdown.php";
-      if (unlink($front_filename) === false) return false;
+      if (file_exists($front_filename)) {
+         if (unlink($front_filename) === false) return false;
+      }
 
       //remove front.form file for this dropdown
       $form_filename = GLPI_ROOT."/plugins/fields/front/".$dropdown_name."dropdown.form.php";
-      return unlink($form_filename);
+      if (file_exists($form_filename)) {
+         return unlink($form_filename);
+      }
    }
 
    static function getClassname($system_name) {
