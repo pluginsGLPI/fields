@@ -86,7 +86,7 @@ function plugin_fields_getAddSearchOptions($itemtype) {
 
    $itemtypes = PluginFieldsContainer::getEntries('all');
 
-   if (in_array($itemtype, $itemtypes)) {
+   if ($itemtypes !== false && in_array($itemtype, $itemtypes)) {
       return PluginFieldsContainer::getAddSearchOptions($itemtype);
    }
 
