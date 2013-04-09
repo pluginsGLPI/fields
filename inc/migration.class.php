@@ -112,6 +112,10 @@ class PluginFieldsMigration {
             if ($field['data_type'] === "dropdown") {
                $dropdowns_current_values = $dropdowns_values[$systemname];
                $dropdown_classname = PluginFieldsDropdown::getClassname($systemname);
+               //include file if autoload doesn't work
+               if (!class_exists($dropdown_classname)) {
+                  require_once $class_filename = $systemname."dropdown.class.php"; 
+               }
                $dropdown_obj = new $dropdown_classname;
                   
                foreach ($dropdowns_current_values as $d_value) {
