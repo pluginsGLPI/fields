@@ -20,7 +20,9 @@ class PluginFieldsMigration {
       global $DB, $LANG;
 
       set_time_limit(900);
-      ini_set('memory_limit','256M');
+      ini_set('memory_limit','516M');
+
+      $query = "";
 
       $rand = mt_rand();
       $values_dumped = false;
@@ -170,36 +172,54 @@ class PluginFieldsMigration {
             foreach ($values as $old_id => $value_line) {
                foreach ($value_line as $fieldname => $value) {
                   if ($fieldname === "id") continue;
+                  $datatype = $fields[$fieldname]['data_type'];
+                  
+                  //pass if empty value
+                  if ($datatype == "sectionhead") continue;
                   if ($value === "" || $value === "NULL" && $value === NULL) continue;
+                  if ($value <= 0 && ($datatype == "dropdown" || $datatype == "yesno")) continue;
 
                   if ($fields[$fieldname]['data_type'] === "dropdown" && !empty($value)) {
+                     if (!isset($dropdowns_ids[$fieldname][$value])) continue;
                      //find the new the new id of dropdowns
                      $value = $dropdowns_ids[$fieldname][$value];
-                  }                  
+                  }   
                   
                   //get correct key for storing value
-                  $value_type = $this->migrateCustomfieldValue($fields[$fieldname]['data_type']);
+                  $value_type = $this->migrateCustomfieldValue($datatype);
+
+                  //correct insertion for strict mysql mode
+                  if ($datatype == "dropdown" || $datatype == "yesno") {
+                     $value_insert = $value;
+                  } else {
+                     //test if empty value
+                     if ($value == "") continue;
+
+                     $value_insert = "'".mysql_real_escape_string($value)."'";
+                  }
+
+                  //prepare insertion of value
+                  if ($value_type == "value_varchar") {
+                     $values_insert = "NULL,$value_insert,NULL";
+                  } elseif ($value_type == "value_text") { 
+                     $values_insert = "NULL,NULL,$value_insert";
+                  } else {
+                     $values_insert = "$value_insert,NULL,NULL";
+                  }
              
-                  //prepare values insertion sql and dump it into a file .
+                  //prepare values insertion sql.
                   //(too long to be executed in this script)
-                  $query = "INSERT INTO glpi_plugin_fields_values (
-                        `$value_type`, `items_id`, `itemtype`, 
-                        `plugin_fields_containers_id`, `plugin_fields_fields_id`
-                     ) VALUES (
-                        '".mysql_real_escape_string($value)."', $old_id, '$itemtype', 
-                        $containers_id, ".$fields[$fieldname]['newId']."
-                     );\n";
-                  file_put_contents(GLPI_DUMP_DIR."/customfields_import_values.$rand.sql", 
-                                    $query, FILE_APPEND);
+                  $query.= "(NULL,$values_insert,$old_id,$containers_id,".$fields[$fieldname]['newId']."),";                  
                }
+               
             }
+            
          }
       }
 
-      //inform user (his dump is in files/_dumps location)
-      if ($values_dumped) {
-         Session::addMessageAfterRedirect($LANG['fields']['install'][1]);
-      }
+      //dump prepared queries into a file
+      $query = "INSERT INTO glpi_plugin_fields_values VALUES ".substr($query, 0, -1);
+      file_put_contents(GLPI_DUMP_DIR."/customfields_import_values.$rand.sql", $query);
       
       return true;
    }

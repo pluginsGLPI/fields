@@ -162,11 +162,14 @@ function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
    } elseif (preg_match("/glpi_plugin_fields_.*dropdowns/", $new_table)) {
 
       return " LEFT JOIN `glpi_plugin_fields_values`
-         ON (`$ref_table`.`id` = `glpi_plugin_fields_values`.`items_id` 
-            AND `glpi_plugin_fields_values`.`itemtype` = '$type')
+         ON `$ref_table`.`id` = `glpi_plugin_fields_values`.`items_id` 
       LEFT JOIN `glpi_plugin_fields_fields`
          ON (`glpi_plugin_fields_fields`.`id` 
-                                    = `glpi_plugin_fields_values`.`plugin_fields_fields_id`)
+               = `glpi_plugin_fields_values`.`plugin_fields_fields_id`)
+      LEFT JOIN `glpi_plugin_fields_containers`
+         ON `glpi_plugin_fields_containers`.`id` 
+               = `glpi_plugin_fields_values`.`plugin_fields_containers_id` 
+         AND `glpi_plugin_fields_containers`.`itemtype` = '$type'
       LEFT JOIN `$new_table`
          ON (`$new_table`.`id` = `glpi_plugin_fields_values`.`value_int`)";
    }

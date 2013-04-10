@@ -17,7 +17,6 @@ class PluginFieldsValue extends CommonDBTM {
                   `value_varchar`                     VARCHAR(255)   DEFAULT NULL,
                   `value_text`                        TEXT           DEFAULT NULL,
                   `items_id`                          INT(11)        NOT NULL DEFAULT '0',
-                  `itemtype`                          VARCHAR(255)   DEFAULT NULL,
                   `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
                   `plugin_fields_fields_id`           INT(11)        NOT NULL DEFAULT '0',
                   PRIMARY KEY                         (`id`),
