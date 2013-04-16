@@ -4,7 +4,7 @@ function plugin_init_fields() {
    global $PLUGIN_HOOKS, $LANG;
 
    $plugin = new Plugin();
-   if (isset($_SESSION['glpiID']) 
+   if (isset($_SESSION['glpiactiveentities']) 
       && $plugin->isInstalled('fields') 
       && $plugin->isActivated('fields')) {
       

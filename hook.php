@@ -84,10 +84,13 @@ function plugin_fields_uninstall() {
 function plugin_fields_getAddSearchOptions($itemtype) {
    global $LANG;
 
-   $itemtypes = PluginFieldsContainer::getEntries('all');
+   if (isset($_SESSION['glpiactiveentities'])) {
 
-   if ($itemtypes !== false && in_array($itemtype, $itemtypes)) {
-      return PluginFieldsContainer::getAddSearchOptions($itemtype);
+      $itemtypes = PluginFieldsContainer::getEntries('all');
+
+      if ($itemtypes !== false && in_array($itemtype, $itemtypes)) {
+         return PluginFieldsContainer::getAddSearchOptions($itemtype);
+      }
    }
 
    return null;  
