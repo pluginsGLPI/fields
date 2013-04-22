@@ -200,9 +200,9 @@ class PluginFieldsMigration {
 
                   //prepare insertion of value
                   if ($value_type == "value_varchar") {
-                     $values_insert = "NULL,$value_insert,NULL";
+                     $values_insert = "0,$value_insert,NULL";
                   } elseif ($value_type == "value_text") { 
-                     $values_insert = "NULL,NULL,$value_insert";
+                     $values_insert = "0,NULL,$value_insert";
                   } else {
                      $values_insert = "$value_insert,NULL,NULL";
                   }
