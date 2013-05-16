@@ -528,7 +528,7 @@ class PluginFieldsField extends CommonDBTM {
                case 'datetime':
                   if ($canedit) {
                      ob_start();
-                     Html::showDateFormItem($field['name'], $value);
+                     Html::showDateTimeFormItem($field['name'], $value);
                      $html.= ob_get_contents();
                      ob_end_clean();
                   } else {
