@@ -293,7 +293,7 @@ class PluginFieldsMigration {
 
          //finish base table declaration
          $new_table_sql.= "PRIMARY KEY                         (`id`),
-            UNIQUE INDEX `items_id`                      (`items_id`),
+            UNIQUE INDEX `itemtype_item`       (`itemtype`, `items_id`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
          $DB->query($new_table_sql) or die ($DB->error());
 
@@ -302,6 +302,7 @@ class PluginFieldsMigration {
          $template_class = file_get_contents(GLPI_ROOT.
                                              "/plugins/fields/templates/container.class.tpl");
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+         $template_class = str_replace("%%ITEMTYPE%%", $container['itemtype'], $template_class);
          $class_filename = $container['name'].".class.php";
          if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
                                $template_class) === false) return false;

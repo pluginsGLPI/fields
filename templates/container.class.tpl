@@ -10,10 +10,11 @@ class %%CLASSNAME%% extends CommonDBTM {
 
       if (!TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                               INT(11) NOT NULL auto_increment,
-                  `items_id`                         INT(11) NOT NULL,
+                  `id`                               INT(11)      NOT NULL auto_increment,
+                  `items_id`                         INT(11)      NOT NULL,
+                  `itemtype`                         VARCHAR(255) DEFAULT '%%ITEMTYPE%%',
                   PRIMARY KEY                        (`id`),
-                  UNIQUE INDEX `items_id`            (`items_id`)
+                  UNIQUE INDEX `itemtype_item`       (`itemtype`, `items_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
          $DB->query($query) or die ($DB->error());
       }

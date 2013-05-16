@@ -116,7 +116,7 @@ function plugin_fields_searchOptionsValues($options=array()) {
    }
    return false;
 }
-
+/*
 function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
 
    $searchopt = &Search::getOptions($type);
@@ -155,8 +155,8 @@ function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
    unset($_SESSION['pass_addwhere_fields']);
 
    return "";
-}
-
+}*/
+/*
 function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
 
    //for itemtype search options
@@ -182,7 +182,7 @@ function plugin_fields_addLeftJoin($type, $ref_table, $new_table, $linkfield) {
          ON (`$new_table`.`id` = `glpi_plugin_fields_values`.`value_int`)";
    }
    return "";
-}
+}*/
 
 // Define Dropdown tables to be manage in GLPI :
 function plugin_fields_getDropdown() {

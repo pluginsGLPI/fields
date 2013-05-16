@@ -148,6 +148,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $template_class = file_get_contents(GLPI_ROOT.
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
       $class_filename = $this->fields['name'].".class.php";
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
                             $template_class) === false) return false;
@@ -536,7 +537,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $opt = array();
 
       $i = 76665;
-      $query = "SELECT fields.name, fields.label, fields.type
+      $query = "SELECT fields.name, fields.label, fields.type, containers.name as container_name
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
@@ -545,18 +546,21 @@ class PluginFieldsContainer extends CommonDBTM {
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
-         $opt[$i]['table']         = 'glpi_plugin_fields_values';
-         $opt[$i]['field']         = 'value_varchar';
+         $opt[$i]['table']         = "glpi_plugin_fields_".getPlural($datas['container_name']);
+         $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['label'];
-         $opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
+         //$opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
          $opt[$i]['massiveaction'] = false;
-         $opt[$i]['pfields_type']  = $datas['type'];
+         $opt[$i]['joinparams']['jointype'] = "itemtype_item";
+         //$opt[$i]['pfields_type']  = $datas['type'];
 
          if ($datas['type'] === "dropdown") {
             $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
             $opt[$i]['field']      = 'name';
             $opt[$i]['searchtype'] = 'equals';
-            unset($opt[$i]['condition']); 
+            $opt[$i]['joinparams']['jointype'] = "";
+            $opt[$i]['joinparams']['beforejoin']['table'] = "glpi_plugin_fields_".getPlural($datas['container_name']);
+            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
          switch ($datas['type']) {
@@ -565,11 +569,9 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             case 'yesno':
                $opt[$i]['datatype'] = "bool";
-               $opt[$i]['field']    = 'value_int';
                break;
             case 'textarea':
                $opt[$i]['datatype'] = "text";
-               $opt[$i]['field']    = 'value_text';
                break;
             case 'date':
             case 'datetime':
