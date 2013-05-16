@@ -11,10 +11,10 @@ function plugin_init_fields() {
       Plugin::registerClass('PluginFieldsContainer',
                             array('addtabon' => PluginFieldsContainer::getEntries()));
 
-      $menu_entry   = "front/container.php";
+      $menu_entry = "front/container.php";
       if ((!isset($_SESSION['glpiactiveprofile']['config']) 
          || $_SESSION['glpiactiveprofile']['config'] != "w")
-      ) $menu_entry  = false;
+      ) $menu_entry = false;
 
       $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
       $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
@@ -27,7 +27,8 @@ function plugin_init_fields() {
             'add'    => "/plugins/fields/front/container.form.php"
       ));
 
-      $PLUGIN_HOOKS['add_css']['fields'][] = 'fields.css';
+      //include js and css
+      $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
       // Massive Action definition
