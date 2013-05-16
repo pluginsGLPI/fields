@@ -6,6 +6,10 @@ function plugin_fields_install() {
    ini_set('memory_limit', '512M');
    set_time_limit(300);
 
+   $plugin_fields = new Plugin;
+   $plugin_fields->getFromDBbyDir('fields');
+   $version = $plugin_fields->fields['version'];
+
    $classesToInstall = array(
       'PluginFieldsDropdown',
       'PluginFieldsField',
@@ -16,7 +20,8 @@ function plugin_fields_install() {
       'PluginFieldsMigration'   
    );
 
-   $migration = new Migration("1.0");
+   $migration = new Migration($version);
+
    echo "<center>";
    echo "<table class='tab_cadre_fixe'>";
    echo "<tr><th>".$LANG['fields']['install'][0]."<th></tr>";
@@ -29,7 +34,7 @@ function plugin_fields_install() {
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if (!call_user_func(array($class,'install'), $migration)) return false;
+            if (!call_user_func(array($class,'install'), $migration, $version)) return false;
          }
       }
    }

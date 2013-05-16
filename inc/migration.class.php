@@ -2,13 +2,16 @@
 
 class PluginFieldsMigration {
 
-   static function install(Migration $migration) {
+   static function install(Migration $migration, $version) {
       $fields_migration = new self;
 
       if (TableExists("glpi_plugin_customfields_fields")) {
-         return $fields_migration->updateFromCustomfields();
+         if (!$fields_migration->updateFromCustomfields()) return false;
       }
 
+      if ($version === "2.0") {
+         if (!$fields_migration->migrateNewSchema()) return false;
+      }
       return true;
    }
 
@@ -209,7 +212,8 @@ class PluginFieldsMigration {
              
                   //prepare values insertion sql.
                   //(too long to be executed in this script)
-                  $query.= "(NULL,$values_insert,$old_id,$containers_id,".$fields[$fieldname]['newId']."),";                  
+                  $query.= "(NULL, 
+                     $values_insert,$old_id,$containers_id,".$fields[$fieldname]['newId']."),";
                }
                
             }
@@ -254,5 +258,95 @@ class PluginFieldsMigration {
       );
 
       return $types[$old_type];
+   }
+
+   function migrateNewSchema() {
+      global $DB;
+
+      //create new table for each container
+      $container_obj = new PluginFieldsContainer;
+      $containers = $container_obj->find();
+      $field_obj = new PluginFieldsField;
+      $value_obj = new PluginFieldsValue;
+      foreach ($containers as $containers_id  => $container) {
+         //find fields associated with this container for create new table
+         $fields = $field_obj->find("plugin_fields_containers_id = $containers_id 
+                                     AND type != 'header'");
+
+         //prepare base table declaration
+         $new_table_name = "glpi_plugin_fields_".$container['name'];
+         $new_table_sql = "CREATE TABLE IF NOT EXISTS `$new_table_name` (
+            `id`                               INT(11) NOT NULL auto_increment,
+            `items_id`                         INT(11) NOT NULL,
+            `plugin_fields_containers_id`      INT(11) NOT NULL DEFAULT '0',
+            ";
+
+         //complete table declaration with each fields
+         foreach ($fields as $fields_id => $field) {
+            $new_table_sql.= "`".$field['name']."` ".self::getSqlType($field['type']).", 
+            ";
+         }
+
+         //finish base table declaration
+         $new_table_sql.= "PRIMARY KEY                         (`id`),
+            UNIQUE INDEX `items_id`                      (`items_id`),
+            KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
+         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+         $DB->query($new_table_sql) or die ($DB->error());
+
+         //retrieve values for this containers
+         $values = $value_obj->find("plugin_fields_containers_id = $containers_id");
+         foreach ($values as $value) {
+            $field_name = $fields[$value['plugin_fields_fields_id']]['name'];
+
+            //retieve correct value field
+            $value_to_insert = $value[
+               self::getValueSQLField($fields[$value['plugin_fields_fields_id']]['type'])
+            ];
+
+            //insert value in new table (if key items_id alredy exist, update row)
+            $query_value = "INSERT INTO $new_table_name (
+                  items_id, 
+                  plugin_fields_containers_id, 
+                  $field_name
+               ) VALUES (
+                  ".$value['items_id'].",
+                  $containers_id,
+                  '$value_to_insert'
+               ) ON DUPLICATE KEY UPDATE $field_name = '$value_to_insert';
+            ";
+            $DB->query($query_value) or die ($DB->error());
+         }
+         
+      }
+      return true;
+   }
+
+   static function getSQLType($field_type) {
+      $types = array(
+         'text'     => 'VARCHAR(255) DEFAULT NULL',
+         'textarea' => 'TEXT         DEFAULT NULL',
+         'number'   => 'VARCHAR(255) DEFAULT NULL',
+         'dropdown' => 'INT(11)      NOT NULL DEFAULT 0',
+         'yesno'    => 'INT(11)      NOT NULL DEFAULT 0',
+         'date'     => 'VARCHAR(255) DEFAULT NULL',
+         'datetime' => 'VARCHAR(255) DEFAULT NULL'
+      );
+
+      return $types[$field_type];
+   }
+
+   static function getValueSQLField($field_type) {
+      $value_field = array(
+         'text'     => 'value_varchar',
+         'textarea' => 'value_text',
+         'number'   => 'value_varchar',
+         'dropdown' => 'value_int',
+         'yesno'    => 'value_int',
+         'date'     => 'value_varchar',
+         'datetime' => 'value_varchar'
+      );
+
+      return $value_field[$field_type];
    }
 }
