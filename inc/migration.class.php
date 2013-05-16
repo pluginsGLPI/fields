@@ -282,10 +282,13 @@ class PluginFieldsMigration {
 
          //complete table declaration with each fields
          foreach ($fields as $fields_id => $field) {
+            if ($field['type'] === "dropdown") {
+               $field['name'] = getForeignKeyFieldForItemType(
+                  PluginFieldsDropdown::getClassname($field['name']));
+            }
+
             $new_table_sql.= "`".$field['name']."` ".self::getSqlType($field['type']).", 
             ";
-
-            //TODO : specific for dropdown
          }
 
          //finish base table declaration
