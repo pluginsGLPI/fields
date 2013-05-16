@@ -278,21 +278,30 @@ class PluginFieldsMigration {
          $new_table_sql = "CREATE TABLE IF NOT EXISTS `$new_table_name` (
             `id`                               INT(11) NOT NULL auto_increment,
             `items_id`                         INT(11) NOT NULL,
-            `plugin_fields_containers_id`      INT(11) NOT NULL DEFAULT '0',
             ";
 
          //complete table declaration with each fields
          foreach ($fields as $fields_id => $field) {
             $new_table_sql.= "`".$field['name']."` ".self::getSqlType($field['type']).", 
             ";
+
+            //TODO : specific for dropdown
          }
 
          //finish base table declaration
          $new_table_sql.= "PRIMARY KEY                         (`id`),
             UNIQUE INDEX `items_id`                      (`items_id`),
-            KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
          $DB->query($new_table_sql) or die ($DB->error());
+
+         //create class file for this new table
+         $classname = "PluginFields".ucfirst($container['name']);
+         $template_class = file_get_contents(GLPI_ROOT.
+                                             "/plugins/fields/templates/container.class.tpl");
+         $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+         $class_filename = $container['name'].".class.php";
+         if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+                               $template_class) === false) return false;
 
          //retrieve values for this containers
          $values = $value_obj->find("plugin_fields_containers_id = $containers_id");
@@ -307,11 +316,9 @@ class PluginFieldsMigration {
             //insert value in new table (if key items_id alredy exist, update row)
             $query_value = "INSERT INTO $new_table_name (
                   items_id, 
-                  plugin_fields_containers_id, 
                   $field_name
                ) VALUES (
                   ".$value['items_id'].",
-                  $containers_id,
                   '$value_to_insert'
                ) ON DUPLICATE KEY UPDATE $field_name = '$value_to_insert';
             ";

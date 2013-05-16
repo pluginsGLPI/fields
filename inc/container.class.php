@@ -142,6 +142,47 @@ class PluginFieldsContainer extends CommonDBTM {
    function post_addItem() {
       //create profiles associated to this container
       PluginFieldsProfile::createForContainer($this);
+
+      //create class file
+      $classname = "PluginFields".ucfirst($this->fields['name']);
+      $template_class = file_get_contents(GLPI_ROOT.
+                                          "/plugins/fields/templates/container.class.tpl");
+      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $class_filename = $this->fields['name'].".class.php";
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+                            $template_class) === false) return false;
+
+      //install table for receive field
+      $classname::install();
+   }
+
+   function pre_deleteItem() {
+      $classname = "PluginFields".ucfirst($this->fields['name']);
+      $class_filename = $this->fields['name'].".class.php";
+
+      //delete fields
+      $field_obj = new PluginFieldsField;
+      $fields = $field_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
+      foreach ($fields as $fields_id => $field) {
+         $field_obj->delete(array('id' => $fields_id));
+      }
+
+      //delete profiles
+      $profile_obj = new PluginFieldsProfile;
+      $profiles = $profile_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
+      foreach ($profiles as $profiles_id => $profile) {
+         $profile_obj->delete(array('id' => $profiles_id));
+      }
+
+      //delete table
+      $classname::uninstall();
+
+      //remove file
+      if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+         return unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+      }
+
+      return true;
    }
 
    static function getTypeName() {
@@ -312,9 +353,30 @@ class PluginFieldsContainer extends CommonDBTM {
       return PluginFieldsField::showForTabContainer($c_id, $item->fields['id']);
    }
 
+   /**
+    * Insert values submited by fields container
+    * @param  array $datas datas posted 
+    * @return boolean
+    */
    function updateFieldsValues($datas) {
       global $DB;
 
+      //insert datas in new table
+      $container_obj = new PluginFieldsContainer;
+      $container_obj->getFromDB($datas['plugin_fields_containers_id']);
+      $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+      $obj = new $classname;
+      //check if datas already inserted
+      $found = $obj->find("items_id = ".$datas['items_id']);
+      if (empty($found)) {
+         $obj->add($datas);
+      } else {
+         $first_found = array_pop($found);
+         $datas['id'] = $first_found['id'];
+         $obj->update($datas);
+      }
+
+      //insert datas in vanilla table
       $c_id     = $datas['plugin_fields_containers_id'];
       $items_id = $datas['items_id'];
 

@@ -76,22 +76,62 @@ class PluginFieldsField extends CommonDBTM {
          if (empty($found)) {
             PluginFieldsDropdown::create($input);
          }
+
+         $oldname = $input['name'];
+         $input['name'] = getForeignKeyFieldForItemType(
+            PluginFieldsDropdown::getClassname($input['name']));
       }
 
       // Before adding, add the ranking of the new field
       if (empty($input["ranking"])) {
          $input["ranking"] = $this->getNextRanking();
       }
+      
+      //add field to container table
+      if ($input['type'] !== "header") {
+         $container_obj = new PluginFieldsContainer;
+         $container_obj->getFromDB($input['plugin_fields_containers_id']);
+         $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+         $classname::addField($input['name'], $input['type']);
+      }
+
+      if (isset($oldname)) $input['name'] = $oldname;
+
       return $input;
    }
    function prepareInputForUpdate($input) {
       //parse name
       $input['name'] = $this->prepareName($input);
 
+      //rename field in container table
+      if ($this->fields['type'] !== "header") {
+         $container_obj = new PluginFieldsContainer;
+         $container_obj->getFromDB($input['plugin_fields_containers_id']);
+         $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+         $classname::renameField($this->fields['name'], $input['name'], $this->fields['type']);
+      }
+
       return $input;
    }
 
    function pre_deleteItem() {
+      //remove field in container table
+      if ($this->fields['type'] !== "header") {
+
+         if ($this->fields['type'] === "dropdown") {
+            $oldname = $this->fields['name'];
+            $this->fields['name'] = getForeignKeyFieldForItemType(
+               PluginFieldsDropdown::getClassname($this->fields['name']));
+         }
+
+         $container_obj = new PluginFieldsContainer;
+         $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
+         $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+         $classname::removeField($this->fields['name']);
+      }
+
+      if (isset($oldname)) $this->fields['name'] = $oldname;
+
       if ($this->fields['type'] === "dropdown") {
          return PluginFieldsDropdown::destroy($this->fields['name']);
       }
