@@ -563,7 +563,8 @@ class PluginFieldsContainer extends CommonDBTM {
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
-         $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].$datas['container_name']);
+         $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].
+                        getPlural(preg_replace('/s$/', '', $datas['container_name'])));
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['label'];
