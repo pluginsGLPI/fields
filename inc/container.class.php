@@ -349,7 +349,7 @@ class PluginFieldsContainer extends CommonDBTM {
       //retrieve container for current tab
       $container = new self;
       $found_c = $container->find("`itemtype` = '".get_class($item)."' 
-                                  AND `type` = 'tab' AND `name` = '$tabnum'");
+                                  AND `type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
       $tmp = array_shift($found_c);
       $c_id = $tmp['id'];
 
@@ -460,7 +460,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if ($type === 'tab' || $type === 'dom') {
          $sql_type = "`type` = '$type'";
       }
-      $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype'");
+      $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype' AND is_active = 1");
 
       if (count($found_c) == 0) return false;
       
