@@ -87,6 +87,8 @@ class PluginFieldsDropdown {
       if (!class_exists($classname) && file_exists($dropdown_name."dropdown.class.php")) {
          require_once $dropdown_name."dropdown.class.php";   
 
+         Toolbox::logDebug("destroy classname");
+
          //call uninstall method in dropdown class
          if ($classname::uninstall() === false) return false;   
       }

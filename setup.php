@@ -32,7 +32,7 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
       // Massive Action definition
-      $PLUGIN_HOOKS['use_massive_action']['fields'] = 1;
+      //$PLUGIN_HOOKS['use_massive_action']['fields'] = 1;
 
 
       //Retrieve dom container 

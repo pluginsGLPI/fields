@@ -3,6 +3,9 @@
 class PluginFieldsMigration {
 
    static function install(Migration $migration, $version) {
+      set_time_limit(900);
+      ini_set('memory_limit','1024M');
+
       $fields_migration = new self;
 
       if (TableExists("glpi_plugin_customfields_fields")) {
@@ -21,9 +24,6 @@ class PluginFieldsMigration {
    
    function updateFromCustomfields($glpi_version = "0.80") {
       global $DB, $LANG;
-
-      set_time_limit(900);
-      ini_set('memory_limit','516M');
 
       $query = "";
 
@@ -262,6 +262,8 @@ class PluginFieldsMigration {
 
    function migrateNewSchema() {
       global $DB;
+      $rand = mt_rand();
+      $values_to_insert = array();
 
       //create new table for each container
       $container_obj = new PluginFieldsContainer;
@@ -274,10 +276,12 @@ class PluginFieldsMigration {
                                      AND type != 'header'");
 
          //prepare base table declaration
-         $new_table_name = "glpi_plugin_fields_".$container['name'];
+         $new_table_name = "glpi_plugin_fields_".strtolower($container['itemtype'].
+                                                            $container['name']);
          $new_table_sql = "CREATE TABLE IF NOT EXISTS `$new_table_name` (
             `id`                               INT(11) NOT NULL auto_increment,
             `items_id`                         INT(11) NOT NULL,
+            `itemtype`                         VARCHAR(255) DEFAULT '".$container['itemtype']."',
             ";
 
          //complete table declaration with each fields
@@ -298,12 +302,14 @@ class PluginFieldsMigration {
          $DB->query($new_table_sql) or die ($DB->error());
 
          //create class file for this new table
-         $classname = "PluginFields".ucfirst($container['name']);
+         $classname = "PluginFields".ucfirst($container['itemtype'].
+                                             preg_replace('/s$/', '', $container['name']));
          $template_class = file_get_contents(GLPI_ROOT.
                                              "/plugins/fields/templates/container.class.tpl");
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
          $template_class = str_replace("%%ITEMTYPE%%", $container['itemtype'], $template_class);
-         $class_filename = $container['name'].".class.php";
+         $class_filename = strtolower($container['itemtype'].
+                                      preg_replace('/s$/', '', $container['name']).".class.php");
          if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
                                $template_class) === false) return false;
 
@@ -312,24 +318,37 @@ class PluginFieldsMigration {
          foreach ($values as $value) {
             $field_name = $fields[$value['plugin_fields_fields_id']]['name'];
 
+            if ($fields[$value['plugin_fields_fields_id']]['type'] === "dropdown") {
+               $field_name = getForeignKeyFieldForItemType(
+                  PluginFieldsDropdown::getClassname($field_name));
+            }
+
             //retieve correct value field
             $value_to_insert = $value[
                self::getValueSQLField($fields[$value['plugin_fields_fields_id']]['type'])
             ];
 
-            //insert value in new table (if key items_id alredy exist, update row)
-            $query_value = "INSERT INTO $new_table_name (
-                  items_id, 
-                  $field_name
-               ) VALUES (
-                  ".$value['items_id'].",
-                  '$value_to_insert'
-               ) ON DUPLICATE KEY UPDATE $field_name = '$value_to_insert';
-            ";
-            $DB->query($query_value) or die ($DB->error());
+            //compute an array with value to easier insertion in mysql 
+            //(key => table, items_id, fieldname)
+            $values_to_insert[$new_table_name][$value['items_id']][$field_name] = $value_to_insert;
          }
          
       }
+
+      //insert all values in new tables
+      foreach ($values_to_insert as $tablename => $table_content) {
+         foreach ($table_content as $items_id => $fields) {
+            $columns = implode("`, `",array_keys($fields));
+            $escaped_values = array_map('mysql_real_escape_string', array_values($fields));
+            $values  = implode("', '", $escaped_values);
+            $query_value = "INSERT INTO `$tablename` (`items_id`, `$columns`) 
+                                              VALUES ('$items_id', '$values')";
+            $DB->query($query_value) or die ($DB->error());
+         }
+      }
+
+      Toolbox::logDebug(date("r"));
+
       return true;
    }
 

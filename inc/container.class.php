@@ -144,12 +144,14 @@ class PluginFieldsContainer extends CommonDBTM {
       PluginFieldsProfile::createForContainer($this);
 
       //create class file
-      $classname = "PluginFields".ucfirst($this->fields['name']);
+      $classname = "PluginFields".ucfirst($this->fields['itemtype'].
+                                          preg_replace('/s$/', '', $this->fields['name']));
       $template_class = file_get_contents(GLPI_ROOT.
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
-      $class_filename = $this->fields['name'].".class.php";
+      $class_filename = strtolower($this->fields['itemtype'].
+                                   preg_replace('/s$/', '', $this->fields['name']).".class.php");
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
                             $template_class) === false) return false;
 
@@ -365,7 +367,8 @@ class PluginFieldsContainer extends CommonDBTM {
       //insert datas in new table
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
-      $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+      $classname = "PluginFields".ucfirst($container_obj->fields['itemtype'].
+                                          preg_replace('/s$/', '', $container_obj->fields['name']));
       $obj = new $classname;
       //check if datas already inserted
       $found = $obj->find("items_id = ".$datas['items_id']);
@@ -537,7 +540,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $opt = array();
 
       $i = 76665;
-      $query = "SELECT fields.name, fields.label, fields.type, containers.name as container_name
+      $query = "SELECT fields.name, fields.label, fields.type, 
+            containers.name as container_name, containers.itemtype
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
@@ -546,20 +550,23 @@ class PluginFieldsContainer extends CommonDBTM {
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
-         $opt[$i]['table']         = "glpi_plugin_fields_".getPlural($datas['container_name']);
+         $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].$datas['container_name']);
+         $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['label'];
+         $opt[$i]['linkfield']     = $datas['name'];
          //$opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
-         $opt[$i]['massiveaction'] = false;
+         //$opt[$i]['massiveaction'] = false;
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
-         //$opt[$i]['pfields_type']  = $datas['type'];
+         $opt[$i]['pfields_type']  = $datas['type'];
 
          if ($datas['type'] === "dropdown") {
             $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
             $opt[$i]['field']      = 'name';
+            $opt[$i]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
             $opt[$i]['searchtype'] = 'equals';
             $opt[$i]['joinparams']['jointype'] = "";
-            $opt[$i]['joinparams']['beforejoin']['table'] = "glpi_plugin_fields_".getPlural($datas['container_name']);
+            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
@@ -582,15 +589,15 @@ class PluginFieldsContainer extends CommonDBTM {
           } 
 
           //massive action searchoption
-         $opt[$i+100000]                  = $opt[$i];
+         /*$opt[$i+100000]                  = $opt[$i];
          $opt[$i+100000]['linkfield']     = $datas['name'];
          if ($datas['type'] === "dropdown") {
             $opt[$i+100000]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
          }
          $opt[$i+100000]['massiveaction'] = true;
-         $opt[$i+100000]['nosearch'] = true;
-         $opt[$i+100000]['datatype'] = "";
-
+         $opt[$i+100000]['nosort']        = true;
+         $opt[$i+100000]['nosearch']      = true;
+         $opt[$i+100000]['datatype']      = "";*/
 
          $i++;
       }

@@ -102,7 +102,7 @@ function plugin_fields_getAddSearchOptions($itemtype) {
 }
 
 
-function plugin_fields_searchOptionsValues($options=array()) {
+/*function plugin_fields_searchOptionsValues($options=array()) {
    global $LANG;
 
    $table = $options['searchoption']['table'];
@@ -115,7 +115,7 @@ function plugin_fields_searchOptionsValues($options=array()) {
          return true;
    }
    return false;
-}
+}*/
 /*
 function plugin_fields_addWhere($link,$nott,$type,$ID,$val, $searchtype) {
 
