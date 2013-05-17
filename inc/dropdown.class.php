@@ -81,20 +81,21 @@ class PluginFieldsDropdown {
 
    static function destroy($dropdown_name) {
 
+
       $classname = self::getClassname($dropdown_name);
+      $class_filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
       
       //load class manually on plugin uninstallation
-      if (!class_exists($classname) && file_exists($dropdown_name."dropdown.class.php")) {
-         require_once $dropdown_name."dropdown.class.php";   
-
-         Toolbox::logDebug("destroy classname");
+      if (file_exists($class_filename)) {
+         if (!class_exists($classname)) {
+            require_once $dropdown_name."dropdown.class.php";    
+         } 
 
          //call uninstall method in dropdown class
          if ($classname::uninstall() === false) return false;   
       }
 
       //remove class file for this dropdown
-      $class_filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
       if (file_exists($class_filename)) {
          if (unlink($class_filename) === false) return false;
       }
