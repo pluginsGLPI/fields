@@ -168,6 +168,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function pre_deleteItem() {
+      $_SESSION['delete_container'] = true;
       $classname = "PluginFields".ucfirst(strtolower($this->fields['itemtype'].
                                           preg_replace('/s$/', '', $this->fields['name'])));
       $class_filename = strtolower($this->fields['itemtype'].
@@ -191,9 +192,11 @@ class PluginFieldsContainer extends CommonDBTM {
       $classname::uninstall();
 
       //remove file
-      //if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+      if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
          return unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
-      //}
+      }
+
+      unset($_SESSION['delete_container']);
 
       return true;
    }

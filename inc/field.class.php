@@ -117,8 +117,11 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function pre_deleteItem() {
+      global $DB;
+
       //remove field in container table
-      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'] )) {
+      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields']) 
+            && !isset($_SESSION['delete_container'])) {
 
          if ($this->fields['type'] === "dropdown") {
             $oldname = $this->fields['name'];
@@ -132,7 +135,13 @@ class PluginFieldsField extends CommonDBTM {
                                        preg_replace('/s$/', '', $container_obj->fields['name'])));
          $classname::removeField($this->fields['name']);
       }
-
+      
+      //delete values 
+      if (!isset($_SESSION['uninstall_fields']) ) {
+         $DB->query("DELETE FROM glpi_plugin_fields_values WHERE plugin_fields_fields_id = ".
+            $this->fields['id']);
+      }
+      
       if (isset($oldname)) $this->fields['name'] = $oldname;
 
       if ($this->fields['type'] === "dropdown") {

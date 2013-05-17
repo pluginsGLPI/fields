@@ -265,6 +265,8 @@ class PluginFieldsMigration {
       $rand = mt_rand();
       $values_to_insert = array();
 
+      Toolbox::logDebug("Start migrate Fields : ".date("r"));
+
       //create new table for each container
       $container_obj = new PluginFieldsContainer;
       $containers = $container_obj->find();
@@ -347,7 +349,7 @@ class PluginFieldsMigration {
          }
       }
 
-      Toolbox::logDebug(date("r"));
+      Toolbox::logDebug("End migrate Fields : ".date("r"));
 
       return true;
    }
