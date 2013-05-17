@@ -91,7 +91,8 @@ class PluginFieldsField extends CommonDBTM {
       if ($input['type'] !== "header") {
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($input['plugin_fields_containers_id']);
-         $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+         $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
+                                       preg_replace('/s$/', '', $container_obj->fields['name'])));
          $classname::addField($input['name'], $input['type']);
       }
 
@@ -107,7 +108,8 @@ class PluginFieldsField extends CommonDBTM {
       if ($this->fields['type'] !== "header") {
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($input['plugin_fields_containers_id']);
-         $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+         $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
+                                       preg_replace('/s$/', '', $container_obj->fields['name'])));
          $classname::renameField($this->fields['name'], $input['name'], $this->fields['type']);
       }
 
@@ -116,7 +118,7 @@ class PluginFieldsField extends CommonDBTM {
 
    function pre_deleteItem() {
       //remove field in container table
-      if ($this->fields['type'] !== "header") {
+      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'] )) {
 
          if ($this->fields['type'] === "dropdown") {
             $oldname = $this->fields['name'];
@@ -126,7 +128,8 @@ class PluginFieldsField extends CommonDBTM {
 
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
-         $classname = "PluginFields".ucfirst($container_obj->fields['name']);
+         $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
+                                       preg_replace('/s$/', '', $container_obj->fields['name'])));
          $classname::removeField($this->fields['name']);
       }
 

@@ -50,11 +50,13 @@ function plugin_fields_install() {
 function plugin_fields_uninstall() {
    global $LANG;
 
+   $_SESSION['uninstall_fields'] = true;
+
    $classesToUninstall = array(
       'PluginFieldsDropdown',
-      'PluginFieldsField',
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
+      'PluginFieldsField',
       'PluginFieldsValue',
       'PluginFieldsProfile', 
       'PluginFieldsMigration' 
@@ -81,6 +83,8 @@ function plugin_fields_uninstall() {
    echo "</td>";
    echo "</tr>";
    echo "</table></center>";
+
+   unset($_SESSION['uninstall_fields']);
 
    return true;
 }

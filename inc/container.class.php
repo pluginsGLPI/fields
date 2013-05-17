@@ -43,6 +43,14 @@ class PluginFieldsContainer extends CommonDBTM {
    static function uninstall() {
       global $DB;
 
+      //uninstall container table and class
+      $obj = new self;
+      $containers = $obj->find();
+      foreach ($containers as $containers_id => $container) {
+         $obj->delete(array('id'=>$containers_id));
+      }
+
+      //drop global container table
       $obj = new self();
       $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
 
@@ -161,7 +169,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    function pre_deleteItem() {
       $classname = "PluginFields".ucfirst(strtolower($this->fields['itemtype'].
-                                          $this->fields['name']));
+                                          preg_replace('/s$/', '', $this->fields['name'])));
       $class_filename = strtolower($this->fields['itemtype'].
                                    preg_replace('/s$/', '', $this->fields['name'])).".class.php";
 
