@@ -422,7 +422,8 @@ class PluginFieldsField extends CommonDBTM {
 
    
 
-   static function prepareHtmlFields($fields, $items_id, $canedit = true, $show_table = true) {
+   static function prepareHtmlFields($fields, $items_id, $canedit = true, 
+                                     $show_table = true, $massiveaction = false) {
       $html = "";
       $field_value_obj = new PluginFieldsValue;
       $odd = 0;
@@ -506,6 +507,10 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'yesno':
+                  //in massive action, we must skip display for yesno (possible bug in framework)
+                  //otherwise double display of field
+                  if ($massiveaction) continue;
+                  
                   if ($canedit) {
                      ob_start();
                      Dropdown::showYesNo($field['name'], $value);
@@ -546,14 +551,14 @@ class PluginFieldsField extends CommonDBTM {
       return $html;
    }
 
-   static function showSingle($itemtype, $searchOption) {
+   static function showSingle($itemtype, $searchOption, $massiveaction = false) {
       $fields = array(array(
          'id'    => 0,
          'type'  => $searchOption['pfields_type'],
          'name'  => $searchOption['linkfield']
       ));
 
-      echo self::prepareHtmlFields($fields, 0, true, false);
+      echo self::prepareHtmlFields($fields, 0, true, false, $massiveaction);
       return true;
    }
 

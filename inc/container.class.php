@@ -161,7 +161,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
    function pre_deleteItem() {
       $classname = "PluginFields".ucfirst($this->fields['name']);
-      $class_filename = $this->fields['name'].".class.php";
+      $class_filename = strtolower($this->fields['itemtype'].
+                                   preg_replace('/s$/', '', $this->fields['name'])).".class.php";
 
       //delete fields
       $field_obj = new PluginFieldsField;
@@ -502,7 +503,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $input = "plugin_fields_".$field['name']."dropdowns_id";
          }
          if (isset($item->input[$input])) {
-            $datas[$field['name']] = $item->input[$input];
+            $datas[$input] = $item->input[$input];
          }
       }
 

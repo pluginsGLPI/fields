@@ -206,7 +206,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options=array()) {
    $itemtypes = PluginFieldsContainer::getEntries('all');
 
    if (in_array($options['itemtype'], $itemtypes)) {
-      PluginFieldsField::showSingle($options['itemtype'], $options['options']);
+      PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
       return true;
    }
 
