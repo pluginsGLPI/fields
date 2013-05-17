@@ -440,6 +440,7 @@ class PluginFieldsField extends CommonDBTM {
       $field_value_obj = new PluginFieldsValue;
       $odd = 0;
       foreach($fields as $field) {
+      
          if ($field['type'] === 'header') {
             $html.= "<tr class='tab_bg_2'>";
             $html.= "<th colspan='4'>".$field['label']."</td>";
@@ -564,12 +565,24 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function showSingle($itemtype, $searchOption, $massiveaction = false) {
+      //find container for field in massive action
+      $field_obj = new self;
+      $found = $field_obj->find("name = '".$searchOption['linkfield']."'");
+      if (empty($found)) return false;
+      $tmp = array_pop($found);
+      $c_id = $tmp['plugin_fields_containers_id'];
+
+      //display an hidden post field to store container id
+      echo "<input type='hidden' name='c_id' value='$c_id' />";
+
+      //preapre arary for function prepareHtmlFields
       $fields = array(array(
          'id'    => 0,
          'type'  => $searchOption['pfields_type'],
          'name'  => $searchOption['linkfield']
       ));
 
+      //show field
       echo self::prepareHtmlFields($fields, 0, true, false, $massiveaction);
       return true;
    }

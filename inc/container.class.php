@@ -493,8 +493,12 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function preItemUpdate(CommonDBTM $item) {
       //find container (if not exist, do nothing)
-      $c_id = self::findContainer(get_Class($item), $item->fields['id'], "all");
-      if ($c_id === false) return false;
+      if (isset($_REQUEST['c_id'])) {
+         $c_id = $_REQUEST['c_id'];
+      } else {
+         $c_id = self::findContainer(get_Class($item), $item->fields['id'], "all");
+         if ($c_id === false) return false;
+      }
 
       //find fields associated to found container
       $field_obj = new PluginFieldsField;
