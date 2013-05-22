@@ -571,7 +571,7 @@ class PluginFieldsContainer extends CommonDBTM {
                         getPlural(preg_replace('/s$/', '', $datas['container_name'])));
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $datas['name'];
-         $opt[$i]['name']          = $datas['label'];
+         $opt[$i]['name']          = $datas['container_name']." - ".$datas['label'];
          $opt[$i]['linkfield']     = $datas['name'];
          //$opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
          //$opt[$i]['massiveaction'] = false;
