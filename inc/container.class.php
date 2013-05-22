@@ -563,6 +563,7 @@ class PluginFieldsContainer extends CommonDBTM {
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
+            AND containers.is_active = 1
          WHERE containers.itemtype = '$itemtype'
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
