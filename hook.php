@@ -4,7 +4,7 @@ function plugin_fields_install() {
    global $LANG;
 
    iset_time_limit(900);
-   ini_set('memory_limit','1024M');
+   ini_set('memory_limit','2048M');
 
    $plugin_fields = new Plugin;
    $plugin_fields->getFromDBbyDir('fields');
