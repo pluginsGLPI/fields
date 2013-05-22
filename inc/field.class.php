@@ -565,12 +565,28 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function showSingle($itemtype, $searchOption, $massiveaction = false) {
+      global $DB;
+
       //find container for field in massive action
       $field_obj = new self;
-      $found = $field_obj->find("name = '".$searchOption['linkfield']."'");
-      if (empty($found)) return false;
-      $tmp = array_pop($found);
-      $c_id = $tmp['plugin_fields_containers_id'];
+
+      //clean dropdown [pre/su]fix if exists
+      $cleaned_linkfield = preg_replace("/plugin_fields_(.*)dropdowns_id/", "$1", 
+                                        $searchOption['linkfield']);
+      
+      //find field
+      $query_f = "SELECT fields.plugin_fields_containers_id
+                FROM glpi_plugin_fields_fields fields
+                LEFT JOIN glpi_plugin_fields_containers containers
+                  ON containers.id = fields.plugin_fields_containers_id
+                  AND containers.itemtype = '$itemtype'
+               WHERE fields.name = '$cleaned_linkfield'";
+      $res_f = $DB->query($query_f);
+      if ($DB->numrows($res_f) == 0) return false;
+      else {
+         $row_f = $DB->fetch_assoc($res_f);
+         $c_id = $row_f['plugin_fields_containers_id'];
+      }
 
       //display an hidden post field to store container id
       echo "<input type='hidden' name='c_id' value='$c_id' />";
@@ -579,7 +595,7 @@ class PluginFieldsField extends CommonDBTM {
       $fields = array(array(
          'id'    => 0,
          'type'  => $searchOption['pfields_type'],
-         'name'  => $searchOption['linkfield']
+         'name'  => $cleaned_linkfield
       ));
 
       //show field
