@@ -3,8 +3,8 @@
 function plugin_fields_install() {
    global $LANG;
 
-   ini_set('memory_limit', '512M');
-   set_time_limit(300);
+   iset_time_limit(900);
+   ini_set('memory_limit','1024M');
 
    $plugin_fields = new Plugin;
    $plugin_fields->getFromDBbyDir('fields');

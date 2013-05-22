@@ -3,9 +3,6 @@
 class PluginFieldsMigration {
 
    static function install(Migration $migration, $version) {
-      set_time_limit(900);
-      ini_set('memory_limit','1024M');
-
       $fields_migration = new self;
 
       if (TableExists("glpi_plugin_customfields_fields")) {
