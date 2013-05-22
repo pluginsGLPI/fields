@@ -598,6 +598,9 @@ class PluginFieldsContainer extends CommonDBTM {
             case 'textarea':
                $opt[$i]['datatype'] = "text";
                break;
+            case 'number':
+               $opt[$i]['datatype'] = "number";
+               break;
             case 'date':
             case 'datetime':
                $opt[$i]['datatype'] = $datas['type'];
