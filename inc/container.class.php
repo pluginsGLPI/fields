@@ -378,6 +378,8 @@ class PluginFieldsContainer extends CommonDBTM {
    function updateFieldsValues($datas) {
       global $DB;
 
+      if (self::validateValues($datas) === false) return false;
+
       //insert datas in new table
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
@@ -395,6 +397,39 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       return true;
+   }
+
+   /**
+    * check datas inserted (only nuber for the moment)
+    * display a message when not ok
+    * @param  array $datas : datas send by form
+    * @return boolean
+    */
+   static function validateValues($datas) {
+      global $LANG;
+
+      $field_obj = new PluginFieldsField;
+      $fields = $field_obj->find("plugin_fields_containers_id = ".
+                                 $datas['plugin_fields_containers_id']." AND type = 'number'");
+
+      unset($datas['plugin_fields_containers_id']);
+      unset($datas['items_id']);
+      unset($datas['update_fields_values']);
+      $datas_keys = array_keys($datas);
+
+      $fields_error = array();
+      foreach ($fields as $fields_id => $field) {
+         if (!preg_match("/[-+]?[0-9]*\.?[0-9]+/", $datas[$field['name']])) {
+            $fields_error[] = $field['label'];
+         }
+      }
+
+      if (!empty($fields_error)) {
+         Session::AddMessageAfterRedirect($LANG['fields']['error']['no_numeric_value'].
+                                          " : (".implode(", ", $fields_error).")");
+         $_SESSION['plugin']['fields']['values_sent'] = $datas;
+         return false;
+      } else return true;
    }
 
 

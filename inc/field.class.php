@@ -456,6 +456,16 @@ class PluginFieldsField extends CommonDBTM {
                }
             }
 
+            if (isset($_SESSION['plugin']['fields']['values_sent'])) {
+               if ($field['type'] == "dropdown") {
+                  $value = $_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
+                                                                        $field['name'].
+                                                                        "dropdowns_id"];
+               } else {
+                  $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
+               }
+            }
+
             //get default value
             if (empty($value) && !empty($field['default_value'])) {
                $value = $field['default_value'];
@@ -547,6 +557,9 @@ class PluginFieldsField extends CommonDBTM {
          }         
       }
       if ($show_table && $odd%2 == 1)  $html.= "</tr>";
+
+      unset($_SESSION['plugin']['fields']['values_sent']);
+
       return $html;
    }
 
