@@ -104,15 +104,6 @@ class PluginFieldsField extends CommonDBTM {
       //parse name
       $input['name'] = $this->prepareName($input);
 
-      //rename field in container table
-      if ($this->fields['type'] !== "header") {
-         $container_obj = new PluginFieldsContainer;
-         $container_obj->getFromDB($input['plugin_fields_containers_id']);
-         $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
-                                       preg_replace('/s$/', '', $container_obj->fields['name'])));
-         $classname::renameField($this->fields['name'], $input['name'], $this->fields['type']);
-      }
-
       return $input;
    }
 

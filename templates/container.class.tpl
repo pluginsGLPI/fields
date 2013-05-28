@@ -46,15 +46,4 @@ class %%CLASSNAME%% extends CommonDBTM {
          DROP COLUMN `$fieldname`
       ");
    }
-
-   static function renameField($oldname, $newname, $type) {
-      global $DB;
-
-      $sql_type = PluginFieldsMigration::getSQLType($type);
-      
-      $obj = new self();
-      return $DB->query("ALTER TABLE  `".$obj->getTable()."`
-         CHANGE COLUMN `$oldname` `$newname` $sql_type
-      ");
-   }
 }
