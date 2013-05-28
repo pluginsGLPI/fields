@@ -158,6 +158,7 @@ class PluginFieldsContainer extends CommonDBTM {
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
+      $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
       $class_filename = strtolower($this->fields['itemtype'].
                                    preg_replace('/s$/', '', $this->fields['name']).".class.php");
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
