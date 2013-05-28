@@ -393,76 +393,6 @@ class PluginFieldsContainer extends CommonDBTM {
          $obj->update($datas);
       }
 
-      //insert datas in vanilla table
-      $c_id     = $datas['plugin_fields_containers_id'];
-      $items_id = $datas['items_id'];
-
-      //get itemtype
-      $container = new self;
-      $container->getFromDB($c_id);
-      $itemtype = $container->fields['itemtype'];
-
-      //unset unused datas
-      unset(
-         $datas['plugin_fields_containers_id'], 
-         $datas['items_id'], 
-         $datas['update_fields_values']
-      );
-
-      $field_obj = new PluginFieldsField;
-      $field_value_obj = new PluginFieldsValue;
-      foreach($datas as $field => $value) {
-         //parse name for dropdown
-         if (strpos($field, "dropdown") !== false) {
-            $field = str_replace("plugin_fields_", "", $field);
-            $field = str_replace("dropdowns_id", "", $field);
-         }
-
-         //find field
-         $found_f = $field_obj->find(
-            "`plugin_fields_containers_id` = $c_id AND `name` = '".$field."'");
-         if (count($found_f) == 0) {
-            continue;
-         }
-         $tmp_f = array_shift($found_f);
-         $fields_id = $tmp_f['id'];
-
-         //find existing values
-         $found_v = $field_value_obj->find(
-            "`plugin_fields_fields_id` = $fields_id AND `items_id` = '".$items_id."'");
-
-         $value_field = 'value_varchar';
-         switch ($tmp_f['type']) {
-            case 'dropdown':
-               $value_field = 'value_int';
-               break;
-            case 'yesno':
-               $value_field = 'value_int';
-               break;
-            case 'textarea':
-               $value_field = 'value_text';
-         }
-
-         if (count($found_v) > 0) {
-            //update
-            $tmp_v = array_shift($found_v);
-            $values_id = $tmp_v['id'];
-            $field_value_obj->update(array(
-               'id'         => $values_id,
-               $value_field => $value
-            ));
-         } else {
-            // add
-            $field_value_obj->add(array(
-               'items_id'                    => $items_id,
-               'itemtype'                    => $itemtype,
-               $value_field                  => $value,
-               'plugin_fields_containers_id' => $c_id,
-               'plugin_fields_fields_id'     => $fields_id
-            ));
-         }
-      }
-
       return true;
    }
 
@@ -526,29 +456,6 @@ class PluginFieldsContainer extends CommonDBTM {
       //update datas
       $container = new self;
       return $container->updateFieldsValues($datas);
-   }
-   
-   static function preItemPurge(CommonDBTM $item) {
-      global $DB;
-
-      $values = new PluginFieldsValue;
-
-      //get all value associated to this item
-      $query = "SELECT glpi_plugin_fields_values.id as values_id
-      FROM glpi_plugin_fields_containers
-      INNER JOIN glpi_plugin_fields_values
-         ON glpi_plugin_fields_values.plugin_fields_containers_id = glpi_plugin_fields_containers.id
-      WHERE glpi_plugin_fields_containers.itemtype = '".get_Class($item)."'
-         AND glpi_plugin_fields_values.items_id = ".$item->fields['id'];
-      $res = $DB->query($query);
-      while ($data = $DB->fetch_assoc($res)) {
-         $values_id = $data['values_id'];
-
-         //remove associated values
-         $values->delete(array(
-            'id' => $values_id
-         ), 1);
-      }
    }
 
    static function getAddSearchOptions($itemtype) {

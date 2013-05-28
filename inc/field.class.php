@@ -136,12 +136,6 @@ class PluginFieldsField extends CommonDBTM {
          $classname::removeField($this->fields['name']);
       }
       
-      //delete values 
-      if (!isset($_SESSION['uninstall_fields']) ) {
-         $DB->query("DELETE FROM glpi_plugin_fields_values WHERE plugin_fields_fields_id = ".
-            $this->fields['id']);
-      }
-      
       if (isset($oldname)) $this->fields['name'] = $oldname;
 
       if ($this->fields['type'] === "dropdown") {
