@@ -426,7 +426,8 @@ class PluginFieldsField extends CommonDBTM {
       $first_field = array_shift($tmp);
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
-      $classname = "PluginFields".$container_obj->fields['itemtype'].$container_obj->fields['name'];
+      $classname = "PluginFields".ucfirst($container_obj->fields['itemtype'].
+                                  preg_replace('/s$/', '', $container_obj->fields['name']));
       $obj = new $classname;
 
       //find row for this object with the items_id
