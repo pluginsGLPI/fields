@@ -419,6 +419,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $fields_error = array();
       foreach ($fields as $fields_id => $field) {
+         if (empty($datas[$field['name']])) continue;
          if (!preg_match("/[-+]?[0-9]*\.?[0-9]+/", $datas[$field['name']])) {
             $fields_error[] = $field['label'];
          }
