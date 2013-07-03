@@ -383,20 +383,105 @@ class PluginFieldsContainer extends CommonDBTM {
       //insert datas in new table
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
-      $classname = "PluginFields".ucfirst($container_obj->fields['itemtype'].
+
+      $items_id = $datas['items_id'];
+      $itemtype = $container_obj->fields['itemtype'];
+
+      $classname = "PluginFields".ucfirst($itemtype.
                                           preg_replace('/s$/', '', $container_obj->fields['name']));
       $obj = new $classname;
       //check if datas already inserted
-      $found = $obj->find("items_id = ".$datas['items_id']);
+      $found = $obj->find("items_id = $items_id");
       if (empty($found)) {
          $obj->add($datas);
+
+         //construct history on itemtype object (Historical tab)
+         self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
+                            $itemtype, $datas);
       } else {
          $first_found = array_pop($found);
          $datas['id'] = $first_found['id'];
          $obj->update($datas);
+
+         //construct history on itemtype object (Historical tab)
+         self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
+                            $itemtype, $datas, $first_found);
       }
 
       return true;
+   }
+
+   /**
+    * Add log in "itemtype" object on fields values update
+    * @param  int    $containers_id : 
+    * @param  int    $items_id      : 
+    * @param  string $itemtype      : 
+    * @param  array  $datas         : values send by update form
+    * @param  array  $old_values    : old values, if empty -> values add
+    * @return nothing
+    */
+   static function constructHistory($containers_id, $items_id, $itemtype, $datas, 
+                                $old_values = array()) {
+      //get searchoptions
+      $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
+
+      //add/update values condition
+      if (empty($old_values)) {
+         // -- add new item --
+
+         //remove non-datas keys
+         $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 
+                              'update_fields_values' => 0);
+         $datas = array_diff_key($datas, $blacklist_k);
+         
+         foreach ($datas as $key => $value) {
+            //log only not empty values
+            if (!empty($value)) {
+               //prepare log
+               $changes = array(0, "", $value);
+
+               //find searchoption
+               foreach ($searchoptions as $id_search_option => $searchoption) {
+                  if ($searchoption['field'] == $key) {
+                     $changes[0] = $id_search_option;
+                     break;
+                  }
+               }
+
+               //add log
+               Log::history($items_id, $itemtype, $changes);
+            }
+         }
+      } else {
+         // -- update existing item --
+
+         //find changes
+         $updates = array();
+         foreach ($old_values as $key => $old_value) {
+            if (!isset($datas[$key])) {
+               continue;
+            }
+            if ($old_value !== '' && $datas[$key] == 'NULL') {
+               continue;
+            }
+            if ($datas[$key] !== $old_value) {
+               $updates[$key] = array(0, $old_value, $datas[$key]);
+            }
+         }
+
+         //for all change find searchoption
+         foreach ($updates as $key => $changes) {
+            foreach ($searchoptions as $id_search_option => $searchoption) {
+               if ($searchoption['linkfield'] == $key) {
+                  $changes[0] = $id_search_option;
+                  break;
+               }
+            }   
+
+            //add log
+            Log::history($items_id, $itemtype, $changes);
+         }
+      }      
    }
 
    /**
@@ -495,10 +580,15 @@ class PluginFieldsContainer extends CommonDBTM {
       return $container->updateFieldsValues($datas);
    }
 
-   static function getAddSearchOptions($itemtype) {
+   static function getAddSearchOptions($itemtype, $containers_id = false) {
       global $DB;
 
       $opt = array();
+
+      $where = "";
+      if ($containers_id !== false) {
+         $where = "AND containers.id = $containers_id";
+      }
 
       $i = 76665;
       $query = "SELECT fields.name, fields.label, fields.type, 
@@ -510,6 +600,7 @@ class PluginFieldsContainer extends CommonDBTM {
             AND containers.is_active = 1
          WHERE containers.itemtype = '$itemtype'
             AND fields.type != 'header'
+            $where
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
