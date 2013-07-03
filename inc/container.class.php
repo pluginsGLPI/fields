@@ -425,15 +425,17 @@ class PluginFieldsContainer extends CommonDBTM {
       //get searchoptions
       $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
 
+      //define non-datas keys 
+      $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 
+                              'update_fields_values' => 0);
+
+      //remove non-datas keys
+      $datas = array_diff_key($datas, $blacklist_k);
+         
       //add/update values condition
       if (empty($old_values)) {
          // -- add new item --
 
-         //remove non-datas keys
-         $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 
-                              'update_fields_values' => 0);
-         $datas = array_diff_key($datas, $blacklist_k);
-         
          foreach ($datas as $key => $value) {
             //log only not empty values
             if (!empty($value)) {
@@ -458,12 +460,13 @@ class PluginFieldsContainer extends CommonDBTM {
          //find changes
          $updates = array();
          foreach ($old_values as $key => $old_value) {
-            if (!isset($datas[$key])) {
+            if (!isset($datas[$key]) 
+                || empty($old_value) && empty($datas[$key])
+                || $old_value !== '' && $datas[$key] == 'NULL'
+                ) {
                continue;
             }
-            if ($old_value !== '' && $datas[$key] == 'NULL') {
-               continue;
-            }
+
             if ($datas[$key] !== $old_value) {
                $updates[$key] = array(0, $old_value, $datas[$key]);
             }
