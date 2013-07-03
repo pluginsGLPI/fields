@@ -446,6 +446,11 @@ class PluginFieldsContainer extends CommonDBTM {
                foreach ($searchoptions as $id_search_option => $searchoption) {
                   if ($searchoption['field'] == $key) {
                      $changes[0] = $id_search_option;
+                     
+                     //manage dropdown values
+                     if ($searchoption['datatype'] === 'dropdown') {
+                        $value = Dropdown::getDropdownName($searchoption['table'],$value);
+                     }
                      break;
                   }
                }
@@ -477,6 +482,12 @@ class PluginFieldsContainer extends CommonDBTM {
             foreach ($searchoptions as $id_search_option => $searchoption) {
                if ($searchoption['linkfield'] == $key) {
                   $changes[0] = $id_search_option;
+
+                  //manage dropdown values
+                  if ($searchoption['datatype'] === 'dropdown') {
+                     $changes[1] = Dropdown::getDropdownName($searchoption['table'],$changes[1]);
+                     $changes[2] = Dropdown::getDropdownName($searchoption['table'],$changes[2]);
+                  }
                   break;
                }
             }   
