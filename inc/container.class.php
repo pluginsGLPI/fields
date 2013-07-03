@@ -449,7 +449,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
                      //manage dropdown values
                      if ($searchoption['datatype'] === 'dropdown') {
-                        $value = Dropdown::getDropdownName($searchoption['table'],$value);
+                        $changes = array($id_search_option, "", 
+                                         Dropdown::getDropdownName($searchoption['table'],$value));
                      }
                      break;
                   }
