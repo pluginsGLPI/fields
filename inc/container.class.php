@@ -393,7 +393,7 @@ class PluginFieldsContainer extends CommonDBTM {
       //check if datas already inserted
       $found = $obj->find("items_id = $items_id");
       if (empty($found)) {
-         //$obj->add($datas);
+         $obj->add($datas);
 
          //construct history on itemtype object (Historical tab)
          self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
