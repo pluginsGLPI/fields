@@ -490,7 +490,9 @@ class PluginFieldsField extends CommonDBTM {
             if ($show_table) {
                if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
                if ($container_obj->fields['itemtype'] == 'Ticket' 
-                   && $container_obj->fields['type'] == 'dom') {
+                   && $container_obj->fields['type'] == 'dom'
+                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
+                   && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
                   $html.= "<th width='13%'>".$field['label']." : </th>";
                } else {
                   $html.= "<td>".$field['label']." : </td>";
