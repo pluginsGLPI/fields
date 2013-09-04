@@ -372,9 +372,6 @@ class PluginFieldsField extends CommonDBTM {
       }
       $expl_url = explode("?", $current_url);
 
-      //if add item form, do nothing
-      //if (!isset($expl_url[1]) || strpos($expl_url[1], "id=") === false) return false;
-
       //get current id
       if(isset($expl_url[1])) {
          parse_str($expl_url[1], $params);
