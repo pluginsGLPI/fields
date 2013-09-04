@@ -365,20 +365,37 @@ class PluginFieldsField extends CommonDBTM {
 
       //parse http_referer to get current url (this code is loaded by javacript)
       $current_url = $_SERVER['HTTP_REFERER'];
-      if (strpos($current_url, ".form.php") === false) return false;
+      if (strpos($current_url, ".form.php") === false
+            && strpos($current_url, ".injector.php") === false
+            && strpos($current_url, ".public.php") === false) {
+         return false;
+      }
       $expl_url = explode("?", $current_url);
 
       //if add item form, do nothing
-      if (!isset($expl_url[1]) || strpos($expl_url[1], "id=") === false) return false;
+      //if (!isset($expl_url[1]) || strpos($expl_url[1], "id=") === false) return false;
 
       //get current id
-      parse_str($expl_url[1], $params);
-      $items_id = $params['id'];
+      if(isset($expl_url[1])) {
+         parse_str($expl_url[1], $params);
+         if(isset($params['id'])) {
+            $items_id = $params['id'];
+         } else {
+            $items_id = 0;
+         }
+      } else {
+         $items_id = 0;
+      }
 
       //get itemtype
       $tmp = explode("/", $expl_url[0]);
       $script_name = array_pop($tmp);
-      $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+
+      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
+         $current_itemtype = "Ticket";
+      } else {
+         $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+      }
 
       //Retrieve dom container 
       $itemtypes = PluginFieldsContainer::getEntries('dom', true);
