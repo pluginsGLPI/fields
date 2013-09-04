@@ -406,7 +406,7 @@ class PluginFieldsField extends CommonDBTM {
 
       echo "Ext.onReady(function() {\n
          Ext.select('#page form tr:last').each(function(el){
-            el.insertHtml('beforeBegin', '<tr><td colspan=\"4\" id=\"dom_container\"></td></tr>');
+            el.insertHtml('beforeBegin', '<tr><td style=\"padding:0\" colspan=\"4\" id=\"dom_container\"></td></tr>');
             Ext.get('dom_container').load({
                url: '../plugins/fields/ajax/load_dom_fields.php',
                params: {
