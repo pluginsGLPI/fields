@@ -143,32 +143,31 @@ class PluginFieldsContainer extends CommonDBTM {
       return $input;
    }
 
-   function post_addItem() {
-      global $CFG_GLPI;
-      
+   function post_addItem() {      
       //create profiles associated to this container
       PluginFieldsProfile::createForContainer($this);
 
       //create class file
       $classname = "PluginFields".ucfirst($this->fields['itemtype'].
                                           preg_replace('/s$/', '', $this->fields['name']));
-      $template_class = file_get_contents($CFG_GLPI['root_doc'].
+      $template_class = file_get_contents(GLPI_ROOT.
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
       $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
       $class_filename = strtolower($this->fields['itemtype'].
                                    preg_replace('/s$/', '', $this->fields['name']).".class.php");
-      if (file_put_contents($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename", 
-                            $template_class) === false) return false;
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+                            $template_class) === false) {
+         Toolbox::logDebug("Error : class file creation - $class_filename");
+         return false;
+      }
 
       //install table for receive field
       $classname::install();
    }
 
    function pre_deleteItem() {
-      global $CFG_GLPI;
-      
       $_SESSION['delete_container'] = true;
       $classname = "PluginFields".ucfirst(strtolower($this->fields['itemtype'].
                                           preg_replace('/s$/', '', $this->fields['name'])));
@@ -193,8 +192,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $classname::uninstall();
 
       //remove file
-      if (file_exists($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename")) {
-         return unlink($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename");
+      if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+         return unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
       }
 
       unset($_SESSION['delete_container']);
