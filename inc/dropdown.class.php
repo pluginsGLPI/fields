@@ -82,7 +82,7 @@ class PluginFieldsDropdown {
    }
 
    static function destroy($dropdown_name) {
-      global $CFG_GLPI
+      global $CFG_GLPI;
 
       $classname = self::getClassname($dropdown_name);
       $class_filename = $CFG_GLPI['root_doc']."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";

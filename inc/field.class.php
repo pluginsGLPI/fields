@@ -37,17 +37,17 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
-   static function getTypeName() {
+   static function getTypeName($nb = 0) {
       global $LANG;
 
       return $LANG['fields']['type'][0];
    }
 
-   public function canCreate() {
+   static function canCreate() {
       return true;
    }
 
-   public function canView() {
+   static function canView() {
       return true;
    }
 

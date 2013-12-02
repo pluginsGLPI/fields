@@ -21,7 +21,6 @@ function plugin_fields_install() {
    );
 
    $migration = new Migration($version);
-
    echo "<center>";
    echo "<table class='tab_cadre_fixe'>";
    echo "<tr><th>".$LANG['fields']['install'][0]."<th></tr>";
@@ -30,7 +29,7 @@ function plugin_fields_install() {
    echo "<td align='center'>";
    foreach ($classesToInstall as $class) {
       if ($plug=isPluginItemType($class)) {
-         $dir=$CFG_GLPI['root_doc'] . "/plugins/fields/inc/";
+         $dir= GLPI_ROOT . "/plugins/fields/inc/";
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
@@ -48,7 +47,7 @@ function plugin_fields_install() {
 
 
 function plugin_fields_uninstall() {
-   global $LANG, $CFG_GLPI;
+   global $LANG;
 
    $_SESSION['uninstall_fields'] = true;
 
@@ -71,7 +70,7 @@ function plugin_fields_uninstall() {
 
    foreach ($classesToUninstall as $class) {
       if ($plug=isPluginItemType($class)) {
-         $dir=$CFG_GLPI['root_doc'] . "/plugins/fields/inc/";
+         $dir=GLPI_ROOT . "/plugins/fields/inc/";
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");

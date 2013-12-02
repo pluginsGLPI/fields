@@ -217,13 +217,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public function showForm($ID, $options=array()) {
-      if ($ID > 0) {
-         $this->check($ID,'r');
-      } else {
-         // Create item
-         $this->check(-1,'w');
-      }
-
+      $this->initForm($ID, $options);
       $this->showTabs($options);
       $this->showFormHeader($options);
 
