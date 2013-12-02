@@ -1,7 +1,6 @@
 <?php
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../inc/includes.php");
 
 $dropdown = new %%CLASSNAME%%();
-include (GLPI_ROOT . "/front/dropdown.common.form.php");
+include ("../../../front/dropdown.common.form.php");

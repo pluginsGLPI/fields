@@ -38,17 +38,12 @@ class PluginFieldsProfile extends CommonDBTM {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
-
-      return self::createTabEntry($LANG['Menu'][35]);
+      return self::createTabEntry(__("Profiles"));
 
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, 
-                                            $withtemplate=0) {
-      global $LANG;
-
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       $profile = new Profile;
       $found_profiles = $profile->find();
 
@@ -57,7 +52,7 @@ class PluginFieldsProfile extends CommonDBTM {
       echo "<div class='spaced' id='tabsbody'>";
       echo "<table class='tab_cadre_fixe'>";
 
-      echo "<tr><th colspan='2'>".$LANG['Menu'][35]."</th></tr>";
+      echo "<tr><th colspan='2'>".__("Profiles")."</th></tr>";
       foreach ($found_profiles as $profile_item) {
          //get right for current profile
          $found = $fields_profile->find("`profiles_id` = '".$profile_item['id']."' 
@@ -76,7 +71,7 @@ class PluginFieldsProfile extends CommonDBTM {
       echo "<tr><td class='tab_bg_2 center' colspan='2'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='".
             $item->fields['id']."' />";
-      echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
+      echo "<input type='submit' name='update' value=\""._sx("button", "Save")."\" class='submit'>";
       echo "</td>";
       echo "</tr>";
       echo "</table></div>";

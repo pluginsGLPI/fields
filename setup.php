@@ -3,6 +3,8 @@
 function plugin_init_fields() {
    global $PLUGIN_HOOKS, $LANG;
 
+   $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
+
    $plugin = new Plugin();
    if (isset($_SESSION['glpiactiveentities']) 
       && $plugin->isInstalled('fields') 
@@ -31,19 +33,18 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
-      // Massive Action definition
-      //$PLUGIN_HOOKS['use_massive_action']['fields'] = 1;
-
 
       //Retrieve dom container 
       $itemtypes = PluginFieldsContainer::getEntries('all');
-      foreach ($itemtypes as $itemtype) {
-         $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer", 
-                                                                       "preItemUpdate");
-         $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
-                                                                       "preItemPurge");
-         $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer", 
-                                                                       "preItemUpdate");
+      if ($itemtypes !== false) {
+         foreach ($itemtypes as $itemtype) {
+            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer", 
+                                                                          "preItemUpdate");
+            $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
+                                                                          "preItemPurge");
+            $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer", 
+                                                                          "preItemUpdate");
+         }
       }
    }
 }
@@ -53,17 +54,17 @@ function plugin_init_fields() {
 function plugin_version_fields() {
    global $LANG;
    return array ('name'           => $LANG["fields"]["title"][1],
-                 'version'        => '2.0',
+                 'version'        => '0.84-1.0',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
                  'license'        => 'restricted',
-                 'minGlpiVersion' => '0.83.3');
+                 'minGlpiVersion' => '0.84');
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_fields_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI 0.83.3";
+   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
+      echo "This plugin requires GLPI 0.84";
       return false;
    }
    if (version_compare(PHP_VERSION, '5.3.0', 'lt')) {

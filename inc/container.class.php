@@ -61,53 +61,51 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function getSearchOptions() {
-      global $LANG;
-
       $tab = array();
 
       $tab[1]['table']         = $this->getTable();
       $tab[1]['field']         = 'name';
-      $tab[1]['name']          = $LANG['common'][16];
+      $tab[1]['name']          = __("Name");
       $tab[1]['datatype']      = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
       $tab[1]['massiveaction'] = false;
 
       $tab[2]['table']         = $this->getTable();
       $tab[2]['field']         = 'label';
-      $tab[2]['name']          = $LANG['mailing'][139];
+      $tab[2]['name']          = __("Label");
       $tab[2]['massiveaction'] = false;
 
       $tab[3]['table']         = $this->getTable();
       $tab[3]['field']         = 'itemtype';
-      $tab[3]['name']          = $LANG['common'][90];
+      $tab[3]['name']          = __("Associated item type");
       $tab[3]['datatype']       = 'itemtypename';
 
       $tab[4]['table']         = $this->getTable();
       $tab[4]['field']         = 'type';
-      $tab[4]['name']          = $LANG['common'][17];
+      $tab[4]['name']          = __("Type");
       $tab[4]['searchtype']    = 'equals';
 
       $tab[5]['table']         = $this->getTable();
       $tab[5]['field']         = 'is_active';
-      $tab[5]['name']          = $LANG['common'][60];
+      $tab[5]['name']          = __("Active");
       $tab[5]['datatype']      = 'bool';
 
       $tab[6]['table']         = 'glpi_entities';
       $tab[6]['field']         = 'completename';
-      $tab[6]['name']          = $LANG['entity'][0];
+      $tab[6]['name']          = __("Entity");
       $tab[6]['massiveaction'] = false;
       $tab[6]['datatype']      = 'dropdown';
 
       $tab[7]['table']         = $this->getTable();
       $tab[7]['field']         = 'is_recursive';
-      $tab[7]['name']          = $LANG['entity'][9];
+      $tab[7]['name']          = __("Child entities");
       $tab[6]['massiveaction'] = false;
       $tab[7]['datatype']      = 'bool';
 
       return $tab;
    }
 
-   static function getSpecificValueToDisplay($field, $values, $options=array()) {
+   static function getSpecificValueToDisplay($field, $values, array $options=array()) {
       if (!is_array($values)) {
          $values = array($field => $values);
       }
@@ -120,8 +118,6 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function defineTabs($options=array()) {
-      global $LANG, $CFG_GLPI;
-
       $ong = array();
       $this->addStandardTab('PluginFieldsField', $ong, $options);
       $this->addStandardTab('PluginFieldsProfile', $ong, $options);
@@ -148,20 +144,22 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function post_addItem() {
+      global $CFG_GLPI;
+      
       //create profiles associated to this container
       PluginFieldsProfile::createForContainer($this);
 
       //create class file
       $classname = "PluginFields".ucfirst($this->fields['itemtype'].
                                           preg_replace('/s$/', '', $this->fields['name']));
-      $template_class = file_get_contents(GLPI_ROOT.
+      $template_class = file_get_contents($CFG_GLPI['root_doc'].
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
       $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
       $class_filename = strtolower($this->fields['itemtype'].
                                    preg_replace('/s$/', '', $this->fields['name']).".class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+      if (file_put_contents($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename", 
                             $template_class) === false) return false;
 
       //install table for receive field
@@ -169,6 +167,8 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function pre_deleteItem() {
+      global $CFG_GLPI;
+      
       $_SESSION['delete_container'] = true;
       $classname = "PluginFields".ucfirst(strtolower($this->fields['itemtype'].
                                           preg_replace('/s$/', '', $this->fields['name'])));
@@ -193,8 +193,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $classname::uninstall();
 
       //remove file
-      if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
-         return unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+      if (file_exists($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename")) {
+         return unlink($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename");
       }
 
       unset($_SESSION['delete_container']);
@@ -202,23 +202,21 @@ class PluginFieldsContainer extends CommonDBTM {
       return true;
    }
 
-   static function getTypeName() {
+   static function getTypeName($nb = 0) {
       global $LANG;
 
       return $LANG['fields']['type'][1];
    }
 
-   public function canCreate() {
+   static function canCreate() {
       return true;
    }
 
-   public function canView() {
+   static function canView() {
       return true;
    }
 
    public function showForm($ID, $options=array()) {
-      global $LANG;
-
       if ($ID > 0) {
          $this->check($ID,'r');
       } else {
@@ -230,23 +228,23 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      /*echo "<td>".$LANG['common'][16]." : </td>";
+      /*echo "<td>".__("Name")." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
       echo "</td>";*/
-      echo "<td>".$LANG['mailing'][139]." : </td>";
+      echo "<td>".__("label")." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>".$LANG['common'][17]." : </td>";
+      echo "<td>".__("Type")." : </td>";
       echo "<td>";
       Dropdown::showFromArray('type', self::getTypes(), 
          array('value' => $this->fields["type"]));
       echo "</td>";
-      echo "<td>".$LANG['common'][90]." : </td>";
+      echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
       Dropdown::showFromArray('itemtype', self::getItemtypes(), 
          array('value' => $this->fields["itemtype"]));
@@ -254,7 +252,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>".$LANG['common'][60]." : </td>";
+      echo "<td>".__("Active")." : </td>";
       echo "<td>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
@@ -268,27 +266,25 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function getItemtypes() {
-      global $LANG;
-
       return array(
-         'Computer'           => $LANG['Menu'][0],
-         'Networkequipment'   => $LANG['Menu'][1],
-         'Printer'            => $LANG['Menu'][2],
-         'Monitor'            => $LANG['Menu'][3],
-         'Software'           => $LANG['Menu'][4],
-         'Ticket'             => $LANG['Menu'][5],
-         'User'               => $LANG['Menu'][14],
-         'Cartridgeitem'      => $LANG['Menu'][21],
-         'Contact'            => $LANG['Menu'][22],
-         'Supplier'           => $LANG['Menu'][23],
-         'Contract'           => $LANG['Menu'][25],
-         'Document'           => $LANG['Menu'][27],
-         'State'              => $LANG['Menu'][28],
-         'Consumableitem'     => $LANG['Menu'][32],
-         'Phone'              => $LANG['Menu'][34],
-         'Profile'            => $LANG['Menu'][35],
-         'Group'              => $LANG['Menu'][36],
-         'Entity'             => $LANG['Menu'][37]
+         'Computer'           => __("Computer"),
+         'Networkequipment'   => __("Networkequipment"),
+         'Printer'            => __("Printer"),
+         'Monitor'            => __("Monitor"),
+         'Software'           => __("Software"),
+         'Ticket'             => __("Ticket"),
+         'User'               => __("User"),
+         'Cartridgeitem'      => __("Cartridgeitem"),
+         'Contact'            => __("Contact"),
+         'Supplier'           => __("Supplier"),
+         'Contract'           => __("Contract"),
+         'Document'           => __("Document"),
+         'State'              => __("State"),
+         'Consumableitem'     => __("Consumableitem"),
+         'Phone'              => __("Phone"),
+         'Profile'            => __("Profile"),
+         'Group'              => __("Group"),
+         'Entity'             => __("Entity")
       );
    }
 
@@ -345,8 +341,6 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
-      
       $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();

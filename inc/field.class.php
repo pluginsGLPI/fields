@@ -244,9 +244,9 @@ class PluginFieldsField extends CommonDBTM {
       } else {
          echo "<table class='tab_cadre_fixehov'>";
          echo "<tr>";
-         echo "<th>" . $LANG['mailing'][139] . "</th>";
-         echo "<th>" . $LANG['common'][17] . "</th>";
-         echo "<th>" . $LANG['common'][44] . "</th>";
+         echo "<th>" . __("Label") . "</th>";
+         echo "<th>" . __("Type") . "</th>";
+         echo "<th>" . __("Default values") . "</th>";
          echo "</tr>\n";
 
          $fields_type = self::getTypes();
@@ -278,8 +278,6 @@ class PluginFieldsField extends CommonDBTM {
 
 
    function showForm($ID, $options=array()) {
-      global $LANG;
-
       if (isset($options['parent']) && !empty($options['parent'])) {
          $container = $options['parent'];
       }
@@ -297,7 +295,7 @@ class PluginFieldsField extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      echo "<td>".$LANG['mailing'][139]." : </td>";
+      echo "<td>".__("Label")." : </td>";
       echo "<td>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='".
          $container->getField('id')."'>";
@@ -307,13 +305,13 @@ class PluginFieldsField extends CommonDBTM {
       if (!$edit) {
          echo "</tr>";
          echo "<tr>";
-         echo "<td>".$LANG['common'][17]." : </td>";
+         echo "<td>".__("Type")." : </td>";
          echo "<td>";
          Dropdown::showFromArray('type', self::getTypes(), 
             array('value' => $this->fields["type"]));
          echo "</td>";
       } 
-      echo "<td>".$LANG['common'][44]." : </td>";
+      echo "<td>".__("Default values")." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value', 
                                     array('value' => $this->fields["default_value"]));
@@ -325,7 +323,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function showForTabContainer($c_id, $items_id) {
-      global $CFG_GLPI, $LANG;
+      global $CFG_GLPI;
 
       $field_obj = new PluginFieldsField;
 
@@ -351,7 +349,7 @@ class PluginFieldsField extends CommonDBTM {
       if ($canedit) {
          echo "<tr><td class='tab_bg_2 center' colspan='4'>";
          echo "<input type='submit' name='update_fields_values' value=\"".
-            $LANG['buttons'][7]."\" class='submit'>";
+            _sx("button", "Save")."\" class='submit'>";
          echo "</td></tr>";
       }
 

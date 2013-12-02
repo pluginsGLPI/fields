@@ -37,8 +37,10 @@ class PluginFieldsDropdown {
    }
    
    static function create($input) {
+      global $CFG_GLPI;
+
       //get class template
-      $template_class = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
+      $template_class = file_get_contents($CFG_GLPI['root_doc']."/plugins/fields/templates/dropdown.class.tpl");
       if ($template_class === false) return false;
 
       $classname = self::getClassname($input['name']);
@@ -47,27 +49,27 @@ class PluginFieldsDropdown {
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%FIELDNAME%%", $input['name'], $template_class);
       $class_filename = $input['name']."dropdown.class.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+      if (file_put_contents($CFG_GLPI['root_doc']."/plugins/fields/inc/$class_filename", 
                             $template_class) === false) return false;
 
       //get front template
-      $template_front = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.tpl");
+      $template_front = file_get_contents($CFG_GLPI['root_doc']."/plugins/fields/templates/dropdown.tpl");
       if ($template_front === false) return false;
 
       //create dropdown front file
       $template_front = str_replace("%%CLASSNAME%%", $classname, $template_front);
       $front_filename = $input['name']."dropdown.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$front_filename", 
+      if (file_put_contents($CFG_GLPI['root_doc']."/plugins/fields/front/$front_filename", 
                             $template_front) === false) return false;
 
       //get form template
-      $template_form = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.form.tpl");
+      $template_form = file_get_contents($CFG_GLPI['root_doc']."/plugins/fields/templates/dropdown.form.tpl");
       if ($template_form === false) return false;
 
       //create dropdown form file
       $template_form = str_replace("%%CLASSNAME%%", $classname, $template_form);
       $form_filename = $input['name']."dropdown.form.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$form_filename", 
+      if (file_put_contents($CFG_GLPI['root_doc']."/plugins/fields/front/$form_filename", 
                             $template_form) === false) return false;
 
       //load class manually on plugin installation
@@ -80,10 +82,10 @@ class PluginFieldsDropdown {
    }
 
    static function destroy($dropdown_name) {
-
+      global $CFG_GLPI
 
       $classname = self::getClassname($dropdown_name);
-      $class_filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
+      $class_filename = $CFG_GLPI['root_doc']."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
       
       //load class manually on plugin uninstallation
       if (file_exists($class_filename)) {
@@ -101,13 +103,13 @@ class PluginFieldsDropdown {
       }
 
       //remove front file for this dropdown
-      $front_filename = GLPI_ROOT."/plugins/fields/front/".$dropdown_name."dropdown.php";
+      $front_filename = $CFG_GLPI['root_doc']."/plugins/fields/front/".$dropdown_name."dropdown.php";
       if (file_exists($front_filename)) {
          if (unlink($front_filename) === false) return false;
       }
 
       //remove front.form file for this dropdown
-      $form_filename = GLPI_ROOT."/plugins/fields/front/".$dropdown_name."dropdown.form.php";
+      $form_filename = $CFG_GLPI['root_doc']."/plugins/fields/front/".$dropdown_name."dropdown.form.php";
       if (file_exists($form_filename)) {
          return unlink($form_filename);
       }

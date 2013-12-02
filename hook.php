@@ -1,7 +1,7 @@
 <?php
 
 function plugin_fields_install() {
-   global $LANG;
+   global $LANG, $CFG_GLPI;
 
    set_time_limit(900);
    ini_set('memory_limit','2048M');
@@ -30,7 +30,7 @@ function plugin_fields_install() {
    echo "<td align='center'>";
    foreach ($classesToInstall as $class) {
       if ($plug=isPluginItemType($class)) {
-         $dir=GLPI_ROOT . "/plugins/fields/inc/";
+         $dir=$CFG_GLPI['root_doc'] . "/plugins/fields/inc/";
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
@@ -48,7 +48,7 @@ function plugin_fields_install() {
 
 
 function plugin_fields_uninstall() {
-   global $LANG;
+   global $LANG, $CFG_GLPI;
 
    $_SESSION['uninstall_fields'] = true;
 
@@ -71,7 +71,7 @@ function plugin_fields_uninstall() {
 
    foreach ($classesToUninstall as $class) {
       if ($plug=isPluginItemType($class)) {
-         $dir=GLPI_ROOT . "/plugins/fields/inc/";
+         $dir=$CFG_GLPI['root_doc'] . "/plugins/fields/inc/";
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
