@@ -1,7 +1,7 @@
 <?php
 // Init the hooks of the plugins -Needed
 function plugin_init_fields() {
-   global $PLUGIN_HOOKS, $LANG;
+   global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
@@ -22,7 +22,7 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
 
       $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
-         'title' => $LANG['fields']['config']['containers'],
+         'title' => __("Configurate the blocs", "fields"),
          'page'  => "/plugins/fields/$menu_entry",
          'links' => array(
             'search' => "/plugins/fields/$menu_entry",
@@ -52,8 +52,7 @@ function plugin_init_fields() {
 
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
-   global $LANG;
-   return array ('name'           => $LANG["fields"]["title"][1],
+   return array ('name'           => __("Additionnal fields", "fields"),
                  'version'        => '0.84-1.0',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
@@ -77,13 +76,11 @@ function plugin_fields_check_prerequisites() {
 // Check configuration process for plugin : need to return true if succeeded
 // Can display a message only if failure and $verbose is true
 function plugin_fields_check_config($verbose = false) {
-   global $LANG;
-
    if (true) { // Your configuration check
       return true;
    }
    if ($verbose) {
-      echo $LANG['plugins'][2];
+      echo __("Installed / not configured");
    }
    return false;
 }

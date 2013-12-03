@@ -1,7 +1,7 @@
 <?php
 
 function plugin_fields_install() {
-   global $LANG, $CFG_GLPI;
+   global $CFG_GLPI;
 
    set_time_limit(900);
    ini_set('memory_limit','2048M');
@@ -23,7 +23,7 @@ function plugin_fields_install() {
    $migration = new Migration($version);
    echo "<center>";
    echo "<table class='tab_cadre_fixe'>";
-   echo "<tr><th>".$LANG['fields']['install'][0]."<th></tr>";
+   echo "<tr><th>".__("MySQL tables installation", "fields")."<th></tr>";
 
    echo "<tr class='tab_bg_1'>";
    echo "<td align='center'>";
@@ -47,8 +47,6 @@ function plugin_fields_install() {
 
 
 function plugin_fields_uninstall() {
-   global $LANG;
-
    $_SESSION['uninstall_fields'] = true;
 
    $classesToUninstall = array(
@@ -63,7 +61,7 @@ function plugin_fields_uninstall() {
 
    echo "<center>";
    echo "<table class='tab_cadre_fixe'>";
-   echo "<tr><th>".$LANG['fields']['uninstall'][0]."<th></tr>";
+   echo "<tr><th>".__("MySQL tables uninstallation", "fields")."<th></tr>";
 
    echo "<tr class='tab_bg_1'>";
    echo "<td align='center'>";
@@ -90,8 +88,6 @@ function plugin_fields_uninstall() {
 
 
 function plugin_fields_getAddSearchOptions($itemtype) {
-   global $LANG;
-
    if (isset($_SESSION['glpiactiveentities'])) {
 
       $itemtypes = PluginFieldsContainer::getEntries('all');

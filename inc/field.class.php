@@ -38,9 +38,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function getTypeName($nb = 0) {
-      global $LANG;
-
-      return $LANG['fields']['type'][0];
+      return __("Field", "fields");
    }
 
    static function canCreate() {
@@ -52,8 +50,6 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function prepareInputForAdd($input) {
-      global $LANG;
-
       //parse name
       $input['name'] = $this->prepareName($input);
 
@@ -66,7 +62,7 @@ class PluginFieldsField extends CommonDBTM {
 
          //reject adding for same dropdown on same bloc
          if (!empty($found)) {
-            Session::AddMessageAfterRedirect($LANG['fields']['error']['dropdown_unique']);
+            Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields'));
             return false;
          }
 
@@ -189,9 +185,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
-
-      return self::createTabEntry($LANG['fields']['types'][0],
+      return self::createTabEntry(__("Fields", "fields"),
                    countElementsInTable($this->getTable(),
                                         "`plugin_fields_containers_id` = '".$item->getID()."'"));
 
@@ -205,7 +199,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function showSummary($container) {
-      global $DB, $LANG, $CFG_GLPI;
+      global $DB, $CFG_GLPI;
 
 
       $cID = $container->fields['id'];
@@ -235,12 +229,12 @@ class PluginFieldsField extends CommonDBTM {
          echo "</script>\n";
          echo "<div class='center'>".
               "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
-         echo $LANG['fields']['field']['label']['add']."</a></div><br>\n";
+         echo __("Add a new field", "fields")."</a></div><br>\n";
       
 
       if ($DB->numrows($result) == 0) {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
-         echo "<th class='b'>".$LANG['fields']['field']['label']['no_fields']."</th></tr></table>";
+         echo "<th class='b'>".__("No field for this bloc", "fields")."</th></tr></table>";
       } else {
          echo "<table class='tab_cadre_fixehov'>";
          echo "<tr>";
@@ -621,17 +615,15 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function getTypes() {
-      global $LANG;
-      
       return array(
-         'header'   => $LANG['fields']['field']['type']['header'],
-         'text'     => $LANG['fields']['field']['type']['text'],
-         'textarea' => $LANG['fields']['field']['type']['textarea'],
-         'number'   => $LANG['fields']['field']['type']['number'],
-         'dropdown' => $LANG['fields']['field']['type']['dropdown'],
-         'yesno'    => $LANG['fields']['field']['type']['yesno'],
-         'date'     => $LANG['fields']['field']['type']['date'],
-         'datetime' => $LANG['fields']['field']['type']['datetime']
+         'header'   => __("Header", "fields"),
+         'text'     => __("Text (single line)", "fields"),
+         'textarea' => __("Text (multiples lines)", "fields"),
+         'number'   => __("Number", "fields"),
+         'dropdown' => __("Dropdown", "fields"),
+         'yesno'    => __("Yes/No", "fields"),
+         'date'     => __("Date", "fields"),
+         'datetime' => __("Date & time", "fields")
       );
    }
 

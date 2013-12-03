@@ -17,7 +17,7 @@ class PluginFieldsMigration {
    }
    
    function updateFromCustomfields($glpi_version = "0.80") {
-      global $DB, $LANG;
+      global $DB;
 
       //TODO : REWRITE customfield update
       return true;

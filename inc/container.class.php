@@ -125,14 +125,12 @@ class PluginFieldsContainer extends CommonDBTM {
       return $ong;
    }
 
-   function prepareInputForAdd($input) {
-      global $LANG;
-      
+   function prepareInputForAdd($input) {    
       if ($input['type'] === "dom") {
          //check for already exist dom container with this itemtype
          $found = $this->find("`type`='dom' AND `itemtype` = '".$input['itemtype']."'");
          if (!empty($found)) {
-            Session::AddMessageAfterRedirect($LANG['fields']['error']['dom_not_unique']);
+            Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"));
             return false;
          }
       }
@@ -202,9 +200,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    static function getTypeName($nb = 0) {
-      global $LANG;
-
-      return $LANG['fields']['type'][1];
+      return __("Bloc", "fields");
    }
 
    static function canCreate() {
@@ -282,11 +278,9 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    static function getTypes() {
-      global $LANG;
-
       return array(
-         'tab' => $LANG['fields']['container']['type']['tab'],
-         'dom' => $LANG['fields']['container']['type']['dom']
+         'tab' => __("Add tab", "fields"),
+         'dom' => __("Insertion in the form (before save button)", "fields")
       );
    }
 
@@ -493,8 +487,6 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return boolean
     */
    static function validateValues($datas) {
-      global $LANG;
-
       $field_obj = new PluginFieldsField;
       $fields = $field_obj->find("plugin_fields_containers_id = ".
                                  $datas['plugin_fields_containers_id']." AND type = 'number'");
@@ -513,7 +505,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       if (!empty($fields_error)) {
-         Session::AddMessageAfterRedirect($LANG['fields']['error']['no_numeric_value'].
+         Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields").
                                           " : (".implode(", ", $fields_error).")");
          $_SESSION['plugin']['fields']['values_sent'] = $datas;
          return false;

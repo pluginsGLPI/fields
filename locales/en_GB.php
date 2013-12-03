@@ -12,7 +12,7 @@ $LANG['fields']['error']['dom_not_unique'] = "You cannot add several blocs with 
 
 $LANG['fields']['config']['fields']     = "Configurate the fields";
 $LANG['fields']['config']['containers'] = "Configurate the blocs";
-$LANG['fields']['error']['dropdown_unique'] = "Vou cannot add same field 'dropdown' on same bloc";
+$LANG['fields']['error']['dropdown_unique'] = "You cannot add same field 'dropdown' on same bloc";
 $LANG['fields']['error']['no_numeric_value'] = "Some numeric fields contains non numeric values";
 
 $LANG['fields']['type'][0] = "Field";

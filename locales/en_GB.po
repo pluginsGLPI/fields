@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-03 11:08+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: hook.php:26
+msgid "MySQL tables installation"
+msgstr "MySQL tables installation"
+
+#: hook.php:64
+msgid "MySQL tables uninstallation"
+msgstr "MySQL tables uninstallation"
+
+#: setup.php:25
+msgid "Configurate the blocs"
+msgstr "Configurate the blocs"
+
+#: setup.php:55 front/container.form.php:35 front/container.php:4
+msgid "Additionnal fields"
+msgstr "Additionnal fields"
+
+#: inc/container.class.php:133
+msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
+msgstr "You cannot add several blocs with type 'Insertion in the form' on same object"
+
+#: inc/container.class.php:203
+msgid "Bloc"
+msgstr "Bloc"
+
+#: inc/container.class.php:282
+msgid "Add tab"
+msgstr "Add tab"
+
+#: inc/container.class.php:283
+msgid "Insertion in the form (before save button)"
+msgstr "Insertion in the form (before save button)"
+
+#: inc/container.class.php:508
+msgid "Some numeric fields contains non numeric values"
+msgstr "Some numeric fields contains non numeric values"
+
+#: inc/dropdown.class.php:14
+msgid "This plugin need write right on his own files, please correct."
+msgstr "This plugin need write right on his own files, please correct."
+
+#: inc/field.class.php:41
+msgid "Field"
+msgstr "Field"
+
+#: inc/field.class.php:65
+msgid "You cannot add same field 'dropdown' on same bloc"
+msgstr "You cannot add same field 'dropdown' on same bloc"
+
+#: inc/field.class.php:188
+msgid "Fields"
+msgstr "Fields"
+
+#: inc/field.class.php:232
+msgid "Add a new field"
+msgstr "Add a new field"
+
+#: inc/field.class.php:237
+msgid "No field for this bloc"
+msgstr "No field for this bloc"
+
+#: inc/field.class.php:619
+msgid "Header"
+msgstr "Header"
+
+#: inc/field.class.php:620
+msgid "Text (single line)"
+msgstr "Text (single line)"
+
+#: inc/field.class.php:621
+msgid "Text (multiples lines)"
+msgstr "Text (multiples lines)"
+
+#: inc/field.class.php:622
+msgid "Number"
+msgstr "Number"
+
+#: inc/field.class.php:623
+msgid "Dropdown"
+msgstr "Dropdown"
+
+#: inc/field.class.php:624
+msgid "Yes/No"
+msgstr "Yes/No"
+
+#: inc/field.class.php:625
+msgid "Date"
+msgstr "Date"
+
+#: inc/field.class.php:626
+msgid "Date & time"
+msgstr "Date & time"

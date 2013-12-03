@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-03 11:08+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: hook.php:26
+msgid "MySQL tables installation"
+msgstr "Installation des tables MySQL"
+
+#: hook.php:64
+msgid "MySQL tables uninstallation"
+msgstr "Désinstallation des tables MySQL"
+
+#: setup.php:25
+msgid "Configurate the blocs"
+msgstr "Configurer les blocs"
+
+#: setup.php:55 front/container.form.php:35 front/container.php:4
+msgid "Additionnal fields"
+msgstr "Champs supplémentaires"
+
+#: inc/container.class.php:133
+msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
+msgstr "Vous ne pouvez pas créer plusieurs bloc de type 'Insertion dans le formulaire' sur le même objet"
+
+#: inc/container.class.php:203
+msgid "Bloc"
+msgstr "Bloc"
+
+#: inc/container.class.php:282
+msgid "Add tab"
+msgstr "Ajout d'un onglet"
+
+#: inc/container.class.php:283
+msgid "Insertion in the form (before save button)"
+msgstr "Insertion dans le formulaire (avant le boutton sauvegarder)"
+
+#: inc/container.class.php:508
+msgid "Some numeric fields contains non numeric values"
+msgstr "Des champs numériques contiennent des données non numériques"
+
+#: inc/dropdown.class.php:14
+msgid "This plugin need write right on his own files, please correct."
+msgstr "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger."
+
+#: inc/field.class.php:41
+msgid "Field"
+msgstr "Champ"
+
+#: inc/field.class.php:65
+msgid "You cannot add same field 'dropdown' on same bloc"
+msgstr "Vous ne pouvez pas créer plusieurs fois la même champs 'intitulé' pour le même bloc"
+
+#: inc/field.class.php:188
+msgid "Fields"
+msgstr "Champs"
+
+#: inc/field.class.php:232
+msgid "Add a new field"
+msgstr "Ajouter un nouveau champ"
+
+#: inc/field.class.php:237
+msgid "No field for this bloc"
+msgstr "Pas de champs pour ce bloc"
+
+#: inc/field.class.php:619
+msgid "Header"
+msgstr "Entête"
+
+#: inc/field.class.php:620
+msgid "Text (single line)"
+msgstr "Texte (simple ligne)"
+
+#: inc/field.class.php:621
+msgid "Text (multiples lines)"
+msgstr "Texte (multiples lignes)"
+
+#: inc/field.class.php:622
+msgid "Number"
+msgstr "Nombre"
+
+#: inc/field.class.php:623
+msgid "Dropdown"
+msgstr "Intitulés"
+
+#: inc/field.class.php:624
+msgid "Yes/No"
+msgstr "Oui/Non"
+
+#: inc/field.class.php:625
+msgid "Date"
+msgstr "Date"
+
+#: inc/field.class.php:626
+msgid "Date & time"
+msgstr "Date & heure"
