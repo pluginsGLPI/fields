@@ -4,6 +4,7 @@
 
 0.84-1.0
  ✔ 0.84 port @done (13-12-03 13:59)
+ ✔ add some itemtypes and improve display of itemtype choice @done (13-12-03 14:13)
 
 0.83-1.0 : New plugin fields for glpi 0.83
    Features : 

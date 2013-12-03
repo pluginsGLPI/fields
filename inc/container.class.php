@@ -252,24 +252,34 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function getItemtypes() {
       return array(
-         'Computer'           => __("Computer"),
-         'Networkequipment'   => __("Networkequipment"),
-         'Printer'            => __("Printer"),
-         'Monitor'            => __("Monitor"),
-         'Software'           => __("Software"),
-         'Ticket'             => __("Ticket"),
-         'User'               => __("User"),
-         'Cartridgeitem'      => __("Cartridgeitem"),
-         'Contact'            => __("Contact"),
-         'Supplier'           => __("Supplier"),
-         'Contract'           => __("Contract"),
-         'Document'           => __("Document"),
-         'State'              => __("State"),
-         'Consumableitem'     => __("Consumableitem"),
-         'Phone'              => __("Phone"),
-         'Profile'            => __("Profile"),
-         'Group'              => __("Group"),
-         'Entity'             => __("Entity")
+         __("Assets") => array(
+            'Computer'           => __("Computer"),
+            'Monitor'            => __("Monitor"),
+            'Software'           => __("Software"),
+            'Networkequipment'   => __("Networkequipment"),
+            'Peripheral'         => __("Peripheral"),
+            'Printer'            => __("Printer"),
+            'Cartridgeitem'      => __("Cartridgeitem"),
+            'Consumableitem'     => __("Consumableitem"),
+            'Phone'              => __("Phone")),
+         __("Assistance") => array(
+            'Ticket'             => __("Ticket"),
+            'Problem'            => __("Problem"),
+            'TicketRecurrent'    => __("Recurrent tickets")),
+         __("Management") => array(
+            'Budget'             => __("Budget"),
+            'Supplier'           => __("Supplier"),
+            'Contact'            => __("Contact"),
+            'Contract'           => __("Contract"),
+            'Document'           => __("Document")),
+         __("Tools") => array(
+            'Notes'              => __("Notes"),
+            'RSSFeed'            => __("RSS feed")),
+         __("Administration") => array(
+            'User'               => __("User"),
+            'Group'              => __("Group"),
+            'Entity'             => __("Entity"),
+            'Profile'            => __("Profile"))         
       );
    }
 
