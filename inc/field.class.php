@@ -353,7 +353,8 @@ class PluginFieldsField extends CommonDBTM {
          echo "</td></tr>";
       }
 
-      echo "</table></form>";
+      echo "</table>";
+      Html::closeForm();
 
       return true;
    }
