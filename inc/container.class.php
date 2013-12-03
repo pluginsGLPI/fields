@@ -217,10 +217,6 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      /*echo "<td>".__("Name")." : </td>";
-      echo "<td>";
-      Html::autocompletionTextField($this, 'name', array('value' => $this->fields["name"]));
-      echo "</td>";*/
       echo "<td>".__("label")." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
@@ -604,8 +600,6 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['container_label']." - ".$datas['label'];
          $opt[$i]['linkfield']     = $datas['name'];
-         //$opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
-         //$opt[$i]['massiveaction'] = false;
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $datas['type'];
 
@@ -639,17 +633,6 @@ class PluginFieldsContainer extends CommonDBTM {
             default:
                $opt[$i]['datatype'] = "string";
           } 
-
-          //massive action searchoption
-         /*$opt[$i+100000]                  = $opt[$i];
-         $opt[$i+100000]['linkfield']     = $datas['name'];
-         if ($datas['type'] === "dropdown") {
-            $opt[$i+100000]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
-         }
-         $opt[$i+100000]['massiveaction'] = true;
-         $opt[$i+100000]['nosort']        = true;
-         $opt[$i+100000]['nosearch']      = true;
-         $opt[$i+100000]['datatype']      = "";*/
 
          $i++;
       }
