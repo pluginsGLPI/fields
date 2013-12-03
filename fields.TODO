@@ -1,26 +1,32 @@
-New plugin fields for glpi 0.83
+0.84-1.1
+ ☐ migration from customfields
+ ☐ plus button on dropdown page
 
-Features : 
- ✔ Config Page for containers and fields @done (13-02-18 10:00)
- ✔ Tab insertion @done (13-02-18 11:00)
- ✔ add and update values (for tabs) @done (13-02-18 14:00)
- ✔ dom insertions @done (13-02-18 17:32)
- ✔ add and update values (for dom) @done (13-02-19 11:05)
- ✔ add is_active field to container @done (13-02-19 11:33)
- ✔ add display preferences for container(label, itemtype, type, active) @done (13-02-19 15:50)
- ✔ Dynamic dropdowns @done (13-02-21 17:22)
- ✔ searchOptions @done (13-03-22 16:30)
-     ✔ Search @done (13-02-19 17:11)
-     ✔ Massive Actions @done (13-03-22 16:30)
-     ✔ GiveItem @done (13-02-20 08:55)
-     ✔ dropdowns @done (13-03-21 15:26)
- ✔ Profiles @done (13-03-22 11:46)
- ✔ Entities and recursivity @done (13-03-21 16:39)
- ✔ Add prepareInputForAdd in containers and fields to check : @done (13-03-21 16:19)
-    ✔ field unicity @done (13-02-21 17:22)
-    ✔ no conflict with itemtype fields @done (13-03-21 16:18)
-    ✔ name format (no accents, space, punctuation) @done (13-02-21 17:22)
-    ✔ Make dom containers unique by itemtype @done (13-03-21 15:44)
-✔ Migration scripts for customfields plugin @done (13-03-21 15:26)
-     ✔ standard fields @done (13-03-21 15:26)
-     ✔ dropdowns @done (13-03-21 15:26)
+0.84-1.0
+ ✔ 0.84 port @done (13-12-03 13:59)
+
+0.83-1.0 : New plugin fields for glpi 0.83
+   Features : 
+    ✔ Config Page for containers and fields @done (13-02-18 10:00)
+    ✔ Tab insertion @done (13-02-18 11:00)
+    ✔ add and update values (for tabs) @done (13-02-18 14:00)
+    ✔ dom insertions @done (13-02-18 17:32)
+    ✔ add and update values (for dom) @done (13-02-19 11:05)
+    ✔ add is_active field to container @done (13-02-19 11:33)
+    ✔ add display preferences for container(label, itemtype, type, active) @done (13-02-19 15:50)
+    ✔ Dynamic dropdowns @done (13-02-21 17:22)
+    ✔ searchOptions @done (13-03-22 16:30)
+        ✔ Search @done (13-02-19 17:11)
+        ✔ Massive Actions @done (13-03-22 16:30)
+        ✔ GiveItem @done (13-02-20 08:55)
+        ✔ dropdowns @done (13-03-21 15:26)
+    ✔ Profiles @done (13-03-22 11:46)
+    ✔ Entities and recursivity @done (13-03-21 16:39)
+    ✔ Add prepareInputForAdd in containers and fields to check : @done (13-03-21 16:19)
+       ✔ field unicity @done (13-02-21 17:22)
+       ✔ no conflict with itemtype fields @done (13-03-21 16:18)
+       ✔ name format (no accents, space, punctuation) @done (13-02-21 17:22)
+       ✔ Make dom containers unique by itemtype @done (13-03-21 15:44)
+    ✔ Migration scripts for customfields plugin @done (13-03-21 15:26)
+        ✔ standard fields @done (13-03-21 15:26)
+        ✔ dropdowns @done (13-03-21 15:26)
