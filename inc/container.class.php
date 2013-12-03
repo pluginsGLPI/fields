@@ -217,7 +217,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      echo "<td>".__("label")." : </td>";
+      echo "<td>".__("Label")." : </td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
