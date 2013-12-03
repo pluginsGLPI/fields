@@ -283,15 +283,14 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       if ($ID > 0) {
-         $this->check($ID,'r');
          $edit = true;
       } else {
          // Create item
          $edit = false;
-         $input = array('plugin_fields_containers_id' => $container->getField('id'));
-         $this->check(-1,'w',$input);
+         $_SESSION['saveInput'] = array('plugin_fields_containers_id' => $container->getField('id'));
       }
 
+      $this->initForm($ID, $options);
       $this->showFormHeader($options);
 
       echo "<tr>";
