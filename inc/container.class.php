@@ -550,7 +550,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
       } else {
-         $c_id = self::findContainer(get_Class($item), $item->fields['id'], "all");
+         $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
          if ($c_id === false) return false;
       }
 
