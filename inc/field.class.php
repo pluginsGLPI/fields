@@ -525,10 +525,6 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'yesno':
-                  //in massive action, we must skip display for yesno (possible bug in framework)
-                  //otherwise double display of field
-                  if ($massiveaction) continue;
-                  
                   if ($canedit) {
                      ob_start();
                      Dropdown::showYesNo($field['name'], $value);
@@ -539,7 +535,6 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'date':
-                  if ($massiveaction) continue;
                   if ($canedit) {
                      ob_start();
                      Html::showDateFormItem($field['name'], $value);
@@ -550,7 +545,6 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'datetime':
-                  if ($massiveaction) continue;
                   if ($canedit) {
                      ob_start();
                      Html::showDateTimeFormItem($field['name'], $value);
