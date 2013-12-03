@@ -423,7 +423,7 @@ class PluginFieldsField extends CommonDBTM {
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo "<table class='tab_cadre_fixe'>";
       echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
-       echo "</table>";
+      echo "</table>";
    }
 
    

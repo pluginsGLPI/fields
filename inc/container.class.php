@@ -427,7 +427,7 @@ class PluginFieldsContainer extends CommonDBTM {
             //log only not empty values
             if (!empty($value)) {
                //prepare log
-               $changes = array(0, "", $value);
+               $changes = array(0, "N/A", $value);
 
                //find searchoption
                foreach ($searchoptions as $id_search_option => $searchoption) {
