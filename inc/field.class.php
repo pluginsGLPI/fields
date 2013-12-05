@@ -424,6 +424,9 @@ class PluginFieldsField extends CommonDBTM {
 
    static function prepareHtmlFields($fields, $items_id, $canedit = true, 
                                      $show_table = true, $massiveaction = false) {
+
+      if (empty($fields)) return false;
+
       //get object associated with this fields
       $tmp = $fields;
       $first_field = array_shift($tmp);
