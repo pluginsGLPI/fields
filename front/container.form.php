@@ -8,22 +8,22 @@ if (empty($_GET["id"])) {
 $container = new PluginFieldsContainer;
 
 if (isset($_POST["add"])) {
-   $container->check(-1,'w',$_POST);
+   $container->check(-1, CREATE, $_POST);
    $newID = $container->add($_POST);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.form.php?id=$newID");
 
 } elseif (isset($_POST["delete"])) {
-   $container->check($_POST['id'],'d');
+   $container->check($_POST['id'], DELETE);
    $ok = $container->delete($_POST);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.php");
 
 } elseif (isset($_REQUEST["purge"])) {
-   $container->check($_REQUEST['id'],'d');
+   $container->check($_REQUEST['id'], PURGE);
    $container->delete($_REQUEST,1);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.php");
 
 } elseif (isset($_POST["update"])) {
-   $container->check($_POST['id'],'w');
+   $container->check($_POST['id'], UPDATE);
    $container->update($_POST);
    Html::back();
 
@@ -32,11 +32,9 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else {
-   Html::header(__("Additionnal fields", "fields"), $_SERVER['PHP_SELF'], 
-                "plugins", "fields", "container");
-   $container->showForm($_GET["id"]);
+   Html::header(__("Additionnal fields", "fields"), $_SERVER['PHP_SELF'] , 
+                "config", "pluginfieldsmenu", "fieldscontainer");
+   $container->display(array('id' => $_GET["id"]));
    Html::footer();
 }
-
-Html::footer();
 ?>

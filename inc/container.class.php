@@ -1,6 +1,7 @@
 <?php
 
 class PluginFieldsContainer extends CommonDBTM {
+   static $rightname = 'config';
    
    static function install(Migration $migration) {
       global $DB;
@@ -119,6 +120,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    function defineTabs($options=array()) {
       $ong = array();
+      $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsField', $ong, $options);
       $this->addStandardTab('PluginFieldsProfile', $ong, $options);
 
@@ -203,17 +205,8 @@ class PluginFieldsContainer extends CommonDBTM {
       return __("Bloc", "fields");
    }
 
-   static function canCreate() {
-      return true;
-   }
-
-   static function canView() {
-      return true;
-   }
-
    public function showForm($ID, $options=array()) {
       $this->initForm($ID, $options);
-      $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr>";
@@ -244,8 +237,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</tr>";
 
       $this->showFormButtons($options);
-      $this->addDivForTabs();
-
+      
       return true;
    }
 

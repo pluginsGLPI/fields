@@ -1,7 +1,8 @@
 <?php
 
 class PluginFieldsDropdown {
-
+   static $rightname = 'dropdown';
+   
    static function install(Migration $migration) {
       //check if "inc", "front" and "ajax" directories are writeable for httpd
       $directories = array(

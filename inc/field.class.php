@@ -1,6 +1,7 @@
 <?php
 
 class PluginFieldsField extends CommonDBTM {
+   static $rightname = 'config';
 
    static function install(Migration $migration) {
       global $DB;
@@ -41,13 +42,6 @@ class PluginFieldsField extends CommonDBTM {
       return __("Field", "fields");
    }
 
-   static function canCreate() {
-      return true;
-   }
-
-   static function canView() {
-      return true;
-   }
 
    function prepareInputForAdd($input) {
       //parse name
@@ -206,7 +200,7 @@ class PluginFieldsField extends CommonDBTM {
 
       // Display existing Fields
       $tmp    = array('plugin_fields_containers_id' => $cID);
-      $canadd = $this->can(-1, 'w', $tmp);
+      $canadd = $this->can(-1, CREATE, $tmp);
 
       $query  = "SELECT `id`, `label`
                 FROM `".$this->getTable()."`
@@ -326,7 +320,7 @@ class PluginFieldsField extends CommonDBTM {
       $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
                                  AND `plugin_fields_containers_id` = '$c_id'");
       $first_found = array_shift($found);
-      if ($first_found['right'] == "w") {
+      if ($first_found['right'] == CREATE) {
          $canedit = true;
       }
       
@@ -393,19 +387,21 @@ class PluginFieldsField extends CommonDBTM {
       if (!isset($itemtypes[$current_itemtype])) return false;
 
 
-      echo "Ext.onReady(function() {\n
-         Ext.select('#page form tr:last').each(function(el){
-            el.insertHtml('beforeBegin', 
-                          '<tr><td style=\"padding:0\" colspan=\"4\" id=\"dom_container\"></td></tr>');
-            Ext.get('dom_container').load({
-               url: '../plugins/fields/ajax/load_dom_fields.php',
-               params: {
+      echo "
+      jQuery( document ).ready(function( $ ) {
+         jQuery('div.ui-tabs').tabs({
+            load: function( event, ui ) {
+               jQuery('#page form tr:has(input[type=submit])')
+                  .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
+               jQuery('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
                   itemtype: '$current_itemtype',
                   items_id: '$items_id'
-               }
-            });
+               });
+            }
          });
-      });\n";
+   
+      });
+      ";
    }
 
    static function AjaxForDomContainer($itemtype, $items_id) {

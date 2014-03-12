@@ -9,30 +9,17 @@ function plugin_init_fields() {
    if (isset($_SESSION['glpiactiveentities']) 
       && $plugin->isInstalled('fields') 
       && $plugin->isActivated('fields')) {
+
+      // add entry to configuration menu
+      $PLUGIN_HOOKS["menu_toadd"]['davfi'] = array('config'  => 'PluginFieldsMenu');
       
+      // add tabs to itemtypes 
       Plugin::registerClass('PluginFieldsContainer',
                             array('addtabon' => PluginFieldsContainer::getEntries()));
-
-      $menu_entry = "front/container.php";
-      if ((!isset($_SESSION['glpiactiveprofile']['config']) 
-         || $_SESSION['glpiactiveprofile']['config'] != "w")
-      ) $menu_entry = false;
-
-      $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
-      $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
-
-      $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
-         'title' => __("Configurate the blocs", "fields"),
-         'page'  => "/plugins/fields/$menu_entry",
-         'links' => array(
-            'search' => "/plugins/fields/$menu_entry",
-            'add'    => "/plugins/fields/front/container.form.php"
-      ));
 
       //include js and css
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
-
 
       //Retrieve dom container 
       $itemtypes = PluginFieldsContainer::getEntries('all');

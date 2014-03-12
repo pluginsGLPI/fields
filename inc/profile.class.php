@@ -109,7 +109,7 @@ class PluginFieldsProfile extends CommonDBTM {
          $fields_profile->add(array(
             'profiles_id'                 => $profile_item['id'],
             'plugin_fields_containers_id' => $container->fields['id'],
-            'right'                       => 'w' 
+            'right'                       => CREATE
          ));
       }
       return true;
