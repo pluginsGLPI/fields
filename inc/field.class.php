@@ -98,7 +98,9 @@ class PluginFieldsField extends CommonDBTM {
    }
    function prepareInputForUpdate($input) {
       //parse name
-      $input['name'] = $this->prepareName($input);
+      if(isset($input["name"])) {
+         $input['name'] = $this->prepareName($input);
+      }
 
       return $input;
    }
