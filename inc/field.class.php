@@ -334,6 +334,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
       echo "<input type='hidden' name='items_id' value='$items_id'>";
       echo "<table class='tab_cadre_fixe'>";
+      
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo self::prepareHtmlFields($fields, $items_id, $canedit);
       
@@ -445,9 +446,9 @@ class PluginFieldsField extends CommonDBTM {
       foreach($fields as $field) {
       
          if ($field['type'] === 'header') {
-            $html.= "<tr class='tab_bg_2'>";
-            $html.= "<th colspan='4'>".$field['label']."<span style='color:blue;'>*</span></td>";
-            $html.= "</tr>";
+            $html .= "<tr class='tab_bg_2'>";
+            $html .= "<th colspan='4'>".$field['label']."</td>";
+            $html .= "</tr>";
             $odd = 0;
          } else {
             //get value
@@ -477,34 +478,36 @@ class PluginFieldsField extends CommonDBTM {
 
             //show field
             if ($show_table) {
-               if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
+               if ($odd%2 == 0) {
+                  $html .= "<tr class='tab_bg_2'>";
+               }
                if ($container_obj->fields['itemtype'] == 'Ticket' 
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html.= "<th width='13%'>".$field['label']." : </th>";
+                  $html .= "<th width='13%'>".$field['label']." : </th>";
                } else {
-                  $html.= "<td>".$field['label']." : </td>";
+                  $html .= "<td>".$field['label']." : <span class='red'>*</span></td>";
                }
-               $html.= "<td>";
+               $html .= "<td>";
             }
             switch ($field['type']) {
                case 'number':
                case 'text':
                   $value = Html::cleanInputText($value);
                   if ($canedit) {
-                     $html.= "<input type='text' name='".$field['name']."' value=\"$value\" />";
+                     $html .= "<input type='text' name='".$field['name']."' value=\"$value\" />";
                   } else {
-                     $html.= $value;
+                     $html .= $value;
                   }
                   break;
                case 'textarea':
                   if ($massiveaction) continue;
                   if ($canedit) {
-                     $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
+                     $html .= "<textarea cols='45' rows='4' name='".$field['name']."'>".
                         "$value</textarea>";
                   } else {
-                     $html.= str_replace('\n', '<br />', $value);
+                     $html .= str_replace('\n', '<br />', $value);
                   }
                   break;
                case 'dropdown':
@@ -517,51 +520,55 @@ class PluginFieldsField extends CommonDBTM {
                         $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
                      }
                      Dropdown::show($dropdown_itemtype, array('value' => $value));
-                     $html.= ob_get_contents();
+                     $html .= ob_get_contents();
                      ob_end_clean();
                   } else {
                      $dropdown_table = "glpi_plugin_fields_".$field['name']."dropdowns";
-                     $html.= Dropdown::getDropdownName($dropdown_table, $value);
+                     $html .= Dropdown::getDropdownName($dropdown_table, $value);
                   }
                   break;
                case 'yesno':
                   if ($canedit) {
                      ob_start();
                      Dropdown::showYesNo($field['name'], $value);
-                     $html.= ob_get_contents();
+                     $html .= ob_get_contents();
                      ob_end_clean();
                   } else {
-                     $html.= Dropdown::getYesNo($value);
+                     $html .= Dropdown::getYesNo($value);
                   }
                   break;
                case 'date':
                   if ($canedit) {
                      ob_start();
                      Html::showDateFormItem($field['name'], $value);
-                     $html.= ob_get_contents();
+                     $html .= ob_get_contents();
                      ob_end_clean();
                   } else {
-                     $html.= Html::convDate($value);
+                     $html .= Html::convDate($value);
                   }
                   break;
                case 'datetime':
                   if ($canedit) {
                      ob_start();
                      Html::showDateTimeFormItem($field['name'], $value);
-                     $html.= ob_get_contents();
+                     $html .= ob_get_contents();
                      ob_end_clean();
                   } else {
-                     $html.= Html::convDateTime($value);
+                     $html .= Html::convDateTime($value);
                   }
             }
             if ($show_table) {
-               $html.= "</td>";
-               if ($odd%2 == 1)  $html.= "</tr>";
+               $html .= "</td>";
+               if ($odd%2 == 1) {
+                  $html .= "</tr>";
+               }
                $odd++;
             }
          }         
       }
-      if ($show_table && $odd%2 == 1)  $html.= "</tr>";
+      if ($show_table && $odd%2 == 1) {
+         $html .= "</tr>";
+      }
 
       unset($_SESSION['plugin']['fields']['values_sent']);
 
