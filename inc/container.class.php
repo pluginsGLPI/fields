@@ -505,7 +505,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (!empty($fields_error)) {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields").
                                           " : (".implode(", ", $fields_error).")", false, ERROR);
-         $_SESSION['plugin']['fields']['values_sent'] = $datas;
+         $_SESSION['plugin']['fields']['values_sent'] = stripslashes($datas);
          return false;
       } else return true;
    }
