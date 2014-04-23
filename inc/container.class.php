@@ -132,7 +132,7 @@ class PluginFieldsContainer extends CommonDBTM {
          //check for already exist dom container with this itemtype
          $found = $this->find("`type`='dom' AND `itemtype` = '".$input['itemtype']."'");
          if (!empty($found)) {
-            Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"));
+            Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"), false, ERROR);
             return false;
          }
       }
@@ -504,8 +504,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
       if (!empty($fields_error)) {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields").
-                                          " : (".implode(", ", $fields_error).")");
-         $_SESSION['plugin']['fields']['values_sent'] = $datas;
+                                          " : (".implode(", ", $fields_error).")", false, ERROR);
+         $_SESSION['plugin']['fields']['values_sent'] = stripslashes($datas);
          return false;
       } else return true;
    }

@@ -56,7 +56,7 @@ class PluginFieldsField extends CommonDBTM {
 
          //reject adding for same dropdown on same bloc
          if (!empty($found)) {
-            Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields'));
+            Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields', false, ERROR));
             return false;
          }
 
