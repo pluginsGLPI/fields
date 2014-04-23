@@ -300,8 +300,9 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $itemtypes = array();
+      $profile = new PluginFieldsProfile();
       $container = new self;
-      $profile = new PluginFieldsProfile;
+      
       $found = $container->find("$sql_type AND is_active = 1", "`label`");
       foreach($found as $item) {
          //entities restriction
@@ -336,7 +337,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();
-         foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) { 
+         foreach ($itemtypes[$item->getType()] as $tab_name => $tab_label) { 
             $tabs_entries[$tab_name] = $tab_label;
          }
          return $tabs_entries;
@@ -472,8 +473,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
                   //manage dropdown values
                   if ($searchoption['datatype'] === 'dropdown') {
-                     $changes[1] = Dropdown::getDropdownName($searchoption['table'],$changes[1]);
-                     $changes[2] = Dropdown::getDropdownName($searchoption['table'],$changes[2]);
+                     $changes[1] = Dropdown::getDropdownName($searchoption['table'], $changes[1]);
+                     $changes[2] = Dropdown::getDropdownName($searchoption['table'], $changes[2]);
                   }
                   break;
                }

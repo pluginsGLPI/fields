@@ -68,8 +68,8 @@ function plugin_fields_uninstall() {
 
    foreach ($classesToUninstall as $class) {
       if ($plug=isPluginItemType($class)) {
-         $dir=GLPI_ROOT . "/plugins/fields/inc/";
-         $item=strtolower($plug['class']);
+         $dir = GLPI_ROOT . "/plugins/fields/inc/";
+         $item = strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
             if(!call_user_func(array($class,'uninstall'))) return false;
