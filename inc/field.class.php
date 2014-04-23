@@ -422,8 +422,8 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    
-   static function prepareHtmlFields($fields, $items_id, $canedit = true, 
-                                     $show_table = true, $massiveaction = false) {
+   static function prepareHtmlFields($fields, $items_id, $canedit = true, $show_table = true,
+                            $massiveaction = false) {
 
       if (empty($fields)) return false;
 
@@ -445,7 +445,7 @@ class PluginFieldsField extends CommonDBTM {
       //show all fields
       $html = "";
       $odd = 0;
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
       
          if ($field['type'] === 'header') {
             $html .= "<tr class='tab_bg_2'>";
@@ -480,7 +480,7 @@ class PluginFieldsField extends CommonDBTM {
 
             //show field
             if ($show_table) {
-               if ($odd%2 == 0) {
+               if (($odd % 2) == 0) {
                   $html .= "<tr class='tab_bg_2'>";
                }
                if ($container_obj->fields['itemtype'] == 'Ticket' 
@@ -561,14 +561,14 @@ class PluginFieldsField extends CommonDBTM {
             }
             if ($show_table) {
                $html .= "</td>";
-               if ($odd%2 == 1) {
+               if (($odd % 2) == 1) {
                   $html .= "</tr>";
                }
                $odd++;
             }
          }         
       }
-      if ($show_table && $odd%2 == 1) {
+      if ($show_table && (($odd % 2) == 1)) {
          $html .= "</tr>";
       }
 
