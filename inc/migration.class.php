@@ -3,7 +3,7 @@
 class PluginFieldsMigration {
 
    static function install(Migration $migration, $version) {
-      $fields_migration = new self;
+      $fields_migration = new self();
 
       if (TableExists("glpi_plugin_customfields_fields")) {
          if (!$fields_migration->updateFromCustomfields()) return false;

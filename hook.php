@@ -4,9 +4,9 @@ function plugin_fields_install() {
    global $CFG_GLPI;
 
    set_time_limit(900);
-   ini_set('memory_limit','2048M');
+   ini_set('memory_limit', '2048M');
 
-   $plugin_fields = new Plugin;
+   $plugin_fields = new Plugin();
    $plugin_fields->getFromDBbyDir('fields');
    $version = $plugin_fields->fields['version'];
 
@@ -17,7 +17,7 @@ function plugin_fields_install() {
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
       'PluginFieldsProfile', 
-      'PluginFieldsMigration'   
+      'PluginFieldsMigration'
    );
 
    $migration = new Migration($version);
@@ -33,7 +33,9 @@ function plugin_fields_install() {
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if (!call_user_func(array($class,'install'), $migration, $version)) return false;
+            if (!call_user_func(array($class, 'install'), $migration, $version)) {
+               return false;
+            }
          }
       }
    }
@@ -72,7 +74,9 @@ function plugin_fields_uninstall() {
          $item = strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if(!call_user_func(array($class,'uninstall'))) return false;
+            if (!call_user_func(array($class,'uninstall'))) {
+               return false;
+            }
          }
       }
    }
@@ -104,7 +108,7 @@ function plugin_fields_getAddSearchOptions($itemtype) {
 function plugin_fields_getDropdown() {
    $dropdowns = array();
 
-   $field_obj = new PluginFieldsField;
+   $field_obj = new PluginFieldsField();
    $fields = $field_obj->find("`type` = 'dropdown'");
    foreach ($fields as $field) {
       $dropdowns["PluginFields".ucfirst($field['name'])."Dropdown"] = $field['label'];

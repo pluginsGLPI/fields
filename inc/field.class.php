@@ -85,7 +85,7 @@ class PluginFieldsField extends CommonDBTM {
       
       //add field to container table
       if ($input['type'] !== "header") {
-         $container_obj = new PluginFieldsContainer;
+         $container_obj = new PluginFieldsContainer();
          $container_obj->getFromDB($input['plugin_fields_containers_id']);
          $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
                                        preg_replace('/s$/', '', $container_obj->fields['name'])));
@@ -98,9 +98,9 @@ class PluginFieldsField extends CommonDBTM {
    }
    function prepareInputForUpdate($input) {
       //parse name
-      if(isset($input["name"])) {
+      //if(isset($input["name"])) {
          $input['name'] = $this->prepareName($input);
-      }
+      //}
 
       return $input;
    }
@@ -118,7 +118,7 @@ class PluginFieldsField extends CommonDBTM {
                PluginFieldsDropdown::getClassname($this->fields['name']));
          }
 
-         $container_obj = new PluginFieldsContainer;
+         $container_obj = new PluginFieldsContainer();
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
          $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
                                        preg_replace('/s$/', '', $container_obj->fields['name'])));
@@ -153,11 +153,11 @@ class PluginFieldsField extends CommonDBTM {
 
       //check if field name not already exist and not in conflict with itemtype fields name
       $containers_id = $input['plugin_fields_containers_id'];
-      $container = new PluginFieldsContainer;
+      $container = new PluginFieldsContainer();
       $container->getFromDB($containers_id);
       $item = new $container->fields['itemtype'];
       $item->getEmpty();
-      $field = new self;
+      $field = new self();
       $i = 2;
       $field_name = $input['name'];
       while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
@@ -414,7 +414,7 @@ class PluginFieldsField extends CommonDBTM {
       $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, "dom");
 
       //get fields for this container
-      $field_obj = new self;
+      $field_obj = new self();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo "<table class='tab_cadre_fixe'>";
       echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
@@ -430,11 +430,11 @@ class PluginFieldsField extends CommonDBTM {
       //get object associated with this fields
       $tmp = $fields;
       $first_field = array_shift($tmp);
-      $container_obj = new PluginFieldsContainer;
+      $container_obj = new PluginFieldsContainer();
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
       $classname = "PluginFields".ucfirst($container_obj->fields['itemtype'].
                                   preg_replace('/s$/', '', $container_obj->fields['name']));
-      $obj = new $classname;
+      $obj = new $classname();
 
       //find row for this object with the items_id
       $found_values = $obj->find("plugin_fields_containers_id = ".
@@ -581,7 +581,7 @@ class PluginFieldsField extends CommonDBTM {
       global $DB;
 
       //find container for field in massive action
-      $field_obj = new self;
+      $field_obj = new self();
 
       //clean dropdown [pre/su]fix if exists
       $cleaned_linkfield = preg_replace("/plugin_fields_(.*)dropdowns_id/", "$1", 

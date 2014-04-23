@@ -42,10 +42,10 @@ class PluginFieldsProfile extends CommonDBTM {
 
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
-      $profile = new Profile;
+      $profile = new Profile();
       $found_profiles = $profile->find();
 
-      $fields_profile = new self;
+      $fields_profile = new self();
       echo "<form name='form' method='post' action='".$fields_profile->getFormURL()."'>";
       echo "<div class='spaced' id='tabsbody'>";
       echo "<table class='tab_cadre_fixe'>";

@@ -24,7 +24,7 @@ class PluginFieldsDropdown {
       //remove dropdown tables and files
       if (TableExists("glpi_plugin_fields_fields")) {
          require_once "field.class.php";
-         $field = new PluginFieldsField;
+         $field = new PluginFieldsField();
          $dropdowns = $field->find("`type` = 'dropdown'");
          foreach ($dropdowns as $dropdown) {
             self::destroy($dropdown['name']);

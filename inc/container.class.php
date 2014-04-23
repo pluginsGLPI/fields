@@ -26,7 +26,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //add display preferences for this class
-      $d_pref = new DisplayPreference;
+      $d_pref = new DisplayPreference();
       $found = $d_pref->find("itemtype = '".__CLASS__."'");
       if (count($found) == 0) {
          for ($i = 2; $i <= 5; $i++) {
@@ -43,7 +43,7 @@ class PluginFieldsContainer extends CommonDBTM {
       global $DB;
 
       //uninstall container table and class
-      $obj = new self;
+      $obj = new self();
       $containers = $obj->find();
       foreach ($containers as $containers_id => $container) {
          $obj->delete(array('id'=>$containers_id));
@@ -173,14 +173,14 @@ class PluginFieldsContainer extends CommonDBTM {
                                    preg_replace('/s$/', '', $this->fields['name'])).".class.php";
 
       //delete fields
-      $field_obj = new PluginFieldsField;
+      $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
       foreach ($fields as $fields_id => $field) {
          $field_obj->delete(array('id' => $fields_id));
       }
 
       //delete profiles
-      $profile_obj = new PluginFieldsProfile;
+      $profile_obj = new PluginFieldsProfile();
       $profiles = $profile_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
       foreach ($profiles as $profiles_id => $profile) {
          $profile_obj->delete(array('id' => $profiles_id));
@@ -302,7 +302,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $itemtypes = array();
       $profile = new PluginFieldsProfile();
-      $container = new self;
+      $container = new self();
       
       $found = $container->find("$sql_type AND is_active = 1", "`label`");
       foreach($found as $item) {
@@ -349,7 +349,7 @@ class PluginFieldsContainer extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
 
       //retrieve container for current tab
-      $container = new self;
+      $container = new self();
       $found_c = $container->find("`itemtype` = '".get_class($item)."' 
                                   AND `type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
       $tmp = array_shift($found_c);
@@ -366,10 +366,12 @@ class PluginFieldsContainer extends CommonDBTM {
    function updateFieldsValues($datas) {
       //global $DB;
 
-      if (self::validateValues($datas) === false) return false;
+      if (self::validateValues($datas) === false) {
+         return false;
+      }
 
       //insert datas in new table
-      $container_obj = new PluginFieldsContainer;
+      $container_obj = new PluginFieldsContainer();
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
 
       $items_id = $datas['items_id'];
@@ -438,7 +440,7 @@ class PluginFieldsContainer extends CommonDBTM {
                      //manage dropdown values
                      if ($searchoption['datatype'] === 'dropdown') {
                         $changes = array($id_search_option, "", 
-                                         Dropdown::getDropdownName($searchoption['table'],$value));
+                                         Dropdown::getDropdownName($searchoption['table'], $value));
                      }
                      break;
                   }
@@ -494,7 +496,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return boolean
     */
    static function validateValues($datas) {
-      $field_obj = new PluginFieldsField;
+      $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = ".
                                  $datas['plugin_fields_containers_id']." AND type = 'number'");
 
@@ -521,7 +523,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function findContainer($itemtype, $items_id, $type='tab') {
-      $container = new PluginFieldsContainer;
+      $container = new PluginFieldsContainer();
       $sql_type = "1=1";
       if ($type === 'tab' || $type === 'dom') {
          $sql_type = "`type` = '$type'";
@@ -578,7 +580,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //update datas
-      $container = new self;
+      $container = new self();
       return $container->updateFieldsValues($datas);
    }
 
