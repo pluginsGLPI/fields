@@ -19,11 +19,20 @@ class PluginFieldsField extends CommonDBTM {
                   `type`                              VARCHAR(25)    DEFAULT NULL,
                   `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
                   `ranking`                           INT(11)        NOT NULL DEFAULT '0',
-                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
+                  `default_value`                     VARCHAR(255)   DEFAULT NULL,,
+                  `is_active`                         TINYINT(1)     NOT NULL DEFAULT '1',
                   PRIMARY KEY                         (`id`),
-                  KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
+                  KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
+                  KEY `is_active`                     (`is_active`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
             $DB->query($query) or die ($DB->error());
+      } elseif(!FieldExists($table, 'is_active')) {
+         $migration->displayMessage("Updating $table");
+
+         $query = "ALTER TABLE  `$table`
+                   ADD  `is_active` TINYINT(1) NOT NULL DEFAULT  '1',
+                   ADD INDEX (`is_active`)')";
+         $DB->query($query) or die ($DB->error());
       }
 
       return true;
@@ -92,7 +101,7 @@ class PluginFieldsField extends CommonDBTM {
    }
    function prepareInputForUpdate($input) {
       //parse name
-      $input['name'] = $this->prepareName($input);
+      //$input['name'] = $this->prepareName($input);
 
       return $input;
    }
@@ -235,6 +244,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<th>" . __("Label") . "</th>";
          echo "<th>" . __("Type") . "</th>";
          echo "<th>" . __("Default values") . "</th>";
+         echo "<th>" . __("Active") . "</th>";
          echo "</tr>\n";
 
          $fields_type = self::getTypes();
@@ -258,6 +268,11 @@ class PluginFieldsField extends CommonDBTM {
                echo $this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
+               echo "<td align='center'>";
+               echo ($this->fields['is_active'] == 1)
+                     ? __('Yes')
+                     : '<b class="red">' . __('No') . '</b>';
+               echo "</td>";
                echo "</tr>\n";
             }
          }
@@ -303,6 +318,16 @@ class PluginFieldsField extends CommonDBTM {
       Html::autocompletionTextField($this, 'default_value', 
                                     array('value' => $this->fields["default_value"]));
       echo "</td>";
+
+      echo "</tr>";
+
+      echo "<tr>";
+      echo "<td>" . __('Active') . " :</td>";
+      echo "<td>";
+      Dropdown::showYesNo('is_active', $this->fields["is_active"]);
+      echo "</td>";
+      echo "<td>&nbsp;</td>";
+      echo "<td>&nbsp;</td>";
       echo "</tr>";
 
       $this->showFormButtons($options);
@@ -325,7 +350,7 @@ class PluginFieldsField extends CommonDBTM {
       }
       
       //get fields for this container
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
          "/plugins/fields/front/container.form.php'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
@@ -410,7 +435,7 @@ class PluginFieldsField extends CommonDBTM {
 
       //get fields for this container
       $field_obj = new self;
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
       echo "<table class='tab_cadre_fixe'>";
       echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
       echo "</table>";
