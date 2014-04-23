@@ -358,6 +358,50 @@ class PluginFieldsContainer extends CommonDBTM {
       return PluginFieldsField::showForTabContainer($c_id, $item->fields['id']);
    }
 
+   function validateMandatoryValues($input) {
+   
+      $fields = new PluginFieldsField();
+      $fields_tab = $fields->find("`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']);
+   
+      foreach ($fields_tab as $champ_en_BDD) {
+         $name = $champ_en_BDD['name'];
+          
+         if (isset($input[$name])) {
+            $value = $input[$name];
+         } else {
+            continue;
+         }
+          
+         switch ($champ_en_BDD['type']) {
+         	case 'yesno' :
+         	case 'date' :
+         	case 'textarea' :
+         	case 'text' :
+         	case 'number' :
+         	case 'datetime' :
+         	   if ($value !== "0") {
+         	      if (empty($value) || $value == 'NULL') {
+         	         Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
+         	         false, ERROR);
+         	         return false;
+         	      }
+         	   }
+         	   break;
+         	case 'dropdown' :
+         	   if (empty($value) || $value == 'NULL') {
+         	      Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'), //TODO
+         	      false, ERROR);
+         	      return false;
+         	   }
+         	   break;
+         	case 'header' :
+         	   break;
+         }
+      }
+   
+      return $input;
+   }
+   
    /**
     * Insert values submited by fields container
     * @param  array $datas datas posted 
@@ -365,6 +409,9 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    function updateFieldsValues($datas) {
       //global $DB;
+      if(self::validateMandatoryValues($datas) === false) {
+         return false;
+      }
 
       if (self::validateValues($datas) === false) {
          return false;
