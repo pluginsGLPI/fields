@@ -503,7 +503,7 @@ class PluginFieldsField extends CommonDBTM {
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
                         "$value</textarea>";
                   } else {
-                     $html.= str_replace('\n', '<br />', $value);
+                     $html.= nl2br($value);
                   }
                   break;
                case 'dropdown':
