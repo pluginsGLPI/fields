@@ -618,7 +618,7 @@ class PluginFieldsField extends CommonDBTM {
 
    static function getTypes() {
       return array(
-         'header'   => __("Header", "fields"),
+         'header'   => __("Headband", "fields"),
          'text'     => __("Text (single line)", "fields"),
          'textarea' => __("Text (multiples lines)", "fields"),
          'number'   => __("Number", "fields"),
