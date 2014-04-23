@@ -1,5 +1,4 @@
 <?php
-
 class PluginFieldsContainer extends CommonDBTM {
    
    static function install(Migration $migration) {
@@ -12,17 +11,17 @@ class PluginFieldsContainer extends CommonDBTM {
          $migration->displayMessage("Installing $table");
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`           INT(11)        NOT NULL auto_increment,
-                  `name`         VARCHAR(255)   DEFAULT NULL,
-                  `label`        VARCHAR(255)   DEFAULT NULL,
-                  `itemtype`     VARCHAR(255)   DEFAULT NULL,
-                  `type`         VARCHAR(255)   DEFAULT NULL,
-                  `entities_id`  INT(11)        NOT NULL DEFAULT '0',
-                  `is_recursive` TINYINT(1)     NOT NULL DEFAULT '0',
-                  `is_active`    TINYINT(1)     NOT NULL DEFAULT '0',
+                  `id`           INT(11)      NOT NULL auto_increment,
+                  `name`         VARCHAR(255) DEFAULT NULL,
+                  `label`        VARCHAR(255) DEFAULT NULL,
+                  `itemtype`     VARCHAR(255) DEFAULT NULL,
+                  `type`         VARCHAR(255) DEFAULT NULL,
+                  `entities_id`  INT(11)      NOT NULL DEFAULT '0',
+                  `is_recursive` TINYINT(1)   NOT NULL DEFAULT '0',
+                  `is_active`    TINYINT(1)   NOT NULL DEFAULT '0',
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
          $DB->query($query) or die ($DB->error());
       }
 
@@ -125,7 +124,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return $ong;
    }
 
-   function prepareInputForAdd($input) {    
+   function prepareInputForAdd($input) {
       if ($input['type'] === "dom") {
          //check for already exist dom container with this itemtype
          $found = $this->find("`type`='dom' AND `itemtype` = '".$input['itemtype']."'");
@@ -363,7 +362,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return boolean
     */
    function updateFieldsValues($datas) {
-      global $DB;
+      //global $DB;
 
       if (self::validateValues($datas) === false) return false;
 
@@ -549,11 +548,12 @@ class PluginFieldsContainer extends CommonDBTM {
          $c_id = $_REQUEST['c_id'];
       } else {
          $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
-         if ($c_id === false) return false;
+         if ($c_id === false)
+            return false;
       }
 
       //find fields associated to found container
-      $field_obj = new PluginFieldsField;
+      $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", 
                                  "ranking");
 
@@ -562,7 +562,7 @@ class PluginFieldsContainer extends CommonDBTM {
          'plugin_fields_containers_id' => $c_id,
          'items_id'                    =>  $item->fields['id']
       );
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
          if (isset($item->input[$field['name']])) {
             //standard field
             $input = $field['name'];

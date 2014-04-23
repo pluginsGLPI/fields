@@ -21,7 +21,6 @@ class PluginFieldsDropdown {
    }
 
    static function uninstall() {
-      global $DB;
 
       //remove dropdown tables and files
       if (TableExists("glpi_plugin_fields_fields")) {

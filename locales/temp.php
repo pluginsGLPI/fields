@@ -1,5 +1,4 @@
 <?php
-
 $LANG['fields']['title'][1] = "Champs supplémentaires";
 $LANG['fields']['title'][2] = "Configuration";
 

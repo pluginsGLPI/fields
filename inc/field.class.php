@@ -12,16 +12,16 @@ class PluginFieldsField extends CommonDBTM {
          $migration->displayMessage("Installing $table");
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                INT(11)        NOT NULL auto_increment,
-                  `name`                              VARCHAR(255)   DEFAULT NULL,
-                  `label`                             VARCHAR(255)   DEFAULT NULL,
-                  `type`                              VARCHAR(25)    DEFAULT NULL,
-                  `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
-                  `ranking`                           INT(11)        NOT NULL DEFAULT '0',
-                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
+                  `id`                                INT(11)      NOT NULL auto_increment,
+                  `name`                              VARCHAR(255) DEFAULT NULL,
+                  `label`                             VARCHAR(255) DEFAULT NULL,
+                  `type`                              VARCHAR(25)  DEFAULT NULL,
+                  `plugin_fields_containers_id`       INT(11)      NOT NULL DEFAULT '0',
+                  `ranking`                           INT(11)      NOT NULL DEFAULT '0',
+                  `default_value`                     VARCHAR(255) DEFAULT NULL,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
             $DB->query($query) or die ($DB->error());
       }
 
@@ -188,7 +188,6 @@ class PluginFieldsField extends CommonDBTM {
       return self::createTabEntry(__("Fields", "fields"),
                    countElementsInTable($this->getTable(),
                                         "`plugin_fields_containers_id` = '".$item->getID()."'"));
-
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
@@ -200,7 +199,6 @@ class PluginFieldsField extends CommonDBTM {
 
    function showSummary($container) {
       global $DB, $CFG_GLPI;
-
 
       $cID = $container->fields['id'];
 
@@ -318,11 +316,11 @@ class PluginFieldsField extends CommonDBTM {
    static function showForTabContainer($c_id, $items_id) {
       global $CFG_GLPI;
 
-      $field_obj = new PluginFieldsField;
+      $field_obj = new PluginFieldsField();
 
       //profile restriction (for reading profile)
       $canedit = false;
-      $profile = new PluginFieldsProfile;
+      $profile = new PluginFieldsProfile();
       $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
                                  AND `plugin_fields_containers_id` = '$c_id'");
       $first_found = array_shift($found);
@@ -331,12 +329,12 @@ class PluginFieldsField extends CommonDBTM {
       }
       
       //get fields for this container
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
          "/plugins/fields/front/container.form.php'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
       echo "<input type='hidden' name='items_id' value='$items_id'>";
       echo "<table class='tab_cadre_fixe'>";
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo self::prepareHtmlFields($fields, $items_id, $canedit);
       
       if ($canedit) {
@@ -421,7 +419,6 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    
-
    static function prepareHtmlFields($fields, $items_id, $canedit = true, 
                                      $show_table = true, $massiveaction = false) {
 
@@ -449,7 +446,7 @@ class PluginFieldsField extends CommonDBTM {
       
          if ($field['type'] === 'header') {
             $html.= "<tr class='tab_bg_2'>";
-            $html.= "<th colspan='4'>".$field['label']."</td>";
+            $html.= "<th colspan='4'>".$field['label']."<span style='color:blue;'>*</span></td>";
             $html.= "</tr>";
             $odd = 0;
          } else {
