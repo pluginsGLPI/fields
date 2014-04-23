@@ -6,4 +6,3 @@ Html::header(__("Additionnal fields", "fields"), $_SERVER['PHP_SELF'], "plugins"
 Search::show("PluginFieldsContainer");
 
 Html::footer();
-?>
