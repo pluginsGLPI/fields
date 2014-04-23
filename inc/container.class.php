@@ -368,7 +368,9 @@ class PluginFieldsContainer extends CommonDBTM {
    function validateMandatoryValues($input) {
    
       $fields = new PluginFieldsField();
-      $fields_tab = $fields->find("`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']);
+      $find = "`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']." 
+               AND `is_required` = 1";
+      $fields_tab = $fields->find($find);
    
       foreach ($fields_tab as $champ_en_BDD) {
          $name = $champ_en_BDD['name'];
@@ -389,15 +391,15 @@ class PluginFieldsContainer extends CommonDBTM {
          	   if ($value !== "0") {
          	      if (empty($value) || $value == 'NULL') {
          	         Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
-         	         false, ERROR);
+         	           false, ERROR);
          	         return false;
          	      }
          	   }
          	   break;
          	case 'dropdown' :
          	   if (empty($value) || $value == 'NULL') {
-         	      Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'), //TODO
-         	      false, ERROR);
+         	      Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'), 
+         	        false, ERROR);
          	      return false;
          	   }
          	   break;
