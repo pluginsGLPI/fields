@@ -241,7 +241,14 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
+      
+      echo "<td>".__("Mandatory field")." : </td>";
+      echo "<td>";
+      Dropdown::showYesNo("is_require");
+      echo "</td>";
+      
       echo "</tr>";
+      
 
       $this->showFormButtons($options);
       $this->addDivForTabs();

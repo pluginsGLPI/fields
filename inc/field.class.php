@@ -240,6 +240,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<th>" . __("Label") . "</th>";
          echo "<th>" . __("Type") . "</th>";
          echo "<th>" . __("Default values") . "</th>";
+         echo "<th>" . __("Mandatory field") . "</th>";
          echo "</tr>\n";
 
          $fields_type = self::getTypes();
@@ -263,6 +264,7 @@ class PluginFieldsField extends CommonDBTM {
                echo $this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
+               echo "<td>".Dropdown::getYesNo($this->fields["is_required"])."</td>";
                echo "</tr>\n";
             }
          }
@@ -303,10 +305,17 @@ class PluginFieldsField extends CommonDBTM {
             array('value' => $this->fields["type"]));
          echo "</td>";
       } 
-      echo "<td>".__("Default values")." : </td>";
+      echo "<td>".__("Default values")." :</td>";
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value', 
                                     array('value' => $this->fields["default_value"]));
+      echo "</td>";
+      echo "</tr>";
+      
+      echo "<tr>";
+      echo "<td>".__("Mandatory field")." : </td>";
+      echo "<td>";
+      Dropdown::showYesNo("is_required", $this->fields["is_required"]);
       echo "</td>";
       echo "</tr>";
 
@@ -482,13 +491,19 @@ class PluginFieldsField extends CommonDBTM {
                if (($odd % 2) == 0) {
                   $html .= "<tr class='tab_bg_2'>";
                }
+               
+               $more_str = "";
+               if ($field['is_required'] == 1){
+                  $more_str = "<span class='red'>*</span>";
+               }
+               
                if ($container_obj->fields['itemtype'] == 'Ticket' 
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html .= "<th width='13%'>".$field['label']." : <span class='red'>*</span></th>";
+                  $html .= "<th width='13%'>".$field['label']." : $more_str</th>";
                } else {
-                  $html .= "<td>".$field['label']." : <span class='red'>*</span></td>";
+                  $html .= "<td>".$field['label']." : $more_str</td>";
                }
                $html .= "<td>";
             }
