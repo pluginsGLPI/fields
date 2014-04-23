@@ -1,5 +1,4 @@
 <?php
-
 class PluginFieldsDropdown {
 
    static function install(Migration $migration) {

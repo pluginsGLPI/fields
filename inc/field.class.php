@@ -155,7 +155,7 @@ class PluginFieldsField extends CommonDBTM {
       $container->getFromDB($containers_id);
       $item = new $container->fields['itemtype'];
       $item->getEmpty();
-      $field  = new self;
+      $field = new self;
       $i = 2;
       $field_name = $input['name'];
       while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
