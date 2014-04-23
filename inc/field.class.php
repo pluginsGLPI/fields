@@ -487,7 +487,7 @@ class PluginFieldsField extends CommonDBTM {
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html .= "<th width='13%'>".$field['label']." : </th>";
+                  $html .= "<th width='13%'>".$field['label']." : <span class='red'>*</span></th>";
                } else {
                   $html .= "<td>".$field['label']." : <span class='red'>*</span></td>";
                }
