@@ -307,6 +307,7 @@ class PluginFieldsField extends CommonDBTM {
       }
       echo '</table>';
       echo '</div>';
+      echo Html::scriptBlock('redipsInit()');
    }
 
 

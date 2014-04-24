@@ -23,3 +23,6 @@ div.fields_clear {
    clear: both;
    width:100%;
 }
+.drag {
+   background: none !important;
+}

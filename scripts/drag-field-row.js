@@ -31,10 +31,3 @@ redipsInit = function () {
      });
    }
 };
-
-// add onload event listener
-if (window.addEventListener) {
-   window.addEventListener('load', redipsInit, false);
-} else if (window.attachEvent) {
-   window.attachEvent('onload', redipsInit);
-}
