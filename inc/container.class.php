@@ -2,7 +2,7 @@
 
 class PluginFieldsContainer extends CommonDBTM {
    static $rightname = 'config';
-   
+
    static function install(Migration $migration) {
       global $DB;
 
@@ -23,7 +23,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   `is_active`    TINYINT(1)     NOT NULL DEFAULT '0',
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ($DB->error());
       }
 
@@ -32,7 +32,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $found = $d_pref->find("itemtype = '".__CLASS__."'");
       if (count($found) == 0) {
          for ($i = 2; $i <= 5; $i++) {
-            $DB->query("INSERT INTO glpi_displaypreferences VALUES 
+            $DB->query("INSERT INTO glpi_displaypreferences VALUES
                (NULL, '".__CLASS__."', $i, ".($i-1).", 0)");
          }
       }
@@ -40,7 +40,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return true;
    }
 
-   
+
    static function uninstall() {
       global $DB;
 
@@ -127,7 +127,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return $ong;
    }
 
-   function prepareInputForAdd($input) {    
+   function prepareInputForAdd($input) {
       if ($input['type'] === "dom") {
          //check for already exist dom container with this itemtype
          $found = $this->find("`type`='dom' AND `itemtype` = '".$input['itemtype']."'");
@@ -143,7 +143,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return $input;
    }
 
-   function post_addItem() {      
+   function post_addItem() {
       //create profiles associated to this container
       PluginFieldsProfile::createForContainer($this);
 
@@ -157,7 +157,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
       $class_filename = strtolower($this->fields['itemtype'].
                                    preg_replace('/s$/', '', $this->fields['name']).".class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
                             $template_class) === false) {
          Toolbox::logDebug("Error : class file creation - $class_filename");
          return false;
@@ -210,22 +210,33 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr>";
-      echo "<td>".__("Label")." : </td>";
-      echo "<td>";
+      echo "<td width='20%'>".__("Label")." : </td>";
+      echo "<td width='30%'>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
+      echo "<td width='20%'>&nbsp;</td>";
+      echo "<td width='30%'>&nbsp;</td>";
       echo "</tr>";
 
       echo "<tr>";
       echo "<td>".__("Type")." : </td>";
       echo "<td>";
-      Dropdown::showFromArray('type', self::getTypes(), 
-         array('value' => $this->fields["type"]));
+      if($ID > 0) {
+         $types = self::getTypes();
+         echo $types[$this->fields["type"]];
+      } else {
+         Dropdown::showFromArray('type', self::getTypes(),
+            array('value' => $this->fields["type"]));
+      }
       echo "</td>";
       echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
-      Dropdown::showFromArray('itemtype', self::getItemtypes(), 
-         array('value' => $this->fields["itemtype"]));
+      if($ID > 0) {
+         echo $this->fields["itemtype"];
+      } else {
+         Dropdown::showFromArray('itemtype', self::getTypes(),
+            array('value' => $this->fields["itemtype"]));
+      }
       echo "</td>";
       echo "</tr>";
 
@@ -237,7 +248,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</tr>";
 
       $this->showFormButtons($options);
-      
+
       return true;
    }
 
@@ -271,7 +282,7 @@ class PluginFieldsContainer extends CommonDBTM {
             'User'               => __("User"),
             'Group'              => __("Group"),
             'Entity'             => __("Entity"),
-            'Profile'            => __("Profile"))         
+            'Profile'            => __("Profile"))
       );
    }
 
@@ -310,7 +321,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          //profiles restriction
-         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
+         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                  AND `plugin_fields_containers_id` = '".$item['id']."'");
          $first_found = array_shift($found);
          if ($first_found['right'] == NULL) continue;
@@ -329,7 +340,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();
-         foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) { 
+         foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) {
             $tabs_entries[$tab_name] = $tab_label;
          }
          return $tabs_entries;
@@ -341,7 +352,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //retrieve container for current tab
       $container = new self;
-      $found_c = $container->find("`itemtype` = '".get_class($item)."' 
+      $found_c = $container->find("`itemtype` = '".get_class($item)."'
                                   AND `type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
       $tmp = array_shift($found_c);
       $c_id = $tmp['id'];
@@ -351,7 +362,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    /**
     * Insert values submited by fields container
-    * @param  array $datas datas posted 
+    * @param  array $datas datas posted
     * @return boolean
     */
    function updateFieldsValues($datas) {
@@ -375,7 +386,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $obj->add($datas);
 
          //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
+         self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
                             $itemtype, $datas);
       } else {
          $first_found = array_pop($found);
@@ -383,7 +394,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $obj->update($datas);
 
          //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
+         self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
                             $itemtype, $datas, $first_found);
       }
 
@@ -392,25 +403,25 @@ class PluginFieldsContainer extends CommonDBTM {
 
    /**
     * Add log in "itemtype" object on fields values update
-    * @param  int    $containers_id : 
-    * @param  int    $items_id      : 
-    * @param  string $itemtype      : 
+    * @param  int    $containers_id :
+    * @param  int    $items_id      :
+    * @param  string $itemtype      :
     * @param  array  $datas         : values send by update form
     * @param  array  $old_values    : old values, if empty -> values add
     * @return nothing
     */
-   static function constructHistory($containers_id, $items_id, $itemtype, $datas, 
+   static function constructHistory($containers_id, $items_id, $itemtype, $datas,
                                 $old_values = array()) {
       //get searchoptions
       $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
 
-      //define non-datas keys 
-      $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 
+      //define non-datas keys
+      $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0,
                               'update_fields_values' => 0);
 
       //remove non-datas keys
       $datas = array_diff_key($datas, $blacklist_k);
-         
+
       //add/update values condition
       if (empty($old_values)) {
          // -- add new item --
@@ -428,7 +439,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
                      //manage dropdown values
                      if ($searchoption['datatype'] === 'dropdown') {
-                        $changes = array($id_search_option, "", 
+                        $changes = array($id_search_option, "",
                                          Dropdown::getDropdownName($searchoption['table'],$value));
                      }
                      break;
@@ -445,7 +456,7 @@ class PluginFieldsContainer extends CommonDBTM {
          //find changes
          $updates = array();
          foreach ($old_values as $key => $old_value) {
-            if (!isset($datas[$key]) 
+            if (!isset($datas[$key])
                 || empty($old_value) && empty($datas[$key])
                 || $old_value !== '' && $datas[$key] == 'NULL'
                 ) {
@@ -470,12 +481,12 @@ class PluginFieldsContainer extends CommonDBTM {
                   }
                   break;
                }
-            }   
+            }
 
             //add log
             Log::history($items_id, $itemtype, $changes);
          }
-      }      
+      }
    }
 
    /**
@@ -520,7 +531,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype' AND is_active = 1");
 
       if (count($found_c) == 0) return false;
-      
+
       if ($type == "dom") {
          $tmp = array_shift($found_c);
          $id = $tmp['id'];
@@ -546,7 +557,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //find fields associated to found container
       $field_obj = new PluginFieldsField;
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", 
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'",
                                  "ranking");
 
       //prepare datas to update
@@ -583,8 +594,8 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $i = 76665;
-      $query = "SELECT fields.name, fields.label, fields.type, 
-            containers.name as container_name, containers.label as container_label, 
+      $query = "SELECT fields.name, fields.label, fields.type,
+            containers.name as container_name, containers.label as container_label,
             containers.itemtype
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
@@ -634,7 +645,7 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             default:
                $opt[$i]['datatype'] = "string";
-          } 
+          }
 
          $i++;
       }
