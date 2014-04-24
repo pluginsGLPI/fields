@@ -234,7 +234,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if($ID > 0) {
          echo $this->fields["itemtype"];
       } else {
-         Dropdown::showFromArray('itemtype', self::getTypes(),
+         Dropdown::showFromArray('itemtype', self::getItemtypes(),
             array('value' => $this->fields["itemtype"]));
       }
       echo "</td>";
