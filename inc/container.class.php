@@ -244,7 +244,7 @@ class PluginFieldsContainer extends CommonDBTM {
       
       echo "<td>".__("Mandatory field")." : </td>";
       echo "<td>";
-      Dropdown::showYesNo("is_require");
+      Dropdown::showYesNo("mandatory");
       echo "</td>";
       
       echo "</tr>";
@@ -371,40 +371,43 @@ class PluginFieldsContainer extends CommonDBTM {
       $find = "`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']." 
                AND `mandatory` = 1";
       $fields_tab = $fields->find($find);
-   
+
       foreach ($fields_tab as $champ_en_BDD) {
          $name = $champ_en_BDD['name'];
           
          if (isset($input[$name])) {
             $value = $input[$name];
          } else {
-            continue;
+            if($champ_en_BDD['type'] == 'dropdown') {
+               $value = $input["plugin_fields_".$name."dropdowns_id"];
+            }
          }
           
          switch ($champ_en_BDD['type']) {
-         	case 'yesno' :
-         	case 'date' :
-         	case 'textarea' :
-         	case 'text' :
-         	case 'number' :
-         	case 'datetime' :
-         	   if ($value !== "0") {
-         	      if (empty($value) || $value == 'NULL') {
-         	         Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
-         	           false, ERROR);
-         	         return false;
-         	      }
-         	   }
-         	   break;
-         	case 'dropdown' :
-         	   if (empty($value) || $value == 'NULL') {
-         	      Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'), 
-         	        false, ERROR);
-         	      return false;
-         	   }
-         	   break;
-         	case 'header' :
-         	   break;
+            case 'yesno' :
+            case 'date' :
+            case 'textarea' :
+            case 'text' :
+            case 'number' :
+            case 'datetime' :
+               if ($value !== "0") {
+                  if (empty($value) || $value == 'NULL') {
+                     Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
+                       false, ERROR);
+                     return false;
+                  }
+               }
+               break;
+            case 'dropdown' :
+               Toolbox::logDebug($value);
+               if ($value === "0") {
+                  Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
+                    false, ERROR);
+                  return false;
+               }
+               break;
+            case 'header' :
+               break;
          }
       }
    
