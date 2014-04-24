@@ -19,10 +19,14 @@ class PluginFieldsField extends CommonDBTM {
                   `plugin_fields_containers_id`     INT(11)      NOT NULL DEFAULT '0',
                   `ranking`                         INT(11)      NOT NULL DEFAULT '0',
                   `default_value`                   VARCHAR(255) DEFAULT NULL,
+                  `mandatory`                       TINYINT(1)   NOT NULL,
                   PRIMARY KEY                       (`id`),
                   KEY `plugin_fields_containers_id` (`plugin_fields_containers_id`)
                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
             $DB->query($query) or die ($DB->error());
+      } else {
+         $query = "ALTER TABLE `glpi_plugin_fields_fields` ADD `mandatory` TINYINT(1) NOT NULL";
+         $DB->query($query) or die ($DB->error());
       }
 
       return true;
@@ -264,7 +268,7 @@ class PluginFieldsField extends CommonDBTM {
                echo $this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
-               echo "<td>".Dropdown::getYesNo($this->fields["is_required"])."</td>";
+               echo "<td>".Dropdown::getYesNo($this->fields["mandatory"])."</td>";
                echo "</tr>\n";
             }
          }
@@ -315,7 +319,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<tr>";
       echo "<td>".__("Mandatory field")." : </td>";
       echo "<td>";
-      Dropdown::showYesNo("is_required", $this->fields["is_required"]);
+      Dropdown::showYesNo("mandatory", $this->fields["mandatory"]);
       echo "</td>";
       echo "</tr>";
 
@@ -493,7 +497,7 @@ class PluginFieldsField extends CommonDBTM {
                }
                
                $more_str = "";
-               if ($field['is_required'] == 1){
+               if ($field['mandatory'] == 1){
                   $more_str = "<span class='red'>*</span>";
                }
                

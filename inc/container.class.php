@@ -369,7 +369,7 @@ class PluginFieldsContainer extends CommonDBTM {
    
       $fields = new PluginFieldsField();
       $find = "`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']." 
-               AND `is_required` = 1";
+               AND `mandatory` = 1";
       $fields_tab = $fields->find($find);
    
       foreach ($fields_tab as $champ_en_BDD) {

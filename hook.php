@@ -1,7 +1,7 @@
 <?php
 
 function plugin_fields_install() {
-   global $CFG_GLPI;
+   global $CFG_GLPI, $BD;
 
    set_time_limit(900);
    ini_set('memory_limit', '2048M');
@@ -43,7 +43,7 @@ function plugin_fields_install() {
    echo "</td>";
    echo "</tr>";
    echo "</table></center>";
-
+   
    return true;
 }
 
