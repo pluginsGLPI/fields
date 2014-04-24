@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GLPI - Resources plugin 0.84\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: 2014-04-23 14:41+0100\n"
+"PO-Revision-Date: 2014-04-24 09:58+0100\n"
 "Last-Translator: Emmanuel HAGUET <ehaguet@teclib.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -109,4 +109,8 @@ msgstr "Date"
 #: inc/field.class.php:626
 msgid "Date & time"
 msgstr "Date & heure"
+
+#: inc/field.class.php:626
+msgid "Not saved : Unfilled mandatory field(s)."
+msgstr "Pas sauvegardé : Manque un ou des champs obligatoires"
 

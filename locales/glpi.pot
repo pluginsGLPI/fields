@@ -108,3 +108,7 @@ msgstr ""
 #: inc/field.class.php:626
 msgid "Date & time"
 msgstr ""
+
+#: inc/field.class.php:626
+msgid "Not saved : Unfilled mandatory field(s)."
+msgstr ""
