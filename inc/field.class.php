@@ -31,7 +31,7 @@ class PluginFieldsField extends CommonDBTM {
 
          $query = "ALTER TABLE  `$table`
                    ADD  `is_active` TINYINT(1)  NOT NULL DEFAULT  '1',
-                   ADD INDEX (`is_active`)')";
+                   ADD INDEX (`is_active`)";
          $DB->query($query) or die ($DB->error());
       }
 
