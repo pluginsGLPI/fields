@@ -19,25 +19,25 @@ class PluginFieldsField extends CommonDBTM {
                   `type`                              VARCHAR(25)    DEFAULT NULL,
                   `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
                   `ranking`                           INT(11)        NOT NULL DEFAULT '0',
-                  `default_value`                     VARCHAR(255)   DEFAULT NULL,,
+                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
                   `is_active`                         TINYINT(1)     NOT NULL DEFAULT '1',
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       } elseif(!FieldExists($table, 'is_active')) {
          $migration->displayMessage("Updating $table");
 
          $query = "ALTER TABLE  `$table`
-                   ADD  `is_active` TINYINT(1) NOT NULL DEFAULT  '1',
+                   ADD  `is_active` TINYINT(1)  NOT NULL DEFAULT  '1',
                    ADD INDEX (`is_active`)')";
          $DB->query($query) or die ($DB->error());
       }
 
       return true;
    }
-   
+
    static function uninstall() {
       global $DB;
 
@@ -53,13 +53,14 @@ class PluginFieldsField extends CommonDBTM {
 
 
    function prepareInputForAdd($input) {
+      global $DB;
       //parse name
       $input['name'] = $this->prepareName($input);
 
       //dropdowns : create files
       if ($input['type'] === "dropdown") {
-         //search if dropdown already exist in this container 
-         $found = $this->find("name = '".$input['name']."' 
+         //search if dropdown already exist in this container
+         $found = $this->find("name = '".$input['name']."'
                               AND plugin_fields_containers_id = '".
                                  $input['plugin_fields_containers_id']."'");
 
@@ -69,7 +70,7 @@ class PluginFieldsField extends CommonDBTM {
             return false;
          }
 
-         //search if dropdown already exist in other container 
+         //search if dropdown already exist in other container
          $found = $this->find("name = '".$input['name']."'");
          //for dropdown, if already exist, don't create files
          if (empty($found)) {
@@ -85,7 +86,7 @@ class PluginFieldsField extends CommonDBTM {
       if (empty($input["ranking"])) {
          $input["ranking"] = $this->getNextRanking();
       }
-      
+
       //add field to container table
       if ($input['type'] !== "header") {
          $container_obj = new PluginFieldsContainer;
@@ -110,7 +111,7 @@ class PluginFieldsField extends CommonDBTM {
       global $DB;
 
       //remove field in container table
-      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields']) 
+      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])) {
 
          if ($this->fields['type'] === "dropdown") {
@@ -125,7 +126,7 @@ class PluginFieldsField extends CommonDBTM {
                                        preg_replace('/s$/', '', $container_obj->fields['name'])));
          $classname::removeField($this->fields['name']);
       }
-      
+
       if (isset($oldname)) $this->fields['name'] = $oldname;
 
       if ($this->fields['type'] === "dropdown") {
@@ -134,11 +135,27 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
+   function post_purgeItem() {
+      global $DB;
+
+      $table         = getTableForItemType(__CLASS__);
+      $old_container = $this->fields['plugin_fields_containers_id'];
+      $old_ranking   = $this->fields['ranking'];
+
+      $query = "UPDATE $table SET
+                ranking = ranking-1
+                WHERE plugin_fields_containers_id = $old_container
+                AND ranking > $old_ranking";
+      $DB->query($query);
+
+      return true;
+   }
+
 
    /**
     * parse name for avoid non alphanumeric char in it and conflict with other fields
     * @param  array $input the field form input
-    * @return string  the parsed name 
+    * @return string  the parsed name
     */
    function prepareName($input) {
       //contruct field name by processing label (remove non alphanumeric char)
@@ -233,25 +250,29 @@ class PluginFieldsField extends CommonDBTM {
          echo "<div class='center'>".
               "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
          echo __("Add a new field", "fields")."</a></div><br>\n";
-      
+
 
       if ($DB->numrows($result) == 0) {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
          echo "<th class='b'>".__("No field for this bloc", "fields")."</th></tr></table>";
       } else {
+         echo '<div id="drag">';
+         echo '<input type="hidden" name="_plugin_fields_containers_id"
+                  id="plugin_fields_containers_id" value="' . $cID . '" />';
          echo "<table class='tab_cadre_fixehov'>";
          echo "<tr>";
          echo "<th>" . __("Label") . "</th>";
          echo "<th>" . __("Type") . "</th>";
          echo "<th>" . __("Default values") . "</th>";
          echo "<th>" . __("Active") . "</th>";
+         echo "<th width='16'>&nbsp;</th>";
          echo "</tr>\n";
 
          $fields_type = self::getTypes();
 
          while ($data = $DB->fetch_array($result)) {
             if ($this->getFromDB($data['id'])) {
-               echo "<tr class='tab_bg_2' style='cursor:pointer' onClick=\"viewEditField$cID". 
+               echo "<tr class='tab_bg_2' style='cursor:pointer' onClick=\"viewEditField$cID".
                   $this->fields['id']."$rand();\">";
 
                echo "<td>";
@@ -273,10 +294,19 @@ class PluginFieldsField extends CommonDBTM {
                      ? __('Yes')
                      : '<b class="red">' . __('No') . '</b>';
                echo "</td>";
+
+               echo '<td class="rowhandler control center">';
+               echo '<div class="drag row" style="cursor:move;border:none !important;">';
+               echo '<img src="../pics/drag.png" alt="#" title="Déplacer" width="16" height="16" />';
+               echo '</div>';
+               echo '</td>';
+
                echo "</tr>\n";
             }
          }
       }
+      echo '</table>';
+      echo '</div>';
    }
 
 
@@ -303,19 +333,19 @@ class PluginFieldsField extends CommonDBTM {
          $container->getField('id')."'>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
-     
+
       if (!$edit) {
          echo "</tr>";
          echo "<tr>";
          echo "<td>".__("Type")." : </td>";
          echo "<td>";
-         Dropdown::showFromArray('type', self::getTypes(), 
+         Dropdown::showFromArray('type', self::getTypes(),
             array('value' => $this->fields["type"]));
          echo "</td>";
-      } 
+      }
       echo "<td>".__("Default values")." : </td>";
       echo "<td>";
-      Html::autocompletionTextField($this, 'default_value', 
+      Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
       echo "</td>";
 
@@ -342,13 +372,13 @@ class PluginFieldsField extends CommonDBTM {
       //profile restriction (for reading profile)
       $canedit = false;
       $profile = new PluginFieldsProfile;
-      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
+      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                  AND `plugin_fields_containers_id` = '$c_id'");
       $first_found = array_shift($found);
       if ($first_found['right'] == CREATE) {
          $canedit = true;
       }
-      
+
       //get fields for this container
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
@@ -357,7 +387,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<input type='hidden' name='items_id' value='$items_id'>";
       echo "<table class='tab_cadre_fixe'>";
       echo self::prepareHtmlFields($fields, $items_id, $canedit);
-      
+
       if ($canedit) {
          echo "<tr><td class='tab_bg_2 center' colspan='4'>";
          echo "<input type='submit' name='update_fields_values' value=\"".
@@ -405,7 +435,7 @@ class PluginFieldsField extends CommonDBTM {
          $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
       }
 
-      //Retrieve dom container 
+      //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getEntries('dom', true);
 
       //if no dom containers defined for this itemtype, do nothing
@@ -424,7 +454,7 @@ class PluginFieldsField extends CommonDBTM {
                });
             }
          });
-   
+
       });
       ";
    }
@@ -441,9 +471,9 @@ class PluginFieldsField extends CommonDBTM {
       echo "</table>";
    }
 
-   
 
-   static function prepareHtmlFields($fields, $items_id, $canedit = true, 
+
+   static function prepareHtmlFields($fields, $items_id, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
 
       if (empty($fields)) return false;
@@ -467,7 +497,7 @@ class PluginFieldsField extends CommonDBTM {
       $html = "";
       $odd = 0;
       foreach($fields as $field) {
-      
+
          if ($field['type'] === 'header') {
             $html.= "<tr class='tab_bg_2'>";
             $html.= "<th colspan='4'>".$field['label']."</td>";
@@ -502,9 +532,9 @@ class PluginFieldsField extends CommonDBTM {
             //show field
             if ($show_table) {
                if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
-               if ($container_obj->fields['itemtype'] == 'Ticket' 
+               if ($container_obj->fields['itemtype'] == 'Ticket'
                    && $container_obj->fields['type'] == 'dom'
-                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
+                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
                   $html.= "<th width='13%'>".$field['label']." : </th>";
                } else {
@@ -583,7 +613,7 @@ class PluginFieldsField extends CommonDBTM {
                if ($odd%2 == 1)  $html.= "</tr>";
                $odd++;
             }
-         }         
+         }
       }
       if ($show_table && $odd%2 == 1)  $html.= "</tr>";
 
@@ -599,9 +629,9 @@ class PluginFieldsField extends CommonDBTM {
       $field_obj = new self;
 
       //clean dropdown [pre/su]fix if exists
-      $cleaned_linkfield = preg_replace("/plugin_fields_(.*)dropdowns_id/", "$1", 
+      $cleaned_linkfield = preg_replace("/plugin_fields_(.*)dropdowns_id/", "$1",
                                         $searchOption['linkfield']);
-      
+
       //find field
       $query_f = "SELECT fields.plugin_fields_containers_id
                 FROM glpi_plugin_fields_fields fields

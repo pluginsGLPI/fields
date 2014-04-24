@@ -34,6 +34,12 @@ function plugin_init_fields() {
          }
       }
    }
+
+   //load drag and drop javascript library on Package Interface
+   $PLUGIN_HOOKS['add_javascript']['fields'] = array(
+       "scripts/redips-drag-min.js",
+       "scripts/drag-field-row.js"
+   );
 }
 
 
