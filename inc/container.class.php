@@ -399,7 +399,6 @@ class PluginFieldsContainer extends CommonDBTM {
                }
                break;
             case 'dropdown' :
-               Toolbox::logDebug($value);
                if ($value === "0") {
                   Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
                     false, ERROR);

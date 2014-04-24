@@ -149,9 +149,11 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //for dropdown, if already exist, link to it
-      if ($input['type'] === "dropdown") {
-         $found = $this->find("name = '".$input['name']."'");
-         if (!empty($found)) return $input['name'];
+      if (isset($input['type'])) { //TODO : Review this little block
+         if ($input['type'] === "dropdown") {
+            $found = $this->find("name = '".$input['name']."'");
+            if (!empty($found)) return $input['name'];
+         }
       }
 
       //check if field name not already exist and not in conflict with itemtype fields name
@@ -161,11 +163,16 @@ class PluginFieldsField extends CommonDBTM {
       $item = new $container->fields['itemtype'];
       $item->getEmpty();
       $field = new self();
-      $i = 2;
-      $field_name = $input['name'];
-      while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
-         $field_name = $input['name'].$i;
-         $i++;
+      
+      if (isset($input["add"])) {
+         $i = 2;
+         $field_name = $input['name'];
+         while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
+            $field_name = $input['name'].$i;
+            $i++;
+         }
+      } else { //update
+         $field_name = $input['name'];
       }
       return $field_name;
    }
