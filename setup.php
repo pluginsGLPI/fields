@@ -6,14 +6,16 @@ function plugin_init_fields() {
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
    $plugin = new Plugin();
-   if (isset($_SESSION['glpiactiveentities']) 
-      && $plugin->isInstalled('fields') 
+   if (isset($_SESSION['glpiactiveentities'])
+      && $plugin->isInstalled('fields')
       && $plugin->isActivated('fields')) {
 
+      $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
+
       // add entry to configuration menu
-      $PLUGIN_HOOKS["menu_toadd"]['davfi'] = array('config'  => 'PluginFieldsMenu');
-      
-      // add tabs to itemtypes 
+      $PLUGIN_HOOKS["menu_toadd"]['fields'] = array('config'  => 'PluginFieldsMenu');
+
+      // add tabs to itemtypes
       Plugin::registerClass('PluginFieldsContainer',
                             array('addtabon' => PluginFieldsContainer::getEntries()));
 
@@ -21,15 +23,15 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
-      //Retrieve dom container 
+      //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getEntries('all');
       if ($itemtypes !== false) {
          foreach ($itemtypes as $itemtype) {
-            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer", 
+            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer",
                                                                           "preItemUpdate");
-            $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
+            $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer",
                                                                           "preItemPurge");
-            $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer", 
+            $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer",
                                                                           "preItemUpdate");
          }
       }
