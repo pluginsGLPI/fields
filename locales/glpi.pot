@@ -108,3 +108,11 @@ msgstr ""
 #: inc/field.class.php:626
 msgid "Date & time"
 msgstr ""
+
+#: inc/field.class.php:350
+msgid "Configure"
+msgstr ""
+
+#: inc/field.class.php:350
+msgid "Configure fields values"
+msgstr ""

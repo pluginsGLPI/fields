@@ -3,15 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2014-04-25 17:46+0100\n"
+"Last-Translator: Jérémy MOREAU <jmoreau@teclib.com>\n"
+"Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +28,9 @@ msgstr "MySQL tables uninstallation"
 msgid "Configurate the blocs"
 msgstr "Configurate the blocs"
 
-#: setup.php:55 front/container.form.php:35 front/container.php:4
+#: setup.php:55
+#: front/container.form.php:35
+#: front/container.php:4
 msgid "Additionnal fields"
 msgstr "Additionnal fields"
 
@@ -108,3 +109,12 @@ msgstr "Date"
 #: inc/field.class.php:626
 msgid "Date & time"
 msgstr "Date & time"
+
+#: inc/field.class.php:350
+msgid "Configure"
+msgstr "Configure"
+
+#: inc/field.class.php:350
+msgid "Configure fields values"
+msgstr "Configure fields values"
+
