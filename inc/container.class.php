@@ -241,12 +241,6 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
-      
-      echo "<td>".__("Mandatory field")." : </td>";
-      echo "<td>";
-      Dropdown::showYesNo("mandatory");
-      echo "</td>";
-      
       echo "</tr>";
       
 
@@ -371,6 +365,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $find = "`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']." 
                AND `mandatory` = 1";
       $fields_tab = $fields->find($find);
+      
+      $validation = true; //Init
 
       foreach ($fields_tab as $champ_en_BDD) {
          $name = $champ_en_BDD['name'];
@@ -392,22 +388,27 @@ class PluginFieldsContainer extends CommonDBTM {
             case 'datetime' :
                if ($value !== "0") {
                   if (empty($value) || $value == 'NULL') {
-                     Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
+                     Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field", 'fields').' : '.$name,
                        false, ERROR);
-                     return false;
+                     $validation = false;
                   }
                }
                break;
             case 'dropdown' :
                if ($value === "0") {
-                  Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field(s).", 'fields'),
+                  Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field", 'fields').' : '.$name,
                     false, ERROR);
-                  return false;
+                  $validation = false;
                }
                break;
             case 'header' :
                break;
          }
+      }
+      
+      if($validation === false){
+         $_SESSION['plugin']['fields']['values_sent'] = $input;
+         return $validation;
       }
    
       return $input;
@@ -420,14 +421,20 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    function updateFieldsValues($datas) {
       //global $DB;
+      $condition = true; //Init
+      
       if(self::validateMandatoryValues($datas) === false) {
-         return false;
+         $condition = false;
       }
 
       if (self::validateValues($datas) === false) {
+         $condition = false;
+      }
+      
+      if ($condition === false) {
          return false;
       }
-
+      
       //insert datas in new table
       $container_obj = new PluginFieldsContainer();
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
@@ -566,14 +573,14 @@ class PluginFieldsContainer extends CommonDBTM {
       $fields_error = array();
       foreach ($fields as $fields_id => $field) {
          if (empty($datas[$field['name']])) continue;
-         if (!preg_match("/[-+]?[0-9]*\.?[0-9]+/", $datas[$field['name']])) {
+         if (!is_numeric($datas[$field['name']])) {
             $fields_error[] = $field['label'];
          }
       }
 
       if (!empty($fields_error)) {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields").
-                                          " : (".implode(", ", $fields_error).")");
+                                          " : (".implode(", ", $fields_error).")", false, ERROR);
          $_SESSION['plugin']['fields']['values_sent'] = $datas;
          return false;
       } else return true;

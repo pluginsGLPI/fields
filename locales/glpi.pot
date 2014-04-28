@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 11:08+0100\n"
+"POT-Creation-Date: 2014-04-28 10:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "MySQL tables installation"
 msgstr ""
 
-#: hook.php:64
+#: hook.php:66
 msgid "MySQL tables uninstallation"
 msgstr ""
 
@@ -29,86 +29,87 @@ msgstr ""
 msgid "Configurate the blocs"
 msgstr ""
 
-#: setup.php:55 front/container.form.php:35 front/container.php:4
+#: setup.php:55 front/container.form.php:37 front/container.php:4
 msgid "Additionnal fields"
 msgstr ""
 
-#: inc/container.class.php:133
-msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
+#: inc/container.class.php:132
+msgid ""
+"You cannot add several blocs with type 'Insertion in the form' on same object"
 msgstr ""
 
 #: inc/container.class.php:203
 msgid "Bloc"
 msgstr ""
 
-#: inc/container.class.php:282
+#: inc/container.class.php:295
 msgid "Add tab"
 msgstr ""
 
-#: inc/container.class.php:283
+#: inc/container.class.php:296
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:508
+#: inc/container.class.php:397 inc/container.class.php:405
+msgid "Not saved : Unfilled mandatory field"
+msgstr ""
+
+#: inc/container.class.php:581
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/dropdown.class.php:14
+#: inc/dropdown.class.php:13
 msgid "This plugin need write right on his own files, please correct."
 msgstr ""
 
-#: inc/field.class.php:41
+#: inc/field.class.php:45
 msgid "Field"
 msgstr ""
 
-#: inc/field.class.php:65
+#: inc/field.class.php:69
 msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr ""
 
-#: inc/field.class.php:188
+#: inc/field.class.php:200
 msgid "Fields"
 msgstr ""
 
-#: inc/field.class.php:232
+#: inc/field.class.php:242
 msgid "Add a new field"
 msgstr ""
 
-#: inc/field.class.php:237
+#: inc/field.class.php:247
 msgid "No field for this bloc"
 msgstr ""
 
-#: inc/field.class.php:619
+#: inc/field.class.php:647
 msgid "Headband"
 msgstr ""
 
-#: inc/field.class.php:620
+#: inc/field.class.php:648
 msgid "Text (single line)"
 msgstr ""
 
-#: inc/field.class.php:621
+#: inc/field.class.php:649
 msgid "Text (multiples lines)"
 msgstr ""
 
-#: inc/field.class.php:622
+#: inc/field.class.php:650
 msgid "Number"
 msgstr ""
 
-#: inc/field.class.php:623
+#: inc/field.class.php:651
 msgid "Dropdown"
 msgstr ""
 
-#: inc/field.class.php:624
+#: inc/field.class.php:652
 msgid "Yes/No"
 msgstr ""
 
-#: inc/field.class.php:625
+#: inc/field.class.php:653
 msgid "Date"
 msgstr ""
 
-#: inc/field.class.php:626
+#: inc/field.class.php:654
 msgid "Date & time"
-msgstr ""
-
-#: inc/field.class.php:626
-msgid "Not saved : Unfilled mandatory field(s)."
 msgstr ""

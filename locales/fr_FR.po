@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Resources plugin 0.84\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: 2014-04-24 09:58+0100\n"
+"POT-Creation-Date: 2014-04-28 10:00+0200\n"
+"PO-Revision-Date: 2014-04-28 10:06+0100\n"
 "Last-Translator: Emmanuel HAGUET <ehaguet@teclib.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "MySQL tables installation"
 msgstr "Installation des tables MySQL"
 
-#: hook.php:64
+#: hook.php:66
 msgid "MySQL tables uninstallation"
 msgstr "Désinstallation des tables MySQL"
 
@@ -29,12 +29,12 @@ msgid "Configurate the blocs"
 msgstr "Configurer les blocs"
 
 #: setup.php:55
-#: front/container.form.php:35
+#: front/container.form.php:37
 #: front/container.php:4
 msgid "Additionnal fields"
 msgstr "Champs supplémentaires"
 
-#: inc/container.class.php:133
+#: inc/container.class.php:132
 msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
 msgstr "Vous ne pouvez pas créer plusieurs bloc de type 'Insertion dans le formulaire' sur le même objet"
 
@@ -42,75 +42,76 @@ msgstr "Vous ne pouvez pas créer plusieurs bloc de type 'Insertion dans le form
 msgid "Bloc"
 msgstr "Bloc"
 
-#: inc/container.class.php:282
+#: inc/container.class.php:295
 msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
-#: inc/container.class.php:283
+#: inc/container.class.php:296
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion dans le formulaire (avant le boutton sauvegarder)"
 
-#: inc/container.class.php:508
+#: inc/container.class.php:397
+#: inc/container.class.php:405
+msgid "Not saved : Unfilled mandatory field"
+msgstr "Pas sauvegardé : Manque le champs obligatoire"
+
+#: inc/container.class.php:581
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
-#: inc/dropdown.class.php:14
+#: inc/dropdown.class.php:13
 msgid "This plugin need write right on his own files, please correct."
 msgstr "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger."
 
-#: inc/field.class.php:41
+#: inc/field.class.php:45
 msgid "Field"
 msgstr "Champ"
 
-#: inc/field.class.php:65
+#: inc/field.class.php:69
 msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr "Vous ne pouvez pas créer plusieurs fois la même champs 'intitulé' pour le même bloc"
 
-#: inc/field.class.php:188
+#: inc/field.class.php:200
 msgid "Fields"
 msgstr "Champs"
 
-#: inc/field.class.php:232
+#: inc/field.class.php:242
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
-#: inc/field.class.php:237
+#: inc/field.class.php:247
 msgid "No field for this bloc"
 msgstr "Pas de champs pour ce bloc"
 
-#: inc/field.class.php:619
+#: inc/field.class.php:647
 msgid "Headband"
 msgstr "Bandeau"
 
-#: inc/field.class.php:620
+#: inc/field.class.php:648
 msgid "Text (single line)"
 msgstr "Texte (simple ligne)"
 
-#: inc/field.class.php:621
+#: inc/field.class.php:649
 msgid "Text (multiples lines)"
 msgstr "Texte (multiples lignes)"
 
-#: inc/field.class.php:622
+#: inc/field.class.php:650
 msgid "Number"
 msgstr "Nombre"
 
-#: inc/field.class.php:623
+#: inc/field.class.php:651
 msgid "Dropdown"
 msgstr "Intitulés"
 
-#: inc/field.class.php:624
+#: inc/field.class.php:652
 msgid "Yes/No"
 msgstr "Oui/Non"
 
-#: inc/field.class.php:625
+#: inc/field.class.php:653
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:626
+#: inc/field.class.php:654
 msgid "Date & time"
 msgstr "Date & heure"
-
-#: inc/field.class.php:626
-msgid "Not saved : Unfilled mandatory field(s)."
-msgstr "Pas sauvegardé : Manque un ou des champs obligatoires"
 
