@@ -21,6 +21,7 @@ class PluginFieldsField extends CommonDBTM {
                   `ranking`                           INT(11)        NOT NULL DEFAULT '0',
                   `default_value`                     VARCHAR(255)   DEFAULT NULL,
                   `is_active`                         TINYINT(1)     NOT NULL DEFAULT '1',
+                  `mandatory`                         TINYINT(1)     NOT NULL DEFAULT '0',
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`)
@@ -28,11 +29,9 @@ class PluginFieldsField extends CommonDBTM {
             $DB->query($query) or die ($DB->error());
       } elseif(!FieldExists($table, 'is_active')) {
          $migration->displayMessage("Updating $table");
-
-         $query = "ALTER TABLE  `$table`
-                   ADD  `is_active` TINYINT(1)  NOT NULL DEFAULT  '1',
-                   ADD INDEX (`is_active`)";
-         $DB->query($query) or die ($DB->error());
+         $migration->addField($table, 'is_active', 'bool', array('value' => 1));
+         $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
+         $migration->addKey($table, 'is_active', 'is_active');
       }
 
       return true;
@@ -264,6 +263,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<th>" . __("Label") . "</th>";
          echo "<th>" . __("Type") . "</th>";
          echo "<th>" . __("Default values") . "</th>";
+         echo "<th>" . __("Mandatory field") . "</th>";
          echo "<th>" . __("Active") . "</th>";
          echo "<th width='16'>&nbsp;</th>";
          echo "</tr>\n";
@@ -289,6 +289,7 @@ class PluginFieldsField extends CommonDBTM {
                echo $this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
+               echo "<td align='center'>".Dropdown::getYesNo($this->fields["mandatory"])."</td>";
                echo "<td align='center'>";
                echo ($this->fields['is_active'] == 1)
                      ? __('Yes')
@@ -360,8 +361,10 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo('is_active', !empty($this->fields["is_active"]) ?: 1);
       echo "</td>";
-      echo "<td>&nbsp;</td>";
-      echo "<td>&nbsp;</td>";
+      echo "<td>".__("Mandatory field")." : </td>";
+      echo "<td>";
+      Dropdown::showYesNo("mandatory", $this->fields["mandatory"]);
+      echo "</td>";
       echo "</tr>";
 
       $this->showFormButtons($options);
@@ -536,16 +539,20 @@ class PluginFieldsField extends CommonDBTM {
             //show field
             if ($show_table) {
                if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
+
+               $required = ($field['mandatory'] == 1) ? "<span class='red'>*</span>" : '';
+
                if ($container_obj->fields['itemtype'] == 'Ticket'
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html.= "<th width='13%'>".$field['label']." : </th>";
+                  $html.= "<th width='13%'>".$field['label']." : $required</th>";
                } else {
-                  $html.= "<td>".$field['label']." : </td>";
+                  $html.= "<td>".$field['label']." : $required</td>";
                }
                $html.= "<td>";
             }
+
             switch ($field['type']) {
                case 'number':
                case 'text':
