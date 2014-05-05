@@ -368,18 +368,18 @@ class PluginFieldsContainer extends CommonDBTM {
       
       $validation = true; //Init
 
-      foreach ($fields_tab as $champ_en_BDD) {
-         $name = $champ_en_BDD['name'];
+      foreach ($fields_tab as $field_in_database) {
+         $name = $field_in_database['name'];
           
          if (isset($input[$name])) {
             $value = $input[$name];
          } else {
-            if($champ_en_BDD['type'] == 'dropdown') {
+            if($field_in_database['type'] == 'dropdown') {
                $value = $input["plugin_fields_".$name."dropdowns_id"];
             }
          }
           
-         switch ($champ_en_BDD['type']) {
+         switch ($field_in_database['type']) {
             case 'yesno' :
             case 'date' :
             case 'textarea' :
@@ -388,7 +388,7 @@ class PluginFieldsContainer extends CommonDBTM {
             case 'datetime' :
                if ($value !== "0") {
                   if (empty($value) || $value == 'NULL') {
-                     Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$champ_en_BDD['label'].'" !',
+                     Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$field_in_database['label'].'" !',
                        false, ERROR);
                      $validation = false;
                   }
@@ -396,7 +396,7 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             case 'dropdown' :
                if ($value === "0") {
-                  Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$champ_en_BDD['label'].'" !',
+                  Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$field_in_database['label'].'" !',
                     false, ERROR);
                   $validation = false;
                }
