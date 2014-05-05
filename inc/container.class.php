@@ -388,7 +388,7 @@ class PluginFieldsContainer extends CommonDBTM {
             case 'datetime' :
                if ($value !== "0") {
                   if (empty($value) || $value == 'NULL') {
-                     Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field", 'fields').' : '.$name,
+                     Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$champ_en_BDD['label'].'" !',
                        false, ERROR);
                      $validation = false;
                   }
@@ -396,7 +396,7 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             case 'dropdown' :
                if ($value === "0") {
-                  Session::addMessageAfterRedirect(__("Not saved : Unfilled mandatory field", 'fields').' : '.$name,
+                  Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$champ_en_BDD['label'].'" !',
                     false, ERROR);
                   $validation = false;
                }
