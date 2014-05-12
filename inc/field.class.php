@@ -476,7 +476,7 @@ class PluginFieldsField extends CommonDBTM {
       $field_obj = new self;
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
       echo "<table class='tab_cadre_fixe'>";
-      echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
+      echo self::prepareHtmlFields($fields, $items_id);
       echo "</table>";
    }
 
