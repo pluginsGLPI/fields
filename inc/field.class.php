@@ -349,9 +349,11 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
-      echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/intitulsdropdown.php">
-               <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
-                  alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
+      if($this->fields["type"] == "dropdown") {
+         echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/'.$this->fields["name"].'dropdown.php">
+                  <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
+                     alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
+      }
       echo "</td>";
 
       echo "</tr>";

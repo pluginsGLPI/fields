@@ -1,10 +1,7 @@
 <?php
+include ('../../../inc/includes.php');
 
-include ("../../../inc/includes.php");
+Plugin::load('fields',true);
 
-Html::header(%%CLASSNAME%%::getTypeName(),$_SERVER['PHP_SELF'], "plugins", "fields", 
-             "%%CLASSNAME%%");
-
-Search::show('%%CLASSNAME%%');
-
-Html::footer();
+$dropdown = new %%CLASSNAME%%();
+include (GLPI_ROOT . "/front/dropdown.common.php");
