@@ -23,6 +23,10 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
+      //load drag and drop javascript library on Package Interface
+      $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
+      $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
+
       //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getEntries('all');
       if ($itemtypes !== false) {
@@ -36,12 +40,6 @@ function plugin_init_fields() {
          }
       }
    }
-
-   //load drag and drop javascript library on Package Interface
-   $PLUGIN_HOOKS['add_javascript']['fields'] = array(
-       "scripts/redips-drag-min.js",
-       "scripts/drag-field-row.js"
-   );
 }
 
 
