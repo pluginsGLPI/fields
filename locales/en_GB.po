@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: GLPI - Resources plugin 0.84\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-28 10:00+0200\n"
-"PO-Revision-Date: 2014-05-05 12:00+0100\n"
-"Last-Translator: Emmanuel HAGUET <ehaguet@teclib.com>\n"
+"PO-Revision-Date: 2014-06-02 15:54+0100\n"
+"Last-Translator: Jérémy MOREAU <jmoreau@teclib.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -52,8 +52,8 @@ msgstr "Insertion in the form (before save button)"
 
 #: inc/container.class.php:397
 #: inc/container.class.php:405
-msgid "Please fill in the mandatory field"
-msgstr "Please fill in the mandatory field"
+msgid "Not saved : Unfilled mandatory field"
+msgstr "Not saved : Unfilled mandatory field"
 
 #: inc/container.class.php:581
 msgid "Some numeric fields contains non numeric values"
@@ -84,8 +84,8 @@ msgid "No field for this bloc"
 msgstr "No field for this bloc"
 
 #: inc/field.class.php:647
-msgid "Headband"
-msgstr "Headband"
+msgid "Header"
+msgstr "Header"
 
 #: inc/field.class.php:648
 msgid "Text (single line)"
@@ -115,3 +115,5 @@ msgstr "Date"
 msgid "Date & time"
 msgstr "Date & time"
 
+#~ msgid "Headband"
+#~ msgstr "Headband"

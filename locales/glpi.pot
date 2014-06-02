@@ -83,7 +83,7 @@ msgid "No field for this bloc"
 msgstr ""
 
 #: inc/field.class.php:647
-msgid "Headband"
+msgid "Header"
 msgstr ""
 
 #: inc/field.class.php:648
