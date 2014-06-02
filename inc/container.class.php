@@ -359,61 +359,6 @@ class PluginFieldsContainer extends CommonDBTM {
       return PluginFieldsField::showForTabContainer($c_id, $item->fields['id']);
    }
 
-   function validateMandatoryValues($input) {
-
-      $fields = new PluginFieldsField();
-      $find = "`plugin_fields_containers_id` = ".$input['plugin_fields_containers_id']."
-               AND `mandatory` = 1";
-      $fields_tab = $fields->find($find);
-
-      $validation = true; //Init
-
-      foreach ($fields_tab as $field_in_database) {
-         $name = $field_in_database['name'];
-
-         if (isset($input[$name])) {
-            $value = $input[$name];
-         } else {
-            if($field_in_database['type'] == 'dropdown') {
-               $value = $input["plugin_fields_".$name."dropdowns_id"];
-            }
-         }
-
-         switch ($field_in_database['type']) {
-            case 'yesno' :
-            case 'date' :
-            case 'textarea' :
-            case 'text' :
-            case 'number' :
-            case 'datetime' :
-               if ($value !== "0") {
-                  if (empty($value) || $value == 'NULL') {
-                     Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$field_in_database['label'].'" !',
-                       false, ERROR);
-                     $validation = false;
-                  }
-               }
-               break;
-            case 'dropdown' :
-               if ($value === "0") {
-                  Session::addMessageAfterRedirect(__("Please fill in the mandatory field", 'fields').' : "'.$field_in_database['label'].'" !',
-                    false, ERROR);
-                  $validation = false;
-               }
-               break;
-            case 'header' :
-               break;
-         }
-      }
-
-      if($validation === false){
-         $_SESSION['plugin']['fields']['values_sent'] = $input;
-         return $validation;
-      }
-
-      return $input;
-   }
-
    /**
     * Insert values submited by fields container
     * @param  array $datas datas posted
@@ -422,10 +367,6 @@ class PluginFieldsContainer extends CommonDBTM {
    function updateFieldsValues($datas) {
       //global $DB;
       $condition = true; //Init
-
-      if(self::validateMandatoryValues($datas) === false) {
-         $condition = false;
-      }
 
       if (self::validateValues($datas) === false) {
          $condition = false;
@@ -561,29 +502,34 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return boolean
     */
    static function validateValues($datas) {
+      $valid = true;
+
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = ".
-                                 $datas['plugin_fields_containers_id']." AND type = 'number'");
+                                 $datas['plugin_fields_containers_id']);
 
-      unset($datas['plugin_fields_containers_id']);
-      unset($datas['items_id']);
-      unset($datas['update_fields_values']);
-      $datas_keys = array_keys($datas);
-
-      $fields_error = array();
       foreach ($fields as $fields_id => $field) {
-         if (empty($datas[$field['name']])) continue;
-         if (!is_numeric($datas[$field['name']])) {
-            $fields_error[] = $field['label'];
+         $name  = $field['name'];
+         $value = isset($datas[$name]) ? $datas[$name] : $datas['plugin_fields_' . $name . 'dropdowns_id'];
+
+         // Check mandatory fields
+         if (($field['mandatory'] == 1)
+             && (empty($value)
+               || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
+            Session::AddMessageAfterRedirect(
+               __("Some mandatory fields are empty", "fields")
+               . " : " . $field['label'], false, ERROR);
+            $valid = false;
+
+         // Check number fields
+         } elseif($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+            Session::AddMessageAfterRedirect(
+               __("Some numeric fields contains non numeric values", "fields")
+               . " : " . $field['label'], false, ERROR);
+            $valid = false;
          }
       }
-
-      if (!empty($fields_error)) {
-         Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields").
-                                          " : (".implode(", ", $fields_error).")", false, ERROR);
-         $_SESSION['plugin']['fields']['values_sent'] = $datas;
-         return false;
-      } else return true;
+      return $valid;
    }
 
 

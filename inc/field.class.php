@@ -19,14 +19,25 @@ class PluginFieldsField extends CommonDBTM {
                   `plugin_fields_containers_id`     INT(11)      NOT NULL DEFAULT '0',
                   `ranking`                         INT(11)      NOT NULL DEFAULT '0',
                   `default_value`                   VARCHAR(255) DEFAULT NULL,
-                  `mandatory`                       TINYINT(1)   NOT NULL,
+                  `mandatory`                       TINYINT(1)   NOT NULL DEFAULT '0',
                   PRIMARY KEY                       (`id`),
                   KEY `plugin_fields_containers_id` (`plugin_fields_containers_id`)
                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       } else {
+         $migration->displayMessage("Updating $table");
+
          $query = "ALTER TABLE `glpi_plugin_fields_fields` ADD `mandatory` TINYINT(1) NOT NULL";
          $DB->query($query) or die ($DB->error());
+
+         if(!FieldExists($table, 'is_active')) {
+            $migration->addField($table, 'is_active', 'bool', array('value' => 1));
+            $migration->addKey($table, 'is_active', 'is_active');
+         }
+         if(!FieldExists($table, 'mandatory')) {
+            $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
+         }
+         $migration->executeMigration();
       }
 
       return true;
