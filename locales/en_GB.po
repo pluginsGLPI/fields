@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: 2014-04-25 17:46+0100\n"
+"PO-Revision-Date: 2014-06-02 17:49+0100\n"
 "Last-Translator: Jérémy MOREAU <jmoreau@teclib.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -53,6 +53,10 @@ msgstr "Insertion in the form (before save button)"
 #: inc/container.class.php:508
 msgid "Some numeric fields contains non numeric values"
 msgstr "Some numeric fields contains non numeric values"
+
+#: inc/container.class.php:514
+msgid "Some mandatory fields are empty"
+msgstr "Some mandatory fields are empty"
 
 #: inc/dropdown.class.php:14
 msgid "This plugin need write right on his own files, please correct."

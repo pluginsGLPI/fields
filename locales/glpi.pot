@@ -53,6 +53,10 @@ msgstr ""
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
+#: inc/container.class.php:514
+msgid "Some mandatory fields are empty"
+msgstr ""
+
 #: inc/dropdown.class.php:14
 msgid "This plugin need write right on his own files, please correct."
 msgstr ""

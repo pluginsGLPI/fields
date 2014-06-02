@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: 2014-04-25 17:46+0100\n"
+"PO-Revision-Date: 2014-06-02 17:49+0100\n"
 "Last-Translator: Jérémy MOREAU <jmoreau@teclib.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -36,7 +36,7 @@ msgstr "Champs supplémentaires"
 
 #: inc/container.class.php:133
 msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
-msgstr "Vous ne pouvez pas créer plusieurs bloc de type 'Insertion dans le formulaire' sur le même objet"
+msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
 
 #: inc/container.class.php:203
 msgid "Bloc"
@@ -48,15 +48,19 @@ msgstr "Ajout d'un onglet"
 
 #: inc/container.class.php:283
 msgid "Insertion in the form (before save button)"
-msgstr "Insertion dans le formulaire (avant le boutton sauvegarder)"
+msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 
 #: inc/container.class.php:508
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
+#: inc/container.class.php:514
+msgid "Some mandatory fields are empty"
+msgstr "Un champ obligatoire est vide"
+
 #: inc/dropdown.class.php:14
 msgid "This plugin need write right on his own files, please correct."
-msgstr "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger."
+msgstr "Ce plugin nécessite les droits d'écriture sur ses propres fichiers, veuillez corriger."
 
 #: inc/field.class.php:41
 msgid "Field"
@@ -64,7 +68,7 @@ msgstr "Champ"
 
 #: inc/field.class.php:65
 msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr "Vous ne pouvez pas créer plusieurs fois la même champs 'intitulé' pour le même bloc"
+msgstr "Vous ne pouvez pas créer plusieurs fois le même champ 'intitulé' pour le même bloc"
 
 #: inc/field.class.php:188
 msgid "Fields"
@@ -84,11 +88,11 @@ msgstr "Entête"
 
 #: inc/field.class.php:620
 msgid "Text (single line)"
-msgstr "Texte (simple ligne)"
+msgstr "Texte (ligne simple)"
 
 #: inc/field.class.php:621
 msgid "Text (multiples lines)"
-msgstr "Texte (multiples lignes)"
+msgstr "Texte (lignes multiples)"
 
 #: inc/field.class.php:622
 msgid "Number"
@@ -96,7 +100,7 @@ msgstr "Nombre"
 
 #: inc/field.class.php:623
 msgid "Dropdown"
-msgstr "Intitulés"
+msgstr "Liste déroulante (Intitulés)"
 
 #: inc/field.class.php:624
 msgid "Yes/No"
@@ -116,5 +120,5 @@ msgstr "Configuration"
 
 #: inc/field.class.php:350
 msgid "Configure fields values"
-msgstr "Configurer les valeurs du champs"
+msgstr "Configurer les valeurs du champ"
 
