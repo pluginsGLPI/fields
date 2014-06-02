@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GLPI - Resources plugin 0.84\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-28 10:00+0200\n"
-"PO-Revision-Date: 2014-06-02 16:00+0100\n"
+"PO-Revision-Date: 2014-06-02 17:48+0100\n"
 "Last-Translator: Jérémy MOREAU <jmoreau@teclib.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -54,6 +54,10 @@ msgstr "Insertion dans le formulaire (avant le boutton sauvegarder)"
 #: inc/container.class.php:405
 msgid "Not saved : Unfilled mandatory field"
 msgstr "Veuillez remplir le(s) champ(s) obligatoire(s)"
+
+#: inc/container.class.php:520
+msgid "Some mandatory fields are empty"
+msgstr "Un champ obligatoire est vide"
 
 #: inc/container.class.php:581
 msgid "Some numeric fields contains non numeric values"

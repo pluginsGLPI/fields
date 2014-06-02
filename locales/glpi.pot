@@ -54,6 +54,10 @@ msgstr ""
 msgid "Not saved : Unfilled mandatory field"
 msgstr ""
 
+#: inc/container.class.php:520
+msgid "Some mandatory fields are empty"
+msgstr ""
+
 #: inc/container.class.php:581
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
