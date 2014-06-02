@@ -10,7 +10,7 @@ class PluginFieldsDropdown {
       );
       foreach ($directories as $directory) {
          if(!is_writable($directory)) {
-            Session::addMessageAfterRedirect(__("This plugin need write right on his own files, please correct.", 'fields'), 
+            Session::addMessageAfterRedirect(__("This plugin need write right on his own files, please correct.", 'fields'),
                                              false, ERROR);
             return false;
          }
@@ -32,19 +32,19 @@ class PluginFieldsDropdown {
       }
       return true;
    }
-   
+
    static function create($input) {
       //get class template
       $template_class = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
       if ($template_class === false) return false;
 
       $classname = self::getClassname($input['name']);
-      
+
       //create dropdown class file
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%FIELDNAME%%", $input['name'], $template_class);
       $class_filename = $input['name']."dropdown.class.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
                             $template_class) === false) {
          Toolbox::logDebug("Error : dropdown class file creation - $class_filename");
          return false;
@@ -60,7 +60,7 @@ class PluginFieldsDropdown {
       //create dropdown front file
       $template_front = str_replace("%%CLASSNAME%%", $classname, $template_front);
       $front_filename = $input['name']."dropdown.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$front_filename", 
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$front_filename",
                             $template_front) === false) {
          Toolbox::logDebug("Error : dropdown front file creation - $class_filename");
          return false;
@@ -73,14 +73,14 @@ class PluginFieldsDropdown {
       //create dropdown form file
       $template_form = str_replace("%%CLASSNAME%%", $classname, $template_form);
       $form_filename = $input['name']."dropdown.form.php";
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$form_filename", 
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/front/$form_filename",
                             $template_form) === false) {
          Toolbox::logDebug("Error : get dropdown form template error");
          return false;
       }
 
       //load class manually on plugin installation
-      if (!class_exists($classname)) require_once $class_filename;      
+      if (!class_exists($classname)) require_once $class_filename;
 
       //call install method (create table)
       if ($classname::install() === false) {
@@ -94,17 +94,17 @@ class PluginFieldsDropdown {
    static function destroy($dropdown_name) {
       $classname = self::getClassname($dropdown_name);
       $class_filename = GLPI_ROOT."/plugins/fields/inc/".$dropdown_name."dropdown.class.php";
-      
+
       //load class manually on plugin uninstallation
       if (file_exists($class_filename)) {
          if (!class_exists($classname)) {
-            require_once $dropdown_name."dropdown.class.php";    
-         } 
+            require_once $dropdown_name."dropdown.class.php";
+         }
 
          //call uninstall method in dropdown class
          if ($classname::uninstall() === false) {
             Toolbox::logDebug("Error : calling dropdown $classname uninstallation");
-            return false;   
+            return false;
          }
       }
 

@@ -16,7 +16,7 @@ function plugin_fields_install() {
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
-      'PluginFieldsProfile', 
+      'PluginFieldsProfile',
       'PluginFieldsMigration'
    );
 
@@ -43,7 +43,7 @@ function plugin_fields_install() {
    echo "</td>";
    echo "</tr>";
    echo "</table></center>";
-   
+
    return true;
 }
 
@@ -57,8 +57,8 @@ function plugin_fields_uninstall() {
       'PluginFieldsContainer_Field',
       'PluginFieldsField',
       'PluginFieldsValue',
-      'PluginFieldsProfile', 
-      'PluginFieldsMigration' 
+      'PluginFieldsProfile',
+      'PluginFieldsMigration'
    );
 
    echo "<center>";
@@ -101,7 +101,7 @@ function plugin_fields_getAddSearchOptions($itemtype) {
       }
    }
 
-   return null;  
+   return null;
 }
 
 // Define Dropdown tables to be manage in GLPI :

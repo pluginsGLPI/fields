@@ -22,7 +22,7 @@ class PluginFieldsField extends CommonDBTM {
                   `mandatory`                       TINYINT(1)   NOT NULL,
                   PRIMARY KEY                       (`id`),
                   KEY `plugin_fields_containers_id` (`plugin_fields_containers_id`)
-               ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       } else {
          $query = "ALTER TABLE `glpi_plugin_fields_fields` ADD `mandatory` TINYINT(1) NOT NULL";
@@ -31,7 +31,7 @@ class PluginFieldsField extends CommonDBTM {
 
       return true;
    }
-   
+
    static function uninstall() {
       global $DB;
 
@@ -59,8 +59,8 @@ class PluginFieldsField extends CommonDBTM {
 
       //dropdowns : create files
       if ($input['type'] === "dropdown") {
-         //search if dropdown already exist in this container 
-         $found = $this->find("name = '".$input['name']."' 
+         //search if dropdown already exist in this container
+         $found = $this->find("name = '".$input['name']."'
                               AND plugin_fields_containers_id = '".
                                  $input['plugin_fields_containers_id']."'");
 
@@ -70,7 +70,7 @@ class PluginFieldsField extends CommonDBTM {
             return false;
          }
 
-         //search if dropdown already exist in other container 
+         //search if dropdown already exist in other container
          $found = $this->find("name = '".$input['name']."'");
          //for dropdown, if already exist, don't create files
          if (empty($found)) {
@@ -86,7 +86,7 @@ class PluginFieldsField extends CommonDBTM {
       if (empty($input["ranking"])) {
          $input["ranking"] = $this->getNextRanking();
       }
-      
+
       //add field to container table
       if ($input['type'] !== "header") {
          $container_obj = new PluginFieldsContainer();
@@ -112,7 +112,7 @@ class PluginFieldsField extends CommonDBTM {
    function pre_deleteItem() {
 
       //remove field in container table
-      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields']) 
+      if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])) {
 
          if ($this->fields['type'] === "dropdown") {
@@ -127,7 +127,7 @@ class PluginFieldsField extends CommonDBTM {
                                        preg_replace('/s$/', '', $container_obj->fields['name'])));
          $classname::removeField($this->fields['name']);
       }
-      
+
       if (isset($oldname)) $this->fields['name'] = $oldname;
 
       if ($this->fields['type'] === "dropdown") {
@@ -140,7 +140,7 @@ class PluginFieldsField extends CommonDBTM {
    /**
     * parse name for avoid non alphanumeric char in it and conflict with other fields
     * @param  array $input the field form input
-    * @return string  the parsed name 
+    * @return string  the parsed name
     */
    function prepareName($input) {
       //contruct field name by processing label (remove non alphanumeric char)
@@ -163,7 +163,7 @@ class PluginFieldsField extends CommonDBTM {
       $item = new $container->fields['itemtype'];
       $item->getEmpty();
       $field = new self();
-      
+
       if (isset($input["add"])) {
          $i = 2;
          $field_name = $input['name'];
@@ -240,7 +240,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<div class='center'>".
               "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
          echo __("Add a new field", "fields")."</a></div><br>\n";
-      
+
 
       if ($DB->numrows($result) == 0) {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
@@ -258,7 +258,7 @@ class PluginFieldsField extends CommonDBTM {
 
          while ($data = $DB->fetch_array($result)) {
             if ($this->getFromDB($data['id'])) {
-               echo "<tr class='tab_bg_2' style='cursor:pointer' onClick=\"viewEditField$cID". 
+               echo "<tr class='tab_bg_2' style='cursor:pointer' onClick=\"viewEditField$cID".
                   $this->fields['id']."$rand();\">";
 
                echo "<td>";
@@ -306,23 +306,23 @@ class PluginFieldsField extends CommonDBTM {
          $container->getField('id')."'>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
-     
+
       if (!$edit) {
          echo "</tr>";
          echo "<tr>";
          echo "<td>".__("Type")." : </td>";
          echo "<td>";
-         Dropdown::showFromArray('type', self::getTypes(), 
+         Dropdown::showFromArray('type', self::getTypes(),
             array('value' => $this->fields["type"]));
          echo "</td>";
-      } 
+      }
       echo "<td>".__("Default values")." :</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, 'default_value', 
+      Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
       echo "</td>";
       echo "</tr>";
-      
+
       echo "<tr>";
       echo "<td>".__("Mandatory field")." : </td>";
       echo "<td>";
@@ -342,23 +342,23 @@ class PluginFieldsField extends CommonDBTM {
       //profile restriction (for reading profile)
       $canedit = false;
       $profile = new PluginFieldsProfile();
-      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
+      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                  AND `plugin_fields_containers_id` = '$c_id'");
       $first_found = array_shift($found);
       if ($first_found['right'] == "w") {
          $canedit = true;
       }
-      
+
       //get fields for this container
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
          "/plugins/fields/front/container.form.php'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
       echo "<input type='hidden' name='items_id' value='$items_id'>";
       echo "<table class='tab_cadre_fixe'>";
-      
+
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo self::prepareHtmlFields($fields, $items_id, $canedit);
-      
+
       if ($canedit) {
          echo "<tr><td class='tab_bg_2 center' colspan='4'>";
          echo "<input type='submit' name='update_fields_values' value=\"".
@@ -406,7 +406,7 @@ class PluginFieldsField extends CommonDBTM {
          $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
       }
 
-      //Retrieve dom container 
+      //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getEntries('dom', true);
 
       //if no dom containers defined for this itemtype, do nothing
@@ -415,7 +415,7 @@ class PluginFieldsField extends CommonDBTM {
 
       echo "Ext.onReady(function() {\n
          Ext.select('#page form tr:last').each(function(el){
-            el.insertHtml('beforeBegin', 
+            el.insertHtml('beforeBegin',
                           '<tr><td style=\"padding:0\" colspan=\"4\" id=\"dom_container\"></td></tr>');
             Ext.get('dom_container').load({
                url: '../plugins/fields/ajax/load_dom_fields.php',
@@ -440,7 +440,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "</table>";
    }
 
-   
+
    static function prepareHtmlFields($fields, $items_id, $canedit = true, $show_table = true,
                             $massiveaction = false) {
 
@@ -465,7 +465,7 @@ class PluginFieldsField extends CommonDBTM {
       $html = "";
       $odd = 0;
       foreach ($fields as $field) {
-      
+
          if ($field['type'] === 'header') {
             $html .= "<tr class='tab_bg_2'>";
             $html .= "<th colspan='4'>".$field['label']."</td>";
@@ -502,15 +502,15 @@ class PluginFieldsField extends CommonDBTM {
                if (($odd % 2) == 0) {
                   $html .= "<tr class='tab_bg_2'>";
                }
-               
+
                $more_str = "";
                if ($field['mandatory'] == 1){
                   $more_str = "<span class='red'>*</span>";
                }
-               
-               if ($container_obj->fields['itemtype'] == 'Ticket' 
+
+               if ($container_obj->fields['itemtype'] == 'Ticket'
                    && $container_obj->fields['type'] == 'dom'
-                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
+                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
                   $html .= "<th width='13%'>".$field['label']." : $more_str</th>";
                } else {
@@ -591,7 +591,7 @@ class PluginFieldsField extends CommonDBTM {
                }
                $odd++;
             }
-         }         
+         }
       }
       if ($show_table && (($odd % 2) == 1)) {
          $html .= "</tr>";
@@ -609,9 +609,9 @@ class PluginFieldsField extends CommonDBTM {
       $field_obj = new self();
 
       //clean dropdown [pre/su]fix if exists
-      $cleaned_linkfield = preg_replace("/plugin_fields_(.*)dropdowns_id/", "$1", 
+      $cleaned_linkfield = preg_replace("/plugin_fields_(.*)dropdowns_id/", "$1",
                                         $searchOption['linkfield']);
-      
+
       //find field
       $query_f = "SELECT fields.plugin_fields_containers_id
                 FROM glpi_plugin_fields_fields fields
@@ -644,14 +644,14 @@ class PluginFieldsField extends CommonDBTM {
 
    static function getTypes() {
       return array(
-         'header'   => __("Headband", "fields"),
-         'text'     => __("Text (single line)", "fields"),
-         'textarea' => __("Text (multiples lines)", "fields"),
-         'number'   => __("Number", "fields"),
-         'dropdown' => __("Dropdown", "fields"),
-         'yesno'    => __("Yes/No", "fields"),
-         'date'     => __("Date", "fields"),
-         'datetime' => __("Date & time", "fields")
+         'header'   => __('Header', 'fields'),
+         'text'     => __('Text (single line)', 'fields'),
+         'textarea' => __('Text (multiples lines)', 'fields'),
+         'number'   => __('Number', 'fields'),
+         'dropdown' => __('Dropdown', 'fields'),
+         'yesno'    => __('Yes/No', 'fields'),
+         'date'     => __('Date', 'fields'),
+         'datetime' => __('Date & time', 'fields')
       );
    }
 
