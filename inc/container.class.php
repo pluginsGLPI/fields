@@ -100,8 +100,13 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[7]['table']         = $this->getTable();
       $tab[7]['field']         = 'is_recursive';
       $tab[7]['name']          = __("Child entities");
-      $tab[6]['massiveaction'] = false;
+      $tab[7]['massiveaction'] = false;
       $tab[7]['datatype']      = 'bool';
+
+      $tab[8]['table']         = $this->getTable();
+      $tab[8]['field']         = 'id';
+      $tab[8]['name']          = __("ID");
+      $tab[8]['datatype']      = 'itemlink';
 
       return $tab;
    }
