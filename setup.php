@@ -34,7 +34,7 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
 
       //Retrieve dom container
-      $itemtypes = PluginFieldsContainer::getEntries('all');
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes();
       if ($itemtypes !== false) {
          foreach ($itemtypes as $itemtype) {
             $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer",

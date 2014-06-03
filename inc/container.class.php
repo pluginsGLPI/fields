@@ -201,6 +201,18 @@ class PluginFieldsContainer extends CommonDBTM {
       return true;
    }
 
+   static function preItemPurge($item) {
+      $itemtype = get_class($item);
+      $containers = new self();
+      $founded_containers = $containers->find('itemtype = "' . $itemtype . '"');
+      foreach($founded_containers as $container) {
+         $classname = 'PluginFields' . $itemtype . $container['name'];
+         $fields = new $classname();
+         $fields->deleteByCriteria(array('items_id' => $item->fields['id']));
+      }
+      return true;
+   }
+
    static function getTypeName($nb = 0) {
       return __("Bloc", "fields");
    }
@@ -333,6 +345,20 @@ class PluginFieldsContainer extends CommonDBTM {
             $itemtypes[] = $item['itemtype'];
          }
       }
+      return $itemtypes;
+   }
+
+   static function getUsedItemtypes() {
+      global $DB;
+      $itemtypes = array();
+
+      $query = 'SELECT DISTINCT `itemtype`
+                FROM `glpi_plugin_fields_containers`';
+      $result = $DB->query($query);
+      while(list($itemtype) = $DB->fetch_array($result)) {
+         $itemtypes[] = $itemtype;
+      }
+
       return $itemtypes;
    }
 
