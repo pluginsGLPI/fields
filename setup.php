@@ -59,7 +59,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.84-1.3',
+                 'version'        => '0.84-1.4',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
                  'license'        => 'restricted',
