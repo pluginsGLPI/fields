@@ -50,7 +50,7 @@ class PluginFieldsProfile extends CommonDBTM {
       echo "<div class='spaced' id='tabsbody'>";
       echo "<table class='tab_cadre_fixe'>";
 
-      echo "<tr><th colspan='2'>" . self::getTabNameForItem($item) ."</th></tr>";
+      echo "<tr><th colspan='2'>" . _n("Profile", "Profiles", 2) ."</th></tr>";
       foreach ($found_profiles as $profile_item) {
          //get right for current profile
          $found = $fields_profile->find("`profiles_id` = '".$profile_item['id']."'
