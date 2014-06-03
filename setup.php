@@ -19,7 +19,8 @@ function plugin_init_fields() {
       ) $menu_entry = false;
 
       $PLUGIN_HOOKS['menu_entry']['fields']  = $menu_entry;
-      $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
+      // $PLUGIN_HOOKS['config_page']['fields'] = $menu_entry;
+      $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
       $PLUGIN_HOOKS['submenu_entry']['fields']['options']['container'] = array(
          'title' => __("Configurate the blocs", "fields"),

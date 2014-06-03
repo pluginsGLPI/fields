@@ -331,6 +331,13 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
+
+      if($this->fields["type"] == "dropdown") {
+         echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/'.$this->fields["name"].'dropdown.php">
+                  <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
+                     alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
+      }
+
       echo "</td>";
       echo "</tr>";
 
@@ -447,7 +454,8 @@ class PluginFieldsField extends CommonDBTM {
       $field_obj = new self();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       echo "<table class='tab_cadre_fixe'>";
-      echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
+      // echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
+      echo self::prepareHtmlFields($fields, $items_id);
       echo "</table>";
    }
 

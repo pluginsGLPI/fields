@@ -88,6 +88,9 @@ class PluginFieldsDropdown {
          return false;
       }
 
+      // Destroy menu in session for force to regenerate it
+      unset($_SESSION['glpimenu']);
+
       return true;
    }
 
