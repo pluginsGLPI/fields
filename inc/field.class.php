@@ -431,7 +431,8 @@ class PluginFieldsField extends CommonDBTM {
       if (!in_array($current_itemtype, $itemtypes)) return false;
 
       echo "Ext.onReady(function() {\n
-         Ext.select('#page form tr:last').each(function(el){
+         Ext.select('#page form:first tr:has(input[name=update]), #page form:first tr:has(input[name=add])')
+         .each(function(el){
             el.insertHtml('beforeBegin',
                           '<tr><td style=\"padding:0\" colspan=\"4\" id=\"dom_container\"></td></tr>');
             Ext.get('dom_container').load({
