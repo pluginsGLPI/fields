@@ -111,4 +111,23 @@ class PluginFieldsProfile extends CommonDBTM {
       return true;
    }
 
+   static function addNewProfile(Profile $profile) {
+      $containers = new PluginFieldsContainer;
+      $found_containers = $containers->find();
+
+      $fields_profile = new self;
+      foreach ($found_containers as $container) {
+         $fields_profile->add(array(
+            'profiles_id'                 => $profile->fields['id'],
+            'plugin_fields_containers_id' => $container['id']
+         ));
+      }
+      return true;
+   }
+
+   static function deleteProfile(Profile $profile) {
+      $fields_profile = new self;
+      $fields_profile->deleteByCriteria(array('profiles_id' => $profile->fields['id']));
+      return true;
+   }
 }

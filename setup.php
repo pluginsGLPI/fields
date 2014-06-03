@@ -34,6 +34,11 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
+      // Add/delete profiles to automaticaly to container
+      $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
+                                                                    "addNewProfile");
+      $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = array("PluginFieldsProfile",
+                                                                    "deleteProfile");
 
       //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getEntries('all');
@@ -41,7 +46,7 @@ function plugin_init_fields() {
          foreach ($itemtypes as $itemtype) {
             $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer",
                                                                           "preItemUpdate");
-            $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer",
+            $PLUGIN_HOOKS['pre_item_purge']['fields'][$itemtype]  = array("PluginFieldsContainer",
                                                                           "preItemPurge");
             $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer",
                                                                           "preItemUpdate");
