@@ -41,7 +41,7 @@ function plugin_init_fields() {
                                                                     "deleteProfile");
 
       //Retrieve dom container
-      $itemtypes = PluginFieldsContainer::getEntries('all');
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes();
       if ($itemtypes !== false) {
          foreach ($itemtypes as $itemtype) {
             $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer",
