@@ -23,6 +23,12 @@ function plugin_init_fields() {
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
       $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
+      // Add/delete profiles to automaticaly to container
+      $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
+                                                                    "addNewProfile");
+      $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = array("PluginFieldsProfile",
+                                                                    "deleteProfile");
+
       //load drag and drop javascript library on Package Interface
       $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
       $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
