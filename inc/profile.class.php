@@ -38,7 +38,7 @@ class PluginFieldsProfile extends CommonDBTM {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      return self::createTabEntry(__("Profiles"));
+      return self::createTabEntry(_n("Profile", "Profiles", 2));
 
    }
 
@@ -52,7 +52,7 @@ class PluginFieldsProfile extends CommonDBTM {
       echo "<div class='spaced' id='tabsbody'>";
       echo "<table class='tab_cadre_fixe'>";
 
-      echo "<tr><th colspan='2'>".__("Profiles")."</th></tr>";
+      echo "<tr><th colspan='2'>" . self::getTabNameForItem($item) ."</th></tr>";
       foreach ($found_profiles as $profile_item) {
          //get right for current profile
          $found = $fields_profile->find("`profiles_id` = '".$profile_item['id']."' 
