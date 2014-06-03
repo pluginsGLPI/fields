@@ -425,11 +425,10 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //Retrieve dom container
-      $itemtypes = PluginFieldsContainer::getEntries('dom', true);
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes('dom', true);
 
       //if no dom containers defined for this itemtype, do nothing
-      if (!isset($itemtypes[$current_itemtype])) return false;
-
+      if (!in_array($current_itemtype, $itemtypes)) return false;
 
       echo "Ext.onReady(function() {\n
          Ext.select('#page form tr:last').each(function(el){

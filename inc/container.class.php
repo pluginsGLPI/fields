@@ -303,12 +303,16 @@ class PluginFieldsContainer extends CommonDBTM {
       );
    }
 
-   static function getUsedItemtypes() {
+   static function getUsedItemtypes($type = 'all', $must_be_active = false) {
       global $DB;
       $itemtypes = array();
+      $where = ($type == 'all') ? '1=1' : 'type = "' . $type . '"';
+      if($must_be_active)
+         $where .= ' AND is_active = 1';
 
       $query = 'SELECT DISTINCT `itemtype`
-                FROM `glpi_plugin_fields_containers`';
+                FROM `glpi_plugin_fields_containers`
+                WHERE ' . $where;
       $result = $DB->query($query);
       while(list($itemtype) = $DB->fetch_array($result)) {
          $itemtypes[] = $itemtype;
@@ -391,14 +395,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return boolean
     */
    function updateFieldsValues($datas) {
-      //global $DB;
-      $condition = true; //Init
-
       if (self::validateValues($datas) === false) {
-         $condition = false;
-      }
-
-      if ($condition === false) {
          return false;
       }
 
@@ -522,7 +519,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    /**
-    * check datas inserted (only nuber for the moment)
+    * check datas inserted
     * display a message when not ok
     * @param  array $datas : datas send by form
     * @return boolean
@@ -536,7 +533,13 @@ class PluginFieldsContainer extends CommonDBTM {
 
       foreach ($fields as $fields_id => $field) {
          $name  = $field['name'];
-         $value = isset($datas[$name]) ? $datas[$name] : $datas['plugin_fields_' . $name . 'dropdowns_id'];
+         if(isset($datas[$name])) {
+            $value = $datas[$name];
+         } elseif(isset($datas['plugin_fields_' . $name . 'dropdowns_id'])) {
+            $value = $datas['plugin_fields_' . $name . 'dropdowns_id'];
+         } else {
+            $value = '';
+         }
 
          // Check mandatory fields
          if (($field['mandatory'] == 1)
@@ -618,7 +621,11 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //update datas
       $container = new self();
-      return $container->updateFieldsValues($datas);
+      if(!$container->updateFieldsValues($datas)) {
+         return $item->input = array();
+      } else {
+         return true;
+      }
    }
 
    static function getAddSearchOptions($itemtype, $containers_id = false) {
