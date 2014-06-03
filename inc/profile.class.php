@@ -1,7 +1,7 @@
 <?php
 
 class PluginFieldsProfile extends CommonDBTM {
-   
+
    static function install(Migration $migration) {
       global $DB;
 
@@ -19,14 +19,14 @@ class PluginFieldsProfile extends CommonDBTM {
                   PRIMARY KEY                         (`id`),
                   KEY `profiles_id`                   (`profiles_id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       }
 
       return true;
    }
 
-   
+
    static function uninstall() {
       global $DB;
 
@@ -39,7 +39,6 @@ class PluginFieldsProfile extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       return self::createTabEntry(_n("Profile", "Profiles", 2));
-
    }
 
 
@@ -52,10 +51,10 @@ class PluginFieldsProfile extends CommonDBTM {
       echo "<div class='spaced' id='tabsbody'>";
       echo "<table class='tab_cadre_fixe'>";
 
-      echo "<tr><th colspan='2'>" . self::getTabNameForItem($item) ."</th></tr>";
+      echo "<tr><th colspan='2'>" . _n("Profile", "Profiles", 2) ."</th></tr>";
       foreach ($found_profiles as $profile_item) {
          //get right for current profile
-         $found = $fields_profile->find("`profiles_id` = '".$profile_item['id']."' 
+         $found = $fields_profile->find("`profiles_id` = '".$profile_item['id']."'
                          AND `plugin_fields_containers_id` = '".$item->fields['id']."'");
          $first_found = array_shift($found);
 
@@ -83,7 +82,7 @@ class PluginFieldsProfile extends CommonDBTM {
    static function updateProfile($input) {
       $fields_profile = new self;
       foreach ($input['rights'] as $profiles_id => $right) {
-         $found = $fields_profile->find("`profiles_id` = '$profiles_id' 
+         $found = $fields_profile->find("`profiles_id` = '$profiles_id'
                          AND `plugin_fields_containers_id` = '".
                            $input['plugin_fields_containers_id']."'");
          $first_found = array_shift($found);
