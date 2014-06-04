@@ -29,9 +29,15 @@ class PluginFieldsField extends CommonDBTM {
             $DB->query($query) or die ($DB->error());
       } elseif(!FieldExists($table, 'is_active')) {
          $migration->displayMessage("Updating $table");
-         $migration->addField($table, 'is_active', 'bool', array('value' => 1));
-         $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
-         $migration->addKey($table, 'is_active', 'is_active');
+
+         if(!FieldExists($table, 'is_active')) {
+            $migration->addField($table, 'is_active', 'bool', array('value' => 1));
+            $migration->addKey($table, 'is_active', 'is_active');
+         }
+         if(!FieldExists($table, 'mandatory')) {
+            $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
+         }
+         $migration->executeMigration();
       }
 
       return true;
