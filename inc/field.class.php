@@ -27,9 +27,6 @@ class PluginFieldsField extends CommonDBTM {
       } else {
          $migration->displayMessage("Updating $table");
 
-         $query = "ALTER TABLE `glpi_plugin_fields_fields` ADD `mandatory` TINYINT(1) NOT NULL";
-         $DB->query($query) or die ($DB->error());
-
          if(!FieldExists($table, 'is_active')) {
             $migration->addField($table, 'is_active', 'bool', array('value' => 1));
             $migration->addKey($table, 'is_active', 'is_active');
