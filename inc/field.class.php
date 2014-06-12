@@ -461,7 +461,7 @@ class PluginFieldsField extends CommonDBTM {
       jQuery( document ).ready(function( $ ) {
          jQuery('div.ui-tabs').tabs({
             load: function( event, ui ) {
-               jQuery('#page form[action*=\"".strlower($current_itemtype).".form.php\"] tr:has(input[type=submit])')
+               jQuery('#page form[action*=\"".strtolower($current_itemtype).".form.php\"] tr:has(input[type=submit])')
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
                jQuery('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
                   itemtype: '$current_itemtype',
