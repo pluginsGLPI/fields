@@ -44,11 +44,11 @@ function plugin_init_fields() {
       $itemtypes = PluginFieldsContainer::getUsedItemtypes();
       if ($itemtypes !== false) {
          foreach ($itemtypes as $itemtype) {
-            $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype]    = array("PluginFieldsContainer",
+            $PLUGIN_HOOKS['post_prepareadd']['fields'][$itemtype] = array("PluginFieldsContainer",
                                                                           "preItemAdd");
             $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer",
                                                                           "postItemAdd");
-            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer",
+            $PLUGIN_HOOKS['item_update']['fields'][$itemtype]     = array("PluginFieldsContainer",
                                                                           "preItemUpdate");
             $PLUGIN_HOOKS['pre_item_purge']['fields'][$itemtype]  = array("PluginFieldsContainer",
                                                                           "preItemPurge");
