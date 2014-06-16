@@ -209,8 +209,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $containers = new self();
       $founded_containers = $containers->find('itemtype = "' . $itemtype . '"');
       foreach($founded_containers as $container) {
-         $classname = 'PluginFields' . $itemtype . $container['name'];
-         $fields = new $classname();
+         $classname = "PluginFields" . ucfirst($itemtype . preg_replace('/s$/', '', $container['name']));
+         $fields    = new $classname();
          $fields->deleteByCriteria(array('items_id' => $item->fields['id']));
       }
       return true;
@@ -426,7 +426,7 @@ class PluginFieldsContainer extends CommonDBTM {
       //check if datas already inserted
       $found = $obj->find("items_id = $items_id");
       if (empty($found)) {
-         $obj->add($datas);
+         $datas['id'] = $obj->add($datas);
 
          //construct history on itemtype object (Historical tab)
          self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
@@ -441,7 +441,7 @@ class PluginFieldsContainer extends CommonDBTM {
                             $itemtype, $datas, $first_found);
       }
 
-      return true;
+      return $datas['id'];
    }
 
    /**
@@ -600,7 +600,54 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
 
+   static function preItemAdd(CommonDBTM $item) {
+      //find container (if not exist, do nothing)
+      if (isset($_REQUEST['c_id'])) {
+         $c_id = $_REQUEST['c_id'];
+      } else {
+         $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
+         if ($c_id === false)
+            return false;
+      }
+
+      //find fields associated to found container
+      $field_obj = new PluginFieldsField();
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'",
+                                 "ranking");
+
+      $datas = array(
+         'plugin_fields_containers_id' => $c_id,
+         'items_id'                    => $item->fields['id']
+      );
+      foreach ($fields as $field) {
+         if (isset($_REQUEST[$field['name']])) {
+            //standard field
+            $input = $field['name'];
+         } else {
+            //dropdown field
+            $input = "plugin_fields_".$field['name']."dropdowns_id";
+         }
+         if (isset($item->input[$input])) {
+            $datas[$input] = $item->input[$input];
+         }
+      }
+
+      if (self::validateValues($datas) === false) {
+         $item->input = array();
+      }
+      return $item->input;
+   }
+
+   static function postItemAdd(CommonDBTM $item) {
+      Toolbox::logDebug('postAdd');
+      return self::preItemUpdate($item);
+   }
+
    static function preItemUpdate(CommonDBTM $item) {
+      if(isset($_REQUEST['purge'])) {
+         return $item->input = array();
+      }
+
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
@@ -618,27 +665,28 @@ class PluginFieldsContainer extends CommonDBTM {
       //prepare datas to update
       $datas = array(
          'plugin_fields_containers_id' => $c_id,
-         'items_id'                    =>  $item->fields['id']
+         'items_id'                    => $item->fields['id']
       );
       foreach ($fields as $field) {
-         if (isset($item->input[$field['name']])) {
+         if (isset($_REQUEST[$field['name']])) {
             //standard field
             $input = $field['name'];
          } else {
             //dropdown field
             $input = "plugin_fields_".$field['name']."dropdowns_id";
          }
-         if (isset($item->input[$input])) {
-            $datas[$input] = $item->input[$input];
+         if (isset($_REQUEST[$input])) {
+            $datas[$input] = $_REQUEST[$input];
          }
       }
 
-      //update datas
+      // //update datas
       $container = new self();
-      if(!$container->updateFieldsValues($datas)) {
+      if((sizeof($datas) < 3) || (!$id = $container->updateFieldsValues($datas))) {
          return $item->input = array();
       } else {
-         return true;
+         $datas['id'] = $id;
+         return $item->input = $datas;
       }
    }
 
