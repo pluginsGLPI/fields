@@ -243,13 +243,22 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<tr>";
       echo "<td>".__("Type")." : </td>";
       echo "<td>";
-      Dropdown::showFromArray('type', self::getTypes(),
-         array('value' => $this->fields["type"]));
+      if($ID > 0) {
+         $types = self::getTypes();
+         echo $types[$this->fields["type"]];
+      } else {
+         Dropdown::showFromArray('type', self::getTypes(),
+            array('value' => $this->fields["type"]));
+      }
       echo "</td>";
       echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
-      Dropdown::showFromArray('itemtype', self::getItemtypes(),
-         array('value' => $this->fields["itemtype"]));
+      if($ID > 0) {
+         echo $this->fields["itemtype"];
+      } else {
+         Dropdown::showFromArray('itemtype', self::getItemtypes(),
+            array('value' => $this->fields["itemtype"]));
+      }
       echo "</td>";
       echo "</tr>";
 
