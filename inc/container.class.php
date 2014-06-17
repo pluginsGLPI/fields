@@ -104,7 +104,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[8]['table']         = $this->getTable();
       $tab[8]['field']         = 'id';
       $tab[8]['name']          = __("ID");
-      $tab[8]['datatype']      = 'itemlink';
+      $tab[8]['datatype']      = 'number';
+      $tab[8]['massiveaction'] = false;
 
       return $tab;
    }
