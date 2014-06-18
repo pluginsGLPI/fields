@@ -154,23 +154,30 @@ class PluginFieldsContainer extends CommonDBTM {
       PluginFieldsProfile::createForContainer($this);
 
       //create class file
-      $classname = "PluginFields".ucfirst($this->fields['itemtype'].
-                                          preg_replace('/s$/', '', $this->fields['name']));
-      $template_class = file_get_contents(GLPI_ROOT.
-                                          "/plugins/fields/templates/container.class.tpl");
-      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
-      $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
-      $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
-      $class_filename = strtolower($this->fields['itemtype'].
-                                   preg_replace('/s$/', '', $this->fields['name']).".class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
-                            $template_class) === false) {
-         Toolbox::logDebug("Error : class file creation - $class_filename");
+      if(!self::generateTemplate($this->fields)) {
          return false;
       }
 
       //install table for receive field
       $classname::install();
+   }
+
+   public static function generateTemplate($fields) {
+      $classname = "PluginFields".ucfirst($fields['itemtype'].
+                                          preg_replace('/s$/', '', $fields['name']));
+      $template_class = file_get_contents(GLPI_ROOT.
+                                          "/plugins/fields/templates/container.class.tpl");
+      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
+      $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
+      $class_filename = strtolower($fields['itemtype'].
+                                   preg_replace('/s$/', '', $fields['name']).".class.php");
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
+                            $template_class) === false) {
+         Toolbox::logDebug("Error : class file creation - $class_filename");
+         return false;
+      }
+      return true;
    }
 
    function pre_deleteItem() {
