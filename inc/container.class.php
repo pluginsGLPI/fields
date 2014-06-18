@@ -281,33 +281,33 @@ class PluginFieldsContainer extends CommonDBTM {
    static function getItemtypes() {
       return array(
          __("Assets") => array(
-            'Computer'           => __("Computer"),
-            'Monitor'            => __("Monitor"),
-            'Software'           => __("Software"),
-            'Networkequipment'   => __("Networkequipment"),
-            'Peripheral'         => __("Peripheral"),
-            'Printer'            => __("Printer"),
-            'Cartridgeitem'      => __("Cartridgeitem"),
-            'Consumableitem'     => __("Consumableitem"),
-            'Phone'              => __("Phone")),
+            'Computer'           => _n("Computer", "Computers", 2),
+            'Monitor'            => _n("Monitor", "Monitors", 2),
+            'Software'           => _n("Software", "Software", 2),
+            'Networkequipment'   => _n("Network", "Networks", 2),
+            'Peripheral'         => _n("Device", "Devices", 2),
+            'Printer'            => _n("Printer", "Printers", 2),
+            'Cartridgeitem'      => _n("Cartridge", "Cartridges", 2),
+            'Consumableitem'     => _n("Consumable", "Consumables", 2),
+            'Phone'              => _n("Phone", "Phones", 2)),
          __("Assistance") => array(
-            'Ticket'             => __("Ticket"),
-            'Problem'            => __("Problem"),
+            'Ticket'             => _n("Ticket", "Tickets", 2),
+            'Problem'            => _n("Problem", "Problems", 2),
             'TicketRecurrent'    => __("Recurrent tickets")),
          __("Management") => array(
-            'Budget'             => __("Budget"),
-            'Supplier'           => __("Supplier"),
-            'Contact'            => __("Contact"),
-            'Contract'           => __("Contract"),
-            'Document'           => __("Document")),
+            'Budget'             => _n("Budget", "Budgets", 2),
+            'Supplier'           => _n("Supplier", "Suppliers", 2),
+            'Contact'            => _n("Contact", "Contacts", 2),
+            'Contract'           => _n("Contract", "Contracts", 2),
+            'Document'           => _n("Document", "Documents", 2)),
          __("Tools") => array(
             'Notes'              => __("Notes"),
             'RSSFeed'            => __("RSS feed")),
          __("Administration") => array(
-            'User'               => __("User"),
-            'Group'              => __("Group"),
-            'Entity'             => __("Entity"),
-            'Profile'            => __("Profile"))
+            'User'               => _n("User", "Users", 2),
+            'Group'              => _n("Group", "Groups", 2),
+            'Entity'             => _n("Entity", "Entities", 2),
+            'Profile'            => _n("Profile", "Profiles", 2))
       );
    }
 
