@@ -61,7 +61,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.84-1.4',
+                 'version'        => '0.84-1.5',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
                  'license'        => 'restricted',
@@ -78,7 +78,45 @@ function plugin_fields_check_prerequisites() {
       echo "PHP 5.3.0 or higher is required";
       return false;
    }
+
+   // Check class and front files for existing containers and dropdown fields
+   plugin_fields_checkFiles();
+
    return true;
+}
+
+function plugin_fields_checkFiles() {
+   $plugin = new Plugin();
+
+   if (isset($_SESSION['glpiactiveentities'])
+      && $plugin->isInstalled('fields')
+      && $plugin->isActivated('fields')) {
+
+      Plugin::registerClass('PluginFieldsContainer');
+      Plugin::registerClass('PluginFieldsDropdown');
+      Plugin::registerClass('PluginFieldsField');
+
+      if (TableExists("glpi_plugin_fields_containers")) {
+         $container_obj = new PluginFieldsContainer();
+         $containers    = $container_obj->find();
+
+         foreach ($containers as $container) {
+            $classname = "PluginFields".ucfirst($container['itemtype'].
+                                        preg_replace('/s$/', '', $container['name']));
+            if(!class_exists($classname)) {
+               PluginFieldsContainer::generateTemplate($container);
+            }
+         }
+      }
+
+      if (TableExists("glpi_plugin_fields_fields")) {
+         $fields_obj = new PluginFieldsField();
+         $fields     = $fields_obj->find("`type` = 'dropdown'");
+         foreach ($fields as $field) {
+            PluginFieldsDropdown::create($field);
+         }
+      }
+   }
 }
 
 // Check configuration process for plugin : need to return true if succeeded
