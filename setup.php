@@ -48,7 +48,7 @@ function plugin_init_fields() {
                                                                           "preItemAdd");
             $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer",
                                                                           "postItemAdd");
-            $PLUGIN_HOOKS['item_update']['fields'][$itemtype]     = array("PluginFieldsContainer",
+            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype]     = array("PluginFieldsContainer",
                                                                           "preItemUpdate");
             $PLUGIN_HOOKS['pre_item_purge']['fields'][$itemtype]  = array("PluginFieldsContainer",
                                                                           "preItemPurge");

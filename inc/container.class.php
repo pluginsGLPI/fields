@@ -655,7 +655,6 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    static function postItemAdd(CommonDBTM $item) {
-      Toolbox::logDebug('postAdd');
       return self::preItemUpdate($item);
    }
 
@@ -701,8 +700,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if((sizeof($datas) < 3) || (!$id = $container->updateFieldsValues($datas))) {
          return $item->input = array();
       } else {
-         $datas['id'] = $id;
-         return $item->input = $datas;
+         return $item->input;
       }
    }
 
