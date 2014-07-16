@@ -50,6 +50,12 @@ msgstr "Ajout d'un onglet"
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion dans le formulaire (avant le boutton sauvegarder)"
 
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le boutton sauvegarder)"
+
+msgid "Tab"
+msgstr "Onglet"
+
 #: inc/container.class.php:397
 #: inc/container.class.php:405
 msgid "Not saved : Unfilled mandatory field"

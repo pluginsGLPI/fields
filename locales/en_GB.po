@@ -50,6 +50,12 @@ msgstr "Add tab"
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion in the form (before save button)"
 
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion in the form of a specific tab (before save button)"
+
+msgid "Tab"
+msgstr "Tab"
+
 #: inc/container.class.php:397
 #: inc/container.class.php:405
 msgid "Not saved : Unfilled mandatory field"
