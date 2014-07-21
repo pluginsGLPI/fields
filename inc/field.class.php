@@ -485,19 +485,19 @@ class PluginFieldsField extends CommonDBTM {
 
       $rand = mt_rand();
       echo "Ext.onReady(function() {\n
-         var insert_dom_tab$rand = function(curennt_glpi_tab) {
+         var insert_dom_tab$rand = function(current_glpi_tab) {
             // escape $ in tab name
-            glpi_tab_esc = curennt_glpi_tab.replace('$', '\\\\$');
+            glpi_tab_esc = current_glpi_tab.replace('$', '\\\\$');
 
             setTimeout(function() {
                // tabs with form
                var selector = '#'+glpi_tab_esc+' form:first-child input[name=update]';
                selector+= ', #'+glpi_tab_esc+' form:first-child input[name=add]';
-               var found = insert_html$rand(selector, curennt_glpi_tab);
+               var found = insert_html$rand(selector, current_glpi_tab);
                
                //tabs without form
                if (!found) {
-                  insert_html$rand('#'+glpi_tab_esc+' a.vsubmit:first-child', curennt_glpi_tab);
+                  insert_html$rand('#'+glpi_tab_esc+' a.vsubmit:first-child', current_glpi_tab);
                }
             }, 500)
          };
