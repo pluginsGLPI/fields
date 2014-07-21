@@ -485,7 +485,10 @@ class PluginFieldsField extends CommonDBTM {
 
       $rand = mt_rand();
       echo "Ext.onReady(function() {\n
+         var dom_inserted = false;
+
          var insert_dom_tab$rand = function(current_glpi_tab) {
+            
             // escape $ in tab name
             glpi_tab_esc = current_glpi_tab.replace('$', '\\\\$');
 
@@ -503,9 +506,13 @@ class PluginFieldsField extends CommonDBTM {
          };
 
          var insert_html$rand = function(selector, current_glpi_tab) {
+            if (dom_inserted) return true;
+
             var found = false;
             Ext.select(selector).each(function(el){
                rand = Math.random() * 1000000;
+
+               console.log(Ext.get('tabdom_container'+rand));
 
                var pos_to_insert = el.parent('tr');
                if (pos_to_insert === null) pos_to_insert = el;
@@ -521,7 +528,8 @@ class PluginFieldsField extends CommonDBTM {
                      subtype:  current_glpi_tab
                   }
                });
-
+               
+               dom_inserted = true;
                found = true;
             });
 
