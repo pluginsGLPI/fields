@@ -510,7 +510,7 @@ class PluginFieldsField extends CommonDBTM {
                var pos_to_insert = el.parent('tr');
                if (pos_to_insert === null) pos_to_insert = el;
                pos_to_insert.insertHtml('beforeBegin',
-                  '<tr><td style=\"padding:0\" colspan=\"4\"><div id=\"tabdom_container'+rand+'\">toto</div></td></tr>');
+                  '<tr><td style=\"padding:0\" colspan=\"4\"><div id=\"tabdom_container'+rand+'\"></div></td></tr>');
       
                Ext.get('tabdom_container'+rand).load({
                   url: '../plugins/fields/ajax/load_dom_fields.php',
@@ -540,8 +540,6 @@ class PluginFieldsField extends CommonDBTM {
                var getParams = option.params.split('?');
                var params = Ext.urlDecode(getParams[getParams.length - 1]);
 
-               
-               console.log(params['glpi_tab'], glpi_tab);
                insert_dom_tab$rand(params['glpi_tab']);
             }
          });
