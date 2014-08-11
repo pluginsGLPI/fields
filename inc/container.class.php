@@ -621,6 +621,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
          // Check mandatory fields
          if (($field['mandatory'] == 1)
+             && ($field['type'] != 'yesno')
+             && ($value != 0)
              && (empty($value)
                || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
             $empty_errors[] = $field['label'];
