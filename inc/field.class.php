@@ -558,6 +558,10 @@ class PluginFieldsField extends CommonDBTM {
       //retieve dom containers associated to this itemtype
       $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
 
+      if ($c_id === false) {
+         $c_id = -1;
+      }
+      
       //get fields for this container
       $field_obj = new self();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
