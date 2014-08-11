@@ -444,7 +444,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function showForDomtabContainer() {
-
+      
       //parse http_referer to get current url (this code is loaded by javacript)
       $current_url = $_SERVER['HTTP_REFERER'];
       if (strpos($current_url, ".form.php") === false
@@ -512,8 +512,6 @@ class PluginFieldsField extends CommonDBTM {
             Ext.select(selector).each(function(el){
                rand = Math.random() * 1000000;
 
-               console.log(Ext.get('tabdom_container'+rand));
-
                var pos_to_insert = el.parent('tr');
                if (pos_to_insert === null) pos_to_insert = el;
                pos_to_insert.insertHtml('beforeBegin',
@@ -529,7 +527,7 @@ class PluginFieldsField extends CommonDBTM {
                   }
                });
                
-               dom_inserted = true;
+               //dom_inserted = true;
                found = true;
             });
 
@@ -538,7 +536,7 @@ class PluginFieldsField extends CommonDBTM {
 
          //trigger on page load
          var glpi_tab = tabpanel.activeTab.id;
-         insert_dom_tab$rand(glpi_tab);
+         //insert_dom_tab$rand(glpi_tab);
 
          //trigger on tab change
          Ext.Ajax.on('requestcomplete', function(conn, response, option) {
@@ -547,6 +545,8 @@ class PluginFieldsField extends CommonDBTM {
                // transforming the parameters into a dictionnary
                var getParams = option.params.split('?');
                var params = Ext.urlDecode(getParams[getParams.length - 1]);
+               
+               //insert_html$rand(params['glpi_tab'], glpi_tab);
 
                insert_dom_tab$rand(params['glpi_tab']);
             }
