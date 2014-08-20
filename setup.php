@@ -32,7 +32,10 @@ function plugin_init_fields() {
 
       //include js and css
       $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
-      $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
+      $page_to_ban = "bollorelogisticsticket/front/ticket.form.php";
+      if (isset($_SERVER['HTTP_REFERER']) && strstr($_SERVER['HTTP_REFERER'], $page_to_ban) !== false) {
+         $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
+      }
 
       // Add/delete profiles to automaticaly to container
       $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
