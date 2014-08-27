@@ -443,9 +443,114 @@ class PluginFieldsField extends CommonDBTM {
       });\n";
    }
 
-   static function AjaxForDomContainer($itemtype, $items_id) {
+   static function showForDomtabContainer() {
+
+      //parse http_referer to get current url (this code is loaded by javacript)
+      $current_url = $_SERVER['HTTP_REFERER'];
+      if (strpos($current_url, ".form.php") === false
+            && strpos($current_url, ".injector.php") === false
+            && strpos($current_url, ".public.php") === false) {
+         return false;
+      }
+      $expl_url = explode("?", $current_url);
+
+      //get current id
+      if(isset($expl_url[1])) {
+         parse_str($expl_url[1], $params);
+         if(isset($params['id'])) {
+            $items_id = $params['id'];
+         } else {
+            $items_id = 0;
+         }
+      } else {
+         $items_id = 0;
+      }
+
+      //get itemtype
+      $tmp = explode("/", $expl_url[0]);
+      $script_name = array_pop($tmp);
+
+      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
+         $current_itemtype = "Ticket";
+      } else {
+         $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+      }
+
+      //Retrieve dom container
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes('domtab', true);
+
+      //if no dom containers defined for this itemtype, do nothing
+      if (!in_array($current_itemtype, $itemtypes)) return false;
+
+
+      $rand = mt_rand();
+      echo "Ext.onReady(function() {\n
+         var insert_dom_tab$rand = function(curennt_glpi_tab) {
+            // escape $ in tab name
+            glpi_tab_esc = curennt_glpi_tab.replace('$', '\\\\$');
+
+            setTimeout(function() {
+               // tabs with form
+               var selector = '#'+glpi_tab_esc+' form:first-child input[name=update]';
+               selector+= ', #'+glpi_tab_esc+' form:first-child input[name=add]';
+               var found = insert_html$rand(selector, curennt_glpi_tab);
+               
+               //tabs without form
+               if (!found) {
+                  insert_html$rand('#'+glpi_tab_esc+' a.vsubmit:first-child', curennt_glpi_tab);
+               }
+            }, 500)
+         };
+
+         var insert_html$rand = function(selector, current_glpi_tab) {
+            var found = false;
+            Ext.select(selector).each(function(el){
+               rand = Math.random() * 1000000;
+
+               var pos_to_insert = el.parent('tr');
+               if (pos_to_insert === null) pos_to_insert = el;
+               pos_to_insert.insertHtml('beforeBegin',
+                  '<tr><td style=\"padding:0\" colspan=\"4\"><div id=\"tabdom_container'+rand+'\">toto</div></td></tr>');
+      
+               Ext.get('tabdom_container'+rand).load({
+                  url: '../plugins/fields/ajax/load_dom_fields.php',
+                  params: {
+                     itemtype: '$current_itemtype',
+                     items_id: '$items_id',
+                     type:     'domtab', 
+                     subtype:  current_glpi_tab
+                  }
+               });
+
+               found = true;
+            });
+
+            return found;
+         };
+
+         //trigger on page load
+         var glpi_tab = tabpanel.activeTab.id;
+         insert_dom_tab$rand(glpi_tab);
+
+         //trigger on tab change
+         Ext.Ajax.on('requestcomplete', function(conn, response, option) {
+            //intercept ajax load of group tab 
+            if (option.url.indexOf('common.tabs.php') > 0) {
+               // transforming the parameters into a dictionnary
+               var getParams = option.params.split('?');
+               var params = Ext.urlDecode(getParams[getParams.length - 1]);
+
+               
+               console.log(params['glpi_tab'], glpi_tab);
+               insert_dom_tab$rand(params['glpi_tab']);
+            }
+         });
+      });\n";
+   }
+
+   static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
       //retieve dom containers associated to this itemtype
-      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, "dom");
+      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
 
       //get fields for this container
       $field_obj = new self();

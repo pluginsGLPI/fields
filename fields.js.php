@@ -7,4 +7,5 @@ header("Content-type: application/javascript");
 
 if ($plugin->isInstalled("fields") && $plugin->isActivated("fields")) {
    PluginFieldsField::showForDomContainer();
+   PluginFieldsField::showForDomtabContainer();
 }

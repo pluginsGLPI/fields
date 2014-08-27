@@ -16,6 +16,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   `label`        VARCHAR(255) DEFAULT NULL,
                   `itemtype`     VARCHAR(255) DEFAULT NULL,
                   `type`         VARCHAR(255) DEFAULT NULL,
+                  `subtype`      VARCHAR(255) DEFAULT NULL,
                   `entities_id`  INT(11)      NOT NULL DEFAULT '0',
                   `is_recursive` TINYINT(1)   NOT NULL DEFAULT '0',
                   `is_active`    TINYINT(1)   NOT NULL DEFAULT '0',
@@ -33,6 +34,11 @@ class PluginFieldsContainer extends CommonDBTM {
             $DB->query("INSERT INTO glpi_displaypreferences VALUES
                (NULL, '".__CLASS__."', $i, ".($i-1).", 0)");
          }
+      }
+
+      if (!FieldExists($table, "subtype")) {
+         $migration->addField($table, 'subtype', 'VARCHAR(255) DEFAULT NULL',array('after' => 'type'));
+         $migration->migrationOneTable($table);
       }
 
       return true;
@@ -156,6 +162,9 @@ class PluginFieldsContainer extends CommonDBTM {
          return false;
       }
 
+      $classname = "PluginFields".ucfirst($this->fields['itemtype'].
+                                          preg_replace('/s$/', '', $this->fields['name']));
+
       //install table for receive field
       $classname = "PluginFields".ucfirst($this->fields['itemtype'].
                                           preg_replace('/s$/', '', $this->fields['name']));
@@ -239,9 +248,12 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public function showForm($ID, $options=array()) {
+      global $CFG_GLPI;
+
       $this->initForm($ID, $options);
       $this->showTabs($options);
       $this->showFormHeader($options);
+      $rand = mt_rand();
 
       echo "<tr>";
       echo "<td>".__("Label")." : </td>";
@@ -257,8 +269,8 @@ class PluginFieldsContainer extends CommonDBTM {
          $types = self::getTypes();
          echo $types[$this->fields["type"]];
       } else {
-         Dropdown::showFromArray('type', self::getTypes(),
-            array('value' => $this->fields["type"]));
+         Dropdown::showFromArray('type', self::getTypes(), array('value' => $this->fields["type"],
+                                                                 'rand'  => $rand));
       }
       echo "</td>";
       echo "<td>".__("Associated item type")." : </td>";
@@ -267,7 +279,35 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $this->fields["itemtype"];
       } else {
          Dropdown::showFromArray('itemtype', self::getItemtypes(),
-            array('value' => $this->fields["itemtype"]));
+            array('value' => $this->fields["itemtype"],
+                  'rand'  => $rand));
+      }
+      echo "</td>";
+      echo "</tr>";
+
+      $display = "style='display:none'";
+      if (!empty($this->fields["subtype"])) {
+         $display = "";
+      }
+      echo "<tr id='tab_tr' $display>";
+      echo "<td colspan='2'></td>";
+      echo "<td>".__("Tab", "fields")." : </td>";
+      echo "<td>";
+      echo "&nbsp;<span id='subtype_$rand'></span>";
+      if($ID > 0 && !empty($this->fields["subtype"])) {
+         $item = new $this->fields["itemtype"];
+         $item->getEmpty();
+         $tabs = $item->defineTabs();
+         echo $tabs[$this->fields["subtype"]];
+      } else {
+         $params = array('type'     => '__VALUE0__',
+                         'itemtype' => '__VALUE1__', 
+                         'subtype'  => $this->fields["subtype"], 
+                         'rand'     => $rand);
+         Ajax::updateItemOnSelectEvent(array("dropdown_type$rand", "dropdown_itemtype$rand"), 
+                                       "subtype_$rand",
+                                       $CFG_GLPI["root_doc"]."/plugins/fields/ajax/container_subtype_dropdown.php", 
+                                       $params);
       }
       echo "</td>";
       echo "</tr>";
@@ -284,6 +324,19 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->addDivForTabs();
 
       return true;
+   }
+
+   static function showFormSubtype($params) {
+      echo "<script type='text/javascript>Ext.get('tab_tr').hide();</script>";
+      if (isset($params['type']) && $params['type'] == "domtab") {
+         if (class_exists($params['itemtype'])) {
+            $item = new $params['itemtype'];
+            $item->getEmpty();
+            $tabs = $item->defineTabs();
+            Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype']));
+            echo "<script type='text/javascript>Ext.get('tab_tr').show();</script>";
+         }
+      }
    }
 
 
@@ -322,8 +375,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function getTypes() {
       return array(
-         'tab' => __("Add tab", "fields"),
-         'dom' => __("Insertion in the form (before save button)", "fields")
+         'tab'    => __("Add tab", "fields"),
+         'dom'    => __("Insertion in the form (before save button)", "fields"),
+         'domtab' => __("Insertion in the form of a specific tab (before save button)", "fields")
       );
    }
 
@@ -594,11 +648,14 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
 
-   static function findContainer($itemtype, $items_id, $type='tab') {
+   static function findContainer($itemtype, $items_id, $type='tab', $subtype='') {
       $container = new PluginFieldsContainer();
       $sql_type = "1=1";
-      if ($type === 'tab' || $type === 'dom') {
+      if (in_array($type , array('tab', 'dom', 'domtab'))) {
          $sql_type = "`type` = '$type'";
+         if (!empty($subtype)) {
+            $sql_type.= " AND subtype = '$subtype'";
+         }
       }
       $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype' AND is_active = 1");
 
