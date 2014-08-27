@@ -444,7 +444,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function showForDomtabContainer() {
-
+      
       //parse http_referer to get current url (this code is loaded by javacript)
       $current_url = $_SERVER['HTTP_REFERER'];
       if (strpos($current_url, ".form.php") === false
@@ -485,24 +485,29 @@ class PluginFieldsField extends CommonDBTM {
 
       $rand = mt_rand();
       echo "Ext.onReady(function() {\n
-         var insert_dom_tab$rand = function(curennt_glpi_tab) {
+         var dom_inserted = false;
+
+         var insert_dom_tab$rand = function(current_glpi_tab) {
+            
             // escape $ in tab name
-            glpi_tab_esc = curennt_glpi_tab.replace('$', '\\\\$');
+            glpi_tab_esc = current_glpi_tab.replace('$', '\\\\$');
 
             setTimeout(function() {
                // tabs with form
                var selector = '#'+glpi_tab_esc+' form:first-child input[name=update]';
                selector+= ', #'+glpi_tab_esc+' form:first-child input[name=add]';
-               var found = insert_html$rand(selector, curennt_glpi_tab);
+               var found = insert_html$rand(selector, current_glpi_tab);
                
                //tabs without form
                if (!found) {
-                  insert_html$rand('#'+glpi_tab_esc+' a.vsubmit:first-child', curennt_glpi_tab);
+                  insert_html$rand('#'+glpi_tab_esc+' a.vsubmit:first-child', current_glpi_tab);
                }
             }, 500)
          };
 
          var insert_html$rand = function(selector, current_glpi_tab) {
+            if (dom_inserted) return true;
+
             var found = false;
             Ext.select(selector).each(function(el){
                rand = Math.random() * 1000000;
@@ -510,7 +515,7 @@ class PluginFieldsField extends CommonDBTM {
                var pos_to_insert = el.parent('tr');
                if (pos_to_insert === null) pos_to_insert = el;
                pos_to_insert.insertHtml('beforeBegin',
-                  '<tr><td style=\"padding:0\" colspan=\"4\"><div id=\"tabdom_container'+rand+'\">toto</div></td></tr>');
+                  '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\"></div></td></tr>');
       
                Ext.get('tabdom_container'+rand).load({
                   url: '../plugins/fields/ajax/load_dom_fields.php',
@@ -521,7 +526,8 @@ class PluginFieldsField extends CommonDBTM {
                      subtype:  current_glpi_tab
                   }
                });
-
+               
+               //dom_inserted = true;
                found = true;
             });
 
@@ -530,7 +536,7 @@ class PluginFieldsField extends CommonDBTM {
 
          //trigger on page load
          var glpi_tab = tabpanel.activeTab.id;
-         insert_dom_tab$rand(glpi_tab);
+         //insert_dom_tab$rand(glpi_tab);
 
          //trigger on tab change
          Ext.Ajax.on('requestcomplete', function(conn, response, option) {
@@ -539,9 +545,9 @@ class PluginFieldsField extends CommonDBTM {
                // transforming the parameters into a dictionnary
                var getParams = option.params.split('?');
                var params = Ext.urlDecode(getParams[getParams.length - 1]);
-
                
-               console.log(params['glpi_tab'], glpi_tab);
+               //insert_html$rand(params['glpi_tab'], glpi_tab);
+
                insert_dom_tab$rand(params['glpi_tab']);
             }
          });
@@ -552,10 +558,19 @@ class PluginFieldsField extends CommonDBTM {
       //retieve dom containers associated to this itemtype
       $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
 
+      if ($c_id === false) {
+         $c_id = -1;
+      }
+      
       //get fields for this container
       $field_obj = new self();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
-      echo "<table class='tab_cadre_fixe'>";
+      if ($subtype == 'TicketTask$1') {
+         echo "<table>";
+      } else {
+         echo "<table class='tab_cadre_fixe'>";
+      }
+      echo "<input type='hidden' name='_plugin_fields_type' value='$type' />";
       // echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
       echo self::prepareHtmlFields($fields, $items_id);
       echo "</table>";

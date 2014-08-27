@@ -623,6 +623,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
          // Check mandatory fields
          if (($field['mandatory'] == 1)
+             && ($field['type'] != 'yesno')
+             && ($value != 0)
              && (empty($value)
                || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
             $empty_errors[] = $field['label'];
@@ -722,13 +724,19 @@ class PluginFieldsContainer extends CommonDBTM {
          return $item->input = array();
       }
 
+
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
       } else {
-         $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
-         if ($c_id === false)
+         $type = "dom";
+         if (isset($item->input['_plugin_fields_type'])) {
+            $type = $item->input['_plugin_fields_type'];
+         }
+         $c_id = self::findContainer(get_Class($item), $item->fields['id'], $type);
+         if ($c_id === false) {
             return false;
+         }
       }
 
       //find fields associated to found container
