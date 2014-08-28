@@ -428,6 +428,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          //profiles restriction
+         if (Session::isCron()) continue;
          $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                  AND `plugin_fields_containers_id` = '".$item['id']."'");
          $first_found = array_shift($found);
