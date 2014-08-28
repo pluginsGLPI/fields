@@ -106,7 +106,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[8]['table']         = $this->getTable();
       $tab[8]['field']         = 'id';
       $tab[8]['name']          = __("ID");
-      $tab[8]['datatype']      = 'itemlink';
+      $tab[8]['datatype']      = 'number';
+      $tab[8]['massiveaction'] = false;
 
       return $tab;
    }
@@ -153,23 +154,30 @@ class PluginFieldsContainer extends CommonDBTM {
       PluginFieldsProfile::createForContainer($this);
 
       //create class file
-      $classname = "PluginFields".ucfirst($this->fields['itemtype'].
-                                          preg_replace('/s$/', '', $this->fields['name']));
-      $template_class = file_get_contents(GLPI_ROOT.
-                                          "/plugins/fields/templates/container.class.tpl");
-      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
-      $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
-      $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
-      $class_filename = strtolower($this->fields['itemtype'].
-                                   preg_replace('/s$/', '', $this->fields['name']).".class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
-                            $template_class) === false) {
-         Toolbox::logDebug("Error : class file creation - $class_filename");
+      if(!self::generateTemplate($this->fields)) {
          return false;
       }
 
       //install table for receive field
       $classname::install();
+   }
+
+   public static function generateTemplate($fields) {
+      $classname = "PluginFields".ucfirst($fields['itemtype'].
+                                          preg_replace('/s$/', '', $fields['name']));
+      $template_class = file_get_contents(GLPI_ROOT.
+                                          "/plugins/fields/templates/container.class.tpl");
+      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
+      $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
+      $class_filename = strtolower($fields['itemtype'].
+                                   preg_replace('/s$/', '', $fields['name']).".class.php");
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
+                            $template_class) === false) {
+         Toolbox::logDebug("Error : class file creation - $class_filename");
+         return false;
+      }
+      return true;
    }
 
    function pre_deleteItem() {
@@ -273,33 +281,33 @@ class PluginFieldsContainer extends CommonDBTM {
    static function getItemtypes() {
       return array(
          __("Assets") => array(
-            'Computer'           => __("Computer"),
-            'Monitor'            => __("Monitor"),
-            'Software'           => __("Software"),
-            'Networkequipment'   => __("Networkequipment"),
-            'Peripheral'         => __("Peripheral"),
-            'Printer'            => __("Printer"),
-            'Cartridgeitem'      => __("Cartridgeitem"),
-            'Consumableitem'     => __("Consumableitem"),
-            'Phone'              => __("Phone")),
+            'Computer'           => _n("Computer", "Computers", 2),
+            'Monitor'            => _n("Monitor", "Monitors", 2),
+            'Software'           => _n("Software", "Software", 2),
+            'Networkequipment'   => _n("Network", "Networks", 2),
+            'Peripheral'         => _n("Device", "Devices", 2),
+            'Printer'            => _n("Printer", "Printers", 2),
+            'Cartridgeitem'      => _n("Cartridge", "Cartridges", 2),
+            'Consumableitem'     => _n("Consumable", "Consumables", 2),
+            'Phone'              => _n("Phone", "Phones", 2)),
          __("Assistance") => array(
-            'Ticket'             => __("Ticket"),
-            'Problem'            => __("Problem"),
+            'Ticket'             => _n("Ticket", "Tickets", 2),
+            'Problem'            => _n("Problem", "Problems", 2),
             'TicketRecurrent'    => __("Recurrent tickets")),
          __("Management") => array(
-            'Budget'             => __("Budget"),
-            'Supplier'           => __("Supplier"),
-            'Contact'            => __("Contact"),
-            'Contract'           => __("Contract"),
-            'Document'           => __("Document")),
+            'Budget'             => _n("Budget", "Budgets", 2),
+            'Supplier'           => _n("Supplier", "Suppliers", 2),
+            'Contact'            => _n("Contact", "Contacts", 2),
+            'Contract'           => _n("Contract", "Contracts", 2),
+            'Document'           => _n("Document", "Documents", 2)),
          __("Tools") => array(
             'Notes'              => __("Notes"),
             'RSSFeed'            => __("RSS feed")),
          __("Administration") => array(
-            'User'               => __("User"),
-            'Group'              => __("Group"),
-            'Entity'             => __("Entity"),
-            'Profile'            => __("Profile"))
+            'User'               => _n("User", "Users", 2),
+            'Group'              => _n("Group", "Groups", 2),
+            'Entity'             => _n("Entity", "Entities", 2),
+            'Profile'            => _n("Profile", "Profiles", 2))
       );
    }
 
