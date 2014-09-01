@@ -626,6 +626,8 @@ class PluginFieldsContainer extends CommonDBTM {
                                  $datas['plugin_fields_containers_id']);
 
       foreach ($fields as $fields_id => $field) {
+         if ($field['type'] == "yesno") continue;
+
          $name  = $field['name'];
          if(isset($datas[$name])) {
             $value = $datas[$name];
@@ -733,18 +735,20 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function preItemUpdate(CommonDBTM $item) {
       if(isset($_REQUEST['purge'])) {
-         return $item->input = array();
+         return $item;
       }
-
 
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
       } else {
-         $type = "dom";
-         if (isset($item->input['_plugin_fields_type'])) {
-            $type = $item->input['_plugin_fields_type'];
-         }
+
+         //detect field insertion method (return if not found)
+         if (!isset($item->input['_plugin_fields_type'])) {
+            return $item;
+         } 
+         $type = $item->input['_plugin_fields_type'];
+         
          $c_id = self::findContainer(get_Class($item), $item->fields['id'], $type);
          if ($c_id === false) {
             return false;
@@ -777,7 +781,7 @@ class PluginFieldsContainer extends CommonDBTM {
       // update datas
       $container = new self();
       if((sizeof($datas) < 3) || (!$id = $container->updateFieldsValues($datas))) {
-         return $item->input = array();
+         return false;
       } else {
          return $item->input;
       }
