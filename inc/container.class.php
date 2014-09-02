@@ -217,10 +217,12 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //delete profiles
-      $profile_obj = new PluginFieldsProfile();
-      $profiles = $profile_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
-      foreach ($profiles as $profiles_id => $profile) {
-         $profile_obj->delete(array('id' => $profiles_id));
+      if (class_exists("PluginFieldsProfile")) {
+         $profile_obj = new PluginFieldsProfile();
+         $profiles = $profile_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
+         foreach ($profiles as $profiles_id => $profile) {
+            $profile_obj->delete(array('id' => $profiles_id));
+         }
       }
 
       //delete table
