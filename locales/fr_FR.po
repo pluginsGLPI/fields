@@ -48,10 +48,10 @@ msgstr "Ajout d'un onglet"
 
 #: inc/container.class.php:296
 msgid "Insertion in the form (before save button)"
-msgstr "Insertion dans le formulaire (avant le boutton sauvegarder)"
+msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le boutton sauvegarder)"
+msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
 
 msgid "Tab"
 msgstr "Onglet"
@@ -71,7 +71,7 @@ msgstr "Des champs numériques contiennent des données non numériques"
 
 #: inc/dropdown.class.php:13
 msgid "This plugin need write right on his own files, please correct."
-msgstr "Ce plugin nécéssite les droits d'écritures sur ses propres fichiers, veuillez corriger."
+msgstr "Ce plugin nécessite les droits d'écritures sur ses propres fichiers, veuillez corriger."
 
 #: inc/field.class.php:45
 msgid "Field"
