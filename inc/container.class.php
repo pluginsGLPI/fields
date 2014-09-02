@@ -226,12 +226,14 @@ class PluginFieldsContainer extends CommonDBTM {
       //delete table
       $classname::uninstall();
 
+      //clean session
+      unset($_SESSION['delete_container']);
+
       //remove file
       if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
          return unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
       }
 
-      unset($_SESSION['delete_container']);
 
       return true;
    }

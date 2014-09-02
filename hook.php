@@ -75,6 +75,9 @@ function plugin_fields_uninstall() {
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
             if (!call_user_func(array($class,'uninstall'))) {
+               //clean session
+               unset($_SESSION['uninstall_fields']);
+               
                return false;
             }
          }
@@ -85,6 +88,7 @@ function plugin_fields_uninstall() {
    echo "</tr>";
    echo "</table></center>";
 
+   //clean session
    unset($_SESSION['uninstall_fields']);
 
    return true;
