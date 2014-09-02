@@ -288,12 +288,17 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</td>";
       echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
+      $itemtypes = self::getItemtypes();
       if($ID > 0) {
-         echo $this->fields["itemtype"];
+         foreach ($itemtypes as $groupname => $group_itemtype) {
+            if (isset($group_itemtype[$this->fields["itemtype"]])) {
+               echo $group_itemtype[$this->fields["itemtype"]];
+               break;
+            }
+         }
       } else {
-         Dropdown::showFromArray('itemtype', self::getItemtypes(),
-            array('value' => $this->fields["itemtype"],
-                  'rand'  => $rand));
+         Dropdown::showFromArray('itemtype', $itemtypes, array('value' => $this->fields["itemtype"],
+                                                               'rand'  => $rand));
       }
       echo "</td>";
       echo "</tr>";
