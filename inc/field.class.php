@@ -674,6 +674,10 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'dropdown':
                   if ($canedit) {
+                     //find entity on current object
+                     $obj = new $container_obj->fields['itemtype'];
+                     $obj->getFromDB($items_id);
+
                      ob_start();
                      if (strpos($field['name'], "dropdowns_id") !== false) {
                         $dropdown_itemtype = getItemTypeForTable(
@@ -681,7 +685,8 @@ class PluginFieldsField extends CommonDBTM {
                      } else {
                         $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
                      }
-                     Dropdown::show($dropdown_itemtype, array('value' => $value));
+                     Dropdown::show($dropdown_itemtype, array('value'  => $value,
+                                                              'entity' => $obj->getEntityID()));
                      $html .= ob_get_contents();
                      ob_end_clean();
                   } else {
