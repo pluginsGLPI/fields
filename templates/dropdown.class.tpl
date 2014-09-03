@@ -3,6 +3,10 @@
 class %%CLASSNAME%% extends CommonTreeDropdown {
    var $field_name      = "%%FIELDNAME%%";
 
+   static function getTypeName($nb=0) {
+      return "%%LABEL%%";
+   }
+
    static function install() {
       global $DB;
 

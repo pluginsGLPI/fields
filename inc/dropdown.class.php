@@ -41,8 +41,9 @@ class PluginFieldsDropdown {
       $classname = self::getClassname($input['name']);
 
       //create dropdown class file
-      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
-      $template_class = str_replace("%%FIELDNAME%%", $input['name'], $template_class);
+      $template_class = str_replace("%%CLASSNAME%%", $classname,      $template_class);
+      $template_class = str_replace("%%FIELDNAME%%", $input['name'],  $template_class);
+      $template_class = str_replace("%%LABEL%%",     $input['label'], $template_class);
       $class_filename = $input['name']."dropdown.class.php";
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
                             $template_class) === false) {
