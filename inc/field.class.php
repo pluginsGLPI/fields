@@ -172,16 +172,15 @@ class PluginFieldsField extends CommonDBTM {
       $item->getEmpty();
       $field = new self();
 
-      if (isset($input["add"])) {
+      $field_name = $input['name'];
+      if (isset($input["_add"])) {
          $i = 2;
-         $field_name = $input['name'];
          while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
             $field_name = $input['name'].$i;
             $i++;
          }
-      } else { //update
-         $field_name = $input['name'];
-      }
+      } 
+      
       return $field_name;
    }
 
