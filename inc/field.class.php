@@ -495,6 +495,7 @@ class PluginFieldsField extends CommonDBTM {
                // tabs with form
                var selector = '#'+glpi_tab_esc+' form:first-child input[name=update]';
                selector+= ', #'+glpi_tab_esc+' form:first-child input[name=add]';
+               selector+= ', #'+glpi_tab_esc+' #mainformtable > tbody > tr:last-child';
                var found = insert_html$rand(selector, current_glpi_tab);
                
                //tabs without form
@@ -509,25 +510,27 @@ class PluginFieldsField extends CommonDBTM {
 
             var found = false;
             Ext.select(selector).each(function(el){
-               rand = Math.random() * 1000000;
+               if (!found) {
+                  rand = Math.random() * 1000000;
 
-               var pos_to_insert = el.parent('tr');
-               if (pos_to_insert === null) pos_to_insert = el;
-               pos_to_insert.insertHtml('beforeBegin',
-                  '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\"></div></td></tr>');
-      
-               Ext.get('tabdom_container'+rand).load({
-                  url: '../plugins/fields/ajax/load_dom_fields.php',
-                  params: {
-                     itemtype: '$current_itemtype',
-                     items_id: '$items_id',
-                     type:     'domtab', 
-                     subtype:  current_glpi_tab
-                  }
-               });
-               
-               //dom_inserted = true;
-               found = true;
+                  var pos_to_insert = el.parent('tr');
+                  if (pos_to_insert === null) pos_to_insert = el;
+                  pos_to_insert.insertHtml('beforeBegin',
+                     '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\"></div></td></tr>');
+         
+                  Ext.get('tabdom_container'+rand).load({
+                     url: '../plugins/fields/ajax/load_dom_fields.php',
+                     params: {
+                        itemtype: '$current_itemtype',
+                        items_id: '$items_id',
+                        type:     'domtab', 
+                        subtype:  current_glpi_tab
+                     }
+                  });
+                  
+                  //dom_inserted = true;
+                  found = true;
+               }
             });
 
             return found;
