@@ -674,6 +674,13 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function findContainer($itemtype, $items_id, $type='tab', $subtype='') {
+      $item = new $itemtype;
+      $item->getFromDB($items_id);
+      $entities_id = $_SESSION['glpiactive_entity'];
+      if (isset($item->fields['entities_id'])) {
+         $entities_id = $item->fields['entities_id'];
+      }
+
       $container = new PluginFieldsContainer();
       $sql_type = "1=1";
       if (in_array($type , array('tab', 'dom', 'domtab'))) {
@@ -683,7 +690,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
-      $sql_entity = getEntitiesRestrictRequest( "AND", "", "", $_SESSION['glpiactive_entity'], true, true);
+      $sql_entity = getEntitiesRestrictRequest( "AND", "", "", $entities_id, true, true);
       $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype' AND is_active = 1 $sql_entity");
       if (count($found_c) == 0) return false;
 
