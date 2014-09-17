@@ -1,0 +1,45 @@
+// Titre principal du document :
+= Plugin Champs Supplémentaires (Fields) =
+// Sous titre du document :
+:subtitle: 
+avec un saut de ligne
+// Date du document :
+:docdate: 17/09/2014
+// Identifiant du client:
+:customerid: 
+// Ville associée au document
+:city: Paris
+
+== Objectif du plugin \'Champs Supplémentaires'
+
+== Version de référence du plugin
+
+== Installation du plugin
+Particularités relatives aux droits.
+
+== Paramétrage
+
+=== Paramétrage d'un bloc de champs supplémentaires
+
+=== Paramétrage des champs supplémentaires
+
+==== Type \'Entête' de champ supplémentaire
+Valeur par défaut.
+
+==== Type \'Texte (simple ligne)' de champ supplémentaire
+
+==== Type \'Texte (multiples lignes)' de champ supplémentaire
+
+==== Type \'Nombre' de champ supplémentaire
+
+==== Type \'Intitulés' de champ supplémentaire
+
+==== Type \'Oui/Non' de champ supplémentaire
+
+==== Type \'Date' de champ supplémentaire
+
+==== Type \'Date & heure' de champ supplémentaire
+
+== Exécution et utilisation du plugin
+
+=== Gestion des droits (profils)
