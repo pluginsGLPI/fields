@@ -768,7 +768,7 @@ class PluginFieldsContainer extends CommonDBTM {
          
          $c_id = self::findContainer(get_Class($item), $item->fields['id'], $type);
          if ($c_id === false) {
-            return $item->input = array();
+            return $item;
          }
       }
 
