@@ -1,0 +1,154 @@
+// Titre principal du document :
+= Plugin Champs Supplémentaires (Fields) =
+// Sous titre du document :
+:subtitle: 
+avec un saut de ligne
+// Date du document :
+:docdate: 17/09/2014
+// Identifiant du client:
+:customerid: 
+// Ville associée au document
+:city: Paris
+
+== Revision History ==
+
+[options="header",format="csv"]
+|===
+Auteurs, Date, Révision, Description
+Benoit Le Rohellec <blerohellec@teclib.com>, 18/09/2014, 0, Version initiale
+|===
+
+== Objet du plugin \'Champs Supplémentaires'
+Le plugin \'Champs supplémentaires' (Fields) permet d'ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...
+
+== Version de référence du plugin
+La version de référence du plugin pour ce document est la 0.84-1.6
+
+== Installation du plugin
+Au fur et à mesure de la création de champs supplémentaires, le plugin va créer à la volée des tables dans la base de données ainsi que des fichiers .PHP.
+
+Pour ce dernier point, le plugin, exécuté par Apache (utilisateur www-data), a donc besoin de posséder des droits d'écriture sur son répertoire (./glpi/plugins/fields), qu'il faudra lui accorder manuellement.
+
+== Paramétrage
+Le paramétrage s'effectue par le menu Plugins > Champs supplémentaires.
+
+Ce paramétrage consiste à créer des blocs, liés à un type d'objet (ticket, ordinateur, utilisateur...).
+Un bloc contient lui-même des champs, chaque champ étant typé.
+
+=== Droits de paramétrage
+Pour paramétrer le plugin (ajouter, modifier, supprimer des blocs, des champs), le droit d'Ecriture sur la configuration générale est nécessaire (menu Administration > Profils, onglet Configuration).
+
+=== Paramétrage d'un bloc de champs supplémentaires
+Le paramétrage débute par la création d'un bloc.
+
+image::pics/fields_bloc.png[scaledwidth="80%"]
+Outre son libellé, son ID, l'entité et la récursivité, les attributs spécifiques d'un bloc sont :
+
+* le type d'élément associé : ticket, ordinateur, utilisateur...
+* le type : 3 options
+** Ajout d'un onglet : le bloc de champs fait l'objet d'un nouvel onglet dans le type d'élément associé. On peut créer plusieurs blocs de ce type pour un même type d'objet
+** Insertion dans le formulaire (avant le bouton sauvegarder) : le bloc de champs apparaît à la suite du bloc principal de l'objet, avant le bouton Sauvegarder. On ne peut créer qu'un seul bloc de ce type pour un type d'objet donné.
+** Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder) : la liste des onglets du type d'élément associé, choisi plus haut, est présenté pour compléter le paramétrage du bloc (ex pour Ticket : Suivis, Validations, Tâches...).
+Le bloc de champs apparaît à la fin de l'onglet, avant le bouton Sauvegarder de l'onglet.
+
+=== Paramétrage des champs supplémentaires
+Chaque bloc contient des champs.
+
+image::pics/fields_champ.png[scaledwidth="80%"]
+Outre son libellé, les attributs d'un champ sont : le type, une valeur par défaut (optionnelle), le fait qu'il soit obligatoire ou facultatif.
+
+==== Champ de type \'Entête'
+Un champ de ce type est particulier, dans la mesure où il ne sera pas saisissable.
+Il sert simplement à donner un titre au bloc de champs.
+Valeur par défaut et Obligatoire/Facultatif n'ont pas de sens pour ce type de champ.
+
+==== Champ de type \'Texte (simple ligne)'
+Le champ sera un simple texte, dont la longueur n'est pas particulièrement définie.
+Son contenu peut être quelconque.
+
+==== Champ de type \'Texte (multiples lignes)'
+Le champ sera une zone de texte sur plusieurs lignes.
+Son contenu peut être quelconque.
+
+==== Champ de type \'Nombre'
+Le champ sera un nombre, entier ou décimal.
+Son contenu sera contrôlé comme étant un nombre.
+La valeur par défaut doit bien entendu être aussi un nombre.
+
+==== Champ de type \'Intitulés'
+Le champ sera une liste déroulante dont les valeurs sont aussi à paramétrer.
+
+L'ajout d'un champ de type \'Intitulés' crée un intitulé dans le menu Configuration > Intitulés, paragraphe Champs supplémentaires, où il faut saisir les valeurs possibles de l'intitulé.
+
+A noter que chaque valeur de l'intitulé dépend d'une entité, et peut être récursive ou pas.
+Elles peuvent en outre être organisées de façon hiérarchique (mère - fille).
+
+A l'exécution du champ, il est automatiquement rajouté un 1er élément à la liste déroulante : (--) qui correspond à la valeur 0.
+
+La valeur par défaut du champ supplémentaire doit être l'ID de l'une des valeurs de l'intitulé, ou bien 0 pour la valeur vide (--).
+
+Si le champ est obligatoire, la valeur vide (--) n'est pas autorisé.
+
+==== Champ de type \'Oui/Non'
+Le champ se présente sous forme d'une liste déroulante à 2 valeurs : Non/Oui.
+La valeur par défaut est 0 pour Non, 1 pour Oui.
+La notion d'obligatoire/facultatif n'a pas d'impact sur ce type de champ. Car même sans valeur par défaut, ce champ prendra la valeur Non (0), qui est valide.
+
+==== Champ de type \'Date'
+Le champ se présente avec un calendrier sur sa droite, qui permet d'y choisir la date.
+Cependant, la saisie peut être effectuée directement.
+
+==== Champ de type \'Date & heure'
+Ce champ se présente sous forme de 2 zones de saisie : une date et une heure.
+
+La zone des heures se présente sous forme d'une liste déroulante de valeurs, s'échelonnant de 00:00 à 24:00, selon un pas défini dans la Configuration générale de GLPI.
+Le pas est paramétrable dans le menu Configuration > Générale, onglet Assistance, champ "Pas pour les heures (en minutes)".
+Par défaut, le pas est de 5 mn.
+
+== Exécution et utilisation du plugin
+
+A l'exécution d'un bloc, les champs obligatoires sont signalés par un astérisque rouge.
+
+Dans le cas d'un bloc de type \'Insertion dans le formulaire', le bloc est sauvegardé (en création/modification) en même temps que le bloc principal de l'objet auquel il est rattaché.
+
+Dans le cas d'un bloc de type \'Ajout d'un Onglet', le bloc dispose de son propre bouton Sauvegarder, et donc est sauvegardé indépendamment de l'objet auquel il est rattaché.
+
+Dans le cas d'un bloc de type \'Insertion dans le formulaire d'un onglet spécifique', le bloc est sauvegardé en même temps que le contenu de l'onglet.
+
+=== Interface simplifiée
+Seul un bloc rattaché aux Tickets et de type \'Insertion dans un formulaire' peut apparaître dans l'interface dite simplifiée de création d'un ticket (en tenant compte cependant des droits du profil utilisé, généralement Self-Service).
+
+=== Recherche
+Tous les champs supplémentaires peuvent être utilisés comme critères de recherche de l'objet auquel ils sont rattachés.
+
+=== Gestion des entités
+Un bloc ne sera présenté en saisie/visualisation que si son entité est compatible avec l'entité de l'objet auquel il s'applique.
+
+Prenons l'exemple d'un bloc rattaché aux Tickets
+
+[width="80%"]
+|=======
+|Entité du bloc|Récursivité du bloc|Entité du ticket|bloc visible ?
+|A|Oui/Non|B > A|Non
+|A|Oui/Non|A|Oui
+|A|Oui|B < A|Oui
+|A|Non|B < A|Non
+|=======
+Bien entendu, la visibilité d'un bloc est aussi conditionnée par les droits du profil utilisé.
+
+Les entités interviennent aussi dans le cas d'un champ de type Intitulés.
+En effet, les valeurs d'un intitulé portant une entité et une récursivité, elles s'afficheront ou pas en fonction de l'entité de l'objet auquel s'applique le bloc.
+
+=== Droits d'exécution
+La gestion des droits s'effectue dans l'onglet \'Profils' de chaque bloc.
+Elle s'effectue par profil, et ne comporte qu'un seul droit : Lecture / Ecriture / Aucun accès.
+
+A la création d'un bloc, par défaut, le droit d'Ecriture est donné à tous les profils.
+
+== Langues
+le plugin Fields - partie paramétrage - est disponible en français et en anglais.
+
+En anglais, le plugin se nomme Additional fields.
+
+Cependant, les noms de blocs, de champs, les valeurs d'intitulé ne sont pas traduisibles, et seront communs à toutes les langues de GLPI.
+
