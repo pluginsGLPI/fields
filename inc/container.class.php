@@ -355,6 +355,15 @@ class PluginFieldsContainer extends CommonDBTM {
             $item = new $params['itemtype'];
             $item->getEmpty();
             $tabs = $item->defineTabs();
+            
+            // For delete <sup>number<sup> :
+            foreach ($tabs as $key => &$value) {
+               $results = array();
+               if (preg_match_all('#<sup>(.+)</sup>#', $value, $results)) {
+                  $value = str_replace($results[0][0], "", $value);
+               }
+            }
+            
             Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype']));
             echo "<script type='text/javascript>Ext.get('tab_tr').show();</script>";
          }
