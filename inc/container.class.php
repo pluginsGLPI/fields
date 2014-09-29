@@ -713,6 +713,15 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
+      //profiles restriction
+      $profile = new PluginFieldsProfile();
+      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
+                              AND `plugin_fields_containers_id` = '$id'");
+      $first_found = array_shift($found);
+      if ($first_found['right'] == NULL) {
+         return false;
+      }
+
       return $id;
    }
 
