@@ -105,12 +105,12 @@ class PluginFieldsField extends CommonDBTM {
 
       return $input;
    }
-   function prepareInputForUpdate($input) {
+   /*function prepareInputForUpdate($input) {
       //parse name
       //$input['name'] = $this->prepareName($input);
 
       return $input;
-   }
+   }*/
 
    function pre_deleteItem() {
       global $DB;
