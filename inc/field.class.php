@@ -151,7 +151,7 @@ class PluginFieldsField extends CommonDBTM {
     * @return string  the parsed name
     */
    function prepareName($input) {
-      //contruct field name by processing label (remove non alphanumeric char)
+      //contruct field name by processing label (remove non alphanumeric char and suffix by field)
       if (empty($input['name'])) {
          $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']))."field";
       }
