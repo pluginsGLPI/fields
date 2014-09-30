@@ -35,10 +35,10 @@ function plugin_init_fields() {
       $pages_to_ban = array(
          "bollorelogisticsticket/front/ticket.form.php"
       );
-      if (isset($_SERVER['HTTP_REFERER'])) {
+      if (isset($_SERVER['REQUEST_URI'])) {
          $add_javascript = true;
          foreach ($pages_to_ban as $page) {
-            if (strpos($_SERVER['HTTP_REFERER'], $page) !== false) {
+            if (strpos($_SERVER['REQUEST_URI'], $page) !== false) {
                $add_javascript = false;
                break;
             }
