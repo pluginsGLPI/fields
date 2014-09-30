@@ -153,7 +153,7 @@ class PluginFieldsField extends CommonDBTM {
    function prepareName($input) {
       //contruct field name by processing label (remove non alphanumeric char)
       if (empty($input['name'])) {
-         $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
+         $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']))."field";
       }
 
       //for dropdown, if already exist, link to it
