@@ -3,7 +3,7 @@
  * Configuration class for Davfi Plugin
  */
 class PluginFieldsMenu extends CommonGLPI {
-   static $rightname = 'config';
+   static $rightname = 'entity';
 
    static function getMenuName() {
       return __("Additionnal fields", "fields");
