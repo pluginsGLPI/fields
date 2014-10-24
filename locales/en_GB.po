@@ -38,6 +38,9 @@ msgstr "Additionnal fields"
 msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
 msgstr "You cannot add several blocs with type 'Insertion in the form' on same object"
 
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion in the form of a specific tab (before save button)"
+
 #: inc/container.class.php:203
 msgid "Bloc"
 msgstr "Bloc"
@@ -122,3 +125,5 @@ msgstr "Configure"
 msgid "Configure fields values"
 msgstr "Configure fields values"
 
+msgid "Regenerate container files"
+msgstr "Regenerate container files"

@@ -37,6 +37,9 @@ msgstr ""
 msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
 msgstr ""
 
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr ""
+
 #: inc/container.class.php:203
 msgid "Bloc"
 msgstr ""
@@ -119,4 +122,7 @@ msgstr ""
 
 #: inc/field.class.php:350
 msgid "Configure fields values"
+msgstr ""
+
+msgid "Regenerate container files"
 msgstr ""

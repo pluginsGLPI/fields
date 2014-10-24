@@ -38,6 +38,9 @@ msgstr "Champs supplémentaires"
 msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
 
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
+
 #: inc/container.class.php:203
 msgid "Bloc"
 msgstr "Bloc"
@@ -122,3 +125,5 @@ msgstr "Configuration"
 msgid "Configure fields values"
 msgstr "Configurer les valeurs du champ"
 
+msgid "Regenerate container files"
+msgstr "Regénerer les fichiers des blocs"
