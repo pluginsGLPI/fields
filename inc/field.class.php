@@ -456,8 +456,10 @@ class PluginFieldsField extends CommonDBTM {
       //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getUsedItemtypes('dom', true);
 
-      //if no dom containers defined for this itemtype, do nothing
-      if (!in_array($current_itemtype, $itemtypes)) return false;
+      //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
+      if (!in_array(strtolower($current_itemtype), array_map('strtolower', $itemtypes))) {
+      	return false;
+      }
 
 
       echo "
