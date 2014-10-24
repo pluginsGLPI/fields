@@ -479,7 +479,7 @@ class PluginFieldsField extends CommonDBTM {
       ";
    }
 
-   static function AjaxForDomContainer($itemtype, $items_id) {
+   static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
       //retieve dom containers associated to this itemtype
       $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, "dom");
 
