@@ -610,6 +610,8 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    static function validateValues($datas) {
       $valid = true;
+      $empty_errors  = array();
+      $number_errors = array();
 
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = ".
@@ -632,19 +634,26 @@ class PluginFieldsContainer extends CommonDBTM {
          if (($field['mandatory'] == 1)
              && (empty($value)
                || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
-            Session::AddMessageAfterRedirect(
-               __("Some mandatory fields are empty", "fields")
-               . " : " . $field['label'], false, ERROR);
+            $empty_errors[] = $field['label'];
             $valid = false;
 
          // Check number fields
          } elseif($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
-            Session::AddMessageAfterRedirect(
-               __("Some numeric fields contains non numeric values", "fields")
-               . " : " . $field['label'], false, ERROR);
+            $number_errors[] = $field['label'];
             $valid = false;
          }
       }
+
+      if(!empty($empty_errors)) {
+         Session::AddMessageAfterRedirect(__("Some mandatory fields are empty", "fields")
+            . " : " . implode(', ', $empty_errors), false, ERROR);
+      }
+
+      if(!empty($number_errors)) {
+         Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields")
+            . " : " . implode(', ', $number_errors), false, ERROR);
+      }
+      
       return $valid;
    }
 
