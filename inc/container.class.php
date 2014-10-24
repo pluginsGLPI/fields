@@ -616,6 +616,9 @@ class PluginFieldsContainer extends CommonDBTM {
                                  $datas['plugin_fields_containers_id']);
 
       foreach ($fields as $fields_id => $field) {
+         if ($field['type'] == "yesno") continue;
+         if ($field['type'] == "header") continue;
+
          $name  = $field['name'];
          if(isset($datas[$name])) {
             $value = $datas[$name];
