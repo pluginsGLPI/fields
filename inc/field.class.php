@@ -458,7 +458,7 @@ class PluginFieldsField extends CommonDBTM {
 
       //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
       if (!in_array(strtolower($current_itemtype), array_map('strtolower', $itemtypes))) {
-      	return false;
+         return false;
       }
 
 
@@ -479,22 +479,145 @@ class PluginFieldsField extends CommonDBTM {
       ";
    }
 
+   static function showForDomtabContainer() {
+      
+      //parse http_referer to get current url (this code is loaded by javacript)
+      $current_url = $_SERVER['HTTP_REFERER'];
+      if (strpos($current_url, ".form.php") === false
+            && strpos($current_url, ".injector.php") === false
+            && strpos($current_url, ".public.php") === false) {
+         return false;
+      }
+      $expl_url = explode("?", $current_url);
+
+      //get current id
+      if(isset($expl_url[1])) {
+         parse_str($expl_url[1], $params);
+         if(isset($params['id'])) {
+            $items_id = $params['id'];
+         } else {
+            $items_id = 0;
+         }
+      } else {
+         $items_id = 0;
+      }
+
+      //get itemtype
+      $tmp = explode("/", $expl_url[0]);
+      $script_name = array_pop($tmp);
+
+      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
+         $current_itemtype = "Ticket";
+      } else {
+         $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+      }
+
+      //Retrieve dom container
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes('domtab', true);
+
+      //if no dom containers defined for this itemtype, do nothing
+      if (!in_array($current_itemtype, $itemtypes)) return false;
+
+
+      $rand = mt_rand();
+      echo "jQuery(document ).ready(function($) {
+         var dom_inserted = false;
+
+         var insert_dom_tab$rand = function(jqui_tab, current_glpi_tab) {
+
+            // escape $ in tab name
+            current_glpi_tab = current_glpi_tab.replace('$', '\\\\$');
+            
+            setTimeout(function() {
+               // tabs with form
+               var selector = '#'+jqui_tab+' form:first-child input[name=update]';
+               selector+= ', #'+jqui_tab+' form:first-child input[name=add]';
+               selector+= ', #'+jqui_tab+' #mainformtable > tbody > tr:last-child';
+               var found = insert_html$rand(selector, current_glpi_tab);
+               
+               //tabs without form
+               if (!found) {
+                  insert_html$rand('#'+jqui_tab+' a.vsubmit:first-child', current_glpi_tab);
+               }
+            }, 500)
+         };
+
+         var insert_html$rand = function(selector, current_glpi_tab) {
+            if (dom_inserted) return true;
+
+            var found = false;
+            jQuery(selector).each(function(index, el) {
+               if (!found) {
+                  element = jQuery(this);
+                  rand = Math.round(Math.random() * 1000000);
+        
+                  var pos_to_insert = element.parent('tr');
+                  if (el.tagName === 'TR') pos_to_insert = element;
+                  pos_to_insert.before(
+                     '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\">.</div></td></tr>');
+         
+                  jQuery('#tabdom_container'+rand).load(
+                     '../plugins/fields/ajax/load_dom_fields.php',
+                     {
+                        itemtype: '$current_itemtype',
+                        items_id: '$items_id',
+                        type:     'domtab', 
+                        subtype:  current_glpi_tab
+                     }
+                  );
+                  
+                  dom_inserted = true;
+                  found = true;
+               }
+            });
+
+            return found;
+         };
+
+         findtab_and_insert = function () {
+            //get active tab index
+            var jqui_tab = 'ui-tabs-'+($('div.ui-tabs').tabs( 'option', 'active' ) + 1);
+            //get active tab glpi type
+            var current_glpi_tab = $('div.ui-tabs li.ui-tabs-active a')
+                                    .attr('href')
+                                    .match(/&_glpi_tab=(.*)&id=/)[1];
+
+            // add html in dom                                          
+            insert_dom_tab$rand(jqui_tab, current_glpi_tab);
+         }
+
+         jQuery('div.ui-tabs').tabs({
+            load: function( event, ui ) {
+               findtab_and_insert();               
+            }
+         });
+
+         //trigger one time if above event not launched
+         findtab_and_insert();
+      });\n";
+   }
+
    static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
       //retieve dom containers associated to this itemtype
-      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, "dom");
+      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
 
+      if ($c_id === false) {
+         $c_id = -1;
+      }
+      
       //get fields for this container
-      $field_obj = new self;
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
+      $field_obj = new self();
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
       if ($subtype == 'TicketTask$1') {
          echo "<table>";
       } else {
          echo "<table class='tab_cadre_fixe'>";
       }
+      echo "<input type='hidden' name='_plugin_fields_type' value='$type' />";
+      // echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
       echo self::prepareHtmlFields($fields, $items_id);
       echo "</table>";
    }
-
 
 
    static function prepareHtmlFields($fields, $items_id, $canedit = true,
