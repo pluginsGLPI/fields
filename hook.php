@@ -86,6 +86,16 @@ function plugin_fields_uninstall() {
    return true;
 }
 
+function regenerateFiles() {
+	$container = new PluginFieldsContainer;
+	$found_container = $container->find();
+	foreach ($found_container as $current_container) {
+		$containers_id = $current_container['id'];
+		$container->getFromDB($containers_id);
+		$container->post_addItem();
+	}
+}
+
 
 function plugin_fields_getAddSearchOptions($itemtype) {
    if (isset($_SESSION['glpiactiveentities'])) {

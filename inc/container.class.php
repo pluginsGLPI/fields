@@ -3,6 +3,12 @@
 class PluginFieldsContainer extends CommonDBTM {
    static $rightname = 'config';
 
+   static function titleList() {
+      echo "<center><input type='button' class='submit' value='&nbsp;".
+            __("Regenerate container files", "fields")."&nbsp;' 
+            onclick='location.href=\"regenerate_files.php\"' /></center>";
+   }
+
    static function install(Migration $migration) {
       global $DB;
 
