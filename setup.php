@@ -8,6 +8,11 @@ function plugin_init_fields() {
    $plugin = new Plugin();
    if ($plugin->isInstalled('fields')
        && $plugin->isActivated('fields')) {
+
+      // complete rule engine
+      $PLUGIN_HOOKS['use_rules']['fields']    = array('PluginFusioninventoryTaskpostactionRule');
+      $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
+        
       if (isset($_SESSION['glpiactiveentities'])) {
 
          $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
@@ -18,9 +23,6 @@ function plugin_init_fields() {
          // add tabs to itemtypes
          Plugin::registerClass('PluginFieldsContainer',
                                array('addtabon' => PluginFieldsContainer::getEntries()));
-
-         // complete rule engine
-         $PLUGIN_HOOKS['use_rules']['fields'] = array('PluginFusioninventoryTaskpostactionRule');
 
          //include js and css
          $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
