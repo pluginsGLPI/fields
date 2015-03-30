@@ -6,32 +6,38 @@ function plugin_init_fields() {
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
    $plugin = new Plugin();
-   if (isset($_SESSION['glpiactiveentities'])
-      && $plugin->isInstalled('fields')
-      && $plugin->isActivated('fields')) {
+   if ($plugin->isInstalled('fields')
+       && $plugin->isActivated('fields')) {
 
-      $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
+      // complete rule engine
+      $PLUGIN_HOOKS['use_rules']['fields']    = array('PluginFusioninventoryTaskpostactionRule');
+      $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
+        
+      if (isset($_SESSION['glpiactiveentities'])) {
 
-      // add entry to configuration menu
-      $PLUGIN_HOOKS["menu_toadd"]['fields'] = array('config'  => 'PluginFieldsMenu');
+         $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
-      // add tabs to itemtypes
-      Plugin::registerClass('PluginFieldsContainer',
-                            array('addtabon' => PluginFieldsContainer::getEntries()));
+         // add entry to configuration menu
+         $PLUGIN_HOOKS["menu_toadd"]['fields'] = array('config'  => 'PluginFieldsMenu');
 
-      //include js and css
-      $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
-      $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
+         // add tabs to itemtypes
+         Plugin::registerClass('PluginFieldsContainer',
+                               array('addtabon' => PluginFieldsContainer::getEntries()));
 
-      // Add/delete profiles to automaticaly to container
-      $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
-                                                                    "addNewProfile");
-      $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = array("PluginFieldsProfile",
-                                                                    "deleteProfile");
+         //include js and css
+         $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
+         $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
-      //load drag and drop javascript library on Package Interface
-      $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
-      $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
+         // Add/delete profiles to automaticaly to container
+         $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
+                                                                       "addNewProfile");
+         $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = array("PluginFieldsProfile",
+                                                                       "deleteProfile");
+
+         //load drag and drop javascript library on Package Interface
+         $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
+         $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
+      }
 
       //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getUsedItemtypes();

@@ -139,3 +139,71 @@ function plugin_fields_MassiveActionsFieldsDisplay($options=array()) {
    // Need to return false on non display item
    return false;
 }
+
+
+/**** RULES ENGINE ****/
+
+/**
+ *
+ * Actions for rules
+ * @since 0.84
+ * @param $params input data
+ * @return an array of actions
+ */
+function plugin_fields_getRuleActions($params) {
+   $actions = array();
+
+   switch ($params['rule_itemtype']) {
+      case "PluginFusioninventoryTaskpostactionRule":
+         $options = PluginFieldsContainer::getAddSearchOptions("Computer");
+         foreach ($options as $num => $option) {
+            $actions[$option['linkfield']]['name'] = $option['name'];
+            $actions[$option['linkfield']]['type'] = $option['pfields_type'];
+            if ($option['pfields_type'] == 'dropdown') {
+               $actions[$option['linkfield']]['table'] = $option['table'];
+            }
+         }
+
+         break;
+   }
+
+   return $actions;
+}
+
+
+function plugin_fields_rule_matched($params) {
+   global $DB;
+
+   $container = new PluginFieldsContainer;
+
+   switch ($params['sub_type']) {
+      case "PluginFusioninventoryTaskpostactionRule":
+         $agent = new PluginFusioninventoryAgent;
+
+         if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
+            foreach ($params['output'] as $field => $value) {
+
+               // check if current field is in a tab container
+               $query = "SELECT c.id
+                         FROM glpi_plugin_fields_fields f
+                         LEFT JOIN glpi_plugin_fields_containers c
+                            ON c.id = f.plugin_fields_containers_id
+                         WHERE f.name = '$field'";
+               $res = $DB->query($query);
+               if ($DB->numrows($res) > 0) {
+                  $data = $DB->fetch_assoc($res);
+
+                  //retrieve computer
+                  $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
+                  $agent->getFromDB($agents_id);
+
+                  // update current field
+                  $container->updateFieldsValues(array('plugin_fields_containers_id' => $data['id'],
+                                                       $field     => $value,
+                                                       'items_id' => $agent->fields['computers_id']));
+               }
+            }
+         }
+      break;
+   }
+}

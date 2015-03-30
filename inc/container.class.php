@@ -421,7 +421,9 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          //profiles restriction
-         if (Session::isCron()) continue;
+         if (Session::isCron() || !isset($_SESSION['glpiactiveprofile']['id'])) {
+            continue;
+         }
          $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                  AND `plugin_fields_containers_id` = '".$item['id']."'");
          $first_found = array_shift($found);
@@ -671,7 +673,12 @@ class PluginFieldsContainer extends CommonDBTM {
          $sql_type = "`type` = '$type'";
       }
 
-      $sql_entity = getEntitiesRestrictRequest( "AND", "", "", $_SESSION['glpiactive_entity'], true, true);
+      $entity = 0;
+      if (isset($_SESSION['glpiactive_entity'])) {
+         $entity = $_SESSION['glpiactive_entity'];
+      }
+
+      $sql_entity = getEntitiesRestrictRequest( "AND", "", "", $entity, true, true);
       $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype' AND is_active = 1 $sql_entity");
       if (count($found_c) == 0) return false;
 
@@ -686,12 +693,14 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //profiles restriction
-      $profile = new PluginFieldsProfile();
-      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                              AND `plugin_fields_containers_id` = '$id'");
-      $first_found = array_shift($found);
-      if ($first_found['right'] == NULL) {
-         return false;
+      if (isset($_SESSION['glpiactiveprofile']['id'])) {
+         $profile = new PluginFieldsProfile();
+         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
+                                 AND `plugin_fields_containers_id` = '$id'");
+         $first_found = array_shift($found);
+         if ($first_found['right'] == NULL) {
+            return false;
+         }
       }
 
       return $id;
