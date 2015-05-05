@@ -504,11 +504,28 @@ class PluginFieldsContainer extends CommonDBTM {
       //check if datas already inserted
       $found = $obj->find("items_id = $items_id");
       if (empty($found)) {
-         $obj->add($datas);
 
-         //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
-                            $itemtype, $datas);
+         //check emptyness of fields datas before really add them
+         $field_obj = new PluginFieldsField();
+         $fields = $field_obj->find("plugin_fields_containers_id = ".
+                                    $datas['plugin_fields_containers_id']);
+
+         $empty = true;
+         foreach ($fields as $fields_id => $fields_params) {
+            if (!empty($datas[$fields_params['name']])) {
+               $empty = false;
+               break;
+            }
+         }
+
+         if (!$empty) {
+            // add fields datas
+            $obj->add($datas);
+
+            //construct history on itemtype object (Historical tab)
+            self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
+                               $itemtype, $datas);
+         }
       } else {
          $first_found = array_pop($found);
          $datas['id'] = $first_found['id'];
