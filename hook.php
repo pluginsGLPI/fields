@@ -47,6 +47,8 @@ function plugin_fields_install() {
 
 
 function plugin_fields_uninstall() {
+   global $DB; 
+
    $_SESSION['uninstall_fields'] = true;
 
    $classesToUninstall = array(
@@ -82,6 +84,9 @@ function plugin_fields_uninstall() {
    echo "</table></center>";
 
    unset($_SESSION['uninstall_fields']);
+
+   // clean display preferences 
+   $DB->query("DELETE FROM glpi_displaypreferences WHERE itemtype LIKE 'PluginFields%'");
 
    return true;
 }
