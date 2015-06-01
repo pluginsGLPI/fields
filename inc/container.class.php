@@ -491,9 +491,12 @@ class PluginFieldsContainer extends CommonDBTM {
 
       if (self::validateValues($datas) === false) return false;
 
-      //insert datas in new table
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
+
+      $field_obj = new PluginFieldsField();
+      $fields = $field_obj->find("plugin_fields_containers_id = ".
+                                 $datas['plugin_fields_containers_id']);
 
       $items_id = $datas['items_id'];
       $itemtype = $container_obj->fields['itemtype'];
@@ -506,10 +509,6 @@ class PluginFieldsContainer extends CommonDBTM {
       if (empty($found)) {
 
          //check emptyness of fields datas before really add them
-         $field_obj = new PluginFieldsField();
-         $fields = $field_obj->find("plugin_fields_containers_id = ".
-                                    $datas['plugin_fields_containers_id']);
-
          $empty = true;
          foreach ($fields as $fields_id => $fields_params) {
             if (!empty($datas[$fields_params['name']])) {
@@ -527,6 +526,15 @@ class PluginFieldsContainer extends CommonDBTM {
                                $itemtype, $datas);
          }
       } else {
+
+         //clean empty fields
+         $empty = true;
+         foreach ($fields as $fields_id => $fields_params) {
+            if (empty($datas[$fields_params['name']])) {
+               $datas[$fields_params['name']] = 'NULL';
+            }
+         }
+
          $first_found = array_pop($found);
          $datas['id'] = $first_found['id'];
          $obj->update($datas);
