@@ -217,11 +217,11 @@ function plugin_fields_giveItem($itemtype,$ID,$data,$num) {
    $searchopt = &Search::getOptions($itemtype);
    $table = $searchopt[$ID]["table"];
    $field = $searchopt[$ID]["field"];
-   $datatype = $searchopt[$ID]["datatype"];
    
    //fix glpi default Search::giveItem who for empty date display "--"
    if (strpos($table, "glpi_plugin_fields") !== false 
-       && strpos($datatype, "date") !== false
+       && isset($searchopt[$ID]["datatype"])
+       && strpos($searchopt[$ID]["datatype"], "date") !== false
        && empty($data['raw']["ITEM_$num"])) {
       return " ";
    }
