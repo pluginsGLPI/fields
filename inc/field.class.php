@@ -630,8 +630,8 @@ class PluginFieldsField extends CommonDBTM {
       $first_field = array_shift($tmp);
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
-      $classname = "PluginFields".ucfirst($container_obj->fields['itemtype'].
-                                  preg_replace('/s$/', '', $container_obj->fields['name']));
+      $items_itemtype = ucfirst($container_obj->fields['itemtype']);
+      $classname = "PluginFields".$items_itemtype.preg_replace('/s$/', '', $container_obj->fields['name']);
       $obj = new $classname;
 
       //find row for this object with the items_id
@@ -639,6 +639,17 @@ class PluginFieldsField extends CommonDBTM {
                                  $first_field['plugin_fields_containers_id']." AND items_id = ".
                                  $items_id);
       $found_v = array_shift($found_values);
+
+      // for class "Ticket" only, test status
+      if (is_subclass_of($items_itemtype, "CommonITILObject") ) {
+         $items_obj = new $items_itemtype();
+         $items_obj->getFromDB($items_id);
+
+         if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray()) 
+               || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray()) ) {
+            $canedit = false;
+         }
+      }
 
       //show all fields
       $html = "";
