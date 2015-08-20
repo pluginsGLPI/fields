@@ -10,6 +10,11 @@ class PluginFieldsMenu extends CommonGLPI {
    }
 
    static function getMenuContent() {
+
+      if (!Session::haveRight('entity', READ)) {
+         return;
+      }
+
       $front_fields = "/plugins/fields/front";
       $menu = array();
       $menu['title'] = self::getMenuName();

@@ -5,6 +5,8 @@ if (empty($_GET["id"])) {
    $_GET["id"] = "";
 }
 
+Session::checkRight('entity', READ);
+
 $field = new PluginFieldsField;
 
 if (isset($_POST["add"])) {
