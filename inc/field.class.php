@@ -641,13 +641,20 @@ class PluginFieldsField extends CommonDBTM {
                                  $items_id);
       $found_v = array_shift($found_values);
 
+      // find profiles (to check if current profile can edit fields)
+      $fprofile = new PluginFieldsProfile;
+      $found_p = $fprofile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
+                                  AND `plugin_fields_containers_id` = '".$first_field['plugin_fields_containers_id']."'");
+      $first_found_p = array_shift($found_p);
+
       // test status for "CommonITILObject" objects
       if (is_subclass_of($items_itemtype, "CommonITILObject") ) {
          $items_obj = new $items_itemtype();
          $items_obj->getFromDB($items_id);
 
          if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray()) 
-               || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray()) ) {
+               || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray()) 
+               || $first_found_p['right'] != CREATE) {
             $canedit = false;
          }
       }
