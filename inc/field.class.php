@@ -466,7 +466,7 @@ class PluginFieldsField extends CommonDBTM {
       jQuery( document ).ready(function( $ ) {
          jQuery('div.ui-tabs').tabs({
             load: function( event, ui ) {
-               jQuery('#page #ui-tabs-1 form:first table.tab_cadre_fixe:last tr').eq(-2) // before last tr
+               jQuery('#page #mainformtable tr').eq(-2) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
                jQuery('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
                   itemtype: '$current_itemtype',
