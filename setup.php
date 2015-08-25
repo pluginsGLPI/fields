@@ -58,7 +58,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.85-1.2',
+                 'version'        => '0.90-1.0',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
                  'license'        => 'restricted',
@@ -67,10 +67,11 @@ function plugin_version_fields() {
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_fields_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
+   if (version_compare(GLPI_VERSION,'0.85','lt')) {
       echo "This plugin requires GLPI 0.85";
       return false;
    }
+   
    if (version_compare(PHP_VERSION, '5.3.0', 'lt')) {
       echo "PHP 5.3.0 or higher is required";
       return false;
