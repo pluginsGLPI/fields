@@ -551,7 +551,7 @@ class PluginFieldsField extends CommonDBTM {
                   element = jQuery(this);
                   rand = Math.round(Math.random() * 1000000);
         
-                  var pos_to_insert = element.parent('tr');
+                  var pos_to_insert = element.closest('tr');
                   if (el.tagName === 'TR') pos_to_insert = element;
                   pos_to_insert.before(
                      '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\">.</div></td></tr>');
