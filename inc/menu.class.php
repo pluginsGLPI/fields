@@ -1,7 +1,4 @@
 <?php
-/**
- * Configuration class for Davfi Plugin
- */
 class PluginFieldsMenu extends CommonGLPI {
    static $rightname = 'entity';
 
