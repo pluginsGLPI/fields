@@ -44,6 +44,10 @@ msgstr ""
 msgid "Bloc"
 msgstr ""
 
+#: inc/container.class.php:297
+msgid "Tab"
+msgstr ""
+
 #: inc/container.class.php:282
 msgid "Add tab"
 msgstr ""
