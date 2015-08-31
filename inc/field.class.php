@@ -607,7 +607,7 @@ class PluginFieldsField extends CommonDBTM {
       
       //get fields for this container
       $field_obj = new self();
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id", "ranking");
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
       if ($subtype == 'TicketTask$1') {
          echo "<table>";
       } else {
