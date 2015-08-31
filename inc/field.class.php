@@ -607,13 +607,19 @@ class PluginFieldsField extends CommonDBTM {
       //retieve dom containers associated to this itemtype
       $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
 
+      if (is_array($c_id)) {
+         $condition = "plugin_fields_containers_id IN (".implode(", ", $c_id).")";
+      } else {
+         $condition = "plugin_fields_containers_id = $c_id";
+      }
+
       if ($c_id === false) {
-         $c_id = -1;
+         $condition = "1=0";
       }
       
       //get fields for this container
       $field_obj = new self();
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
+      $fields = $field_obj->find($condition." AND is_active = 1", "ranking");
       if ($subtype == 'TicketTask$1') {
          echo "<table>";
       } else {

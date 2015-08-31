@@ -337,7 +337,17 @@ class PluginFieldsContainer extends CommonDBTM {
             $item->getEmpty();
             $tabs = $item->defineTabs();
 
-            
+            list($id, ) = each($tabs);
+            // delete first element of array
+            unset($tabs[$id]);
+
+            // delete Log of array (don't work with this tab)
+            foreach (array('Log$1', 'TicketFollowup$1', 'TicketTask$1') as $fields_to_remove) {
+               if (isset($tabs[$fields_to_remove])) {
+                  unset($tabs[$fields_to_remove]);
+               }
+            }
+
             // For delete <sup class='tab_nb'>number<sup> :
             foreach ($tabs as $key => &$value) {
                $results = array();
@@ -675,21 +685,32 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
 
-   static function findContainer($itemtype, $items_id, $type='tab') {
-      $container = new PluginFieldsContainer;
-      $sql_type = "1=1";
+   static function findContainer($itemtype, $items_id, $type = 'tab', $subtype = '') {
+
       if ($type === 'tab' || $type === 'dom') {
          $sql_type = "`type` = '$type'";
+      } else {
+         $sql_type = "1=1";
       }
 
-      $entity = 0;
-      if (isset($_SESSION['glpiactive_entity'])) {
-         $entity = $_SESSION['glpiactive_entity'];
+      $entity = isset($_SESSION['glpiactive_entity']) ? $_SESSION['glpiactive_entity'] : 0;
+
+      $sql_entity = getEntitiesRestrictRequest("AND", "", "", $entity, true, true);
+
+      $sql_subtype = '';
+      if ($subtype != '') {
+         if ($subtype == $itemtype.'$main') {
+            $sql_subtype = " AND type = 'dom' ";
+         } else {
+            $sql_subtype = " AND type != 'dom' AND subtype = '$subtype' ";
+         }
       }
 
-      $sql_entity = getEntitiesRestrictRequest( "AND", "", "", $entity, true, true);
-      $found_c = $container->find("$sql_type AND `itemtype` = '$itemtype' AND is_active = 1 $sql_entity");
-      if (count($found_c) == 0) return false;
+      $container = new PluginFieldsContainer();
+      $found_c = $container->find($sql_type." AND `itemtype` = '$itemtype' AND is_active = 1 ".$sql_entity.$sql_subtype);
+      if (empty($found_c)) {
+         return false;
+      }
 
       if ($type == "dom") {
          $tmp = array_shift($found_c);
@@ -704,8 +725,13 @@ class PluginFieldsContainer extends CommonDBTM {
       //profiles restriction
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
          $profile = new PluginFieldsProfile();
+         if (is_array($id)) {
+            $condition = "`plugin_fields_containers_id` IN (".implode(", ", $id).")";
+         } else {
+            $condition = "`plugin_fields_containers_id` = '$id'";
+         }
          $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                                 AND `plugin_fields_containers_id` = '$id'");
+                                 AND $condition");
          $first_found = array_shift($found);
          if ($first_found['right'] == NULL) {
             return false;
@@ -726,15 +752,13 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //find fields associated to found container
-      $field_obj = new PluginFieldsField;
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'",
-                                 "ranking");
+      $field_obj = new PluginFieldsField();
+      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", "ranking");
 
       //prepare datas to update
-      $datas = array(
-         'plugin_fields_containers_id' => $c_id,
-         'items_id'                    =>  $item->fields['id']
-      );
+      $datas = array('plugin_fields_containers_id' => $c_id,
+                     'items_id'                    =>  $item->fields['id']);
+
       foreach($fields as $field) {
          if (isset($item->input[$field['name']])) {
             //standard field
@@ -749,12 +773,11 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //update datas
-      $container = new self;
-      if(!$container->updateFieldsValues($datas)) {
-         return $item->input = array();
-      } else {
+      $container = new self();
+      if ($container->updateFieldsValues($datas)) {
          return true;
       }
+      return $item->input = array();
    }
 
    static function getAddSearchOptions($itemtype, $containers_id = false) {
