@@ -370,7 +370,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<tr>";
       echo "<td>" . __('Active') . " :</td>";
       echo "<td>";
-      Dropdown::showYesNo('is_active', !empty($this->fields["is_active"]) ?: 1);
+      Dropdown::showYesNo('is_active', $this->fields["is_active"]);
       echo "</td>";
       echo "<td>".__("Mandatory field")." : </td>";
       echo "<td>";
