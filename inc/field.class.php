@@ -461,12 +461,18 @@ class PluginFieldsField extends CommonDBTM {
          return false;
       }
 
+      if ($items_id >= 1) {
+         $eq = -2; // have a <tr> for delete item
+      } else {
+         $eq = -1;
+      }
+
 
       echo "
       jQuery( document ).ready(function( $ ) {
          jQuery('div.ui-tabs').tabs({
             load: function( event, ui ) {
-               jQuery('#page #mainformtable tr').eq(-2) // before last tr
+               jQuery('#page #mainformtable tr').eq($eq) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
                jQuery('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
                   itemtype: '$current_itemtype',
