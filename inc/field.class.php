@@ -532,7 +532,7 @@ class PluginFieldsField extends CommonDBTM {
          var insert_dom_tab$rand = function(jqui_tab, current_glpi_tab) {
 
             // escape $ in tab name
-            current_glpi_tab = current_glpi_tab.replace('$', '\\\\$');
+            //current_glpi_tab = current_glpi_tab.replace('$', '\\\\$');
             
             setTimeout(function() {
                // tabs with form
