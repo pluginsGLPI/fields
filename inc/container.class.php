@@ -535,6 +535,12 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    static function constructHistory($containers_id, $items_id, $itemtype, $datas,
                                 $old_values = array()) {
+      // Don't log few itemtypes
+      $obj = new $itemtype();
+      if ($obj->dohistory == false) {
+         return;
+      }
+
       //get searchoptions
       $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
 
