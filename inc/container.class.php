@@ -278,7 +278,8 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
       if($ID > 0) {
-         echo $this->fields["itemtype"];
+         $obj = getItemForItemtype($this->fields["itemtype"]);
+         echo $obj->getTypeName(1);
       } else {
          Dropdown::showFromArray('itemtype', 
          	                     self::getItemtypes(),
