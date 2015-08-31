@@ -546,7 +546,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //define non-datas keys
       $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0,
-                              'update_fields_values' => 0);
+                              'update_fields_values' => 0, '_glpi_csrf_token' => 0);
 
       //remove non-datas keys
       $datas = array_diff_key($datas, $blacklist_k);
