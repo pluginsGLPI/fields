@@ -348,10 +348,10 @@ class PluginFieldsContainer extends CommonDBTM {
                }
             }
 
-            // For delete <sup class='tab_nb'>number<sup> :
+            // For delete <sup class='tab_nb'>number</sup> :
             foreach ($tabs as $key => &$value) {
                $results = array();
-               if (preg_match_all('#<sup.+>(.+)</sup>#', $value, $results)) {
+               if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
                   $value = str_replace($results[0][0], "", $value);
                }
             }
