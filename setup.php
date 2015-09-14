@@ -61,7 +61,7 @@ function plugin_version_fields() {
                  'version'        => '0.90-1.0',
                  'author'         => 'Alexandre Delaunay & Walid Nouh',
                  'homepage'       => 'teclib.com',
-                 'license'        => 'restricted',
+                 'license'        => 'GPLv2+',
                  'minGlpiVersion' => '0.85');
 }
 
