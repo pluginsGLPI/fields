@@ -23,6 +23,10 @@ class PluginFieldsField extends CommonDBTM {
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
             $DB->query($query) or die ($DB->error());
+      } else { //table exists, but we may add fields
+          
+          $migration->addField( $table, 'is_readonly', 'bool', array('default' => false)) ;
+          $migration->executeMigration();
       }
 
       return true;
@@ -148,7 +152,7 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //for dropdown, if already exist, link to it
-      if ($input['type'] === "dropdown") {
+      if (isset( $input['type'] ) && $input['type'] === "dropdown") {
          $found = $this->find("name = '".$input['name']."'");
          if (!empty($found)) return $input['name'];
       }
@@ -247,6 +251,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<th>" . $LANG['mailing'][139] . "</th>";
          echo "<th>" . $LANG['common'][17] . "</th>";
          echo "<th>" . $LANG['common'][44] . "</th>";
+         echo "<th>" . $LANG['fields']['field']['label']['readonly'] . "</th>";
          echo "</tr>\n";
 
          $fields_type = self::getTypes();
@@ -269,7 +274,10 @@ class PluginFieldsField extends CommonDBTM {
                echo "</script>\n";
                echo $this->fields['label']."</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
-               echo "<td>".$this->fields['default_value']."</td>";
+               echo "<td>".$this->fields['default_value']."</td>";               
+               echo "<td>";
+                    Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"],-1,array('readonly' => true));
+                    echo "</td>"; 
                echo "</tr>\n";
             }
          }
@@ -294,6 +302,7 @@ class PluginFieldsField extends CommonDBTM {
          $this->check(-1,'w',$input);
       }
 
+      $options['colspan'] = 3 ;
       $this->showFormHeader($options);
 
       echo "<tr>";
@@ -318,8 +327,12 @@ class PluginFieldsField extends CommonDBTM {
       Html::autocompletionTextField($this, 'default_value', 
                                     array('value' => $this->fields["default_value"]));
       echo "</td>";
+      echo "<td>".$LANG['fields']['field']['label']['readonly'].":</td>";
+      echo "<td>";
+      Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
+      echo "</td>";
       echo "</tr>";
-
+      
       $this->showFormButtons($options);
 
    }
@@ -364,35 +377,27 @@ class PluginFieldsField extends CommonDBTM {
    static function showForDomContainer() {
 
       //parse http_referer to get current url (this code is loaded by javacript)
-      $current_url = $_SERVER['HTTP_REFERER'];
-      if (strpos($current_url, ".form.php") === false
-            && strpos($current_url, ".injector.php") === false
-            && strpos($current_url, ".public.php") === false) {
-         return false;
-      }
+      if( isset( $_SERVER['HTTP_REFERER'] ) ) 
+          $current_url = $_SERVER['HTTP_REFERER'];
+      else return false ;
+      
+      if (strpos($current_url, ".form.php") === false) return false;
       $expl_url = explode("?", $current_url);
 
+      //if add item form, do nothing
+      if (!isset($expl_url[1]) || strpos($expl_url[1], "id=") === false) return false;
+
       //get current id
-      if(isset($expl_url[1])) {
-         parse_str($expl_url[1], $params);
-         if(isset($params['id'])) {
-            $items_id = $params['id'];
-         } else {
-            $items_id = 0;
-         }
-      } else {
-         $items_id = 0;
+      parse_str($expl_url[1], $params);
+      if( !isset($params['id'])) {
+          return false ;
       }
+      $items_id = $params['id'];
 
       //get itemtype
       $tmp = explode("/", $expl_url[0]);
       $script_name = array_pop($tmp);
-
-      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
-         $current_itemtype = "Ticket";
-      } else {
-         $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
-      }
+      $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
 
       //Retrieve dom container 
       $itemtypes = PluginFieldsContainer::getEntries('dom', true);
@@ -403,8 +408,7 @@ class PluginFieldsField extends CommonDBTM {
 
       echo "Ext.onReady(function() {\n
          Ext.select('#page form tr:last').each(function(el){
-            el.insertHtml('beforeBegin', 
-                          '<tr><td style=\"padding:0\" colspan=\"4\" id=\"dom_container\"></td></tr>');
+            el.insertHtml('beforeBegin', '<tr><td colspan=\"4\" id=\"dom_container\"></td></tr>');
             Ext.get('dom_container').load({
                url: '../plugins/fields/ajax/load_dom_fields.php',
                params: {
@@ -413,7 +417,11 @@ class PluginFieldsField extends CommonDBTM {
                }
             });
          });
-      });\n";
+
+         
+      ";
+
+      echo "});\n";
    }
 
    static function AjaxForDomContainer($itemtype, $items_id) {
@@ -486,21 +494,15 @@ class PluginFieldsField extends CommonDBTM {
             //show field
             if ($show_table) {
                if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
-               if ($container_obj->fields['itemtype'] == 'Ticket' 
-                   && $container_obj->fields['type'] == 'dom'
-                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false  
-                   && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html.= "<th width='13%'>".$field['label']." : </th>";
-               } else {
-                  $html.= "<td>".$field['label']." : </td>";
-               }
+               $html.= "<td>".$field['label']." : </td>";
                $html.= "<td>";
             }
+            $readonly = $field['is_readonly'];
             switch ($field['type']) {
                case 'number':
                case 'text':
                   $value = Html::cleanInputText($value);
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      $html.= "<input type='text' name='".$field['name']."' value=\"$value\" />";
                   } else {
                      $html.= $value;
@@ -508,7 +510,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'textarea':
                   if ($massiveaction) continue;
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
                         "$value</textarea>";
                   } else {
@@ -516,7 +518,7 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'dropdown':
-                  if ($canedit) {
+                   if ($canedit && !$readonly) {
                      ob_start();
                      if (strpos($field['name'], "dropdowns_id") !== false) {
                         $dropdown_itemtype = getItemTypeForTable(
@@ -524,7 +526,7 @@ class PluginFieldsField extends CommonDBTM {
                      } else {
                         $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
                      }
-                     Dropdown::show($dropdown_itemtype, array('value' => $value));
+                     Dropdown::show($dropdown_itemtype, array('value' => $value, 'condition' => 'is_visible=1' ));
                      $html.= ob_get_contents();
                      ob_end_clean();
                   } else {
@@ -537,7 +539,7 @@ class PluginFieldsField extends CommonDBTM {
                   //otherwise double display of field
                   if ($massiveaction) continue;
                   
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      ob_start();
                      Dropdown::showYesNo($field['name'], $value);
                      $html.= ob_get_contents();
@@ -548,7 +550,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'date':
                   if ($massiveaction) continue;
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      ob_start();
                      Html::showDateFormItem($field['name'], $value);
                      $html.= ob_get_contents();
@@ -559,7 +561,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'datetime':
                   if ($massiveaction) continue;
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      ob_start();
                      Html::showDateTimeFormItem($field['name'], $value);
                      $html.= ob_get_contents();
@@ -567,6 +569,24 @@ class PluginFieldsField extends CommonDBTM {
                   } else {
                      $html.= Html::convDateTime($value);
                   }
+               case 'dropdownuser':
+                   if ($massiveaction) continue;
+                   if ($canedit && !$readonly) {
+                       ob_start();
+                       User::dropdown(array('name'   => $field['name'],
+                                      'value'  => $value,
+                                      'entity' => -1,
+                                      'right'  => 'all',
+                                      'condition' => 'is_active=1 && is_deleted=0'));
+                       $html.= ob_get_contents();
+                       ob_end_clean();
+                   } else {
+                       $showuserlink = 0;
+                       if (Session::haveRight('user','r')) {
+                           $showuserlink = 1;
+                       }
+                       $html.= getUserName($value, $showuserlink);
+                   }
             }
             if ($show_table) {
                $html.= "</td>";
@@ -593,7 +613,7 @@ class PluginFieldsField extends CommonDBTM {
                                         $searchOption['linkfield']);
       
       //find field
-      $query_f = "SELECT fields.plugin_fields_containers_id
+      $query_f = "SELECT fields.plugin_fields_containers_id, fields.is_readonly
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
@@ -609,12 +629,13 @@ class PluginFieldsField extends CommonDBTM {
       //display an hidden post field to store container id
       echo "<input type='hidden' name='c_id' value='$c_id' />";
 
-      //preapre arary for function prepareHtmlFields
+      //prepare array for function prepareHtmlFields
       $fields = array(array(
          'id'    => 0,
          'type'  => $searchOption['pfields_type'],
          'plugin_fields_containers_id'  => $c_id,
-         'name'  => $cleaned_linkfield
+         'name'  => $cleaned_linkfield,
+         'is_readonly' => $row_f['is_readonly']
       ));
 
       //show field
@@ -633,7 +654,8 @@ class PluginFieldsField extends CommonDBTM {
          'dropdown' => $LANG['fields']['field']['type']['dropdown'],
          'yesno'    => $LANG['fields']['field']['type']['yesno'],
          'date'     => $LANG['fields']['field']['type']['date'],
-         'datetime' => $LANG['fields']['field']['type']['datetime']
+         'datetime' => $LANG['fields']['field']['type']['datetime'],
+         'dropdownuser' => $LANG['fields']['field']['type']['dropdownuser']
       );
    }
 

@@ -31,6 +31,10 @@ $LANG['fields']['field']['type']['dropdown'] = "Dropdown";
 $LANG['fields']['field']['type']['yesno']    = "Yes/No";
 $LANG['fields']['field']['type']['date']     = "Date";
 $LANG['fields']['field']['type']['datetime'] = "Date & time";
+$LANG['fields']['field']['type']['dropdownuser'] = "User Dropdown";
+
 
 $LANG['fields']['field']['label']['add']       = "Add a new field";
 $LANG['fields']['field']['label']['no_fields'] = "No field for this bloc";
+
+$LANG['fields']['field']['label']['readonly'] = "Read only";
