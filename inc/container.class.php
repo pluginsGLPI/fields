@@ -610,7 +610,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $i = 76665;
-      $query = "SELECT fields.name, fields.label, fields.type, 
+      $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
             containers.name as container_name, containers.label as container_label, 
             containers.itemtype
          FROM glpi_plugin_fields_containers containers
@@ -630,7 +630,10 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['name']          = $datas['container_label']." - ".$datas['label'];
          $opt[$i]['linkfield']     = $datas['name'];
          //$opt[$i]['condition']     = "glpi_plugin_fields_fields.name = '".$datas['name']."'";
-         //$opt[$i]['massiveaction'] = false;
+         
+         if( $datas['is_readonly'] ) 
+             $opt[$i]['massiveaction'] = false;
+         
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $datas['type'];
 
@@ -644,11 +647,22 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         }
+         } elseif ($datas['type'] === "dropdownuser") {
+             $opt[$i]['table']      = 'glpi_users';
+             $opt[$i]['field']      = 'name';
+             $opt[$i]['linkfield']     = $datas['name'];
+             //$opt[$i]['searchtype'] = 'equals';
+             $opt[$i]['forcegroupby'] = true ; // to fix a bug in mySQL: see http://bugs.mysql.com/bug.php?id=69268 and http://bugs.mysql.com/bug.php?id=68897 fixed in mySQL 5.6.13
+             //$opt[$i]['condition']     = "is_visible=1" ;
+             $opt[$i]['joinparams']['jointype'] = "";
+             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";             
+         }                  
 
          switch ($datas['type']) {
-            case 'dropdown':
-               $opt[$i]['datatype'] = "dropdown";
+             case 'dropdown':
+             case 'dropdownuser':
+                 $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
                $opt[$i]['datatype'] = "bool";

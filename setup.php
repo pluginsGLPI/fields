@@ -52,8 +52,8 @@ function plugin_init_fields() {
 function plugin_version_fields() {
    global $LANG;
    return array ('name'           => $LANG["fields"]["title"][1],
-                 'version'        => '2.0',
-                 'author'         => 'Alexandre Delaunay & Walid Nouh',
+                 'version'        => '2.1.0',
+                 'author'         => 'Alexandre Delaunay & Walid Nouh & Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'restricted',
                  'minGlpiVersion' => '0.83.3');
