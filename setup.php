@@ -6,7 +6,8 @@ function plugin_init_fields() {
    $plugin = new Plugin();
    if (isset($_SESSION['glpiactiveentities']) 
       && $plugin->isInstalled('fields') 
-      && $plugin->isActivated('fields')) {
+      && $plugin->isActivated('fields')
+      && Session::getLoginUserID() ) {
       
       Plugin::registerClass('PluginFieldsContainer',
                             array('addtabon' => PluginFieldsContainer::getEntries()));
@@ -42,8 +43,6 @@ function plugin_init_fields() {
                                                                        "preItemUpdate");
          $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer", 
                                                                        "preItemPurge");
-         $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer", 
-                                                                       "preItemUpdate");
       }
    }
 }
