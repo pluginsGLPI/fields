@@ -329,10 +329,14 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          //profiles restriction
-         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
-                                 AND `plugin_fields_containers_id` = '".$item['id']."'");
-         $first_found = array_shift($found);
-         if ($first_found['right'] == NULL) continue;
+         if( isset($_SESSION['glpiactiveprofile']['id'])) {
+            $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."' 
+                                AND `plugin_fields_containers_id` = '".$item['id']."'");
+            $first_found = array_shift($found);
+            if ($first_found['right'] == NULL) continue;
+         } else 
+             continue ;
+         
 
          //show more info or not
          if ($full) {
