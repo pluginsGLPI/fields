@@ -7,7 +7,8 @@ function plugin_init_fields() {
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('fields')
-       && $plugin->isActivated('fields')) {
+       && $plugin->isActivated('fields')
+       && Session::getLoginUserID() ) {
 
       // complete rule engine
       $PLUGIN_HOOKS['use_rules']['fields']    = array('PluginFusioninventoryTaskpostactionRule');
