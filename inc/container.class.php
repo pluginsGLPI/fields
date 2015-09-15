@@ -639,6 +639,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
             $opt[$i]['searchtype'] = 'equals';
+            $opt[$i]['forcegroupby'] = true ; // to fix a bug in mySQL: see http://bugs.mysql.com/bug.php?id=69268 and http://bugs.mysql.com/bug.php?id=68897 fixed in mySQL 5.6.13
             //$opt[$i]['condition']     = "is_visible=1" ;
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
