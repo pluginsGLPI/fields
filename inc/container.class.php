@@ -158,7 +158,6 @@ class PluginFieldsContainer extends CommonDBTM {
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $this->fields['itemtype'], $template_class);
-      $template_class = str_replace("%%CONTAINER%%", $this->fields['id'], $template_class);
       $class_filename = strtolower($this->fields['itemtype'].
                                    preg_replace('/s$/', '', $this->fields['name']).".class.php");
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename", 
@@ -378,159 +377,93 @@ class PluginFieldsContainer extends CommonDBTM {
    function updateFieldsValues($datas) {
       global $DB;
 
-      if (self::validateValues($datas) === false) return false;
-
       //insert datas in new table
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
-
-      $items_id = $datas['items_id'];
-      $itemtype = $container_obj->fields['itemtype'];
-
-      $classname = "PluginFields".ucfirst($itemtype.
+      $classname = "PluginFields".ucfirst($container_obj->fields['itemtype'].
                                           preg_replace('/s$/', '', $container_obj->fields['name']));
       $obj = new $classname;
       //check if datas already inserted
-      $found = $obj->find("items_id = $items_id");
+      $found = $obj->find("items_id = ".$datas['items_id']);
       if (empty($found)) {
          $obj->add($datas);
-
-         //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
-                            $itemtype, $datas);
       } else {
          $first_found = array_pop($found);
          $datas['id'] = $first_found['id'];
          $obj->update($datas);
+      }
 
-         //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id, 
-                            $itemtype, $datas, $first_found);
+      //insert datas in vanilla table
+      $c_id     = $datas['plugin_fields_containers_id'];
+      $items_id = $datas['items_id'];
+
+      //get itemtype
+      $container = new self;
+      $container->getFromDB($c_id);
+      $itemtype = $container->fields['itemtype'];
+
+      //unset unused datas
+      unset(
+         $datas['plugin_fields_containers_id'], 
+         $datas['items_id'], 
+         $datas['update_fields_values']
+      );
+
+      $field_obj = new PluginFieldsField;
+      $field_value_obj = new PluginFieldsValue;
+      foreach($datas as $field => $value) {
+         //parse name for dropdown
+         if (strpos($field, "dropdown") !== false) {
+            $field = str_replace("plugin_fields_", "", $field);
+            $field = str_replace("dropdowns_id", "", $field);
+         }
+
+         //find field
+         $found_f = $field_obj->find(
+            "`plugin_fields_containers_id` = $c_id AND `name` = '".$field."'");
+         if (count($found_f) == 0) {
+            continue;
+         }
+         $tmp_f = array_shift($found_f);
+         $fields_id = $tmp_f['id'];
+
+         //find existing values
+         $found_v = $field_value_obj->find(
+            "`plugin_fields_fields_id` = $fields_id AND `items_id` = '".$items_id."'");
+
+         $value_field = 'value_varchar';
+         switch ($tmp_f['type']) {
+            case 'dropdown':
+               $value_field = 'value_int';
+               break;
+            case 'yesno':
+               $value_field = 'value_int';
+               break;
+            case 'textarea':
+               $value_field = 'value_text';
+         }
+
+         if (count($found_v) > 0) {
+            //update
+            $tmp_v = array_shift($found_v);
+            $values_id = $tmp_v['id'];
+            $field_value_obj->update(array(
+               'id'         => $values_id,
+               $value_field => $value
+            ));
+         } else {
+            // add
+            $field_value_obj->add(array(
+               'items_id'                    => $items_id,
+               'itemtype'                    => $itemtype,
+               $value_field                  => $value,
+               'plugin_fields_containers_id' => $c_id,
+               'plugin_fields_fields_id'     => $fields_id
+            ));
+         }
       }
 
       return true;
-   }
-
-   /**
-    * Add log in "itemtype" object on fields values update
-    * @param  int    $containers_id : 
-    * @param  int    $items_id      : 
-    * @param  string $itemtype      : 
-    * @param  array  $datas         : values send by update form
-    * @param  array  $old_values    : old values, if empty -> values add
-    * @return nothing
-    */
-   static function constructHistory($containers_id, $items_id, $itemtype, $datas, 
-                                $old_values = array()) {
-      //get searchoptions
-      $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
-
-      //define non-datas keys 
-      $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 
-                              'update_fields_values' => 0);
-
-      //remove non-datas keys
-      $datas = array_diff_key($datas, $blacklist_k);
-         
-      //add/update values condition
-      if (empty($old_values)) {
-         // -- add new item --
-
-         foreach ($datas as $key => $value) {
-            //log only not empty values
-            if (!empty($value)) {
-               //prepare log
-               $changes = array(0, "", $value);
-
-               //find searchoption
-               foreach ($searchoptions as $id_search_option => $searchoption) {
-                  if ($searchoption['linkfield'] == $key) {
-                     $changes[0] = $id_search_option;
-
-                     //manage dropdown values
-                     if ($searchoption['datatype'] === 'dropdown') {
-                        $changes = array($id_search_option, "", 
-                                         Dropdown::getDropdownName($searchoption['table'],$value));
-                     }
-                     break;
-                  }
-               }
-
-               //add log
-               Log::history($items_id, $itemtype, $changes);
-            }
-         }
-      } else {
-         // -- update existing item --
-
-         //find changes
-         $updates = array();
-         foreach ($old_values as $key => $old_value) {
-            if (!isset($datas[$key]) 
-                || empty($old_value) && empty($datas[$key])
-                || $old_value !== '' && $datas[$key] == 'NULL'
-                ) {
-               continue;
-            }
-
-            if ($datas[$key] !== $old_value) {
-               $updates[$key] = array(0, $old_value, $datas[$key]);
-            }
-         }
-
-         //for all change find searchoption
-         foreach ($updates as $key => $changes) {
-            foreach ($searchoptions as $id_search_option => $searchoption) {
-               if ($searchoption['linkfield'] == $key) {
-                  $changes[0] = $id_search_option;
-
-                  //manage dropdown values
-                  if ($searchoption['datatype'] === 'dropdown') {
-                     $changes[1] = Dropdown::getDropdownName($searchoption['table'],$changes[1]);
-                     $changes[2] = Dropdown::getDropdownName($searchoption['table'],$changes[2]);
-                  }
-                  break;
-               }
-            }   
-
-            //add log
-            Log::history($items_id, $itemtype, $changes);
-         }
-      }      
-   }
-
-   /**
-    * check datas inserted (only nuber for the moment)
-    * display a message when not ok
-    * @param  array $datas : datas send by form
-    * @return boolean
-    */
-   static function validateValues($datas) {
-      global $LANG;
-
-      $field_obj = new PluginFieldsField;
-      $fields = $field_obj->find("plugin_fields_containers_id = ".
-                                 $datas['plugin_fields_containers_id']." AND type = 'number'");
-
-      unset($datas['plugin_fields_containers_id']);
-      unset($datas['items_id']);
-      unset($datas['update_fields_values']);
-      $datas_keys = array_keys($datas);
-
-      $fields_error = array();
-      foreach ($fields as $fields_id => $field) {
-         if (empty($datas[$field['name']])) continue;
-         if (!preg_match("/[-+]?[0-9]*\.?[0-9]+/", $datas[$field['name']])) {
-            $fields_error[] = $field['label'];
-         }
-      }
-
-      if (!empty($fields_error)) {
-         Session::AddMessageAfterRedirect($LANG['fields']['error']['no_numeric_value'].
-                                          " : (".implode(", ", $fields_error).")");
-         $_SESSION['plugin']['fields']['values_sent'] = $datas;
-         return false;
-      } else return true;
    }
 
 
@@ -594,16 +527,34 @@ class PluginFieldsContainer extends CommonDBTM {
       $container = new self;
       return $container->updateFieldsValues($datas);
    }
+   
+   static function preItemPurge(CommonDBTM $item) {
+      global $DB;
 
-   static function getAddSearchOptions($itemtype, $containers_id = false) {
+      $values = new PluginFieldsValue;
+
+      //get all value associated to this item
+      $query = "SELECT glpi_plugin_fields_values.id as values_id
+      FROM glpi_plugin_fields_containers
+      INNER JOIN glpi_plugin_fields_values
+         ON glpi_plugin_fields_values.plugin_fields_containers_id = glpi_plugin_fields_containers.id
+      WHERE glpi_plugin_fields_containers.itemtype = '".get_Class($item)."'
+         AND glpi_plugin_fields_values.items_id = ".$item->fields['id'];
+      $res = $DB->query($query);
+      while ($data = $DB->fetch_assoc($res)) {
+         $values_id = $data['values_id'];
+
+         //remove associated values
+         $values->delete(array(
+            'id' => $values_id
+         ), 1);
+      }
+   }
+
+   static function getAddSearchOptions($itemtype) {
       global $DB;
 
       $opt = array();
-
-      $where = "";
-      if ($containers_id !== false) {
-         $where = "AND containers.id = $containers_id";
-      }
 
       $i = 76665;
       $query = "SELECT fields.name, fields.label, fields.type, 
@@ -615,7 +566,6 @@ class PluginFieldsContainer extends CommonDBTM {
             AND containers.is_active = 1
          WHERE containers.itemtype = '$itemtype'
             AND fields.type != 'header'
-            $where
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
@@ -635,6 +585,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
             $opt[$i]['searchtype'] = 'equals';
+            $opt[$i]['condition']     = "is_visible=1" ;
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
