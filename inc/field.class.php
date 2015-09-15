@@ -364,7 +364,10 @@ class PluginFieldsField extends CommonDBTM {
    static function showForDomContainer() {
 
       //parse http_referer to get current url (this code is loaded by javacript)
-      $current_url = $_SERVER['HTTP_REFERER'];
+      if( isset( $_SERVER['HTTP_REFERER'] ) ) 
+          $current_url = $_SERVER['HTTP_REFERER'];
+      else return false ;
+      
       if (strpos($current_url, ".form.php") === false) return false;
       $expl_url = explode("?", $current_url);
 
