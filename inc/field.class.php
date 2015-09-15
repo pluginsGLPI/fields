@@ -389,6 +389,9 @@ class PluginFieldsField extends CommonDBTM {
 
       //get current id
       parse_str($expl_url[1], $params);
+      if( !isset($params['id'])) {
+          return false ;
+      }
       $items_id = $params['id'];
 
       //get itemtype
