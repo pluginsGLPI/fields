@@ -1,6 +1,6 @@
 <?php
 
-class %%CLASSNAME%% extends CommonTreeDropdown {
+class %%CLASSNAME%% extends PluginFieldsDropdownBase {
    var $field_name      = "%%FIELDNAME%%";
 
    static function install() {
@@ -21,7 +21,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
                   `sons_cache`                              TEXT           DEFAULT NULL,
                   `entities_id`                             INT(11)        NOT NULL DEFAULT '0',
                   `is_recursive`                            TINYINT(1)     NOT NULL DEFAULT '0',
-                  `is_visible`                               TINYINT(1)     NOT NULL DEFAULT '1',
+				  `is_visible`                               TINYINT(1)     NOT NULL DEFAULT '1',
                   PRIMARY KEY                               (`id`),
                   KEY                                       `entities_id`  (`entities_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
