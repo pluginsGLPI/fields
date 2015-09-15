@@ -63,8 +63,8 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.90-1.0',
-                 'author'         => 'Alexandre Delaunay & Walid Nouh',
+                 'version'        => '0.90-1.1',
+                 'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',
                  'minGlpiVersion' => '0.85');

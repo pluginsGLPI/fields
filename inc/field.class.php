@@ -21,24 +21,30 @@ class PluginFieldsField extends CommonDBTM {
                   `ranking`                           INT(11)        NOT NULL DEFAULT '0',
                   `default_value`                     VARCHAR(255)   DEFAULT NULL,
                   `is_active`                         TINYINT(1)     NOT NULL DEFAULT '1',
+                  `is_readonly`                       TINYINT(1)     NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT(1)     NOT NULL DEFAULT '0',
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
-                  KEY `is_active`                     (`is_active`)
+                  KEY `is_active`                     (`is_active`),
+                  KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
-      } elseif(!FieldExists($table, 'is_active')) {
-         $migration->displayMessage("Updating $table");
+      } 
 
-         if(!FieldExists($table, 'is_active')) {
-            $migration->addField($table, 'is_active', 'bool', array('value' => 1));
-            $migration->addKey($table, 'is_active', 'is_active');
-         }
-         if(!FieldExists($table, 'mandatory')) {
-            $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
-         }
-         $migration->executeMigration();
+      $migration->displayMessage("Updating $table");
+
+      if(!FieldExists($table, 'is_active')) {
+         $migration->addField($table, 'is_active', 'bool', array('value' => 1));
+         $migration->addKey($table, 'is_active', 'is_active');
       }
+      if(!FieldExists($table, 'is_readonly')) {
+         $migration->addField( $table, 'is_readonly', 'bool', array('default' => false)) ;
+         $migration->addKey($table, 'is_readonly', 'is_readonly');
+      }
+      if(!FieldExists($table, 'mandatory')) {
+         $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
+      }
+      $migration->executeMigration();
 
       return true;
    }
@@ -169,7 +175,7 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //for dropdown, if already exist, link to it
-      if ($input['type'] === "dropdown") {
+      if (isset( $input['type'] ) && $input['type'] === "dropdown") {
          $found = $this->find("name = '".$input['name']."'");
          if (!empty($found)) return $input['name'];
       }
@@ -274,6 +280,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<th>" . __("Default values") . "</th>";
          echo "<th>" . __("Mandatory field") . "</th>";
          echo "<th>" . __("Active") . "</th>";
+         echo "<th>" . __("Read only") . "</th>";
          echo "<th width='16'>&nbsp;</th>";
          echo "</tr>\n";
 
@@ -305,12 +312,15 @@ class PluginFieldsField extends CommonDBTM {
                      : '<b class="red">' . __('No') . '</b>';
                echo "</td>";
 
+               echo "<td>";
+               Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"],-1,array('readonly' => true));
+               echo "</td>";
+
                echo '<td class="rowhandler control center">';
                echo '<div class="drag row" style="cursor:move;border:none !important;">';
                echo '<img src="../pics/drag.png" alt="#" title="Déplacer" width="16" height="16" />';
                echo '</div>';
-               echo '</td>';
-
+               echo '</td>';        
                echo "</tr>\n";
             }
          }
@@ -334,8 +344,8 @@ class PluginFieldsField extends CommonDBTM {
          $_SESSION['saveInput'] = array('plugin_fields_containers_id' => $container->getField('id'));
       }
 
+      $options['colspan'] = 3 ;
       $this->initForm($ID, $options);
-      $this->showFormHeader($options);
 
       echo "<tr>";
       echo "<td>".__("Label")." : </td>";
@@ -376,8 +386,12 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("mandatory", $this->fields["mandatory"]);
       echo "</td>";
+      echo "<td>".$LANG['fields']['field']['label']['readonly'].":</td>";
+      echo "<td>";
+      Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
+      echo "</td>";
       echo "</tr>";
-
+      
       $this->showFormButtons($options);
 
    }
@@ -724,11 +738,12 @@ class PluginFieldsField extends CommonDBTM {
                $html.= "<td>";
             }
 
+            $readonly = $field['is_readonly'];
             switch ($field['type']) {
                case 'number':
                case 'text':
                   $value = Html::cleanInputText($value);
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      $html.= "<input type='text' name='".$field['name']."' value=\"$value\" />";
                   } else {
                      $html.= $value;
@@ -736,7 +751,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'textarea':
                   if ($massiveaction) continue;
-                  if ($canedit) {
+                  if ($canedit && !$readonly) {
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
                         "$value</textarea>";
                   } else {
@@ -744,7 +759,7 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'dropdown':
-                  if ($canedit) {
+                   if ($canedit && !$readonly) {
                      //find entity on current object
                      $obj = new $container_obj->fields['itemtype'];
                      $obj->getFromDB($items_id);
@@ -766,7 +781,10 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'yesno':
-                  if ($canedit) {
+                  //in massive action, we must skip display for yesno (possible bug in framework)
+                  //otherwise double display of field
+                  if ($massiveaction) continue;
+                  if ($canedit && !$readonly) {
                      ob_start();
                      Dropdown::showYesNo($field['name'], $value);
                      $html.= ob_get_contents();
@@ -776,7 +794,8 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'date':
-                  if ($canedit) {
+                  if ($massiveaction) continue;
+                  if ($canedit && !$readonly) {
                      ob_start();
                      Html::showDateFormItem($field['name'], $value);
                      $html.= ob_get_contents();
@@ -786,7 +805,8 @@ class PluginFieldsField extends CommonDBTM {
                   }
                   break;
                case 'datetime':
-                  if ($canedit) {
+                  if ($massiveaction) continue;
+                  if ($canedit && !$readonly) {
                      ob_start();
                      Html::showDateTimeFormItem($field['name'], $value);
                      $html.= ob_get_contents();
@@ -794,6 +814,24 @@ class PluginFieldsField extends CommonDBTM {
                   } else {
                      $html.= Html::convDateTime($value);
                   }
+               case 'dropdownuser':
+                   if ($massiveaction) continue;
+                   if ($canedit && !$readonly) {
+                       ob_start();
+                       User::dropdown(array('name'   => $field['name'],
+                                      'value'  => $value,
+                                      'entity' => -1,
+                                      'right'  => 'all',
+                                      'condition' => 'is_active=1 && is_deleted=0'));
+                       $html.= ob_get_contents();
+                       ob_end_clean();
+                   } else {
+                       $showuserlink = 0;
+                       if (Session::haveRight('user','r')) {
+                           $showuserlink = 1;
+                       }
+                       $html.= getUserName($value, $showuserlink);
+                   }
             }
             if ($show_table) {
                $html.= "</td>";
@@ -820,7 +858,7 @@ class PluginFieldsField extends CommonDBTM {
                                         $searchOption['linkfield']);
 
       //find field
-      $query_f = "SELECT fields.plugin_fields_containers_id
+      $query_f = "SELECT fields.plugin_fields_containers_id, fields.is_readonly
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
@@ -836,12 +874,13 @@ class PluginFieldsField extends CommonDBTM {
       //display an hidden post field to store container id
       echo "<input type='hidden' name='c_id' value='$c_id' />";
 
-      //preapre arary for function prepareHtmlFields
+      //prepare array for function prepareHtmlFields
       $fields = array(array(
          'id'    => 0,
          'type'  => $searchOption['pfields_type'],
          'plugin_fields_containers_id'  => $c_id,
-         'name'  => $cleaned_linkfield
+         'name'  => $cleaned_linkfield,
+         'is_readonly' => $row_f['is_readonly']
       ));
 
       //show field
@@ -851,14 +890,15 @@ class PluginFieldsField extends CommonDBTM {
 
    static function getTypes() {
       return array(
-         'header'   => __("Header", "fields"),
-         'text'     => __("Text (single line)", "fields"),
-         'textarea' => __("Text (multiples lines)", "fields"),
-         'number'   => __("Number", "fields"),
-         'dropdown' => __("Dropdown", "fields"),
-         'yesno'    => __("Yes/No", "fields"),
-         'date'     => __("Date", "fields"),
-         'datetime' => __("Date & time", "fields")
+         'header'       => __("Header", "fields"),
+         'text'         => __("Text (single line)", "fields"),
+         'textarea'     => __("Text (multiples lines)", "fields"),
+         'number'       => __("Number", "fields"),
+         'dropdown'     => __("Dropdown", "fields"),
+         'yesno'        => __("Yes/No", "fields"),
+         'date'         => __("Date", "fields"),
+         'datetime'     => __("Date & time", "fields"),
+         'dropdownuser' => __("User Dropdown", "fields")
       );
    }
 
