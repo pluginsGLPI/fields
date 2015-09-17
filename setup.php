@@ -12,7 +12,7 @@ function plugin_init_fields() {
       // complete rule engine
       $PLUGIN_HOOKS['use_rules']['fields']    = array('PluginFusioninventoryTaskpostactionRule');
       $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
-        
+
       if (isset($_SESSION['glpiactiveentities'])) {
 
          $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
@@ -37,6 +37,11 @@ function plugin_init_fields() {
          //load drag and drop javascript library on Package Interface
          $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
          $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
+      }
+
+      // Add Fields to Datainjection
+      if ($plugin->isInstalled('datainjection') && $plugin->isActivated('datainjection')) {
+         $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
       }
 
       //Retrieve dom container
@@ -71,7 +76,7 @@ function plugin_fields_check_prerequisites() {
       echo "This plugin requires GLPI 0.85";
       return false;
    }
-   
+
    if (version_compare(PHP_VERSION, '5.3.0', 'lt')) {
       echo "PHP 5.3.0 or higher is required";
       return false;

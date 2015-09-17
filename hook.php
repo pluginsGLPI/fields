@@ -16,8 +16,8 @@ function plugin_fields_install() {
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
-      'PluginFieldsProfile', 
-      'PluginFieldsMigration'   
+      'PluginFieldsProfile',
+      'PluginFieldsMigration'
    );
 
    $migration = new Migration($version);
@@ -47,7 +47,7 @@ function plugin_fields_install() {
 
 
 function plugin_fields_uninstall() {
-   global $DB; 
+   global $DB;
 
    $_SESSION['uninstall_fields'] = true;
 
@@ -57,8 +57,8 @@ function plugin_fields_uninstall() {
       'PluginFieldsContainer_Field',
       'PluginFieldsField',
       'PluginFieldsValue',
-      'PluginFieldsProfile', 
-      'PluginFieldsMigration' 
+      'PluginFieldsProfile',
+      'PluginFieldsMigration'
    );
 
    echo "<center>";
@@ -85,7 +85,7 @@ function plugin_fields_uninstall() {
 
    unset($_SESSION['uninstall_fields']);
 
-   // clean display preferences 
+   // clean display preferences
    $DB->query("DELETE FROM glpi_displaypreferences WHERE itemtype LIKE 'PluginFields%'");
 
    return true;
@@ -112,7 +112,7 @@ function plugin_fields_getAddSearchOptions($itemtype) {
       }
    }
 
-   return null;  
+   return null;
 }
 
 // Define Dropdown tables to be manage in GLPI :
@@ -217,9 +217,9 @@ function plugin_fields_giveItem($itemtype,$ID,$data,$num) {
    $searchopt = &Search::getOptions($itemtype);
    $table = $searchopt[$ID]["table"];
    $field = $searchopt[$ID]["field"];
-   
+
    //fix glpi default Search::giveItem who for empty date display "--"
-   if (strpos($table, "glpi_plugin_fields") !== false 
+   if (strpos($table, "glpi_plugin_fields") !== false
        && isset($searchopt[$ID]["datatype"])
        && strpos($searchopt[$ID]["datatype"], "date") !== false
        && empty($data['raw']["ITEM_$num"])) {
@@ -227,4 +227,23 @@ function plugin_fields_giveItem($itemtype,$ID,$data,$num) {
    }
 
    return false;
+}
+
+/**
+ * Load Fields classes in datainjection.
+ * Called by Setup.php:44 if Datainjection is installed and active
+**/
+function plugin_datainjection_populate_fields() {
+   global $INJECTABLE_TYPES;
+
+   $container = new PluginFieldsContainer('is_active = 1');
+   $found = $container->find();
+
+   foreach ($found as $id => $values) {
+      $classname = "PluginFields"
+                     . ucfirst($values['itemtype'] . preg_replace('/s$/', '', $values['name']))
+                     . 'Injection';
+      $INJECTABLE_TYPES[$classname]               = 'fields';
+      $INJECTABLE_TYPES[$classname . 'Injection'] = 'fields';
+   }
 }

@@ -5,7 +5,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function titleList() {
       echo "<center><input type='button' class='submit' value='&nbsp;".
-            __("Regenerate container files", "fields")."&nbsp;' 
+            __("Regenerate container files", "fields")."&nbsp;'
             onclick='location.href=\"regenerate_files.php\"' /></center>";
    }
 
@@ -47,7 +47,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (!FieldExists($table, "subtype")) {
          $migration->addField($table, 'subtype', 'VARCHAR(255) DEFAULT NULL',array('after' => 'type'));
          $migration->migrationOneTable($table);
-      }      
+      }
 
       return true;
    }
@@ -184,6 +184,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
       $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
+      $template_class = str_replace("%%ITEMTYPE_RIGHT%%", strtolower($fields['itemtype']), $template_class);
       $class_filename = strtolower($fields['itemtype'].
                                    preg_replace('/s$/', '', $fields['name']).".class.php");
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
@@ -191,6 +192,36 @@ class PluginFieldsContainer extends CommonDBTM {
          Toolbox::logDebug("Error : class file creation - $class_filename");
          return false;
       }
+
+      // Generate Datainjection files
+      $template_class = file_get_contents(GLPI_ROOT.
+                                          "/plugins/fields/templates/injection.class.tpl");
+      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
+      $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
+      $template_class = str_replace("%%CONTAINER_NAME%%", $fields['label'], $template_class);
+      $class_filename = strtolower($fields['itemtype'].
+                                   preg_replace('/s$/', '', $fields['name'])."injection.class.php");
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
+                            $template_class) === false) {
+         Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
+         return false;
+      }
+
+      // Generate Datainjection injection files
+      $template_class = file_get_contents(GLPI_ROOT.
+                                          "/plugins/fields/templates/injectioninjection.class.tpl");
+      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
+      $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
+      $class_filename = strtolower($fields['itemtype'].
+                                   preg_replace('/s$/', '', $fields['name'])."injectioninjection.class.php");
+      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
+                            $template_class) === false) {
+         Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
+         return false;
+      }
+
       return true;
    }
 
@@ -269,9 +300,9 @@ class PluginFieldsContainer extends CommonDBTM {
          $types = self::getTypes();
          echo $types[$this->fields["type"]];
       } else {
-         Dropdown::showFromArray('type', 
+         Dropdown::showFromArray('type',
          	                     self::getTypes(),
-                                 array('value' => $this->fields["type"], 
+                                 array('value' => $this->fields["type"],
                                  	   'rand'  => $rand));
       }
       echo "</td>";
@@ -281,9 +312,9 @@ class PluginFieldsContainer extends CommonDBTM {
          $obj = getItemForItemtype($this->fields["itemtype"]);
          echo $obj->getTypeName(1);
       } else {
-         Dropdown::showFromArray('itemtype', 
+         Dropdown::showFromArray('itemtype',
          	                     self::getItemtypes(),
-            							array('value' => $this->fields["itemtype"], 
+            							array('value' => $this->fields["itemtype"],
             								   'rand'  => $rand));
       }
       echo "</td>";
@@ -305,13 +336,13 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $tabs[$this->fields["subtype"]];
       } else {
          $params = array('type'     => '__VALUE0__',
-                         'itemtype' => '__VALUE1__', 
-                         'subtype'  => $this->fields["subtype"], 
+                         'itemtype' => '__VALUE1__',
+                         'subtype'  => $this->fields["subtype"],
                          'rand'     => $rand);
-         Ajax::updateItemOnSelectEvent(array("dropdown_type$rand", "dropdown_itemtype$rand"), 
+         Ajax::updateItemOnSelectEvent(array("dropdown_type$rand", "dropdown_itemtype$rand"),
                                        "subtype_$rand",
                                        $CFG_GLPI["root_doc"].
-                                       	"/plugins/fields/ajax/container_subtype_dropdown.php", 
+                                       	"/plugins/fields/ajax/container_subtype_dropdown.php",
                                        $params);
       }
       echo "</td>";
@@ -355,7 +386,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   $value = str_replace($results[0][0], "", $value);
                }
             }
-            
+
             Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype']));
             echo "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
          }
@@ -521,7 +552,7 @@ class PluginFieldsContainer extends CommonDBTM {
          //construct history on itemtype object (Historical tab)
          self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
                             $itemtype, $datas);
-      
+
       } else {
          $first_found = array_pop($found);
          $datas['id'] = $first_found['id'];
@@ -680,7 +711,7 @@ class PluginFieldsContainer extends CommonDBTM {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields")
             . " : " . implode(', ', $number_errors), false, ERROR);
       }
-      
+
       return $valid;
    }
 

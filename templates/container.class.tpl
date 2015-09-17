@@ -1,6 +1,8 @@
 <?php
 
-class %%CLASSNAME%% extends CommonDBTM {
+class %%CLASSNAME%% extends CommonDBTM
+{
+   static $rightname = '%%ITEMTYPE_RIGHT%%';
 
    static function install() {
       global $DB;
@@ -15,9 +17,9 @@ class %%CLASSNAME%% extends CommonDBTM {
                   `itemtype`                         VARCHAR(255) DEFAULT '%%ITEMTYPE%%',
                   `plugin_fields_containers_id`      INT(11)      NOT NULL DEFAULT '%%CONTAINER%%',
                   PRIMARY KEY                        (`id`),
-                  UNIQUE INDEX `itemtype_item_container`       
+                  UNIQUE INDEX `itemtype_item_container`
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
+               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ($DB->error());
       }
    }
@@ -42,7 +44,7 @@ class %%CLASSNAME%% extends CommonDBTM {
 
    static function removeField($fieldname) {
       global $DB;
-      
+
       $obj = new self();
       return $DB->query("ALTER TABLE  `".$obj->getTable()."`
          DROP COLUMN `$fieldname`
