@@ -1,0 +1,45 @@
+<root>
+   <name>Fields</name>
+   <key>field</key>
+   <state>stable</state>
+   <logo>http://link/to/logo/with/dimensions/40px/40px</logo>
+   <description>
+      <short>
+         <en>This plugin is a replacement for <a href="http://plugins.glpi-project.org/#/plugin/customfields">customfields</a>.</en>
+         <fr>Ce plugin est un remplacement pour <a href="http://plugins.glpi-project.org/#/plugin/customfields">customfields</a>.</fr>
+      </short>
+      <long>
+         <en>Allows GLPI to handle custom fields for most objects</en>
+         <fr>Ajoute des champs personnalisés pour la plupart des objets</fr>
+      </long>
+   </description>
+   <homepage>https://github.com/pluginsGLPI/fields</homepage>
+   <download>https://github.com/pluginsGLPI/fields/releases</download>
+   <issues>https://github.com/pluginsGLPI/fields/issues</issues>
+   <readme>https://github.com/pluginsGLPI/fields/blob/master/README.md</readme>
+   <authors>
+      <author>Alexandre Delaunay</author>
+      <author>Walid Nouh</author>
+      <author>François Legastelois</author>
+      <author>Jérémy Moreau</author>
+   </authors>
+   <versions>
+      <version>
+         <num>0.90</num>
+         <compatibility>0.85</compatibility>
+      </version>
+   </versions>
+   <langs>
+      <lang>en_GB</lang>
+      <lang>fr_FR</lang>
+   </langs>
+   <license>GPL v2+</license>
+   <tags>
+      <en>
+         <tag>custom fields</tag>
+      </en>
+      <lang>
+         <tag>champs personnalisés</tag>
+      </lang>
+   </tags>
+</root>
