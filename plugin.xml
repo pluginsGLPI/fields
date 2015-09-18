@@ -42,4 +42,8 @@
          <tag>champs personnalisés</tag>
       </lang>
    </tags>
+   <screenshots>
+      <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields_bloc.png</screenshot>
+      <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields_champ.png</screenshot>
+   </screenshots>
 </root>
