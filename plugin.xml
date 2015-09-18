@@ -2,7 +2,7 @@
    <name>Fields</name>
    <key>field</key>
    <state>stable</state>
-   <logo>http://link/to/logo/with/dimensions/40px/40px</logo>
+   <logo>https://raw.githubusercontent.com/pluginsGLPI/fields/master/plugin.png</logo>
    <description>
       <short>
          <en>This plugin is a replacement for customfields</en>
