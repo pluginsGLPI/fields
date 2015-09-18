@@ -5,12 +5,12 @@
    <logo>http://link/to/logo/with/dimensions/40px/40px</logo>
    <description>
       <short>
-         <en>This plugin is a replacement for <a href="http://plugins.glpi-project.org/#/plugin/customfields">customfields</a>.</en>
-         <fr>Ce plugin est un remplacement pour <a href="http://plugins.glpi-project.org/#/plugin/customfields">customfields</a>.</fr>
+         <en>This plugin is a replacement for customfields</en>
+         <fr>Ce plugin est un remplacement pour customfields.</fr>
       </short>
       <long>
-         <en>Allows GLPI to handle custom fields for most objects</en>
-         <fr>Ajoute des champs personnalisés pour la plupart des objets</fr>
+         <en>This plugin is a replacement for <a href="http://plugins.glpi-project.org/#/plugin/customfields">customfields</a></en>
+         <fr>Ce plugin est un remplacement pour <a href="http://plugins.glpi-project.org/#/plugin/customfields">customfields</a>.</fr>
       </long>
    </description>
    <homepage>https://github.com/pluginsGLPI/fields</homepage>
