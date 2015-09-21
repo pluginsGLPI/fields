@@ -854,17 +854,15 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
             $opt[$i]['searchtype'] = 'equals';
             $opt[$i]['forcegroupby'] = true ;
-            //$opt[$i]['condition']     = "is_visible=1" ;
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         } elseif ($datas['type'] === "dropdownuser") {
+         } 
+         if ($datas['type'] === "dropdownuser") {
              $opt[$i]['table']      = 'glpi_users';
              $opt[$i]['field']      = 'name';
              $opt[$i]['linkfield']     = $datas['name'];
-             //$opt[$i]['searchtype'] = 'equals';
              $opt[$i]['forcegroupby'] = true ;
-             //$opt[$i]['condition']     = "is_visible=1" ;
              $opt[$i]['joinparams']['jointype'] = "";
              $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
              $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";             
