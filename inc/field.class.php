@@ -175,7 +175,7 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //for dropdown, if already exist, link to it
-      if (isset( $input['type'] ) && $input['type'] === "dropdown") {
+      if (isset($input['type']) && $input['type'] === "dropdown") {
          $found = $this->find("name = '".$input['name']."'");
          if (!empty($found)) return $input['name'];
       }
@@ -251,19 +251,19 @@ class PluginFieldsField extends CommonDBTM {
       $rand   = mt_rand();
 
       echo "<div id='viewField" . $cID . "$rand'></div>\n";
-         echo "<script type='text/javascript' >\n";
-         echo "function viewAddField" . $cID . "$rand() {\n";
-         $params = array('type'                        => __CLASS__,
-                         'parenttype'                  => 'PluginFieldsContainer',
-                         'plugin_fields_containers_id' => $cID,
-                         'id'                          => -1);
-         Ajax::updateItemJsCode("viewField" . $cID . "$rand",
-                                $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
-         echo "};";
-         echo "</script>\n";
-         echo "<div class='center'>".
-              "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
-         echo __("Add a new field", "fields")."</a></div><br>\n";
+      echo "<script type='text/javascript' >\n";
+      echo "function viewAddField" . $cID . "$rand() {\n";
+      $params = array('type'                        => __CLASS__,
+                      'parenttype'                  => 'PluginFieldsContainer',
+                      'plugin_fields_containers_id' => $cID,
+                      'id'                          => -1);
+      Ajax::updateItemJsCode("viewField" . $cID . "$rand",
+                             $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
+      echo "};";
+      echo "</script>\n";
+      echo "<div class='center'>".
+           "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
+      echo __("Add a new field", "fields")."</a></div><br>\n";
 
 
       if ($DB->numrows($result) == 0) {
@@ -275,12 +275,12 @@ class PluginFieldsField extends CommonDBTM {
                   id="plugin_fields_containers_id" value="' . $cID . '" />';
          echo "<table class='tab_cadre_fixehov'>";
          echo "<tr>";
-         echo "<th>" . __("Label") . "</th>";
-         echo "<th>" . __("Type") . "</th>";
-         echo "<th>" . __("Default values") . "</th>";
-         echo "<th>" . __("Mandatory field") . "</th>";
-         echo "<th>" . __("Active") . "</th>";
-         echo "<th>" . __("Read only") . "</th>";
+         echo "<th>" . __("Label")               . "</th>";
+         echo "<th>" . __("Type")                . "</th>";
+         echo "<th>" . __("Default values")      . "</th>";
+         echo "<th>" . __("Mandatory field")     . "</th>";
+         echo "<th>" . __("Active")              . "</th>";
+         echo "<th>" . __("Read only", "fields") . "</th>";
          echo "<th width='16'>&nbsp;</th>";
          echo "</tr>\n";
 
@@ -313,14 +313,14 @@ class PluginFieldsField extends CommonDBTM {
                echo "</td>";
 
                echo "<td>";
-               Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"],-1,array('readonly' => true));
+               echo Dropdown::getYesNo($this->fields["is_readonly"]);
                echo "</td>";
 
                echo '<td class="rowhandler control center">';
                echo '<div class="drag row" style="cursor:move;border:none !important;">';
                echo '<img src="../pics/drag.png" alt="#" title="Déplacer" width="16" height="16" />';
                echo '</div>';
-               echo '</td>';        
+               echo '</td>';
                echo "</tr>\n";
             }
          }
@@ -344,8 +344,8 @@ class PluginFieldsField extends CommonDBTM {
          $_SESSION['saveInput'] = array('plugin_fields_containers_id' => $container->getField('id'));
       }
 
-      $options['colspan'] = 3 ;
       $this->initForm($ID, $options);
+      $this->showFormHeader($ID, $options);
 
       echo "<tr>";
       echo "<td>".__("Label")." : </td>";
@@ -386,7 +386,10 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("mandatory", $this->fields["mandatory"]);
       echo "</td>";
-      echo "<td>".$LANG['fields']['field']['label']['readonly'].":</td>";
+      echo "</tr>";
+
+      echo "<tr>";
+      echo "<td>".__("Read-only", "fields").":</td>";
       echo "<td>";
       Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
       echo "</td>";
