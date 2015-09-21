@@ -841,8 +841,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['container_label']." - ".$datas['label'];
-         $opt[$i]['linkfield']     = $datas['name'];        
-         $opt[$i]['condition']     = "is_visible=1" ; 
+         $opt[$i]['linkfield']     = $datas['name'];         
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $datas['type'];
          if( $datas['is_readonly'] ) {
