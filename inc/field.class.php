@@ -904,7 +904,7 @@ class PluginFieldsField extends CommonDBTM {
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
-         'dropdownuser' => __("User Dropdown", "fields")
+         'dropdownuser' => _n("User", "Users", 2)
       );
    }
 
