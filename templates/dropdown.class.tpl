@@ -26,7 +26,10 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
                   `entities_id`                             INT(11)        NOT NULL DEFAULT '0',
                   `is_recursive`                            TINYINT(1)     NOT NULL DEFAULT '0',
                   PRIMARY KEY                               (`id`),
-                  KEY                                       `entities_id`  (`entities_id`)
+                  KEY                                       `entities_id`  (`entities_id`),
+                  KEY                                       `is_recursive` (`is_recursive`),
+                  KEY                                       `plugin_fields_%%FIELDNAME%%dropdowns_id`
+                                                            (`plugin_fields_%%FIELDNAME%%dropdowns_id`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"; 
          $DB->query($query) or die ($DB->error());
       }
