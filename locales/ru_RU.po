@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Alexey Petukhov <lexx015@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Plugin - Fields\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-03 11:08+0100\n"
+"PO-Revision-Date: 2015-09-21 08:46+0000\n"
+"Last-Translator: Alexey Petukhov <lexx015@gmail.com>\n"
+"Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru_RU\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: hook.php:26
+msgid "MySQL tables installation"
+msgstr "MySQL таблицы установки"
+
+#: hook.php:64
+msgid "MySQL tables uninstallation"
+msgstr "MySQL таблицы удаления"
+
+#: setup.php:25
+msgid "Configurate the blocs"
+msgstr ""
+
+#: setup.php:55 front/container.form.php:35 front/container.php:4
+msgid "Additionnal fields"
+msgstr "Дополнительные поля"
+
+#: inc/container.class.php:133
+msgid ""
+"You cannot add several blocs with type 'Insertion in the form' on same "
+"object"
+msgstr ""
+
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr ""
+
+#: inc/container.class.php:203
+msgid "Bloc"
+msgstr "Блок"
+
+#: inc/container.class.php:297
+msgid "Tab"
+msgstr "Закладка"
+
+#: inc/container.class.php:282
+msgid "Add tab"
+msgstr "Добавить закладку"
+
+#: inc/container.class.php:283
+msgid "Insertion in the form (before save button)"
+msgstr ""
+
+#: inc/container.class.php:508
+msgid "Some numeric fields contains non numeric values"
+msgstr "Некоторые числовые поля содержат не только цифры"
+
+#: inc/container.class.php:514
+msgid "Some mandatory fields are empty"
+msgstr "Некоторые обязательные поля пусты"
+
+#: inc/dropdown.class.php:14
+msgid "This plugin need write right on his own files, please correct."
+msgstr "Это расширение требует прав записи для своих файло, пожалуйста предоставьте права."
+
+#: inc/field.class.php:41
+msgid "Field"
+msgstr "Поле"
+
+#: inc/field.class.php:65
+msgid "You cannot add same field 'dropdown' on same bloc"
+msgstr "Вы не можете добавить одноименные выпадающие поля для одного блока"
+
+#: inc/field.class.php:188
+msgid "Fields"
+msgstr "Поля"
+
+#: inc/field.class.php:232
+msgid "Add a new field"
+msgstr "Добавить новое поле"
+
+#: inc/field.class.php:237
+msgid "No field for this bloc"
+msgstr "Нет полей для этого блока"
+
+#: inc/field.class.php:619
+msgid "Header"
+msgstr "Заголовок"
+
+#: inc/field.class.php:620
+msgid "Text (single line)"
+msgstr "Тест(одна строка)"
+
+#: inc/field.class.php:621
+msgid "Text (multiples lines)"
+msgstr "Текст(многострочный)"
+
+#: inc/field.class.php:622
+msgid "Number"
+msgstr "Номер"
+
+#: inc/field.class.php:623
+msgid "Dropdown"
+msgstr "Выпадающий список"
+
+#: inc/field.class.php:624
+msgid "Yes/No"
+msgstr "Да/Нет"
+
+#: inc/field.class.php:625
+msgid "Date"
+msgstr "Дата"
+
+#: inc/field.class.php:626
+msgid "Date & time"
+msgstr "Дата и время"
+
+#: inc/field.class.php:350
+msgid "Configure"
+msgstr "Настройка"
+
+#: inc/field.class.php:350
+msgid "Configure fields values"
+msgstr "Настрить поля значений"
+
+msgid "Regenerate container files"
+msgstr ""
