@@ -9,7 +9,9 @@
          <fr>Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...</fr>
       </short>
       <long>
-         <en>The fields plugin allows you to add custom fields on glpi types : tickets, computers, users... 
+         <en>The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...  
+         Directories "inc" and "front" should be available in writing for apache user.   
+
          Addionnal data can be added : 
          * In object tab
          * In main form of object (above save button)
@@ -29,6 +31,7 @@
          There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) from "customfields" plugin.
          **WARNING : this one is experimental and deserved to be more tested. We strongly advise you to backup your data before using it**</en>
          <fr>Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...  
+         Les répertoires "inc" et "front" du plugin doivent être accessible en écriture pour l'utilisateur apache.  
 
          Les données supplémentaires peuvent être ajoutés : 
          * Dans un onglet de l'objet
