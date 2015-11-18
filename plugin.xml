@@ -38,7 +38,7 @@ There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/m
 Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...  
 Les répertoires "inc" et "front" du plugin doivent être accessible en écriture pour l'utilisateur apache.  
 
-Les données supplémentaires peuvent être ajoutés : 
+Les données supplémentaires peuvent être ajoutées : 
 
 * Dans un onglet de l'objet
 * Dans le formulaire principal de l'objet (au dessus du bouton sauvegarder)
