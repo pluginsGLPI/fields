@@ -10,12 +10,12 @@
       </short>
       <long>
          <en>The fields plugin allows you to add custom fields on glpi types : tickets, computers, users... 
-         Les données supplémentaires peuvent être ajoutés : 
-         * Dans un onglet de l'objet
-         * Dans le formulaire principal de l'objet (au dessus du bouton sauvegarder)
-         * Dans le formulaire d'un onglet existant (attention, cette fonctionnalité est expérimental)
+         Addionnal data can be added : 
+         * In object tab
+         * In main form of object (above save button)
+         * In form of a tab (Warning, this feature is experimental)
 
-         possible fields type are : 
+         Possible fields type are : 
          * Header (title bloc)
          * Text (single line)
          * Text (multiple lines)
