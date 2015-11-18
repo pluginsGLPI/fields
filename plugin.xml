@@ -31,7 +31,7 @@ Possible fields type are :
 * Date / Hour
 * Glpi User list
 
-There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) from "customfields" plugin.
+There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) from "customfields" plugin.  
 **WARNING : this one is experimental and deserved to be more tested. We strongly advise you to backup your data before using it**
          </en>
          <fr>
@@ -56,7 +56,7 @@ Les types de champs possibles sont :
 * Date / Heure
 * liste d'utilisateurs de glpi
 
-Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) depuis le plugin "customfields".
+Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) depuis le plugin "customfields".  
 **Attention : celui ci est expérimental et mérité d'être testé plus fortement. Nous vous conseillons fortement de sauvegarder vos données avant de l'utiliser**
          </fr>
       </long>
