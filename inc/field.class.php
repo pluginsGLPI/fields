@@ -703,7 +703,11 @@ JAVASCRIPT;
       // test status for "CommonITILObject" objects
       if (is_subclass_of($items_itemtype, "CommonITILObject") ) {
          $items_obj = new $items_itemtype();
-         $items_obj->getFromDB($items_id);
+         if ($items_id > 0) {
+            $items_obj->getFromDB($items_id);
+         } else {
+            $items_obj->getEmpty();
+         }
 
          if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray()) 
                || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray()) 
