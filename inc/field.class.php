@@ -487,22 +487,39 @@ class PluginFieldsField extends CommonDBTM {
          $eq = -1;
       }
 
+      if ($current_itemtype == "Ticket") {
+         $eq--;
+      }
 
-      echo "
-      jQuery( document ).ready(function( $ ) {
-         jQuery('div.ui-tabs').tabs({
-            load: function( event, ui ) {
-               jQuery('#page #mainformtable tr').eq($eq) // before last tr
+
+      $JS = <<<JAVASCRIPT
+      $( document ).ready(function() {
+         var insert_dom = function() {
+            if ($('#fields_dom_container').length == 0) {
+               console.log("insert_dom")
+               $('#page table[id*=mainformtable]:last tr').eq({$eq}) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
-               jQuery('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
-                  itemtype: '$current_itemtype',
-                  items_id: '$items_id'
+
+               $('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
+                  'itemtype': '{$current_itemtype}',
+                  'items_id': '{$items_id}'
                });
             }
+         };
+
+         $('.ui-tabs-panel:visible').ready(function() {
+            insert_dom();
+         })
+
+         $('#tabspanel + div.ui-tabs').on('tabsload', function() {
+            setTimeout(function() {
+               insert_dom();
+            }, 300);
          });
 
       });
-      ";
+JAVASCRIPT;
+      echo $JS;
    }
 
    static function showForDomtabContainer() {
@@ -544,12 +561,12 @@ class PluginFieldsField extends CommonDBTM {
       //if no dom containers defined for this itemtype, do nothing
       if (!in_array($current_itemtype, $itemtypes)) return false;
 
-
       $rand = mt_rand();
-      echo "jQuery(document ).ready(function($) {
+      $JS = <<<JAVASCRIPT
+      jQuery(document).ready(function($) {
          var dom_inserted = false;
 
-         var insert_dom_tab$rand = function(jqui_tab, current_glpi_tab) {
+         var insert_dom_tab{$rand} = function(jqui_tab, current_glpi_tab) {
 
             // escape $ in tab name
             //current_glpi_tab = current_glpi_tab.replace('$', '\\\\$');
@@ -568,7 +585,7 @@ class PluginFieldsField extends CommonDBTM {
             }, 500)
          };
 
-         var insert_html$rand = function(selector, current_glpi_tab) {
+         var insert_html{$rand} = function(selector, current_glpi_tab) {
             if (dom_inserted) return true;
 
             var found = false;
@@ -582,15 +599,15 @@ class PluginFieldsField extends CommonDBTM {
                   pos_to_insert.before(
                      '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\">.</div></td></tr>');
          
-                  jQuery('#tabdom_container'+rand).load(
-                     '../plugins/fields/ajax/load_dom_fields.php',
-                     {
-                        itemtype: '$current_itemtype',
-                        items_id: '$items_id',
-                        type:     'domtab', 
-                        subtype:  current_glpi_tab
-                     }
-                  );
+                  jQuery('#tabdom_container'+rand)
+                     .load('../plugins/fields/ajax/load_dom_fields.php',
+                        {
+                           itemtype: '$current_itemtype',
+                           items_id: '$items_id',
+                           type:     'domtab', 
+                           subtype:  current_glpi_tab
+                        }
+                     );
                   
                   dom_inserted = true;
                   found = true;
@@ -600,27 +617,31 @@ class PluginFieldsField extends CommonDBTM {
             return found;
          };
 
-         findtab_and_insert = function () {
+         var findtab_and_insert = function () {
             //get active tab index
             var jqui_tab = 'ui-tabs-'+($('div.ui-tabs').tabs( 'option', 'active' ) + 1);
+
             //get active tab glpi type
             var current_glpi_tab = $('div.ui-tabs li.ui-tabs-active a')
                                     .attr('href')
                                     .match(/&_glpi_tab=(.*)&id=/)[1];
 
             // add html in dom                                          
-            insert_dom_tab$rand(jqui_tab, current_glpi_tab);
-         }
+            insert_dom_tab{$rand}(jqui_tab, current_glpi_tab);
+         };
 
-         jQuery('div.ui-tabs').tabs({
-            load: function( event, ui ) {
-               findtab_and_insert();               
-            }
+         $('.ui-tabs-panel:visible').ready(function() {
+            findtab_and_insert();
+         })
+
+         $('#tabspanel + div.ui-tabs').on('tabsload', function() {
+            setTimeout(function() {
+               findtab_and_insert();
+            }, 300);
          });
-
-         //trigger one time if above event not launched
-         findtab_and_insert();
-      });\n";
+      });
+JAVASCRIPT;
+      echo $JS;
    }
 
    static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
