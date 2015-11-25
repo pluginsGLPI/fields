@@ -488,16 +488,16 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       if ($current_itemtype == "Ticket") {
-         $eq--;
+         $eq = -3;
       }
 
+      $rand = mt_rand();
 
       $JS = <<<JAVASCRIPT
       $( document ).ready(function() {
-         var insert_dom = function() {
+         var insert_dom{$rand} = function() {
             if ($('#fields_dom_container').length == 0) {
-               console.log("insert_dom")
-               $('#page table[id*=mainformtable]:last tr').eq({$eq}) // before last tr
+               $('#page table[id*=mainformtable]:last > tbody > tr').eq({$eq}) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
 
                $('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
@@ -508,12 +508,12 @@ class PluginFieldsField extends CommonDBTM {
          };
 
          $('.ui-tabs-panel:visible').ready(function() {
-            insert_dom();
+            insert_dom{$rand}();
          })
 
          $('#tabspanel + div.ui-tabs').on('tabsload', function() {
             setTimeout(function() {
-               insert_dom();
+               insert_dom{$rand}();
             }, 300);
          });
 
