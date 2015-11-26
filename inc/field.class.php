@@ -846,6 +846,7 @@ JAVASCRIPT;
                   } else {
                      $html.= Html::convDateTime($value);
                   }
+                  break;
                case 'dropdownuser':
                    if ($massiveaction) continue;
                    if ($canedit && !$readonly) {
