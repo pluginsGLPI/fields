@@ -717,15 +717,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function findContainer($itemtype, $items_id, $type = 'tab', $subtype = '') {
-
-      if ($type === 'tab' || $type === 'dom') {
-         $sql_type = "`type` = '$type'";
-      } else {
-         $sql_type = "1=1";
-      }
-
+      $sql_type = "`type` = '$type'";
       $entity = isset($_SESSION['glpiactive_entity']) ? $_SESSION['glpiactive_entity'] : 0;
-
       $sql_entity = getEntitiesRestrictRequest("AND", "", "", $entity, true, true);
 
       $sql_subtype = '';

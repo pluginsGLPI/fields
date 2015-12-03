@@ -5,12 +5,60 @@
    <logo>https://raw.githubusercontent.com/pluginsGLPI/fields/master/plugin.png</logo>
    <description>
       <short>
-         <en>This plugin is a replacement for customfields</en>
-         <fr>Ce plugin est un remplacement pour customfields.</fr>
+         <en>The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...</en>
+         <fr>Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...</fr>
       </short>
       <long>
-         <en>This plugin is a replacement for customfields</en>
-         <fr>Ce plugin est un remplacement pour customfields</fr>
+         <en>
+The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...  
+Directories "inc" and "front" should be available in writing for apache user.   
+
+Addionnal data can be added : 
+
+* In object tab
+* In main form of object (above save button)
+* In form of a tab (Warning, this feature is experimental)
+
+Possible fields type are : 
+
+* Header (title bloc)
+* Text (single line)
+* Text (multiple lines)
+* Number
+* Dropdown (always a tree dropdown)
+* Yes / No
+* Date
+* Date / Hour
+* Glpi User list
+
+There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) from "customfields" plugin.  
+**WARNING : this one is experimental and deserved to be more tested. We strongly advise you to backup your data before using it**
+         </en>
+         <fr>
+Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...  
+Les répertoires "inc" et "front" du plugin doivent être accessible en écriture pour l'utilisateur apache.  
+
+Les données supplémentaires peuvent être ajoutées : 
+
+* Dans un onglet de l'objet
+* Dans le formulaire principal de l'objet (au dessus du bouton sauvegarder)
+* Dans le formulaire d'un onglet existant (attention, cette fonctionnalité est expérimental)
+
+Les types de champs possibles sont : 
+
+* Entête (bloc de titre)
+* Texte (ligne simple)
+* Texte (ligne multiples)
+* Nombre
+* Liste déroulante (intitulés, forcement un arbre)
+* Oui / Non
+* Date
+* Date / Heure
+* liste d'utilisateurs de glpi
+
+Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) depuis le plugin "customfields".  
+**Attention : celui ci est expérimental et mérité d'être testé plus fortement. Nous vous conseillons fortement de sauvegarder vos données avant de l'utiliser**
+         </fr>
       </long>
    </description>
    <homepage>https://github.com/pluginsGLPI/fields</homepage>
@@ -18,6 +66,7 @@
    <issues>https://github.com/pluginsGLPI/fields/issues</issues>
    <readme>https://github.com/pluginsGLPI/fields/blob/master/README.md</readme>
    <authors>
+      <author>Teclib'</author>
       <author>Alexandre Delaunay</author>
       <author>Jérémy Moreau</author>
       <author>François Legastelois</author>
@@ -25,7 +74,13 @@
    </authors>
    <versions>
       <version>
-         <num>0.90</num>
+         <num>0.90-1.1</num>
+         <compatibility>0.90</compatibility>
+         <compatibility>0.85</compatibility>
+      </version>
+      <version>
+         <num>0.90-1.0</num>
+         <compatibility>0.90</compatibility>
          <compatibility>0.85</compatibility>
       </version>
    </versions>
