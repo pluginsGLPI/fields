@@ -266,7 +266,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $containers = new self();
       $founded_containers = $containers->find('itemtype = "' . $itemtype . '"');
       foreach($founded_containers as $container) {
-         $classname = 'PluginFields' . $itemtype . $container['name'];
+         $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
          $fields = new $classname();
          $fields->deleteByCriteria(array('items_id' => $item->fields['id']));
       }
@@ -824,7 +824,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $i = 76665;
 
       $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
-            containers.name as container_name, containers.label as container_label, 
+            containers.name as container_name, containers.label as container_label,
             containers.itemtype
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
@@ -841,7 +841,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['container_label']." - ".$datas['label'];
-         $opt[$i]['linkfield']     = $datas['name'];         
+         $opt[$i]['linkfield']     = $datas['name'];
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $datas['type'];
          if( $datas['is_readonly'] ) {
@@ -857,7 +857,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         } 
+         }
          if ($datas['type'] === "dropdownuser") {
              $opt[$i]['table']      = 'glpi_users';
              $opt[$i]['field']      = 'name';
@@ -865,8 +865,8 @@ class PluginFieldsContainer extends CommonDBTM {
              $opt[$i]['forcegroupby'] = true ;
              $opt[$i]['joinparams']['jointype'] = "";
              $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";             
-         }                  
+             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+         }
 
          switch ($datas['type']) {
              case 'dropdown':
