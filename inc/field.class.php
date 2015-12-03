@@ -813,9 +813,6 @@ JAVASCRIPT;
                   }
                   break;
                case 'yesno':
-                  //in massive action, we must skip display for yesno (possible bug in framework)
-                  //otherwise double display of field
-                  if ($massiveaction) continue;
                   if ($canedit && !$readonly) {
                      ob_start();
                      Dropdown::showYesNo($field['name'], $value);
