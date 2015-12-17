@@ -462,12 +462,13 @@ class PluginFieldsContainer extends CommonDBTM {
             }
          }
 
-         //profiles restriction
          if (Session::isCron() || !isset($_SESSION['glpiactiveprofile']['id'])) {
             continue;
          }
+         //profiles restriction
          $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                                 AND `plugin_fields_containers_id` = '".$item['id']."'");
+                                 AND `plugin_fields_containers_id` = '".$item['id']."'
+                                 AND `right` >= ".READ);
          $first_found = array_shift($found);
          if ($first_found['right'] == NULL) continue;
 
