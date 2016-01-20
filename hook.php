@@ -103,7 +103,9 @@ function regenerateFiles() {
 
 
 function plugin_fields_getAddSearchOptions($itemtype) {
-   if (isset($_SESSION['glpiactiveentities']) && count($_SESSION['glpiactiveentities']) > 0) {
+   if (isset($_SESSION['glpiactiveentities'])
+      && is_array($_SESSION['glpiactiveentities'])
+      && count($_SESSION['glpiactiveentities']) > 0) {
 
       $itemtypes = PluginFieldsContainer::getEntries('all');
 
