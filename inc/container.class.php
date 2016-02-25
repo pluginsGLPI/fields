@@ -417,6 +417,8 @@ class PluginFieldsContainer extends CommonDBTM {
             'Contract'           => _n("Contract", "Contracts", 2),
             'Document'           => _n("Document", "Documents", 2)),
          __("Tools") => array(
+            'Project'            => __("Project"),
+            'ProjectTask'        => __("Project tasks"),
             'Notes'              => __("Notes"),
             'RSSFeed'            => __("RSS feed")),
          __("Administration") => array(
