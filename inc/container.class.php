@@ -393,7 +393,7 @@ class PluginFieldsContainer extends CommonDBTM {
                }
             }
 
-            Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype']));
+            Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype'], 'width' => '100%'));
             echo "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
          }
       }
