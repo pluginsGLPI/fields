@@ -375,9 +375,10 @@ class PluginFieldsContainer extends CommonDBTM {
             unset($tabs[$id]);
 
             // delete Log of array (don't work with this tab)
-            foreach (array('Log$1', 'TicketFollowup$1', 'TicketTask$1') as $fields_to_remove) {
-               if (isset($tabs[$fields_to_remove])) {
-                  unset($tabs[$fields_to_remove]);
+            $tabs_to_remove = array('Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1');
+            foreach ($tabs_to_remove as $tab_to_remove) {
+               if (isset($tabs[$tab_to_remove])) {
+                  unset($tabs[$tab_to_remove]);
                }
             }
 
