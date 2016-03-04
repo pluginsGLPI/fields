@@ -23,7 +23,7 @@ function plugin_init_fields() {
 
          // add tabs to itemtypes
          Plugin::registerClass('PluginFieldsContainer',
-                               array('addtabon' => PluginFieldsContainer::getEntries()));
+                               array('addtabon' => array_unique(PluginFieldsContainer::getEntries())));
 
          //include js and css
          $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
