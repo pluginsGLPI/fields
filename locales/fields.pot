@@ -128,5 +128,8 @@ msgstr ""
 msgid "Configure fields values"
 msgstr ""
 
+msgid "Read only"
+msgstr ""
+
 msgid "Regenerate container files"
 msgstr ""
