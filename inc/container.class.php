@@ -832,7 +832,7 @@ class PluginFieldsContainer extends CommonDBTM {
          WHERE containers.itemtype = '$itemtype'
             AND fields.type != 'header'
             $where
-            ORDER BY fields.id ASC";
+            ORDER BY fields.ranking ASC, fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
          $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].
@@ -843,6 +843,8 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['linkfield']     = $datas['name'];
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $datas['type'];
+
+         // No massive action for this field is the field is readonly
          if( $datas['is_readonly'] ) {
              $opt[$i]['massiveaction'] = false;
          }
