@@ -127,6 +127,7 @@ function plugin_fields_getDropdown() {
       $dropdowns["PluginFields".ucfirst($field['name'])."Dropdown"] = $field['label'];
    }
 
+   asort($dropdowns);
    return $dropdowns;
 }
 
