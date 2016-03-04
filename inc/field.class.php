@@ -389,7 +389,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>".__("Read-only", "fields").":</td>";
+      echo "<td>".__("Read only", "fields")." :</td>";
       echo "<td>";
       Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
       echo "</td>";
