@@ -847,27 +847,24 @@ class PluginFieldsContainer extends CommonDBTM {
          if ($datas['type'] === "dropdown") {
             $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
             $opt[$i]['field']      = 'name';
-            $opt[$i]['linkfield']     = "plugin_fields_".$datas['name']."dropdowns_id";
+            $opt[$i]['linkfield']  = "plugin_fields_".$datas['name']."dropdowns_id";
             $opt[$i]['searchtype'] = 'equals';
-            $opt[$i]['forcegroupby'] = true ;
-            $opt[$i]['joinparams']['jointype'] = "";
-            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
          if ($datas['type'] === "dropdownuser") {
              $opt[$i]['table']      = 'glpi_users';
              $opt[$i]['field']      = 'name';
-             $opt[$i]['linkfield']     = $datas['name'];
-             $opt[$i]['forcegroupby'] = true ;
-             $opt[$i]['joinparams']['jointype'] = "";
-             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+             $opt[$i]['linkfield']  = $datas['name'];
          }
 
          switch ($datas['type']) {
              case 'dropdown':
              case 'dropdownuser':
-                 $opt[$i]['datatype'] = "dropdown";
+               $opt[$i]['forcegroupby'] = true;
+               $opt[$i]['joinparams']['jointype'] = "";
+               $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+               $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+
+               $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
                $opt[$i]['datatype'] = "bool";
