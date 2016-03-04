@@ -239,8 +239,8 @@ function plugin_fields_giveItem($itemtype,$ID,$data,$num) {
 function plugin_datainjection_populate_fields() {
    global $INJECTABLE_TYPES;
 
-   $container = new PluginFieldsContainer('is_active = 1');
-   $found = $container->find();
+   $container = new PluginFieldsContainer();
+   $found = $container->find("`is_active` = 1");
 
    foreach ($found as $id => $values) {
       $classname = "PluginFields"
