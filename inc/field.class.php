@@ -181,13 +181,12 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //check if field name not already exist and not in conflict with itemtype fields name
-      $containers_id = $input['plugin_fields_containers_id'];
       $container = new PluginFieldsContainer;
-      $container->getFromDB($containers_id);
+      $container->getFromDB($input['plugin_fields_containers_id']);
+
       $item = new $container->fields['itemtype'];
       $item->getEmpty();
       $field  = new self;
-      $i = 2;
 
       $field_name = $input['name'];
       $i = 2;
@@ -402,19 +401,15 @@ class PluginFieldsField extends CommonDBTM {
    static function showForTabContainer($c_id, $items_id) {
       global $CFG_GLPI;
 
-      $field_obj = new PluginFieldsField;
-
       //profile restriction (for reading profile)
-      $canedit = false;
       $profile = new PluginFieldsProfile;
       $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                  AND `plugin_fields_containers_id` = '$c_id'");
       $first_found = array_shift($found);
-      if ($first_found['right'] == CREATE) {
-         $canedit = true;
-      }
+      $canedit = ($first_found['right'] == CREATE);
 
       //get fields for this container
+      $field_obj = new self();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
          "/plugins/fields/front/container.form.php'>";
