@@ -92,11 +92,13 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[3]['field']         = 'itemtype';
       $tab[3]['name']          = __("Associated item type");
       $tab[3]['datatype']       = 'itemtypename';
+      $tab[3]['massiveaction'] = false;
 
       $tab[4]['table']         = $this->getTable();
       $tab[4]['field']         = 'type';
       $tab[4]['name']          = __("Type");
       $tab[4]['searchtype']    = 'equals';
+      $tab[4]['massiveaction'] = false;
 
       $tab[5]['table']         = $this->getTable();
       $tab[5]['field']         = 'is_active';
