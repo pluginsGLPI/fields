@@ -888,33 +888,34 @@ JAVASCRIPT;
                                         $searchOption['linkfield']);
 
       //find field
-      $query_f = "SELECT fields.plugin_fields_containers_id, fields.is_readonly
+      $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
                   AND containers.itemtype = '$itemtype'
                WHERE fields.name = '$cleaned_linkfield'";
-      $res_f = $DB->query($query_f);
-      if ($DB->numrows($res_f) == 0) return false;
-      else {
-         $row_f = $DB->fetch_assoc($res_f);
-         $c_id = $row_f['plugin_fields_containers_id'];
+      $res = $DB->query($query);
+      if ($DB->numrows($res) == 0) {
+         return false;
       }
+      
+      $data = $DB->fetch_assoc($res);
 
       //display an hidden post field to store container id
-      echo "<input type='hidden' name='c_id' value='$c_id' />";
+      echo "<input type='hidden' name='c_id' value='".$data['plugin_fields_containers_id']."' />";
 
       //prepare array for function prepareHtmlFields
       $fields = array(array(
          'id'    => 0,
          'type'  => $searchOption['pfields_type'],
-         'plugin_fields_containers_id'  => $c_id,
+         'plugin_fields_containers_id'  => $data['plugin_fields_containers_id'],
          'name'  => $cleaned_linkfield,
-         'is_readonly' => $row_f['is_readonly']
+         'is_readonly' => $data['is_readonly']
       ));
 
       //show field
       echo self::prepareHtmlFields($fields, 0, true, false, $massiveaction);
+
       return true;
    }
 
