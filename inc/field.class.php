@@ -763,9 +763,9 @@ JAVASCRIPT;
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html.= "<th width='13%'>".$field['label']." : $required</th>";
+                  $html.= "<th width='13%'><label>".$field['label']." : $required</label></th>";
                } else {
-                  $html.= "<td>".$field['label']." : $required</td>";
+                  $html.= "<td><label>".$field['label']." : $required</label></td>";
                }
                $html.= "<td>";
             }
