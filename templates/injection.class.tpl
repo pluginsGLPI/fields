@@ -27,7 +27,7 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
    **/
    function isPrimaryType()
    {
-      return true;
+      return false;
    }
 
    /**
