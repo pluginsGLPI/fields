@@ -523,10 +523,10 @@ class PluginFieldsContainer extends CommonDBTM {
     * @param  array $datas datas posted
     * @return boolean
     */
-   function updateFieldsValues($datas) {
+   function updateFieldsValues($datas, $massiveaction = false) {
       global $DB;
 
-      if (self::validateValues($datas) === false) return false;
+      if (self::validateValues($datas, $massiveaction) === false) return false;
 
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($datas['plugin_fields_containers_id']);
@@ -667,7 +667,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @param  array $datas : datas send by form
     * @return boolean
     */
-   static function validateValues($datas) {
+   static function validateValues($datas, $massiveaction) {
       $valid = true;
       $empty_errors  = array();
       $number_errors = array();
@@ -686,6 +686,7 @@ class PluginFieldsContainer extends CommonDBTM {
          } elseif(isset($datas['plugin_fields_' . $name . 'dropdowns_id'])) {
             $value = $datas['plugin_fields_' . $name . 'dropdowns_id'];
          } else {
+            if ($massiveaction) continue;
             $value = '';
          }
 
@@ -799,7 +800,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //update datas
       $container = new self();
-      if ($container->updateFieldsValues($datas)) {
+      if ($container->updateFieldsValues($datas, isset($_REQUEST['massiveaction']))) {
          return true;
       }
       return $item->input = array();
