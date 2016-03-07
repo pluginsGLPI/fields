@@ -875,6 +875,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['table']      = 'glpi_users';
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = $datas['name'];
+            $opt[$i]['right'] = 'all';
 
             $opt[$i]['forcegroupby'] = true;
 
