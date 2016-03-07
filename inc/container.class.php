@@ -182,14 +182,14 @@ class PluginFieldsContainer extends CommonDBTM {
       $classname = "PluginFields".ucfirst($fields['itemtype'].
                                           preg_replace('/s$/', '', $fields['name']));
 
-      $itemtype_right = ($fields['itemtype'] == 'Reminder') ? 'reminder_public' : strtolower($fields['itemtype']);
+      $itemtype = $fields['itemtype'];
 
       $template_class = file_get_contents(GLPI_ROOT.
                                           "/plugins/fields/templates/container.class.tpl");
       $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
       $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
       $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
-      $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $itemtype_right, $template_class);
+      $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $itemtype::$rightname, $template_class);
       $class_filename = strtolower($fields['itemtype'].
                                    preg_replace('/s$/', '', $fields['name']).".class.php");
       if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
