@@ -840,6 +840,7 @@ class PluginFieldsContainer extends CommonDBTM {
       while ($datas = $DB->fetch_assoc($res)) {
          $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].
                         getPlural(preg_replace('/s$/', '', $datas['container_name'])));
+
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $datas['name'];
          $opt[$i]['name']          = $datas['container_label']." - ".$datas['label'];
@@ -857,21 +858,31 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = "plugin_fields_".$datas['name']."dropdowns_id";
             $opt[$i]['searchtype'] = 'equals';
+
+            $opt[$i]['forcegroupby'] = true;
+
+            $opt[$i]['joinparams']['jointype'] = "";
+            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
          if ($datas['type'] === "dropdownuser") {
-             $opt[$i]['table']      = 'glpi_users';
-             $opt[$i]['field']      = 'name';
-             $opt[$i]['linkfield']  = $datas['name'];
+            $opt[$i]['table']      = 'glpi_users';
+            $opt[$i]['field']      = 'name';
+            $opt[$i]['linkfield']  = $datas['name'];
+
+            $opt[$i]['forcegroupby'] = true;
+
+            $opt[$i]['joinparams']['jointype'] = "";
+            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+
+            // Quick fix
+            $opt[$i]['massiveaction'] = false;
          }
 
          switch ($datas['type']) {
              case 'dropdown':
              case 'dropdownuser':
-               $opt[$i]['forcegroupby'] = true;
-               $opt[$i]['joinparams']['jointype'] = "";
-               $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-               $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-
                $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
