@@ -622,7 +622,10 @@ class PluginFieldsContainer extends CommonDBTM {
                         $changes = array($id_search_option, "",
                                          Dropdown::getDropdownName($searchoption['table'],$value));
                      }
-                     break;
+                  }
+
+                  if ($searchoption['datatype'] === 'bool') {
+                     $changes = array($id_search_option, "", Dropdown::getYesNo($value));
                   }
                }
 
@@ -659,7 +662,10 @@ class PluginFieldsContainer extends CommonDBTM {
                      $changes[1] = Dropdown::getDropdownName($searchoption['table'],$changes[1]);
                      $changes[2] = Dropdown::getDropdownName($searchoption['table'],$changes[2]);
                   }
-                  break;
+                  if ($searchoption['datatype'] === 'bool') {
+                     $changes[1] = Dropdown::getYesNo($changes[1]);
+                     $changes[2] = Dropdown::getYesNo($changes[2]);
+                  }
                }
             }
 
