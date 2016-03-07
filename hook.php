@@ -134,7 +134,6 @@ function plugin_fields_getDropdown() {
 
 /**** MASSIVE ACTIONS ****/
 
-
 // Display specific massive actions for plugin fields
 function plugin_fields_MassiveActionsFieldsDisplay($options=array()) {
    $itemtypes = PluginFieldsContainer::getEntries('all');
@@ -247,6 +246,5 @@ function plugin_datainjection_populate_fields() {
                      . ucfirst($values['itemtype'] . preg_replace('/s$/', '', $values['name']))
                      . 'Injection';
       $INJECTABLE_TYPES[$classname]               = 'fields';
-      $INJECTABLE_TYPES[$classname . 'Injection'] = 'fields';
    }
 }
