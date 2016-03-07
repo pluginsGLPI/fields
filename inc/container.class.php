@@ -213,20 +213,6 @@ class PluginFieldsContainer extends CommonDBTM {
          return false;
       }
 
-      // Generate Datainjection injection files
-      $template_class = file_get_contents(GLPI_ROOT.
-                                          "/plugins/fields/templates/injectioninjection.class.tpl");
-      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
-      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
-      $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
-      $class_filename = strtolower($fields['itemtype'].
-                                   preg_replace('/s$/', '', $fields['name'])."injectioninjection.class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
-                            $template_class) === false) {
-         Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
-         return false;
-      }
-
       return true;
    }
 
