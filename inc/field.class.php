@@ -234,7 +234,6 @@ class PluginFieldsField extends CommonDBTM {
    function showSummary($container) {
       global $DB, $CFG_GLPI;
 
-
       $cID = $container->fields['id'];
 
       // Display existing Fields
@@ -777,7 +776,6 @@ JAVASCRIPT;
                   }
                   break;
                case 'textarea':
-                  if ($massiveaction) continue;
                   if ($canedit && !$readonly) {
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
                         "$value</textarea>";
@@ -818,7 +816,6 @@ JAVASCRIPT;
                   }
                   break;
                case 'date':
-                  if ($massiveaction) continue;
                   if ($canedit && !$readonly) {
                      ob_start();
                      Html::showDateFormItem($field['name'], $value);
@@ -829,7 +826,6 @@ JAVASCRIPT;
                   }
                   break;
                case 'datetime':
-                  if ($massiveaction) continue;
                   if ($canedit && !$readonly) {
                      ob_start();
                      Html::showDateTimeFormItem($field['name'], $value);
