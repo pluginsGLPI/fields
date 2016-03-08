@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GLPI Plugin - Plugin Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: 2016-03-04 10:36+0100\n"
+"PO-Revision-Date: 2016-03-08 10:15+0100\n"
 "Last-Translator: Jérémy MOREAU <jmoreau.dev@gmail.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/"
 "fr_FR/)\n"
@@ -132,6 +132,9 @@ msgstr "Configurer les valeurs du champ"
 
 msgid "Read only"
 msgstr "Lecture seule"
+
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 
 msgid "Regenerate container files"
 msgstr "Regénerer les fichiers des blocs"

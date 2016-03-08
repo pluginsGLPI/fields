@@ -49,17 +49,13 @@ function plugin_fields_install() {
 function plugin_fields_uninstall() {
    global $DB;
 
-   $_SESSION['uninstall_fields'] = true;
+   if (! class_exists('PluginFieldsProfile')) {
+      Session::addMessageAfterRedirect(__("The plugin can't be uninstalled when the plugin is disabled", 'fields'),
+                                       true, WARNING, true);
+      return false;
+   }
 
-   $classesToUninstall = array(
-      'PluginFieldsDropdown',
-      'PluginFieldsContainer',
-      'PluginFieldsContainer_Field',
-      'PluginFieldsField',
-      'PluginFieldsValue',
-      'PluginFieldsProfile',
-      'PluginFieldsMigration'
-   );
+   $_SESSION['uninstall_fields'] = true;
 
    echo "<center>";
    echo "<table class='tab_cadre_fixe'>";
@@ -68,13 +64,23 @@ function plugin_fields_uninstall() {
    echo "<tr class='tab_bg_1'>";
    echo "<td align='center'>";
 
+   $classesToUninstall = array('PluginFieldsDropdown',
+                              'PluginFieldsContainer',
+                              'PluginFieldsContainer_Field',
+                              'PluginFieldsField',
+                              'PluginFieldsValue',
+                              'PluginFieldsProfile',
+                              'PluginFieldsMigration');
+
    foreach ($classesToUninstall as $class) {
       if ($plug=isPluginItemType($class)) {
-         $dir=GLPI_ROOT . "/plugins/fields/inc/";
-         $item=strtolower($plug['class']);
+
+         $dir = GLPI_ROOT . "/plugins/fields/inc/";
+         $item = strtolower($plug['class']);
+
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if(!call_user_func(array($class,'uninstall'))) return false;
+            if (!call_user_func(array($class,'uninstall'))) return false;
          }
       }
    }

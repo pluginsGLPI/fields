@@ -131,5 +131,8 @@ msgstr ""
 msgid "Read only"
 msgstr ""
 
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr ""
+
 msgid "Regenerate container files"
 msgstr ""
