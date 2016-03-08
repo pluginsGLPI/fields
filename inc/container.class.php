@@ -794,6 +794,10 @@ class PluginFieldsContainer extends CommonDBTM {
             $input = "plugin_fields_".$field['name']."dropdowns_id";
          }
          if (isset($item->input[$input])) {
+            // Before is_number check, help user to have a number correct, during a massive action of a number field
+            if ($field['type'] == 'number') {
+               $item->input[$input] = str_replace(",", ".", $item->input[$input]);
+            }
             $datas[$input] = $item->input[$input];
          }
       }
