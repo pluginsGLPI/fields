@@ -656,6 +656,7 @@ JAVASCRIPT;
       //get fields for this container
       $field_obj = new self();
       $fields = $field_obj->find($condition." AND is_active = 1", "ranking");
+
       if ($subtype == 'TicketTask$1') {
          echo "<table>";
       } else {
@@ -732,12 +733,16 @@ JAVASCRIPT;
                }
             }
 
-            if (isset($_SESSION['plugin']['fields']['values_sent'])) {
+            if (! $field['is_readonly']) {
                if ($field['type'] == "dropdown") {
-                  $value = $_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
+                  if (isset($_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
                                                                         $field['name'].
-                                                                        "dropdowns_id"];
-               } else {
+                                                                        "dropdowns_id"])) {
+                     $value = $_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
+                                                                           $field['name'].
+                                                                           "dropdowns_id"];
+                  }
+               } else if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
                   $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
                }
             }

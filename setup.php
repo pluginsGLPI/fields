@@ -10,6 +10,18 @@ function plugin_init_fields() {
        && $plugin->isActivated('fields')
        && Session::getLoginUserID() ) {
 
+      // When a Category is changed during ticket creation
+      if (isset($_POST) && !empty($_POST) && isset($_POST['_plugin_fields_type'])) {
+         if ($_SERVER['REQUEST_URI'] == Ticket::getFormURL()) {
+            //$_SESSION['plugin_fields']['Ticket'] = $_POST;
+            foreach ($_POST as $key => $value) {
+               if (! is_array($value)) {
+                  $_SESSION['plugin']['fields']['values_sent'][$key] = stripcslashes($value);
+               }
+            }
+         }
+      }
+
       // complete rule engine
       $PLUGIN_HOOKS['use_rules']['fields']    = array('PluginFusioninventoryTaskpostactionRule');
       $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
