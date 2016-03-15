@@ -827,7 +827,7 @@ class PluginFieldsContainer extends CommonDBTM {
             AND containers.is_active = 1
          WHERE containers.itemtype = '$itemtype'
             AND fields.type != 'header'
-            ORDER BY fields.ranking ASC, fields.id ASC";
+            ORDER BY fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
 
@@ -848,8 +848,6 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['linkfield']     = $datas['name'];
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $datas['type'];
-
-         // No massive action for this field is the field is readonly
          if( $datas['is_readonly'] ) {
              $opt[$i]['massiveaction'] = false;
          }
