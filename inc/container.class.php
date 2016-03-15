@@ -608,10 +608,11 @@ class PluginFieldsContainer extends CommonDBTM {
                         $changes = array($id_search_option, "",
                                          Dropdown::getDropdownName($searchoption['table'],$value));
                      }
-                  }
 
-                  if ($searchoption['datatype'] === 'bool') {
-                     $changes = array($id_search_option, "", Dropdown::getYesNo($value));
+                     //manage bool dropdown values
+                     if ($searchoption['datatype'] === 'bool') {
+                        $changes = array($id_search_option, "", Dropdown::getYesNo($value));
+                     }
                   }
                }
 
@@ -815,26 +816,29 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $opt = array();
 
-      $where = "";
-      if ($containers_id !== false) {
-         $where = "AND containers.id = $containers_id";
-      }
-
       $i = 76665;
 
       $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
             containers.name as container_name, containers.label as container_label,
-            containers.itemtype
+            containers.itemtype, containers.id as container_id
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
          WHERE containers.itemtype = '$itemtype'
             AND fields.type != 'header'
-            $where
             ORDER BY fields.ranking ASC, fields.id ASC";
       $res = $DB->query($query);
       while ($datas = $DB->fetch_assoc($res)) {
+
+         if ($containers_id !== false) {
+            // Filter by container (don't filter by SQL for have $i value with few containers for a itemtype)
+            if ($datas['container_id'] != $containers_id) {
+               $i++;
+               continue;
+            }
+         }
+
          $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].
                         getPlural(preg_replace('/s$/', '', $datas['container_name'])));
 
