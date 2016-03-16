@@ -147,10 +147,9 @@ class PluginFieldsContainer extends CommonDBTM {
          case $this->getTable().'.type':
             $options['display'] = false;
             return Dropdown::showFromArray($name, self::getTypes(), $options);
-
-         default :
-            return "";
       }
+
+      return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
    }
 
    function defineTabs($options=array()) {
