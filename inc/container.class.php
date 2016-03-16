@@ -105,6 +105,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[5]['field']         = 'is_active';
       $tab[5]['name']          = __("Active");
       $tab[5]['datatype']      = 'bool';
+      $tab[5]['searchtype']    = array('equals', 'notequals');
 
       $tab[6]['table']         = 'glpi_entities';
       $tab[6]['field']         = 'completename';
