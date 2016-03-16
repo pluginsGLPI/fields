@@ -432,6 +432,7 @@ class PluginFieldsField extends CommonDBTM {
 
 
    static function showForDomContainer() {
+      global $CFG_GLPI;
 
       //parse http_referer to get current url (this code is loaded by javacript)
       if(!isset($_SERVER['HTTP_REFERER'])) {
@@ -458,13 +459,18 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //get itemtype
-      $tmp = explode("/", $expl_url[0]);
-      $script_name = array_pop($tmp);
-
-      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
-         $current_itemtype = "Ticket";
+      if (isset($params['itemtype'])) {
+         //URL param in a object in plugin genericobject
+         $current_itemtype = $params['itemtype'];
       } else {
-         $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+         $tmp = explode("/", $expl_url[0]);
+         $script_name = array_pop($tmp);
+
+         if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
+            $current_itemtype = "Ticket";
+         } else {
+            $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
+         }
       }
 
       //Retrieve dom container
@@ -485,7 +491,14 @@ class PluginFieldsField extends CommonDBTM {
          $eq = -3;
       }
 
+      // For genericobject, display fields before date_mod
+      if (isset($params['itemtype'])) {
+         $eq--;
+      }
+
       $rand = mt_rand();
+
+      $url_ajax = $CFG_GLPI["root_doc"]."/plugins/fields/ajax/load_dom_fields.php";
 
       $JS = <<<JAVASCRIPT
       $( document ).ready(function() {
@@ -494,7 +507,7 @@ class PluginFieldsField extends CommonDBTM {
                $('#page table[id*=mainformtable]:last > tbody > tr').eq({$eq}) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
 
-               $('#fields_dom_container').load('../plugins/fields/ajax/load_dom_fields.php', {
+               $('#fields_dom_container').load('{$url_ajax}', {
                   'itemtype': '{$current_itemtype}',
                   'items_id': '{$items_id}'
                });
@@ -556,6 +569,9 @@ JAVASCRIPT;
       if (!in_array($current_itemtype, $itemtypes)) return false;
 
       $rand = mt_rand();
+
+      $url_ajax = $CFG_GLPI["root_doc"]."/plugins/fields/ajax/load_dom_fields.php";
+
       $JS = <<<JAVASCRIPT
       jQuery(document).ready(function($) {
          var dom_inserted = false;
@@ -594,7 +610,7 @@ JAVASCRIPT;
                      '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\">.</div></td></tr>');
          
                   jQuery('#tabdom_container'+rand)
-                     .load('../plugins/fields/ajax/load_dom_fields.php',
+                     .load('{$url_ajax}',
                         {
                            itemtype: '$current_itemtype',
                            items_id: '$items_id',
