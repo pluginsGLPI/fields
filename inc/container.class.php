@@ -387,7 +387,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function getItemtypes() {
-      return array(
+      global $PLUGIN_HOOKS;
+
+      $tab = array(
          __("Assets") => array(
             'Computer'           => _n("Computer", "Computers", 2),
             'Monitor'            => _n("Monitor", "Monitors", 2),
@@ -419,6 +421,18 @@ class PluginFieldsContainer extends CommonDBTM {
             'Entity'             => _n("Entity", "Entities", 2),
             'Profile'            => _n("Profile", "Profiles", 2))
       );
+
+      foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
+         $isPlugin = isPluginItemType($itemtype);
+         if ($isPlugin) {
+            $plugin_name = Plugin::getInfo($isPlugin['plugin'], 'name');
+
+            $tab[__("Plugins")][$itemtype] = $plugin_name . ' - ' . $itemtype::getTypeName(Session::getPluralNumber());
+         }
+      }
+
+      return $tab;
+
    }
 
    static function getTypes() {

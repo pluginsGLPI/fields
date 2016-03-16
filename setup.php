@@ -10,6 +10,9 @@ function plugin_init_fields() {
        && $plugin->isActivated('fields')
        && Session::getLoginUserID() ) {
 
+      // Init hook about itemtype(s) for plugin fields
+      $PLUGIN_HOOKS['plugin_fields'] = array();
+
       // When a Category is changed during ticket creation
       if (isset($_POST) && !empty($_POST) && isset($_POST['_plugin_fields_type'])) {
          if ($_SERVER['REQUEST_URI'] == Ticket::getFormURL()) {
