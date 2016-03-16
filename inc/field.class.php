@@ -530,6 +530,7 @@ JAVASCRIPT;
    }
 
    static function showForDomtabContainer() {
+      global $CFG_GLPI;
       
       //parse http_referer to get current url (this code is loaded by javacript)
       $current_url = $_SERVER['HTTP_REFERER'];
