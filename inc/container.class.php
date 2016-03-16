@@ -98,7 +98,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[4]['table']         = $this->getTable();
       $tab[4]['field']         = 'type';
       $tab[4]['name']          = __("Type");
-      $tab[4]['searchtype']    = 'equals';
+      $tab[4]['searchtype']    = array('equals', 'notequals');
       $tab[4]['massiveaction'] = false;
 
       $tab[5]['table']         = $this->getTable();
@@ -136,6 +136,20 @@ class PluginFieldsContainer extends CommonDBTM {
             $types = self::getTypes();
             return $types[$values[$field]];
             break;
+      }
+   }
+
+   
+   function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = array()) {
+
+      switch ($field_id_or_search_options['table'].'.'.$field_id_or_search_options['field']) {
+         // For searchoption "Type"
+         case $this->getTable().'.type':
+            $options['display'] = false;
+            return Dropdown::showFromArray($name, self::getTypes(), $options);
+
+         default :
+            return "";
       }
    }
 
