@@ -885,7 +885,6 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = "plugin_fields_".$datas['name']."dropdowns_id";
-            $opt[$i]['searchtype'] = 'equals';
 
             $opt[$i]['forcegroupby'] = true;
 
