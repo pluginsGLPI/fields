@@ -56,7 +56,7 @@ function plugin_init_fields() {
       }
 
       // Add Fields to Datainjection
-      if ($plugin->isInstalled('datainjection') && $plugin->isActivated('datainjection')) {
+      if ($plugin->isActivated('datainjection')) {
          $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
       }
 
@@ -79,7 +79,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.90-1.1',
+                 'version'        => '0.90-1.2',
                  'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',

@@ -22,7 +22,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   `id`           INT(11)        NOT NULL auto_increment,
                   `name`         VARCHAR(255)   DEFAULT NULL,
                   `label`        VARCHAR(255)   DEFAULT NULL,
-                  `itemtype`     VARCHAR(255)   DEFAULT NULL,
+                  `itemtype`     LONGTEXT   DEFAULT NULL,
                   `type`         VARCHAR(255)   DEFAULT NULL,
                   `subtype`      VARCHAR(255) DEFAULT NULL,
                   `entities_id`  INT(11)        NOT NULL DEFAULT '0',
@@ -48,7 +48,9 @@ class PluginFieldsContainer extends CommonDBTM {
          $migration->addField($table, 'subtype', 'VARCHAR(255) DEFAULT NULL',array('after' => 'type'));
          $migration->migrationOneTable($table);
       }
-
+      $migration->changeField($table, 'itemtype', 'itemtype', 'longtext');
+      $migration->migrationOneTable($table);
+      
       return true;
    }
 
@@ -91,9 +93,9 @@ class PluginFieldsContainer extends CommonDBTM {
       $tab[3]['table']         = $this->getTable();
       $tab[3]['field']         = 'itemtype';
       $tab[3]['name']          = __("Associated item type");
-      $tab[3]['datatype']       = 'itemtypename';
+      $tab[3]['datatype']       = 'specific';
       $tab[3]['massiveaction'] = false;
-      $tab[3]['types']         = self::getUsedItemtypes();
+      $tab[3]['nosearch']      = true;
 
       $tab[4]['table']         = $this->getTable();
       $tab[4]['field']         = 'type';
@@ -137,6 +139,21 @@ class PluginFieldsContainer extends CommonDBTM {
             $types = self::getTypes();
             return $types[$values[$field]];
             break;
+         case 'itemtype' :
+            $types = json_decode($values[$field]);
+            $obj   = '';
+            $count = count($types);
+            $i     = 1;
+            foreach ($types as $type) {
+               $name_type = getItemForItemtype($type);
+               $obj .= $name_type->getTypeName(2);
+               if ($count > $i) {
+                  $obj .= ", ";
+               }
+               $i++;
+            }
+            return $obj;
+            break;
       }
    }
 
@@ -148,6 +165,9 @@ class PluginFieldsContainer extends CommonDBTM {
          case $this->getTable().'.type':
             $options['display'] = false;
             return Dropdown::showFromArray($name, self::getTypes(), $options);
+         case $this->getTable().'.itemtype':
+            $options['display'] = false;
+            return Dropdown::showFromArray($name, self::getItemtypes(), $options);
       }
 
       return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
@@ -163,17 +183,22 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function prepareInputForAdd($input) {
+      if (!isset($input['itemtype'])) {
+         Session::AddMessageAfterRedirect(__("You cannot add bloc without associated element type", "fields"), false, ERROR);
+         return false;
+      }
       if ($input['type'] === "dom") {
-         //check for already exist dom container with this itemtype
-         $found = $this->find("`type`='dom' AND `itemtype` = '".$input['itemtype']."'");
-         if (!empty($found)) {
-            Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"), false, ERROR);
-            return false;
-         }
+            //check for already exist dom container with this itemtype
+            $found = $this->find("`type`='dom'");
+            if (!in_array($found, $input['itemtype'])) {
+               Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"), false, ERROR);
+               return false;
+            }
       }
 
       //contruct field name by processing label (remove non alphanumeric char)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
+      $input['itemtype'] = (isset($input['itemtype'])) ? json_encode($input['itemtype'], TRUE): NULL ;
 
       return $input;
    }
@@ -186,83 +211,92 @@ class PluginFieldsContainer extends CommonDBTM {
       if(!self::generateTemplate($this->fields)) {
          return false;
       }
-
-      //install table for receive field
-      $classname = "PluginFields".ucfirst($this->fields['itemtype'].
-                                          preg_replace('/s$/', '', $this->fields['name']));
-      $classname::install();
+      foreach (json_decode($this->fields['itemtype']) as $itemtype) {
+         //install table for receive field
+         $classname = "PluginFields" . ucfirst($itemtype .
+               preg_replace('/s$/', '', $this->fields['name']));
+         $classname::install();
+      }
    }
 
    public static function generateTemplate($fields) {
-      $classname = "PluginFields".ucfirst($fields['itemtype'].
-                                          preg_replace('/s$/', '', $fields['name']));
+      $itemtypes = (count($fields['itemtype']) > 0) ? json_decode($fields['itemtype'], TRUE) : array();
+      foreach ($itemtypes as $itemtype) {
+         $classname = "PluginFields" . ucfirst($itemtype .
+               preg_replace('/s$/', '', $fields['name']));
 
-      $itemtype = $fields['itemtype'];
+         $template_class = file_get_contents(GLPI_ROOT .
+            "/plugins/fields/templates/container.class.tpl");
+         $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+         $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
+         $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
+         $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $itemtype::$rightname, $template_class);
+         $class_filename = strtolower($itemtype .
+            preg_replace('/s$/', '', $fields['name']) . ".class.php");
+         if (file_put_contents(GLPI_ROOT . "/plugins/fields/inc/$class_filename", $template_class) === false) {
+            Toolbox::logDebug("Error : class file creation - $class_filename");
+            return false;
+         }
 
-      $template_class = file_get_contents(GLPI_ROOT.
-                                          "/plugins/fields/templates/container.class.tpl");
-      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
-      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
-      $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
-      $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $itemtype::$rightname, $template_class);
-      $class_filename = strtolower($fields['itemtype'].
-                                   preg_replace('/s$/', '', $fields['name']).".class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
-                            $template_class) === false) {
-         Toolbox::logDebug("Error : class file creation - $class_filename");
-         return false;
+         // Generate Datainjection files
+         $template_class = file_get_contents(GLPI_ROOT .
+            "/plugins/fields/templates/injection.class.tpl");
+         $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
+         $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
+         $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
+         $template_class = str_replace("%%CONTAINER_NAME%%", $fields['label'], $template_class);
+         $class_filename = strtolower($itemtype .
+            preg_replace('/s$/', '', $fields['name']) . "injection.class.php");
+         if (file_put_contents(GLPI_ROOT . "/plugins/fields/inc/$class_filename", $template_class) === false) {
+            Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
+            return false;
+         }
       }
-
-      // Generate Datainjection files
-      $template_class = file_get_contents(GLPI_ROOT.
-                                          "/plugins/fields/templates/injection.class.tpl");
-      $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
-      $template_class = str_replace("%%ITEMTYPE%%", $fields['itemtype'], $template_class);
-      $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
-      $template_class = str_replace("%%CONTAINER_NAME%%", $fields['label'], $template_class);
-      $class_filename = strtolower($fields['itemtype'].
-                                   preg_replace('/s$/', '', $fields['name'])."injection.class.php");
-      if (file_put_contents(GLPI_ROOT."/plugins/fields/inc/$class_filename",
-                            $template_class) === false) {
-         Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
-         return false;
-      }
-
       return true;
    }
 
    function pre_deleteItem() {
       $_SESSION['delete_container'] = true;
-      $classname = "PluginFields".ucfirst(strtolower($this->fields['itemtype'].
-                                          preg_replace('/s$/', '', $this->fields['name'])));
-      $class_filename = strtolower($this->fields['itemtype'].
-                                   preg_replace('/s$/', '', $this->fields['name'])).".class.php";
+      
+      foreach (json_decode($this->fields['itemtype']) as $itemtype){
+         
+         $classname = "PluginFields".ucfirst(strtolower($itemtype.
+                                             preg_replace('/s$/', '', $this->fields['name'])));
+         $class_filename = strtolower($itemtype.
+                                      preg_replace('/s$/', '', $this->fields['name'])).".class.php";
+         
+         $injection_filename = strtolower($itemtype.
+                                      preg_replace('/s$/', '', $this->fields['name']))."injection.class.php";
+         
+         //delete fields
+         $field_obj = new PluginFieldsField;
+         $fields = $field_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
+         foreach ($fields as $fields_id => $field) {
+            $field_obj->delete(array('id' => $fields_id));
+         }
 
-      //delete fields
-      $field_obj = new PluginFieldsField;
-      $fields = $field_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
-      foreach ($fields as $fields_id => $field) {
-         $field_obj->delete(array('id' => $fields_id));
+         //delete profiles
+         $profile_obj = new PluginFieldsProfile;
+         $profiles = $profile_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
+         foreach ($profiles as $profiles_id => $profile) {
+            $profile_obj->delete(array('id' => $profiles_id));
+         }
+
+         //delete table
+         $classname::uninstall();
+
+         //clean session
+         unset($_SESSION['delete_container']);
+
+         //remove file
+         if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+            unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+         }
+         
+         if (file_exists(GLPI_ROOT."/plugins/fields/inc/$injection_filename")) {
+            unlink(GLPI_ROOT."/plugins/fields/inc/$injection_filename");
+         }
       }
-
-      //delete profiles
-      $profile_obj = new PluginFieldsProfile;
-      $profiles = $profile_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
-      foreach ($profiles as $profiles_id => $profile) {
-         $profile_obj->delete(array('id' => $profiles_id));
-      }
-
-      //delete table
-      $classname::uninstall();
-
-      //clean session
-      unset($_SESSION['delete_container']);
-
-      //remove file
-      if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
-         return unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
-      }
-
 
       return true;
    }
@@ -270,11 +304,14 @@ class PluginFieldsContainer extends CommonDBTM {
    static function preItemPurge($item) {
       $itemtype = get_class($item);
       $containers = new self();
-      $founded_containers = $containers->find('itemtype = "' . $itemtype . '"');
+      $founded_containers = $containers->find();
       foreach($founded_containers as $container) {
-         $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
-         $fields = new $classname();
-         $fields->deleteByCriteria(array('items_id' => $item->fields['id']));
+         $types = json_decode($container['itemtype']);
+         if(in_array($itemtype, $types)){
+            $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
+            $fields = new $classname();
+            $fields->deleteByCriteria(array('items_id' => $item->fields['id']));
+         }
       }
       return true;
    }
@@ -315,13 +352,24 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
       if($ID > 0) {
-         $obj = getItemForItemtype($this->fields["itemtype"]);
-         echo $obj->getTypeName(1);
-      } else {
-         Dropdown::showFromArray('itemtype',
-         	                     self::getItemtypes(),
-            							array('value' => $this->fields["itemtype"],
-            								   'rand'  => $rand));
+         $types = json_decode($this->fields['itemtype']);
+         $obj = '';
+         $count = count($types);
+         $i = 1;
+         foreach ($types as $type){
+            $name_type = getItemForItemtype($type);
+            $obj .= $name_type->getTypeName(2);
+            if ($count > $i) {
+               $obj .= ", ";
+            }
+            $i++;
+         }
+         echo $obj;
+
+         } else {
+         
+         Dropdown::showFromArray("itemtype", self::getItemtypes(), 
+                                 array('multiple' => true, 'width' => 200));
       }
       echo "</td>";
       echo "</tr>";
@@ -495,11 +543,14 @@ class PluginFieldsContainer extends CommonDBTM {
          $first_found = array_shift($found);
          if ($first_found['right'] == NULL) continue;
 
+         $jsonitemtype = json_decode($item['itemtype']);
          //show more info or not
-         if ($full) {
-            $itemtypes[$item['itemtype']][$item['name']] = $item['label'];
-         } else {
-            $itemtypes[] = $item['itemtype'];
+         foreach($jsonitemtype as $k => $v) {
+            if ($full) {
+               $itemtypes[$v][$item['name']] = $item['label'];
+            } else {
+               $itemtypes[] = $v;
+            }
          }
       }
       return $itemtypes;
@@ -517,7 +568,8 @@ class PluginFieldsContainer extends CommonDBTM {
                 WHERE ' . $where;
       $result = $DB->query($query);
       while(list($itemtype) = $DB->fetch_array($result)) {
-         $itemtypes[] = $itemtype;
+         $jsonitemtype = json_decode($itemtype);
+         $itemtypes = array_merge($itemtypes, $jsonitemtype);
       }
 
       return $itemtypes;
@@ -535,16 +587,21 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       //retrieve container for current tab
       $container = new self;
-      $found_c = $container->find("`itemtype` = '".get_class($item)."'
-                                  AND `type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
-      $tmp = array_shift($found_c);
-      $c_id = $tmp['id'];
+      $found_c   = $container->find("`type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
+      foreach ($found_c as $data) {
+         $dataitemtype = json_decode($data['itemtype']);
 
-      return PluginFieldsField::showForTabContainer($c_id, $item->fields['id']);
+         if (in_array(get_class($item), $dataitemtype) != FALSE) {
+            $tmp  = array_shift($found_c);
+            $c_id = $tmp['id'];
+
+            return PluginFieldsField::showForTabContainer($c_id, $item->fields['id'], get_class($item));
+         }
+      }
    }
 
    /**
@@ -552,7 +609,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @param  array $datas datas posted
     * @return boolean
     */
-   function updateFieldsValues($datas, $massiveaction = false) {
+   function updateFieldsValues($datas, $massiveaction = false, $itemtype) {
       global $DB;
 
       if (self::validateValues($datas, $massiveaction) === false) return false;
@@ -562,7 +619,6 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
       $items_id = $datas['items_id'];
-      $itemtype = $container_obj->fields['itemtype'];
 
       $classname = "PluginFields".ucfirst($itemtype.
                                           preg_replace('/s$/', '', $container_obj->fields['name']));
@@ -611,7 +667,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
 
       //define non-datas keys
-      $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0,
+      $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 'itemtype' => $itemtype,
                               'update_fields_values' => 0, '_glpi_csrf_token' => 0);
 
       //remove non-datas keys
@@ -750,7 +806,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function findContainer($itemtype, $items_id, $type = 'tab', $subtype = '') {
       $sql_type = "`type` = '$type'";
-      $entity = isset($_SESSION['glpiactive_entity']) ? $_SESSION['glpiactive_entity'] : 0;
+      $entity = isset($_SESSION['glpiactiveentities']) ? $_SESSION['glpiactiveentities'] : 0;
       $sql_entity = getEntitiesRestrictRequest("AND", "", "", $entity, true, true);
 
       $sql_subtype = '';
@@ -763,34 +819,35 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $container = new PluginFieldsContainer();
-      $found_c = $container->find($sql_type." AND `itemtype` = '$itemtype' AND is_active = 1 ".$sql_entity.$sql_subtype);
-      if (empty($found_c)) {
+      $itemtypes = $container->find($sql_type." AND is_active = 1 ".$sql_entity.$sql_subtype);
+      $id = 0;
+      if (count($itemtypes) < 1) {
          return false;
       }
-
-      if ($type == "dom") {
-         $tmp = array_shift($found_c);
-         $id = $tmp['id'];
-      } else {
-         $id = array_keys($found_c);
-         if (count($id) == 1) {
-            $id = array_shift($id);
+      
+      foreach ($itemtypes as $data) {
+         $dataitemtype = json_decode($data['itemtype']);
+         $item = new $itemtype();
+         if (in_array($item->getType(), $dataitemtype) != FALSE) {
+            $id = $data['id'];
          }
-      }
+     }
 
       //profiles restriction
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
          $profile = new PluginFieldsProfile();
-         if (is_array($id)) {
-            $condition = "`plugin_fields_containers_id` IN (".implode(", ", $id).")";
-         } else {
-            $condition = "`plugin_fields_containers_id` = '$id'";
-         }
-         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
+         if (isset($id)) {
+            if (is_array($id)) {
+               $condition = "`plugin_fields_containers_id` IN (" . implode(", ", $id) . ")";
+            } else {
+               $condition = "`plugin_fields_containers_id` = '$id'";
+            }
+            $found       = $profile->find("`profiles_id` = '" . $_SESSION['glpiactiveprofile']['id'] . "'
                                  AND $condition");
-         $first_found = array_shift($found);
-         if ($first_found['right'] == NULL) {
-            return false;
+            $first_found = array_shift($found);
+            if ($first_found['right'] == NULL) {
+               return false;
+            }
          }
       }
 
@@ -834,7 +891,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //update datas
       $container = new self();
-      if ($container->updateFieldsValues($datas, isset($_REQUEST['massiveaction']))) {
+      if ($container->updateFieldsValues($datas, isset($_REQUEST['massiveaction']), $item->getType())) {
          return true;
       }
       return $item->input = array();
