@@ -98,13 +98,13 @@ function plugin_fields_uninstall() {
 }
 
 function regenerateFiles() {
-	$container = new PluginFieldsContainer;
-	$found_container = $container->find();
-	foreach ($found_container as $current_container) {
-		$containers_id = $current_container['id'];
-		$container->getFromDB($containers_id);
-		$container->post_addItem();
-	}
+   $container = new PluginFieldsContainer;
+   $found_container = $container->find();
+   foreach ($found_container as $current_container) {
+      $containers_id = $current_container['id'];
+      $container->getFromDB($containers_id);
+      $container->post_addItem();
+   }
 }
 
 

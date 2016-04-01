@@ -102,9 +102,11 @@ class PluginFieldsField extends CommonDBTM {
       if ($input['type'] !== "header") {
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($input['plugin_fields_containers_id']);
-         $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
-                                       preg_replace('/s$/', '', $container_obj->fields['name'])));
-         $classname::addField($input['name'], $input['type']);
+         foreach (json_decode($container_obj->fields['itemtype']) as $itemtype) {
+            $classname = "PluginFields" . ucfirst(strtolower($itemtype .
+                     preg_replace('/s$/', '', $container_obj->fields['name'])));
+            $classname::addField($input['name'], $input['type']);
+         }
       }
 
       if (isset($oldname)) $input['name'] = $oldname;
@@ -133,8 +135,11 @@ class PluginFieldsField extends CommonDBTM {
 
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
-         $classname = "PluginFields".ucfirst(strtolower($container_obj->fields['itemtype'].
-                                       preg_replace('/s$/', '', $container_obj->fields['name'])));
+         foreach (json_decode($container_obj->fields['itemtype']) as $itemtype) {
+            $classname = "PluginFields" . ucfirst(strtolower($itemtype .
+                     preg_replace('/s$/', '', $container_obj->fields['name'])));
+            $classname::removeField($this->fields['name']);
+         }
          $classname::removeField($this->fields['name']);
       }
 
@@ -183,14 +188,12 @@ class PluginFieldsField extends CommonDBTM {
       //check if field name not already exist and not in conflict with itemtype fields name
       $container = new PluginFieldsContainer;
       $container->getFromDB($input['plugin_fields_containers_id']);
-
-      $item = new $container->fields['itemtype'];
-      $item->getEmpty();
+      
       $field  = new self;
 
       $field_name = $input['name'];
       $i = 2;
-      while (count($field->find("name = '$field_name'")) > 0 || isset($item->fields[$field_name])) {
+      while (count($field->find("name = '$field_name'")) > 0) {
          $field_name = $input['name'].$i;
          $i++;
       }   
@@ -397,7 +400,7 @@ class PluginFieldsField extends CommonDBTM {
 
    }
 
-   static function showForTabContainer($c_id, $items_id) {
+   static function showForTabContainer($c_id, $items_id, $itemtype) {
       global $CFG_GLPI;
 
       //profile restriction (for reading profile)
@@ -414,8 +417,9 @@ class PluginFieldsField extends CommonDBTM {
          "/plugins/fields/front/container.form.php'>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='$c_id'>";
       echo "<input type='hidden' name='items_id' value='$items_id'>";
+      echo "<input type='hidden' name='itemtype' value='$itemtype'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo self::prepareHtmlFields($fields, $items_id, $canedit);
+      echo self::prepareHtmlFields($fields, $items_id, $itemtype, $canedit);
 
       if ($canedit) {
          echo "<tr><td class='tab_bg_2 center' colspan='4'>";
@@ -681,12 +685,12 @@ JAVASCRIPT;
       }
       echo "<input type='hidden' name='_plugin_fields_type' value='$type' />";
       // echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
-      echo self::prepareHtmlFields($fields, $items_id);
+      echo self::prepareHtmlFields($fields, $items_id, $itemtype);
       echo "</table>";
    }
 
 
-   static function prepareHtmlFields($fields, $items_id, $canedit = true,
+   static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
 
       if (empty($fields)) return false;
@@ -696,8 +700,7 @@ JAVASCRIPT;
       $first_field = array_shift($tmp);
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
-      $items_itemtype = ucfirst($container_obj->fields['itemtype']);
-      $classname = "PluginFields".$items_itemtype.
+      $classname = "PluginFields".$itemtype.
                                  preg_replace('/s$/', '', $container_obj->fields['name']);
       $obj = new $classname;
 
@@ -714,8 +717,8 @@ JAVASCRIPT;
       $first_found_p = array_shift($found_p);
 
       // test status for "CommonITILObject" objects
-      if (is_subclass_of($items_itemtype, "CommonITILObject") ) {
-         $items_obj = new $items_itemtype();
+      if (is_subclass_of($itemtype, "CommonITILObject") ) {
+         $items_obj = new $itemtype();
          if ($items_id > 0) {
             $items_obj->getFromDB($items_id);
          } else {
@@ -927,7 +930,7 @@ JAVASCRIPT;
       ));
 
       //show field
-      echo self::prepareHtmlFields($fields, 0, true, false, $massiveaction);
+      echo self::prepareHtmlFields($fields, 0,  $itemtype, true, false, $massiveaction);
 
       return true;
    }
