@@ -190,7 +190,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if ($input['type'] === "dom") {
             //check for already exist dom container with this itemtype
             $found = $this->find("`type`='dom'");
-            if (!in_array($found, $input['itemtype'])) {
+            if (count($found) > 0 && !in_array($found, $input['itemtype'])) {
                Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"), false, ERROR);
                return false;
             }
