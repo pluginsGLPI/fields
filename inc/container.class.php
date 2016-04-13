@@ -194,6 +194,11 @@ class PluginFieldsContainer extends CommonDBTM {
          Session::AddMessageAfterRedirect(__("You cannot add bloc without associated element type", "fields"), false, ERROR);
          return false;
       }
+
+      if (!is_array($input['itemtypes'])) {
+         $input['itemtypes'] = array($input['itemtypes']);
+      }
+
       if ($input['type'] === "dom") {
             //check for already exist dom container with this itemtype
             $found = $this->find("`type`='dom'");
@@ -354,6 +359,14 @@ class PluginFieldsContainer extends CommonDBTM {
          	                     self::getTypes(),
                                  array('value' => $this->fields["type"],
                                  	   'rand'  => $rand));
+         $params = array('type'     => '__VALUE__',
+                         'itemtype' => $this->fields["itemtypes"],
+                         'subtype'  => $this->fields['subtype'],
+                         'rand'     => $rand);
+         Ajax::updateItemOnSelectEvent("dropdown_type$rand",
+                                       "itemtypes_$rand",
+                                       "../ajax/container_itemtypes_dropdown.php",
+                                       $params);
       }
       echo "</td>";
       echo "<td>".__("Associated item type")." : </td>";
@@ -374,9 +387,10 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $obj;
 
          } else {
-
-         Dropdown::showFromArray("itemtypes", self::getItemtypes(),
-                                 array('multiple' => true, 'width' => 200));
+         echo "&nbsp;<span id='itemtypes_$rand'>";
+         self::showFormItemtype(array('rand'    => $rand,
+                                      'subtype' => $this->fields['subtype']));
+         echo "</span>";
       }
       echo "</td>";
       echo "</tr>";
@@ -391,20 +405,12 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td>";
       echo "&nbsp;<span id='subtype_$rand'></span>";
       if($ID > 0 && !empty($this->fields["subtype"])) {
-         $item = new $this->fields["itemtype"];
+         $itemtypes = json_decode($this->fields["itemtypes"], true);
+         $itemtype = array_shift($itemtypes);
+         $item = new $itemtype;
          $item->getEmpty();
          $tabs = $item->defineTabs();
          echo $tabs[$this->fields["subtype"]];
-      } else {
-         $params = array('type'     => '__VALUE0__',
-                         'itemtype' => '__VALUE1__',
-                         'subtype'  => $this->fields["subtype"],
-                         'rand'     => $rand);
-         Ajax::updateItemOnSelectEvent(array("dropdown_type$rand", "dropdown_itemtype$rand"),
-                                       "subtype_$rand",
-                                       $CFG_GLPI["root_doc"].
-                                       	"/plugins/fields/ajax/container_subtype_dropdown.php",
-                                       $params);
       }
       echo "</td>";
       echo "</tr>";
@@ -420,6 +426,31 @@ class PluginFieldsContainer extends CommonDBTM {
 
       return true;
    }
+
+   static function showFormItemtype($params = array()) {
+      global $CFG_GLPI;
+
+      $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
+
+      $rand = $params['rand'];
+      Dropdown::showFromArray("itemtypes", self::getItemtypes(),
+                              array('rand'                => $rand,
+                                    'multiple'            => !$is_domtab,
+                                    'width'               => 200,
+                                    'display_emptychoice' => $is_domtab));
+
+      if ($is_domtab) {
+         $params = array('type'     => '__VALUE0__',
+                         'itemtype' => '__VALUE1__',
+                         'subtype'  => $params["subtype"],
+                         'rand'     => $rand);
+         Ajax::updateItemOnSelectEvent(array("dropdown_type$rand", "dropdown_itemtypes$rand"),
+                                       "subtype_$rand",
+                                       "../ajax/container_subtype_dropdown.php",
+                                       $params);
+      }
+   }
+
 
    static function showFormSubtype($params) {
       echo "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
