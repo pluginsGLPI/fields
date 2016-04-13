@@ -1,12 +1,12 @@
 The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...  
 Directories "inc", "front" and "ajax" should be available in writing for apache user
 
-Addionnal data can be added : 
+Addionnal data can be added :
  * In object tab
  * In main form of object (above save button)
  * In form of a tab (Warning, this feature is experimental)
 
-Possible fields type are : 
+Possible fields type are :
  * Header (title bloc)
  * Text (single line)
  * Text (multiple lines)

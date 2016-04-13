@@ -29,7 +29,7 @@ class PluginFieldsField extends CommonDBTM {
                   KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
-      } 
+      }
 
       $migration->displayMessage("Updating $table");
 
@@ -188,7 +188,7 @@ class PluginFieldsField extends CommonDBTM {
       //check if field name not already exist and not in conflict with itemtype fields name
       $container = new PluginFieldsContainer;
       $container->getFromDB($input['plugin_fields_containers_id']);
-      
+
       $field  = new self;
 
       $field_name = $input['name'];
@@ -196,8 +196,8 @@ class PluginFieldsField extends CommonDBTM {
       while (count($field->find("name = '$field_name'")) > 0) {
          $field_name = $input['name'].$i;
          $i++;
-      }   
-      
+      }
+
       return $field_name;
    }
 
@@ -395,7 +395,7 @@ class PluginFieldsField extends CommonDBTM {
       Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
       echo "</td>";
       echo "</tr>";
-      
+
       $this->showFormButtons($options);
 
    }
@@ -535,7 +535,7 @@ JAVASCRIPT;
 
    static function showForDomtabContainer() {
       global $CFG_GLPI;
-      
+
       //parse http_referer to get current url (this code is loaded by javacript)
       $current_url = $_SERVER['HTTP_REFERER'];
       if (strpos($current_url, ".form.php") === false
@@ -585,14 +585,14 @@ JAVASCRIPT;
 
             // escape $ in tab name
             //current_glpi_tab = current_glpi_tab.replace('$', '\\\\$');
-            
+
             setTimeout(function() {
                // tabs with form
                var selector = '#'+jqui_tab+' form:first-child input[name=update]';
                selector+= ', #'+jqui_tab+' form:first-child input[name=add]';
                selector+= ', #'+jqui_tab+' #mainformtable > tbody > tr:last-child';
                var found = insert_html$rand(selector, current_glpi_tab);
-               
+
                //tabs without form
                if (!found) {
                   insert_html$rand('#'+jqui_tab+' a.vsubmit:first-child', current_glpi_tab);
@@ -608,22 +608,22 @@ JAVASCRIPT;
                if (!found) {
                   element = jQuery(this);
                   rand = Math.round(Math.random() * 1000000);
-        
+
                   var pos_to_insert = element.closest('tr');
                   if (el.tagName === 'TR') pos_to_insert = element;
                   pos_to_insert.before(
                      '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\">.</div></td></tr>');
-         
+
                   jQuery('#tabdom_container'+rand)
                      .load('{$url_ajax}',
                         {
                            itemtype: '$current_itemtype',
                            items_id: '$items_id',
-                           type:     'domtab', 
+                           type:     'domtab',
                            subtype:  current_glpi_tab
                         }
                      );
-                  
+
                   dom_inserted = true;
                   found = true;
                }
@@ -641,7 +641,7 @@ JAVASCRIPT;
                                     .attr('href')
                                     .match(/&_glpi_tab=(.*)&id=/)[1];
 
-            // add html in dom                                          
+            // add html in dom
             insert_dom_tab{$rand}(jqui_tab, current_glpi_tab);
          };
 
@@ -673,7 +673,7 @@ JAVASCRIPT;
       if ($c_id === false) {
          $condition = "1=0";
       }
-      
+
       //get fields for this container
       $field_obj = new self();
       $fields = $field_obj->find($condition." AND is_active = 1", "ranking");
@@ -725,8 +725,8 @@ JAVASCRIPT;
             $items_obj->getEmpty();
          }
 
-         if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray()) 
-               || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray()) 
+         if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
+               || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray())
                || $first_found_p['right'] != CREATE) {
             $canedit = false;
          }
@@ -914,7 +914,7 @@ JAVASCRIPT;
       if ($DB->numrows($res) == 0) {
          return false;
       }
-      
+
       $data = $DB->fetch_assoc($res);
 
       //display an hidden post field to store container id

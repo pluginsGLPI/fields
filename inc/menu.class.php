@@ -16,7 +16,7 @@ class PluginFieldsMenu extends CommonGLPI {
       $menu = array();
       $menu['title'] = self::getMenuName();
       $menu['page']  = "$front_fields/container.php";
- 
+
       $itemtypes = array('PluginFieldsContainer' => 'fieldscontainer');
 
       foreach ($itemtypes as $itemtype => $option) {
@@ -26,7 +26,7 @@ class PluginFieldsMenu extends CommonGLPI {
          if ($itemtype::canCreate()) {
             $menu['options'][$option]['links']['add'] = $itemtype::getFormURL(false);
          }
-         
+
       }
       return $menu;
    }

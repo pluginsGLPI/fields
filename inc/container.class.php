@@ -50,7 +50,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
       $migration->changeField($table, 'itemtype', 'itemtype', 'longtext');
       $migration->migrationOneTable($table);
-      
+
       return true;
    }
 
@@ -157,7 +157,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
    }
 
-   
+
    function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = array()) {
 
       switch ($field_id_or_search_options['table'].'.'.$field_id_or_search_options['field']) {
@@ -257,17 +257,17 @@ class PluginFieldsContainer extends CommonDBTM {
 
    function pre_deleteItem() {
       $_SESSION['delete_container'] = true;
-      
+
       foreach (json_decode($this->fields['itemtype']) as $itemtype){
-         
+
          $classname = "PluginFields".ucfirst(strtolower($itemtype.
                                              preg_replace('/s$/', '', $this->fields['name'])));
          $class_filename = strtolower($itemtype.
                                       preg_replace('/s$/', '', $this->fields['name'])).".class.php";
-         
+
          $injection_filename = strtolower($itemtype.
                                       preg_replace('/s$/', '', $this->fields['name']))."injection.class.php";
-         
+
          //delete fields
          $field_obj = new PluginFieldsField;
          $fields = $field_obj->find("plugin_fields_containers_id = ".$this->fields['id']);
@@ -292,7 +292,7 @@ class PluginFieldsContainer extends CommonDBTM {
          if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
             unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
          }
-         
+
          if (file_exists(GLPI_ROOT."/plugins/fields/inc/$injection_filename")) {
             unlink(GLPI_ROOT."/plugins/fields/inc/$injection_filename");
          }
@@ -367,8 +367,8 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $obj;
 
          } else {
-         
-         Dropdown::showFromArray("itemtype", self::getItemtypes(), 
+
+         Dropdown::showFromArray("itemtype", self::getItemtypes(),
                                  array('multiple' => true, 'width' => 200));
       }
       echo "</td>";
@@ -824,7 +824,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (count($itemtypes) < 1) {
          return false;
       }
-      
+
       foreach ($itemtypes as $data) {
          $dataitemtype = json_decode($data['itemtype']);
          $item = new $itemtype();

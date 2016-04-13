@@ -15,7 +15,7 @@ class PluginFieldsMigration {
    static function uninstall() {
       return true;
    }
-   
+
    function updateFromCustomfields($glpi_version = "0.80") {
       global $DB;
 
@@ -33,7 +33,7 @@ class PluginFieldsMigration {
          'number'      => 'number',
          'dropdown'    => 'dropdown',
          'yesno'       => 'yesno',
-         'date'        => 'date'    
+         'date'        => 'date'
       );
 
       return $types[$old_type];

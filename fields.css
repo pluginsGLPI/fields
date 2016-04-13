@@ -3,7 +3,7 @@ ul.fields_config li {
    cursor:pointer;
    float:left;
    width:20%;
-   -moz-border-radius: 5px; 
+   -moz-border-radius: 5px;
    -webkit-border-radius:5px;
    border-radius: 5px;
    margin:0 1% 10px 1%;

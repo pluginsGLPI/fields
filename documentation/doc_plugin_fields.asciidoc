@@ -1,12 +1,12 @@
 // Titre principal du document :
 = Plugin Champs Supplémentaires (Fields) =
 // Sous titre du document :
-:subtitle: 
+:subtitle:
 avec un saut de ligne
 // Date du document :
 :docdate: 17/09/2014
 // Identifiant du client:
-:customerid: 
+:customerid:
 // Ville associée au document
 :city: Paris
 
