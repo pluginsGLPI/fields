@@ -778,7 +778,7 @@ JAVASCRIPT;
 
                $required = ($field['mandatory'] == 1) ? "<span class='red'>*</span>" : '';
 
-               if ($container_obj->fields['itemtype'] == 'Ticket'
+               if (stristr($container_obj->fields['itemtypes'], 'Ticket') !== false
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
@@ -811,7 +811,7 @@ JAVASCRIPT;
                case 'dropdown':
                    if ($canedit && !$readonly) {
                      //find entity on current object
-                     $obj = new $container_obj->fields['itemtype'];
+                     $obj = new $itemtype;
                      $obj->getFromDB($items_id);
 
                      ob_start();
@@ -908,7 +908,7 @@ JAVASCRIPT;
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
-                  AND containers.itemtype = '$itemtype'
+                  AND containers.itemtypes LIKE '$itemtype'
                WHERE fields.name = '$cleaned_linkfield'";
       $res = $DB->query($query);
       if ($DB->numrows($res) == 0) {
