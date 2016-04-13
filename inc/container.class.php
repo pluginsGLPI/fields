@@ -949,7 +949,7 @@ class PluginFieldsContainer extends CommonDBTM {
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
-         WHERE containers.itemtypes LIKE '$itemtype'
+         WHERE containers.itemtypes LIKE '%$itemtype%'
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
@@ -963,7 +963,7 @@ class PluginFieldsContainer extends CommonDBTM {
             }
          }
 
-         $tablename = "glpi_plugin_fields_".strtolower($datas['itemtype'].
+         $tablename = "glpi_plugin_fields_".strtolower($itemtype.
                         getPlural(preg_replace('/s$/', '', $datas['container_name'])));
 
          $opt[$i]['table']         = $tablename;
