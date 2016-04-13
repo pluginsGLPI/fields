@@ -102,7 +102,7 @@ class PluginFieldsField extends CommonDBTM {
       if ($input['type'] !== "header") {
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($input['plugin_fields_containers_id']);
-         foreach (json_decode($container_obj->fields['itemtype']) as $itemtype) {
+         foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
             $classname = "PluginFields" . ucfirst(strtolower($itemtype .
                      preg_replace('/s$/', '', $container_obj->fields['name'])));
             $classname::addField($input['name'], $input['type']);
@@ -135,7 +135,7 @@ class PluginFieldsField extends CommonDBTM {
 
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
-         foreach (json_decode($container_obj->fields['itemtype']) as $itemtype) {
+         foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
             $classname = "PluginFields" . ucfirst(strtolower($itemtype .
                      preg_replace('/s$/', '', $container_obj->fields['name'])));
             $classname::removeField($this->fields['name']);
