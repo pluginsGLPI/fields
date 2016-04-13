@@ -908,7 +908,7 @@ JAVASCRIPT;
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
-                  AND containers.itemtypes LIKE '$itemtype'
+                  AND containers.itemtypes LIKE '%$itemtype%'
                WHERE fields.name = '$cleaned_linkfield'";
       $res = $DB->query($query);
       if ($DB->numrows($res) == 0) {
