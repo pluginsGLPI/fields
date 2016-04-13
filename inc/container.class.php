@@ -913,12 +913,12 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
             containers.name as container_name, containers.label as container_label,
-            containers.itemtype, containers.id as container_id
+            containers.itemtypes, containers.id as container_id
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
-         WHERE containers.itemtype = '$itemtype'
+         WHERE containers.itemtypes LIKE '$itemtype'
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
