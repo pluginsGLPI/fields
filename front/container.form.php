@@ -28,7 +28,7 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } elseif (isset($_POST["update_fields_values"])) {
-   $container->updateFieldsValues($_REQUEST);
+   $container->updateFieldsValues($_REQUEST, false, $_REQUEST['itemtype']);
    Html::back();
 
 } else {
