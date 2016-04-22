@@ -200,12 +200,14 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       if ($input['type'] === "dom") {
-            //check for already exist dom container with this itemtype
-            $found = $this->find("`type`='dom'");
-            if (count($found) > 0 && !in_array($found, $input['itemtypes'])) {
+         //check for already exist dom container with this itemtype
+         $found = $this->find("`type`='dom'");
+         foreach ($found as $data) {
+            if (count(array_intersect(json_decode($data['itemtypes']), $input['itemtypes'])) > 0) {
                Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"), false, ERROR);
                return false;
             }
+         }
       }
 
       //contruct field name by processing label (remove non alphanumeric char)
@@ -333,13 +335,13 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public function showForm($ID, $options=array()) {
-   	global $CFG_GLPI;
+      global $CFG_GLPI;
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
       $rand = mt_rand();
 
-      echo "<tr>";
+      echo "<tr class='tab_bg_1'>";
       echo "<td width='20%'>".__("Label")." : </td>";
       echo "<td width='30%'>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
@@ -348,7 +350,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td width='30%'>&nbsp;</td>";
       echo "</tr>";
 
-      echo "<tr>";
+      echo "<tr class='tab_bg_1'>";
       echo "<td>".__("Type")." : </td>";
       echo "<td>";
       if($ID > 0) {
@@ -356,9 +358,9 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $types[$this->fields["type"]];
       } else {
          Dropdown::showFromArray('type',
-         	                     self::getTypes(),
+                                 self::getTypes(),
                                  array('value' => $this->fields["type"],
-                                 	   'rand'  => $rand));
+                                       'rand'  => $rand));
          $params = array('type'     => '__VALUE__',
                          'itemtype' => $this->fields["itemtypes"],
                          'subtype'  => $this->fields['subtype'],
@@ -399,7 +401,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (!empty($this->fields["subtype"])) {
          $display = "";
       }
-      echo "<tr id='tab_tr' $display>";
+      echo "<tr class='tab_bg_1' id='tab_tr' $display>";
       echo "<td colspan='2'></td>";
       echo "<td>".__("Tab", "fields")." : </td>";
       echo "<td>";
@@ -415,11 +417,12 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr>";
+      echo "<tr class='tab_bg_1'>";
       echo "<td>".__("Active")." : </td>";
       echo "<td>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
+      echo "<td colspan='2'></td>";
       echo "</tr>";
 
       $this->showFormButtons($options);
