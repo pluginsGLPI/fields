@@ -3,3 +3,5 @@
 .tx export-ignore
 tools/ export-ignore
 * text=auto
+*.png binary
+*.jpg binary
