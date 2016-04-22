@@ -333,8 +333,6 @@ class PluginFieldsField extends CommonDBTM {
 
 
    function showForm($ID, $options=array()) {
-      global $CFG_GLPI;
-      
       if (isset($options['parent']) && !empty($options['parent'])) {
          $container = $options['parent'];
       }
@@ -350,19 +348,17 @@ class PluginFieldsField extends CommonDBTM {
       $this->initForm($ID, $options);
       $this->showFormHeader($ID, $options);
 
-      echo "<tr class='tab_bg_1'>";
+      echo "<tr>";
       echo "<td>".__("Label")." : </td>";
       echo "<td>";
       echo "<input type='hidden' name='plugin_fields_containers_id' value='".
          $container->getField('id')."'>";
       Html::autocompletionTextField($this, 'label', array('value' => $this->fields["label"]));
       echo "</td>";
-      
-      
+
       if (!$edit) {
-         echo "<td colspan='2'></td>";
          echo "</tr>";
-         echo "<tr class='tab_bg_1'>";
+         echo "<tr>";
          echo "<td>".__("Type")." : </td>";
          echo "<td>";
          Dropdown::showFromArray('type', self::getTypes(),
@@ -374,15 +370,15 @@ class PluginFieldsField extends CommonDBTM {
       Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
       if($this->fields["type"] == "dropdown") {
-         echo '<a href="'.$CFG_GLPI['root_doc'].'/plugins/fields/front/'.$this->fields["name"].'dropdown.php">
-                  <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
+         echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/'.$this->fields["name"].'dropdown.php">
+                  <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
                      alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
       }
       echo "</td>";
 
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'>";
+      echo "<tr>";
       echo "<td>" . __('Active') . " :</td>";
       echo "<td>";
       Dropdown::showYesNo('is_active', $this->fields["is_active"]);
@@ -393,12 +389,11 @@ class PluginFieldsField extends CommonDBTM {
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'>";
+      echo "<tr>";
       echo "<td>".__("Read only", "fields")." :</td>";
       echo "<td>";
       Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
       echo "</td>";
-      echo "<td colspan='2'></td>";
       echo "</tr>";
 
       $this->showFormButtons($options);
@@ -481,18 +476,12 @@ class PluginFieldsField extends CommonDBTM {
             $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
          }
       }
-      $tmp         = explode("/", $expl_url[0]);
-      $script_name = array_pop($tmp);
-      if (in_array($script_name, array("helpdesk.public.php", "tracking.injector.php"))) {
-         $adress_itemtype = "Ticket";
-      } else {
-         $adress_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
-      }
+
       //Retrieve dom container
       $itemtypes = PluginFieldsContainer::getUsedItemtypes('dom', true);
 
       //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-      if (!in_array(strtolower($current_itemtype), array_map('strtolower', $itemtypes)) || $adress_itemtype != $current_itemtype) {
+      if (!in_array(strtolower($current_itemtype), array_map('strtolower', $itemtypes))) {
          return false;
       }
 
