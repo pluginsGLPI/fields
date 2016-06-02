@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 11:08+0100\n"
+"POT-Creation-Date: 2016-06-02 14:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,118 +21,121 @@ msgstr ""
 msgid "MySQL tables installation"
 msgstr ""
 
-#: hook.php:64
-msgid "MySQL tables uninstallation"
-msgstr ""
-
-#: setup.php:25
-msgid "Configurate the blocs"
-msgstr ""
-
-#: setup.php:55 front/container.form.php:35 front/container.php:4
-msgid "Additionnal fields"
-msgstr ""
-
-#: inc/container.class.php:133
-msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
-msgstr ""
-
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr ""
-
-#: inc/container.class.php:203
-msgid "Bloc"
-msgstr ""
-
-#: inc/container.class.php:297
-msgid "Tab"
-msgstr ""
-
-#: inc/container.class.php:282
-msgid "Add tab"
-msgstr ""
-
-#: inc/container.class.php:283
-msgid "Insertion in the form (before save button)"
-msgstr ""
-
-#: inc/container.class.php:508
-msgid "Some numeric fields contains non numeric values"
-msgstr ""
-
-#: inc/container.class.php:514
-msgid "Some mandatory fields are empty"
-msgstr ""
-
-#: inc/dropdown.class.php:14
-msgid "This plugin need write right on his own files, please correct."
-msgstr ""
-
-#: inc/field.class.php:41
-msgid "Field"
-msgstr ""
-
-#: inc/field.class.php:65
-msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr ""
-
-#: inc/field.class.php:188
-msgid "Fields"
-msgstr ""
-
-#: inc/field.class.php:232
-msgid "Add a new field"
-msgstr ""
-
-#: inc/field.class.php:237
-msgid "No field for this bloc"
-msgstr ""
-
-#: inc/field.class.php:619
-msgid "Header"
-msgstr ""
-
-#: inc/field.class.php:620
-msgid "Text (single line)"
-msgstr ""
-
-#: inc/field.class.php:621
-msgid "Text (multiples lines)"
-msgstr ""
-
-#: inc/field.class.php:622
-msgid "Number"
-msgstr ""
-
-#: inc/field.class.php:623
-msgid "Dropdown"
-msgstr ""
-
-#: inc/field.class.php:624
-msgid "Yes/No"
-msgstr ""
-
-#: inc/field.class.php:625
-msgid "Date"
-msgstr ""
-
-#: inc/field.class.php:626
-msgid "Date & time"
-msgstr ""
-
-#: inc/field.class.php:350
-msgid "Configure"
-msgstr ""
-
-#: inc/field.class.php:350
-msgid "Configure fields values"
-msgstr ""
-
-msgid "Read only"
-msgstr ""
-
+#: hook.php:53
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr ""
 
+#: hook.php:62
+msgid "MySQL tables uninstallation"
+msgstr ""
+
+#: setup.php:81 front/container.form.php:35 front/container.php:4
+#: inc/menu.class.php:6
+msgid "Additionnal fields"
+msgstr ""
+
+#: inc/container.class.php:8
 msgid "Regenerate container files"
+msgstr ""
+
+#: inc/container.class.php:194
+msgid "You cannot add block without associated element type"
+msgstr ""
+
+#: inc/container.class.php:206
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr ""
+
+#: inc/container.class.php:332
+msgid "Block"
+msgstr ""
+
+#: inc/container.class.php:404
+msgid "Tab"
+msgstr ""
+
+#: inc/container.class.php:541
+msgid "Add tab"
+msgstr ""
+
+#: inc/container.class.php:542
+msgid "Insertion in the form (before save button)"
+msgstr ""
+
+#: inc/container.class.php:543
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr ""
+
+#: inc/container.class.php:832
+msgid "Some mandatory fields are empty"
+msgstr ""
+
+#: inc/container.class.php:837
+msgid "Some numeric fields contains non numeric values"
+msgstr ""
+
+#: inc/dropdown.class.php:15
+msgid "This plugin need write right on his own files, please correct."
+msgstr ""
+
+#: inc/field.class.php:62
+msgid "Field"
+msgstr ""
+
+#: inc/field.class.php:224
+msgid "Fields"
+msgstr ""
+
+#: inc/field.class.php:267
+msgid "Add a new field"
+msgstr ""
+
+#: inc/field.class.php:272
+msgid "No field for this block"
+msgstr ""
+
+#: inc/field.class.php:284 inc/field.class.php:393
+msgid "Read only"
+msgstr ""
+
+#: inc/field.class.php:375
+msgid "Configure"
+msgstr ""
+
+#: inc/field.class.php:375
+msgid "Configure fields values"
+msgstr ""
+
+#: inc/field.class.php:940
+msgid "Header"
+msgstr ""
+
+#: inc/field.class.php:941
+msgid "Text (single line)"
+msgstr ""
+
+#: inc/field.class.php:942
+msgid "Text (multiples lines)"
+msgstr ""
+
+#: inc/field.class.php:943
+msgid "Number"
+msgstr ""
+
+#: inc/field.class.php:944
+msgid "Dropdown"
+msgstr ""
+
+#: inc/field.class.php:945
+msgid "Yes/No"
+msgstr ""
+
+#: inc/field.class.php:946
+msgid "Date"
+msgstr ""
+
+#: inc/field.class.php:947
+msgid "Date & time"
 msgstr ""

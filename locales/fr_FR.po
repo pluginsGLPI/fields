@@ -1,140 +1,142 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Alexandre DELAUNAY <delaunay.alexandre@gmail.com>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Plugin - Plugin Fields\n"
+"Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 11:08+0100\n"
-"PO-Revision-Date: 2016-03-08 10:15+0100\n"
-"Last-Translator: Jérémy MOREAU <jmoreau.dev@gmail.com>\n"
-"Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/"
-"fr_FR/)\n"
+"POT-Creation-Date: 2016-06-02 14:37+0200\n"
+"PO-Revision-Date: 2016-06-02 12:39+0000\n"
+"Last-Translator: Alexandre DELAUNAY <delaunay.alexandre@gmail.com>\n"
+"Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.5\n"
 
 #: hook.php:26
 msgid "MySQL tables installation"
 msgstr "Installation des tables MySQL"
 
-#: hook.php:64
-msgid "MySQL tables uninstallation"
-msgstr "Désinstallation des tables MySQL"
-
-#: setup.php:25
-msgid "Configurate the blocs"
-msgstr "Configurer les blocs"
-
-#: setup.php:55 front/container.form.php:35 front/container.php:4
-msgid "Additionnal fields"
-msgstr "Champs supplémentaires"
-
-#: inc/container.class.php:133
-msgid "You cannot add several blocs with type 'Insertion in the form' on same object"
-msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
-
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
-
-#: inc/container.class.php:203
-msgid "Bloc"
-msgstr "Bloc"
-
-#: inc/container.class.php:297
-msgid "Tab"
-msgstr "Onglet"
-
-#: inc/container.class.php:282
-msgid "Add tab"
-msgstr "Ajout d'un onglet"
-
-#: inc/container.class.php:283
-msgid "Insertion in the form (before save button)"
-msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
-
-#: inc/container.class.php:508
-msgid "Some numeric fields contains non numeric values"
-msgstr "Des champs numériques contiennent des données non numériques"
-
-#: inc/container.class.php:514
-msgid "Some mandatory fields are empty"
-msgstr "Un champ obligatoire est vide"
-
-#: inc/dropdown.class.php:14
-msgid "This plugin need write right on his own files, please correct."
-msgstr "Ce plugin nécessite les droits d'écriture sur ses propres fichiers, veuillez corriger."
-
-#: inc/field.class.php:41
-msgid "Field"
-msgstr "Champ"
-
-#: inc/field.class.php:65
-msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr "Vous ne pouvez pas créer plusieurs fois le même champ 'intitulé' pour le même bloc"
-
-#: inc/field.class.php:188
-msgid "Fields"
-msgstr "Champs"
-
-#: inc/field.class.php:232
-msgid "Add a new field"
-msgstr "Ajouter un nouveau champ"
-
-#: inc/field.class.php:237
-msgid "No field for this bloc"
-msgstr "Pas de champs pour ce bloc"
-
-#: inc/field.class.php:619
-msgid "Header"
-msgstr "Entête"
-
-#: inc/field.class.php:620
-msgid "Text (single line)"
-msgstr "Texte (ligne simple)"
-
-#: inc/field.class.php:621
-msgid "Text (multiples lines)"
-msgstr "Texte (lignes multiples)"
-
-#: inc/field.class.php:622
-msgid "Number"
-msgstr "Nombre"
-
-#: inc/field.class.php:623
-msgid "Dropdown"
-msgstr "Liste déroulante (Intitulés)"
-
-#: inc/field.class.php:624
-msgid "Yes/No"
-msgstr "Oui/Non"
-
-#: inc/field.class.php:625
-msgid "Date"
-msgstr "Date"
-
-#: inc/field.class.php:626
-msgid "Date & time"
-msgstr "Date & heure"
-
-#: inc/field.class.php:350
-msgid "Configure"
-msgstr "Configuration"
-
-#: inc/field.class.php:350
-msgid "Configure fields values"
-msgstr "Configurer les valeurs du champ"
-
-msgid "Read only"
-msgstr "Lecture seule"
-
+#: hook.php:53
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 
+#: hook.php:62
+msgid "MySQL tables uninstallation"
+msgstr "Désinstallation des tables MySQL"
+
+#: setup.php:81 front/container.form.php:35 front/container.php:4
+#: inc/menu.class.php:6
+msgid "Additionnal fields"
+msgstr "Champs supplémentaires"
+
+#: inc/container.class.php:8
 msgid "Regenerate container files"
 msgstr "Regénerer les fichiers des blocs"
+
+#: inc/container.class.php:194
+msgid "You cannot add block without associated element type"
+msgstr "Vous ne pouvez pas ajouter de blocks sans associer de type d'éléments"
+
+#: inc/container.class.php:206
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
+
+#: inc/container.class.php:332
+msgid "Block"
+msgstr "Bloc"
+
+#: inc/container.class.php:404
+msgid "Tab"
+msgstr "Onglet"
+
+#: inc/container.class.php:541
+msgid "Add tab"
+msgstr "Ajout d'un onglet"
+
+#: inc/container.class.php:542
+msgid "Insertion in the form (before save button)"
+msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
+
+#: inc/container.class.php:543
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
+
+#: inc/container.class.php:832
+msgid "Some mandatory fields are empty"
+msgstr "Un champ obligatoire est vide"
+
+#: inc/container.class.php:837
+msgid "Some numeric fields contains non numeric values"
+msgstr "Des champs numériques contiennent des données non numériques"
+
+#: inc/dropdown.class.php:15
+msgid "This plugin need write right on his own files, please correct."
+msgstr "Ce plugin nécessite les droits d'écriture sur ses propres fichiers, veuillez corriger."
+
+#: inc/field.class.php:62
+msgid "Field"
+msgstr "Champ"
+
+#: inc/field.class.php:224
+msgid "Fields"
+msgstr "Champs"
+
+#: inc/field.class.php:267
+msgid "Add a new field"
+msgstr "Ajouter un nouveau champ"
+
+#: inc/field.class.php:272
+msgid "No field for this block"
+msgstr "pas de champs pour ce bloc"
+
+#: inc/field.class.php:284 inc/field.class.php:393
+msgid "Read only"
+msgstr "Lecture seule"
+
+#: inc/field.class.php:375
+msgid "Configure"
+msgstr "Configuration"
+
+#: inc/field.class.php:375
+msgid "Configure fields values"
+msgstr "Configurer les valeurs du champ"
+
+#: inc/field.class.php:940
+msgid "Header"
+msgstr "Entête"
+
+#: inc/field.class.php:941
+msgid "Text (single line)"
+msgstr "Texte (ligne simple)"
+
+#: inc/field.class.php:942
+msgid "Text (multiples lines)"
+msgstr "Texte (lignes multiples)"
+
+#: inc/field.class.php:943
+msgid "Number"
+msgstr "Nombre"
+
+#: inc/field.class.php:944
+msgid "Dropdown"
+msgstr "Liste déroulante (Intitulés)"
+
+#: inc/field.class.php:945
+msgid "Yes/No"
+msgstr "Oui/Non"
+
+#: inc/field.class.php:946
+msgid "Date"
+msgstr "Date"
+
+#: inc/field.class.php:947
+msgid "Date & time"
+msgstr "Date & heure"

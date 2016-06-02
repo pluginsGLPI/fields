@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alexey Petukhov <lexx015@gmail.com>, 2015
+# Alexander Salas <alexander.salas@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
@@ -11,33 +11,33 @@ msgstr ""
 "POT-Creation-Date: 2016-06-02 14:37+0200\n"
 "PO-Revision-Date: 2016-06-02 12:37+0000\n"
 "Last-Translator: Alexandre DELAUNAY <delaunay.alexandre@gmail.com>\n"
-"Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
+"Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru_RU\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: hook.php:26
 msgid "MySQL tables installation"
-msgstr "MySQL таблицы установки"
+msgstr "Instalación de las tablas MySQL"
 
 #: hook.php:53
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr ""
+msgstr "El plugin no se puede desinstalar el plugin cuando se desactiva"
 
 #: hook.php:62
 msgid "MySQL tables uninstallation"
-msgstr "MySQL таблицы удаления"
+msgstr "Desinstalación de las tablas MySQL"
 
 #: setup.php:81 front/container.form.php:35 front/container.php:4
 #: inc/menu.class.php:6
 msgid "Additionnal fields"
-msgstr "Дополнительные поля"
+msgstr "Campos adicionales"
 
 #: inc/container.class.php:8
 msgid "Regenerate container files"
-msgstr ""
+msgstr "Regenerar archivos contenedores"
 
 #: inc/container.class.php:194
 msgid "You cannot add block without associated element type"
@@ -55,43 +55,43 @@ msgstr ""
 
 #: inc/container.class.php:404
 msgid "Tab"
-msgstr "Закладка"
+msgstr "Pestaña"
 
 #: inc/container.class.php:541
 msgid "Add tab"
-msgstr "Добавить закладку"
+msgstr "Agregar pestaña"
 
 #: inc/container.class.php:542
 msgid "Insertion in the form (before save button)"
-msgstr ""
+msgstr "Insertando en el formulario (antes del botón guardar)"
 
 #: inc/container.class.php:543
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr ""
+msgstr "Inserción en el formulario de una pestaña específica (antes del botón guardar)"
 
 #: inc/container.class.php:832
 msgid "Some mandatory fields are empty"
-msgstr "Некоторые обязательные поля пусты"
+msgstr "Algunos campos obligatorios están vacíos"
 
 #: inc/container.class.php:837
 msgid "Some numeric fields contains non numeric values"
-msgstr "Некоторые числовые поля содержат не только цифры"
+msgstr "Algunos campos numéricos contienen valores no numéricos"
 
 #: inc/dropdown.class.php:15
 msgid "This plugin need write right on his own files, please correct."
-msgstr "Это расширение требует прав записи для своих файло, пожалуйста предоставьте права."
+msgstr "Este plugin necesita escribir derechos sobre estos propios archivos, por favor corrígelo. "
 
 #: inc/field.class.php:62
 msgid "Field"
-msgstr "Поле"
+msgstr "Campo"
 
 #: inc/field.class.php:224
 msgid "Fields"
-msgstr "Поля"
+msgstr "Campos"
 
 #: inc/field.class.php:267
 msgid "Add a new field"
-msgstr "Добавить новое поле"
+msgstr "Agregar nuevo campo"
 
 #: inc/field.class.php:272
 msgid "No field for this block"
@@ -99,44 +99,44 @@ msgstr ""
 
 #: inc/field.class.php:284 inc/field.class.php:393
 msgid "Read only"
-msgstr ""
+msgstr "Solo lectura"
 
 #: inc/field.class.php:375
 msgid "Configure"
-msgstr "Настройка"
+msgstr "Configurar"
 
 #: inc/field.class.php:375
 msgid "Configure fields values"
-msgstr "Настрить поля значений"
+msgstr "Configure valores de los campos"
 
 #: inc/field.class.php:940
 msgid "Header"
-msgstr "Заголовок"
+msgstr "Encabezamiento"
 
 #: inc/field.class.php:941
 msgid "Text (single line)"
-msgstr "Тест(одна строка)"
+msgstr "Texto (línea simple)"
 
 #: inc/field.class.php:942
 msgid "Text (multiples lines)"
-msgstr "Текст(многострочный)"
+msgstr "Texto (multiples líneas)"
 
 #: inc/field.class.php:943
 msgid "Number"
-msgstr "Номер"
+msgstr "Número"
 
 #: inc/field.class.php:944
 msgid "Dropdown"
-msgstr "Выпадающий список"
+msgstr "Menú desplegable"
 
 #: inc/field.class.php:945
 msgid "Yes/No"
-msgstr "Да/Нет"
+msgstr "Si/No"
 
 #: inc/field.class.php:946
 msgid "Date"
-msgstr "Дата"
+msgstr "Fecha"
 
 #: inc/field.class.php:947
 msgid "Date & time"
-msgstr "Дата и время"
+msgstr "Fecha & Hora"

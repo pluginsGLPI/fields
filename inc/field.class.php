@@ -269,7 +269,7 @@ class PluginFieldsField extends CommonDBTM {
 
       if ($DB->numrows($result) == 0) {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
-         echo "<th class='b'>".__("No field for this bloc", "fields")."</th></tr></table>";
+         echo "<th class='b'>".__("No field for this block", "fields")."</th></tr></table>";
       } else {
          echo '<div id="drag">';
          echo '<input type="hidden" name="_plugin_fields_containers_id"

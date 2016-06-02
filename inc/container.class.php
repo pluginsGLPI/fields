@@ -191,7 +191,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    function prepareInputForAdd($input) {
       if (!isset($input['itemtypes'])) {
-         Session::AddMessageAfterRedirect(__("You cannot add bloc without associated element type", "fields"), false, ERROR);
+         Session::AddMessageAfterRedirect(__("You cannot add block without associated element type", "fields"), false, ERROR);
          return false;
       }
 
@@ -203,7 +203,7 @@ class PluginFieldsContainer extends CommonDBTM {
             //check for already exist dom container with this itemtype
             $found = $this->find("`type`='dom'");
             if (count($found) > 0 && !in_array($found, $input['itemtypes'])) {
-               Session::AddMessageAfterRedirect(__("You cannot add several blocs with type 'Insertion in the form' on same object", "fields"), false, ERROR);
+               Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
                return false;
             }
       }
@@ -329,7 +329,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    static function getTypeName($nb = 0) {
-      return __("Bloc", "fields");
+      return __("Block", "fields");
    }
 
    public function showForm($ID, $options=array()) {

@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alexey Petukhov <lexx015@gmail.com>, 2015
+# Kaya Zeren <kayazeren@gmail.com>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
@@ -11,33 +11,33 @@ msgstr ""
 "POT-Creation-Date: 2016-06-02 14:37+0200\n"
 "PO-Revision-Date: 2016-06-02 12:37+0000\n"
 "Last-Translator: Alexandre DELAUNAY <delaunay.alexandre@gmail.com>\n"
-"Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru_RU\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: tr_TR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: hook.php:26
 msgid "MySQL tables installation"
-msgstr "MySQL таблицы установки"
+msgstr "MySQL tabloları yükleme"
 
 #: hook.php:53
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr ""
+msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
 
 #: hook.php:62
 msgid "MySQL tables uninstallation"
-msgstr "MySQL таблицы удаления"
+msgstr "MySQL tabloları kaldırma"
 
 #: setup.php:81 front/container.form.php:35 front/container.php:4
 #: inc/menu.class.php:6
 msgid "Additionnal fields"
-msgstr "Дополнительные поля"
+msgstr "Ek alanlar"
 
 #: inc/container.class.php:8
 msgid "Regenerate container files"
-msgstr ""
+msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
 #: inc/container.class.php:194
 msgid "You cannot add block without associated element type"
@@ -55,43 +55,43 @@ msgstr ""
 
 #: inc/container.class.php:404
 msgid "Tab"
-msgstr "Закладка"
+msgstr "Sekme"
 
 #: inc/container.class.php:541
 msgid "Add tab"
-msgstr "Добавить закладку"
+msgstr "Sekme ekle"
 
 #: inc/container.class.php:542
 msgid "Insertion in the form (before save button)"
-msgstr ""
+msgstr "Forma eklensin (kaydet düğmesinden önce)"
 
 #: inc/container.class.php:543
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr ""
+msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
 
 #: inc/container.class.php:832
 msgid "Some mandatory fields are empty"
-msgstr "Некоторые обязательные поля пусты"
+msgstr "Bazı zorunlu alanlar boş"
 
 #: inc/container.class.php:837
 msgid "Some numeric fields contains non numeric values"
-msgstr "Некоторые числовые поля содержат не только цифры"
+msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
 #: inc/dropdown.class.php:15
 msgid "This plugin need write right on his own files, please correct."
-msgstr "Это расширение требует прав записи для своих файло, пожалуйста предоставьте права."
+msgstr "Bu uygulama ekinin kendi dosyalarına yazma izni olması gerekiyor, lütfen doğru izinleri verin."
 
 #: inc/field.class.php:62
 msgid "Field"
-msgstr "Поле"
+msgstr "Alan"
 
 #: inc/field.class.php:224
 msgid "Fields"
-msgstr "Поля"
+msgstr "Alanlar"
 
 #: inc/field.class.php:267
 msgid "Add a new field"
-msgstr "Добавить новое поле"
+msgstr "Alan ekle"
 
 #: inc/field.class.php:272
 msgid "No field for this block"
@@ -99,44 +99,44 @@ msgstr ""
 
 #: inc/field.class.php:284 inc/field.class.php:393
 msgid "Read only"
-msgstr ""
+msgstr "Salt okunur"
 
 #: inc/field.class.php:375
 msgid "Configure"
-msgstr "Настройка"
+msgstr "Ayarlar"
 
 #: inc/field.class.php:375
 msgid "Configure fields values"
-msgstr "Настрить поля значений"
+msgstr "Alan değerleri ayarları"
 
 #: inc/field.class.php:940
 msgid "Header"
-msgstr "Заголовок"
+msgstr "Üst Bilg"
 
 #: inc/field.class.php:941
 msgid "Text (single line)"
-msgstr "Тест(одна строка)"
+msgstr "Metin (tak satır)"
 
 #: inc/field.class.php:942
 msgid "Text (multiples lines)"
-msgstr "Текст(многострочный)"
+msgstr "Metin (birden çok satır)"
 
 #: inc/field.class.php:943
 msgid "Number"
-msgstr "Номер"
+msgstr "Sayı"
 
 #: inc/field.class.php:944
 msgid "Dropdown"
-msgstr "Выпадающий список"
+msgstr "Açılan Kutu"
 
 #: inc/field.class.php:945
 msgid "Yes/No"
-msgstr "Да/Нет"
+msgstr "Evet/Hayır"
 
 #: inc/field.class.php:946
 msgid "Date"
-msgstr "Дата"
+msgstr "Tarih"
 
 #: inc/field.class.php:947
 msgid "Date & time"
-msgstr "Дата и время"
+msgstr "Tarih ve Saat"
