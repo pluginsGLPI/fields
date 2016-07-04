@@ -120,10 +120,13 @@ function plugin_fields_checkFiles() {
          $containers    = $container_obj->find();
 
          foreach ($containers as $container) {
-            $classname = "PluginFields".ucfirst($container['itemtypes'].
+            $itemtypes = (count($container['itemtypes']) > 0) ? json_decode($container['itemtypes'], TRUE) : array();
+            foreach ($itemtypes as $itemtype) {
+               $classname = "PluginFields".ucfirst($itemtype.
                                         preg_replace('/s$/', '', $container['name']));
-            if(!class_exists($classname)) {
-               PluginFieldsContainer::generateTemplate($container);
+               if(!class_exists($classname)) {
+                  PluginFieldsContainer::generateTemplate($container);
+               }
             }
          }
       }
