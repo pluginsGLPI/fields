@@ -245,7 +245,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $itemtype::$rightname, $template_class);
          $class_filename = strtolower($itemtype .
             preg_replace('/s$/', '', $fields['name']) . ".class.php");
-         if (file_put_contents(GLPI_ROOT . "/plugins/fields/inc/$class_filename", $template_class) === false) {
+         if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename", $template_class) === false) {
             Toolbox::logDebug("Error : class file creation - $class_filename");
             return false;
          }
@@ -259,7 +259,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $template_class = str_replace("%%CONTAINER_NAME%%", $fields['label'], $template_class);
          $class_filename = strtolower($itemtype .
             preg_replace('/s$/', '', $fields['name']) . "injection.class.php");
-         if (file_put_contents(GLPI_ROOT . "/plugins/fields/inc/$class_filename", $template_class) === false) {
+         if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename", $template_class) === false) {
             Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
             return false;
          }
@@ -301,12 +301,12 @@ class PluginFieldsContainer extends CommonDBTM {
          unset($_SESSION['delete_container']);
 
          //remove file
-         if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
-            unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+         if (file_exists(PLUGINFIELDS_CLASS_PATH . "/$class_filename")) {
+            unlink(PLUGINFIELDS_CLASS_PATH . "/$class_filename");
          }
 
-         if (file_exists(GLPI_ROOT."/plugins/fields/inc/$injection_filename")) {
-            unlink(GLPI_ROOT."/plugins/fields/inc/$injection_filename");
+         if (file_exists(PLUGINFIELDS_CLASS_PATH . "/$injection_filename")) {
+            unlink(PLUGINFIELDS_CLASS_PATH . "/$injection_filename");
          }
       }
 
