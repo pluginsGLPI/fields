@@ -1,7 +1,6 @@
 <?php
-include ('../../../inc/includes.php');
 
 Plugin::load('fields',true);
 
 $dropdown = new %%CLASSNAME%%();
-include (GLPI_ROOT . "/front/dropdown.common.php");
+include GLPI_ROOT . "/front/dropdown.common.php";

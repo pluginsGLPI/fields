@@ -1,4 +1,38 @@
 <?php
+
+if (!defined("PLUGINFIELDS_DIR")) {
+   define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
+}
+
+if (!defined("PLUGINFIELDS_DOC_DIR") ) {
+   define("PLUGINFIELDS_DOC_DIR", GLPI_PLUGIN_DOC_DIR . "/fields");
+   if(!file_exists(PLUGINFIELDS_DOC_DIR)) {
+      mkdir(PLUGINFIELDS_DOC_DIR);
+   }
+}
+
+if (!defined("PLUGINFIELDS_CLASS_PATH")) {
+   define("PLUGINFIELDS_CLASS_PATH", PLUGINFIELDS_DOC_DIR . "/inc");
+   if(!file_exists(PLUGINFIELDS_CLASS_PATH)) {
+      mkdir(PLUGINFIELDS_CLASS_PATH);
+   }
+}
+
+if (!defined("PLUGINFIELDS_FRONT_PATH")) {
+   define("PLUGINFIELDS_FRONT_PATH", PLUGINFIELDS_DOC_DIR."/front");
+   if(!file_exists(PLUGINFIELDS_FRONT_PATH)) {
+      mkdir(PLUGINFIELDS_FRONT_PATH);
+   }
+}
+
+include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
+
+$options = array(
+   PLUGINFIELDS_CLASS_PATH
+);
+$pluginfields_autoloader = new PluginFieldsAutoloader($options);
+$pluginfields_autoloader->register();
+
 // Init the hooks of the plugins -Needed
 function plugin_init_fields() {
    global $PLUGIN_HOOKS;
@@ -79,7 +113,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.90-1.2',
+                 'version'        => '0.90-1.3',
                  'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',
@@ -120,10 +154,13 @@ function plugin_fields_checkFiles() {
          $containers    = $container_obj->find();
 
          foreach ($containers as $container) {
-            $classname = "PluginFields".ucfirst($container['itemtypes'].
+            $itemtypes = (count($container['itemtypes']) > 0) ? json_decode($container['itemtypes'], TRUE) : array();
+            foreach ($itemtypes as $itemtype) {
+               $classname = "PluginFields".ucfirst($itemtype.
                                         preg_replace('/s$/', '', $container['name']));
-            if(!class_exists($classname)) {
-               PluginFieldsContainer::generateTemplate($container);
+               if(!class_exists($classname)) {
+                  PluginFieldsContainer::generateTemplate($container);
+               }
             }
          }
       }

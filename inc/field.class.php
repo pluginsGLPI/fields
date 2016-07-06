@@ -3,14 +3,22 @@
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
 
-   static function install(Migration $migration) {
+   /**
+    * Install or update fields
+    *
+    * @param Migration $migration Migration instance
+    * @param string    $version   Plugin current version
+    *
+    * @return boolean
+    */
+   static function install(Migration $migration, $version) {
       global $DB;
 
       $obj = new self();
       $table = $obj->getTable();
 
       if (!TableExists($table)) {
-         $migration->displayMessage("Installing $table");
+         $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT(11)        NOT NULL auto_increment,
@@ -370,7 +378,7 @@ class PluginFieldsField extends CommonDBTM {
       Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
       if($this->fields["type"] == "dropdown") {
-         echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/'.$this->fields["name"].'dropdown.php">
+         echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/commondropdown.php?ddtype=' . $this->fields['name'] .'dropdown">
                   <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
                      alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
       }

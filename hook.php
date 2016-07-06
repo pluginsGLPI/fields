@@ -33,7 +33,9 @@ function plugin_fields_install() {
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if (!call_user_func(array($class,'install'), $migration, $version)) return false;
+            if (!call_user_func(array($class,'install'), $migration, $version)) {
+               return false;
+            }
          }
       }
    }
