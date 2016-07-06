@@ -485,14 +485,22 @@ class PluginFieldsField extends CommonDBTM {
          return false;
       }
 
+      $item = new $current_itemtype;
+      $item->getFromDB($items_id);
+
       if ($items_id >= 1) {
          $eq = -2; // have a <tr> for delete item
       } else {
          $eq = -1;
       }
 
-      if ($current_itemtype == "Ticket") {
+      if ($item instanceof Ticket) {
          $eq = -3;
+      }
+
+      if (!$item->can($items_id, UPDATE)
+          && !$item->can($items_id, DELETE)) {
+         $eq++;
       }
 
       // For genericobject, display fields before date_mod
