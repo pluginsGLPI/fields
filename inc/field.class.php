@@ -3,14 +3,22 @@
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
 
-   static function install(Migration $migration) {
+   /**
+    * Install or update fields
+    *
+    * @param Migration $migration Migration instance
+    * @param string    $version   Plugin current version
+    *
+    * @return boolean
+    */
+   static function install(Migration $migration, $version) {
       global $DB;
 
       $obj = new self();
       $table = $obj->getTable();
 
       if (!TableExists($table)) {
-         $migration->displayMessage("Installing $table");
+         $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT(11)        NOT NULL auto_increment,

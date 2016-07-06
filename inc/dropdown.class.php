@@ -2,9 +2,48 @@
 
 class PluginFieldsDropdown {
    static $rightname = 'dropdown';
-   
-   static function install(Migration $migration) {
-       return true;
+
+
+   /**
+    * Install or update dropdowns
+    *
+    * @param Migration $migration Migration instance
+    * @param string    $version   Plugin current version
+    *
+    * @return void
+    */
+   static function install(Migration $migration, $version)
+   {
+      $migration->displayMessage(__("Updating generated dropdown files", "fields"));
+      // -> 0.90-1.3: generated class moved
+      // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
+      // NEW path: PLUGINFIELDS_CLASS_PATH . "/$class_filename"
+      // OLD path: GLPI_ROOT."/plugins/fields/front/$class_filename"
+      // NEW path: PLUGINFIELDS_FRONT_PATH . "/$class_filename"
+      $obj = new PluginFieldsField;
+      $fields = $obj->find('type = "dropdown"');
+      foreach ($fields as $field) {
+         //First, drop old fields from plugin directories
+         $class_filename = $field['name']."dropdown.class.php";
+         if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+            unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+         }
+
+         $front_filename = $field['name']."dropdown.php";
+         if (file_exists(GLPI_ROOT."/plugins/fields/front/$front_filename")) {
+            unlink(GLPI_ROOT."/plugins/fields/front/$front_filename");
+         }
+
+         $form_filename = $field['name']."dropdown.form.php";
+         if (file_exists(GLPI_ROOT."/plugins/fields/front/$form_filename")) {
+            unlink(GLPI_ROOT."/plugins/fields/front/$form_filename");
+         }
+
+         //Second, create new files
+         self::create($field);
+      }
+
+      return true;
    }
 
    static function uninstall() {

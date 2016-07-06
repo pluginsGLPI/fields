@@ -9,14 +9,22 @@ class PluginFieldsContainer extends CommonDBTM {
             onclick='location.href=\"regenerate_files.php\"' /></center>";
    }
 
-   static function install(Migration $migration) {
+   /**
+    * Install or update containers
+    *
+    * @param Migration $migration Migration instance
+    * @param string    $version   Plugin current version
+    *
+    * @return boolean
+    */
+   static function install(Migration $migration, $version) {
       global $DB;
 
       $obj = new self();
       $table = $obj->getTable();
 
       if (!TableExists($table)) {
-         $migration->displayMessage("Installing $table");
+         $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`           INT(11)        NOT NULL auto_increment,
@@ -58,9 +66,35 @@ class PluginFieldsContainer extends CommonDBTM {
          $migration->migrationOneTable($table);
       }
 
+      $migration->displayMessage(__("Updating generated containers files", "fields"));
+      // -> 0.90-1.3: generated class moved
+      // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
+      // NEW path: PLUGINFIELDS_CLASS_PATH . "/$class_filename"
+      $obj = new self;
+      $containers = $obj->find();
+      foreach ($containers as $container) {
+         //First, drop old fields from plugin directories
+         $itemtypes = (count($container['itemtypes']) > 0) ? json_decode($container['itemtypes'], true) : array();
+         foreach ($itemtypes as $itemtype) {
+            $class_filename = strtolower($itemtype .
+               preg_replace('/s$/', '', $container['name']) . ".class.php");
+            if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+               unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+            }
+
+            $injclass_filename = strtolower($itemtype .
+               preg_replace('/s$/', '', $container['name']) . "injection.class.php");
+            if (file_exists(GLPI_ROOT."/plugins/fields/inc/$injclass_filename")) {
+               unlink(GLPI_ROOT."/plugins/fields/inc/$injclass_filename");
+            }
+         }
+
+         //Second, create new files
+         self::generateTemplate($container);
+      }
+
       return true;
    }
-
 
    static function uninstall() {
       global $DB;
@@ -333,7 +367,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public function showForm($ID, $options=array()) {
-   	global $CFG_GLPI;
+      global $CFG_GLPI;
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
