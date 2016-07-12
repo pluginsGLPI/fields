@@ -27,18 +27,31 @@ function plugin_fields_install() {
 
    echo "<tr class='tab_bg_1'>";
    echo "<td align='center'>";
+
+   //load all classes
    foreach ($classesToInstall as $class) {
       if ($plug=isPluginItemType($class)) {
          $dir= GLPI_ROOT . "/plugins/fields/inc/";
          $item=strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
+         }
+      }
+   }
+
+   //install
+   foreach ($classesToInstall as $class) {
+      if ($plug=isPluginItemType($class)) {
+         $dir= GLPI_ROOT . "/plugins/fields/inc/";
+         $item=strtolower($plug['class']);
+         if (file_exists("$dir$item.class.php")) {
             if (!call_user_func(array($class,'install'), $migration, $version)) {
                return false;
             }
          }
       }
    }
+
 
    echo "</td>";
    echo "</tr>";
