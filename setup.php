@@ -25,19 +25,19 @@ if (!defined("PLUGINFIELDS_FRONT_PATH")) {
    }
 }
 
-include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
-
-$options = array(
-   PLUGINFIELDS_CLASS_PATH
-);
-$pluginfields_autoloader = new PluginFieldsAutoloader($options);
-$pluginfields_autoloader->register();
-
 // Init the hooks of the plugins -Needed
 function plugin_init_fields() {
    global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
+
+   include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
+
+   $options = array(
+      PLUGINFIELDS_CLASS_PATH
+   );
+   $pluginfields_autoloader = new PluginFieldsAutoloader($options);
+   $pluginfields_autoloader->register();
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('fields')
