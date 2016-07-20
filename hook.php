@@ -263,9 +263,13 @@ function plugin_datainjection_populate_fields() {
    $found = $container->find("`is_active` = 1");
 
    foreach ($found as $id => $values) {
-      $classname = "PluginFields"
-                     . ucfirst($values['itemtype'] . preg_replace('/s$/', '', $values['name']))
+      $types = json_decode($values['itemtypes']);
+
+      foreach ($types as $type) {
+         $classname = "PluginFields"
+                     . ucfirst($type. preg_replace('/s$/', '', $values['name']))
                      . 'Injection';
-      $INJECTABLE_TYPES[$classname]               = 'fields';
+         $INJECTABLE_TYPES[$classname]               = 'fields';
+      }
    }
 }
