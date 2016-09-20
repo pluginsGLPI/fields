@@ -651,8 +651,21 @@ class PluginFieldsContainer extends CommonDBTM {
       $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();
+         $container = new self ;
          foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) {
-            $tabs_entries[$tab_name] = $tab_label;
+            // needs to check if entity of item is in hierachy of $tab_name
+            foreach ( $container->find("`is_active` = 1 AND `name` = '$tab_name'") as $data) {
+               $dataitemtypes = json_decode($data['itemtypes']);
+               if (in_array(get_class($item), $dataitemtypes) != FALSE) {
+                  $entities = array( $data['entities_id'] ) ;
+                  if( $data['is_recursive'] ) {
+                     $entities = getSonsOf( getTableForItemType( 'Entity' ), $data['entities_id']) ;
+                  }
+                  if( in_array( $item->fields['entities_id'], $entities ) ) {
+                     $tabs_entries[$tab_name] = $tab_label;
+                  }               
+               }
+            }
          }
          return $tabs_entries;
       }
