@@ -236,7 +236,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if ($input['type'] === "dom") {
             //check for already exist dom container with this itemtype
             $found = $this->find("`type`='dom'");
-            if (count($found) > 0) { // && !in_array($found, $input['itemtypes'])) {
+            if (count($found) > 0) {
                foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
                   foreach( json_decode( $founditemtypes ) as $founditemtype ) {
                      if( in_array( $founditemtype, $input['itemtypes'] ) ) {
