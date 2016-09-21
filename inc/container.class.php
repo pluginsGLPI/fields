@@ -242,8 +242,26 @@ class PluginFieldsContainer extends CommonDBTM {
             }
       }
 
-      //contruct field name by processing label (remove non alphanumeric char)
-      $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']));
+      //construct field name by processing label (remove non alphanumeric char and any trailing s)
+      $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", preg_replace('/s*$/', '', $input['label'])));
+      // if empty, uses a random number
+      if( strlen( $input['name'] ) == 0 ) {
+         $input['name'] = rand();
+      }
+
+      //check for already existing container with same name
+      $found = $this->find("`name`='".$input['name']."'");
+      if (count($found) > 0) {
+         foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
+            foreach( json_decode( $founditemtypes ) as $founditemtype ) {
+               if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+                  Session::AddMessageAfterRedirect(__("You cannot add several blocs with identical name on same object", "fields"), false, ERROR);
+                  return false;
+               }
+            }
+         }
+      }
+      
       $input['itemtypes'] = (isset($input['itemtypes'])) ? json_encode($input['itemtypes'], TRUE): NULL ;
 
       return $input;
