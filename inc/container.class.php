@@ -664,7 +664,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   if( in_array( $item->fields['entities_id'], $entities ) ) {
                      $tabs_entries[$tab_name] = $tab_label;
                   }               
-               }
+               } 
             }
          }
          return $tabs_entries;
