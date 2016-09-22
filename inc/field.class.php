@@ -506,8 +506,7 @@ class PluginFieldsField extends CommonDBTM {
          $eq = -3;
       }
 
-      if (!$item->can($items_id, UPDATE)
-          && !$item->can($items_id, DELETE)) {
+      if (!$item->can($items_id, UPDATE)) {
          $eq++;
       }
 
