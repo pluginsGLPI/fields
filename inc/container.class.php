@@ -703,12 +703,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $found_c   = $container->find("`type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
       foreach ($found_c as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
-
          if (in_array(get_class($item), $dataitemtypes) != FALSE) {
-            $tmp  = array_shift($found_c);
-            $c_id = $tmp['id'];
-
-            return PluginFieldsField::showForTabContainer($c_id, $item->fields['id'], get_class($item));
+            return PluginFieldsField::showForTabContainer($data['id'], $item->fields['id'], get_class($item));
          }
       }
    }
