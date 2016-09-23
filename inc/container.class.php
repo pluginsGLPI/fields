@@ -974,6 +974,17 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
+      //need to check if container is usable on this object entity
+      $loc_c = new PluginFieldsContainer ;
+      $loc_c->getFromDB( $c_id ) ;
+      $entities = array( $loc_c->fields['entities_id'] ) ;
+      if( $loc_c->fields['is_recursive'] ) {
+         $entities = getSonsOf( getTableForItemType( 'Entity' ), $loc_c->fields['entities_id']) ;
+      }
+      if( !in_array( $item->fields['entities_id'], $entities ) ) {
+         return false ;
+      }
+      
       //find fields associated to found container
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", "ranking");
