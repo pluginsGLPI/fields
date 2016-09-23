@@ -970,7 +970,12 @@ class PluginFieldsContainer extends CommonDBTM {
          $c_id = $_REQUEST['c_id'];
       } else {
          $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
-         if ($c_id === false) return false;
+         if ($c_id === false) {
+            $c_id = self::findContainer(get_Class($item), $item->fields['id']); //tries for 'tab'
+            if ($c_id === false) {
+               return false;
+            }
+         }
       }
 
       //find fields associated to found container
@@ -1070,9 +1075,6 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-
-            // Quick fix
-            $opt[$i]['massiveaction'] = false;
          }
 
          switch ($datas['type']) {
