@@ -1,4 +1,33 @@
 <?php
+/*
+ * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
+ -------------------------------------------------------------------------
+ Fields plugin for GLPI
+ Copyright (C) 2016 by the fields Development Team.
+
+ https://forge.indepnet.net/projects/mreporting
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of fields.
+
+ fields is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ fields is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with fields. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ */
+
+define ('PLUGIN_FIELDS_VERSION', '1.3.1');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -113,7 +142,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.90-1.3',
+                 'version'        => PLUGIN_FIELDS_VERSION,
                  'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',
