@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+define ('PLUGIN_FIELDS_VERSION', '1.3.1');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -141,7 +142,7 @@ function plugin_init_fields() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => '0.90-1.3',
+                 'version'        => PLUGIN_FIELDS_VERSION,
                  'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',
