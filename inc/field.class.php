@@ -222,8 +222,8 @@ class PluginFieldsField extends CommonDBTM {
       $result = $DB->query($sql);
 
       if ($DB->numrows($result) > 0) {
-         $datas = $DB->fetch_assoc($result);
-         return $datas["rank"] + 1;
+         $data = $DB->fetch_assoc($result);
+         return $data["rank"] + 1;
       }
       return 0;
    }

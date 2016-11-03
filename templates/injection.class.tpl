@@ -51,7 +51,7 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
    {
       $searchoptions = PluginFieldsContainer::getAddSearchOptions('%%ITEMTYPE%%', %%CONTAINER_ID%%);
 
-      foreach ($searchoptions as $id => $datas) {
+      foreach ($searchoptions as $id => $data) {
          $searchoptions[$id]['injectable'] = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
          if (!isset($searchoptions[$id]['displaytype'])) {
             if (isset($searchoptions[$id]['datatype'])) {
