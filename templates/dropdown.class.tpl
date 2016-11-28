@@ -92,4 +92,13 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
       $link    .= '&id=' . $id;
       return $link;
    }
+
+   /**
+    * Get default values to search engine to override
+   **/
+   static function getDefaultSearchRequest() {
+      $plug = isPluginItemType(get_called_class());
+      $search = ['addhidden' => ['ddtype' => strtolower($plug['class'])]];
+      return $search;
+   }
 }
