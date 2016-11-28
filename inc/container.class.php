@@ -719,7 +719,9 @@ class PluginFieldsContainer extends CommonDBTM {
    function updateFieldsValues($data, $massiveaction = false, $itemtype) {
       global $DB;
 
-      if (self::validateValues($data, $massiveaction) === false) return false;
+      if (self::validateValues($data, $itemtype, $massiveaction) === false) {
+          return false;
+      }
 
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($data['plugin_fields_containers_id']);
@@ -857,13 +859,22 @@ class PluginFieldsContainer extends CommonDBTM {
    /**
     * check data inserted
     * display a message when not ok
-    * @param  array $data data send by form
+    *
+    * @param array $data            Data send by form
+    * @param string $itemtype       Item type
+    * @param boolean $massiveaction ?
+    *
     * @return boolean
     */
-   static function validateValues($data, $massiveaction) {
+   static function validateValues($data, $itemtype, $massiveaction) {
+      global $DB;
+
       $valid = true;
       $empty_errors  = array();
       $number_errors = array();
+
+      $container = new self();
+      $container->getFromDB($data['plugin_fields_containers_id']);
 
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = ".
@@ -878,6 +889,24 @@ class PluginFieldsContainer extends CommonDBTM {
             $value = $data[$name];
          } elseif(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
             $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
+         } else if ($field['mandatory'] == 1) {
+            $tablename = "glpi_plugin_fields_" . strtolower(
+               $itemtype . getPlural(preg_replace('/s$/', '', $container->fields['name']))
+            );
+
+            $query = "SELECT * FROM `$tablename` WHERE
+               `itemtype`='$itemtype'
+               AND `items_id`='{$data['items_id']}'
+               AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
+
+            $db_result = [];
+            if ($result = $DB->query($query)) {
+               $db_result = $DB->fetch_assoc($result);
+               if (isset($db_result[$name])) {
+                  $value = $db_result[$name];
+               }
+            }
+
          } else {
             if ($massiveaction) continue;
             $value = '';
