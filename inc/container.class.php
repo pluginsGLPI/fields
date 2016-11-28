@@ -267,7 +267,7 @@ class PluginFieldsContainer extends CommonDBTM {
             }
          }
       }
-      
+
       $input['itemtypes'] = (isset($input['itemtypes'])) ? json_encode($input['itemtypes'], TRUE): NULL ;
 
       return $input;
@@ -414,9 +414,9 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $types[$this->fields["type"]];
       } else {
          Dropdown::showFromArray('type',
-         	                     self::getTypes(),
+                                 self::getTypes(),
                                  array('value' => $this->fields["type"],
-                                 	   'rand'  => $rand));
+                                       'rand'  => $rand));
          $params = array('type'     => '__VALUE__',
                          'itemtype' => $this->fields["itemtypes"],
                          'subtype'  => $this->fields['subtype'],
@@ -689,8 +689,8 @@ class PluginFieldsContainer extends CommonDBTM {
                   }
                   if( in_array( $item->fields['entities_id'], $entities ) ) {
                      $tabs_entries[$tab_name] = $tab_label;
-                  }               
-               } 
+                  }
+               }
             }
          }
          return $tabs_entries;
@@ -1015,7 +1015,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if( !in_array( $item->fields['entities_id'], $entities ) ) {
          return false ;
       }
-      
+
       //find fields associated to found container
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", "ranking");
