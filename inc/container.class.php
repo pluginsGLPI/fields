@@ -565,6 +565,7 @@ class PluginFieldsContainer extends CommonDBTM {
             'Change'             => _n("Change", "Changes", 2),
             'TicketRecurrent'    => __("Recurrent tickets")),
          __("Management") => array(
+            'SoftwareLicense'    => _n("License", "Licenses", 2),
             'Budget'             => _n("Budget", "Budgets", 2),
             'Supplier'           => _n("Supplier", "Suppliers", 2),
             'Contact'            => _n("Contact", "Contacts", 2),
