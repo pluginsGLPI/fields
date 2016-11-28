@@ -156,6 +156,11 @@ function plugin_fields_check_prerequisites() {
       return false;
    }
 
+   if (!function_exists('array_column')) {
+      echo "Either PHP >= 5.5.0 or GLPI >= 9.1 is required";
+      return false;
+   }
+
    if (version_compare(PHP_VERSION, '5.3.0', 'lt')) {
       echo "PHP 5.3.0 or higher is required";
       return false;
