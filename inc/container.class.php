@@ -353,7 +353,15 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          //delete table
-         $classname::uninstall();
+         if (class_exists($classname)) {
+            $classname::uninstall();
+         } else {
+            //class does not exists; try to remove any existing table
+            $tablename = "glpi_plugin_fields_" . strtolower(
+               $itemtype . getPlural(preg_replace('/s$/', '', $this->fields['name']))
+            );
+            $DB->query("DROP TABLE IF EXISTS `$tablename`");
+         }
 
          //clean session
          unset($_SESSION['delete_container']);
