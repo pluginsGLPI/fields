@@ -108,7 +108,11 @@ function plugin_init_fields() {
                                array('addtabon' => array_unique(PluginFieldsContainer::getEntries())));
 
          //include js and css
-         $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
+         if (file_exists(__DIR__ . '/css/fields.min.css')) {
+            $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.min.css';
+         } else {
+            $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.css';
+         }
          $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
          // Add/delete profiles to automaticaly to container
@@ -118,8 +122,12 @@ function plugin_init_fields() {
                                                                        "deleteProfile");
 
          //load drag and drop javascript library on Package Interface
-         $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
-         $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
+         $PLUGIN_HOOKS['add_javascript']['fields'][] = "js/redips-drag-min.js";
+         if (file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
+            $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
+         } else {
+            $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
+         }
       }
 
       // Add Fields to Datainjection
