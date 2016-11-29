@@ -274,7 +274,6 @@ class PluginFieldsField extends CommonDBTM {
            "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
       echo __("Add a new field", "fields")."</a></div><br>\n";
 
-
       if ($DB->numrows($result) == 0) {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
          echo "<th class='b'>".__("No field for this block", "fields")."</th></tr></table>";
@@ -824,7 +823,7 @@ JAVASCRIPT;
                   }
                   break;
                case 'dropdown':
-                   if ($canedit && !$readonly) {
+                  if ($canedit && !$readonly) {
                      //find entity on current object
                      $obj = new $itemtype;
                      $obj->getFromDB($items_id);
@@ -876,23 +875,25 @@ JAVASCRIPT;
                   }
                   break;
                case 'dropdownuser':
-                   if ($massiveaction) continue;
-                   if ($canedit && !$readonly) {
-                       ob_start();
-                       User::dropdown(array('name'   => $field['name'],
-                                      'value'  => $value,
-                                      'entity' => -1,
-                                      'right'  => 'all',
-                                      'condition' => 'is_active=1 && is_deleted=0'));
-                       $html.= ob_get_contents();
-                       ob_end_clean();
-                   } else {
-                       $showuserlink = 0;
-                       if (Session::haveRight('user','r')) {
-                           $showuserlink = 1;
-                       }
-                       $html.= getUserName($value, $showuserlink);
-                   }
+                  if ($massiveaction) {
+                     continue;
+                  }
+                  if ($canedit && !$readonly) {
+                     ob_start();
+                     User::dropdown(array('name'   => $field['name'],
+                                          'value'  => $value,
+                                          'entity' => -1,
+                                          'right'  => 'all',
+                                          'condition' => 'is_active=1 && is_deleted=0'));
+                     $html.= ob_get_contents();
+                     ob_end_clean();
+                  } else {
+                     $showuserlink = 0;
+                     if (Session::haveRight('user','r')) {
+                        $showuserlink = 1;
+                     }
+                     $html.= getUserName($value, $showuserlink);
+                  }
             }
             if ($show_table) {
                $html.= "</td>";

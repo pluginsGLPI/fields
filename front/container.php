@@ -10,4 +10,3 @@ PluginFieldsContainer::titleList();
 Search::show("PluginFieldsContainer");
 
 Html::footer();
-?>

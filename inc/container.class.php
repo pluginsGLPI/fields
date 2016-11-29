@@ -234,18 +234,18 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       if ($input['type'] === "dom") {
-            //check for already exist dom container with this itemtype
-            $found = $this->find("`type`='dom'");
-            if (count($found) > 0) {
-               foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
-                  foreach( json_decode( $founditemtypes ) as $founditemtype ) {
-                     if( in_array( $founditemtype, $input['itemtypes'] ) ) {
-                        Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
-                        return false;
-                     }
+         //check for already exist dom container with this itemtype
+         $found = $this->find("`type`='dom'");
+         if (count($found) > 0) {
+            foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
+               foreach( json_decode( $founditemtypes ) as $founditemtype ) {
+                  if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+                     Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
+                     return false;
                   }
                }
             }
+         }
       }
 
       //construct field name by processing label (remove non alphanumeric char and any trailing s)
@@ -444,7 +444,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
          echo $obj;
 
-         } else {
+      } else {
          echo "&nbsp;<span id='itemtypes_$rand'>";
          self::showFormItemtype(array('rand'    => $rand,
                                       'subtype' => $this->fields['subtype']));
@@ -726,7 +726,6 @@ class PluginFieldsContainer extends CommonDBTM {
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($data['plugin_fields_containers_id']);
 
-
       $items_id = $data['items_id'];
 
       $classname = "PluginFields".ucfirst($itemtype.
@@ -887,7 +886,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $name  = $field['name'];
          if(isset($data[$name])) {
             $value = $data[$name];
-         } elseif(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
+         } else if(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
             $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
          } else if ($field['mandatory'] == 1) {
             $tablename = "glpi_plugin_fields_" . strtolower(
@@ -918,9 +917,8 @@ class PluginFieldsContainer extends CommonDBTM {
                || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
             $empty_errors[] = $field['label'];
             $valid = false;
-
-         // Check number fields
-         } elseif($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+         } else if($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+            // Check number fields
             $number_errors[] = $field['label'];
             $valid = false;
          }
@@ -967,7 +965,7 @@ class PluginFieldsContainer extends CommonDBTM {
          if (in_array($item->getType(), $dataitemtypes) != FALSE) {
             $id = $data['id'];
          }
-     }
+      }
 
       //profiles restriction
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
@@ -1116,8 +1114,8 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          switch ($data['type']) {
-             case 'dropdown':
-             case 'dropdownuser':
+            case 'dropdown':
+            case 'dropdownuser':
                $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
@@ -1135,7 +1133,7 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             default:
                $opt[$i]['datatype'] = "string";
-          }
+         }
 
          $i++;
       }

@@ -1,6 +1,6 @@
 # Fields GLPi plugin
 
-The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...  
+The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...
 
 Addionnal data can be added :
  * In object tab

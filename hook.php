@@ -83,7 +83,6 @@ function plugin_fields_install() {
       }
    }
 
-
    echo "</td>";
    echo "</tr>";
    echo "</table></center>";
