@@ -267,7 +267,7 @@ class PluginFieldsContainer extends CommonDBTM {
             }
          }
       }
-      
+
       $input['itemtypes'] = (isset($input['itemtypes'])) ? json_encode($input['itemtypes'], TRUE): NULL ;
 
       return $input;
@@ -414,9 +414,9 @@ class PluginFieldsContainer extends CommonDBTM {
          echo $types[$this->fields["type"]];
       } else {
          Dropdown::showFromArray('type',
-         	                     self::getTypes(),
+                                 self::getTypes(),
                                  array('value' => $this->fields["type"],
-                                 	   'rand'  => $rand));
+                                       'rand'  => $rand));
          $params = array('type'     => '__VALUE__',
                          'itemtype' => $this->fields["itemtypes"],
                          'subtype'  => $this->fields['subtype'],
@@ -565,6 +565,7 @@ class PluginFieldsContainer extends CommonDBTM {
             'Change'             => _n("Change", "Changes", 2),
             'TicketRecurrent'    => __("Recurrent tickets")),
          __("Management") => array(
+            'SoftwareLicense'    => _n("License", "Licenses", 2),
             'Budget'             => _n("Budget", "Budgets", 2),
             'Supplier'           => _n("Supplier", "Suppliers", 2),
             'Contact'            => _n("Contact", "Contacts", 2),
@@ -688,8 +689,8 @@ class PluginFieldsContainer extends CommonDBTM {
                   }
                   if( in_array( $item->fields['entities_id'], $entities ) ) {
                      $tabs_entries[$tab_name] = $tab_label;
-                  }               
-               } 
+                  }
+               }
             }
          }
          return $tabs_entries;
@@ -712,41 +713,43 @@ class PluginFieldsContainer extends CommonDBTM {
 
    /**
     * Insert values submited by fields container
-    * @param  array $datas datas posted
+    * @param  array $data data posted
     * @return boolean
     */
-   function updateFieldsValues($datas, $massiveaction = false, $itemtype) {
+   function updateFieldsValues($data, $massiveaction = false, $itemtype) {
       global $DB;
 
-      if (self::validateValues($datas, $massiveaction) === false) return false;
+      if (self::validateValues($data, $itemtype, $massiveaction) === false) {
+          return false;
+      }
 
       $container_obj = new PluginFieldsContainer;
-      $container_obj->getFromDB($datas['plugin_fields_containers_id']);
+      $container_obj->getFromDB($data['plugin_fields_containers_id']);
 
 
-      $items_id = $datas['items_id'];
+      $items_id = $data['items_id'];
 
       $classname = "PluginFields".ucfirst($itemtype.
                                           preg_replace('/s$/', '', $container_obj->fields['name']));
       $obj = new $classname;
-      //check if datas already inserted
+      //check if data already inserted
       $found = $obj->find("items_id = $items_id");
       if (empty($found)) {
-         // add fields datas
-         $obj->add($datas);
+         // add fields data
+         $obj->add($data);
 
          //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
-                            $itemtype, $datas);
+         self::constructHistory($data['plugin_fields_containers_id'], $items_id,
+                            $itemtype, $data);
 
       } else {
          $first_found = array_pop($found);
-         $datas['id'] = $first_found['id'];
-         $obj->update($datas);
+         $data['id'] = $first_found['id'];
+         $obj->update($data);
 
          //construct history on itemtype object (Historical tab)
-         self::constructHistory($datas['plugin_fields_containers_id'], $items_id,
-                            $itemtype, $datas, $first_found);
+         self::constructHistory($data['plugin_fields_containers_id'], $items_id,
+                            $itemtype, $data, $first_found);
       }
 
       return true;
@@ -757,11 +760,11 @@ class PluginFieldsContainer extends CommonDBTM {
     * @param  int    $containers_id :
     * @param  int    $items_id      :
     * @param  string $itemtype      :
-    * @param  array  $datas         : values send by update form
+    * @param  array  $data         : values send by update form
     * @param  array  $old_values    : old values, if empty -> values add
     * @return nothing
     */
-   static function constructHistory($containers_id, $items_id, $itemtype, $datas,
+   static function constructHistory($containers_id, $items_id, $itemtype, $data,
                                 $old_values = array()) {
       // Don't log few itemtypes
       $obj = new $itemtype();
@@ -772,18 +775,18 @@ class PluginFieldsContainer extends CommonDBTM {
       //get searchoptions
       $searchoptions = self::getAddSearchOptions($itemtype, $containers_id);
 
-      //define non-datas keys
+      //define non-data keys
       $blacklist_k = array('plugin_fields_containers_id' => 0, 'items_id' => 0, 'itemtype' => $itemtype,
                               'update_fields_values' => 0, '_glpi_csrf_token' => 0);
 
-      //remove non-datas keys
-      $datas = array_diff_key($datas, $blacklist_k);
+      //remove non-data keys
+      $data = array_diff_key($data, $blacklist_k);
 
       //add/update values condition
       if (empty($old_values)) {
          // -- add new item --
 
-         foreach ($datas as $key => $value) {
+         foreach ($data as $key => $value) {
             //log only not empty values
             if (!empty($value)) {
                //prepare log
@@ -817,15 +820,15 @@ class PluginFieldsContainer extends CommonDBTM {
          //find changes
          $updates = array();
          foreach ($old_values as $key => $old_value) {
-            if (!isset($datas[$key])
-                || empty($old_value) && empty($datas[$key])
-                || $old_value !== '' && $datas[$key] == 'NULL'
+            if (!isset($data[$key])
+                || empty($old_value) && empty($data[$key])
+                || $old_value !== '' && $data[$key] == 'NULL'
                 ) {
                continue;
             }
 
-            if ($datas[$key] !== $old_value) {
-               $updates[$key] = array(0, $old_value, $datas[$key]);
+            if ($data[$key] !== $old_value) {
+               $updates[$key] = array(0, $old_value, $data[$key]);
             }
          }
 
@@ -854,29 +857,56 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    /**
-    * check datas inserted
+    * check data inserted
     * display a message when not ok
-    * @param  array $datas : datas send by form
+    *
+    * @param array $data            Data send by form
+    * @param string $itemtype       Item type
+    * @param boolean $massiveaction ?
+    *
     * @return boolean
     */
-   static function validateValues($datas, $massiveaction) {
+   static function validateValues($data, $itemtype, $massiveaction) {
+      global $DB;
+
       $valid = true;
       $empty_errors  = array();
       $number_errors = array();
 
+      $container = new self();
+      $container->getFromDB($data['plugin_fields_containers_id']);
+
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = ".
-                                 $datas['plugin_fields_containers_id']);
+                                 $data['plugin_fields_containers_id']);
 
       foreach ($fields as $fields_id => $field) {
          if ($field['type'] == "yesno") continue;
          if ($field['type'] == "header") continue;
 
          $name  = $field['name'];
-         if(isset($datas[$name])) {
-            $value = $datas[$name];
-         } elseif(isset($datas['plugin_fields_' . $name . 'dropdowns_id'])) {
-            $value = $datas['plugin_fields_' . $name . 'dropdowns_id'];
+         if(isset($data[$name])) {
+            $value = $data[$name];
+         } elseif(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
+            $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
+         } else if ($field['mandatory'] == 1) {
+            $tablename = "glpi_plugin_fields_" . strtolower(
+               $itemtype . getPlural(preg_replace('/s$/', '', $container->fields['name']))
+            );
+
+            $query = "SELECT * FROM `$tablename` WHERE
+               `itemtype`='$itemtype'
+               AND `items_id`='{$data['items_id']}'
+               AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
+
+            $db_result = [];
+            if ($result = $DB->query($query)) {
+               $db_result = $DB->fetch_assoc($result);
+               if (isset($db_result[$name])) {
+                  $value = $db_result[$name];
+               }
+            }
+
          } else {
             if ($massiveaction) continue;
             $value = '';
@@ -985,13 +1015,13 @@ class PluginFieldsContainer extends CommonDBTM {
       if( !in_array( $item->fields['entities_id'], $entities ) ) {
          return false ;
       }
-      
+
       //find fields associated to found container
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", "ranking");
 
-      //prepare datas to update
-      $datas = array('plugin_fields_containers_id' => $c_id,
+      //prepare data to update
+      $data = array('plugin_fields_containers_id' => $c_id,
                      'items_id'                    =>  $item->fields['id']);
 
       foreach($fields as $field) {
@@ -1007,13 +1037,13 @@ class PluginFieldsContainer extends CommonDBTM {
             if ($field['type'] == 'number') {
                $item->input[$input] = str_replace(",", ".", $item->input[$input]);
             }
-            $datas[$input] = $item->input[$input];
+            $data[$input] = $item->input[$input];
          }
       }
 
-      //update datas
+      //update data
       $container = new self();
-      if ($container->updateFieldsValues($datas, isset($_REQUEST['massiveaction']), $item->getType())) {
+      if ($container->updateFieldsValues($data, isset($_REQUEST['massiveaction']), $item->getType())) {
          return true;
       }
       return $item->input = array();
@@ -1037,33 +1067,33 @@ class PluginFieldsContainer extends CommonDBTM {
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
-      while ($datas = $DB->fetch_assoc($res)) {
+      while ($data = $DB->fetch_assoc($res)) {
 
          if ($containers_id !== false) {
             // Filter by container (don't filter by SQL for have $i value with few containers for a itemtype)
-            if ($datas['container_id'] != $containers_id) {
+            if ($data['container_id'] != $containers_id) {
                $i++;
                continue;
             }
          }
 
          $tablename = "glpi_plugin_fields_".strtolower($itemtype.
-                        getPlural(preg_replace('/s$/', '', $datas['container_name'])));
+                        getPlural(preg_replace('/s$/', '', $data['container_name'])));
 
          $opt[$i]['table']         = $tablename;
-         $opt[$i]['field']         = $datas['name'];
-         $opt[$i]['name']          = $datas['container_label']." - ".$datas['label'];
-         $opt[$i]['linkfield']     = $datas['name'];
+         $opt[$i]['field']         = $data['name'];
+         $opt[$i]['name']          = $data['container_label']." - ".$data['label'];
+         $opt[$i]['linkfield']     = $data['name'];
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
-         $opt[$i]['pfields_type']  = $datas['type'];
-         if( $datas['is_readonly'] ) {
+         $opt[$i]['pfields_type']  = $data['type'];
+         if( $data['is_readonly'] ) {
              $opt[$i]['massiveaction'] = false;
          }
 
-         if ($datas['type'] === "dropdown") {
-            $opt[$i]['table']      = 'glpi_plugin_fields_'.$datas['name'].'dropdowns';
+         if ($data['type'] === "dropdown") {
+            $opt[$i]['table']      = 'glpi_plugin_fields_'.$data['name'].'dropdowns';
             $opt[$i]['field']      = 'completename';
-            $opt[$i]['linkfield']  = "plugin_fields_".$datas['name']."dropdowns_id";
+            $opt[$i]['linkfield']  = "plugin_fields_".$data['name']."dropdowns_id";
 
             $opt[$i]['forcegroupby'] = true;
 
@@ -1072,10 +1102,10 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
-         if ($datas['type'] === "dropdownuser") {
+         if ($data['type'] === "dropdownuser") {
             $opt[$i]['table']      = 'glpi_users';
             $opt[$i]['field']      = 'name';
-            $opt[$i]['linkfield']  = $datas['name'];
+            $opt[$i]['linkfield']  = $data['name'];
             $opt[$i]['right'] = 'all';
 
             $opt[$i]['forcegroupby'] = true;
@@ -1085,7 +1115,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
-         switch ($datas['type']) {
+         switch ($data['type']) {
              case 'dropdown':
              case 'dropdownuser':
                $opt[$i]['datatype'] = "dropdown";
@@ -1101,7 +1131,7 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             case 'date':
             case 'datetime':
-               $opt[$i]['datatype'] = $datas['type'];
+               $opt[$i]['datatype'] = $data['type'];
                break;
             default:
                $opt[$i]['datatype'] = "string";

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-02 14:37+0200\n"
+"POT-Creation-Date: 2016-11-29 08:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,15 +21,15 @@ msgstr ""
 msgid "MySQL tables installation"
 msgstr ""
 
-#: hook.php:53
+#: hook.php:68
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr ""
 
-#: hook.php:62
+#: hook.php:77
 msgid "MySQL tables uninstallation"
 msgstr ""
 
-#: setup.php:81 front/container.form.php:35 front/container.php:4
+#: setup.php:144 front/container.form.php:35 front/container.php:4
 #: inc/menu.class.php:6
 msgid "Additionnal fields"
 msgstr ""
@@ -38,104 +38,112 @@ msgstr ""
 msgid "Regenerate container files"
 msgstr ""
 
-#: inc/container.class.php:194
+#: inc/container.class.php:69
+msgid "Updating generated containers files"
+msgstr ""
+
+#: inc/container.class.php:228
 msgid "You cannot add block without associated element type"
 msgstr ""
 
-#: inc/container.class.php:206
+#: inc/container.class.php:243
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr ""
 
-#: inc/container.class.php:332
+#: inc/container.class.php:264
+msgid "You cannot add several blocs with identical name on same object"
+msgstr ""
+
+#: inc/container.class.php:390
 msgid "Block"
 msgstr ""
 
-#: inc/container.class.php:404
+#: inc/container.class.php:462
 msgid "Tab"
 msgstr ""
 
-#: inc/container.class.php:541
+#: inc/container.class.php:601
 msgid "Add tab"
 msgstr ""
 
-#: inc/container.class.php:542
+#: inc/container.class.php:602
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:543
+#: inc/container.class.php:603
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/container.class.php:832
+#: inc/container.class.php:930
 msgid "Some mandatory fields are empty"
 msgstr ""
 
-#: inc/container.class.php:837
+#: inc/container.class.php:935
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/dropdown.class.php:15
-msgid "This plugin need write right on his own files, please correct."
+#: inc/dropdown.class.php:17
+msgid "Updating generated dropdown files"
 msgstr ""
 
-#: inc/field.class.php:62
+#: inc/field.class.php:70
 msgid "Field"
 msgstr ""
 
-#: inc/field.class.php:224
+#: inc/field.class.php:232
 msgid "Fields"
 msgstr ""
 
-#: inc/field.class.php:267
+#: inc/field.class.php:275
 msgid "Add a new field"
 msgstr ""
 
-#: inc/field.class.php:272
+#: inc/field.class.php:280
 msgid "No field for this block"
 msgstr ""
 
-#: inc/field.class.php:284 inc/field.class.php:393
+#: inc/field.class.php:292 inc/field.class.php:401
 msgid "Read only"
 msgstr ""
 
-#: inc/field.class.php:375
+#: inc/field.class.php:383
 msgid "Configure"
 msgstr ""
 
-#: inc/field.class.php:375
+#: inc/field.class.php:383
 msgid "Configure fields values"
 msgstr ""
 
-#: inc/field.class.php:940
+#: inc/field.class.php:955
 msgid "Header"
 msgstr ""
 
-#: inc/field.class.php:941
+#: inc/field.class.php:956
 msgid "Text (single line)"
 msgstr ""
 
-#: inc/field.class.php:942
+#: inc/field.class.php:957
 msgid "Text (multiples lines)"
 msgstr ""
 
-#: inc/field.class.php:943
+#: inc/field.class.php:958
 msgid "Number"
 msgstr ""
 
-#: inc/field.class.php:944
+#: inc/field.class.php:959
 msgid "Dropdown"
 msgstr ""
 
-#: inc/field.class.php:945
+#: inc/field.class.php:960
 msgid "Yes/No"
 msgstr ""
 
-#: inc/field.class.php:946
+#: inc/field.class.php:961
 msgid "Date"
 msgstr ""
 
-#: inc/field.class.php:947
+#: inc/field.class.php:962
 msgid "Date & time"
 msgstr ""
