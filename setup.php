@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.3.1');
+define ('PLUGIN_FIELDS_VERSION', '1.3.2');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -153,6 +153,11 @@ function plugin_version_fields() {
 function plugin_fields_check_prerequisites() {
    if (version_compare(GLPI_VERSION,'0.85','lt')) {
       echo "This plugin requires GLPI 0.85";
+      return false;
+   }
+
+   if (!function_exists('array_column')) {
+      echo "Either PHP >= 5.5.0 or GLPI >= 9.1 is required";
       return false;
    }
 
