@@ -293,7 +293,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public static function generateTemplate($fields) {
-      $itemtypes = (count($fields['itemtypes']) > 0) ? json_decode($fields['itemtypes'], TRUE) : array();
+      $itemtypes = (strlen($fields['itemtypes']) > 0) ? json_decode($fields['itemtypes'], TRUE) : array();
       foreach ($itemtypes as $itemtype) {
          $classname = "PluginFields" . ucfirst($itemtype .
                preg_replace('/s$/', '', $fields['name']));
@@ -528,9 +528,16 @@ class PluginFieldsContainer extends CommonDBTM {
       }
    }
 
-
-   static function showFormSubtype($params) {
-      echo "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
+   /**
+    * Show subtype selection form
+    *
+    * @param array   $params  Parameters
+    * @param boolean $display Whether to display or not; defaults to false
+    *
+    * @return string|void
+    */
+   static function showFormSubtype($params, $display = false) {
+      $out = "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
       if (isset($params['type']) && $params['type'] == "domtab") {
          if (class_exists($params['itemtype'])) {
             $item = new $params['itemtype'];
@@ -538,25 +545,36 @@ class PluginFieldsContainer extends CommonDBTM {
 
             $tabs = self::getSubtypes($item);
 
-            // delete Log of array (don't work with this tab)
-            $tabs_to_remove = array('Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1');
-            foreach ($tabs_to_remove as $tab_to_remove) {
-               if (isset($tabs[$tab_to_remove])) {
-                  unset($tabs[$tab_to_remove]);
+            if (count($tabs)) {
+               // delete Log of array (don't work with this tab)
+               $tabs_to_remove = array('Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1');
+               foreach ($tabs_to_remove as $tab_to_remove) {
+                  if (isset($tabs[$tab_to_remove])) {
+                     unset($tabs[$tab_to_remove]);
+                  }
                }
-            }
 
-            // For delete <sup class='tab_nb'>number</sup> :
-            foreach ($tabs as $key => &$value) {
-               $results = array();
-               if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
-                  $value = str_replace($results[0][0], "", $value);
+               // For delete <sup class='tab_nb'>number</sup> :
+               foreach ($tabs as $key => &$value) {
+                  $results = array();
+                  if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
+                     $value = str_replace($results[0][0], "", $value);
+                  }
                }
-            }
 
-            Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype'], 'width' => '100%'));
-            echo "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+               if (!isset($params['subtype'])) {
+                  $params['subtype'] = null;
+               }
+
+               $out .= Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype'], 'width' => '100%', 'display' => false));
+               $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+            }
          }
+      }
+      if ($display === false) {
+         return $out;
+      } else {
+         echo $out;
       }
    }
 
@@ -1321,6 +1339,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return array
     */
    private static function getSubtypes($item) {
+      $tabs = [];
       switch ($item::getType()) {
          case Computer::getType():
             $tabs = [

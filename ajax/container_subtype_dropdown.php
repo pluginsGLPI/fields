@@ -1,4 +1,4 @@
 <?php
 include ("../../../inc/includes.php");
 
-PluginFieldsContainer::showFormSubtype($_REQUEST);
+PluginFieldsContainer::showFormSubtype($_REQUEST, true);

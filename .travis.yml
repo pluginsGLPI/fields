@@ -5,15 +5,19 @@ env:
 
 before_script:
   - composer self-update
+  - git clone https://github.com/glpi-project/glpi -b 9.1 ../glpi && cd ../glpi
+  - composer install --no-dev
+  - mysql -u root -e 'create database glpitest;'
+  - php tools/cliinstall.php --db=glpi-test --user=travis --tests
+  - mv ../fields plugins/fields
+  - cd plugins/fields
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.4" ]]; then sed -e "s|.*"consolidation/robo".*$||" -i composer.json && composer update; fi
   - composer install -o
-#  - mysql -u root -e 'create database glpitest;'
-#  - php tools/cliinstall.php --lang=en_US --db=glpitest --user=root --tests
 
 script:
-#  - mysql -u root -e 'select version();'
-#  - phpunit --verbose
+  - mysql -u root -e 'select version();'
   - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
+  - ./vendor/bin/atoum -bf tests/bootstrap.php -d tests/units/
 
 matrix:
   include:

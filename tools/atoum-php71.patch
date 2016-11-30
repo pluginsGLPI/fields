@@ -1,0 +1,679 @@
+From 8bc8187dbcf50a2d9a7f846b4b654646f0a94a0c Mon Sep 17 00:00:00 2001
+From: Alexis von Glasow <vonglasow@gmail.com>
+Date: Sun, 10 Jul 2016 22:45:09 +0200
+Subject: [PATCH] Replace void by blank
+
+Void is now a reserved keyword in PHP-7.1. This patch replace all
+required call from `void` to `blank`
+---
+ classes/autoloader.php                             |   7 +-
+ classes/report/fields/runner/tests/blank.php       |  38 +++++++
+ classes/report/fields/runner/tests/blank/cli.php   | 109 +++++++++++++++++++++
+ classes/report/fields/runner/tests/void.php        |  38 -------
+ classes/report/fields/runner/tests/void/cli.php    | 109 ---------------------
+ classes/reports/asynchronous/vim.php               |   2 +-
+ classes/reports/realtime/cli.php                   |   2 +-
+ classes/reports/realtime/cli/light.php             |   2 +-
+ classes/reports/realtime/nyancat.php               |   2 +-
+ classes/reports/realtime/phing.php                 |   2 +-
+ classes/reports/realtime/santa.php                 |   2 +-
+ tests/units/classes/autoloader.php                 |  73 ++++++++++----
+ .../classes/report/fields/runner/tests/blank.php   |  45 +++++++++
+ .../classes/report/fields/runner/tests/void.php    |  45 ---------
+ tests/units/classes/reports/realtime/cli.php       |   2 +-
+ tests/units/classes/reports/realtime/cli/light.php |   2 +-
+ tests/units/classes/reports/realtime/phing.php     |   2 +-
+ 18 files changed, 260 insertions(+), 223 deletions(-)
+ create mode 100644 classes/report/fields/runner/tests/blank.php
+ create mode 100644 classes/report/fields/runner/tests/blank/cli.php
+ delete mode 100644 classes/report/fields/runner/tests/void.php
+ delete mode 100644 classes/report/fields/runner/tests/void/cli.php
+ create mode 100644 tests/units/classes/report/fields/runner/tests/blank.php
+ delete mode 100644 tests/units/classes/report/fields/runner/tests/void.php
+
+diff --git a/classes/autoloader.php b/classes/autoloader.php
+index 870f861..0211f21 100644
+--- a/classes/autoloader.php
++++ b/classes/autoloader.php
+@@ -41,7 +41,12 @@ public function __construct(array $namespaces = array(), array $namespaceAliases
+ 			$this->addNamespaceAlias($alias, $target);
+ 		}
+ 
+-		foreach ($classAliases ?: array('atoum' => __NAMESPACE__ . '\test', __NAMESPACE__ => __NAMESPACE__ . '\test') as $alias => $target)
++		$defaultAliases = array(
++			'atoum' => __NAMESPACE__ . '\test',
++			__NAMESPACE__ => __NAMESPACE__ . '\test'
++		);
++
++		foreach ($classAliases ?: $defaultAliases as $alias => $target)
+ 		{
+ 			$this->addClassAlias($alias, $target);
+ 		}
+diff --git a/classes/report/fields/runner/tests/blank.php b/classes/report/fields/runner/tests/blank.php
+new file mode 100644
+index 0000000..b1b680e
+--- /dev/null
++++ b/classes/report/fields/runner/tests/blank.php
+@@ -0,0 +1,38 @@
++<?php
++
++namespace mageekguy\atoum\report\fields\runner\tests;
++
++use
++	mageekguy\atoum\runner,
++	mageekguy\atoum\report,
++	mageekguy\atoum\observable
++;
++
++abstract class blank extends report\field
++{
++	protected $runner = null;
++
++	public function __construct()
++	{
++		parent::__construct(array(runner::runStop));
++	}
++
++	public function getRunner()
++	{
++		return $this->runner;
++	}
++
++	public function handleEvent($event, observable $observable)
++	{
++		if (parent::handleEvent($event, $observable) === false)
++		{
++			return false;
++		}
++		else
++		{
++			$this->runner = $observable;
++
++			return true;
++		}
++	}
++}
+diff --git a/classes/report/fields/runner/tests/blank/cli.php b/classes/report/fields/runner/tests/blank/cli.php
+new file mode 100644
+index 0000000..7c175e6
+--- /dev/null
++++ b/classes/report/fields/runner/tests/blank/cli.php
+@@ -0,0 +1,109 @@
++<?php
++
++namespace mageekguy\atoum\report\fields\runner\tests\blank;
++
++use
++	mageekguy\atoum,
++	mageekguy\atoum\report,
++	mageekguy\atoum\cli\prompt,
++	mageekguy\atoum\cli\colorizer
++;
++
++class cli extends report\fields\runner\tests\blank
++{
++	protected $titlePrompt = null;
++	protected $titleColorizer = null;
++	protected $methodPrompt = null;
++	protected $methodColorizer = null;
++
++	public function __construct()
++	{
++		parent::__construct();
++
++		$this
++			->setTitlePrompt()
++			->setTitleColorizer()
++			->setMethodPrompt()
++			->setMethodColorizer()
++		;
++	}
++
++	public function __toString()
++	{
++		$string = '';
++
++		if ($this->runner !== null)
++		{
++			$voidMethods = $this->runner->getScore()->getVoidMethods();
++
++			$sizeOfVoidMethod = sizeof($voidMethods);
++
++			if ($sizeOfVoidMethod > 0)
++			{
++				$string .=
++					$this->titlePrompt .
++					sprintf(
++						$this->locale->_('%s:'),
++						$this->titleColorizer->colorize(sprintf($this->locale->__('There is %d void method', 'There are %d void methods', $sizeOfVoidMethod), $sizeOfVoidMethod))
++					) .
++					PHP_EOL
++				;
++
++				foreach ($voidMethods as $voidMethod)
++				{
++					$string .= $this->methodPrompt . $this->methodColorizer->colorize(sprintf('%s::%s()', $voidMethod['class'], $voidMethod['method'])) . PHP_EOL;
++				}
++			}
++		}
++
++		return $string;
++	}
++
++	public function setTitlePrompt(prompt $prompt = null)
++	{
++		$this->titlePrompt = $prompt ?: new prompt();
++
++		return $this;
++	}
++
++	public function getTitlePrompt()
++	{
++		return $this->titlePrompt;
++	}
++
++	public function setTitleColorizer(colorizer $colorizer = null)
++	{
++		$this->titleColorizer = $colorizer ?: new colorizer();
++
++		return $this;
++	}
++
++	public function getTitleColorizer()
++	{
++		return $this->titleColorizer;
++	}
++
++	public function setMethodPrompt(prompt $prompt = null)
++	{
++		$this->methodPrompt = $prompt ?: new prompt();
++
++		return $this;
++	}
++
++	public function getMethodPrompt()
++	{
++		return $this->methodPrompt;
++	}
++
++	public function setMethodColorizer(colorizer $colorizer = null)
++	{
++		$this->methodColorizer = $colorizer ?: new colorizer();
++
++		return $this;
++	}
++
++	public function getMethodColorizer()
++	{
++		return $this->methodColorizer;
++	}
++}
+diff --git a/classes/report/fields/runner/tests/void.php b/classes/report/fields/runner/tests/void.php
+deleted file mode 100644
+index fbc604d..0000000
+--- a/classes/report/fields/runner/tests/void.php
++++ /dev/null
+@@ -1,38 +0,0 @@
+-<?php
+-
+-namespace mageekguy\atoum\report\fields\runner\tests;
+-
+-use
+-	mageekguy\atoum\runner,
+-	mageekguy\atoum\report,
+-	mageekguy\atoum\observable
+-;
+-
+-abstract class void extends report\field
+-{
+-	protected $runner = null;
+-
+-	public function __construct()
+-	{
+-		parent::__construct(array(runner::runStop));
+-	}
+-
+-	public function getRunner()
+-	{
+-		return $this->runner;
+-	}
+-
+-	public function handleEvent($event, observable $observable)
+-	{
+-		if (parent::handleEvent($event, $observable) === false)
+-		{
+-			return false;
+-		}
+-		else
+-		{
+-			$this->runner = $observable;
+-
+-			return true;
+-		}
+-	}
+-}
+diff --git a/classes/report/fields/runner/tests/void/cli.php b/classes/report/fields/runner/tests/void/cli.php
+deleted file mode 100644
+index 7507c09..0000000
+--- a/classes/report/fields/runner/tests/void/cli.php
++++ /dev/null
+@@ -1,109 +0,0 @@
+-<?php
+-
+-namespace mageekguy\atoum\report\fields\runner\tests\void;
+-
+-use
+-	mageekguy\atoum,
+-	mageekguy\atoum\report,
+-	mageekguy\atoum\cli\prompt,
+-	mageekguy\atoum\cli\colorizer
+-;
+-
+-class cli extends report\fields\runner\tests\void
+-{
+-	protected $titlePrompt = null;
+-	protected $titleColorizer = null;
+-	protected $methodPrompt = null;
+-	protected $methodColorizer = null;
+-
+-	public function __construct()
+-	{
+-		parent::__construct();
+-
+-		$this
+-			->setTitlePrompt()
+-			->setTitleColorizer()
+-			->setMethodPrompt()
+-			->setMethodColorizer()
+-		;
+-	}
+-
+-	public function __toString()
+-	{
+-		$string = '';
+-
+-		if ($this->runner !== null)
+-		{
+-			$voidMethods = $this->runner->getScore()->getVoidMethods();
+-
+-			$sizeOfVoidMethod = sizeof($voidMethods);
+-
+-			if ($sizeOfVoidMethod > 0)
+-			{
+-				$string .=
+-					$this->titlePrompt .
+-					sprintf(
+-						$this->locale->_('%s:'),
+-						$this->titleColorizer->colorize(sprintf($this->locale->__('There is %d void method', 'There are %d void methods', $sizeOfVoidMethod), $sizeOfVoidMethod))
+-					) .
+-					PHP_EOL
+-				;
+-
+-				foreach ($voidMethods as $voidMethod)
+-				{
+-					$string .= $this->methodPrompt . $this->methodColorizer->colorize(sprintf('%s::%s()', $voidMethod['class'], $voidMethod['method'])) . PHP_EOL;
+-				}
+-			}
+-		}
+-
+-		return $string;
+-	}
+-
+-	public function setTitlePrompt(prompt $prompt = null)
+-	{
+-		$this->titlePrompt = $prompt ?: new prompt();
+-
+-		return $this;
+-	}
+-
+-	public function getTitlePrompt()
+-	{
+-		return $this->titlePrompt;
+-	}
+-
+-	public function setTitleColorizer(colorizer $colorizer = null)
+-	{
+-		$this->titleColorizer = $colorizer ?: new colorizer();
+-
+-		return $this;
+-	}
+-
+-	public function getTitleColorizer()
+-	{
+-		return $this->titleColorizer;
+-	}
+-
+-	public function setMethodPrompt(prompt $prompt = null)
+-	{
+-		$this->methodPrompt = $prompt ?: new prompt();
+-
+-		return $this;
+-	}
+-
+-	public function getMethodPrompt()
+-	{
+-		return $this->methodPrompt;
+-	}
+-
+-	public function setMethodColorizer(colorizer $colorizer = null)
+-	{
+-		$this->methodColorizer = $colorizer ?: new colorizer();
+-
+-		return $this;
+-	}
+-
+-	public function getMethodColorizer()
+-	{
+-		return $this->methodColorizer;
+-	}
+-}
+diff --git a/classes/reports/asynchronous/vim.php b/classes/reports/asynchronous/vim.php
+index 55f06e5..74fcc1c 100644
+--- a/classes/reports/asynchronous/vim.php
++++ b/classes/reports/asynchronous/vim.php
+@@ -95,7 +95,7 @@ public function __construct()
+ 
+ 		$this->addField($uncompletedField);
+ 
+-		$voidField = new runner\tests\void\cli();
++		$voidField = new runner\tests\blank\cli();
+ 		$voidField
+ 			->setTitlePrompt($firstLevelPrompt)
+ 			->setMethodPrompt($secondLevelPrompt)
+diff --git a/classes/reports/realtime/cli.php b/classes/reports/realtime/cli.php
+index a87f432..d769cb0 100644
+--- a/classes/reports/realtime/cli.php
++++ b/classes/reports/realtime/cli.php
+@@ -174,7 +174,7 @@ public function __construct()
+ 		$voidTestMethodPrompt = clone $secondLevelPrompt;
+ 		$voidTestMethodPrompt->setColorizer($voidTestColorizer);
+ 
+-		$runnerVoidField = new runner\tests\void\cli();
++		$runnerVoidField = new runner\tests\blank\cli();
+ 		$runnerVoidField
+ 			->setTitlePrompt($firstLevelPrompt)
+ 			->setTitleColorizer($voidTestColorizer)
+diff --git a/classes/reports/realtime/cli/light.php b/classes/reports/realtime/cli/light.php
+index 8f179dd..7f2ed02 100644
+--- a/classes/reports/realtime/cli/light.php
++++ b/classes/reports/realtime/cli/light.php
+@@ -109,7 +109,7 @@ public function __construct()
+ 		$voidTestOutputPrompt = clone $thirdLevelPrompt;
+ 		$voidTestOutputPrompt->setColorizer($voidTestColorizer);
+ 
+-		$voidTestField = new runner\tests\void\cli();
++		$voidTestField = new runner\tests\blank\cli();
+ 		$voidTestField
+ 			->setTitlePrompt($firstLevelPrompt)
+ 			->setTitleColorizer($voidTestColorizer)
+diff --git a/classes/reports/realtime/nyancat.php b/classes/reports/realtime/nyancat.php
+index 7f34c69..e615b06 100644
+--- a/classes/reports/realtime/nyancat.php
++++ b/classes/reports/realtime/nyancat.php
+@@ -158,7 +158,7 @@ public function __construct()
+ 		$voidTestMethodPrompt = clone $secondLevelPrompt;
+ 		$voidTestMethodPrompt->setColorizer($voidTestColorizer);
+ 
+-		$runnerVoidField = new runner\tests\void\cli();
++		$runnerVoidField = new runner\tests\blank\cli();
+ 		$runnerVoidField
+ 			->setTitlePrompt($firstLevelPrompt)
+ 			->setTitleColorizer($voidTestColorizer)
+diff --git a/classes/reports/realtime/phing.php b/classes/reports/realtime/phing.php
+index 8c489a0..f3b010f 100644
+--- a/classes/reports/realtime/phing.php
++++ b/classes/reports/realtime/phing.php
+@@ -307,7 +307,7 @@ protected function build()
+ 
+ 		$this->addField($runnerUncompletedField);
+ 
+-		$runnerVoidField = new runner\tests\void\cli();
++		$runnerVoidField = new runner\tests\blank\cli();
+ 		$runnerVoidField
+ 			->setTitlePrompt($firstLevelPrompt)
+ 			->setTitleColorizer($voidTestColorizer)
+diff --git a/classes/reports/realtime/santa.php b/classes/reports/realtime/santa.php
+index 28ef1b0..46f8072 100644
+--- a/classes/reports/realtime/santa.php
++++ b/classes/reports/realtime/santa.php
+@@ -158,7 +158,7 @@ public function __construct()
+ 		$voidTestMethodPrompt = clone $secondLevelPrompt;
+ 		$voidTestMethodPrompt->setColorizer($voidTestColorizer);
+ 
+-		$runnerVoidField = new runner\tests\void\cli();
++		$runnerVoidField = new runner\tests\blank\cli();
+ 		$runnerVoidField
+ 			->setTitlePrompt($firstLevelPrompt)
+ 			->setTitleColorizer($voidTestColorizer)
+diff --git a/tests/units/classes/autoloader.php b/tests/units/classes/autoloader.php
+index fcfee61..7742d6d 100644
+--- a/tests/units/classes/autoloader.php
++++ b/tests/units/classes/autoloader.php
+@@ -19,27 +19,6 @@ public function testClassConstants()
+ 		;
+ 	}
+ 
+-	public function test__construct()
+-	{
+-		$this
+-			->if($autoloader = new testedClass())
+-			->then
+-				->array($autoloader->getClasses())->isEmpty()
+-				->variable($autoloader->getCacheFileForInstance())->isEqualTo(testedClass::getCacheFile())
+-				->array($autoloader->getDirectories())->isEqualTo(array(
+-						'mageekguy\atoum\\' => array(
+-							array(
+-								atoum\directory . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR,
+-								testedClass::defaultFileSuffix
+-							)
+-						)
+-					)
+-				)
+-				->array($autoloader->getNamespaceAliases())->isEqualTo(array('atoum\\' => 'mageekguy\\atoum\\'))
+-				->array($autoloader->getClassAliases())->isEqualTo(array('atoum' => 'mageekguy\\atoum\\test', 'mageekguy\\atoum' => 'mageekguy\\atoum\\test'))
+-		;
+-	}
+-
+ 	public function testAddNamespaceAlias()
+ 	{
+ 		$this
+@@ -84,6 +63,58 @@ public function testAddNamespaceAlias()
+ 		;
+ 	}
+ 
++	/**
++	 * @php >= 7.1
++	 */
++	public function testAddClassAliasphp71()
++	{
++		$this
++			->if($autoloader = new testedClass())
++			->then
++				->object($autoloader->addClassAlias($alias = uniqid(), $target = uniqid()))->isIdenticalTo($autoloader)
++				->array($autoloader->getClassAliases())->isEqualTo(array(
++						'atoum' => 'mageekguy\\atoum\\test',
++						'mageekguy\\atoum' => 'mageekguy\\atoum\\test',
++						$alias => $target
++					)
++				)
++				->object($autoloader->addClassAlias($alias, $target))->isIdenticalTo($autoloader)
++				->array($autoloader->getClassAliases())->isEqualTo(array(
++						'atoum' => 'mageekguy\\atoum\\test',
++						'mageekguy\\atoum' => 'mageekguy\\atoum\\test',
++						$alias => $target
++					)
++				)
++				->object($autoloader->addClassAlias('\\' . ($otherAlias = uniqid()), '\\' . ($otherTarget = uniqid())))->isIdenticalTo($autoloader)
++				->array($autoloader->getClassAliases())->isEqualTo(array(
++						'atoum' => 'mageekguy\\atoum\\test',
++						'mageekguy\\atoum' => 'mageekguy\\atoum\\test',
++						$alias => $target,
++						$otherAlias => $otherTarget
++					)
++				)
++				->object($autoloader->addClassAlias('\\' . ($anOtherAlias = uniqid()) . '\\', '\\' . ($anOtherTarget = uniqid()) . '\\'))->isIdenticalTo($autoloader)
++				->array($autoloader->getClassAliases())->isEqualTo(array(
++						'atoum' => 'mageekguy\\atoum\\test',
++						'mageekguy\\atoum' => 'mageekguy\\atoum\\test',
++						$alias => $target,
++						$otherAlias => $otherTarget,
++						$anOtherAlias => $anOtherTarget
++					)
++				)
++				->object($autoloader->addClassAlias('FOO', '\\' . ($fooTarget = uniqid()) . '\\'))->isIdenticalTo($autoloader)
++				->array($autoloader->getClassAliases())->isEqualTo(array(
++						'atoum' => 'mageekguy\\atoum\\test',
++						'mageekguy\\atoum' => 'mageekguy\\atoum\\test',
++						$alias => $target,
++						$otherAlias => $otherTarget,
++						$anOtherAlias => $anOtherTarget,
++						'foo' => $fooTarget
++					)
++				)
++		;
++	}
++
+ 	public function testAddClassAlias()
+ 	{
+ 		$this
+diff --git a/tests/units/classes/report/fields/runner/tests/blank.php b/tests/units/classes/report/fields/runner/tests/blank.php
+new file mode 100644
+index 0000000..853b6fa
+--- /dev/null
++++ b/tests/units/classes/report/fields/runner/tests/blank.php
+@@ -0,0 +1,45 @@
++<?php
++
++namespace mageekguy\atoum\tests\units\report\fields\runner\tests;
++
++use
++	mageekguy\atoum,
++	mageekguy\atoum\runner,
++	mock\mageekguy\atoum\report\fields\runner\tests\blank as testedClass
++;
++
++require __DIR__ . '/../../../../../runner.php';
++
++class blank extends atoum\test
++{
++	public function testClass()
++	{
++		$this->testedClass
++			->extends('mageekguy\atoum\report\field')
++			->isAbstract()
++		;
++	}
++
++	public function test__construct()
++	{
++		$this
++			->if($field = new testedClass())
++			->then
++				->variable($field->getRunner())->isNull()
++				->array($field->getEvents())->isEqualTo(array(runner::runStop))
++		;
++	}
++
++	public function testHandleEvent()
++	{
++		$this
++			->if($field = new testedClass())
++			->and($runner = new atoum\runner())
++			->then
++				->boolean($field->handleEvent(runner::runStart, $runner))->isFalse()
++				->variable($field->getRunner())->isNull()
++				->boolean($field->handleEvent(runner::runStop, $runner))->isTrue()
++				->object($field->getRunner())->isIdenticalTo($runner)
++		;
++	}
++}
+diff --git a/tests/units/classes/report/fields/runner/tests/void.php b/tests/units/classes/report/fields/runner/tests/void.php
+deleted file mode 100644
+index c996f60..0000000
+--- a/tests/units/classes/report/fields/runner/tests/void.php
++++ /dev/null
+@@ -1,45 +0,0 @@
+-<?php
+-
+-namespace mageekguy\atoum\tests\units\report\fields\runner\tests;
+-
+-use
+-	mageekguy\atoum,
+-	mageekguy\atoum\runner,
+-	mock\mageekguy\atoum\report\fields\runner\tests\void as testedClass
+-;
+-
+-require __DIR__ . '/../../../../../runner.php';
+-
+-class void extends atoum\test
+-{
+-	public function testClass()
+-	{
+-		$this->testedClass
+-			->extends('mageekguy\atoum\report\field')
+-			->isAbstract()
+-		;
+-	}
+-
+-	public function test__construct()
+-	{
+-		$this
+-			->if($field = new testedClass())
+-			->then
+-				->variable($field->getRunner())->isNull()
+-				->array($field->getEvents())->isEqualTo(array(runner::runStop))
+-		;
+-	}
+-
+-	public function testHandleEvent()
+-	{
+-		$this
+-			->if($field = new testedClass())
+-			->and($runner = new atoum\runner())
+-			->then
+-				->boolean($field->handleEvent(runner::runStart, $runner))->isFalse()
+-				->variable($field->getRunner())->isNull()
+-				->boolean($field->handleEvent(runner::runStop, $runner))->isTrue()
+-				->object($field->getRunner())->isIdenticalTo($runner)
+-		;
+-	}
+-}
+diff --git a/tests/units/classes/reports/realtime/cli.php b/tests/units/classes/reports/realtime/cli.php
+index 42f1fca..3afdc88 100644
+--- a/tests/units/classes/reports/realtime/cli.php
++++ b/tests/units/classes/reports/realtime/cli.php
+@@ -103,7 +103,7 @@ public function test__construct()
+ 					->setMethodPrompt(new prompt('=> ', new colorizer('0;37')))
+ 					->setOutputPrompt(new prompt('==> ', new colorizer('0;37')))
+ 				)
+-			->define($runnerVoidField = new fields\runner\tests\void\cli())
++			->define($runnerVoidField = new fields\runner\tests\blank\cli())
+ 				->and($runnerVoidField
+ 					->setTitlePrompt(new prompt('> '))
+ 					->setTitleColorizer(new colorizer('0;34'))
+diff --git a/tests/units/classes/reports/realtime/cli/light.php b/tests/units/classes/reports/realtime/cli/light.php
+index 39c958b..37ee5bf 100644
+--- a/tests/units/classes/reports/realtime/cli/light.php
++++ b/tests/units/classes/reports/realtime/cli/light.php
+@@ -61,7 +61,7 @@ public function test__construct()
+ 					->setMethodPrompt(new prompt('=> ', new colorizer('0;37')))
+ 					->setOutputPrompt(new prompt('==> ', new colorizer('0;37')))
+ 			)
+-			->define($voidTestField = new fields\runner\tests\void\cli())
++			->define($voidTestField = new fields\runner\tests\blank\cli())
+ 			->define($voidTestField
+ 					->setTitlePrompt(new prompt('> '))
+ 					->setTitleColorizer(new colorizer('0;34'))
+diff --git a/tests/units/classes/reports/realtime/phing.php b/tests/units/classes/reports/realtime/phing.php
+index 1ff0f4c..e4332e6 100644
+--- a/tests/units/classes/reports/realtime/phing.php
++++ b/tests/units/classes/reports/realtime/phing.php
+@@ -87,7 +87,7 @@ public function test__construct()
+ 					->setMethodPrompt(new prompt(' ', new colorizer('0;37')))
+ 					->setOutputPrompt(new prompt('  ', new colorizer('0;37')))
+ 				)
+-			->define($runnerVoidField = new fields\runner\tests\void\cli())
++			->define($runnerVoidField = new fields\runner\tests\blank\cli())
+ 				->and($runnerVoidField
+ 					->setTitlePrompt(new prompt(PHP_EOL))
+ 					->setTitleColorizer(new colorizer('0;34'))
