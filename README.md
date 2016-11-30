@@ -12,6 +12,7 @@ Possible fields type are :
  * Text (single line)
  * Text (multiple lines)
  * Number
+ * URL
  * Dropdown (always a tree dropdown)
  * Yes / No
  * Date

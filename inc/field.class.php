@@ -814,6 +814,17 @@ JAVASCRIPT;
                      $html.= $value;
                   }
                   break;
+               case 'url':
+                  $value = Html::cleanInputText($value);
+                  if ($canedit && !$readonly) {
+                     $html.= "<input type='text' name='".$field['name']."' value=\"$value\" />";
+                     if ($value != '') {
+                        $html .= "<a target=\"_blank\" href=\"$value\">" . __('show', 'fields') . "</a>";
+                     }
+                  } else {
+                     $html .= "<a target=\"_blank\" href=\"$value\">$value</a>";
+                  }
+                  break;
                case 'textarea':
                   if ($canedit && !$readonly) {
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
@@ -957,6 +968,7 @@ JAVASCRIPT;
          'text'         => __("Text (single line)", "fields"),
          'textarea'     => __("Text (multiples lines)", "fields"),
          'number'       => __("Number", "fields"),
+         'url'          => __("URL", "fields"),
          'dropdown'     => __("Dropdown", "fields"),
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
