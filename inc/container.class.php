@@ -921,6 +921,11 @@ class PluginFieldsContainer extends CommonDBTM {
             // Check number fields
             $number_errors[] = $field['label'];
             $valid = false;
+         } else if ($field['type'] == 'url' && !empty($value)) {
+            if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+               $url_errors[] = $field['label'];
+               $valid = false;
+            }
          }
       }
 
@@ -932,6 +937,11 @@ class PluginFieldsContainer extends CommonDBTM {
       if(!empty($number_errors)) {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields")
             . " : " . implode(', ', $number_errors), false, ERROR);
+      }
+
+      if(!empty($url_errors)) {
+         Session::AddMessageAfterRedirect(__("Some URL fields contains invalid links", "fields")
+            . " : " . implode(', ', $url_errors), false, ERROR);
       }
 
       return $valid;
