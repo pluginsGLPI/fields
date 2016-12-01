@@ -24,7 +24,7 @@ There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/m
 
 ## Documentation
 
-For 0.84 plugin : https://github.com/pluginsGLPI/fields/blob/0.84/bugfixes/documentation/doc_plugin_fields.asciidoc
+http://glpi-plugins.rtfd.io/en/feature-fields/fields/index.html
 
 ## Contributing
 
