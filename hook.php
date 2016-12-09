@@ -44,6 +44,7 @@ function plugin_fields_install() {
    $classesToInstall = array(
       'PluginFieldsDropdown',
       'PluginFieldsField',
+      'PluginFieldsLabelTranslation',
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
@@ -116,6 +117,7 @@ function plugin_fields_uninstall() {
    $classesToUninstall = array('PluginFieldsDropdown',
                               'PluginFieldsContainer',
                               'PluginFieldsContainer_Field',
+                              'PluginFieldsFieldTranslation',
                               'PluginFieldsField',
                               'PluginFieldsValue',
                               'PluginFieldsProfile',

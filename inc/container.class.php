@@ -219,6 +219,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsField', $ong, $options);
       $this->addStandardTab('PluginFieldsProfile', $ong, $options);
+      $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
 
       return $ong;
    }
@@ -276,6 +277,8 @@ class PluginFieldsContainer extends CommonDBTM {
    function post_addItem() {
       //create profiles associated to this container
       PluginFieldsProfile::createForContainer($this);
+      //Create label translation
+      PluginFieldsLabelTranslation::createForItem($this);
 
       //create class file
       if(!self::generateTemplate($this->fields)) {
@@ -351,6 +354,15 @@ class PluginFieldsContainer extends CommonDBTM {
          foreach ($profiles as $profiles_id => $profile) {
             $profile_obj->delete(array('id' => $profiles_id));
          }
+
+         //delete label translations
+         $translation = new PluginFieldsLabelTranslation();
+         $translation->delete(
+            [
+               'itemtype' => self::getType(),
+               'items_id' => $this->getID()
+            ]
+         );
 
          //delete table
          if (class_exists($classname)) {
@@ -653,7 +665,10 @@ class PluginFieldsContainer extends CommonDBTM {
          //show more info or not
          foreach($jsonitemtypes as $k => $v) {
             if ($full) {
-               $itemtypes[$v][$item['name']] = $item['label'];
+               //check for translation
+               $item['itemtype'] = self::getType();
+               $label = PluginFieldsLabelTranslation::getLabelFor($item);
+               $itemtypes[$v][$item['name']] = $label;
             } else {
                $itemtypes[] = $v;
             }
