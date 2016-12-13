@@ -14,3 +14,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Improve uninstallation when generated classes are missing.
 - Update translations from [Transifex](https://www.transifex.com/teclib/glpi-plugin-plugin-fields)
+- Fix self-service missing field on tickets
