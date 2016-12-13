@@ -50,7 +50,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    }
 
    static function getTypeName($nb = 0) {
-      return __("Label translation", "fields");
+      return _n("Translation", "Translations", $nb);
    }
 
    static function createForItem(CommonDBTM $item) {
@@ -68,10 +68,10 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      return self::createTabEntry(__("Labels translations", "fields"),
-                   countElementsInTable($this->getTable(),
+      $nb = countElementsInTable($this->getTable(),
                                         "`plugin_fields_itemtype` = '{$item::getType()}' AND
-                                        `plugin_fields_items_id` = '{$item->getID()}'"));
+                                        `plugin_fields_items_id` = '{$item->getID()}'");
+      return self::createTabEntry(self::getTypeName($nb),$nb);
 
    }
 
