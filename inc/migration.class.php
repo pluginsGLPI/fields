@@ -42,6 +42,7 @@ class PluginFieldsMigration {
    static function getSQLType($field_type) {
       $types = array(
          'text'     => 'VARCHAR(255) DEFAULT NULL',
+         'url'      => 'TEXT DEFAULT NULL',
          'textarea' => 'TEXT         DEFAULT NULL',
          'number'   => 'VARCHAR(255) DEFAULT NULL',
          'dropdown' => 'INT(11)      NOT NULL DEFAULT 0',

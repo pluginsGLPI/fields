@@ -1,8 +1,10 @@
+<?php
+/*
  -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2016 by the Teclib Development Team.
+ Fields plugin for GLPI
+ Copyright (C) 2016 by the Fields Development Team.
 
- http://teclib.com/   http://glpi-project.org
+ https://github.com/pluginsGLPI/fields
  -------------------------------------------------------------------------
 
  LICENSE
@@ -22,3 +24,16 @@
  You should have received a copy of the GNU General Public License
  along with Fields. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
+ */
+
+include ('../../../inc/includes.php');
+
+
+$translation = new PluginFieldsLabelTranslation();
+if (isset($_POST['add'])) {
+   $translation->add($_POST);
+
+} else if (isset($_POST['update'])) {
+   $translation->update($_POST);
+}
+Html::back();

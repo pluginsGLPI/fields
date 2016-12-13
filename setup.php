@@ -1,33 +1,32 @@
 <?php
 /*
- * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
  Fields plugin for GLPI
- Copyright (C) 2016 by the fields Development Team.
+ Copyright (C) 2016 by the Fields Development Team.
 
- https://forge.indepnet.net/projects/mreporting
+ https://github.com/pluginsGLPI/fields
  -------------------------------------------------------------------------
 
  LICENSE
 
- This file is part of fields.
+ This file is part of Fields.
 
- fields is free software; you can redistribute it and/or modify
+ Fields is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- fields is distributed in the hope that it will be useful,
+ Fields is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with fields. If not, see <http://www.gnu.org/licenses/>.
+ along with Fields. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.3.2');
+define ('PLUGIN_FIELDS_VERSION', '1.4.0');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -54,7 +53,12 @@ if (!defined("PLUGINFIELDS_FRONT_PATH")) {
    }
 }
 
-// Init the hooks of the plugins -Needed
+/**
+ * Init hooks of the plugin.
+ * REQUIRED
+ *
+ * @return void
+ */
 function plugin_init_fields() {
    global $PLUGIN_HOOKS;
 
@@ -104,7 +108,11 @@ function plugin_init_fields() {
                                array('addtabon' => array_unique(PluginFieldsContainer::getEntries())));
 
          //include js and css
-         $PLUGIN_HOOKS['add_css']['fields'][]           = 'fields.css';
+         if (file_exists(__DIR__ . '/css/fields.min.css')) {
+            $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.min.css';
+         } else {
+            $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.css';
+         }
          $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
          // Add/delete profiles to automaticaly to container
@@ -114,8 +122,12 @@ function plugin_init_fields() {
                                                                        "deleteProfile");
 
          //load drag and drop javascript library on Package Interface
-         $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/redips-drag-min.js";
-         $PLUGIN_HOOKS['add_javascript']['fields'][] = "scripts/drag-field-row.js";
+         $PLUGIN_HOOKS['add_javascript']['fields'][] = "js/redips-drag-min.js";
+         if (file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
+            $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
+         } else {
+            $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
+         }
       }
 
       // Add Fields to Datainjection
@@ -139,7 +151,12 @@ function plugin_init_fields() {
 }
 
 
-// Get the name and the version of the plugin - Needed
+/**
+ * Get the name and the version of the plugin
+ * REQUIRED
+ *
+ * @return array
+ */
 function plugin_version_fields() {
    return array ('name'           => __("Additionnal fields", "fields"),
                  'version'        => PLUGIN_FIELDS_VERSION,
@@ -149,7 +166,12 @@ function plugin_version_fields() {
                  'minGlpiVersion' => '0.85');
 }
 
-// Optional : check prerequisites before install : may print errors or add to message after redirect
+/**
+ * Check pre-requisites before install
+ * OPTIONNAL, but recommanded
+ *
+ * @return boolean
+ */
 function plugin_fields_check_prerequisites() {
    if (version_compare(GLPI_VERSION,'0.85','lt')) {
       echo "This plugin requires GLPI 0.85";
@@ -171,6 +193,7 @@ function plugin_fields_check_prerequisites() {
 
    return true;
 }
+
 
 function plugin_fields_checkFiles() {
    $plugin = new Plugin();
@@ -209,8 +232,13 @@ function plugin_fields_checkFiles() {
    }
 }
 
-// Check configuration process for plugin : need to return true if succeeded
-// Can display a message only if failure and $verbose is true
+/**
+ * Check configuration process
+ *
+ * @param boolean $verbose Whether to display message on failure. Defaults to false
+ *
+ * @return boolean
+ */
 function plugin_fields_check_config($verbose = false) {
    if (true) { // Your configuration check
       return true;

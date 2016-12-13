@@ -12,22 +12,22 @@ if (isset($_POST["add"])) {
    $newID = $container->add($_POST);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.form.php?id=$newID");
 
-} elseif (isset($_POST["delete"])) {
+} else if (isset($_POST["delete"])) {
    $container->check($_POST['id'], DELETE);
    $ok = $container->delete($_POST);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.php");
 
-} elseif (isset($_REQUEST["purge"])) {
+} else if (isset($_REQUEST["purge"])) {
    $container->check($_REQUEST['id'], PURGE);
    $container->delete($_REQUEST,1);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.php");
 
-} elseif (isset($_POST["update"])) {
+} else if (isset($_POST["update"])) {
    $container->check($_POST['id'], UPDATE);
    $container->update($_POST);
    Html::back();
 
-} elseif (isset($_POST["update_fields_values"])) {
+} else if (isset($_POST["update_fields_values"])) {
    $container->updateFieldsValues($_REQUEST, false, $_REQUEST['itemtype']);
    Html::back();
 
@@ -37,4 +37,3 @@ if (isset($_POST["add"])) {
    $container->display(array('id' => $_GET["id"]));
    Html::footer();
 }
-?>

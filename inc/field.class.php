@@ -121,16 +121,11 @@ class PluginFieldsField extends CommonDBTM {
 
       return $input;
    }
-   /*function prepareInputForUpdate($input) {
-      //parse name
-      //$input['name'] = $this->prepareName($input);
-
-      return $input;
-   }*/
 
    function pre_deleteItem() {
       global $DB;
 
+      //TODO: remove labels translations
       //remove field in container table
       if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])) {
@@ -151,7 +146,17 @@ class PluginFieldsField extends CommonDBTM {
          $classname::removeField($this->fields['name']);
       }
 
-      if (isset($oldname)) $this->fields['name'] = $oldname;
+      //delete label translations
+      $translation_obj = new PluginFieldsLabelTranslation();
+      $translations = $translation_obj->find("plugin_fields_itemtype = '" . self::getType() .
+                                             "' AND plugin_fields_items_id = ". $this->fields['id']);
+      foreach ($translations as $translation_id => $translation) {
+         $translation_obj->delete(['id' => $translation_id]);
+      }
+
+      if (isset($oldname)) {
+         $this->fields['name'] = $oldname;
+      }
 
       if ($this->fields['type'] === "dropdown") {
          return PluginFieldsDropdown::destroy($this->fields['name']);
@@ -229,10 +234,18 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      if (!$withtemplate) {
+         $nb = 0;
+         switch ($item->getType()) {
+            case __CLASS__ :
+               $ong[1] = $this->getTypeName(1);
+               return $ong;
+         }
+      }
+
       return self::createTabEntry(__("Fields", "fields"),
                    countElementsInTable($this->getTable(),
                                         "`plugin_fields_containers_id` = '".$item->getID()."'"));
-
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
@@ -240,6 +253,14 @@ class PluginFieldsField extends CommonDBTM {
       $fup = new self();
       $fup->showSummary($item);
       return true;
+   }
+
+   function defineTabs($options=array()) {
+      $ong = array();
+      $this->addDefaultFormTab($ong);
+      $this->addStandardTab('PluginFieldsLabelTranslation',$ong, $options);
+
+      return $ong;
    }
 
    function showSummary($container) {
@@ -274,7 +295,6 @@ class PluginFieldsField extends CommonDBTM {
            "<a href='javascript:viewAddField".$container->fields['id']."$rand();'>";
       echo __("Add a new field", "fields")."</a></div><br>\n";
 
-
       if ($DB->numrows($result) == 0) {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
          echo "<th class='b'>".__("No field for this block", "fields")."</th></tr></table>";
@@ -295,23 +315,15 @@ class PluginFieldsField extends CommonDBTM {
 
          $fields_type = self::getTypes();
 
+         Session::initNavigateListItems('PluginFieldsField', __('Fields list'));
+
          while ($data = $DB->fetch_array($result)) {
             if ($this->getFromDB($data['id'])) {
-               echo "<tr class='tab_bg_2' style='cursor:pointer' onClick=\"viewEditField$cID".
-                  $this->fields['id']."$rand();\">";
+               echo "<tr class='tab_bg_2' style='cursor:pointer'>";
 
                echo "<td>";
-               echo "\n<script type='text/javascript' >\n";
-               echo "function viewEditField" . $cID . $this->fields["id"] . "$rand() {\n";
-               $params = array('type'                        => __CLASS__,
-                               'parenttype'                  => 'PluginFieldsContainer',
-                               'plugin_fields_containers_id' => $cID,
-                               'id'                          => $this->fields["id"]);
-               Ajax::updateItemJsCode("viewField" . $cID . "$rand",
-                                      $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php", $params);
-               echo "};";
-               echo "</script>\n";
-               echo $this->fields['label']."</td>";
+               echo "<a href='" . $CFG_GLPI["root_doc"] . "/plugins/fields/front/field.form.php?id={$this->getID()}'>{$this->fields['label']}</a>";
+               echo "</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
                echo "<td align='center'>".Dropdown::getYesNo($this->fields["mandatory"])."</td>";
@@ -341,7 +353,11 @@ class PluginFieldsField extends CommonDBTM {
 
 
    function showForm($ID, $options=array()) {
-      if (isset($options['parent']) && !empty($options['parent'])) {
+      if (isset($options['parent_id']) && !empty($options['parent_id'])) {
+         $container = new PluginFieldsContainer;
+         $container->getFromDB($options['parent_id']);
+      } else if (isset($options['parent'])
+                 && $options['parent'] instanceof CommonDBTM) {
          $container = $options['parent'];
       }
 
@@ -523,7 +539,17 @@ class PluginFieldsField extends CommonDBTM {
       $( document ).ready(function() {
          var insert_dom{$rand} = function() {
             if ($('#fields_dom_container').length == 0) {
-               $('#page table[id*=mainformtable]:last > tbody > tr').eq({$eq}) // before last tr
+               var standard_form   = $('#page table[id*=mainformtable]:last > tbody > tr'),
+                   simplified_form = $('#page form[name=helpdeskform] tr'),
+                   current_form    = null;
+
+               if (standard_form.length) {
+                  current_form = standard_form;
+               } else {
+                  current_form = simplified_form
+               }
+
+               current_form.eq({$eq}) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
 
                $('#fields_dom_container').load('{$url_ajax}', {
@@ -793,13 +819,17 @@ JAVASCRIPT;
 
                $required = ($field['mandatory'] == 1) ? "<span class='red'>*</span>" : '';
 
+               $field['itemtype'] = self::getType();
+               $txt_label = PluginFieldsLabelTranslation::getLabelFor($field);
+               $label =" <label for='{$field['name']}'>{$txt_label} $required</label>";
+
                if (stristr($container_obj->fields['itemtypes'], 'Ticket') !== false
                    && $container_obj->fields['type'] == 'dom'
                    && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
                    && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                  $html.= "<th width='13%'><label>".$field['label']." : $required</label></th>";
+                   $html.= "<th width='13%'>$label</th>";
                } else {
-                  $html.= "<td><label>".$field['label']." : $required</label></td>";
+                  $html.= "<td>$label</td>";
                }
                $html.= "<td>";
             }
@@ -815,6 +845,17 @@ JAVASCRIPT;
                      $html.= $value;
                   }
                   break;
+               case 'url':
+                  $value = Html::cleanInputText($value);
+                  if ($canedit && !$readonly) {
+                     $html.= "<input type='text' name='".$field['name']."' value=\"$value\" />";
+                     if ($value != '') {
+                        $html .= "<a target=\"_blank\" href=\"$value\">" . __('show', 'fields') . "</a>";
+                     }
+                  } else {
+                     $html .= "<a target=\"_blank\" href=\"$value\">$value</a>";
+                  }
+                  break;
                case 'textarea':
                   if ($canedit && !$readonly) {
                      $html.= "<textarea cols='45' rows='4' name='".$field['name']."'>".
@@ -824,7 +865,7 @@ JAVASCRIPT;
                   }
                   break;
                case 'dropdown':
-                   if ($canedit && !$readonly) {
+                  if ($canedit && !$readonly) {
                      //find entity on current object
                      $obj = new $itemtype;
                      $obj->getFromDB($items_id);
@@ -876,23 +917,25 @@ JAVASCRIPT;
                   }
                   break;
                case 'dropdownuser':
-                   if ($massiveaction) continue;
-                   if ($canedit && !$readonly) {
-                       ob_start();
-                       User::dropdown(array('name'   => $field['name'],
-                                      'value'  => $value,
-                                      'entity' => -1,
-                                      'right'  => 'all',
-                                      'condition' => 'is_active=1 && is_deleted=0'));
-                       $html.= ob_get_contents();
-                       ob_end_clean();
-                   } else {
-                       $showuserlink = 0;
-                       if (Session::haveRight('user','r')) {
-                           $showuserlink = 1;
-                       }
-                       $html.= getUserName($value, $showuserlink);
-                   }
+                  if ($massiveaction) {
+                     continue;
+                  }
+                  if ($canedit && !$readonly) {
+                     ob_start();
+                     User::dropdown(array('name'   => $field['name'],
+                                          'value'  => $value,
+                                          'entity' => -1,
+                                          'right'  => 'all',
+                                          'condition' => 'is_active=1 && is_deleted=0'));
+                     $html.= ob_get_contents();
+                     ob_end_clean();
+                  } else {
+                     $showuserlink = 0;
+                     if (Session::haveRight('user','r')) {
+                        $showuserlink = 1;
+                     }
+                     $html.= getUserName($value, $showuserlink);
+                  }
             }
             if ($show_table) {
                $html.= "</td>";
@@ -956,6 +999,7 @@ JAVASCRIPT;
          'text'         => __("Text (single line)", "fields"),
          'textarea'     => __("Text (multiples lines)", "fields"),
          'number'       => __("Number", "fields"),
+         'url'          => __("URL", "fields"),
          'dropdown'     => __("Dropdown", "fields"),
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
@@ -964,4 +1008,8 @@ JAVASCRIPT;
       );
    }
 
+   function post_addItem() {
+      //Create label translation
+      PluginFieldsLabelTranslation::createForItem($this);
+   }
 }

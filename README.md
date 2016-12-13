@@ -1,4 +1,6 @@
-The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...  
+# Fields GLPi plugin
+
+The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...
 
 Addionnal data can be added :
  * In object tab
@@ -10,6 +12,7 @@ Possible fields type are :
  * Text (single line)
  * Text (multiple lines)
  * Number
+ * URL
  * Dropdown (always a tree dropdown)
  * Yes / No
  * Date
@@ -20,7 +23,14 @@ There is a [migration script](https://github.com/pluginsGLPI/customfields/blob/m
 **WARNING : this one is experimental and deserved to be more tested. We strongly advise you to backup your data before using it**
 
 
-Documentation
-=============
+## Documentation
 
-For 0.84 plugin : https://github.com/pluginsGLPI/fields/blob/0.84/bugfixes/documentation/doc_plugin_fields.asciidoc
+http://glpi-plugins.rtfd.io/en/feature-fields/fields/index.html
+
+## Contributing
+
+* Open a ticket for each bug/feature so it can be discussed
+* Follow [development guidelines](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins.html)
+* Refer to [GitFlow](http://git-flow.readthedocs.io/) process for branching
+* Work on a new branch on your own fork
+* Open a PR that will be reviewed by a developer

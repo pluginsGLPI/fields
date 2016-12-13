@@ -219,6 +219,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsField', $ong, $options);
       $this->addStandardTab('PluginFieldsProfile', $ong, $options);
+      $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
 
       return $ong;
    }
@@ -234,18 +235,18 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       if ($input['type'] === "dom") {
-            //check for already exist dom container with this itemtype
-            $found = $this->find("`type`='dom'");
-            if (count($found) > 0) {
-               foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
-                  foreach( json_decode( $founditemtypes ) as $founditemtype ) {
-                     if( in_array( $founditemtype, $input['itemtypes'] ) ) {
-                        Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
-                        return false;
-                     }
+         //check for already exist dom container with this itemtype
+         $found = $this->find("`type`='dom'");
+         if (count($found) > 0) {
+            foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
+               foreach( json_decode( $founditemtypes ) as $founditemtype ) {
+                  if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+                     Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
+                     return false;
                   }
                }
             }
+         }
       }
 
       //construct field name by processing label (remove non alphanumeric char and any trailing s)
@@ -276,6 +277,8 @@ class PluginFieldsContainer extends CommonDBTM {
    function post_addItem() {
       //create profiles associated to this container
       PluginFieldsProfile::createForContainer($this);
+      //Create label translation
+      PluginFieldsLabelTranslation::createForItem($this);
 
       //create class file
       if(!self::generateTemplate($this->fields)) {
@@ -352,8 +355,24 @@ class PluginFieldsContainer extends CommonDBTM {
             $profile_obj->delete(array('id' => $profiles_id));
          }
 
+         //delete label translations
+         $translation_obj = new PluginFieldsLabelTranslation();
+         $translations = $translation_obj->find("plugin_fields_itemtype = '" . self::getType() .
+                                                "' AND plugin_fields_items_id = ". $this->fields['id']);
+         foreach ($translations as $translation_id => $translation) {
+            $translation_obj->delete(['id' => $translation_id]);
+         }
+
          //delete table
-         $classname::uninstall();
+         if (class_exists($classname)) {
+            $classname::uninstall();
+         } else {
+            //class does not exists; try to remove any existing table
+            $tablename = "glpi_plugin_fields_" . strtolower(
+               $itemtype . getPlural(preg_replace('/s$/', '', $this->fields['name']))
+            );
+            $DB->query("DROP TABLE IF EXISTS `$tablename`");
+         }
 
          //clean session
          unset($_SESSION['delete_container']);
@@ -444,7 +463,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
          echo $obj;
 
-         } else {
+      } else {
          echo "&nbsp;<span id='itemtypes_$rand'>";
          self::showFormItemtype(array('rand'    => $rand,
                                       'subtype' => $this->fields['subtype']));
@@ -645,7 +664,10 @@ class PluginFieldsContainer extends CommonDBTM {
          //show more info or not
          foreach($jsonitemtypes as $k => $v) {
             if ($full) {
-               $itemtypes[$v][$item['name']] = $item['label'];
+               //check for translation
+               $item['itemtype'] = self::getType();
+               $label = PluginFieldsLabelTranslation::getLabelFor($item);
+               $itemtypes[$v][$item['name']] = $label;
             } else {
                $itemtypes[] = $v;
             }
@@ -725,7 +747,6 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($data['plugin_fields_containers_id']);
-
 
       $items_id = $data['items_id'];
 
@@ -887,7 +908,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $name  = $field['name'];
          if(isset($data[$name])) {
             $value = $data[$name];
-         } elseif(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
+         } else if(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
             $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
          } else if ($field['mandatory'] == 1) {
             $tablename = "glpi_plugin_fields_" . strtolower(
@@ -918,11 +939,15 @@ class PluginFieldsContainer extends CommonDBTM {
                || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
             $empty_errors[] = $field['label'];
             $valid = false;
-
-         // Check number fields
-         } elseif($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+         } else if($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+            // Check number fields
             $number_errors[] = $field['label'];
             $valid = false;
+         } else if ($field['type'] == 'url' && !empty($value)) {
+            if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+               $url_errors[] = $field['label'];
+               $valid = false;
+            }
          }
       }
 
@@ -934,6 +959,11 @@ class PluginFieldsContainer extends CommonDBTM {
       if(!empty($number_errors)) {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields")
             . " : " . implode(', ', $number_errors), false, ERROR);
+      }
+
+      if(!empty($url_errors)) {
+         Session::AddMessageAfterRedirect(__("Some URL fields contains invalid links", "fields")
+            . " : " . implode(', ', $url_errors), false, ERROR);
       }
 
       return $valid;
@@ -967,7 +997,7 @@ class PluginFieldsContainer extends CommonDBTM {
          if (in_array($item->getType(), $dataitemtypes) != FALSE) {
             $id = $data['id'];
          }
-     }
+      }
 
       //profiles restriction
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
@@ -1116,8 +1146,8 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          switch ($data['type']) {
-             case 'dropdown':
-             case 'dropdownuser':
+            case 'dropdown':
+            case 'dropdownuser':
                $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
@@ -1135,7 +1165,7 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             default:
                $opt[$i]['datatype'] = "string";
-          }
+         }
 
          $i++;
       }
