@@ -257,7 +257,7 @@ class PluginFieldsField extends CommonDBTM {
 
    function defineTabs($options=array()) {
       $ong = array();
-      $this->addStandardTab(__CLASS__, $ong, $options);
+      $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsLabelTranslation',$ong, $options);
 
       return $ong;
