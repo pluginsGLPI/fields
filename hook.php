@@ -42,8 +42,8 @@ function plugin_fields_install() {
    $version = $plugin_fields->fields['version'];
 
    $classesToInstall = array(
-      'PluginFieldsDropdown',
       'PluginFieldsField',
+      'PluginFieldsDropdown',
       'PluginFieldsLabelTranslation',
       'PluginFieldsContainer',
       'PluginFieldsContainer_Field',
