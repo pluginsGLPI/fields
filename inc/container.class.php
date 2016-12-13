@@ -303,7 +303,12 @@ class PluginFieldsContainer extends CommonDBTM {
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
          $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
          $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
-         $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $itemtype::$rightname, $template_class);
+
+         $item_rightname = '';
+         if (property_exists($itemtype, 'rightname')) {
+            $item_rightname = $itemtype::$rightname;
+         }
+         $template_class = str_replace("%%ITEMTYPE_RIGHT%%", $item_rightname, $template_class);
          $class_filename = strtolower($itemtype .
             preg_replace('/s$/', '', $fields['name']) . ".class.php");
          if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename", $template_class) === false) {
@@ -507,10 +512,11 @@ class PluginFieldsContainer extends CommonDBTM {
    static function showFormItemtype($params = array()) {
       global $CFG_GLPI;
 
+      $type = (isset($params['type']) ? $params['type'] : 'tab');
       $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
 
       $rand = $params['rand'];
-      Dropdown::showFromArray("itemtypes", self::getItemtypes(),
+      Dropdown::showFromArray("itemtypes", self::getItemtypes($type),
                               array('rand'                => $rand,
                                     'multiple'            => !$is_domtab,
                                     'width'               => 200,
@@ -563,8 +569,12 @@ class PluginFieldsContainer extends CommonDBTM {
       }
    }
 
-
-   static function getItemtypes() {
+   /**
+    * Get items types list
+    *
+    * @param string $type Requested type; defaults to null
+    */
+   static function getItemtypes($type = null) {
       global $PLUGIN_HOOKS;
 
       $tab = array(
@@ -599,8 +609,12 @@ class PluginFieldsContainer extends CommonDBTM {
             'User'               => _n("User", "Users", 2),
             'Group'              => _n("Group", "Groups", 2),
             'Entity'             => _n("Entity", "Entities", 2),
-            'Profile'            => _n("Profile", "Profiles", 2))
+            'Profile'            => _n("Profile", "Profiles", 2)),
       );
+
+      if ($type == 'tab') {
+         $tab[__('Other')] = ['Preference' => __("User preferences")];
+      }
 
       foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
          $isPlugin = isPluginItemType($itemtype);
@@ -709,7 +723,7 @@ class PluginFieldsContainer extends CommonDBTM {
                   if( $data['is_recursive'] ) {
                      $entities = getSonsOf( getTableForItemType( 'Entity' ), $data['entities_id']);
                   }
-                  if( in_array( $item->fields['entities_id'], $entities ) ) {
+                  if(!property_exists($item, 'fields') || in_array( $item->fields['entities_id'], $entities ) ) {
                      $tabs_entries[$tab_name] = $tab_label;
                   }
                }
@@ -728,7 +742,13 @@ class PluginFieldsContainer extends CommonDBTM {
       foreach ($found_c as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
          if (in_array(get_class($item), $dataitemtypes) != FALSE) {
-            return PluginFieldsField::showForTabContainer($data['id'], $item->fields['id'], get_class($item));
+            $fid = null;
+            if ($item->getType() === Preference::getType()) {
+               $fid = $_SESSION['glpiID'];
+            } else {
+               $fid = $item->fields['id'];
+            }
+            return PluginFieldsField::showForTabContainer($data['id'], $fid, get_class($item));
          }
       }
    }
@@ -789,7 +809,7 @@ class PluginFieldsContainer extends CommonDBTM {
                                 $old_values = array()) {
       // Don't log few itemtypes
       $obj = new $itemtype();
-      if ($obj->dohistory == false) {
+      if ($itemtype != Preference::getType() && $obj->dohistory == false) {
          return;
       }
 
@@ -1136,7 +1156,12 @@ class PluginFieldsContainer extends CommonDBTM {
       $data = ['plugin_fields_containers_id' => $c_id];
       if ($item->isNewItem()) {
          //no ID yet while creating
-         $data['items_id'] = $item->getID();
+         if ($item::getType() == Preference::getType()) {
+            $fid = $_SESSION['glpiID'];
+         } else {
+            $fid = $item->getID();
+         }
+         $data['items_id'] = $fid;
       }
 
       $has_fields = false;
