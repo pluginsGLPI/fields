@@ -356,6 +356,9 @@ class PluginFieldsField extends CommonDBTM {
       if (isset($options['parent_id']) && !empty($options['parent_id'])) {
          $container = new PluginFieldsContainer;
          $container->getFromDB($options['parent_id']);
+      } else if (isset($options['parent'])
+                 && $options['parent'] instanceof CommonDBTM) {
+         $container = new $options['parent'];
       }
 
       if ($ID > 0) {
