@@ -117,7 +117,7 @@ function plugin_fields_uninstall() {
    $classesToUninstall = array('PluginFieldsDropdown',
                               'PluginFieldsContainer',
                               'PluginFieldsContainer_Field',
-                              'PluginFieldsFieldTranslation',
+                              'PluginFieldsLabelTranslation',
                               'PluginFieldsField',
                               'PluginFieldsValue',
                               'PluginFieldsProfile',
