@@ -31,7 +31,7 @@ if (isset($_POST["add"])) {
    Html::header(PluginFieldsField::getTypeName(1), $_SERVER['PHP_SELF']);
 
    $field->getFromDB($_GET['id']);
-   $field->display(['id' => $_GET['id'],
+   $field->display(['id'        => $_GET['id'],
                     'parent_id' => $field->fields['plugin_fields_containers_id']]);
 
    Html::footer();
