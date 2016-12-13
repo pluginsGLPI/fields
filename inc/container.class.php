@@ -356,13 +356,12 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          //delete label translations
-         $translation = new PluginFieldsLabelTranslation();
-         $translation->delete(
-            [
-               'itemtype' => self::getType(),
-               'items_id' => $this->getID()
-            ]
-         );
+         $translation_obj = new PluginFieldsLabelTranslation();
+         $translations = $translation_obj->find("plugin_fields_itemtype = '" . self::getType() .
+                                                "' AND plugin_fields_items_id = ". $this->fields['id']);
+         foreach ($translations as $translation_id => $translation) {
+            $translation_obj->delete(['id' => $translation_id]);
+         }
 
          //delete table
          if (class_exists($classname)) {
