@@ -539,7 +539,17 @@ class PluginFieldsField extends CommonDBTM {
       $( document ).ready(function() {
          var insert_dom{$rand} = function() {
             if ($('#fields_dom_container').length == 0) {
-               $('#page table[id*=mainformtable]:last > tbody > tr').eq({$eq}) // before last tr
+               var standard_form   = $('#page table[id*=mainformtable]:last > tbody > tr'),
+                   simplified_form = $('#page form[name=helpdeskform] tr'),
+                   current_form    = null;
+
+               if (standard_form.length) {
+                  current_form = standard_form;
+               } else {
+                  current_form = simplified_form
+               }
+
+               current_form.eq({$eq}) // before last tr
                   .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
 
                $('#fields_dom_container').load('{$url_ajax}', {
