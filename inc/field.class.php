@@ -136,14 +136,6 @@ class PluginFieldsField extends CommonDBTM {
                PluginFieldsDropdown::getClassname($this->fields['name']));
          }
 
-         $translation = new PluginFieldsLabelTranslation();
-         $translation->delete(
-            [
-               'itemtype' => self::getType(),
-               'items_id' => $this->getID()
-            ]
-         );
-
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
          foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
@@ -152,6 +144,14 @@ class PluginFieldsField extends CommonDBTM {
             $classname::removeField($this->fields['name']);
          }
          $classname::removeField($this->fields['name']);
+      }
+
+      //delete label translations
+      $translation_obj = new PluginFieldsLabelTranslation();
+      $translations = $translation_obj->find("plugin_fields_itemtype = '" . self::getType() .
+                                             "' AND plugin_fields_items_id = ". $this->fields['id']);
+      foreach ($translations as $translation_id => $translation) {
+         $translation_obj->delete(['id' => $translation_id]);
       }
 
       if (isset($oldname)) {
