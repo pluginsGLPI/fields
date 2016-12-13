@@ -1088,7 +1088,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
             containers.name as container_name, containers.label as container_label,
-            containers.itemtypes, containers.id as container_id
+            containers.itemtypes, containers.id as container_id, fields.id as field_id
          FROM glpi_plugin_fields_containers containers
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
@@ -1109,6 +1109,21 @@ class PluginFieldsContainer extends CommonDBTM {
 
          $tablename = "glpi_plugin_fields_".strtolower($itemtype.
                         getPlural(preg_replace('/s$/', '', $data['container_name'])));
+
+         //get translations
+         $container = [
+            'itemtype' => PluginFieldsContainer::getType(),
+            'id'       => $data['container_id'],
+            'label'    => $data['container_label']
+         ];
+         $data['container_label'] = PluginFieldsLabelTranslation::getLabelFor($container);
+
+         $field = [
+            'itemtype' => PluginFieldsField::getType(),
+            'id'       => $data['field_id'],
+            'label'    => $data['label']
+         ];
+         $data['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $data['name'];
