@@ -125,7 +125,6 @@ class PluginFieldsField extends CommonDBTM {
    function pre_deleteItem() {
       global $DB;
 
-      //TODO: remove labels translations
       //remove field in container table
       if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])) {
