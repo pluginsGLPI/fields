@@ -339,7 +339,7 @@ class PluginFieldsField extends CommonDBTM {
 
                echo '<td class="rowhandler control center">';
                echo '<div class="drag row" style="cursor:move;border:none !important;">';
-               echo '<img src="../pics/drag.png" alt="#" title="Déplacer" width="16" height="16" />';
+               echo '<img src="../pics/drag.png" alt="#" title="' . __('Move') .'" width="16" height="16" />';
                echo '</div>';
                echo '</td>';
                echo "</tr>\n";
