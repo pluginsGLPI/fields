@@ -2,7 +2,7 @@
 
 class PluginFieldsDropdown {
    static $rightname = 'dropdown';
-
+   public $can_be_translated = false;
 
    /**
     * Install or update dropdowns
@@ -71,6 +71,7 @@ class PluginFieldsDropdown {
       //create dropdown class file
       $template_class = str_replace("%%CLASSNAME%%", $classname,      $template_class);
       $template_class = str_replace("%%FIELDNAME%%", $input['name'],  $template_class);
+      $template_class = str_replace("%%FIELDID%%",   $input['id'],    $template_class);
       $template_class = str_replace("%%LABEL%%",     $input['label'], $template_class);
       $class_filename = $input['name']."dropdown.class.php";
       if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename",

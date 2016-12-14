@@ -933,6 +933,10 @@ class PluginFieldsContainer extends CommonDBTM {
             $value = '';
          }
 
+         //translate label
+         $field['itemtype'] = PluginFieldsField::getType();
+         $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
+
          // Check mandatory fields
          if (($field['mandatory'] == 1)
              && (empty($value)
