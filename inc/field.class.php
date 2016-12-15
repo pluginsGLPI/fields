@@ -703,7 +703,7 @@ JAVASCRIPT;
    static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
 
       //retieve dom containers associated to this itemtype
-      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
+      $c_id = PluginFieldsContainer::findContainer($itemtype, $type, $subtype);
 
       if (is_array($c_id)) {
          $condition = "plugin_fields_containers_id IN (".implode(", ", $c_id).")";

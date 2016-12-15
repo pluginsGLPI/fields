@@ -269,7 +269,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
-      $input['itemtypes'] = (isset($input['itemtypes'])) ? json_encode($input['itemtypes'], TRUE): NULL ;
+      $input['itemtypes'] = (isset($input['itemtypes'])) ? json_encode($input['itemtypes'], TRUE): NULL;
 
       return $input;
    }
@@ -699,15 +699,15 @@ class PluginFieldsContainer extends CommonDBTM {
       $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();
-         $container = new self ;
+         $container = new self;
          foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) {
             // needs to check if entity of item is in hierachy of $tab_name
             foreach ( $container->find("`is_active` = 1 AND `name` = '$tab_name'") as $data) {
                $dataitemtypes = json_decode($data['itemtypes']);
                if (in_array(get_class($item), $dataitemtypes) != FALSE) {
-                  $entities = array( $data['entities_id'] ) ;
+                  $entities = array( $data['entities_id'] );
                   if( $data['is_recursive'] ) {
-                     $entities = getSonsOf( getTableForItemType( 'Entity' ), $data['entities_id']) ;
+                     $entities = getSonsOf( getTableForItemType( 'Entity' ), $data['entities_id']);
                   }
                   if( in_array( $item->fields['entities_id'], $entities ) ) {
                      $tabs_entries[$tab_name] = $tab_label;
@@ -974,7 +974,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
 
-   static function findContainer($itemtype, $items_id, $type = 'tab', $subtype = '') {
+   static function findContainer($itemtype, $type = 'tab', $subtype = '') {
       $sql_type = "`type` = '$type'";
       $entity = isset($_SESSION['glpiactiveentities']) ? $_SESSION['glpiactiveentities'] : 0;
       $sql_entity = getEntitiesRestrictRequest("AND", "", "", $entity, true, true);
@@ -1024,15 +1024,66 @@ class PluginFieldsContainer extends CommonDBTM {
       return $id;
    }
 
+   /**
+    * Post item hook for add
+    * Do store data in db
+    *
+    * @param CommonDBTM $item Item instance
+    *
+    * @return CommonDBTM|true
+    */
+   static function postItemAdd(CommonDBTM $item) {
+      if (property_exists($item, 'plugin_fields_data')) {
+         $data = $item->plugin_fields_data;
+         $data['items_id'] = $item->getID();
+         //update data
+         $container = new self();
+         if ($container->updateFieldsValues($data, isset($_REQUEST['massiveaction']), $item->getType())) {
+            return true;
+         }
+      }
+      return $item->input = array();
+   }
 
+   /**
+    * Pre item hook for update
+    * Do store data in db
+    *
+    * @param CommonDBTM $item Item instance
+    *
+    * @return boolean
+    */
    static function preItemUpdate(CommonDBTM $item) {
+      self::preItem($item);
+      if (property_exists($item, 'plugin_fields_data')) {
+         $data = $item->plugin_fields_data;
+         //update data
+         $container = new self();
+         if ($container->updateFieldsValues($data, isset($_REQUEST['massiveaction']), $item->getType())) {
+            return true;
+         }
+      }
+      return $item->input = array();
+   }
+
+
+   /**
+    * Pre item hook for add and update
+    * Validates and store plugin data in item object
+    *
+    * @param CommonDBTM $item Item instance
+    *
+    * @return boolean
+    */
+
+   static function preItem(CommonDBTM $item) {
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
       } else {
-         $c_id = self::findContainer(get_Class($item), $item->fields['id'], "dom");
+         $c_id = self::findContainer(get_Class($item), "dom");
          if ($c_id === false) {
-            $c_id = self::findContainer(get_Class($item), $item->fields['id']); //tries for 'tab'
+            $c_id = self::findContainer(get_Class($item)); //tries for 'tab'
             if ($c_id === false) {
                return false;
             }
@@ -1040,24 +1091,55 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //need to check if container is usable on this object entity
-      $loc_c = new PluginFieldsContainer ;
-      $loc_c->getFromDB( $c_id ) ;
-      $entities = array( $loc_c->fields['entities_id'] ) ;
-      if( $loc_c->fields['is_recursive'] ) {
-         $entities = getSonsOf( getTableForItemType( 'Entity' ), $loc_c->fields['entities_id']) ;
-      }
-      if( !in_array( $item->fields['entities_id'], $entities ) ) {
-         return false ;
+      $loc_c = new PluginFieldsContainer;
+      $loc_c->getFromDB($c_id);
+      $entities = array($loc_c->fields['entities_id']);
+      if ($loc_c->fields['is_recursive']) {
+         $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
       }
 
+      //workaround: when a ticket is created from readdonly profile,
+      //it is not initialized; see https://github.com/glpi-project/glpi/issues/1438
+      if (!isset($item->fields) || count($item->fields) == 0) {
+         $item->fields = $item->input;
+      }
+
+      if( !in_array($item->fields['entities_id'], $entities)) {
+         return false;
+      }
+
+      $data = self::populateData($c_id, $item);
+      if ($data !== false) {
+         if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            return $item->input = [];
+         }
+         return $item->plugin_fields_data = $data;
+      }
+
+      return $item->input = [];
+   }
+
+   /**
+    * Populates fields data from item
+    *
+    * @param integer    $c_id Container ID
+    * @param CommonDBTM $item Item instance
+    *
+    * @return array|false
+    */
+   static private function populateData($c_id, CommonDBTM $item) {
       //find fields associated to found container
       $field_obj = new PluginFieldsField();
       $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND type != 'header'", "ranking");
 
       //prepare data to update
-      $data = array('plugin_fields_containers_id' => $c_id,
-                     'items_id'                    =>  $item->fields['id']);
+      $data = ['plugin_fields_containers_id' => $c_id];
+      if ($item->isNewItem()) {
+         //no ID yet while creating
+         $data['items_id'] = $item->getID();
+      }
 
+      $has_fields = false;
       foreach($fields as $field) {
          if (isset($item->input[$field['name']])) {
             //standard field
@@ -1067,6 +1149,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $input = "plugin_fields_".$field['name']."dropdowns_id";
          }
          if (isset($item->input[$input])) {
+            $has_fields = true;
             // Before is_number check, help user to have a number correct, during a massive action of a number field
             if ($field['type'] == 'number') {
                $item->input[$input] = str_replace(",", ".", $item->input[$input]);
@@ -1075,12 +1158,11 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
-      //update data
-      $container = new self();
-      if ($container->updateFieldsValues($data, isset($_REQUEST['massiveaction']), $item->getType())) {
-         return true;
+      if ($has_fields === true) {
+         return $data;
+      } else {
+         return false;
       }
-      return $item->input = array();
    }
 
    static function getAddSearchOptions($itemtype, $containers_id = false) {
