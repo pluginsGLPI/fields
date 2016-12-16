@@ -88,7 +88,7 @@ class RoboFilePlugin extends \Robo\Tasks
     */
    public function localesPull($percent = 70)
    {
-      $this->_exec('tx pull -s --minimum-perc=' .$percent);
+      $this->_exec('tx pull -a --minimum-perc=' .$percent);
       return $this;
    }
 

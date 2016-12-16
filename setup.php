@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.4.0');
+define ('PLUGIN_FIELDS_VERSION', '1.4.1');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -139,12 +139,14 @@ function plugin_init_fields() {
       $itemtypes = PluginFieldsContainer::getUsedItemtypes();
       if ($itemtypes !== false) {
          foreach ($itemtypes as $itemtype) {
-            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = array("PluginFieldsContainer",
-                                                                          "preItemUpdate");
-            $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = array("PluginFieldsContainer",
-                                                                          "preItemPurge");
-            $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = array("PluginFieldsContainer",
-                                                                          "preItemUpdate");
+            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = ["PluginFieldsContainer",
+                                                                     "preItemUpdate"];
+            $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype]    = ["PluginFieldsContainer",
+                                                                     "preItem"];
+            $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = ["PluginFieldsContainer",
+                                                                     "postItemAdd"];
+            $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = ["PluginFieldsContainer",
+                                                                     "preItemPurge"];
          }
       }
    }
@@ -200,7 +202,8 @@ function plugin_fields_checkFiles() {
 
    if (isset($_SESSION['glpiactiveentities'])
       && $plugin->isInstalled('fields')
-      && $plugin->isActivated('fields')) {
+      && $plugin->isActivated('fields')
+      && Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginFieldsContainer');
       Plugin::registerClass('PluginFieldsDropdown');
