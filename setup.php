@@ -202,7 +202,8 @@ function plugin_fields_checkFiles() {
 
    if (isset($_SESSION['glpiactiveentities'])
       && $plugin->isInstalled('fields')
-      && $plugin->isActivated('fields')) {
+      && $plugin->isActivated('fields')
+      && Session::getLoginUserID()) {
 
       Plugin::registerClass('PluginFieldsContainer');
       Plugin::registerClass('PluginFieldsDropdown');
