@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix adding bloc for specific tab
 - Fix dropdown pagination links
 - Fix validation issue creating new tickets
-- Fix checks consistancy
+- Fix checks consistency
 - Ensure we target only the first tab
 
 ## [1.4.0] - 2016-12-13
