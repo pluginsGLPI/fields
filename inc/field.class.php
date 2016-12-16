@@ -539,7 +539,7 @@ class PluginFieldsField extends CommonDBTM {
       $( document ).ready(function() {
          var insert_dom{$rand} = function() {
             if ($('#fields_dom_container').length == 0) {
-               var standard_form   = $('#page table[id*=mainformtable]:last > tbody > tr'),
+               var standard_form   = $('#page #ui-tabs-1 table[id*=mainformtable]:last > tbody > tr'),
                    simplified_form = $('#page form[name=helpdeskform] tr'),
                    current_form    = null;
 
