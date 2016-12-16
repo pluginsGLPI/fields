@@ -181,7 +181,9 @@ function plugin_fields_getDropdown() {
    $field_obj = new PluginFieldsField;
    $fields = $field_obj->find("`type` = 'dropdown'");
    foreach ($fields as $field) {
-      $dropdowns["PluginFields".ucfirst($field['name'])."Dropdown"] = $field['label'];
+      $field['itemtype'] = PluginFieldsField::getType();
+      $label = PluginFieldsLabelTranslation::getLabelFor($field);
+      $dropdowns["PluginFields".ucfirst($field['name'])."Dropdown"] = $label;
    }
 
    asort($dropdowns);

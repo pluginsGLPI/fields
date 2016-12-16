@@ -339,7 +339,7 @@ class PluginFieldsField extends CommonDBTM {
 
                echo '<td class="rowhandler control center">';
                echo '<div class="drag row" style="cursor:move;border:none !important;">';
-               echo '<img src="../pics/drag.png" alt="#" title="Déplacer" width="16" height="16" />';
+               echo '<img src="../pics/drag.png" alt="#" title="' . __('Move') .'" width="16" height="16" />';
                echo '</div>';
                echo '</td>';
                echo "</tr>\n";
@@ -539,7 +539,7 @@ class PluginFieldsField extends CommonDBTM {
       $( document ).ready(function() {
          var insert_dom{$rand} = function() {
             if ($('#fields_dom_container').length == 0) {
-               var standard_form   = $('#page table[id*=mainformtable]:last > tbody > tr'),
+               var standard_form   = $('#page #ui-tabs-1 table[id*=mainformtable]:last > tbody > tr'),
                    simplified_form = $('#page form[name=helpdeskform] tr'),
                    current_form    = null;
 
@@ -703,7 +703,7 @@ JAVASCRIPT;
    static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
 
       //retieve dom containers associated to this itemtype
-      $c_id = PluginFieldsContainer::findContainer($itemtype, $items_id, $type, $subtype);
+      $c_id = PluginFieldsContainer::findContainer($itemtype, $type, $subtype);
 
       if (is_array($c_id)) {
          $condition = "plugin_fields_containers_id IN (".implode(", ", $c_id).")";
