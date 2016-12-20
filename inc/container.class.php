@@ -1134,7 +1134,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //prepare data to update
       $data = ['plugin_fields_containers_id' => $c_id];
-      if ($item->isNewItem()) {
+      if (!$item->isNewItem()) {
          //no ID yet while creating
          $data['items_id'] = $item->getID();
       }
