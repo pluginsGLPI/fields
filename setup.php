@@ -114,7 +114,6 @@ function plugin_init_fields() {
          } else {
             $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.css';
          }
-         $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
          // Add/delete profiles to automaticaly to container
          $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
@@ -151,8 +150,12 @@ function plugin_init_fields() {
          }
       }
 
+      $PLUGIN_HOOKS['post_item_form']['fields'] = ['PluginFieldsField',
+                                                   'showForTab'];
+
       // Check class and front files for existing containers and dropdown fields
       plugin_fields_checkFiles();
+
    }
 }
 
@@ -169,7 +172,7 @@ function plugin_version_fields() {
                  'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',
-                 'minGlpiVersion' => '0.85');
+                 'minGlpiVersion' => '9.1.2');
 }
 
 /**
@@ -179,8 +182,8 @@ function plugin_version_fields() {
  * @return boolean
  */
 function plugin_fields_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '0.85', 'lt')) {
-      echo "This plugin requires GLPI 0.85";
+   if (version_compare(GLPI_VERSION, '9.1.2', 'lt')) {
+      echo "This plugin requires GLPI 9.1.2";
       return false;
    }
 

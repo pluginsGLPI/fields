@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - unreleased
+- Use post_item_form hoo instead of javascript to display fields
+
 ## [1.4.5] - 2017-01-13
 - Set minimal PHP version to 5.4
 - Prevent values to be kept from a new ticket to another

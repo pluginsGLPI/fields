@@ -1151,7 +1151,15 @@ class PluginFieldsContainer extends CommonDBTM {
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
       } else {
-         $c_id = self::findContainer(get_Class($item), "dom");
+         $type = 'dom';
+         if (isset($_REQUEST['_plugin_fields_type'])) {
+            $type = $_REQUEST['_plugin_fields_type'];
+         }
+         $subtype = '';
+         if ($type == 'domtab') {
+            $subtype = $_REQUEST['_plugin_fields_subtype'];
+         }
+         $c_id = self::findContainer(get_Class($item), $type, $subtype);
          if ($c_id === false) {
             $c_id = self::findContainer(get_Class($item)); //tries for 'tab'
             if ($c_id === false) {
