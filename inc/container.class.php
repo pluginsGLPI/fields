@@ -486,7 +486,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $itemtype = array_shift($itemtypes);
          $item = new $itemtype;
          $item->getEmpty();
-         $tabs = $item->defineTabs();
+         $tabs = self::getSubtypes($item);
          echo $tabs[$this->fields["subtype"]];
       }
       echo "</td>";
@@ -510,7 +510,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
 
       $rand = $params['rand'];
-      Dropdown::showFromArray("itemtypes", self::getItemtypes(),
+      Dropdown::showFromArray("itemtypes", self::getItemtypes($is_domtab),
                               array('rand'                => $rand,
                                     'multiple'            => !$is_domtab,
                                     'width'               => 200,
@@ -535,11 +535,8 @@ class PluginFieldsContainer extends CommonDBTM {
          if (class_exists($params['itemtype'])) {
             $item = new $params['itemtype'];
             $item->getEmpty();
-            $tabs = $item->defineTabs();
 
-            list($id, ) = each($tabs);
-            // delete first element of array
-            unset($tabs[$id]);
+            $tabs = self::getSubtypes($item);
 
             // delete Log of array (don't work with this tab)
             $tabs_to_remove = array('Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1');
@@ -563,13 +560,21 @@ class PluginFieldsContainer extends CommonDBTM {
       }
    }
 
-
-   static function getItemtypes() {
+   /**
+    * Get supported item types
+    *
+    * @param boolean $is_domtab Domtab or not
+    *
+    * @return array
+    */
+   static function getItemtypes($is_domtab) {
       global $PLUGIN_HOOKS;
 
-      $tab = array(
-         __("Assets") => array(
-            'Computer'           => _n("Computer", "Computers", 2),
+      $tabs = [];
+
+      $assets = ['Computer' => _n("Computer", "Computers", 2)];
+      if (!$is_domtab) {
+         $assets += [
             'Monitor'            => _n("Monitor", "Monitors", 2),
             'Software'           => _n("Software", "Software", 2),
             'NetworkEquipment'   => _n("Network", "Networks", 2),
@@ -577,42 +582,65 @@ class PluginFieldsContainer extends CommonDBTM {
             'Printer'            => _n("Printer", "Printers", 2),
             'CartridgeItem'      => _n("Cartridge", "Cartridges", 2),
             'ConsumableItem'     => _n("Consumable", "Consumables", 2),
-            'Phone'              => _n("Phone", "Phones", 2)),
-         __("Assistance") => array(
-            'Ticket'             => _n("Ticket", "Tickets", 2),
-            'Problem'            => _n("Problem", "Problems", 2),
-            'Change'             => _n("Change", "Changes", 2),
-            'TicketRecurrent'    => __("Recurrent tickets")),
-         __("Management") => array(
-            'SoftwareLicense'    => _n("License", "Licenses", 2),
-            'Budget'             => _n("Budget", "Budgets", 2),
-            'Supplier'           => _n("Supplier", "Suppliers", 2),
-            'Contact'            => _n("Contact", "Contacts", 2),
-            'Contract'           => _n("Contract", "Contracts", 2),
-            'Document'           => _n("Document", "Documents", 2)),
-         __("Tools") => array(
-            'Project'            => __("Project"),
-            'ProjectTask'        => _n("Project task", "Project tasks", 2),
-            'Reminder'           => _n("Note", "Notes", 2),
-            'RSSFeed'            => __("RSS feed")),
-         __("Administration") => array(
+            'Phone'              => _n("Phone", "Phones", 2)
+         ];
+      }
+      $tabs[__('Assets')] = $assets;
+
+      $assistance = [
+         'Ticket'  => _n("Ticket", "Tickets", 2),
+         'Problem' => _n("Problem", "Problems", 2),
+         'Change'  => _n("Change", "Changes", 2),
+      ];
+      if (!$is_domtab) {
+         $assistance += [
+            'TicketRecurrent'    => __("Recurrent tickets")
+         ];
+      }
+      $tabs[__('Assistance')] = $assistance;
+
+      if (!$is_domtab) {
+         $tabs += [
+            __("Management") => array(
+               'SoftwareLicense'    => _n("License", "Licenses", 2),
+               'Budget'             => _n("Budget", "Budgets", 2),
+               'Supplier'           => _n("Supplier", "Suppliers", 2),
+               'Contact'            => _n("Contact", "Contacts", 2),
+               'Contract'           => _n("Contract", "Contracts", 2),
+               'Document'           => _n("Document", "Documents", 2)),
+            __("Tools") => array(
+               'Project'            => __("Project"),
+               'ProjectTask'        => _n("Project task", "Project tasks", 2),
+               'Reminder'           => _n("Note", "Notes", 2),
+               'RSSFeed'            => __("RSS feed"))
+         ];
+      }
+
+      $administration = [];
+      if (!$is_domtab) {
+         $administration += [
             'User'               => _n("User", "Users", 2),
-            'Group'              => _n("Group", "Groups", 2),
-            'Entity'             => _n("Entity", "Entities", 2),
-            'Profile'            => _n("Profile", "Profiles", 2))
-      );
+            'Group'              => _n("Group", "Groups", 2)
+         ];
+      }
+      $administration['Entity'] = _n("Entity", "Entities", 2);
+      if (!$is_domtab) {
+         $administration += [
+            'Profile'            => _n("Profile", "Profiles", 2)
+         ];
+      }
+      $tabs[__('Administration')] = $administration;
 
       foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
          $isPlugin = isPluginItemType($itemtype);
          if ($isPlugin) {
             $plugin_name = Plugin::getInfo($isPlugin['plugin'], 'name');
 
-            $tab[__("Plugins")][$itemtype] = $plugin_name . ' - ' . $itemtype::getTypeName(Session::getPluralNumber());
+            $tabs[__("Plugins")][$itemtype] = $plugin_name . ' - ' . $itemtype::getTypeName(Session::getPluralNumber());
          }
       }
 
-      return $tab;
-
+      return $tabs;
    }
 
    static function getTypes() {
@@ -1274,4 +1302,54 @@ class PluginFieldsContainer extends CommonDBTM {
       return $opt;
    }
 
+   /**
+    * Get subtypes for specified itemtype.
+    * Was previously retrieved using $item::defineTabs() but
+    * this is not relevant with actual core.
+    *
+    * @param CommonDBTM $item Item instance
+    *
+    * @return array
+    */
+   private static function getSubtypes($item) {
+      switch ($item::getType()) {
+         case Computer::getType():
+            $tabs = [
+               'Computer$1' => __('Operating system')
+            ];
+            break;
+         case Ticket::getType():
+         case Problem::getType():
+            $tabs = [
+               $item::getType() . '$2' => __('Solution')
+            ];
+            break;
+         case Change::getType():
+            $tabs = [
+               'Change$1' => __('Analysis'),
+               'Change$2' => __('Solution'),
+               'Change$3' => __('Plans')
+            ];
+            break;
+         case Entity::getType():
+            $tabs = [
+               'Entity$2' => __('Address'),
+               'Entity$3' => __('Advanced information'),
+               'Entity$4' => __('Notifications'),
+               'Entity$5' => __('Assistance'),
+               'Entity$6' => __('Assets')
+            ];
+            break;
+         default:
+            Toolbox::logDebug('Item type ' . $item::getType() . ' does not have any preconfigured subtypes!');
+            /* For debug purposes
+            $tabs = $item->defineTabs();
+            list($id, ) = each($tabs);
+            // delete first element of array ($main)
+            unset($tabs[$id]);*/
+            break;
+      }
+
+      return $tabs;
+   }
 }
