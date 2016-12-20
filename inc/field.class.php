@@ -514,8 +514,37 @@ class PluginFieldsField extends CommonDBTM {
       $item = $params['item'];
       $options = $params['options'];
 
-      $tab = $_SESSION['glpi_tabs'][strtolower($item::getType())];
-      $mode = (substr($tab, -strlen('$main')) === '$main' ? 'dom' : 'domtab');
+      if (!isset($_SESSION['glpi_tabs'][strtolower($item::getType())])) {
+         return;
+      };
+
+      $subtype = $_SESSION['glpi_tabs'][strtolower($item::getType())];
+      $type = (substr($subtype, -strlen('$main')) === '$main' ? 'dom' : 'domtab');
+
+      //find container (if not exist, do nothing)
+      if (isset($_REQUEST['c_id'])) {
+         $c_id = $_REQUEST['c_id'];
+      } else {
+         $c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype);
+         if ($c_id === false) {
+            $c_id = PluginFieldsContainer::findContainer(get_Class($item)); //tries for 'tab'
+            if ($c_id === false) {
+               return false;
+            }
+         }
+      }
+
+      //need to check if container is usable on this object entity
+      $loc_c = new PluginFieldsContainer;
+      $loc_c->getFromDB($c_id);
+      $entities = array($loc_c->fields['entities_id']);
+      if ($loc_c->fields['is_recursive']) {
+         $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+      }
+
+      if( !in_array($item->fields['entities_id'], $entities)) {
+         return false;
+      }
 
       //parse REQUEST_URI
       if(!isset($_SERVER['REQUEST_URI'])) {
@@ -529,7 +558,7 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //Retrieve dom container
-      $itemtypes = PluginFieldsContainer::getUsedItemtypes($mode, true);
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
       //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
       if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
@@ -540,8 +569,8 @@ class PluginFieldsField extends CommonDBTM {
          $c_id,
          $item::getType(),
          $item->getID(),
-         $mode,
-         $tab
+         $type,
+         $subtype
       );
    }
 
