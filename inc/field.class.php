@@ -771,6 +771,10 @@ JAVASCRIPT;
                || $first_found_p['right'] != CREATE) {
             $canedit = false;
          }
+      } else {
+         if ($first_found_p['right'] != CREATE) {
+            $canedit = false;
+         }
       }
 
       //show all fields

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Fix field update
 - Fix path issue on windows
+- Fix profile restriction issues
 
 ## [1.4.1] - 2016-12-15
 
