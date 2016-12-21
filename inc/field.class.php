@@ -534,11 +534,13 @@ class PluginFieldsField extends CommonDBTM {
 
       $url_ajax = $CFG_GLPI["root_doc"]."/plugins/fields/ajax/load_dom_fields.php";
 
+      $js_selector = ($_SESSION['glpilayout'] == 'lefttab' ? '#page #ui-tabs-1' : '#page #tabsbody');
+
       $JS = <<<JAVASCRIPT
       $( document ).ready(function() {
          var insert_dom{$rand} = function() {
             if ($('#fields_dom_container').length == 0) {
-               var standard_form   = $('#page #ui-tabs-1 table[id*=mainformtable]:last > tbody > tr'),
+               var standard_form   = $('{$js_selector} table[id*=mainformtable]:last > tbody > tr'),
                    simplified_form = $('#page form[name=helpdeskform] tr'),
                    current_form    = null;
 
@@ -768,6 +770,10 @@ JAVASCRIPT;
          if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
                || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray())
                || $first_found_p['right'] != CREATE) {
+            $canedit = false;
+         }
+      } else {
+         if ($first_found_p['right'] != CREATE) {
             $canedit = false;
          }
       }
