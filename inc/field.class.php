@@ -542,12 +542,13 @@ class PluginFieldsField extends CommonDBTM {
          $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
       }
 
-      if( !in_array($item->fields['entities_id'], $entities)) {
+      $current_entity = ($item::getType() == Entity::getType() ? $item->getID() : $item->fields['entities_id']);
+      if (!in_array($current_entity, $entities)) {
          return false;
       }
 
       //parse REQUEST_URI
-      if(!isset($_SERVER['REQUEST_URI'])) {
+      if (!isset($_SERVER['REQUEST_URI'])) {
          return false;
       }
       $current_url = $_SERVER['REQUEST_URI'];
