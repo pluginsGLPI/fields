@@ -658,7 +658,9 @@ class PluginFieldsContainer extends CommonDBTM {
                                  AND `plugin_fields_containers_id` = '".$item['id']."'
                                  AND `right` >= ".READ);
          $first_found = array_shift($found);
-         if ($first_found['right'] == NULL) continue;
+         if ($first_found['right'] == NULL || $first_found['right'] == 0) {
+            continue;
+         }
 
          $jsonitemtypes = json_decode($item['itemtypes']);
          //show more info or not
@@ -1015,7 +1017,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $found       = $profile->find("`profiles_id` = '" . $_SESSION['glpiactiveprofile']['id'] . "'
                                  AND $condition");
             $first_found = array_shift($found);
-            if ($first_found['right'] == NULL) {
+            if ($first_found['right'] == NULL || $first_found['right'] == 0) {
                return false;
             }
          }
@@ -1134,7 +1136,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //prepare data to update
       $data = ['plugin_fields_containers_id' => $c_id];
-      if ($item->isNewItem()) {
+      if (!$item->isNewItem()) {
          //no ID yet while creating
          $data['items_id'] = $item->getID();
       }
