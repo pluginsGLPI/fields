@@ -108,7 +108,8 @@ function plugin_init_fields() {
                                array('addtabon' => array_unique(PluginFieldsContainer::getEntries())));
 
          //include js and css
-         if (file_exists(__DIR__ . '/css/fields.min.css')) {
+         $debug = (isset($_SESSION['glpi_use_mode']) && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
+         if (!$debug && file_exists(__DIR__ . '/css/fields.min.css')) {
             $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.min.css';
          } else {
             $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.css';
@@ -123,7 +124,7 @@ function plugin_init_fields() {
 
          //load drag and drop javascript library on Package Interface
          $PLUGIN_HOOKS['add_javascript']['fields'][] = "js/redips-drag-min.js";
-         if (file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
+         if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
             $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
          } else {
             $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
