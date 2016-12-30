@@ -785,7 +785,9 @@ JAVASCRIPT;
 
          if ($field['type'] === 'header') {
             $html.= "<tr class='tab_bg_2'>";
-            $html.= "<th colspan='4'>".$field['label']."</td>";
+            $field['itemtype'] = self::getType();
+            $txt_label = PluginFieldsLabelTranslation::getLabelFor($field);
+            $html.= "<th colspan='4'>$txt_label</th>";
             $html.= "</tr>";
             $odd = 0;
          } else {
