@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.3] - 2016-12-30
+
+### Changed
+- Fix plugin blocks item update
+- Display translated headers
+- Do notable used minified files when debug mode is active
+
 ## [1.4.2] - 2016-12-21
 
 ### Changed
