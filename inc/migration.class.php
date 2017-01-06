@@ -6,7 +6,9 @@ class PluginFieldsMigration {
       $fields_migration = new self;
 
       if (TableExists("glpi_plugin_customfields_fields")) {
-         if (!$fields_migration->updateFromCustomfields()) return false;
+         if (!$fields_migration->updateFromCustomfields()) {
+            return false;
+         }
       }
 
       return true;

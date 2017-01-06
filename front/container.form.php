@@ -19,7 +19,7 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_REQUEST["purge"])) {
    $container->check($_REQUEST['id'], PURGE);
-   $container->delete($_REQUEST,1);
+   $container->delete($_REQUEST, 1);
    Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.php");
 
 } else if (isset($_POST["update"])) {
@@ -32,7 +32,7 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else {
-   Html::header(__("Additionnal fields", "fields"), $_SERVER['PHP_SELF'] ,
+   Html::header(__("Additionnal fields", "fields"), $_SERVER['PHP_SELF'],
                 "config", "pluginfieldsmenu", "fieldscontainer");
    $container->display(array('id' => $_GET["id"]));
    Html::footer();

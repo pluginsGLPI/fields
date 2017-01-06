@@ -41,15 +41,15 @@ class PluginFieldsField extends CommonDBTM {
 
       $migration->displayMessage("Updating $table");
 
-      if(!FieldExists($table, 'is_active')) {
+      if (!FieldExists($table, 'is_active')) {
          $migration->addField($table, 'is_active', 'bool', array('value' => 1));
          $migration->addKey($table, 'is_active', 'is_active');
       }
-      if(!FieldExists($table, 'is_readonly')) {
-         $migration->addField( $table, 'is_readonly', 'bool', array('default' => false)) ;
+      if (!FieldExists($table, 'is_readonly')) {
+         $migration->addField( $table, 'is_readonly', 'bool', array('default' => false));
          $migration->addKey($table, 'is_readonly', 'is_readonly');
       }
-      if(!FieldExists($table, 'mandatory')) {
+      if (!FieldExists($table, 'mandatory')) {
          $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
       }
       $migration->executeMigration();
@@ -117,7 +117,9 @@ class PluginFieldsField extends CommonDBTM {
          }
       }
 
-      if (isset($oldname)) $input['name'] = $oldname;
+      if (isset($oldname)) {
+         $input['name'] = $oldname;
+      }
 
       return $input;
    }
@@ -194,7 +196,9 @@ class PluginFieldsField extends CommonDBTM {
       //for dropdown, if already exist, link to it
       if (isset($input['type']) && $input['type'] === "dropdown") {
          $found = $this->find("name = '".$input['name']."'");
-         if (!empty($found)) return $input['name'];
+         if (!empty($found)) {
+            return $input['name'];
+         }
       }
 
       //check if field name not already exist and not in conflict with itemtype fields name
@@ -215,6 +219,8 @@ class PluginFieldsField extends CommonDBTM {
 
    /**
     * Get the next ranking for a specified field
+    *
+    * @return integer
    **/
    function getNextRanking() {
       global $DB;
@@ -257,7 +263,7 @@ class PluginFieldsField extends CommonDBTM {
    function defineTabs($options=array()) {
       $ong = array();
       $this->addDefaultFormTab($ong);
-      $this->addStandardTab('PluginFieldsLabelTranslation',$ong, $options);
+      $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
 
       return $ong;
    }
@@ -392,7 +398,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
-      if($this->fields["type"] == "dropdown") {
+      if ($this->fields["type"] == "dropdown") {
          echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/commondropdown.php?ddtype=' . $this->fields['name'] .'dropdown">
                   <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
                      alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
@@ -415,7 +421,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<tr>";
       echo "<td>".__("Read only", "fields")." :</td>";
       echo "<td>";
-      Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
+      Dropdown::showYesNo("is_readonly", $this->fields["is_readonly"]);
       echo "</td>";
       echo "</tr>";
 
@@ -462,7 +468,7 @@ class PluginFieldsField extends CommonDBTM {
       global $CFG_GLPI;
 
       //parse http_referer to get current url (this code is loaded by javacript)
-      if(!isset($_SERVER['HTTP_REFERER'])) {
+      if (!isset($_SERVER['HTTP_REFERER'])) {
          return false;
       }
       $current_url = $_SERVER['HTTP_REFERER'];
@@ -474,9 +480,9 @@ class PluginFieldsField extends CommonDBTM {
       $expl_url = explode("?", $current_url);
 
       //get current id
-      if(isset($expl_url[1])) {
+      if (isset($expl_url[1])) {
          parse_str($expl_url[1], $params);
-         if(isset($params['id'])) {
+         if (isset($params['id'])) {
             $items_id = $params['id'];
          } else {
             $items_id = 0;
@@ -493,7 +499,7 @@ class PluginFieldsField extends CommonDBTM {
          $tmp = explode("/", $expl_url[0]);
          $script_name = array_pop($tmp);
 
-         if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
+         if (in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
             $current_itemtype = "Ticket";
          } else {
             $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
@@ -588,9 +594,9 @@ JAVASCRIPT;
       $expl_url = explode("?", $current_url);
 
       //get current id
-      if(isset($expl_url[1])) {
+      if (isset($expl_url[1])) {
          parse_str($expl_url[1], $params);
-         if(isset($params['id'])) {
+         if (isset($params['id'])) {
             $items_id = $params['id'];
          } else {
             $items_id = 0;
@@ -603,7 +609,7 @@ JAVASCRIPT;
       $tmp = explode("/", $expl_url[0]);
       $script_name = array_pop($tmp);
 
-      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
+      if (in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
          $current_itemtype = "Ticket";
       } else {
          $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
@@ -613,7 +619,9 @@ JAVASCRIPT;
       $itemtypes = PluginFieldsContainer::getUsedItemtypes('domtab', true);
 
       //if no dom containers defined for this itemtype, do nothing
-      if (!in_array($current_itemtype, $itemtypes)) return false;
+      if (!in_array($current_itemtype, $itemtypes)) {
+         return false;
+      }
 
       $rand = mt_rand();
 
@@ -735,7 +743,9 @@ JAVASCRIPT;
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
 
-      if (empty($fields)) return false;
+      if (empty($fields)) {
+         return false;
+      }
 
       //get object associated with this fields
       $tmp = $fields;
@@ -759,7 +769,7 @@ JAVASCRIPT;
       $first_found_p = array_shift($found_p);
 
       // test status for "CommonITILObject" objects
-      if (is_subclass_of($itemtype, "CommonITILObject") ) {
+      if (is_subclass_of($itemtype, "CommonITILObject")) {
          $items_obj = new $itemtype();
          if ($items_id > 0) {
             $items_obj->getFromDB($items_id);
@@ -781,7 +791,7 @@ JAVASCRIPT;
       //show all fields
       $html = "";
       $odd = 0;
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
 
          if ($field['type'] === 'header') {
             $html.= "<tr class='tab_bg_2'>";
@@ -822,7 +832,9 @@ JAVASCRIPT;
 
             //show field
             if ($show_table) {
-               if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
+               if ($odd%2 == 0) {
+                  $html.= "<tr class='tab_bg_2'>";
+               }
 
                $required = ($field['mandatory'] == 1) ? "<span class='red'>*</span>" : '';
 
@@ -938,7 +950,7 @@ JAVASCRIPT;
                      ob_end_clean();
                   } else {
                      $showuserlink = 0;
-                     if (Session::haveRight('user','r')) {
+                     if (Session::haveRight('user', 'r')) {
                         $showuserlink = 1;
                      }
                      $html.= getUserName($value, $showuserlink);
@@ -946,12 +958,16 @@ JAVASCRIPT;
             }
             if ($show_table) {
                $html.= "</td>";
-               if ($odd%2 == 1)  $html.= "</tr>";
+               if ($odd%2 == 1) {
+                  $html.= "</tr>";
+               }
                $odd++;
             }
          }
       }
-      if ($show_table && $odd%2 == 1)  $html.= "</tr>";
+      if ($show_table && $odd%2 == 1) {
+         $html.= "</tr>";
+      }
 
       unset($_SESSION['plugin']['fields']['values_sent']);
 
@@ -995,7 +1011,7 @@ JAVASCRIPT;
       ));
 
       //show field
-      echo self::prepareHtmlFields($fields, 0,  $itemtype, true, false, $massiveaction);
+      echo self::prepareHtmlFields($fields, 0, $itemtype, true, false, $massiveaction);
 
       return true;
    }

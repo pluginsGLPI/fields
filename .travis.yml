@@ -9,13 +9,11 @@ before_script:
   - composer install -o
 #  - mysql -u root -e 'create database glpitest;'
 #  - php tools/cliinstall.php --lang=en_US --db=glpitest --user=root --tests
-  - pear install pear/PHP_CodeSniffer
-  - phpenv rehash
 
 script:
 #  - mysql -u root -e 'select version();'
 #  - phpunit --verbose
-  - phpcs -p --ignore=vendor --ignore=js --standard=tools/phpcs-rules.xml  .
+  - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
 
 matrix:
   include:

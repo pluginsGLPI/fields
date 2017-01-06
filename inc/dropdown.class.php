@@ -12,8 +12,7 @@ class PluginFieldsDropdown {
     *
     * @return void
     */
-   static function install(Migration $migration, $version)
-   {
+   static function install(Migration $migration, $version) {
       $migration->displayMessage(__("Updating generated dropdown files", "fields"));
       // -> 0.90-1.3: generated class moved
       // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
@@ -64,15 +63,33 @@ class PluginFieldsDropdown {
    static function create($input) {
       //get class template
       $template_class = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
-      if ($template_class === false) return false;
+      if ($template_class === false) {
+         return false;
+      }
 
       $classname = self::getClassname($input['name']);
 
       //create dropdown class file
-      $template_class = str_replace("%%CLASSNAME%%", $classname,      $template_class);
-      $template_class = str_replace("%%FIELDNAME%%", $input['name'],  $template_class);
-      $template_class = str_replace("%%FIELDID%%",   $input['id'],    $template_class);
-      $template_class = str_replace("%%LABEL%%",     $input['label'], $template_class);
+      $template_class = str_replace(
+         "%%CLASSNAME%%",
+         $classname,
+         $template_class
+      );
+      $template_class = str_replace(
+         "%%FIELDNAME%%",
+         $input['name'],
+         $template_class
+      );
+      $template_class = str_replace(
+         "%%FIELDID%%",
+         $input['id'],
+         $template_class
+      );
+      $template_class = str_replace(
+         "%%LABEL%%",
+         $input['label'],
+         $template_class
+      );
       $class_filename = $input['name']."dropdown.class.php";
       if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename",
                             $template_class) === false) {
@@ -98,7 +115,9 @@ class PluginFieldsDropdown {
 
       //get form template
       $template_form = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.form.tpl");
-      if ($template_form === false) return false;
+      if ($template_form === false) {
+         return false;
+      }
 
       //create dropdown form file
       $template_form = str_replace("%%CLASSNAME%%", $classname, $template_form);
@@ -110,7 +129,9 @@ class PluginFieldsDropdown {
       }
 
       //load class manually on plugin installation
-      if (!class_exists($classname)) require_once $class_filename;
+      if (!class_exists($classname)) {
+         require_once $class_filename;
+      }
 
       //call install method (create table)
       if ($classname::install() === false) {
@@ -136,7 +157,7 @@ class PluginFieldsDropdown {
 
       //remove class file for this dropdown
       if (file_exists($class_filename)) {
-         if (unlink($class_filename) === false)  {
+         if (unlink($class_filename) === false) {
             Toolbox::logDebug("Error : dropdown class file creation - ".$dropdown_name."dropdown.class.php");
             return false;
          }
@@ -154,7 +175,7 @@ class PluginFieldsDropdown {
       //remove front.form file for this dropdown
       $form_filename = PLUGINFIELDS_FRONT_PATH . "/".$dropdown_name."dropdown.form.php";
       if (file_exists($form_filename)) {
-         if(unlink($form_filename) === false) {
+         if (unlink($form_filename) === false) {
             Toolbox::logDebug("Error : dropdown form file removing - ".$dropdown_name."dropdown.form.php");
             return false;
          }

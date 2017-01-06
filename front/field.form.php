@@ -19,7 +19,7 @@ if (isset($_POST["add"])) {
    Html::back();
 } else if (isset($_REQUEST["purge"])) {
    $field->check($_REQUEST['id'], PURGE);
-   $field->delete($_REQUEST,1);
+   $field->delete($_REQUEST, 1);
    Html::back();
 } else if (isset($_POST["update"])) {
    $field->check($_POST['id'], UPDATE);
