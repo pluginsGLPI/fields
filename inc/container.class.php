@@ -1118,7 +1118,7 @@ class PluginFieldsContainer extends CommonDBTM {
          return $item->plugin_fields_data = $data;
       }
 
-      return $item->plugin_fields_data = [];
+      return;
    }
 
    /**
