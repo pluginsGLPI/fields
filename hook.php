@@ -272,7 +272,7 @@ function plugin_fields_rule_matched($params) {
                         $field                        => $value,
                         'items_id'                    => $agent->fields['computers_id']
                      ),
-                     Rule::getType()
+                     Computer::getType()
                   );
                }
             }
