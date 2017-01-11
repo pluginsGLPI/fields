@@ -14,8 +14,7 @@ class PluginFieldsContainer extends \DbTestCase {
          ->given($this->newTestedInstance)
          ->then
             ->array($this->testedInstance->getSearchOptions())
-               ->hasSize(8)
-      ;
+               ->hasSize(8);
    }
 
    public function testNewContainer() {
