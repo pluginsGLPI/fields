@@ -30,7 +30,8 @@ banned = [
     '.gh_token',
     '.tx',
     'tools',
-    'tests'
+    'tests',
+    '.atoum.php'
 ]
 gh_orga = 'pluginsGLPI'
 script_version = '1.0.0'
