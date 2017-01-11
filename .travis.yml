@@ -1,11 +1,23 @@
 language: php
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - nightly
 
 env:
-  - DB=mysql
+  global:
+    - DB=mysql
+  matrix:
+     #- GLPIVER=9.1.2 ==> not released yet!
+    - GLPIVER=9.1/bugfixes
+    - GLPIVER=master
 
 before_script:
   - composer self-update
-  - git clone https://github.com/glpi-project/glpi -b 9.1 ../glpi && cd ../glpi
+  - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
   - composer install --no-dev
   - mysql -u root -e 'create database glpitest;'
   - php tools/cliinstall.php --db=glpi-test --user=travis --tests
@@ -20,37 +32,9 @@ script:
   - ./vendor/bin/atoum -bf tests/bootstrap.php -d tests/units/
 
 matrix:
-  include:
+  exclude:
     - php: 5.4
-      addons:
-        mariadb: 5.5
-    - php: 5.5
-      addons:
-        mariadb: 5.5
-#    - php: 5.6
-#      addons:
-#        mariadb: 5.5
-#    - php: 5.6
-#      addons:
-#        mariadb: 10.0
-    - php: 5.6
-      addons:
-        mariadb: 10.1
-#    - php: 7.0
-#      addons:
-#        mariadb: 10.0
-    - php: 7.0
-      addons:
-        mariadb: 10.1
-#    - php: 7.1
-#      addons:
-#        mariadb: 10.0
-    - php: 7.1
-      addons:
-        mariadb: 10.1
-    - php: nightly
-      addons:
-        mariadb: 10.1
+      env: GLPIVER=master
   allow_failures:
     - php: nightly
 
