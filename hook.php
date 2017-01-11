@@ -264,9 +264,14 @@ function plugin_fields_rule_matched($params) {
                   $agent->getFromDB($agents_id);
 
                   // update current field
-                  $container->updateFieldsValues(array('plugin_fields_containers_id' => $data['id'],
-                                                       $field     => $value,
-                                                       'items_id' => $agent->fields['computers_id']));
+                  $container->updateFieldsValues(
+                     array(
+                        'plugin_fields_containers_id' => $data['id'],
+                        $field                        => $value,
+                        'items_id'                    => $agent->fields['computers_id']
+                     ),
+                     Computer::getType()
+                  );
                }
             }
          }
