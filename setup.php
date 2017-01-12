@@ -150,6 +150,9 @@ function plugin_init_fields() {
                                                                      "preItemPurge"];
          }
       }
+
+      // Check class and front files for existing containers and dropdown fields
+      plugin_fields_checkFiles();
    }
 }
 
@@ -190,9 +193,6 @@ function plugin_fields_check_prerequisites() {
       echo "PHP 5.4.0 or higher is required";
       return false;
    }
-
-   // Check class and front files for existing containers and dropdown fields
-   plugin_fields_checkFiles();
 
    return true;
 }
