@@ -183,7 +183,11 @@ function plugin_version_fields() {
  */
 function plugin_fields_check_prerequisites() {
    if (version_compare(GLPI_VERSION, '9.1.2', 'lt')) {
-      echo "This plugin requires GLPI 9.1.2";
+      if (method_exists('Plugin', 'messageIncompatible')) {
+         echo Plugin::messageIncompatible('core', '9.1.2');
+      } else {
+         echo "This plugin requires GLPI 9.1.2";
+      }
       return false;
    }
 
@@ -193,7 +197,11 @@ function plugin_fields_check_prerequisites() {
    }
 
    if (version_compare(PHP_VERSION, '5.4.0', 'lt')) {
-      echo "PHP 5.4.0 or higher is required";
+      if (method_exists('Plugin', 'messageIncompatible')) {
+         echo Plugin::messageIncompatible('php', '5.4.0');
+      } else {
+         echo "PHP 5.4.0 or higher is required";
+      }
       return false;
    }
 
