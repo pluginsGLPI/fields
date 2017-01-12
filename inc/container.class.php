@@ -1044,8 +1044,8 @@ class PluginFieldsContainer extends CommonDBTM {
          if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
             return true;
          }
+         return $item->input = array();
       }
-      return $item->input = array();
    }
 
    /**
