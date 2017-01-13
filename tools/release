@@ -307,7 +307,7 @@ def create_gh_release(archive, gh_id, plugin_name, ver):
 
     #create release if it does not exists
     if gh_id is None and gh_release is None:
-        is_prerelease = False if commit else True
+        is_prerelease = True if commit else False
         gh_release = gh_repo.create_git_release(
             ver,
             'GLPi %s %s' % (plugin_name, ver),
