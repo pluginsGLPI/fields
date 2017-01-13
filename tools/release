@@ -228,7 +228,7 @@ def _do_build(repo, ver):
             loctxt = ''
             if local:
                 loctxt = 'locally '
-            msg = 'Relase %s already %sexists' % (rel_name, loctxt)
+            msg = 'Release %s already %sexists' % (rel_name, loctxt)
 
         if ascexists:
             loctxt = ''
