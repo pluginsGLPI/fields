@@ -1183,7 +1183,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $current_entity = ($item::getType() == Entity::getType() ? $item->getID() : $item->fields['entities_id']);
-      if( !in_array($current_entity, $entities)) {
+      if (!in_array($current_entity, $entities)) {
          return false;
       }
 

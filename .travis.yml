@@ -28,7 +28,7 @@ before_script:
 
 script:
   - mysql -u root -e 'select version();'
-  - vendor/bin/phpcs -p --ignore=vendor --ignore=js --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
+  - vendor/bin/phpcs -p --ignore=vendor --ignore=js --ignore=css --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
   - ./vendor/bin/atoum -bf tests/bootstrap.php -d tests/units/
 
 matrix:
