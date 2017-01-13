@@ -34,7 +34,7 @@ banned = [
     '.atoum.php'
 ]
 gh_orga = 'pluginsGLPI'
-script_version = '1.0.0'
+script_version = '1.0.1'
 
 def print_err(msg):
     """
@@ -403,8 +403,9 @@ def compile_mo(build_dir):
                 p1.communicate()
 
 def minify(build_dir):
-    if os.path.exists(os.path.join(plugin_dir, 'vendor')):
-        robo = [os.path.join(plugin_dir, 'vendor', 'bin', 'robo'), 'minify']
+    robo_path = os.path.join(plugin_dir, 'vendor', 'bin', 'robo')
+    if os.path.exists(robo_path):
+        robo = [robo_path, 'minify']
         if not verbose:
             robo.insert(-1, '-q')
 
@@ -416,7 +417,7 @@ def minify(build_dir):
             cwd=build_dir
         )
         p1.communicate()
-    elif verbose:
+    else:
         print_err("Robo.li is not installed; cannot minify!")
 
 def valid_commit(repo, c):
