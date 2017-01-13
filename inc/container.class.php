@@ -253,9 +253,9 @@ class PluginFieldsContainer extends CommonDBTM {
          //check for already exist domtab container with this itemtype on this tab
          $found = $this->find("`type`='domtab' AND `subtype`='{$input['subtype']}'");
          if (count($found) > 0) {
-            foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
-               foreach( json_decode( $founditemtypes ) as $founditemtype ) {
-                  if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+            foreach (array_column( $found, 'itemtypes' ) as $founditemtypes) {
+               foreach (json_decode( $founditemtypes ) as $founditemtype) {
+                  if (in_array( $founditemtype, $input['itemtypes'])) {
                      Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", "fields"), false, ERROR);
                      return false;
                   }
@@ -949,8 +949,8 @@ class PluginFieldsContainer extends CommonDBTM {
     * check data inserted
     * display a message when not ok
     *
-    * @param array $data            Data send by form
-    * @param string $itemtype       Item type
+    * @param array   $data          Data send by form
+    * @param string  $itemtype      Item type
     * @param boolean $massiveaction ?
     *
     * @return boolean
