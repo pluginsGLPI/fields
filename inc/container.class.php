@@ -249,6 +249,21 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
+      if ($input['type'] === "domtab") {
+         //check for already exist domtab container with this itemtype on this tab
+         $found = $this->find("`type`='domtab' AND `subtype`='{$input['subtype']}'");
+         if (count($found) > 0) {
+            foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
+               foreach( json_decode( $founditemtypes ) as $founditemtype ) {
+                  if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+                     Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", "fields"), false, ERROR);
+                     return false;
+                  }
+               }
+            }
+         }
+      }
+
       //construct field name by processing label (remove non alphanumeric char and any trailing s)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", preg_replace('/s*$/', '', $input['label'])));
       // if empty, uses a random number
@@ -1044,8 +1059,8 @@ class PluginFieldsContainer extends CommonDBTM {
          if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
             return true;
          }
+         return $item->input = array();
       }
-      return $item->input = array();
    }
 
    /**
