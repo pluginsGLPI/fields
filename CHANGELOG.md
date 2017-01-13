@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.5] - 2017-01-13
+- Set minimal PHP version to 5.4
+- Prevent values to be kept from a new ticket to another
+- Do not check files if plugin is not initialized
+- Limit to one domtab per tab
+
 ## [1.4.4] - 2017-01-11
 - Fix issue on updating items on some cases
 - Fix issue on creating item on some cases
