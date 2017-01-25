@@ -489,16 +489,9 @@ class PluginFieldsField extends CommonDBTM {
       $field_obj = new self();
       $fields = $field_obj->find($condition." AND is_active = 1", "ranking");
 
-      if ($subtype == 'TicketTask$1') {
-         echo "<table>";
-      } else {
-         echo "<table class='tab_cadre_fixe'>";
-      }
       echo "<input type='hidden' name='_plugin_fields_type' value='$type' />";
       echo "<input type='hidden' name='_plugin_fields_subtype' value='$subtype' />";
       echo self::prepareHtmlFields($fields, $items_id, $itemtype);
-      echo "</table>";
-
    }
 
    /**
