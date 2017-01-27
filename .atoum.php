@@ -8,7 +8,7 @@ if (!file_exists($coverage_dir)) {
 }
 
 $coverageField = new atoum\report\fields\runner\coverage\html(
-    'GLPi Fields Plugin',
+    'GLPI Fields Plugin',
     $coverage_dir
 );
 $coverageField->setRootUrl('file://' . realpath($coverage_dir));
