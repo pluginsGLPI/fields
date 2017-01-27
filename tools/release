@@ -310,7 +310,7 @@ def create_gh_release(archive, gh_id, plugin_name, ver):
         is_prerelease = True if commit else False
         gh_release = gh_repo.create_git_release(
             ver,
-            'GLPi %s %s' % (plugin_name, ver),
+            'GLPI %s %s' % (plugin_name, ver),
             'Automated release from release script',
             True,
             is_prerelease
@@ -532,7 +532,7 @@ def main():
     """
     global verbose, tagrefs, force, extra, assume_yes, sign, plugin_name, github, gh_cred_file
 
-    parser = argparse.ArgumentParser(description='GLPi plugins release script', version=script_version)
+    parser = argparse.ArgumentParser(description='GLPI plugins release script', version=script_version)
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         '-r',
