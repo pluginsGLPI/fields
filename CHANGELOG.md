@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.0] - unreleased
-- Use post_item_form hoo instead of javascript to display fields
+
+**Compatible with GLPI 9.1.2 and above**
+
+- Use post_item_form hook instead of javascript to display fields
+- Fix (and limit) dom tab possibilities
 
 ## [1.4.5] - 2017-01-13
 - Set minimal PHP version to 5.4
