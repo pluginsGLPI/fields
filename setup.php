@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.4.5');
+define ('PLUGIN_FIELDS_VERSION', '1.5.0');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
