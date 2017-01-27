@@ -5,6 +5,7 @@ import os, sys, argparse, re, git, subprocess
 import tarfile, shutil, gitdb, time, urllib2, json
 from datetime import datetime
 from termcolor import colored
+from lxml import etree
 
 plugin_dir = os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))
@@ -29,9 +30,11 @@ banned = [
     '.gh_token',
     '.tx',
     'tools',
-    'tests'
+    'tests',
+    '.atoum.php'
 ]
 gh_orga = 'pluginsGLPI'
+script_version = '1.0.1'
 
 def print_err(msg):
     """
@@ -225,7 +228,7 @@ def _do_build(repo, ver):
             loctxt = ''
             if local:
                 loctxt = 'locally '
-            msg = 'Relase %s already %sexists' % (rel_name, loctxt)
+            msg = 'Release %s already %sexists' % (rel_name, loctxt)
 
         if ascexists:
             loctxt = ''
@@ -304,10 +307,10 @@ def create_gh_release(archive, gh_id, plugin_name, ver):
 
     #create release if it does not exists
     if gh_id is None and gh_release is None:
-        is_prerelease = False if commit else True
+        is_prerelease = True if commit else False
         gh_release = gh_repo.create_git_release(
             ver,
-            'GLPi %s %s' % (plugin_name, ver),
+            'GLPI %s %s' % (plugin_name, ver),
             'Automated release from release script',
             True,
             is_prerelease
@@ -400,8 +403,9 @@ def compile_mo(build_dir):
                 p1.communicate()
 
 def minify(build_dir):
-    if os.path.exists(os.path.join(build_dir, 'vendor')):
-        robo = ['./vendor/bin/robo', 'minify']
+    robo_path = os.path.join(plugin_dir, 'vendor', 'bin', 'robo')
+    if os.path.exists(robo_path):
+        robo = [robo_path, 'minify']
         if not verbose:
             robo.insert(-1, '-q')
 
@@ -413,7 +417,7 @@ def minify(build_dir):
             cwd=build_dir
         )
         p1.communicate()
-    elif verbose:
+    else:
         print_err("Robo.li is not installed; cannot minify!")
 
 def valid_commit(repo, c):
@@ -494,8 +498,33 @@ def check_version(buildver):
     if not found == buildver:
         print_err('Plugin version check has failed (%s but %s found)!' % (buildver, found))
         return False
+
+    #check plugins website XML file
+    xmlfile = os.path.join(plugin_dir, '%s.xml' % plugin_name)
+    if not os.path.exists(xmlfile):
+        xmlfile = os.path.join(plugin_dir, 'plugin.xml')
+        if not os.path.exists(xmlfile):
+            xmlfile = None
+
+    if xmlfile != None:
+        if verbose:
+            print 'XML file found in %s' % xmlfile
+        try:
+            xmldoc = etree.parse(xmlfile)
+            for version in xmldoc.getiterator('num'):
+                if version.text == buildver:
+                    if verbose:
+                        print '%s found in the XML file!' % buildver
+                    return True
+            print_err('%s *NOT* found in the XML file %s' % (buildver, xmlfile))
+        except etree.XMLSyntaxError as err:
+            print_err('%s is *NOT* XML valid!' % (xmlfile))
+            if verbose:
+                print format(err)
+            return False
     else:
-        return True
+        print_err('Plugins website configuration file has not been found!')
+        return False
 
 def main():
     """
@@ -503,11 +532,11 @@ def main():
     """
     global verbose, tagrefs, force, extra, assume_yes, sign, plugin_name, github, gh_cred_file
 
-    parser = argparse.ArgumentParser(description='Release plugin')
+    parser = argparse.ArgumentParser(description='GLPI plugins release script', version=script_version)
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
-        '-v',
-        '--version',
+        '-r',
+        '--release',
         help='Version to release'
     )
     parser.add_argument(
@@ -515,6 +544,12 @@ def main():
         '--nogithub',
         help="DO NOT Create github draft release",
         action='store_false'
+    )
+    parser.add_argument(
+        '-C',
+        '--check-only',
+        help="Only do chec, does not release anything",
+        action='store_true'
     )
     group.add_argument(
         '-p',
@@ -591,6 +626,9 @@ def main():
         )
     assume_yes=args.assume_yes
 
+    if args.check_only:
+        print '*** Entering *check-only* mode ***'
+
     #check if dist_dir exists
     if not os.path.exists(dist_dir):
         os.makedirs(dist_dir)
@@ -602,29 +640,29 @@ def main():
             compile_mo(plugin_repo)
         if args.minify:
             minify(plugin_repo)
-    elif (args.extra or args.commit) and (not args.extra or not args.commit or not args.version):
+    elif (args.extra or args.commit) and (not args.extra or not args.commit or not args.release):
         print_err('You have to specify --version --commit and --extra all together')
         sys.exit(1)
-    elif args.commit and args.version and args.extra:
+    elif args.commit and args.release and args.extra:
         if valid_commit(repo, args.commit):
             if verbose:
                 print 'Commit is valid'
             build = True
-            buildver = args.version
+            buildver = args.release
             extra = args.extra
         else:
             print_err('Invalid commit ref %s' % args.commit)
-    elif args.version:
-        if not valid_version(args.version):
-            print_err('%s is not a valid version number!' % args.version)
+    elif args.release:
+        if not valid_version(args.release):
+            print_err('%s is not a valid version number!' % args.release)
             sys.exit(1)
         else:
             #check if specified version exists
-            if not is_existing_version(args.version):
-                print_err('%s does not exist!' % args.version)
+            if not is_existing_version(args.release):
+                print_err('%s does not exist!' % args.release)
             else:
                 build = True
-                buildver = args.version
+                buildver = args.release
     elif args.propose:
         propose_version()
     else:
@@ -637,7 +675,7 @@ def main():
             )
 
     if build:
-        if check_version(buildver):
+        if check_version(buildver) and args.check_only == False:
             _do_build(repo, buildver)
 
 if __name__ == "__main__":

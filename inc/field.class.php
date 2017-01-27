@@ -41,15 +41,15 @@ class PluginFieldsField extends CommonDBTM {
 
       $migration->displayMessage("Updating $table");
 
-      if(!FieldExists($table, 'is_active')) {
+      if (!FieldExists($table, 'is_active')) {
          $migration->addField($table, 'is_active', 'bool', array('value' => 1));
          $migration->addKey($table, 'is_active', 'is_active');
       }
-      if(!FieldExists($table, 'is_readonly')) {
-         $migration->addField( $table, 'is_readonly', 'bool', array('default' => false)) ;
+      if (!FieldExists($table, 'is_readonly')) {
+         $migration->addField( $table, 'is_readonly', 'bool', array('default' => false));
          $migration->addKey($table, 'is_readonly', 'is_readonly');
       }
-      if(!FieldExists($table, 'mandatory')) {
+      if (!FieldExists($table, 'mandatory')) {
          $migration->addField($table, 'mandatory', 'bool', array('value' => 0));
       }
       $migration->executeMigration();
@@ -117,7 +117,9 @@ class PluginFieldsField extends CommonDBTM {
          }
       }
 
-      if (isset($oldname)) $input['name'] = $oldname;
+      if (isset($oldname)) {
+         $input['name'] = $oldname;
+      }
 
       return $input;
    }
@@ -125,7 +127,6 @@ class PluginFieldsField extends CommonDBTM {
    function pre_deleteItem() {
       global $DB;
 
-      //TODO: remove labels translations
       //remove field in container table
       if ($this->fields['type'] !== "header" && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])) {
@@ -195,7 +196,9 @@ class PluginFieldsField extends CommonDBTM {
       //for dropdown, if already exist, link to it
       if (isset($input['type']) && $input['type'] === "dropdown") {
          $found = $this->find("name = '".$input['name']."'");
-         if (!empty($found)) return $input['name'];
+         if (!empty($found)) {
+            return $input['name'];
+         }
       }
 
       //check if field name not already exist and not in conflict with itemtype fields name
@@ -216,6 +219,8 @@ class PluginFieldsField extends CommonDBTM {
 
    /**
     * Get the next ranking for a specified field
+    *
+    * @return integer
    **/
    function getNextRanking() {
       global $DB;
@@ -258,7 +263,7 @@ class PluginFieldsField extends CommonDBTM {
    function defineTabs($options=array()) {
       $ong = array();
       $this->addDefaultFormTab($ong);
-      $this->addStandardTab('PluginFieldsLabelTranslation',$ong, $options);
+      $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
 
       return $ong;
    }
@@ -393,7 +398,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Html::autocompletionTextField($this, 'default_value',
                                     array('value' => $this->fields["default_value"]));
-      if($this->fields["type"] == "dropdown") {
+      if ($this->fields["type"] == "dropdown") {
          echo '<a href="'.$GLOBALS['CFG_GLPI']['root_doc'].'/plugins/fields/front/commondropdown.php?ddtype=' . $this->fields['name'] .'dropdown">
                   <img src="'.$GLOBALS['CFG_GLPI']['root_doc'].'/pics/options_search.png" class="pointer"
                      alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'" /></a>';
@@ -416,7 +421,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<tr>";
       echo "<td>".__("Read only", "fields")." :</td>";
       echo "<td>";
-      Dropdown::showYesNo("is_readonly",$this->fields["is_readonly"]);
+      Dropdown::showYesNo("is_readonly", $this->fields["is_readonly"]);
       echo "</td>";
       echo "</tr>";
 
@@ -458,255 +463,18 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
-
-   static function showForDomContainer() {
-      global $CFG_GLPI;
-
-      //parse http_referer to get current url (this code is loaded by javacript)
-      if(!isset($_SERVER['HTTP_REFERER'])) {
-         return false;
-      }
-      $current_url = $_SERVER['HTTP_REFERER'];
-      if (strpos($current_url, ".form.php") === false
-            && strpos($current_url, ".injector.php") === false
-            && strpos($current_url, ".public.php") === false) {
-         return false;
-      }
-      $expl_url = explode("?", $current_url);
-
-      //get current id
-      if(isset($expl_url[1])) {
-         parse_str($expl_url[1], $params);
-         if(isset($params['id'])) {
-            $items_id = $params['id'];
-         } else {
-            $items_id = 0;
-         }
-      } else {
-         $items_id = 0;
-      }
-
-      //get itemtype
-      if (isset($params['itemtype'])) {
-         //URL param in a object in plugin genericobject
-         $current_itemtype = $params['itemtype'];
-      } else {
-         $tmp = explode("/", $expl_url[0]);
-         $script_name = array_pop($tmp);
-
-         if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
-            $current_itemtype = "Ticket";
-         } else {
-            $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
-         }
-      }
-
-      //Retrieve dom container
-      $itemtypes = PluginFieldsContainer::getUsedItemtypes('dom', true);
-
-      //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-      if (!in_array(strtolower($current_itemtype), array_map('strtolower', $itemtypes))) {
-         return false;
-      }
-
-      $item = new $current_itemtype;
-      $item->getFromDB($items_id);
-
-      if ($items_id >= 1) {
-         $eq = -2; // have a <tr> for delete item
-      } else {
-         $eq = -1;
-      }
-
-      if ($item instanceof Ticket) {
-         $eq = -3;
-      }
-
-      if (!$item->can($items_id, UPDATE)) {
-         $eq++;
-      }
-
-      // For genericobject, display fields before date_mod
-      if (isset($params['itemtype'])) {
-         $eq--;
-      }
-
-      $rand = mt_rand();
-
-      $url_ajax = $CFG_GLPI["root_doc"]."/plugins/fields/ajax/load_dom_fields.php";
-
-      $js_selector = ($_SESSION['glpilayout'] == 'lefttab' ? '#page #ui-tabs-1' : '#page #tabsbody');
-
-      $JS = <<<JAVASCRIPT
-      $( document ).ready(function() {
-         var insert_dom{$rand} = function() {
-            if ($('#fields_dom_container').length == 0) {
-               var standard_form   = $('{$js_selector} table[id*=mainformtable]:last > tbody > tr'),
-                   simplified_form = $('#page form[name=helpdeskform] tr'),
-                   current_form    = null;
-
-               if (standard_form.length) {
-                  current_form = standard_form;
-               } else {
-                  current_form = simplified_form
-               }
-
-               current_form.eq({$eq}) // before last tr
-                  .before('<tr><td style=\"padding:0\" colspan=\"4\" id=\"fields_dom_container\"></td></tr>');
-
-               $('#fields_dom_container').load('{$url_ajax}', {
-                  'itemtype': '{$current_itemtype}',
-                  'items_id': '{$items_id}'
-               });
-            }
-         };
-
-         $('.ui-tabs-panel:visible').ready(function() {
-            insert_dom{$rand}();
-         })
-
-         $('#tabspanel + div.ui-tabs').on('tabsload', function() {
-            setTimeout(function() {
-               insert_dom{$rand}();
-            }, 300);
-         });
-
-      });
-JAVASCRIPT;
-      echo $JS;
-   }
-
-   static function showForDomtabContainer() {
-      global $CFG_GLPI;
-
-      //parse http_referer to get current url (this code is loaded by javacript)
-      $current_url = $_SERVER['HTTP_REFERER'];
-      if (strpos($current_url, ".form.php") === false
-            && strpos($current_url, ".injector.php") === false
-            && strpos($current_url, ".public.php") === false) {
-         return false;
-      }
-      $expl_url = explode("?", $current_url);
-
-      //get current id
-      if(isset($expl_url[1])) {
-         parse_str($expl_url[1], $params);
-         if(isset($params['id'])) {
-            $items_id = $params['id'];
-         } else {
-            $items_id = 0;
-         }
-      } else {
-         $items_id = 0;
-      }
-
-      //get itemtype
-      $tmp = explode("/", $expl_url[0]);
-      $script_name = array_pop($tmp);
-
-      if(in_array($script_name, array("helpdesk.public.php","tracking.injector.php"))) {
-         $current_itemtype = "Ticket";
-      } else {
-         $current_itemtype = ucfirst(str_replace(".form.php", "", $script_name));
-      }
-
-      //Retrieve dom container
-      $itemtypes = PluginFieldsContainer::getUsedItemtypes('domtab', true);
-
-      //if no dom containers defined for this itemtype, do nothing
-      if (!in_array($current_itemtype, $itemtypes)) return false;
-
-      $rand = mt_rand();
-
-      $url_ajax = $CFG_GLPI["root_doc"]."/plugins/fields/ajax/load_dom_fields.php";
-
-      $JS = <<<JAVASCRIPT
-      jQuery(document).ready(function($) {
-         var dom_inserted = false;
-
-         var insert_dom_tab{$rand} = function(jqui_tab, current_glpi_tab) {
-
-            // escape $ in tab name
-            //current_glpi_tab = current_glpi_tab.replace('$', '\\\\$');
-
-            setTimeout(function() {
-               // tabs with form
-               var selector = '#'+jqui_tab+' form:first-child input[name=update]';
-               selector+= ', #'+jqui_tab+' form:first-child input[name=add]';
-               selector+= ', #'+jqui_tab+' #mainformtable > tbody > tr:last-child';
-               var found = insert_html$rand(selector, current_glpi_tab);
-
-               //tabs without form
-               if (!found) {
-                  insert_html$rand('#'+jqui_tab+' a.vsubmit:first-child', current_glpi_tab);
-               }
-            }, 500)
-         };
-
-         var insert_html{$rand} = function(selector, current_glpi_tab) {
-            if (dom_inserted) return true;
-
-            var found = false;
-            jQuery(selector).each(function(index, el) {
-               if (!found) {
-                  element = jQuery(this);
-                  rand = Math.round(Math.random() * 1000000);
-
-                  var pos_to_insert = element.closest('tr');
-                  if (el.tagName === 'TR') pos_to_insert = element;
-                  pos_to_insert.before(
-                     '<tr><td style=\"padding:0\" colspan=\"6\"><div id=\"tabdom_container'+rand+'\">.</div></td></tr>');
-
-                  jQuery('#tabdom_container'+rand)
-                     .load('{$url_ajax}',
-                        {
-                           itemtype: '$current_itemtype',
-                           items_id: '$items_id',
-                           type:     'domtab',
-                           subtype:  current_glpi_tab
-                        }
-                     );
-
-                  dom_inserted = true;
-                  found = true;
-               }
-            });
-
-            return found;
-         };
-
-         var findtab_and_insert = function () {
-            //get active tab index
-            var jqui_tab = 'ui-tabs-'+($('div.ui-tabs').tabs( 'option', 'active' ) + 1);
-
-            //get active tab glpi type
-            var current_glpi_tab = $('div.ui-tabs li.ui-tabs-active a')
-                                    .attr('href')
-                                    .match(/&_glpi_tab=(.*)&id=/)[1];
-
-            // add html in dom
-            insert_dom_tab{$rand}(jqui_tab, current_glpi_tab);
-         };
-
-         $('.ui-tabs-panel:visible').ready(function() {
-            findtab_and_insert();
-         })
-
-         $('#tabspanel + div.ui-tabs').on('tabsload', function() {
-            setTimeout(function() {
-               findtab_and_insert();
-            }, 300);
-         });
-      });
-JAVASCRIPT;
-      echo $JS;
-   }
-
-   static function AjaxForDomContainer($itemtype, $items_id, $type = "dom", $subtype = "") {
-
-      //retieve dom containers associated to this itemtype
-      $c_id = PluginFieldsContainer::findContainer($itemtype, $type, $subtype);
-
+   /**
+    * Display dom container
+    *
+    * @param integer $c_id     Container's ID
+    * @param string  $itemtype Item type
+    * @param integer $items_id Item ID
+    * @param string  $type     Type (either 'dom' or 'domtab'
+    * @param string  $subtype  Requested subtype (used for domtab only)
+    *
+    * @return void
+    */
+   static private function showDomContainer($c_id, $itemtype, $items_id, $type = "dom", $subtype = "") {
       if (is_array($c_id)) {
          $condition = "plugin_fields_containers_id IN (".implode(", ", $c_id).")";
       } else {
@@ -721,22 +489,91 @@ JAVASCRIPT;
       $field_obj = new self();
       $fields = $field_obj->find($condition." AND is_active = 1", "ranking");
 
-      if ($subtype == 'TicketTask$1') {
-         echo "<table>";
-      } else {
-         echo "<table class='tab_cadre_fixe'>";
-      }
       echo "<input type='hidden' name='_plugin_fields_type' value='$type' />";
-      // echo $html_fields = str_replace("\n", "", self::prepareHtmlFields($fields, $items_id));
+      echo "<input type='hidden' name='_plugin_fields_subtype' value='$subtype' />";
       echo self::prepareHtmlFields($fields, $items_id, $itemtype);
-      echo "</table>";
    }
 
+   /**
+    * Display field sin any existing tab
+    *
+    * @param array $params [item, options]
+    *
+    * @return void
+    */
+   static function showForTab($params) {
+      global $CFG_GLPI;
+
+      $item = $params['item'];
+      $options = $params['options'];
+
+      if (!isset($_SESSION['glpi_tabs'][strtolower($item::getType())])) {
+         return;
+      };
+
+      $subtype = $_SESSION['glpi_tabs'][strtolower($item::getType())];
+      $type = (substr($subtype, -strlen('$main')) === '$main' ? 'dom' : 'domtab');
+
+      //find container (if not exist, do nothing)
+      if (isset($_REQUEST['c_id'])) {
+         $c_id = $_REQUEST['c_id'];
+      } else {
+         $c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype);
+         if ($c_id === false) {
+            $c_id = PluginFieldsContainer::findContainer(get_Class($item)); //tries for 'tab'
+            if ($c_id === false) {
+               return false;
+            }
+         }
+      }
+
+      //need to check if container is usable on this object entity
+      $loc_c = new PluginFieldsContainer;
+      $loc_c->getFromDB($c_id);
+      $entities = array($loc_c->fields['entities_id']);
+      if ($loc_c->fields['is_recursive']) {
+         $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+      }
+
+      $current_entity = ($item::getType() == Entity::getType() ? $item->getID() : $item->fields['entities_id']);
+      if (!in_array($current_entity, $entities)) {
+         return false;
+      }
+
+      //parse REQUEST_URI
+      if (!isset($_SERVER['REQUEST_URI'])) {
+         return false;
+      }
+      $current_url = $_SERVER['REQUEST_URI'];
+      if (strpos($current_url, ".form.php") === false
+            && strpos($current_url, ".injector.php") === false
+            && strpos($current_url, ".public.php") === false) {
+         return false;
+      }
+
+      //Retrieve dom container
+      $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
+
+      //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
+      if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
+         return false;
+      }
+
+      self::showDomContainer(
+         $c_id,
+         $item::getType(),
+         $item->getID(),
+         $type,
+         $subtype
+      );
+   }
 
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
 
-      if (empty($fields)) return false;
+      if (empty($fields)) {
+         return false;
+      }
 
       //get object associated with this fields
       $tmp = $fields;
@@ -760,7 +597,7 @@ JAVASCRIPT;
       $first_found_p = array_shift($found_p);
 
       // test status for "CommonITILObject" objects
-      if (is_subclass_of($itemtype, "CommonITILObject") ) {
+      if (is_subclass_of($itemtype, "CommonITILObject")) {
          $items_obj = new $itemtype();
          if ($items_id > 0) {
             $items_obj->getFromDB($items_id);
@@ -782,7 +619,7 @@ JAVASCRIPT;
       //show all fields
       $html = "";
       $odd = 0;
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
 
          if ($field['type'] === 'header') {
             $html.= "<tr class='tab_bg_2'>";
@@ -823,7 +660,9 @@ JAVASCRIPT;
 
             //show field
             if ($show_table) {
-               if ($odd%2 == 0)  $html.= "<tr class='tab_bg_2'>";
+               if ($odd%2 == 0) {
+                  $html.= "<tr class='tab_bg_2'>";
+               }
 
                $required = ($field['mandatory'] == 1) ? "<span class='red'>*</span>" : '';
 
@@ -939,7 +778,7 @@ JAVASCRIPT;
                      ob_end_clean();
                   } else {
                      $showuserlink = 0;
-                     if (Session::haveRight('user','r')) {
+                     if (Session::haveRight('user', 'r')) {
                         $showuserlink = 1;
                      }
                      $html.= getUserName($value, $showuserlink);
@@ -947,12 +786,16 @@ JAVASCRIPT;
             }
             if ($show_table) {
                $html.= "</td>";
-               if ($odd%2 == 1)  $html.= "</tr>";
+               if ($odd%2 == 1) {
+                  $html.= "</tr>";
+               }
                $odd++;
             }
          }
       }
-      if ($show_table && $odd%2 == 1)  $html.= "</tr>";
+      if ($show_table && $odd%2 == 1) {
+         $html.= "</tr>";
+      }
 
       unset($_SESSION['plugin']['fields']['values_sent']);
 
@@ -996,7 +839,7 @@ JAVASCRIPT;
       ));
 
       //show field
-      echo self::prepareHtmlFields($fields, 0,  $itemtype, true, false, $massiveaction);
+      echo self::prepareHtmlFields($fields, 0, $itemtype, true, false, $massiveaction);
 
       return true;
    }

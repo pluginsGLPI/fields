@@ -4,10 +4,89 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0cf7f5dd3afb59e98200bf7e7bcbb494",
-    "content-hash": "d5210b4cf8ca3c160925a3d33444a705",
+    "content-hash": "bd769bb205f5e28dfc9647680edbb0b1",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "atoum/atoum",
+            "version": "2.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/atoum/atoum.git",
+                "reference": "4d0136b21185eea5fc2ee638f77b291e6c537100"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/4d0136b21185eea5fc2ee638f77b291e6c537100",
+                "reference": "4d0136b21185eea5fc2ee638f77b291e6c537100",
+                "shasum": ""
+            },
+            "require": {
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-session": "*",
+                "ext-tokenizer": "*",
+                "ext-xml": "*",
+                "php": ">=5.3.3"
+            },
+            "replace": {
+                "mageekguy/atoum": "*"
+            },
+            "suggest": {
+                "atoum/stubs": "Provides IDE support (like autocompletion) for atoum",
+                "ext-mbstring": "Provides support for UTF-8 strings"
+            },
+            "bin": [
+                "bin/atoum"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "classes/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Frédéric Hardy",
+                    "email": "frederic.hardy@atoum.org",
+                    "homepage": "http://blog.mageekbox.net"
+                },
+                {
+                    "name": "François Dussert",
+                    "email": "francois.dussert@atoum.org"
+                },
+                {
+                    "name": "Gérald Croes",
+                    "email": "gerald.croes@atoum.org"
+                },
+                {
+                    "name": "Julien Bianchi",
+                    "email": "julien.bianchi@atoum.org"
+                },
+                {
+                    "name": "Ludovic Fleury",
+                    "email": "ludovic.fleury@atoum.org"
+                }
+            ],
+            "description": "Simple modern and intuitive unit testing framework for PHP 5.3+",
+            "homepage": "http://www.atoum.org",
+            "keywords": [
+                "TDD",
+                "atoum",
+                "test",
+                "unit testing"
+            ],
+            "time": "2016-08-12T13:45:10+00:00"
+        },
         {
             "name": "consolidation/annotated-command",
             "version": "2.0.1",
@@ -58,7 +137,7 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2016-10-05 04:09:14"
+            "time": "2016-10-05T04:09:14+00:00"
         },
         {
             "name": "consolidation/log",
@@ -105,7 +184,7 @@
                 }
             ],
             "description": "Improved Psr-3 / Psr\\Log logger based on Symfony Console components.",
-            "time": "2016-03-23 23:46:42"
+            "time": "2016-03-23T23:46:42+00:00"
         },
         {
             "name": "consolidation/output-formatters",
@@ -153,7 +232,7 @@
                 }
             ],
             "description": "Format text by applying transformations provided by plug-in formatters.",
-            "time": "2016-10-05 04:05:17"
+            "time": "2016-10-05T04:05:17+00:00"
         },
         {
             "name": "consolidation/robo",
@@ -254,7 +333,44 @@
                 "MIT"
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "time": "2014-12-30 15:22:37"
+            "time": "2014-12-30T15:22:37+00:00"
+        },
+        {
+            "name": "glpi-project/coding-standard",
+            "version": "0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glpi-project/coding-standard.git",
+                "reference": "e19495c896a01199a2fec2e65b7613310598cf96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glpi-project/coding-standard/zipball/e19495c896a01199a2fec2e65b7613310598cf96",
+                "reference": "e19495c896a01199a2fec2e65b7613310598cf96",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Teclib'",
+                    "email": "contact@teclib.com",
+                    "homepage": "https://teclib.com"
+                }
+            ],
+            "description": "GLPI PHP CodeSniffer Coding Standard",
+            "keywords": [
+                "codesniffer",
+                "glpi",
+                "phpcs"
+            ],
+            "time": "2017-01-06T11:10:46+00:00"
         },
         {
             "name": "league/container",
@@ -318,7 +434,7 @@
                 "provider",
                 "service"
             ],
-            "time": "2016-03-17 11:07:59"
+            "time": "2016-03-17T11:07:59+00:00"
         },
         {
             "name": "natxet/CssMin",
@@ -365,7 +481,7 @@
                 "css",
                 "minify"
             ],
-            "time": "2015-09-25 11:13:11"
+            "time": "2015-09-25T11:13:11+00:00"
         },
         {
             "name": "patchwork/jsqueeze",
@@ -407,7 +523,7 @@
                 "javascript",
                 "minification"
             ],
-            "time": "2015-03-25 10:11:08"
+            "time": "2015-03-25T10:11:08+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -461,7 +577,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27 11:43:31"
+            "time": "2015-12-27T11:43:31+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -506,7 +622,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-09-30 07:12:33"
+            "time": "2016-09-30T07:12:33+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -553,7 +669,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-06-10 07:14:17"
+            "time": "2016-06-10T07:14:17+00:00"
         },
         {
             "name": "psr/log",
@@ -600,7 +716,85 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9b324f3a1132459a7274a0ace2e1b766ba80930f",
+                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2016-11-30T04:02:31+00:00"
         },
         {
             "name": "symfony/console",
@@ -661,7 +855,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-06 01:44:51"
+            "time": "2016-10-06T01:44:51+00:00"
         },
         {
             "name": "symfony/debug",
@@ -718,7 +912,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-06 11:02:40"
+            "time": "2016-09-06T11:02:40+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -778,7 +972,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-13 06:28:43"
+            "time": "2016-10-13T06:28:43+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -827,7 +1021,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-18 04:30:12"
+            "time": "2016-10-18T04:30:12+00:00"
         },
         {
             "name": "symfony/finder",
@@ -876,7 +1070,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-28 00:11:12"
+            "time": "2016-09-28T00:11:12+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -935,7 +1129,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/process",
@@ -984,7 +1178,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-29 14:13:09"
+            "time": "2016-09-29T14:13:09+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1034,7 +1228,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-08-09 15:02:57"
+            "time": "2016-08-09T15:02:57+00:00"
         }
     ],
     "aliases": [],

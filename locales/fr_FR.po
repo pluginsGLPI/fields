@@ -4,13 +4,13 @@
 # 
 # Translators:
 # alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
-# Johan Cwiklinski <trasher@x-tnd.be>, 2016
+# Johan Cwiklinski <trasher@x-tnd.be>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-13 14:22+0100\n"
-"PO-Revision-Date: 2016-12-13 13:24+0000\n"
+"PO-Revision-Date: 2017-01-27 10:05+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "Ajouter un nouveau champ"
 
 #: inc/field.class.php:300
 msgid "No field for this block"
-msgstr "pas de champs pour ce bloc"
+msgstr "Aucun champ pour ce bloc"
 
 #: inc/field.class.php:312 inc/field.class.php:414
 msgid "Read only"
@@ -118,7 +118,7 @@ msgstr "Date & heure"
 
 #: inc/container.class.php:8
 msgid "Regenerate container files"
-msgstr "Regénerer les fichiers des blocs"
+msgstr "Régénérer les fichiers des blocs"
 
 #: inc/container.class.php:69
 msgid "Updating generated containers files"
@@ -126,7 +126,7 @@ msgstr "Mettre à jour les fichier de conteneurs générés"
 
 #: inc/container.class.php:229
 msgid "You cannot add block without associated element type"
-msgstr "Vous ne pouvez pas ajouter de blocks sans associer de type d'éléments"
+msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
 
 #: inc/container.class.php:244
 msgid ""
@@ -160,7 +160,7 @@ msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sa
 
 #: inc/container.class.php:956
 msgid "Some mandatory fields are empty"
-msgstr "Un champ obligatoire est vide"
+msgstr "Des champs obligatoires sont vides"
 
 #: inc/container.class.php:961
 msgid "Some numeric fields contains non numeric values"

@@ -238,9 +238,9 @@ class PluginFieldsContainer extends CommonDBTM {
          //check for already exist dom container with this itemtype
          $found = $this->find("`type`='dom'");
          if (count($found) > 0) {
-            foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
-               foreach( json_decode( $founditemtypes ) as $founditemtype ) {
-                  if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+            foreach (array_column($found, 'itemtypes') as $founditemtypes) {
+               foreach (json_decode($founditemtypes) as $founditemtype) {
+                  if (in_array( $founditemtype, $input['itemtypes'])) {
                      Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
                      return false;
                   }
@@ -253,9 +253,9 @@ class PluginFieldsContainer extends CommonDBTM {
          //check for already exist domtab container with this itemtype on this tab
          $found = $this->find("`type`='domtab' AND `subtype`='{$input['subtype']}'");
          if (count($found) > 0) {
-            foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
-               foreach( json_decode( $founditemtypes ) as $founditemtype ) {
-                  if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+            foreach (array_column( $found, 'itemtypes' ) as $founditemtypes) {
+               foreach (json_decode( $founditemtypes ) as $founditemtype) {
+                  if (in_array( $founditemtype, $input['itemtypes'])) {
                      Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", "fields"), false, ERROR);
                      return false;
                   }
@@ -267,16 +267,16 @@ class PluginFieldsContainer extends CommonDBTM {
       //construct field name by processing label (remove non alphanumeric char and any trailing s)
       $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", preg_replace('/s*$/', '', $input['label'])));
       // if empty, uses a random number
-      if( strlen( $input['name'] ) == 0 ) {
+      if (strlen( $input['name'] ) == 0) {
          $input['name'] = rand();
       }
 
       //check for already existing container with same name
       $found = $this->find("`name`='".$input['name']."'");
       if (count($found) > 0) {
-         foreach(array_column( $found, 'itemtypes' ) as $founditemtypes ) {
-            foreach( json_decode( $founditemtypes ) as $founditemtype ) {
-               if( in_array( $founditemtype, $input['itemtypes'] ) ) {
+         foreach (array_column($found, 'itemtypes') as $founditemtypes) {
+            foreach (json_decode($founditemtypes) as $founditemtype) {
+               if (in_array($founditemtype, $input['itemtypes'])) {
                   Session::AddMessageAfterRedirect(__("You cannot add several blocs with identical name on same object", "fields"), false, ERROR);
                   return false;
                }
@@ -296,7 +296,7 @@ class PluginFieldsContainer extends CommonDBTM {
       PluginFieldsLabelTranslation::createForItem($this);
 
       //create class file
-      if(!self::generateTemplate($this->fields)) {
+      if (!self::generateTemplate($this->fields)) {
          return false;
       }
       foreach (json_decode($this->fields['itemtypes']) as $itemtype) {
@@ -308,7 +308,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public static function generateTemplate($fields) {
-      $itemtypes = (count($fields['itemtypes']) > 0) ? json_decode($fields['itemtypes'], TRUE) : array();
+      $itemtypes = (strlen($fields['itemtypes']) > 0) ? json_decode($fields['itemtypes'], TRUE) : array();
       foreach ($itemtypes as $itemtype) {
          $classname = "PluginFields" . ucfirst($itemtype .
                preg_replace('/s$/', '', $fields['name']));
@@ -346,7 +346,7 @@ class PluginFieldsContainer extends CommonDBTM {
    function pre_deleteItem() {
       $_SESSION['delete_container'] = true;
 
-      foreach (json_decode($this->fields['itemtypes']) as $itemtype){
+      foreach (json_decode($this->fields['itemtypes']) as $itemtype) {
 
          $classname = "PluginFields".ucfirst(strtolower($itemtype.
                                              preg_replace('/s$/', '', $this->fields['name'])));
@@ -409,9 +409,9 @@ class PluginFieldsContainer extends CommonDBTM {
       $itemtype = get_class($item);
       $containers = new self();
       $founded_containers = $containers->find();
-      foreach($founded_containers as $container) {
+      foreach ($founded_containers as $container) {
          $itemtypes = json_decode($container['itemtypes']);
-         if(in_array($itemtype, $itemtypes)){
+         if (in_array($itemtype, $itemtypes)) {
             $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
             $fields = new $classname();
             $fields->deleteByCriteria(array('items_id' => $item->fields['id']));
@@ -443,7 +443,7 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<tr>";
       echo "<td>".__("Type")." : </td>";
       echo "<td>";
-      if($ID > 0) {
+      if ($ID > 0) {
          $types = self::getTypes();
          echo $types[$this->fields["type"]];
       } else {
@@ -463,12 +463,12 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "</td>";
       echo "<td>".__("Associated item type")." : </td>";
       echo "<td>";
-      if($ID > 0) {
+      if ($ID > 0) {
          $types = json_decode($this->fields['itemtypes']);
          $obj = '';
          $count = count($types);
          $i = 1;
-         foreach ($types as $type){
+         foreach ($types as $type) {
             $name_type = getItemForItemtype($type);
             $obj .= $name_type->getTypeName(2);
             if ($count > $i) {
@@ -496,12 +496,12 @@ class PluginFieldsContainer extends CommonDBTM {
       echo "<td>".__("Tab", "fields")." : </td>";
       echo "<td>";
       echo "&nbsp;<span id='subtype_$rand'></span>";
-      if($ID > 0 && !empty($this->fields["subtype"])) {
+      if ($ID > 0 && !empty($this->fields["subtype"])) {
          $itemtypes = json_decode($this->fields["itemtypes"], true);
          $itemtype = array_shift($itemtypes);
          $item = new $itemtype;
          $item->getEmpty();
-         $tabs = $item->defineTabs();
+         $tabs = self::getSubtypes($item);
          echo $tabs[$this->fields["subtype"]];
       }
       echo "</td>";
@@ -525,7 +525,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
 
       $rand = $params['rand'];
-      Dropdown::showFromArray("itemtypes", self::getItemtypes(),
+      Dropdown::showFromArray("itemtypes", self::getItemtypes($is_domtab),
                               array('rand'                => $rand,
                                     'multiple'            => !$is_domtab,
                                     'width'               => 200,
@@ -543,48 +543,71 @@ class PluginFieldsContainer extends CommonDBTM {
       }
    }
 
-
-   static function showFormSubtype($params) {
-      echo "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
+   /**
+    * Show subtype selection form
+    *
+    * @param array   $params  Parameters
+    * @param boolean $display Whether to display or not; defaults to false
+    *
+    * @return string|void
+    */
+   static function showFormSubtype($params, $display = false) {
+      $out = "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
       if (isset($params['type']) && $params['type'] == "domtab") {
          if (class_exists($params['itemtype'])) {
             $item = new $params['itemtype'];
             $item->getEmpty();
-            $tabs = $item->defineTabs();
 
-            list($id, ) = each($tabs);
-            // delete first element of array
-            unset($tabs[$id]);
+            $tabs = self::getSubtypes($item);
 
-            // delete Log of array (don't work with this tab)
-            $tabs_to_remove = array('Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1');
-            foreach ($tabs_to_remove as $tab_to_remove) {
-               if (isset($tabs[$tab_to_remove])) {
-                  unset($tabs[$tab_to_remove]);
+            if (count($tabs)) {
+               // delete Log of array (don't work with this tab)
+               $tabs_to_remove = array('Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1');
+               foreach ($tabs_to_remove as $tab_to_remove) {
+                  if (isset($tabs[$tab_to_remove])) {
+                     unset($tabs[$tab_to_remove]);
+                  }
                }
-            }
 
-            // For delete <sup class='tab_nb'>number</sup> :
-            foreach ($tabs as $key => &$value) {
-               $results = array();
-               if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
-                  $value = str_replace($results[0][0], "", $value);
+               // For delete <sup class='tab_nb'>number</sup> :
+               foreach ($tabs as $key => &$value) {
+                  $results = array();
+                  if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
+                     $value = str_replace($results[0][0], "", $value);
+                  }
                }
-            }
 
-            Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype'], 'width' => '100%'));
-            echo "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+               if (!isset($params['subtype'])) {
+                  $params['subtype'] = null;
+               }
+
+               $out .= Dropdown::showFromArray('subtype', $tabs, array('value' => $params['subtype'], 'width' => '100%', 'display' => false));
+               $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+            }
          }
+      }
+      if ($display === false) {
+         return $out;
+      } else {
+         echo $out;
       }
    }
 
-
-   static function getItemtypes() {
+   /**
+    * Get supported item types
+    *
+    * @param boolean $is_domtab Domtab or not
+    *
+    * @return array
+    */
+   static function getItemtypes($is_domtab) {
       global $PLUGIN_HOOKS;
 
-      $tab = array(
-         __("Assets") => array(
-            'Computer'           => _n("Computer", "Computers", 2),
+      $tabs = [];
+
+      $assets = ['Computer' => _n("Computer", "Computers", 2)];
+      if (!$is_domtab) {
+         $assets += [
             'Monitor'            => _n("Monitor", "Monitors", 2),
             'Software'           => _n("Software", "Software", 2),
             'NetworkEquipment'   => _n("Network", "Networks", 2),
@@ -592,42 +615,65 @@ class PluginFieldsContainer extends CommonDBTM {
             'Printer'            => _n("Printer", "Printers", 2),
             'CartridgeItem'      => _n("Cartridge", "Cartridges", 2),
             'ConsumableItem'     => _n("Consumable", "Consumables", 2),
-            'Phone'              => _n("Phone", "Phones", 2)),
-         __("Assistance") => array(
-            'Ticket'             => _n("Ticket", "Tickets", 2),
-            'Problem'            => _n("Problem", "Problems", 2),
-            'Change'             => _n("Change", "Changes", 2),
-            'TicketRecurrent'    => __("Recurrent tickets")),
-         __("Management") => array(
-            'SoftwareLicense'    => _n("License", "Licenses", 2),
-            'Budget'             => _n("Budget", "Budgets", 2),
-            'Supplier'           => _n("Supplier", "Suppliers", 2),
-            'Contact'            => _n("Contact", "Contacts", 2),
-            'Contract'           => _n("Contract", "Contracts", 2),
-            'Document'           => _n("Document", "Documents", 2)),
-         __("Tools") => array(
-            'Project'            => __("Project"),
-            'ProjectTask'        => _n("Project task", "Project tasks", 2),
-            'Reminder'           => _n("Note", "Notes", 2),
-            'RSSFeed'            => __("RSS feed")),
-         __("Administration") => array(
+            'Phone'              => _n("Phone", "Phones", 2)
+         ];
+      }
+      $tabs[__('Assets')] = $assets;
+
+      $assistance = [
+         'Ticket'  => _n("Ticket", "Tickets", 2),
+         'Problem' => _n("Problem", "Problems", 2),
+         'Change'  => _n("Change", "Changes", 2),
+      ];
+      if (!$is_domtab) {
+         $assistance += [
+            'TicketRecurrent'    => __("Recurrent tickets")
+         ];
+      }
+      $tabs[__('Assistance')] = $assistance;
+
+      if (!$is_domtab) {
+         $tabs += [
+            __("Management") => array(
+               'SoftwareLicense'    => _n("License", "Licenses", 2),
+               'Budget'             => _n("Budget", "Budgets", 2),
+               'Supplier'           => _n("Supplier", "Suppliers", 2),
+               'Contact'            => _n("Contact", "Contacts", 2),
+               'Contract'           => _n("Contract", "Contracts", 2),
+               'Document'           => _n("Document", "Documents", 2)),
+            __("Tools") => array(
+               'Project'            => __("Project"),
+               'ProjectTask'        => _n("Project task", "Project tasks", 2),
+               'Reminder'           => _n("Note", "Notes", 2),
+               'RSSFeed'            => __("RSS feed"))
+         ];
+      }
+
+      $administration = [];
+      if (!$is_domtab) {
+         $administration += [
             'User'               => _n("User", "Users", 2),
-            'Group'              => _n("Group", "Groups", 2),
-            'Entity'             => _n("Entity", "Entities", 2),
-            'Profile'            => _n("Profile", "Profiles", 2))
-      );
+            'Group'              => _n("Group", "Groups", 2)
+         ];
+      }
+      $administration['Entity'] = _n("Entity", "Entities", 2);
+      if (!$is_domtab) {
+         $administration += [
+            'Profile'            => _n("Profile", "Profiles", 2)
+         ];
+      }
+      $tabs[__('Administration')] = $administration;
 
       foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
          $isPlugin = isPluginItemType($itemtype);
          if ($isPlugin) {
             $plugin_name = Plugin::getInfo($isPlugin['plugin'], 'name');
 
-            $tab[__("Plugins")][$itemtype] = $plugin_name . ' - ' . $itemtype::getTypeName(Session::getPluralNumber());
+            $tabs[__("Plugins")][$itemtype] = $plugin_name . ' - ' . $itemtype::getTypeName(Session::getPluralNumber());
          }
       }
 
-      return $tab;
-
+      return $tabs;
    }
 
    static function getTypes() {
@@ -652,7 +698,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $container = new self;
       $profile = new PluginFieldsProfile;
       $found = $container->find("$sql_type AND is_active = 1", "`label`");
-      foreach($found as $item) {
+      foreach ($found as $item) {
          //entities restriction
          if (!in_array($item['entities_id'], $_SESSION['glpiactiveentities'])) {
             if ($item['is_recursive'] == 1) {
@@ -679,7 +725,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
          $jsonitemtypes = json_decode($item['itemtypes']);
          //show more info or not
-         foreach($jsonitemtypes as $k => $v) {
+         foreach ($jsonitemtypes as $k => $v) {
             if ($full) {
                //check for translation
                $item['itemtype'] = self::getType();
@@ -697,14 +743,15 @@ class PluginFieldsContainer extends CommonDBTM {
       global $DB;
       $itemtypes = array();
       $where = ($type == 'all') ? '1=1' : 'type = "' . $type . '"';
-      if($must_be_active)
+      if ($must_be_active) {
          $where .= ' AND is_active = 1';
+      }
 
       $query = 'SELECT DISTINCT `itemtypes`
                 FROM `glpi_plugin_fields_containers`
                 WHERE ' . $where;
       $result = $DB->query($query);
-      while(list($data) = $DB->fetch_array($result)) {
+      while (list($data) = $DB->fetch_array($result)) {
          $jsonitemtype = json_decode($data);
          $itemtypes = array_merge($itemtypes, $jsonitemtype);
       }
@@ -717,16 +764,16 @@ class PluginFieldsContainer extends CommonDBTM {
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = array();
          $container = new self;
-         foreach($itemtypes[$item->getType()] as $tab_name => $tab_label) {
+         foreach ($itemtypes[$item->getType()] as $tab_name => $tab_label) {
             // needs to check if entity of item is in hierachy of $tab_name
-            foreach ( $container->find("`is_active` = 1 AND `name` = '$tab_name'") as $data) {
+            foreach ($container->find("`is_active` = 1 AND `name` = '$tab_name'") as $data) {
                $dataitemtypes = json_decode($data['itemtypes']);
                if (in_array(get_class($item), $dataitemtypes) != FALSE) {
                   $entities = array( $data['entities_id'] );
-                  if( $data['is_recursive'] ) {
+                  if ($data['is_recursive']) {
                      $entities = getSonsOf( getTableForItemType( 'Entity' ), $data['entities_id']);
                   }
-                  if( in_array( $item->fields['entities_id'], $entities ) ) {
+                  if (in_array($item->fields['entities_id'], $entities)) {
                      $tabs_entries[$tab_name] = $tab_label;
                   }
                }
@@ -752,8 +799,11 @@ class PluginFieldsContainer extends CommonDBTM {
 
    /**
     * Insert values submited by fields container
-    * @param  array $data data posted
+    *
+    * @param array   $data          data posted
+    * @param string  $itemtype      Item type
     * @param boolean $massiveaction Is a massive action
+    *
     * @return boolean
     */
    function updateFieldsValues($data, $itemtype, $massiveaction = false) {
@@ -796,11 +846,11 @@ class PluginFieldsContainer extends CommonDBTM {
 
    /**
     * Add log in "itemtype" object on fields values update
-    * @param  int    $containers_id :
-    * @param  int    $items_id      :
-    * @param  string $itemtype      :
-    * @param  array  $data         : values send by update form
-    * @param  array  $old_values    : old values, if empty -> values add
+    * @param  int    $containers_id container id
+    * @param  int    $items_id      item id
+    * @param  string $itemtype      item type
+    * @param  array  $data          values send by update form
+    * @param  array  $old_values    old values, if empty -> values add
     * @return nothing
     */
    static function constructHistory($containers_id, $items_id, $itemtype, $data,
@@ -839,7 +889,7 @@ class PluginFieldsContainer extends CommonDBTM {
                      //manage dropdown values
                      if ($searchoption['datatype'] === 'dropdown') {
                         $changes = array($id_search_option, "",
-                                         Dropdown::getDropdownName($searchoption['table'],$value));
+                                         Dropdown::getDropdownName($searchoption['table'], $value));
                      }
 
                      //manage bool dropdown values
@@ -879,8 +929,8 @@ class PluginFieldsContainer extends CommonDBTM {
 
                   //manage dropdown values
                   if ($searchoption['datatype'] === 'dropdown') {
-                     $changes[1] = Dropdown::getDropdownName($searchoption['table'],$changes[1]);
-                     $changes[2] = Dropdown::getDropdownName($searchoption['table'],$changes[2]);
+                     $changes[1] = Dropdown::getDropdownName($searchoption['table'], $changes[1]);
+                     $changes[2] = Dropdown::getDropdownName($searchoption['table'], $changes[2]);
                   }
                   if ($searchoption['datatype'] === 'bool') {
                      $changes[1] = Dropdown::getYesNo($changes[1]);
@@ -899,8 +949,8 @@ class PluginFieldsContainer extends CommonDBTM {
     * check data inserted
     * display a message when not ok
     *
-    * @param array $data            Data send by form
-    * @param string $itemtype       Item type
+    * @param array   $data          Data send by form
+    * @param string  $itemtype      Item type
     * @param boolean $massiveaction ?
     *
     * @return boolean
@@ -920,13 +970,14 @@ class PluginFieldsContainer extends CommonDBTM {
                                  $data['plugin_fields_containers_id']);
 
       foreach ($fields as $fields_id => $field) {
-         if ($field['type'] == "yesno") continue;
-         if ($field['type'] == "header") continue;
+         if ($field['type'] == "yesno" ||$field['type'] == "header") {
+            continue;
+         }
 
          $name  = $field['name'];
-         if(isset($data[$name])) {
+         if (isset($data[$name])) {
             $value = $data[$name];
-         } else if(isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
+         } else if (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
             $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
          } else if ($field['mandatory'] == 1) {
             $tablename = "glpi_plugin_fields_" . strtolower(
@@ -947,7 +998,9 @@ class PluginFieldsContainer extends CommonDBTM {
             }
 
          } else {
-            if ($massiveaction) continue;
+            if ($massiveaction) {
+               continue;
+            }
             $value = '';
          }
 
@@ -961,7 +1014,7 @@ class PluginFieldsContainer extends CommonDBTM {
                || (in_array($field['type'], array('date', 'datetime')) && $value == 'NULL'))) {
             $empty_errors[] = $field['label'];
             $valid = false;
-         } else if($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+         } else if ($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
             // Check number fields
             $number_errors[] = $field['label'];
             $valid = false;
@@ -973,17 +1026,17 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
-      if(!empty($empty_errors)) {
+      if (!empty($empty_errors)) {
          Session::AddMessageAfterRedirect(__("Some mandatory fields are empty", "fields")
             . " : " . implode(', ', $empty_errors), false, ERROR);
       }
 
-      if(!empty($number_errors)) {
+      if (!empty($number_errors)) {
          Session::AddMessageAfterRedirect(__("Some numeric fields contains non numeric values", "fields")
             . " : " . implode(', ', $number_errors), false, ERROR);
       }
 
-      if(!empty($url_errors)) {
+      if (!empty($url_errors)) {
          Session::AddMessageAfterRedirect(__("Some URL fields contains invalid links", "fields")
             . " : " . implode(', ', $url_errors), false, ERROR);
       }
@@ -1093,13 +1146,20 @@ class PluginFieldsContainer extends CommonDBTM {
     *
     * @return boolean
     */
-
    static function preItem(CommonDBTM $item) {
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
       } else {
-         $c_id = self::findContainer(get_Class($item), "dom");
+         $type = 'dom';
+         if (isset($_REQUEST['_plugin_fields_type'])) {
+            $type = $_REQUEST['_plugin_fields_type'];
+         }
+         $subtype = '';
+         if ($type == 'domtab') {
+            $subtype = $_REQUEST['_plugin_fields_subtype'];
+         }
+         $c_id = self::findContainer(get_Class($item), $type, $subtype);
          if ($c_id === false) {
             $c_id = self::findContainer(get_Class($item)); //tries for 'tab'
             if ($c_id === false) {
@@ -1122,7 +1182,8 @@ class PluginFieldsContainer extends CommonDBTM {
          $item->fields = $item->input;
       }
 
-      if( !in_array($item->fields['entities_id'], $entities)) {
+      $current_entity = ($item::getType() == Entity::getType() ? $item->getID() : $item->fields['entities_id']);
+      if (!in_array($current_entity, $entities)) {
          return false;
       }
 
@@ -1158,7 +1219,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $has_fields = false;
-      foreach($fields as $field) {
+      foreach ($fields as $field) {
          if (isset($item->input[$field['name']])) {
             //standard field
             $input = $field['name'];
@@ -1235,7 +1296,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['linkfield']     = $data['name'];
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $data['type'];
-         if( $data['is_readonly'] ) {
+         if ($data['is_readonly']) {
              $opt[$i]['massiveaction'] = false;
          }
 
@@ -1292,4 +1353,55 @@ class PluginFieldsContainer extends CommonDBTM {
       return $opt;
    }
 
+   /**
+    * Get subtypes for specified itemtype.
+    * Was previously retrieved using $item::defineTabs() but
+    * this is not relevant with actual core.
+    *
+    * @param CommonDBTM $item Item instance
+    *
+    * @return array
+    */
+   private static function getSubtypes($item) {
+      $tabs = [];
+      switch ($item::getType()) {
+         case Computer::getType():
+            $tabs = [
+               'Computer$1' => __('Operating system')
+            ];
+            break;
+         case Ticket::getType():
+         case Problem::getType():
+            $tabs = [
+               $item::getType() . '$2' => __('Solution')
+            ];
+            break;
+         case Change::getType():
+            $tabs = [
+               'Change$1' => __('Analysis'),
+               'Change$2' => __('Solution'),
+               'Change$3' => __('Plans')
+            ];
+            break;
+         case Entity::getType():
+            $tabs = [
+               'Entity$2' => __('Address'),
+               'Entity$3' => __('Advanced information'),
+               'Entity$4' => __('Notifications'),
+               'Entity$5' => __('Assistance'),
+               'Entity$6' => __('Assets')
+            ];
+            break;
+         default:
+            Toolbox::logDebug('Item type ' . $item::getType() . ' does not have any preconfigured subtypes!');
+            /* For debug purposes
+            $tabs = $item->defineTabs();
+            list($id, ) = each($tabs);
+            // delete first element of array ($main)
+            unset($tabs[$id]);*/
+            break;
+      }
+
+      return $tabs;
+   }
 }

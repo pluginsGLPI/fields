@@ -6,7 +6,7 @@ pushd $DIR > /dev/null
 NAME='Fields'
 POTFILE=${NAME,,}.pot
 
-PHP_SOURCES=`find ./ -name \*.php ! -path ./vendor ! -path ./lib`
+PHP_SOURCES=`find ./ -name \*.php -not -path "./vendor/*" ! -not -path "./lib/*"`
 
 if [ ! -d "locales" ]; then
     mkdir locales

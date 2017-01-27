@@ -11,8 +11,7 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     *
     * @return string
    **/
-   static function getTable()
-   {
+   static function getTable() {
       return getTableForItemType(get_parent_class());
    }
 
@@ -23,10 +22,9 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
    /**
     * Tells datainjection is the type is a primary type or not
     *
-    * @return a boolean
+    * @return iboolean
    **/
-   function isPrimaryType()
-   {
+   function isPrimaryType() {
       return false;
    }
 
@@ -35,20 +33,18 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     *
     * @return an array of GLPI types
    **/
-   function connectedTo()
-   {
+   function connectedTo() {
       return array('%%ITEMTYPE%%');
    }
 
    /**
     * Function which calls getSearchOptions and add more parameters specific to display
     *
-    * @param $primary_type    (default '')
+    * @param string $primary_type (default '')
     *
-    * @return an array of search options, as defined in each commondbtm object
+    * @return array of search options, as defined in each commondbtm object
    **/
-   function getOptions($primary_type='')
-   {
+   function getOptions($primary_type='') {
       $searchoptions = PluginFieldsContainer::getAddSearchOptions('%%ITEMTYPE%%', %%CONTAINER_ID%%);
 
       foreach ($searchoptions as $id => $data) {
@@ -71,11 +67,10 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     * @param $values    array fields to add into glpi
     * @param $options   array options used during creation
     *
-    * @return an array of IDs of newly created objects:
+    * @return array of IDs of newly created objects:
     * for example array(Computer=>1, Networkport=>10)
    **/
-   function addOrUpdateObject($values=array(), $options=array())
-   {
+   function addOrUpdateObject($values=array(), $options=array()) {
       $lib = new PluginDatainjectionCommonInjectionLib($this, $values, $options);
       $lib->processAddOrUpdate();
       return $lib->getInjectionResults();

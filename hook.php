@@ -35,7 +35,7 @@ function plugin_fields_install() {
    global $CFG_GLPI;
 
    set_time_limit(900);
-   ini_set('memory_limit','2048M');
+   ini_set('memory_limit', '2048M');
 
    $plugin_fields = new Plugin;
    $plugin_fields->getFromDBbyDir('fields');
@@ -131,7 +131,9 @@ function plugin_fields_uninstall() {
 
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if (!call_user_func(array($class,'uninstall'))) return false;
+            if (!call_user_func(array($class,'uninstall'))) {
+               return false;
+            }
          }
       }
    }

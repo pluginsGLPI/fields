@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - 2017-01-27
+
+**Compatible with GLPI 9.1.2 and above**
+
+- Use post_item_form hook instead of javascript to display fields
+- Fix (and limit) dom tab possibilities
+
 ## [1.4.5] - 2017-01-13
 - Set minimal PHP version to 5.4
 - Prevent values to be kept from a new ticket to another
@@ -41,7 +48,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix adding bloc for specific tab
 - Fix dropdown pagination links
 - Fix validation issue creating new tickets
-- Fix checks consistancy
+- Fix checks consistency
 - Ensure we target only the first tab
 
 ## [1.4.0] - 2016-12-13

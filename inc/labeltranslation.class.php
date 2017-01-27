@@ -71,7 +71,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       $nb = countElementsInTable($this->getTable(),
                                         "`plugin_fields_itemtype` = '{$item::getType()}' AND
                                         `plugin_fields_items_id` = '{$item->getID()}'");
-      return self::createTabEntry(self::getTypeName($nb),$nb);
+      return self::createTabEntry(self::getTypeName($nb), $nb);
 
    }
 
@@ -184,6 +184,8 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
     * @param string $itemtype Item type
     * @param int    $items_id Item ID
     * @param innt   $id       Translation ID (defaults to -1)
+    *
+    * @return void
     */
    function showForm($itemtype, $items_id, $id=-1) {
       global $CFG_GLPI;
@@ -192,7 +194,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
          $this->check($id, READ);
       } else {
          // Create item
-         $this->check(-1 , CREATE);
+         $this->check(-1, CREATE);
 
       }
       $this->showFormHeader();

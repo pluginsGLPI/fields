@@ -11,8 +11,7 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function minify()
-   {
+   public function minify() {
       $this->minifyCSS()
          ->minifyJS();
    }
@@ -22,11 +21,10 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function minifyCSS()
-   {
+   public function minifyCSS() {
       $css_dir = __DIR__ . '/css';
       if (is_dir($css_dir)) {
-         foreach(glob("$css_dir/*.css") as $css_file) {
+         foreach (glob("$css_dir/*.css") as $css_file) {
             if (!$this->endsWith($css_file, 'min.css')) {
                $this->taskMinify($css_file)
                   ->to(str_replace('.css', '.min.css', $css_file))
@@ -43,11 +41,10 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function minifyJS()
-   {
+   public function minifyJS() {
       $js_dir = __DIR__ . '/js';
       if (is_dir($js_dir)) {
-         foreach(glob("$js_dir/*.js") as $js_file) {
+         foreach (glob("$js_dir/*.js") as $js_file) {
             if (!$this->endsWith($js_file, 'min.js')) {
                $this->taskMinify($js_file)
                   ->to(str_replace('.js', '.min.js', $js_file))
@@ -64,8 +61,7 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function localesExtract()
-   {
+   public function localesExtract() {
       $this->_exec('tools/extract_template.sh');
       return $this;
    }
@@ -75,8 +71,7 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function localesPush()
-   {
+   public function localesPush() {
       $this->_exec('tx push -s');
       return $this;
    }
@@ -84,10 +79,11 @@ class RoboFilePlugin extends \Robo\Tasks
    /**
     * Pull locales from transifex.
     *
+    * @param integer $percent Completeness percentage, defaults to 70
+    *
     * @return void
     */
-   public function localesPull($percent = 70)
-   {
+   public function localesPull($percent = 70) {
       $this->_exec('tx pull -a --minimum-perc=' .$percent);
       return $this;
    }
@@ -97,8 +93,7 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function localesMo()
-   {
+   public function localesMo() {
       $this->_exec('./tools/release --compile-mo');
       return $this;
    }
@@ -108,8 +103,7 @@ class RoboFilePlugin extends \Robo\Tasks
     *
     * @return void
     */
-   public function localesSend()
-   {
+   public function localesSend() {
       $this->localesExtract()
            ->localesPush();
       return $this;
@@ -117,6 +111,8 @@ class RoboFilePlugin extends \Robo\Tasks
 
    /**
     * Retrieve locales and generate mo files
+    *
+    * @param integer $percent Completeness percentage, defaults to 70
     *
     * @return void
     */

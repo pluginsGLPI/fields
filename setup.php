@@ -26,29 +26,29 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.4.5');
+define ('PLUGIN_FIELDS_VERSION', '1.5.0');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
 }
 
-if (!defined("PLUGINFIELDS_DOC_DIR") ) {
+if (!defined("PLUGINFIELDS_DOC_DIR")) {
    define("PLUGINFIELDS_DOC_DIR", GLPI_PLUGIN_DOC_DIR . "/fields");
-   if(!file_exists(PLUGINFIELDS_DOC_DIR)) {
+   if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
       mkdir(PLUGINFIELDS_DOC_DIR);
    }
 }
 
 if (!defined("PLUGINFIELDS_CLASS_PATH")) {
    define("PLUGINFIELDS_CLASS_PATH", PLUGINFIELDS_DOC_DIR . "/inc");
-   if(!file_exists(PLUGINFIELDS_CLASS_PATH)) {
+   if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
       mkdir(PLUGINFIELDS_CLASS_PATH);
    }
 }
 
 if (!defined("PLUGINFIELDS_FRONT_PATH")) {
    define("PLUGINFIELDS_FRONT_PATH", PLUGINFIELDS_DOC_DIR."/front");
-   if(!file_exists(PLUGINFIELDS_FRONT_PATH)) {
+   if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
       mkdir(PLUGINFIELDS_FRONT_PATH);
    }
 }
@@ -114,7 +114,6 @@ function plugin_init_fields() {
          } else {
             $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.css';
          }
-         $PLUGIN_HOOKS['add_javascript']['fields'][]    = 'fields.js.php';
 
          // Add/delete profiles to automaticaly to container
          $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
@@ -151,8 +150,12 @@ function plugin_init_fields() {
          }
       }
 
+      $PLUGIN_HOOKS['post_item_form']['fields'] = ['PluginFieldsField',
+                                                   'showForTab'];
+
       // Check class and front files for existing containers and dropdown fields
       plugin_fields_checkFiles();
+
    }
 }
 
@@ -169,7 +172,7 @@ function plugin_version_fields() {
                  'author'         => 'Teclib\', Olivier Moron',
                  'homepage'       => 'teclib.com',
                  'license'        => 'GPLv2+',
-                 'minGlpiVersion' => '0.85');
+                 'minGlpiVersion' => '9.1.2');
 }
 
 /**
@@ -179,18 +182,12 @@ function plugin_version_fields() {
  * @return boolean
  */
 function plugin_fields_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '0.85', 'lt')) {
-      echo "This plugin requires GLPI 0.85";
-      return false;
-   }
-
-   if (!function_exists('array_column')) {
-      echo "Either PHP >= 5.5.0 or GLPI >= 9.1 is required";
-      return false;
-   }
-
-   if (version_compare(PHP_VERSION, '5.4.0', 'lt')) {
-      echo "PHP 5.4.0 or higher is required";
+   if (version_compare(GLPI_VERSION, '9.1.2', 'lt')) {
+      if (method_exists('Plugin', 'messageIncompatible')) {
+         echo Plugin::messageIncompatible('core', '9.1.2');
+      } else {
+         echo "This plugin requires GLPI 9.1.2";
+      }
       return false;
    }
 
@@ -219,7 +216,7 @@ function plugin_fields_checkFiles() {
             foreach ($itemtypes as $itemtype) {
                $classname = "PluginFields".ucfirst($itemtype.
                                         preg_replace('/s$/', '', $container['name']));
-               if(!class_exists($classname)) {
+               if (!class_exists($classname)) {
                   PluginFieldsContainer::generateTemplate($container);
                }
             }
