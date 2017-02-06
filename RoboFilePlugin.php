@@ -6,6 +6,9 @@
  */
 class RoboFilePlugin extends \Robo\Tasks
 {
+   protected $csignore = ['/vendor/'];
+   protected $csfiles  = ['./'];
+
    /**
     * Minify all
     *
@@ -121,6 +124,53 @@ class RoboFilePlugin extends \Robo\Tasks
            ->localesMo();
       return $this;
    }
+
+   /**
+    * Code sniffer.
+    *
+    * Run the PHP Codesniffer on a file or directory.
+    *
+    * @param string $file    A file or directory to analyze.
+    * @param array  $options Options:
+    * @option $autofix Whether to run the automatic fixer or not.
+    * @option $strict  Show warnings as well as errors.
+    *    Default is to show only errors.
+    *
+    *    @return void
+    */
+   public function codeCs(
+      $file = null,
+      $options = [
+         'autofix'   => false,
+         'strict'    => false,
+      ]
+   ) {
+      if ($file === null) {
+         $file = implode(' ', $this->csfiles);
+      }
+
+      $csignore = '';
+      if (count($this->csignore)) {
+         $csignore .= '--ignore=';
+         $csignore .= implode(',', $this->csignore);
+      }
+
+      $strict = $options['strict'] ? '' : '-n';
+
+      $result = $this->taskExec("./vendor/bin/phpcs $csignore --standard=vendor/glpi-project/coding-standard/GlpiStandard/ {$strict} {$file}")->run();
+
+      if (!$result->wasSuccessful()) {
+         if (!$options['autofix'] && !$options['no-interaction']) {
+            $options['autofix'] = $this->confirm('Would you like to run phpcbf to fix the reported errors?');
+         }
+         if ($options['autofix']) {
+            $result = $this->taskExec("./vendor/bin/phpcbf $csignore --standard=vendor/glpi-project/coding-standard/GlpiStandard/ {$file}")->run();
+         }
+      }
+
+      return $result;
+   }
+
 
    /**
     * Checks if a string ends with another string

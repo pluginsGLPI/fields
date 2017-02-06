@@ -28,7 +28,7 @@ before_script:
 
 script:
   - mysql -u root -e 'select version();'
-  - vendor/bin/phpcs -p --ignore=vendor --ignore=js --ignore=css --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.4" ]]; then vendor/bin/robo --no-interaction code:cs .; fi
   - ./vendor/bin/atoum -bf tests/bootstrap.php -d tests/units/
 
 matrix:
