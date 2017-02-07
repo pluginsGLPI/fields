@@ -1,6 +1,5 @@
 language: php
 php:
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
@@ -23,12 +22,11 @@ before_script:
   - php tools/cliinstall.php --db=glpi-test --user=travis --tests
   - mv ../fields plugins/fields
   - cd plugins/fields
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.4" ]]; then sed -e "s|.*"consolidation/robo".*$||" -i composer.json && composer update; fi
   - composer install -o
 
 script:
+  - vendor/bin/robo --no-interaction code:cs
   - mysql -u root -e 'select version();'
-  - vendor/bin/phpcs -p --ignore=vendor --ignore=js --ignore=css --standard=vendor/glpi-project/coding-standard/GlpiStandard/ .
   - ./vendor/bin/atoum -bf tests/bootstrap.php -d tests/units/
 
 matrix:
