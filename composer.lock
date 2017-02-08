@@ -378,16 +378,16 @@
         },
         {
             "name": "glpi-project/tools",
-            "version": "0.1",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/glpi-project/tools.git",
-                "reference": "84fd4cd17d84f2544adbf68fb5d9b3551f077a9d"
+                "reference": "89083f6e71fac05190c7cc76a9c5afd8b1f421ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/glpi-project/tools/zipball/84fd4cd17d84f2544adbf68fb5d9b3551f077a9d",
-                "reference": "84fd4cd17d84f2544adbf68fb5d9b3551f077a9d",
+                "url": "https://api.github.com/repos/glpi-project/tools/zipball/89083f6e71fac05190c7cc76a9c5afd8b1f421ef",
+                "reference": "89083f6e71fac05190c7cc76a9c5afd8b1f421ef",
                 "shasum": ""
             },
             "require": {
@@ -424,7 +424,7 @@
                 "plugins",
                 "tools"
             ],
-            "time": "2017-02-07T14:46:08+00:00"
+            "time": "2017-02-08T08:20:09+00:00"
         },
         {
             "name": "league/container",
