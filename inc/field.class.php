@@ -3,6 +3,10 @@
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
 
+   static function canCreate() {
+      return self::canUpdate();
+   }
+
    /**
     * Install or update fields
     *
