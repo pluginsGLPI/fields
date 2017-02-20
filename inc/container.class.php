@@ -3,6 +3,10 @@
 class PluginFieldsContainer extends CommonDBTM {
    static $rightname = 'config';
 
+   static function canCreate() {
+      return self::canUpdate();
+   }
+
    static function titleList() {
       echo "<center><input type='button' class='submit' value='&nbsp;".
             __("Regenerate container files", "fields")."&nbsp;'
