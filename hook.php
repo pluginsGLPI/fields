@@ -185,7 +185,7 @@ function plugin_fields_getDropdown() {
    foreach ($fields as $field) {
       $field['itemtype'] = PluginFieldsField::getType();
       $label = PluginFieldsLabelTranslation::getLabelFor($field);
-      $dropdowns["PluginFields".ucfirst($field['name'])."Dropdown"] = $label;
+      $dropdowns["GlpiPlugin\Fields\\".ucfirst($field['name'])."Dropdown"] = $label;
    }
 
    asort($dropdowns);
@@ -311,7 +311,7 @@ function plugin_datainjection_populate_fields() {
       $types = json_decode($values['itemtypes']);
 
       foreach ($types as $type) {
-         $classname = "PluginFields"
+         $classname = "GlpiPlugin\Fields\\"
                      . ucfirst($type. preg_replace('/s$/', '', $values['name']))
                      . 'Injection';
          $INJECTABLE_TYPES[$classname]               = 'fields';
