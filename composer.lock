@@ -4,8 +4,63 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2755cf80c9132cd3a8df081402039a0",
-    "packages": [],
+    "content-hash": "c1aba82e3220ccca59cc000c657de48a",
+    "packages": [
+        {
+            "name": "fedora/autoloader",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fedora/autoloader.git",
+                "reference": "98d5a2ec9389686eec8e185c1d0495ef1a6a75c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fedora/autoloader/zipball/98d5a2ec9389686eec8e185c1d0495ef1a6a75c3",
+                "reference": "98d5a2ec9389686eec8e185c1d0495ef1a6a75c3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.3.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "*",
+                "phpdocumentor/phpdocumentor": "*",
+                "phpunit/phpunit": "*",
+                "theseer/autoload": "^1.22"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shawn Iwinski",
+                    "email": "shawn@iwin.ski"
+                },
+                {
+                    "name": "Remi Collet",
+                    "email": "remi@fedoraproject.org"
+                }
+            ],
+            "description": "Fedora PHP Autoloader",
+            "homepage": "https://github.com/php-fedora/autoloader",
+            "keywords": [
+                "PSR-4",
+                "autoload",
+                "autoloader",
+                "fedora",
+                "psr-0"
+            ],
+            "time": "2016-10-28T17:00:54+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "atoum/atoum",

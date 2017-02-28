@@ -1,16 +1,17 @@
 <?php
+namespace GlpiPlugin\Fields;
 
-class %%CLASSNAME%% extends CommonTreeDropdown {
+class %%CLASSNAME%% extends \CommonTreeDropdown {
    public $field_name      = "%%FIELDNAME%%";
    public $can_be_translated = true;
 
    static function getTypeName($nb=0) {
       $item = [
-         "itemtype" => PluginFieldsField::getType(),
+         "itemtype" => \PluginFieldsField::getType(),
          "id"       => "%%FIELDID%%",
          "label"    => "%%LABEL%%"
       ];
-      $label = PluginFieldsLabelTranslation::getLabelFor($item);
+      $label = \PluginFieldsLabelTranslation::getLabelFor($item);
       return $label;
    }
 
@@ -55,7 +56,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
     * @param $full path or relative one (true by default)
    **/
    static function getTabsURL($full=true) {
-      $url = Toolbox::getItemTypeTabsURL('PluginFieldsCommonDropdown', $full);
+      $url = \Toolbox::getItemTypeTabsURL('PluginFieldsCommonDropdown', $full);
       $plug = isPluginItemType(get_called_class());
       $url .= '?ddtype=' . strtolower($plug['class']);
       return $url;
@@ -67,7 +68,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
     * @param $full path or relative one (true by default)
    **/
    static function getSearchURL($full=true) {
-      $url = Toolbox::getItemTypeSearchURL('PluginFieldsCommonDropdown', $full);
+      $url = \Toolbox::getItemTypeSearchURL('PluginFieldsCommonDropdown', $full);
       $plug = isPluginItemType(get_called_class());
       $url .= '?ddtype=' . strtolower($plug['class']);
       return $url;
@@ -79,7 +80,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
     * @param $full path or relative one (true by default)
    **/
    static function getFormURL($full=true) {
-      $url = Toolbox::getItemTypeFormURL('PluginFieldsCommonDropdown', $full);
+      $url = \Toolbox::getItemTypeFormURL('PluginFieldsCommonDropdown', $full);
       $plug = isPluginItemType(get_called_class());
       $url .= '?ddtype=' . strtolower($plug['class']);
       return $url;
