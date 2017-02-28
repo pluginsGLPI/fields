@@ -5,7 +5,7 @@ if (empty($_GET["id"])) {
    $_GET["id"] = "";
 }
 
-$container = new PluginFieldsContainer;
+$container = new \PluginFieldsContainer;
 
 if (isset($_POST["add"])) {
    $container->check(-1, CREATE, $_POST);
