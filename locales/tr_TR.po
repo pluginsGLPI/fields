@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015-2016
+# Kaya Zeren <kayazeren@gmail.com>, 2015-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-13 14:22+0100\n"
-"PO-Revision-Date: 2016-12-15 04:33+0000\n"
+"PO-Revision-Date: 2017-03-02 16:02+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -81,11 +81,11 @@ msgstr "görüntüle"
 
 #: inc/field.class.php:985
 msgid "Header"
-msgstr "Üst Bilg"
+msgstr "Üst Bilgi"
 
 #: inc/field.class.php:986
 msgid "Text (single line)"
-msgstr "Metin (tak satır)"
+msgstr "Metin (tek satır)"
 
 #: inc/field.class.php:987
 msgid "Text (multiples lines)"
@@ -131,7 +131,7 @@ msgstr "İlişkilendirilmiş bir bileşen tipi olmadan bir blok eklenemez"
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "Aynı nesne üzerine 'forma eklensin' tipinde bir kaç blok eklenemez"
+msgstr "Aynı nesne üzerine 'forma eklensin' türünde bir kaç blok eklenemez"
 
 #: inc/container.class.php:265
 msgid "You cannot add several blocs with identical name on same object"
@@ -167,4 +167,4 @@ msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
 #: inc/container.class.php:966
 msgid "Some URL fields contains invalid links"
-msgstr "Bazı İnternet adresi alanlarında geçersiz bağantılar var"
+msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
