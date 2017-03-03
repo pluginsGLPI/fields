@@ -3,6 +3,10 @@
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
 
+   static function canCreate() {
+      return self::canUpdate();
+   }
+
    /**
     * Install or update fields
     *
@@ -111,7 +115,7 @@ class PluginFieldsField extends CommonDBTM {
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($input['plugin_fields_containers_id']);
          foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
-            $classname = "PluginFields" . ucfirst(strtolower($itemtype .
+            $classname = "GlpiPlugin\Fields\\" . ucfirst(strtolower($itemtype .
                      preg_replace('/s$/', '', $container_obj->fields['name'])));
             $classname::addField($input['name'], $input['type']);
          }
@@ -140,7 +144,7 @@ class PluginFieldsField extends CommonDBTM {
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
          foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
-            $classname = "PluginFields" . ucfirst(strtolower($itemtype .
+            $classname = "GlpiPlugin\Fields\\" . ucfirst(strtolower($itemtype .
                      preg_replace('/s$/', '', $container_obj->fields['name'])));
             $classname::removeField($this->fields['name']);
          }
@@ -580,7 +584,7 @@ class PluginFieldsField extends CommonDBTM {
       $first_field = array_shift($tmp);
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
-      $classname = "PluginFields".$itemtype.
+      $classname = "GlpiPlugin\Fields\\".$itemtype.
                                  preg_replace('/s$/', '', $container_obj->fields['name']);
       $obj = new $classname;
 
