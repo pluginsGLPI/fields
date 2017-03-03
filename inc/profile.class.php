@@ -85,14 +85,22 @@ class PluginFieldsProfile extends CommonDBTM {
          $found = $fields_profile->find("`profiles_id` = '$profiles_id'
                          AND `plugin_fields_containers_id` = '".
                            $input['plugin_fields_containers_id']."'");
-         $first_found = array_shift($found);
+         if (count( $found ) > 0) {
+            $first_found = array_shift($found);
 
-         $fields_profile->update(array(
-            'id'                          => $first_found['id'],
-            'profiles_id'                 => $profiles_id,
-            'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
-            'right'                       => $right
-         ));
+            $fields_profile->update(array(
+               'id'                          => $first_found['id'],
+               'profiles_id'                 => $profiles_id,
+               'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+               'right'                       => $right
+            ));
+         } else {
+            $fields_profile->add(array(
+               'profiles_id'                 => $profiles_id,
+               'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+               'right'                       => $right
+            ));
+         }
       }
 
       return true;

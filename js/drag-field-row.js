@@ -18,16 +18,16 @@ redipsInit = function () {
       var container = document.getElementById('plugin_fields_containers_id').value;
 
       jQuery.ajax({
-        type: "POST",
-        url: "../ajax/reorder.php",
-        data: {
+         type: "POST",
+         url: "../ajax/reorder.php",
+         data: {
             old_order:     old_index,
             new_order:     new_index,
             container_id:  container
          }
       })
-     .fail(function() {
+      .fail(function() {
          return false;
-     });
+      });
    }
 };

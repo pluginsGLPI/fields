@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.5.0');
+define ('PLUGIN_FIELDS_VERSION', '1.6.0');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -64,13 +64,11 @@ function plugin_init_fields() {
 
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
-   include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
-
-   $options = array(
-      PLUGINFIELDS_CLASS_PATH
+   include_once(PLUGINFIELDS_DIR . "/vendor/autoload.php");
+   \Fedora\Autoloader\Autoload::addPsr4(
+      'GlpiPlugin\Fields',
+      PLUGINFIELDS_CLASS_PATH . '/GlpiPlugin/Fields'
    );
-   $pluginfields_autoloader = new PluginFieldsAutoloader($options);
-   $pluginfields_autoloader->register();
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('fields')
@@ -214,7 +212,7 @@ function plugin_fields_checkFiles() {
          foreach ($containers as $container) {
             $itemtypes = (count($container['itemtypes']) > 0) ? json_decode($container['itemtypes'], TRUE) : array();
             foreach ($itemtypes as $itemtype) {
-               $classname = "PluginFields".ucfirst($itemtype.
+               $classname = "GlpiPlugin\Fields\\".ucfirst($itemtype.
                                         preg_replace('/s$/', '', $container['name']));
                if (!class_exists($classname)) {
                   PluginFieldsContainer::generateTemplate($container);
