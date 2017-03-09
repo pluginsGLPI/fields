@@ -574,6 +574,7 @@ class PluginFieldsField extends CommonDBTM {
 
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
+      global $CFG_GLPI;
 
       if (empty($fields)) {
          return false;
@@ -729,7 +730,8 @@ class PluginFieldsField extends CommonDBTM {
                         $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
                      }
                      Dropdown::show($dropdown_itemtype, array('value'  => $value,
-                                                              'entity' => $obj->getEntityID()));
+                                                              'entity' => $obj->getEntityID(),
+                                                              'url'    => $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/getFieldsDropdownValue.php'));
                      $html.= ob_get_contents();
                      ob_end_clean();
                   } else {
