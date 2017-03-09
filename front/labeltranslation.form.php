@@ -29,11 +29,11 @@
 include ('../../../inc/includes.php');
 
 
-$translation = new \PluginFieldsLabelTranslation();
+$translation = new PluginFieldsLabelTranslation();
 if (isset($_POST['add'])) {
    $translation->add($_POST);
 
 } else if (isset($_POST['update'])) {
    $translation->update($_POST);
 }
-\Html::back();
+Html::back();

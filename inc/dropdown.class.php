@@ -185,6 +185,6 @@ class PluginFieldsDropdown {
    }
 
    static function getClassname($system_name) {
-      return "GlpiPlugin\Fields\\".ucfirst($system_name)."Dropdown";
+      return "PluginFields".ucfirst($system_name)."Dropdown";
    }
 }
