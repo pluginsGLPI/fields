@@ -7,5 +7,8 @@
     },
     "scripts": {
         "post-install-cmd": "if [ $COMPOSER_DEV_MODE -eq 1 ]; then patch -d vendor/atoum/atoum -p1 < tools/atoum-php71.patch; fi"
+    },
+    "require": {
+        "zendframework/zend-loader": "^2.5"
     }
 }
