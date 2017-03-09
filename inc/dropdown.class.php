@@ -67,7 +67,8 @@ class PluginFieldsDropdown {
          return false;
       }
 
-      $classname = self::getClassname($input['name']);
+      $classname = self::getClassname($input['name'], false);
+      $nsclassname = self::getClassname($input['name']);
 
       //create dropdown class file
       $template_class = str_replace(
@@ -90,8 +91,11 @@ class PluginFieldsDropdown {
          $input['label'],
          $template_class
       );
-      $class_filename = $input['name']."dropdown.class.php";
-      if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename",
+
+      $ns_path = PLUGINFIELDS_CLASS_PATH . '/GlpiPlugin/Fields';
+      $class_filename = ucfirst($input['name'])."Dropdown.php";
+
+      if (file_put_contents($ns_path . "/$class_filename",
                             $template_class) === false) {
          Toolbox::logDebug("Error : dropdown class file creation - $class_filename");
          return false;
@@ -105,7 +109,7 @@ class PluginFieldsDropdown {
       }
 
       //create dropdown front file
-      $template_front = str_replace("%%CLASSNAME%%", $classname, $template_front);
+      $template_front = str_replace("%%CLASSNAME%%", $nsclassname, $template_front);
       $front_filename = $input['name']."dropdown.php";
       if (file_put_contents(PLUGINFIELDS_FRONT_PATH . "/$front_filename",
                             $template_front) === false) {
@@ -120,7 +124,7 @@ class PluginFieldsDropdown {
       }
 
       //create dropdown form file
-      $template_form = str_replace("%%CLASSNAME%%", $classname, $template_form);
+      $template_form = str_replace("%%CLASSNAME%%", $nsclassname, $template_form);
       $form_filename = $input['name']."dropdown.form.php";
       if (file_put_contents(PLUGINFIELDS_FRONT_PATH . "/$form_filename",
                             $template_form) === false) {
@@ -128,13 +132,8 @@ class PluginFieldsDropdown {
          return false;
       }
 
-      //load class manually on plugin installation
-      if (!class_exists($classname)) {
-         require_once $class_filename;
-      }
-
       //call install method (create table)
-      if ($classname::install() === false) {
+      if ($nsclassname::install() === false) {
          Toolbox::logDebug("Error : calling dropdown $classname installation");
          return false;
       }
@@ -146,11 +145,13 @@ class PluginFieldsDropdown {
    }
 
    static function destroy($dropdown_name) {
-      $classname = self::getClassname($dropdown_name);
-      $class_filename = PLUGINFIELDS_CLASS_PATH . "/".$dropdown_name."dropdown.class.php";
+      $classname = self::getClassname($dropdown_name, false);
+      $nsclassname = self::getClassname($dropdown_name);
+      $ns_path = PLUGINFIELDS_CLASS_PATH . '/GlpiPlugin/Fields';
+      $class_filename = $ns_path . '/' . $classname.".php";
 
       //call uninstall method in dropdown class
-      if ($classname::uninstall() === false) {
+      if ($nsclassname::uninstall() === false) {
          Toolbox::logDebug("Error : calling dropdown $classname uninstallation");
          return false;
       }
@@ -158,7 +159,7 @@ class PluginFieldsDropdown {
       //remove class file for this dropdown
       if (file_exists($class_filename)) {
          if (unlink($class_filename) === false) {
-            Toolbox::logDebug("Error : dropdown class file creation - ".$dropdown_name."dropdown.class.php");
+            Toolbox::logDebug("Error : dropdown class file - ". $class_filename);
             return false;
          }
       }
@@ -184,7 +185,19 @@ class PluginFieldsDropdown {
       return true;
    }
 
-   static function getClassname($system_name) {
-      return "GlpiPlugin\Fields\\".ucfirst($system_name)."Dropdown";
+   /**
+    * Get class name
+    *
+    * @param string  $system_name Dropdown name
+    * @param boolean $ns          Namespaced (defaults to true)
+    *
+    * @return string
+    */
+   static function getClassname($system_name, $ns = true) {
+      $classname = ucfirst($system_name)."Dropdown";
+      if ($ns) {
+         $classname = "GlpiPlugin\Fields\\". $classname;
+      }
+      return $classname;
    }
 }
