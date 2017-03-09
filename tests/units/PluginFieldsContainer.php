@@ -9,6 +9,7 @@ class PluginFieldsContainer extends \DbTestCase {
    }
 
    public function testGetSearchOptions() {
+      $container = new \PluginFieldsContainer();
       $this
          ->given($this->newTestedInstance)
          ->then
@@ -29,7 +30,7 @@ class PluginFieldsContainer extends \DbTestCase {
       $newid = $container->add($data);
       $this->integer($newid)->isGreaterThan(0);
 
-      $this->boolean(class_exists('\GlpiPlugin\Fields\Computercontainerlabel1'))->isTrue();
+      $this->boolean(class_exists('PluginFieldsComputercontainerlabel1'))->isTrue();
    }
 
    public function testGetTypes() {
