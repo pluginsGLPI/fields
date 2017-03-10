@@ -1,7 +1,6 @@
 <?php
-namespace GlpiPlugin\Fields;
 
-class %%CLASSNAME%% extends \CommonDBTM
+class %%CLASSNAME%% extends CommonDBTM
 {
    static $rightname = '%%ITEMTYPE_RIGHT%%';
 
@@ -35,7 +34,7 @@ class %%CLASSNAME%% extends \CommonDBTM
    static function addField($fieldname, $type) {
       global $DB;
 
-      $sql_type = \PluginFieldsMigration::getSQLType($type);
+      $sql_type = PluginFieldsMigration::getSQLType($type);
 
       $obj = new self();
       return $DB->query("ALTER TABLE  `".$obj->getTable()."`

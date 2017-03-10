@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.1] - 2017-03-09
+
+- Drop namespaces added in 1.6.0; GLPI is not ready
+- Revert back to zend-loader
+
+## [1.6.0] - 2017-03-03
+
+- Use Fedora/Autoloader, add namespaces
+- Normalize backslashes
+- Fix permissions issues (cannot create containers or fields)
+
 ## [1.5.0] - 2017-01-27
 
 **Compatible with GLPI 9.1.2 and above**

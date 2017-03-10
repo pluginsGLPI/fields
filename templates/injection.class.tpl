@@ -1,7 +1,6 @@
 <?php
-namespace GlpiPlugin\Fields;
 
-class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements \PluginDatainjectionInjectionInterface
+class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectionInjectionInterface
 {
    static $rightname = 'plugin_datainjection_model';
 
@@ -72,7 +71,7 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements \PluginDatainjecti
     * for example array(Computer=>1, Networkport=>10)
    **/
    function addOrUpdateObject($values=array(), $options=array()) {
-      $lib = new \PluginDatainjectionCommonInjectionLib($this, $values, $options);
+      $lib = new PluginDatainjectionCommonInjectionLib($this, $values, $options);
       $lib->processAddOrUpdate();
       return $lib->getInjectionResults();
    }
