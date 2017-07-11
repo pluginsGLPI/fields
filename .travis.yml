@@ -1,6 +1,5 @@
 language: php
 php:
-  - 5.5
   - 5.6
   - 7.0
   - 7.1
@@ -11,7 +10,7 @@ env:
     - DB=mysql
   matrix:
      #- GLPIVER=9.1.2 ==> not released yet!
-    - GLPIVER=9.1/bugfixes
+    - GLPIVER=9.2/bugfixes
     - GLPIVER=master
 
 before_script:
@@ -19,7 +18,7 @@ before_script:
   - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
   - composer install --no-dev
   - mysql -u root -e 'create database glpitest;'
-  - php tools/cliinstall.php --db=glpi-test --user=travis --tests
+  - php tools/cliinstall.php --db=glpitest --user=root --tests
   - mv ../fields plugins/fields
   - cd plugins/fields
   - composer install -o
@@ -27,12 +26,9 @@ before_script:
 script:
   - vendor/bin/robo --no-interaction code:cs
   - mysql -u root -e 'select version();'
-  - ./vendor/bin/atoum -bf tests/bootstrap.php -d tests/units/
+  - ./vendor/bin/atoum --debug -bf tests/bootstrap.php -d tests/units/
 
 matrix:
-  exclude:
-    - php: 5.4
-      env: GLPIVER=master
   allow_failures:
     - php: nightly
 

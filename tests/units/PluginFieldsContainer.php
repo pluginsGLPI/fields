@@ -2,7 +2,7 @@
 
 namespace tests\units;
 
-class PluginFieldsContainer extends \DbTestCase {
+class PluginFieldsContainer extends \FieldsDbTestCase {
 
    public function testGetTypeName() {
       $this->string(\PluginFieldsContainer::getTypeName())->isIdenticalTo('Block');
