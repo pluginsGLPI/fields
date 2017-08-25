@@ -659,7 +659,7 @@ class PluginFieldsField extends CommonDBTM {
 
             //get default value
             if ((empty($value) && !empty($field['default_value']) && $field['type'] != 'yesno') ||
-                (!isset($value) && !empty($field['default_value']) && $field['type'] != 'yesno')) {
+                ($value == "" && !empty($field['default_value']) && $field['type'] != 'yesno')) {
                $value = $field['default_value'];
             }
 
