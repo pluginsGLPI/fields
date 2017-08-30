@@ -750,7 +750,7 @@ class PluginFieldsField extends CommonDBTM {
                case 'date':
                   if ($canedit && !$readonly) {
                      ob_start();
-                     Html::showDateFormItem($field['name'], $value);
+                     Html::showDateField($field['name'], ['value' => $value]);
                      $html.= ob_get_contents();
                      ob_end_clean();
                   } else {
@@ -760,7 +760,7 @@ class PluginFieldsField extends CommonDBTM {
                case 'datetime':
                   if ($canedit && !$readonly) {
                      ob_start();
-                     Html::showDateTimeFormItem($field['name'], $value);
+                     Html::showDateTimeField($field['name'], ['value' => $value]);
                      $html.= ob_get_contents();
                      ob_end_clean();
                   } else {
