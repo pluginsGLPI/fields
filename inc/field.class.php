@@ -519,6 +519,7 @@ class PluginFieldsField extends CommonDBTM {
       $subtype = $_SESSION['glpi_tabs'][strtolower($item::getType())];
       $type = substr($subtype, -strlen('$main')) === '$main'
               || in_array('showPrimaryForm', $functions)
+              || in_array('showFormHelpdesk', $functions)
                ? 'dom'
                : 'domtab';
 
