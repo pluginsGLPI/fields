@@ -839,6 +839,11 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
+   function post_getEmpty() {
+      $this->fields['is_active'] = 1;
+      $this->fields['type']      = 'text';
+   }
+
    static function getTypes() {
       return [
          'header'       => __("Header", "fields"),
