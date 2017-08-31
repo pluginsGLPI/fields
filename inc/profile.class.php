@@ -60,7 +60,8 @@ class PluginFieldsProfile extends CommonDBTM {
          echo "<tr>";
          echo "<td>".$profile_item['name']."</td>";
          echo "<td>";
-         Profile::dropdownNoneReadWrite("rights[".$profile_item['id']."]", $first_found['right']);
+         Profile::dropdownRight("rights[".$profile_item['id']."]",
+                                ['value' => $first_found['right']]);
          echo "</td>";
          echo "<tr>";
       }
