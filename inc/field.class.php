@@ -664,7 +664,7 @@ class PluginFieldsField extends CommonDBTM {
             }
 
             //get default value
-            if (empty($value) && !empty($field['default_value'])) {
+            if ($value === "" && $field['default_value'] !== "") {
                $value = $field['default_value'];
 
                // shortcut for date/datetime
