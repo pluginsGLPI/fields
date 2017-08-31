@@ -192,6 +192,12 @@ function plugin_version_fields() {
  * @return boolean
  */
 function plugin_fields_check_prerequisites() {
+   $version = rtrim(GLPI_VERSION, '-dev');
+   if (version_compare($version, '9.2', 'lt')) {
+      echo "This plugin requires GLPI 9.2";
+      return false;
+   }
+
    return true;
 }
 
