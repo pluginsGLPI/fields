@@ -402,6 +402,10 @@ class PluginFieldsField extends CommonDBTM {
                     alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
                </a>';
       }
+      if (in_array($this->fields['type'], ['date', 'datetime'])) {
+         echo "<i class='pointer fa fa-info'
+                  title=\"".__("You can use 'now' for date and datetime field")."\"></i>";
+      }
       echo "</td>";
 
       echo "</tr>";
@@ -661,6 +665,12 @@ class PluginFieldsField extends CommonDBTM {
             //get default value
             if (empty($value) && !empty($field['default_value'])) {
                $value = $field['default_value'];
+
+               // shortcut for date/datetime
+               if (in_array($field['type'], ['date', 'datetime'])
+                   && $value == 'now') {
+                  $value = $_SESSION["glpi_currenttime"];
+               }
             }
 
             //show field
