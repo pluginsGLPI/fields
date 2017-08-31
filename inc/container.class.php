@@ -1453,10 +1453,23 @@ class PluginFieldsContainer extends CommonDBTM {
       return $tabs;
    }
 
+   /**
+    * Retrieve the classname for a label (raw_name) & an itemtype
+    * @param  string $itemtype the name of associated CommonDBTM class
+    * @param  string $raw_name the label of container
+    * @return string the classname
+    */
    static function getClassname($itemtype = "", $raw_name = "") {
       return "PluginFields".ucfirst(self::getSystemName($itemtype, $raw_name));
    }
 
+   /**
+    * Retrieve the systemname for a label (raw_name) & an itemtype
+    * Used to generate class files
+    * @param  string $itemtype the name of associated CommonDBTM class
+    * @param  string $raw_name the label of container
+    * @return string the classname
+    */
    static function getSystemName($itemtype = "", $raw_name = "") {
       return strtolower($itemtype.preg_replace('/s$/', '', $raw_name));
    }
