@@ -716,7 +716,9 @@ class PluginFieldsContainer extends CommonDBTM {
          $tabs[__('Dropdowns')] = $dropdowns;
 
          $tabs[__('Other')] = [
-            'NetworkPort' => NetworkPort::getTypeName(2),
+            'NetworkPort'          => NetworkPort::getTypeName(2),
+            'Notification'         => Notification::getTypeName(2),
+            'NotificationTemplate' => NotificationTemplate::getTypeName(2),
          ];
       }
 
