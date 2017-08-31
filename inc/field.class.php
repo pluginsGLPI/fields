@@ -506,24 +506,28 @@ class PluginFieldsField extends CommonDBTM {
       $item    = $params['item'];
       $options = $params['options'];
 
+      $functions = array_column(debug_backtrace(), 'function');
+
       if (!isset($_SESSION['glpi_tabs'][strtolower($item::getType())])) {
          return;
       };
 
       $subtype = $_SESSION['glpi_tabs'][strtolower($item::getType())];
-      $type = substr($subtype, -strlen('$main')) === '$main' ? 'dom' : 'domtab';
+      $type = substr($subtype, -strlen('$main')) === '$main'
+              || in_array('showPrimaryForm', $functions)
+               ? 'dom'
+               : 'domtab';
+
+      // if we are in 'dom' or 'tab' type, no need for subtype ('domtab' specific)
+      if ($type != 'domtab') {
+         $subtype = "";
+      }
 
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
-      } else {
-         $c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype);
-         if ($c_id === false) {
-            $c_id = PluginFieldsContainer::findContainer(get_Class($item)); //tries for 'tab'
-            if ($c_id === false) {
-               return false;
-            }
-         }
+      } elseif (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
+         return false;
       }
 
       //need to check if container is usable on this object entity

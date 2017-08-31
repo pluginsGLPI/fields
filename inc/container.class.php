@@ -1412,11 +1412,12 @@ class PluginFieldsContainer extends CommonDBTM {
    private static function getSubtypes($item) {
       $tabs = [];
       switch ($item::getType()) {
-         case Computer::getType():
+         // TODO: didn't work anymore, as we are in a type 'Item_OperatingSystem' (was before Computer)
+         /*case Computer::getType():
             $tabs = [
                'Computer$1' => __('Operating system')
             ];
-            break;
+            break;*/
          case Ticket::getType():
          case Problem::getType():
             $tabs = [
