@@ -707,6 +707,14 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       if (!$is_domtab) {
+         $dropdowns = [];
+         // flatten dropdows
+         $raw_dropdowns = Dropdown::getStandardDropdownItemTypes();
+         array_walk_recursive($raw_dropdowns, function($val, $key) use (&$dropdowns) {
+            $dropdowns[$key] = $val;
+         });
+         $tabs[__('Dropdowns')] = $dropdowns;
+
          $tabs[__('Other')] = [
             'NetworkPort' => NetworkPort::getTypeName(2),
          ];
