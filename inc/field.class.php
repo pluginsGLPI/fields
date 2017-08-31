@@ -526,7 +526,7 @@ class PluginFieldsField extends CommonDBTM {
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
-      } elseif (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
+      } else if (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
          return false;
       }
 

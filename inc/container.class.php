@@ -709,7 +709,7 @@ class PluginFieldsContainer extends CommonDBTM {
       if (!$is_domtab) {
          $tabs[__('Other')] = [
             'NetworkPort' => NetworkPort::getTypeName(2),
-         ]
+         ];
       }
 
       return $tabs;
