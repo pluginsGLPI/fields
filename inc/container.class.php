@@ -122,6 +122,11 @@ class PluginFieldsContainer extends CommonDBTM {
       return true;
    }
 
+   function post_getEmpty() {
+      $this->fields['is_active']    = 1;
+      $this->fields['is_recursive'] = 1;
+   }
+
    function getSearchOptionsNew() {
       $tab = [];
 
