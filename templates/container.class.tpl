@@ -10,7 +10,7 @@ class %%CLASSNAME%% extends CommonDBTM
       $obj = new self();
       $table = $obj->getTable();
 
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                               INT(11)      NOT NULL auto_increment,
                   `items_id`                         INT(11)      NOT NULL,

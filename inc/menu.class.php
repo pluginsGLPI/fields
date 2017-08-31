@@ -13,11 +13,11 @@ class PluginFieldsMenu extends CommonGLPI {
       }
 
       $front_fields = "/plugins/fields/front";
-      $menu = array();
+      $menu = [];
       $menu['title'] = self::getMenuName();
       $menu['page']  = "$front_fields/container.php";
 
-      $itemtypes = array('PluginFieldsContainer' => 'fieldscontainer');
+      $itemtypes = ['PluginFieldsContainer' => 'fieldscontainer'];
 
       foreach ($itemtypes as $itemtype => $option) {
          $menu['options'][$option]['title']           = $itemtype::getTypeName(2);

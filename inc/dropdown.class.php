@@ -49,7 +49,7 @@ class PluginFieldsDropdown {
       global $DB;
 
       //remove dropdown tables and files
-      if (TableExists("glpi_plugin_fields_fields")) {
+      if ($DB->tableExists("glpi_plugin_fields_fields")) {
          require_once "field.class.php";
          $field = new PluginFieldsField;
          $dropdowns = $field->find("`type` = 'dropdown'");

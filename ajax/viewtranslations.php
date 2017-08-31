@@ -50,7 +50,7 @@ $canedit = $translation->can($translation->getID(), CREATE);
 if ($canedit) {
     $translation->showForm($_POST['itemtype'], $_POST['items_id'], $_POST['id']);
 } else {
-   _e('Access denied');
+   echo __('Access denied');
 }
 
 Html::ajaxFooter();

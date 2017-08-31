@@ -14,10 +14,9 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    static function install(Migration $migration, $version) {
       global $DB;
 
-      $obj = new self();
-      $table = $obj->getTable();
+      $table = self::getTable();
 
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
@@ -43,8 +42,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    static function uninstall() {
       global $DB;
 
-      $obj = new self();
-      $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
+      $DB->query("DROP TABLE IF EXISTS `".self::getTable()."`");
 
       return true;
    }
@@ -56,30 +54,25 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    static function createForItem(CommonDBTM $item) {
 
       $translation = new PluginFieldsLabelTranslation();
-      $translation->add(
-         [
-            'plugin_fields_itemtype' => $item::getType(),
-            'plugin_fields_items_id' => $item->getID(),
-            'language'               => $_SESSION['glpilanguage'],
-            'label'                  => $item->fields['label']
-         ]
-      );
+      $translation->add([
+         'plugin_fields_itemtype' => $item::getType(),
+         'plugin_fields_items_id' => $item->getID(),
+         'language'               => $_SESSION['glpilanguage'],
+         'label'                  => $item->fields['label']
+      ]);
       return true;
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      $nb = countElementsInTable($this->getTable(),
-                                        "`plugin_fields_itemtype` = '{$item::getType()}' AND
-                                        `plugin_fields_items_id` = '{$item->getID()}'");
+      $nb = countElementsInTable(self::getTable(),
+                                 "`plugin_fields_itemtype` = '{$item::getType()}' AND
+                                  `plugin_fields_items_id` = '{$item->getID()}'");
       return self::createTabEntry(self::getTypeName($nb), $nb);
 
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
        self::showTranslations($item);
-      /*$fup = new self();
-      $fup->showSummary($item);
-      return true;*/
    }
 
    /**
@@ -95,18 +88,17 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       $canedit = $item->can($item->getID(), UPDATE);
       $rand    = mt_rand();
       if ($canedit) {
-         echo "<div id='viewtranslation" . $item->getID() . "$rand'></div>\n";
-         echo "<script type='text/javascript' >\n";
-         echo "function addTranslation" . $item->getID() . "$rand() {\n";
-         $params = array('type'       => __CLASS__,
-                         'itemtype'   => $item::getType(),
-                         'items_id'   => $item->fields['id'],
-                         'id'         => -1);
+         echo "<div id='viewtranslation".$item->getID()."$rand'></div>";
+         Html::scriptStart();
+         echo "addTranslation".$item->getID()."$rand = function() {";
          Ajax::updateItemJsCode("viewtranslation" . $item->getID() . "$rand",
                                 $CFG_GLPI["root_doc"]."/plugins/fields/ajax/viewtranslations.php",
-                                $params);
+                                ['type'       => __CLASS__,
+                                 'itemtype'   => $item::getType(),
+                                 'items_id'   => $item->fields['id'],
+                                 'id'         => -1]);
          echo "};";
-         echo "</script>\n";
+         echo Html::scriptEnd();
 
          echo "<div class='center'>".
               "<a class='vsubmit' href='javascript:addTranslation".$item->getID()."$rand();'>".
@@ -123,7 +115,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       if (count($found) > 0) {
          if ($canedit) {
             Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = array('container' => 'mass'.__CLASS__.$rand);
+            $massiveactionparams = ['container' => 'mass'.__CLASS__.$rand];
             Html::showMassiveActions($massiveactionparams);
          }
          echo "<div class='center'>";
@@ -138,8 +130,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
          echo "<th>".__("Label", "fields")."</th>";
          foreach ($found as $data) {
             echo "<tr class='tab_bg_1' ".($canedit ? "style='cursor:pointer'
-                     onClick=\"viewEditTranslation".$data['id']."$rand();\"" : '') .
-                 ">";
+                      onClick=\"viewEditTranslation".$data['id']."$rand();\"" : '').">";
             if ($canedit) {
                echo "<td class='center'>";
                Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
@@ -147,17 +138,16 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
             }
             echo "<td>";
             if ($canedit) {
-               echo "\n<script type='text/javascript' >\n";
-               echo "function viewEditTranslation". $data["id"]."$rand() {\n";
-               $params = array('type'    => __CLASS__,
-                              'itemtype' => $item::getType(),
-                              'items_id' => $item->getID(),
-                              'id'       => $data["id"]);
+               Html::scriptStart();
+               echo "viewEditTranslation". $data["id"]."$rand = function() {";
                Ajax::updateItemJsCode("viewtranslation" . $item->getID() . "$rand",
                                       $CFG_GLPI["root_doc"]."/plugins/fields/ajax/viewtranslations.php",
-                                      $params);
+                                      ['type'    => __CLASS__,
+                                       'itemtype' => $item::getType(),
+                                       'items_id' => $item->getID(),
+                                       'id'       => $data["id"]]);
                echo "};";
-               echo "</script>\n";
+               echo Html::scriptEnd();
             }
             echo Dropdown::getLanguageName($data['language']);
             echo "</td><td>";
@@ -172,7 +162,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
          }
       } else {
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
-         echo "<th class='b'>" . __("No translation found")."</th></tr></table>";
+         echo "<th class='b'>".__("No translation found")."</th></tr></table>";
       }
 
       return true;
@@ -207,17 +197,20 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
          echo Dropdown::getLanguageName($this->fields['language']);
       } else {
          Dropdown::showLanguages("language",
-                                 array('display_none' => false,
-                                       'value'        => $_SESSION['glpilanguage'],
-                                       'used'         => self::getAlreadyTranslatedForItem($itemtype, $items_id)));
+                                 ['display_none' => false,
+                                  'value'        => $_SESSION['glpilanguage'],
+                                  'used'         => self::getAlreadyTranslatedForItem($itemtype, $items_id)]);
       }
       echo "</td><td colspan='2'>&nbsp;</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td><label for='label'>".__('Label')."</label></td>";
       echo "<td colspan='3'>";
-      echo "<input type='text' name='label' id='label' value='{$this->fields["label"]}'/>";
-      echo "</td></tr>\n";
+      echo Html::input('label', [
+         'value' => $this->fields["label"],
+         'id'    => 'label'
+      ]);
+      echo "</td></tr>";
 
       $this->showFormButtons();
       return true;
@@ -234,8 +227,8 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    static function getAlreadyTranslatedForItem($itemtype, $items_id) {
       global $DB;
 
-      $tab = array();
-      foreach ($DB->request(getTableForItemType(__CLASS__),
+      $tab = [];
+      foreach ($DB->request(self::getTable(),
                             "`plugin_fields_itemtype` = '$itemtype' AND
                              `plugin_fields_items_id` = '$items_id'") as $data) {
          $tab[$data['language']] = $data['language'];
@@ -252,10 +245,9 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
     */
    static public function getLabelFor(array $item) {
       $obj   = new self;
-      $found = $obj->find(
-          "`plugin_fields_itemtype` = '{$item['itemtype']}' AND
-            `plugin_fields_items_id`='{$item['id']}' AND
-            `language` = '{$_SESSION['glpilanguage']}'"
+      $found = $obj->find("`plugin_fields_itemtype` = '{$item['itemtype']}'
+                           AND `plugin_fields_items_id`='{$item['id']}'
+                           AND `language` = '{$_SESSION['glpilanguage']}'"
       );
 
       if (count($found) > 0) {
