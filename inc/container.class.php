@@ -636,29 +636,29 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $tabs = [];
 
-      $assets = ['Computer' => _n("Computer", "Computers", 2)];
+      $assets = ['Computer' => Computer::getTypeName(2)];
       if (!$is_domtab) {
          $assets += [
-            'Monitor'            => _n("Monitor", "Monitors", 2),
-            'Software'           => _n("Software", "Software", 2),
-            'NetworkEquipment'   => _n("Network", "Networks", 2),
-            'Peripheral'         => _n("Device", "Devices", 2),
-            'Printer'            => _n("Printer", "Printers", 2),
-            'CartridgeItem'      => _n("Cartridge", "Cartridges", 2),
-            'ConsumableItem'     => _n("Consumable", "Consumables", 2),
-            'Phone'              => _n("Phone", "Phones", 2)
+            'Monitor'            => Monitor::getTypeName(2),
+            'Software'           => Software::getTypeName(2),
+            'NetworkEquipment'   => NetworkEquipment::getTypeName(2),
+            'Peripheral'         => Peripheral::getTypeName(2),
+            'Printer'            => Printer::getTypeName(2),
+            'CartridgeItem'      => CartridgeItem::getTypeName(2),
+            'ConsumableItem'     => ConsumableItem::getTypeName(2),
+            'Phone'              => Phone::getTypeName(2)
          ];
       }
       $tabs[__('Assets')] = $assets;
 
       $assistance = [
-         'Ticket'  => _n("Ticket", "Tickets", 2),
-         'Problem' => _n("Problem", "Problems", 2),
-         'Change'  => _n("Change", "Changes", 2),
+         'Ticket'  => Ticket::getTypeName(2),
+         'Problem' => Problem::getTypeName(2),
+         'Change'  => Change::getTypeName(2),
       ];
       if (!$is_domtab) {
          $assistance += [
-            'TicketRecurrent'    => __("Recurrent tickets")
+            'TicketRecurrent'    => TicketRecurrent::getTypeName(2)
          ];
       }
       $tabs[__('Assistance')] = $assistance;
@@ -666,18 +666,18 @@ class PluginFieldsContainer extends CommonDBTM {
       if (!$is_domtab) {
          $tabs += [
             __("Management") => [
-               'SoftwareLicense'    => _n("License", "Licenses", 2),
-               'Budget'             => _n("Budget", "Budgets", 2),
-               'Supplier'           => _n("Supplier", "Suppliers", 2),
-               'Contact'            => _n("Contact", "Contacts", 2),
-               'Contract'           => _n("Contract", "Contracts", 2),
-               'Document'           => _n("Document", "Documents", 2)
+               'SoftwareLicense'    => SoftwareLicense::getTypeName(2),
+               'Budget'             => Budget::getTypeName(2),
+               'Supplier'           => Supplier::getTypeName(2),
+               'Contact'            => Contact::getTypeName(2),
+               'Contract'           => Contract::getTypeName(2),
+               'Document'           => Document::getTypeName(2)
             ],
             __("Tools") => [
-               'Project'            => __("Project"),
-               'ProjectTask'        => _n("Project task", "Project tasks", 2),
-               'Reminder'           => _n("Note", "Notes", 2),
-               'RSSFeed'            => __("RSS feed")
+               'Project'            => Project::getTypeName(2),
+               'ProjectTask'        => ProjectTask::getTypeName(2),
+               'Reminder'           => Reminder::getTypeName(2),
+               'RSSFeed'            => RSSFeed::getTypeName(2),
             ]
          ];
       }
@@ -685,14 +685,14 @@ class PluginFieldsContainer extends CommonDBTM {
       $administration = [];
       if (!$is_domtab) {
          $administration += [
-            'User'  => _n("User", "Users", 2),
-            'Group' => _n("Group", "Groups", 2)
+            'User'  => User::getTypeName(2),
+            'Group' => Group::getTypeName(2)
          ];
       }
-      $administration['Entity'] = _n("Entity", "Entities", 2);
+      $administration['Entity'] = Entity::getTypeName(2);
       if (!$is_domtab) {
          $administration += [
-            'Profile' => _n("Profile", "Profiles", 2)
+            'Profile' => Profile::getTypeName(2)
          ];
       }
       $tabs[__('Administration')] = $administration;
@@ -704,6 +704,12 @@ class PluginFieldsContainer extends CommonDBTM {
 
             $tabs[__("Plugins")][$itemtype] = $plugin_name.' - '.$itemtype::getTypeName(2);
          }
+      }
+
+      if (!$is_domtab) {
+         $tabs[__('Other')] = [
+            'NetworkPort' => NetworkPort::getTypeName(2),
+         ]
       }
 
       return $tabs;
