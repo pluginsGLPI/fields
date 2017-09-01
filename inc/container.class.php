@@ -68,6 +68,56 @@ class PluginFieldsContainer extends CommonDBTM {
          $migration->migrationOneTable($table);
       }
 
+      //Computer OS tab is no longer part of computer object. Moving to main
+      $ostab = self::findContainer(Computer::getType(), 'domtab', Computer::getType() . '$1');
+      if ($ostab) {
+         //check if we already have a container on Computer main tab
+         $comptab = self::findContainer(Computer::getType(), 'dom');
+         if ($comptab) {
+            $oscontainer = new PluginFieldsContainer();
+            $oscontainer->getFromDB($ostab);
+
+            $compcontainer = new PluginFieldsContainer();
+            $compcontainer->getFromDB($comptab);
+
+            $fields = new PluginFieldsField();
+            $fields = $fields->find("plugin_fields_containers_id='$ostab'");
+
+            $sql = "UPDATE glpi_plugin_fields_fields SET plugin_fields_containers_id='$comptab' WHERE plugin_fields_containers_id='$ostab'";
+            $DB->query($sql);
+            $DB->query("DELETE FROM glpi_plugin_fields_containers WHERE id='$ostab'");
+
+            $classname = self::getClassname(Computer::getType(), $oscontainer->fields['name']);
+            $osdata = new $classname;
+            $classname = self::getClassname(Computer::getType(), $compcontainer->fields['name']);
+            $compdata = new $classname;
+
+            $fieldnames = [];
+            //add fields to compcontainer
+            foreach ($fields as $field) {
+               $compdata::addField($field['name'], $field['type']);
+               $fieldnames[] = $field['name'];
+            }
+
+            //migrate existing data
+            $existings = $osdata->find();
+            foreach ($existings as $existing) {
+               $data = [];
+               foreach ($fieldnames as $fieldname) {
+                  $data[$fieldname] = $existing[$fieldname];
+               }
+               $compdata->add($data);
+            }
+
+            //drop old table
+            $DB->query("DROP TABLE " . $osdata::getTable());
+         } else {
+            $sql = "UPDATE glpi_plugin_fields_containers SET type='dom', subtype=NULL WHERE id='$ostab'";
+            $comptab = $ostab;
+            $DB->query($sql);
+         }
+      }
+
       $migration->displayMessage(__("Updating generated containers files", "fields"));
       // -> 0.90-1.3: generated class moved
       // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
@@ -1429,12 +1479,6 @@ class PluginFieldsContainer extends CommonDBTM {
    private static function getSubtypes($item) {
       $tabs = [];
       switch ($item::getType()) {
-         // TODO: didn't work anymore, as we are in a type 'Item_OperatingSystem' (was before Computer)
-         /*case Computer::getType():
-            $tabs = [
-               'Computer$1' => __('Operating system')
-            ];
-            break;*/
          case Ticket::getType():
          case Problem::getType():
             $tabs = [
