@@ -13,6 +13,11 @@ include GLPI_ROOT . "/inc/includes.php";
 //install plugin
 $plugin = new \Plugin();
 $plugin->getFromDBbyDir('fields');
+//check from prerequisites as Plugin::install() does not!
+if (!plugin_fields_check_prerequisites()) {
+   echo "\nPrerequisites are not met!";
+   die(1);
+}
 if (!$plugin->isInstalled('fields')) {
    call_user_func([$plugin, 'install'], $plugin->getID());
 }
