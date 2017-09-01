@@ -83,10 +83,6 @@ class PluginFieldsContainer extends CommonDBTM {
             $fields = new PluginFieldsField();
             $fields = $fields->find("plugin_fields_containers_id='$ostab'");
 
-            $sql = "UPDATE glpi_plugin_fields_fields SET plugin_fields_containers_id='$comptab' WHERE plugin_fields_containers_id='$ostab'";
-            $DB->query($sql);
-            $DB->query("DELETE FROM glpi_plugin_fields_containers WHERE id='$ostab'");
-
             $classname = self::getClassname(Computer::getType(), $oscontainer->fields['name']);
             $osdata = new $classname;
             $classname = self::getClassname(Computer::getType(), $compcontainer->fields['name']);
@@ -95,16 +91,26 @@ class PluginFieldsContainer extends CommonDBTM {
             $fieldnames = [];
             //add fields to compcontainer
             foreach ($fields as $field) {
-               $compdata::addField($field['name'], $field['type']);
-               $fieldnames[] = $field['name'];
+               $newname = $field['name'];
+               $compfields = $fields->find("plugin_fields_containers_id='$comptab' AND name='$newname'");
+               if ($compfields) {
+                  $newname = $newname . '_os';
+                  $DB->query("UPDATE glpi_plugin_fields_fields SET name='$newname' WHERE name='{$field['name']}' AND plugin_fields_containers_id='$ostab'");
+               }
+               $compdata::addField($newname, $field['type']);
+               $fieldnames[$field['name']] = $newname;
             }
+
+            $sql = "UPDATE glpi_plugin_fields_fields SET plugin_fields_containers_id='$comptab' WHERE plugin_fields_containers_id='$ostab'";
+            $DB->query($sql);
+            $DB->query("DELETE FROM glpi_plugin_fields_containers WHERE id='$ostab'");
 
             //migrate existing data
             $existings = $osdata->find();
             foreach ($existings as $existing) {
                $data = [];
-               foreach ($fieldnames as $fieldname) {
-                  $data[$fieldname] = $existing[$fieldname];
+               foreach ($fieldnames as $oldname => $newname) {
+                  $data[$newname] = $existing[$olddname];
                }
                $compdata->add($data);
             }
