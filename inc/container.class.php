@@ -8,9 +8,8 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    static function titleList() {
-      echo "<center><input type='button' class='submit' value='&nbsp;".
-            __("Regenerate container files", "fields")."&nbsp;'
-            onclick='location.href=\"regenerate_files.php\"' /></center>";
+      echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
+            __("Regenerate container files", "fields")."</a></div>";
    }
 
    /**
