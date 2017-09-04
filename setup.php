@@ -155,9 +155,6 @@ function plugin_init_fields() {
       // Display fields in any existing tab
       $PLUGIN_HOOKS['post_item_form']['fields'] = ['PluginFieldsField',
                                                    'showForTab'];
-
-      // Check class and front files for existing containers and dropdown fields
-      plugin_fields_checkFiles();
    }
 }
 
@@ -203,19 +200,25 @@ function plugin_fields_check_prerequisites() {
 
 /**
  * Check all stored containers files (classes & front) are present, or create they if needed
- * @return [type] [description]
+ *
+ * @return void
  */
-function plugin_fields_checkFiles() {
+function plugin_fields_checkFiles($force = false) {
    global $DB;
 
    $plugin = new Plugin();
+
+   if ($force) {
+      //clean all existing files
+      array_map('unlink', glob(PLUGINFIELDS_DOC_DIR.'/*/*'));
+   }
 
    if (isset($_SESSION['glpiactiveentities'])
       && $plugin->isInstalled('fields')
       && $plugin->isActivated('fields')
       && Session::getLoginUserID()) {
 
-      if ($DB->tableExists("glpi_plugin_fields_containers")) {
+      if ($DB->tableExists(PluginFieldsContainer::getTable())) {
          $container_obj = new PluginFieldsContainer();
          $containers    = $container_obj->find();
 
@@ -228,11 +231,14 @@ function plugin_fields_checkFiles() {
                if (!class_exists($classname)) {
                   PluginFieldsContainer::generateTemplate($container);
                }
+
+               // regenerate table (and fields) also
+               $classname::install($container['id']);
             }
          }
       }
 
-      if ($DB->tableExists("glpi_plugin_fields_fields")) {
+      if ($DB->tableExists(PluginFieldsField::getTable())) {
          $fields_obj = new PluginFieldsField();
          $fields     = $fields_obj->find("`type` = 'dropdown'");
          foreach ($fields as $field) {

@@ -88,6 +88,9 @@ function plugin_fields_install() {
    echo "</tr>";
    echo "</table></center>";
 
+   // Check class and front files for existing containers and dropdown fields
+   plugin_fields_checkFiles();
+
    return true;
 }
 
@@ -154,27 +157,6 @@ function plugin_fields_uninstall() {
 
    return true;
 }
-
-function regenerateFiles() {
-   $container       = new PluginFieldsContainer;
-   $found_container = $container->find();
-   $done = [];
-   foreach ($found_container as $current_container) {
-      $containers_id = $current_container['id'];
-      $container->getFromDB($containers_id);
-      $container->post_addItem();
-      $done[] = $current_container['name'];
-   }
-   if (count($done)) {
-      Session::addMessageAfterRedirect(
-         sprintf(
-            __('Following containers has been regenerated: %1$s'),
-            implode($done, ', ')
-         )
-      );
-   }
-}
-
 
 function plugin_fields_getAddSearchOptions($itemtype) {
    if (isset($_SESSION['glpiactiveentities'])
