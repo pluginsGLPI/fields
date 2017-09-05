@@ -34,23 +34,23 @@ if (!defined("PLUGINFIELDS_DIR")) {
 
 if (!defined("PLUGINFIELDS_DOC_DIR")) {
    define("PLUGINFIELDS_DOC_DIR", GLPI_PLUGIN_DOC_DIR . "/fields");
-   if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
-      mkdir(PLUGINFIELDS_DOC_DIR);
-   }
+}
+if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
+   mkdir(PLUGINFIELDS_DOC_DIR);
 }
 
 if (!defined("PLUGINFIELDS_CLASS_PATH")) {
    define("PLUGINFIELDS_CLASS_PATH", PLUGINFIELDS_DOC_DIR . "/inc");
-   if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
-      mkdir(PLUGINFIELDS_CLASS_PATH);
-   }
+}
+if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
+   mkdir(PLUGINFIELDS_CLASS_PATH);
 }
 
 if (!defined("PLUGINFIELDS_FRONT_PATH")) {
    define("PLUGINFIELDS_FRONT_PATH", PLUGINFIELDS_DOC_DIR."/front");
-   if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
-      mkdir(PLUGINFIELDS_FRONT_PATH);
-   }
+}
+if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
+   mkdir(PLUGINFIELDS_FRONT_PATH);
 }
 
 /**
