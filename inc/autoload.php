@@ -4,7 +4,7 @@ use Zend\Loader\SplAutoloader;
 
 class PluginFieldsAutoloader implements SplAutoloader
 {
-   protected $paths = array();
+   protected $paths = [];
 
    public function __construct($options = null) {
       if (null !== $options) {
@@ -47,11 +47,11 @@ class PluginFieldsAutoloader implements SplAutoloader
             return false;
          }
 
-         $filename = implode(".", array(
+         $filename = implode(".", [
             $class_name,
             "class",
             "php"
-         ));
+         ]);
 
          foreach ($this->paths as $path) {
             $test = $path . DIRECTORY_SEPARATOR . $filename;
@@ -64,7 +64,7 @@ class PluginFieldsAutoloader implements SplAutoloader
    }
 
    public function register() {
-      spl_autoload_register(array($this, 'autoload'));
+      spl_autoload_register([$this, 'autoload']);
    }
 }
 

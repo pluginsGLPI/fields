@@ -34,6 +34,6 @@ if (isset($_POST["add"])) {
 } else {
    Html::header(__("Additionnal fields", "fields"), $_SERVER['PHP_SELF'],
                 "config", "pluginfieldsmenu", "fieldscontainer");
-   $container->display(array('id' => $_GET["id"]));
+   $container->display(['id' => $_GET["id"]]);
    Html::footer();
 }

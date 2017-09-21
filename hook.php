@@ -41,7 +41,7 @@ function plugin_fields_install() {
    $plugin_fields->getFromDBbyDir('fields');
    $version = $plugin_fields->fields['version'];
 
-   $classesToInstall = array(
+   $classesToInstall = [
       'PluginFieldsField',
       'PluginFieldsDropdown',
       'PluginFieldsLabelTranslation',
@@ -50,7 +50,7 @@ function plugin_fields_install() {
       'PluginFieldsValue',
       'PluginFieldsProfile',
       'PluginFieldsMigration'
-   );
+   ];
 
    $migration = new Migration($version);
    echo "<center>";
@@ -62,9 +62,9 @@ function plugin_fields_install() {
 
    //load all classes
    foreach ($classesToInstall as $class) {
-      if ($plug=isPluginItemType($class)) {
-         $dir= GLPI_ROOT . "/plugins/fields/inc/";
-         $item=strtolower($plug['class']);
+      if ($plug = isPluginItemType($class)) {
+         $dir  = GLPI_ROOT . "/plugins/fields/inc/";
+         $item = strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
          }
@@ -73,9 +73,9 @@ function plugin_fields_install() {
 
    //install
    foreach ($classesToInstall as $class) {
-      if ($plug=isPluginItemType($class)) {
-         $dir= GLPI_ROOT . "/plugins/fields/inc/";
-         $item=strtolower($plug['class']);
+      if ($plug = isPluginItemType($class)) {
+         $dir  = GLPI_ROOT . "/plugins/fields/inc/";
+         $item =strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             if (!call_user_func(array($class,'install'), $migration, $version)) {
                return false;
@@ -88,6 +88,9 @@ function plugin_fields_install() {
    echo "</tr>";
    echo "</table></center>";
 
+   // Check class and front files for existing containers and dropdown fields
+   plugin_fields_checkFiles();
+
    return true;
 }
 
@@ -99,7 +102,7 @@ function plugin_fields_install() {
 function plugin_fields_uninstall() {
    global $DB;
 
-   if (! class_exists('PluginFieldsProfile')) {
+   if (!class_exists('PluginFieldsProfile')) {
       Session::addMessageAfterRedirect(__("The plugin can't be uninstalled when the plugin is disabled", 'fields'),
                                        true, WARNING, true);
       return false;
@@ -114,19 +117,21 @@ function plugin_fields_uninstall() {
    echo "<tr class='tab_bg_1'>";
    echo "<td align='center'>";
 
-   $classesToUninstall = array('PluginFieldsDropdown',
-                              'PluginFieldsContainer',
-                              'PluginFieldsContainer_Field',
-                              'PluginFieldsLabelTranslation',
-                              'PluginFieldsField',
-                              'PluginFieldsValue',
-                              'PluginFieldsProfile',
-                              'PluginFieldsMigration');
+   $classesToUninstall = [
+      'PluginFieldsDropdown',
+      'PluginFieldsContainer',
+      'PluginFieldsContainer_Field',
+      'PluginFieldsLabelTranslation',
+      'PluginFieldsField',
+      'PluginFieldsValue',
+      'PluginFieldsProfile',
+      'PluginFieldsMigration'
+   ];
 
    foreach ($classesToUninstall as $class) {
-      if ($plug=isPluginItemType($class)) {
+      if ($plug = isPluginItemType($class)) {
 
-         $dir = GLPI_ROOT . "/plugins/fields/inc/";
+         $dir  = GLPI_ROOT . "/plugins/fields/inc/";
          $item = strtolower($plug['class']);
 
          if (file_exists("$dir$item.class.php")) {
@@ -145,29 +150,20 @@ function plugin_fields_uninstall() {
    unset($_SESSION['uninstall_fields']);
 
    // clean display preferences
-   $DB->query("DELETE FROM glpi_displaypreferences WHERE itemtype LIKE 'PluginFields%'");
+   $pref = new DisplayPreference;
+   $pref->deleteByCriteria([
+      'itemtype' => ['LIKE' , 'PluginFields%']
+   ]);
 
    return true;
 }
 
-function regenerateFiles() {
-   $container = new PluginFieldsContainer;
-   $found_container = $container->find();
-   foreach ($found_container as $current_container) {
-      $containers_id = $current_container['id'];
-      $container->getFromDB($containers_id);
-      $container->post_addItem();
-   }
-}
-
-
 function plugin_fields_getAddSearchOptions($itemtype) {
    if (isset($_SESSION['glpiactiveentities'])
-      && is_array($_SESSION['glpiactiveentities'])
-      && count($_SESSION['glpiactiveentities']) > 0) {
+       && is_array($_SESSION['glpiactiveentities'])
+       && count($_SESSION['glpiactiveentities']) > 0) {
 
       $itemtypes = PluginFieldsContainer::getEntries('all');
-
       if ($itemtypes !== false && in_array($itemtype, $itemtypes)) {
          return PluginFieldsContainer::getAddSearchOptions($itemtype);
       }
@@ -178,10 +174,10 @@ function plugin_fields_getAddSearchOptions($itemtype) {
 
 // Define Dropdown tables to be manage in GLPI :
 function plugin_fields_getDropdown() {
-   $dropdowns = array();
+   $dropdowns = [];
 
    $field_obj = new PluginFieldsField;
-   $fields = $field_obj->find("`type` = 'dropdown'");
+   $fields    = $field_obj->find("`type` = 'dropdown'");
    foreach ($fields as $field) {
       $field['itemtype'] = PluginFieldsField::getType();
       $label = PluginFieldsLabelTranslation::getLabelFor($field);
@@ -196,7 +192,7 @@ function plugin_fields_getDropdown() {
 /**** MASSIVE ACTIONS ****/
 
 // Display specific massive actions for plugin fields
-function plugin_fields_MassiveActionsFieldsDisplay($options=array()) {
+function plugin_fields_MassiveActionsFieldsDisplay($options = []) {
    $itemtypes = PluginFieldsContainer::getEntries('all');
 
    if (in_array($options['itemtype'], $itemtypes)) {
@@ -218,8 +214,8 @@ function plugin_fields_MassiveActionsFieldsDisplay($options=array()) {
  * @param $params input data
  * @return an array of actions
  */
-function plugin_fields_getRuleActions($params) {
-   $actions = array();
+function plugin_fields_getRuleActions($params = []) {
+   $actions = [];
 
    switch ($params['rule_itemtype']) {
       case "PluginFusioninventoryTaskpostactionRule":
@@ -239,7 +235,7 @@ function plugin_fields_getRuleActions($params) {
 }
 
 
-function plugin_fields_rule_matched($params) {
+function plugin_fields_rule_matched($params = []) {
    global $DB;
 
    $container = new PluginFieldsContainer;
@@ -281,7 +277,7 @@ function plugin_fields_rule_matched($params) {
    }
 }
 
-function plugin_fields_giveItem($itemtype,$ID,$data,$num) {
+function plugin_fields_giveItem($itemtype, $ID, $data, $num) {
    $searchopt = &Search::getOptions($itemtype);
    $table = $searchopt[$ID]["table"];
    $field = $searchopt[$ID]["field"];
@@ -305,8 +301,7 @@ function plugin_datainjection_populate_fields() {
    global $INJECTABLE_TYPES;
 
    $container = new PluginFieldsContainer();
-   $found = $container->find("`is_active` = 1");
-
+   $found     = $container->find("`is_active` = 1");
    foreach ($found as $id => $values) {
       $types = json_decode($values['itemtypes']);
 
@@ -314,7 +309,7 @@ function plugin_datainjection_populate_fields() {
          $classname = "PluginFields"
                      . ucfirst($type. preg_replace('/s$/', '', $values['name']))
                      . 'Injection';
-         $INJECTABLE_TYPES[$classname]               = 'fields';
+         $INJECTABLE_TYPES[$classname] = 'fields';
       }
    }
 }

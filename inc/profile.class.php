@@ -5,10 +5,9 @@ class PluginFieldsProfile extends CommonDBTM {
    static function install(Migration $migration) {
       global $DB;
 
-      $obj = new self();
-      $table = $obj->getTable();
+      $table = self::getTable();
 
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
@@ -30,19 +29,18 @@ class PluginFieldsProfile extends CommonDBTM {
    static function uninstall() {
       global $DB;
 
-      $obj = new self();
-      $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
+      $DB->query("DROP TABLE IF EXISTS `".self::getTable()."`");
 
       return true;
    }
 
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       return self::createTabEntry(_n("Profile", "Profiles", 2));
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       $profile = new Profile;
       $found_profiles = $profile->find();
 
@@ -62,7 +60,8 @@ class PluginFieldsProfile extends CommonDBTM {
          echo "<tr>";
          echo "<td>".$profile_item['name']."</td>";
          echo "<td>";
-         Profile::dropdownNoneReadWrite("rights[".$profile_item['id']."]", $first_found['right']);
+         Profile::dropdownRight("rights[".$profile_item['id']."]",
+                                ['value' => $first_found['right']]);
          echo "</td>";
          echo "<tr>";
       }
@@ -83,23 +82,23 @@ class PluginFieldsProfile extends CommonDBTM {
       $fields_profile = new self;
       foreach ($input['rights'] as $profiles_id => $right) {
          $found = $fields_profile->find("`profiles_id` = '$profiles_id'
-                         AND `plugin_fields_containers_id` = '".
-                           $input['plugin_fields_containers_id']."'");
+                                         AND `plugin_fields_containers_id` = '".
+                                             $input['plugin_fields_containers_id']."'");
          if (count( $found ) > 0) {
             $first_found = array_shift($found);
 
-            $fields_profile->update(array(
+            $fields_profile->update([
                'id'                          => $first_found['id'],
                'profiles_id'                 => $profiles_id,
                'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
                'right'                       => $right
-            ));
+            ]);
          } else {
-            $fields_profile->add(array(
+            $fields_profile->add([
                'profiles_id'                 => $profiles_id,
                'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
                'right'                       => $right
-            ));
+            ]);
          }
       }
 
@@ -113,11 +112,11 @@ class PluginFieldsProfile extends CommonDBTM {
 
       $fields_profile = new self;
       foreach ($found_profiles as $profile_item) {
-         $fields_profile->add(array(
+         $fields_profile->add([
             'profiles_id'                 => $profile_item['id'],
             'plugin_fields_containers_id' => $container->fields['id'],
             'right'                       => CREATE
-         ));
+         ]);
       }
       return true;
    }
@@ -128,17 +127,17 @@ class PluginFieldsProfile extends CommonDBTM {
 
       $fields_profile = new self;
       foreach ($found_containers as $container) {
-         $fields_profile->add(array(
+         $fields_profile->add([
             'profiles_id'                 => $profile->fields['id'],
             'plugin_fields_containers_id' => $container['id']
-         ));
+         ]);
       }
       return true;
    }
 
    static function deleteProfile(Profile $profile) {
       $fields_profile = new self;
-      $fields_profile->deleteByCriteria(array('profiles_id' => $profile->fields['id']));
+      $fields_profile->deleteByCriteria(['profiles_id' => $profile->fields['id']]);
       return true;
    }
 }

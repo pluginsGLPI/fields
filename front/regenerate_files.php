@@ -4,6 +4,6 @@ include ("../hook.php");
 
 Session::checkRight('entity', READ);
 
-regenerateFiles();
+plugin_fields_checkFiles(true);
 
 Html::back();

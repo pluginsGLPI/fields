@@ -4,13 +4,14 @@ class %%CLASSNAME%% extends CommonDBTM
 {
    static $rightname = '%%ITEMTYPE_RIGHT%%';
 
-   static function install() {
+   static function install($containers_id = 0) {
       global $DB;
 
       $obj = new self();
       $table = $obj->getTable();
 
-      if (!TableExists($table)) {
+      // create Table
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                               INT(11)      NOT NULL auto_increment,
                   `items_id`                         INT(11)      NOT NULL,
@@ -22,6 +23,15 @@ class %%CLASSNAME%% extends CommonDBTM
                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ($DB->error());
       }
+
+      // and its fields
+      if ($containers_id) {
+         foreach ($DB->request(PluginFieldsField::getTable(), [
+            'plugin_fields_containers_id' => $containers_id
+         ]) as $field) {
+            self::addField($field['name'], $field['type']);
+         }
+      }
    }
 
    static function uninstall() {
@@ -32,22 +42,18 @@ class %%CLASSNAME%% extends CommonDBTM
    }
 
    static function addField($fieldname, $type) {
-      global $DB;
+      if ($type != 'header') {
+         $sql_type = PluginFieldsMigration::getSQLType($type);
 
-      $sql_type = PluginFieldsMigration::getSQLType($type);
-
-      $obj = new self();
-      return $DB->query("ALTER TABLE  `".$obj->getTable()."`
-         ADD COLUMN `$fieldname` $sql_type
-      ");
+         $migration = new Migration(0);
+         $migration->addField(self::getTable(), $fieldname, $sql_type);
+         $migration->migrationOneTable(self::getTable());
+      }
    }
 
    static function removeField($fieldname) {
-      global $DB;
+      $migration = new Migration;
+      $migration->dropField(self::getTable(), $fieldname);
 
-      $obj = new self();
-      return $DB->query("ALTER TABLE  `".$obj->getTable()."`
-         DROP COLUMN `$fieldname`
-      ");
    }
 }

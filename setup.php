@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.6.2');
+define ('PLUGIN_FIELDS_VERSION', '1.7.0');
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -34,23 +34,23 @@ if (!defined("PLUGINFIELDS_DIR")) {
 
 if (!defined("PLUGINFIELDS_DOC_DIR")) {
    define("PLUGINFIELDS_DOC_DIR", GLPI_PLUGIN_DOC_DIR . "/fields");
-   if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
-      mkdir(PLUGINFIELDS_DOC_DIR);
-   }
+}
+if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
+   mkdir(PLUGINFIELDS_DOC_DIR);
 }
 
 if (!defined("PLUGINFIELDS_CLASS_PATH")) {
    define("PLUGINFIELDS_CLASS_PATH", PLUGINFIELDS_DOC_DIR . "/inc");
-   if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
-      mkdir(PLUGINFIELDS_CLASS_PATH);
-   }
+}
+if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
+   mkdir(PLUGINFIELDS_CLASS_PATH);
 }
 
 if (!defined("PLUGINFIELDS_FRONT_PATH")) {
    define("PLUGINFIELDS_FRONT_PATH", PLUGINFIELDS_DOC_DIR."/front");
-   if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
-      mkdir(PLUGINFIELDS_FRONT_PATH);
-   }
+}
+if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
+   mkdir(PLUGINFIELDS_FRONT_PATH);
 }
 
 /**
@@ -64,13 +64,10 @@ function plugin_init_fields() {
 
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
+   // manage autoload of plugin custom classes
    include_once(PLUGINFIELDS_DIR . "/vendor/autoload.php");
    include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
-
-   $options = array(
-      PLUGINFIELDS_CLASS_PATH
-   );
-   $pluginfields_autoloader = new PluginFieldsAutoloader($options);
+   $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
    $pluginfields_autoloader->register();
 
    $plugin = new Plugin();
@@ -79,48 +76,51 @@ function plugin_init_fields() {
        && Session::getLoginUserID() ) {
 
       // Init hook about itemtype(s) for plugin fields
-      $PLUGIN_HOOKS['plugin_fields'] = array();
+      if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
+         $PLUGIN_HOOKS['plugin_fields'] = array();
+      }
 
       // When a Category is changed during ticket creation
-      if (isset($_POST) && !empty($_POST) && isset($_POST['_plugin_fields_type'])) {
-         if ($_SERVER['REQUEST_URI'] == Ticket::getFormURL()) {
-            //$_SESSION['plugin_fields']['Ticket'] = $_POST;
-            foreach ($_POST as $key => $value) {
-               if (! is_array($value)) {
-                  $_SESSION['plugin']['fields']['values_sent'][$key] = stripcslashes($value);
-               }
+      if (isset($_POST) && !empty($_POST)
+          && isset($_POST['_plugin_fields_type'])
+          && $_SERVER['REQUEST_URI'] == Ticket::getFormURL()) {
+         foreach ($_POST as $key => $value) {
+            if (!is_array($value)) {
+               $_SESSION['plugin']['fields']['values_sent'][$key] = stripcslashes($value);
             }
          }
       }
 
       // complete rule engine
-      $PLUGIN_HOOKS['use_rules']['fields']    = array('PluginFusioninventoryTaskpostactionRule');
+      $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];
       $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
 
       if (isset($_SESSION['glpiactiveentities'])) {
 
+         // add link in plugin page
          $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
          // add entry to configuration menu
-         $PLUGIN_HOOKS["menu_toadd"]['fields'] = array('config'  => 'PluginFieldsMenu');
+         $PLUGIN_HOOKS["menu_toadd"]['fields'] = ['config' => 'PluginFieldsMenu'];
 
          // add tabs to itemtypes
          Plugin::registerClass('PluginFieldsContainer',
-                               array('addtabon' => array_unique(PluginFieldsContainer::getEntries())));
+                               ['addtabon' => array_unique(PluginFieldsContainer::getEntries())]);
 
          //include js and css
-         $debug = (isset($_SESSION['glpi_use_mode']) && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
+         $debug = (isset($_SESSION['glpi_use_mode'])
+                   && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
          if (!$debug && file_exists(__DIR__ . '/css/fields.min.css')) {
-            $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.min.css';
+            $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
          } else {
-            $PLUGIN_HOOKS['add_css']['fields'][]           = 'css/fields.css';
+            $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.css';
          }
 
          // Add/delete profiles to automaticaly to container
-         $PLUGIN_HOOKS['item_add']['fields']['Profile']       = array("PluginFieldsProfile",
-                                                                       "addNewProfile");
-         $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = array("PluginFieldsProfile",
-                                                                       "deleteProfile");
+         $PLUGIN_HOOKS['item_add']['fields']['Profile']
+            = ["PluginFieldsProfile", "addNewProfile"];
+         $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile']
+            = ["PluginFieldsProfile", "deleteProfile"];
 
          //load drag and drop javascript library on Package Interface
          $PLUGIN_HOOKS['add_javascript']['fields'][] = "js/redips-drag-min.js";
@@ -133,7 +133,8 @@ function plugin_init_fields() {
 
       // Add Fields to Datainjection
       if ($plugin->isActivated('datainjection')) {
-         $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
+         $PLUGIN_HOOKS['plugin_datainjection_populate']['fields']
+            = "plugin_datainjection_populate_fields";
       }
 
       //Retrieve dom container
@@ -151,12 +152,9 @@ function plugin_init_fields() {
          }
       }
 
+      // Display fields in any existing tab
       $PLUGIN_HOOKS['post_item_form']['fields'] = ['PluginFieldsField',
                                                    'showForTab'];
-
-      // Check class and front files for existing containers and dropdown fields
-      plugin_fields_checkFiles();
-
    }
 }
 
@@ -168,12 +166,20 @@ function plugin_init_fields() {
  * @return array
  */
 function plugin_version_fields() {
-   return array ('name'           => __("Additionnal fields", "fields"),
-                 'version'        => PLUGIN_FIELDS_VERSION,
-                 'author'         => 'Teclib\', Olivier Moron',
-                 'homepage'       => 'teclib.com',
-                 'license'        => 'GPLv2+',
-                 'minGlpiVersion' => '9.1.2');
+   return [
+      'name'           => __("Additionnal fields", "fields"),
+      'version'        => PLUGIN_FIELDS_VERSION,
+      'author'         => 'Teclib\', Olivier Moron',
+      'homepage'       => 'teclib.com',
+      'license'        => 'GPLv2+',
+      'requirements'   => [
+         'glpi' => [
+            'min' => '9.2',
+            'max' => '9.3',
+            'dev' => true
+         ]
+      ]
+   ];
 }
 
 /**
@@ -183,48 +189,56 @@ function plugin_version_fields() {
  * @return boolean
  */
 function plugin_fields_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.1.2', 'lt')) {
-      if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.1.2');
-      } else {
-         echo "This plugin requires GLPI 9.1.2";
-      }
+   $version = rtrim(GLPI_VERSION, '-dev');
+   if (version_compare($version, '9.2', 'lt')) {
+      echo "This plugin requires GLPI 9.2";
       return false;
    }
 
    return true;
 }
 
+/**
+ * Check all stored containers files (classes & front) are present, or create they if needed
+ *
+ * @return void
+ */
+function plugin_fields_checkFiles($force = false) {
+   global $DB;
 
-function plugin_fields_checkFiles() {
    $plugin = new Plugin();
+
+   if ($force) {
+      //clean all existing files
+      array_map('unlink', glob(PLUGINFIELDS_DOC_DIR.'/*/*'));
+   }
 
    if (isset($_SESSION['glpiactiveentities'])
       && $plugin->isInstalled('fields')
       && $plugin->isActivated('fields')
       && Session::getLoginUserID()) {
 
-      Plugin::registerClass('PluginFieldsContainer');
-      Plugin::registerClass('PluginFieldsDropdown');
-      Plugin::registerClass('PluginFieldsField');
-
-      if (TableExists("glpi_plugin_fields_containers")) {
+      if ($DB->tableExists(PluginFieldsContainer::getTable())) {
          $container_obj = new PluginFieldsContainer();
          $containers    = $container_obj->find();
 
          foreach ($containers as $container) {
-            $itemtypes = (count($container['itemtypes']) > 0) ? json_decode($container['itemtypes'], TRUE) : array();
+            $itemtypes = (strlen($container['itemtypes']) > 0)
+               ? json_decode($container['itemtypes'], TRUE)
+               : [];
             foreach ($itemtypes as $itemtype) {
-               $classname = "PluginFields".ucfirst($itemtype.
-                                        preg_replace('/s$/', '', $container['name']));
+               $classname = PluginFieldsContainer::getClassname($itemtype, $container['name']);
                if (!class_exists($classname)) {
                   PluginFieldsContainer::generateTemplate($container);
                }
+
+               // regenerate table (and fields) also
+               $classname::install($container['id']);
             }
          }
       }
 
-      if (TableExists("glpi_plugin_fields_fields")) {
+      if ($DB->tableExists(PluginFieldsField::getTable())) {
          $fields_obj = new PluginFieldsField();
          $fields     = $fields_obj->find("`type` = 'dropdown'");
          foreach ($fields as $field) {
@@ -242,11 +256,5 @@ function plugin_fields_checkFiles() {
  * @return boolean
  */
 function plugin_fields_check_config($verbose = false) {
-   if (true) { // Your configuration check
-      return true;
-   }
-   if ($verbose) {
-      echo __("Installed / not configured");
-   }
-   return false;
+   return true;
 }

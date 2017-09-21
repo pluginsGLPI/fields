@@ -1,7 +1,7 @@
 <?php
 include ("../../../inc/includes.php");
 
-$table   = getTableForItemType('PluginFieldsField');
+$table   = PluginFieldsField::getTable();
 
 // Récupération de l'ID du champ à modifier
 $query   = "SELECT id FROM $table
