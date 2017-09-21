@@ -223,7 +223,7 @@ function plugin_fields_checkFiles($force = false) {
          $containers    = $container_obj->find();
 
          foreach ($containers as $container) {
-            $itemtypes = (count($container['itemtypes']) > 0)
+            $itemtypes = (strlen($container['itemtypes']) > 0)
                ? json_decode($container['itemtypes'], TRUE)
                : [];
             foreach ($itemtypes as $itemtype) {
