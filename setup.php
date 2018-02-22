@@ -199,6 +199,20 @@ function plugin_version_fields() {
    ];
 }
 
+/**
+ * Check pre-requisites before install
+ * OPTIONNAL, but recommanded
+ *
+ * @return boolean
+ */
+function plugin_fields_check_prerequisites() {
+   if (!is_readable(__DIR__ . '/vendor/autoload.php') || !is_file(__DIR__ . '/vendor/autoload.php')) {
+      echo "Run composer install --no-dev in the plugin directory<br>";
+      return false;
+   }
+
+   return true;
+}
 
 /**
  * Check all stored containers files (classes & front) are present, or create they if needed
