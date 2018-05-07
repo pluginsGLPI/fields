@@ -182,7 +182,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->fields['is_recursive'] = 1;
    }
 
-   function getSearchOptionsNew() {
+   function rawSearchOptions() {
       $tab = [];
 
       $tab[] = [
