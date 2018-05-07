@@ -1,8 +1,6 @@
 <?php
 
-use Zend\Loader\SplAutoloader;
-
-class PluginFieldsAutoloader implements SplAutoloader
+class PluginFieldsAutoloader
 {
    protected $paths = [];
 
