@@ -65,7 +65,6 @@ function plugin_init_fields() {
    $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
    // manage autoload of plugin custom classes
-   include_once(PLUGINFIELDS_DIR . "/vendor/autoload.php");
    include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
    $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
    $pluginfields_autoloader->register();
