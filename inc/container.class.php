@@ -436,6 +436,8 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function pre_deleteItem() {
+      global $DB;
+
       $_SESSION['delete_container'] = true;
 
       foreach (json_decode($this->fields['itemtypes']) as $itemtype) {
