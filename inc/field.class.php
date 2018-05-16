@@ -78,7 +78,6 @@ class PluginFieldsField extends CommonDBTM {
       //parse name
       $input['name'] = $this->prepareName($input);
 
-      //dropdowns : create files
       if ($input['type'] === "dropdown") {
          //search if dropdown already exist in this container
          $found = $this->find("name = '".$input['name']."'
@@ -89,13 +88,6 @@ class PluginFieldsField extends CommonDBTM {
          if (!empty($found)) {
             Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields', false, ERROR));
             return false;
-         }
-
-         //search if dropdown already exist in other container
-         $found = $this->find("name = '".$input['name']."'");
-         //for dropdown, if already exist, don't create files
-         if (empty($found)) {
-            PluginFieldsDropdown::create($input);
          }
 
          $oldname = $input['name'];
@@ -877,6 +869,18 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    function post_addItem() {
+      $input = $this->fields;
+
+      //dropdowns : create files
+      if ($input['type'] === "dropdown") {
+         //search if dropdown already exist in other container
+         $found = $this->find("id != " . $input['id'] . " AND name = '" . $input['name'] . "'");
+         //for dropdown, if already exist, don't create files
+         if (empty($found)) {
+            PluginFieldsDropdown::create($input);
+         }
+      }
+
       //Create label translation
       PluginFieldsLabelTranslation::createForItem($this);
    }
