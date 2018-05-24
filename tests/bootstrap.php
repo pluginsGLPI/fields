@@ -8,6 +8,7 @@ define("PLUGINFIELDS_DOC_DIR", __DIR__ . "/generated_test_data");
 define('GLPI_ROOT', dirname(dirname(dirname(__DIR__))));
 define("GLPI_CONFIG_DIR", GLPI_ROOT . "/tests");
 include GLPI_ROOT . "/inc/includes.php";
+include_once GLPI_ROOT . '/tests/GLPITestCase.php';
 include_once GLPI_ROOT . '/tests/DbTestCase.php';
 
 //install plugin
