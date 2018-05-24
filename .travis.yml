@@ -9,8 +9,8 @@ env:
   global:
     - DB=mysql
   matrix:
-     #- GLPIVER=9.1.2 ==> not released yet!
-    - GLPIVER=9.2/bugfixes
+    - GLPIVER=9.3/bugfixes
+    - GLPIVER=master
 
 before_script:
   - composer self-update
