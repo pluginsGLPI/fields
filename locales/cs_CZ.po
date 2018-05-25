@@ -4,24 +4,26 @@
 # 
 # Translators:
 # David Stepan <stepand@tiscali.cz>, 2016
+# Merlin Merlin <mmerlin10@gmail.com>, 2017
+# Pavel Borecki <pavel.borecki@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-13 14:22+0100\n"
-"PO-Revision-Date: 2017-03-02 15:22+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2018-03-27 05:53+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
 #: setup.php:161
 msgid "Additionnal fields"
-msgstr "Další pole"
+msgstr "Další kolonky"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -29,7 +31,7 @@ msgstr "Instalace MySQL tabulek"
 
 #: hook.php:103
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Plugin nemůže být odebrán protože je plugin deaktivován."
+msgstr "Zásuvný modul nemůže být odinstalován protože je vypnutý."
 
 #: hook.php:112
 msgid "MySQL tables uninstallation"
@@ -37,31 +39,31 @@ msgstr "Odebrání MySQL tabulek"
 
 #: inc/dropdown.class.php:17
 msgid "Updating generated dropdown files"
-msgstr ""
+msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 
 #: inc/labeltranslation.class.php:137
 msgid "Language"
-msgstr ""
+msgstr "Jazyk"
 
 #: inc/labeltranslation.class.php:138
 msgid "Label"
-msgstr ""
+msgstr "Štítek"
 
 #: inc/field.class.php:70
 msgid "Field"
-msgstr "Pole"
+msgstr "Kolonka"
 
 #: inc/field.class.php:246
 msgid "Fields"
-msgstr "Pole"
+msgstr "Kolonky"
 
 #: inc/field.class.php:296
 msgid "Add a new field"
-msgstr "Přidat nové pole"
+msgstr "Přidat novou kolonku"
 
 #: inc/field.class.php:300
 msgid "No field for this block"
-msgstr "Žádné pole pro tento blok"
+msgstr "Žádná kolonka pro tento blok"
 
 #: inc/field.class.php:312 inc/field.class.php:414
 msgid "Read only"
@@ -69,15 +71,15 @@ msgstr "Pouze pro čtení"
 
 #: inc/field.class.php:396
 msgid "Configure"
-msgstr "Konfigurovat"
+msgstr "Nastavit"
 
 #: inc/field.class.php:396
 msgid "Configure fields values"
-msgstr "Konfigurovat hodnoty polí"
+msgstr "Nastavit hodnoty kolonek"
 
 #: inc/field.class.php:840
 msgid "show"
-msgstr ""
+msgstr "zobrazit"
 
 #: inc/field.class.php:985
 msgid "Header"
@@ -97,7 +99,7 @@ msgstr "Číslo"
 
 #: inc/field.class.php:989
 msgid "URL"
-msgstr ""
+msgstr "URL adresa"
 
 #: inc/field.class.php:990
 msgid "Dropdown"
@@ -113,29 +115,29 @@ msgstr "Datum"
 
 #: inc/field.class.php:993
 msgid "Date & time"
-msgstr "Datum & čas"
+msgstr "Datum a čas"
 
 #: inc/container.class.php:8
 msgid "Regenerate container files"
-msgstr "Regenerovat kontejnerové soubory"
+msgstr "Znovu vytvořit kontejnerové soubory"
 
 #: inc/container.class.php:69
 msgid "Updating generated containers files"
-msgstr ""
+msgstr "Aktualizují se vytvořené soubory kontejnerů"
 
 #: inc/container.class.php:229
 msgid "You cannot add block without associated element type"
-msgstr "Nemůžete přidat blok bez typu přiřazeného elementu"
+msgstr "Není možné přidat blok bez typu přiřazeného prvku"
 
 #: inc/container.class.php:244
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "Nemůžete přidat několik bloků s typem 'vložení do formuláře' na stejný objekt."
+msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
 
 #: inc/container.class.php:265
 msgid "You cannot add several blocs with identical name on same object"
-msgstr ""
+msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
 
 #: inc/container.class.php:410
 msgid "Block"
@@ -155,16 +157,16 @@ msgstr "Vložení do formuláře (před tlačítkem uložit)"
 
 #: inc/container.class.php:623
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Vložení specifické tabulky do formuláře (před tlačítkem uložit)"
+msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
 
 #: inc/container.class.php:956
 msgid "Some mandatory fields are empty"
-msgstr "Některá povinná pole jsou prázdná"
+msgstr "Některá povinná pole nejsou vyplněná"
 
 #: inc/container.class.php:961
 msgid "Some numeric fields contains non numeric values"
-msgstr "Některá číselná pole obsahují nečíselné hodnoty"
+msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
 #: inc/container.class.php:966
 msgid "Some URL fields contains invalid links"
-msgstr ""
+msgstr "Některé URL kolonky obsahují neplatné odkazy"

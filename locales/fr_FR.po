@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
-# alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
+# Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
+# Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
 # Johan Cwiklinski <trasher@x-tnd.be>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-13 14:22+0100\n"
-"PO-Revision-Date: 2017-03-02 15:22+0000\n"
+"PO-Revision-Date: 2017-09-23 21:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
