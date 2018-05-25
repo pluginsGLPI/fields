@@ -52,7 +52,7 @@ class %%CLASSNAME%% extends CommonDBTM
    }
 
    static function removeField($fieldname) {
-      $migration = new Migration;
+      $migration = new Migration(0);
       $migration->dropField(self::getTable(), $fieldname);
 
    }

@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Arthur Schaefer <arthur.r.schaefer@gmail.com>, 2017
+# polar147 <andrei_simoni@hotmail.com>, 2017
+# Arthur Ramos Schaefer <arthur.r.schaefer@gmail.com>, 2017
 # Gilson Gondim <gilsongondim@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-13 14:22+0100\n"
-"PO-Revision-Date: 2017-03-03 13:28+0000\n"
-"Last-Translator: Arthur Schaefer <arthur.r.schaefer@gmail.com>\n"
+"PO-Revision-Date: 2017-09-22 15:16+0000\n"
+"Last-Translator: polar147 <andrei_simoni@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,11 +133,11 @@ msgstr "Você não pode adicionar um bloco sem um tipo de elemento associado"
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr ""
+msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção no formulário' no mesmo objeto"
 
 #: inc/container.class.php:265
 msgid "You cannot add several blocs with identical name on same object"
-msgstr ""
+msgstr "Você não pode adicionar vários blocos com nome idêntico no mesmo objeto"
 
 #: inc/container.class.php:410
 msgid "Block"
@@ -152,20 +153,20 @@ msgstr "Adicionar aba"
 
 #: inc/container.class.php:622
 msgid "Insertion in the form (before save button)"
-msgstr ""
+msgstr "Inserção no formulário (antes do botão de salvar)"
 
 #: inc/container.class.php:623
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr ""
+msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
 
 #: inc/container.class.php:956
 msgid "Some mandatory fields are empty"
-msgstr ""
+msgstr "Alguns campos obrigatórios estão vazios"
 
 #: inc/container.class.php:961
 msgid "Some numeric fields contains non numeric values"
-msgstr ""
+msgstr "Alguns campos numéricos contém valores não numéricos"
 
 #: inc/container.class.php:966
 msgid "Some URL fields contains invalid links"
-msgstr ""
+msgstr "Alguns campos de URL contém links inválidos"
