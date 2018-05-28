@@ -11,14 +11,13 @@ env:
   matrix:
      #- GLPIVER=9.1.2 ==> not released yet!
     - GLPIVER=9.2/bugfixes
-    - GLPIVER=master
 
 before_script:
   - composer self-update
   - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
   - composer install --no-dev
   - mysql -u root -e 'create database glpitest;'
-  - php tools/cliinstall.php --db=glpitest --user=root --tests
+  - php scripts/cliinstall.php --db=glpitest --user=root --tests
   - mv ../fields plugins/fields
   - cd plugins/fields
   - composer install -o
