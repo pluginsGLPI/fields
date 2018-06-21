@@ -26,7 +26,12 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.7.2');
+define ('PLUGIN_FIELDS_VERSION', '1.7.3');
+
+// Minimal GLPI version, inclusive
+define("PLUGIN_FIELDS_MIN_GLPI", "9.2");
+// Maximum GLPI version, exclusive
+define("PLUGIN_FIELDS_MAX_GLPI", "9.3");
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -173,9 +178,9 @@ function plugin_version_fields() {
       'license'        => 'GPLv2+',
       'requirements'   => [
          'glpi' => [
-            'min' => '9.2',
-            'max' => '9.3',
-            'dev' => true
+            'min' => PLUGIN_FIELDS_MIN_GLPI,
+            'max' => PLUGIN_FIELDS_MAX_GLPI,
+            'dev' => true, //Required to allow 9.2-dev
          ]
       ]
    ];
@@ -188,10 +193,23 @@ function plugin_version_fields() {
  * @return boolean
  */
 function plugin_fields_check_prerequisites() {
-   $version = rtrim(GLPI_VERSION, '-dev');
-   if (version_compare($version, '9.2', 'lt')) {
-      echo "This plugin requires GLPI 9.2";
-      return false;
+
+   //Version check is not done by core in GLPI < 9.2 but has to be delegated to core in GLPI >= 9.2.
+   if (!method_exists('Plugin', 'checkGlpiVersion')) {
+      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+      $matchMinGlpiReq = version_compare($version, PLUGIN_FIELDS_MIN_GLPI, '>=');
+      $matchMaxGlpiReq = version_compare($version, PLUGIN_FIELDS_MAX_GLPI, '<');
+
+      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
+         echo vsprintf(
+            'This plugin requires GLPI >= %1$s and < %2$s.',
+            [
+               PLUGIN_FIELDS_MIN_GLPI,
+               PLUGIN_FIELDS_MAX_GLPI,
+            ]
+         );
+         return false;
+      }
    }
 
    return true;
