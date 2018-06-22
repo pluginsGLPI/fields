@@ -287,7 +287,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
 
-   function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = array()) {
+   function getValueToSelect($field_id_or_search_options, $name = '', $values = '', $options = []) {
 
       switch ($field_id_or_search_options['table'].'.'.$field_id_or_search_options['field']) {
          // For searchoption "Type"
@@ -302,7 +302,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
    }
 
-   function defineTabs($options = array()) {
+   function defineTabs($options = []) {
       $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsField', $ong, $options);
@@ -376,8 +376,8 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $input['itemtypes'] = isset($input['itemtypes'])
-                              ? json_encode($input['itemtypes'], TRUE)
-                              : NULL;
+                              ? json_encode($input['itemtypes'], true)
+                              : null;
 
       return $input;
    }
@@ -401,7 +401,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
    public static function generateTemplate($fields) {
       $itemtypes = strlen($fields['itemtypes']) > 0
-                     ? json_decode($fields['itemtypes'], TRUE)
+                     ? json_decode($fields['itemtypes'], true)
                      : [];
       foreach ($itemtypes as $itemtype) {
          $sysname   = self::getSystemName($itemtype, $fields['name']);
@@ -511,7 +511,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return __("Block", "fields");
    }
 
-   public function showForm($ID, $options = array()) {
+   public function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
       $this->initForm($ID, $options);
@@ -605,7 +605,7 @@ class PluginFieldsContainer extends CommonDBTM {
       return true;
    }
 
-   static function showFormItemtype($params = array()) {
+   static function showFormItemtype($params = []) {
       global $CFG_GLPI;
 
       $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
@@ -618,7 +618,7 @@ class PluginFieldsContainer extends CommonDBTM {
                                'display_emptychoice' => $is_domtab]);
 
       if ($is_domtab) {
-         Ajax::updateItemOnSelectEvent(array("dropdown_type$rand", "dropdown_itemtypes$rand"),
+         Ajax::updateItemOnSelectEvent(["dropdown_type$rand", "dropdown_itemtypes$rand"],
                                        "subtype_$rand",
                                        "../ajax/container_subtype_dropdown.php",
                                        ['type'     => '__VALUE0__',
@@ -827,7 +827,7 @@ class PluginFieldsContainer extends CommonDBTM {
                                  AND `plugin_fields_containers_id` = '".$item['id']."'
                                  AND `right` >= ".READ);
          $first_found = array_shift($found);
-         if ($first_found['right'] == NULL || $first_found['right'] == 0) {
+         if ($first_found['right'] == null || $first_found['right'] == 0) {
             continue;
          }
 
@@ -878,7 +878,7 @@ class PluginFieldsContainer extends CommonDBTM {
             // needs to check if entity of item is in hierachy of $tab_name
             foreach ($container->find("`is_active` = 1 AND `name` = '$tab_name'") as $data) {
                $dataitemtypes = json_decode($data['itemtypes']);
-               if (in_array(get_class($item), $dataitemtypes) != FALSE) {
+               if (in_array(get_class($item), $dataitemtypes) != false) {
                   $entities = [$data['entities_id']];
                   if ($data['is_recursive']) {
                      $entities = getSonsOf(getTableForItemType('Entity'), $data['entities_id']);
@@ -901,7 +901,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $found_c   = $container->find("`type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
       foreach ($found_c as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
-         if (in_array(get_class($item), $dataitemtypes) != FALSE) {
+         if (in_array(get_class($item), $dataitemtypes) != false) {
             return PluginFieldsField::showForTabContainer($data['id'], $item->fields['id'], get_class($item));
          }
       }
@@ -963,7 +963,7 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return nothing
     */
    static function constructHistory($containers_id, $items_id, $itemtype, $data,
-                                    $old_values = array()) {
+                                    $old_values = []) {
       // Don't log few itemtypes
       $obj = new $itemtype();
       if ($obj->dohistory == false) {
@@ -1189,7 +1189,7 @@ class PluginFieldsContainer extends CommonDBTM {
       foreach ($itemtypes as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
          $item = new $itemtype();
-         if (in_array($item->getType(), $dataitemtypes) != FALSE) {
+         if (in_array($item->getType(), $dataitemtypes) != false) {
             $id = $data['id'];
          }
       }
@@ -1206,7 +1206,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
                                     AND $condition");
             $first_found = array_shift($found);
-            if ($first_found['right'] == NULL || $first_found['right'] == 0) {
+            if ($first_found['right'] == null || $first_found['right'] == 0) {
                return false;
             }
          }
@@ -1291,7 +1291,7 @@ class PluginFieldsContainer extends CommonDBTM {
       //need to check if container is usable on this object entity
       $loc_c = new PluginFieldsContainer;
       $loc_c->getFromDB($c_id);
-      $entities = array($loc_c->fields['entities_id']);
+      $entities = [$loc_c->fields['entities_id']];
       if ($loc_c->fields['is_recursive']) {
          $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
       }
