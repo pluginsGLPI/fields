@@ -1,8 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[glpi-plugin-plugin-fields.fieldspot]
+[glpi-plugin-plugin-fields.fields-pot]
 file_filter = locales/<lang>.po
 source_file = locales/fields.pot
 source_lang = en
-
+type = PO
