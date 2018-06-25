@@ -132,9 +132,10 @@ class PluginFieldsContainer extends CommonDBTM {
       $containers = $obj->find();
       foreach ($containers as $container) {
          //First, drop old fields from plugin directories
-         $itemtypes = (count($container['itemtypes']) > 0)
+         $itemtypes = !empty($container['itemtypes'])
             ? json_decode($container['itemtypes'], true)
             : [];
+
          foreach ($itemtypes as $itemtype) {
             $sysname = self::getSystemName($itemtype, $container['name']);
             $class_filename = $sysname.".class.php";
