@@ -3,14 +3,14 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
   - nightly
 
 env:
   global:
     - DB=mysql
   matrix:
-     #- GLPIVER=9.1.2 ==> not released yet!
-    - GLPIVER=9.2/bugfixes
+    - GLPIVER=9.3/bugfixes
 
 before_script:
   - composer self-update

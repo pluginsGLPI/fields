@@ -77,7 +77,7 @@ function plugin_fields_install() {
          $dir  = GLPI_ROOT . "/plugins/fields/inc/";
          $item =strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
-            if (!call_user_func(array($class,'install'), $migration, $version)) {
+            if (!call_user_func([$class,'install'], $migration, $version)) {
                return false;
             }
          }
@@ -136,7 +136,7 @@ function plugin_fields_uninstall() {
 
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
-            if (!call_user_func(array($class,'uninstall'))) {
+            if (!call_user_func([$class,'uninstall'])) {
                return false;
             }
          }
@@ -263,11 +263,11 @@ function plugin_fields_rule_matched($params = []) {
 
                   // update current field
                   $container->updateFieldsValues(
-                     array(
+                     [
                         'plugin_fields_containers_id' => $data['id'],
                         $field                        => $value,
                         'items_id'                    => $agent->fields['computers_id']
-                     ),
+                     ],
                      Computer::getType()
                   );
                }

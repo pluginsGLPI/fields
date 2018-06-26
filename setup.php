@@ -26,12 +26,12 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.7.3');
+define ('PLUGIN_FIELDS_VERSION', '1.8.0');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_FIELDS_MIN_GLPI", "9.2");
+define("PLUGIN_FIELDS_MIN_GLPI", "9.3");
 // Maximum GLPI version, exclusive
-define("PLUGIN_FIELDS_MAX_GLPI", "9.3");
+define("PLUGIN_FIELDS_MAX_GLPI", "9.4");
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -81,7 +81,7 @@ function plugin_init_fields() {
 
       // Init hook about itemtype(s) for plugin fields
       if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
-         $PLUGIN_HOOKS['plugin_fields'] = array();
+         $PLUGIN_HOOKS['plugin_fields'] = [];
       }
 
       // When a Category is changed during ticket creation
@@ -241,7 +241,7 @@ function plugin_fields_checkFiles($force = false) {
 
          foreach ($containers as $container) {
             $itemtypes = (strlen($container['itemtypes']) > 0)
-               ? json_decode($container['itemtypes'], TRUE)
+               ? json_decode($container['itemtypes'], true)
                : [];
             foreach ($itemtypes as $itemtype) {
                $classname = PluginFieldsContainer::getClassname($itemtype, $container['name']);

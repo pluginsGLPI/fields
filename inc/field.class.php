@@ -228,7 +228,7 @@ class PluginFieldsField extends CommonDBTM {
       return 0;
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if (!$withtemplate) {
          $nb = 0;
          switch ($item->getType()) {
@@ -243,13 +243,13 @@ class PluginFieldsField extends CommonDBTM {
                                         "`plugin_fields_containers_id` = '".$item->getID()."'"));
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       $fup = new self();
       $fup->showSummary($item);
       return true;
    }
 
-   function defineTabs($options = array()) {
+   function defineTabs($options = []) {
       $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
@@ -348,7 +348,7 @@ class PluginFieldsField extends CommonDBTM {
    }
 
 
-   function showForm($ID, $options = array()) {
+   function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
       if (isset($options['parent_id']) && !empty($options['parent_id'])) {

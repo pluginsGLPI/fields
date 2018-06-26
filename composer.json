@@ -1,17 +1,15 @@
 {
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require-dev": {
-        "glpi-project/tools": "^0.1.0",
+        "glpi-project/tools": "^0.1",
         "atoum/atoum": "^3.1"
     },
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=5.6"
     },
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "5.6.0"
+            "php": "5.6"
         }
     }
 }

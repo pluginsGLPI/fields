@@ -63,7 +63,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       return true;
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       $nb = countElementsInTable(self::getTable(),
                                  "`plugin_fields_itemtype` = '{$item::getType()}' AND
                                   `plugin_fields_items_id` = '{$item->getID()}'");
@@ -71,7 +71,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
 
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
        self::showTranslations($item);
    }
 
@@ -177,7 +177,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
     *
     * @return void
     */
-   function showForm($itemtype, $items_id, $id=-1) {
+   function showForm($itemtype, $items_id, $id = -1) {
       global $CFG_GLPI;
 
       if ($id > 0) {
