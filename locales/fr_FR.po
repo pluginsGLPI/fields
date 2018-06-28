@@ -5,14 +5,15 @@
 # Translators:
 # Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
 # Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
-# Johan Cwiklinski <trasher@x-tnd.be>, 2016-2017
+# Cédric Anne, 2018
+# Johan Cwiklinski <jcwiklinski@teclib.com>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 14:22+0100\n"
-"PO-Revision-Date: 2017-09-23 21:40+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"POT-Creation-Date: 2018-06-28 08:22+0000\n"
+"PO-Revision-Date: 2018-06-28 08:23+0000\n"
+"Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:161
+#: setup.php:174
 msgid "Additionnal fields"
 msgstr "Champs supplémentaires"
 
@@ -29,43 +30,31 @@ msgstr "Champs supplémentaires"
 msgid "MySQL tables installation"
 msgstr "Installation des tables MySQL"
 
-#: hook.php:103
+#: hook.php:106
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 
-#: hook.php:112
+#: hook.php:115
 msgid "MySQL tables uninstallation"
 msgstr "Désinstallation des tables MySQL"
 
-#: inc/dropdown.class.php:17
-msgid "Updating generated dropdown files"
-msgstr "Mise à jour des fichiers générés des listes déroulantes "
-
-#: inc/labeltranslation.class.php:137
-msgid "Language"
-msgstr "Langue"
-
-#: inc/labeltranslation.class.php:138
-msgid "Label"
-msgstr "Libellé"
-
-#: inc/field.class.php:70
+#: inc/field.class.php:72
 msgid "Field"
 msgstr "Champ"
 
-#: inc/field.class.php:246
+#: inc/field.class.php:241
 msgid "Fields"
 msgstr "Champs"
 
-#: inc/field.class.php:296
+#: inc/field.class.php:290
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
-#: inc/field.class.php:300
+#: inc/field.class.php:294
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
-#: inc/field.class.php:312 inc/field.class.php:414
+#: inc/field.class.php:306 inc/field.class.php:419
 msgid "Read only"
 msgstr "Lecture seule"
 
@@ -77,96 +66,114 @@ msgstr "Configuration"
 msgid "Configure fields values"
 msgstr "Configurer les valeurs du champ"
 
-#: inc/field.class.php:840
+#: inc/field.class.php:712
 msgid "show"
 msgstr "afficher"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:858
 msgid "Header"
 msgstr "Entête"
 
-#: inc/field.class.php:986
+#: inc/field.class.php:859
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
-#: inc/field.class.php:987
+#: inc/field.class.php:860
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:988
+#: inc/field.class.php:861
 msgid "Number"
 msgstr "Nombre"
 
-#: inc/field.class.php:989
+#: inc/field.class.php:862
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:990
+#: inc/field.class.php:863
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
-#: inc/field.class.php:991
+#: inc/field.class.php:864
 msgid "Yes/No"
 msgstr "Oui/Non"
 
-#: inc/field.class.php:992
+#: inc/field.class.php:865
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:993
+#: inc/field.class.php:866
 msgid "Date & time"
 msgstr "Date & heure"
 
-#: inc/container.class.php:8
+#: inc/container.class.php:12
 msgid "Regenerate container files"
 msgstr "Régénérer les fichiers des blocs"
 
-#: inc/container.class.php:69
+#: inc/container.class.php:127
 msgid "Updating generated containers files"
 msgstr "Mettre à jour les fichier de conteneurs générés"
 
-#: inc/container.class.php:229
+#: inc/container.class.php:318
 msgid "You cannot add block without associated element type"
 msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
 
-#: inc/container.class.php:244
+#: inc/container.class.php:335
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
 
-#: inc/container.class.php:265
+#: inc/container.class.php:350
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr ""
+
+#: inc/container.class.php:372
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
 
-#: inc/container.class.php:410
+#: inc/container.class.php:512
 msgid "Block"
 msgstr "Bloc"
 
-#: inc/container.class.php:482
+#: inc/container.class.php:583
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/container.class.php:621
+#: inc/container.class.php:788
 msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
-#: inc/container.class.php:622
+#: inc/container.class.php:789
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:623
+#: inc/container.class.php:790
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:956
+#: inc/container.class.php:1149
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:961
+#: inc/container.class.php:1154
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
-#: inc/container.class.php:966
+#: inc/container.class.php:1159
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
+
+#: inc/labeltranslation.class.php:129
+msgid "Language"
+msgstr "Langue"
+
+#: inc/labeltranslation.class.php:130
+msgid "Label"
+msgstr "Libellé"
+
+#: inc/dropdown.class.php:16
+msgid "Updating generated dropdown files"
+msgstr "Mise à jour des fichiers générés des listes déroulantes "
