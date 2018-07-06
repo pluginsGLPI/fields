@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Cédric Anne, 2018
 # Shawn Long <webaccounts@kkg.org>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-28 08:22+0000\n"
-"PO-Revision-Date: 2018-06-28 08:23+0000\n"
+"PO-Revision-Date: 2018-07-06 09:27+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: English (United States) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_US/)\n"
 "MIME-Version: 1.0\n"
@@ -125,7 +126,7 @@ msgstr "You cannot add several blocks with type 'Insertion in the form' on same 
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr ""
+msgstr "You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab"
 
 #: inc/container.class.php:372
 msgid "You cannot add several blocs with identical name on same object"

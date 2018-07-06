@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-28 08:22+0000\n"
-"PO-Revision-Date: 2018-06-28 08:23+0000\n"
+"PO-Revision-Date: 2018-07-06 09:26+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le for
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr ""
+msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire d'un onglet spécifique' sur le même onglet d'un objet"
 
 #: inc/container.class.php:372
 msgid "You cannot add several blocs with identical name on same object"
