@@ -782,8 +782,8 @@ class PluginFieldsContainer extends CommonDBTM {
       
       // Add items from plugin GenericObject
       if (!$is_domtab) {
-         foreach (self::list_genericobject_classes() as $class_name) {
-            $tabs[__('Generic Object')][$class_name] = self::frontend_name_for_class_name($class_name);
+         foreach (self::listGenericObjectClasses() as $class_name) {
+            $tabs[__('Generic Object')][$class_name] = self::frontendNameForClassName($class_name);
          }
       }
 
@@ -1562,7 +1562,7 @@ class PluginFieldsContainer extends CommonDBTM {
     *
     * @return String  Frontend name for given class name or else $dft.
     */
-   static function frontend_name_for_class_name(string $class_name, $dft = NULL) {
+   static function frontendNameForClassName(string $class_name, $dft = NULL) {
       $retval = is_string($dft) ? $dft : $class_name;
       
       // Make sure the class exists and respects the expected implicit interface.
@@ -1583,11 +1583,12 @@ class PluginFieldsContainer extends CommonDBTM {
     *
     * @return Array  A list of class name or an empty array.
     */
-   static function list_genericobject_classes($is_active = true) {
+   static function listGenericObjectClasses($is_active = true) {
       $retval = [];
       
       // Make sure the plugin exists and conforms to the expected implicit interface.
-      if (class_exists('PluginGenericobjectType') && method_exists('PluginGenericobjectType', 'getTypes')) {
+      if (class_exists('PluginGenericobjectType')
+          && method_exists('PluginGenericobjectType', 'getTypes')) {
          //Extract data from the GenericObject plugin.
          $retval = array_column(
             PluginGenericobjectType::getTypes($is_active),
