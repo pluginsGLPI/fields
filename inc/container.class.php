@@ -779,6 +779,13 @@ class PluginFieldsContainer extends CommonDBTM {
             'NotificationTemplate' => NotificationTemplate::getTypeName(2),
          ];
       }
+      
+      // Add items from plugin GenericObject
+      if (!$is_domtab) {
+         foreach (self::list_genericobject_classes() as $class_name) {
+            $tabs[__('Generic Object')][$class_name] = self::frontend_name_for_class_name($class_name);
+         }
+      }
 
       return $tabs;
    }
@@ -1542,5 +1549,64 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    static function getSystemName($itemtype = "", $raw_name = "") {
       return strtolower($itemtype.preg_replace('/s$/', '', $raw_name));
+   }
+   
+   /**
+    * Convert a class name into a frontend name.
+    * Note: This method handles some expectations about how to get a frontend name
+    *       from arbitrary GLPI classes, including classes found outside of
+    *       this plugin.
+    *
+    * @param string $class_name  The class name to convert into a frontend name.
+    * @param string $dft         (Optional) Return value upon error. Defaults to $class_name.
+    *
+    * @return String  Frontend name for given class name or else $dft.
+    */
+   static function frontend_name_for_class_name(string $class_name, $dft = NULL) {
+      $retval = is_string($dft) ? $dft : $class_name;
+      
+      // Make sure the class exists and respects the expected implicit interface.
+      if (class_exists($class_name) && method_exists($class_name, 'getTypeName')) {
+         $retval = ($class_name)::getTypeName(2);
+      }
+      
+      return $retval;
+   }
+
+   /**
+    * Get a list of all class name created using the GenericObject plugin.
+    * Note: This is a quick fix for bridging this plugin with the GenericObject plugin.
+    *       This method is designed to fail gracefully if the GenericObject plugin
+    *       makes breaking changes: The list will become empty.
+    *
+    * @param bool $is_active (Optional) Restrict list to active objects. TRUE by default.
+    *
+    * @return Array  A list of class name or an empty array.
+    */
+   static function list_genericobject_classes($is_active = true) {
+      $retval = [];
+      
+      // Make sure the plugin exists and conforms to the expected implicit interface.
+      if (class_exists('PluginGenericobjectType') && method_exists('PluginGenericobjectType', 'getTypes')) {
+         //Extract data from the GenericObject plugin.
+         $retval = array_column(
+            PluginGenericobjectType::getTypes($is_active),
+            'itemtype' //the class name of a GenericObject
+         );
+         
+         //Exclude invalid data.
+         if( ! is_array($retval)) {
+            $retval = [];
+         }
+         
+         $retval = array_filter ($retval, function($v) {
+            return is_string($v) && strlen($v) > 0;
+         });
+         
+         //Use numerical keys for consistency (don't rely on keys provided by another plugin).
+         $retval = array_values($retval);
+      }
+      
+      return $retval;
    }
 }
