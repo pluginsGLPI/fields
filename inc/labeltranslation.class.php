@@ -89,16 +89,20 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       $rand    = mt_rand();
       if ($canedit) {
          echo "<div id='viewtranslation".$item->getID()."$rand'></div>";
-         Html::scriptStart();
-         echo "addTranslation".$item->getID()."$rand = function() {";
-         Ajax::updateItemJsCode("viewtranslation" . $item->getID() . "$rand",
-                                $CFG_GLPI["root_doc"]."/plugins/fields/ajax/viewtranslations.php",
-                                ['type'       => __CLASS__,
-                                 'itemtype'   => $item::getType(),
-                                 'items_id'   => $item->fields['id'],
-                                 'id'         => -1]);
-         echo "};";
-         echo Html::scriptEnd();
+
+         echo Html::scriptBlock('
+            addTranslation' . $item->getID() . $rand . ' = function() {
+               $("#viewtranslation' . $item->getID() . $rand . '").load(
+                  "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
+                  ' . json_encode([
+                     'type'     => __CLASS__,
+                     'itemtype' => $item::getType(),
+                     'items_id' => $item->fields['id'],
+                     'id'       => -1
+                  ]) . '
+               );
+            };
+         ');
 
          echo "<div class='center'>".
               "<a class='vsubmit' href='javascript:addTranslation".$item->getID()."$rand();'>".
@@ -138,16 +142,19 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
             }
             echo "<td>";
             if ($canedit) {
-               Html::scriptStart();
-               echo "viewEditTranslation". $data["id"]."$rand = function() {";
-               Ajax::updateItemJsCode("viewtranslation" . $item->getID() . "$rand",
-                                      $CFG_GLPI["root_doc"]."/plugins/fields/ajax/viewtranslations.php",
-                                      ['type'    => __CLASS__,
-                                       'itemtype' => $item::getType(),
-                                       'items_id' => $item->getID(),
-                                       'id'       => $data["id"]]);
-               echo "};";
-               echo Html::scriptEnd();
+               echo Html::scriptBlock('
+                  viewEditTranslation' . $data['id'] . $rand . ' = function() {
+                     $("#viewtranslation' . $item->getID() . $rand . '").load(
+                        "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
+                        ' . json_encode([
+                           'type'     => __CLASS__,
+                           'itemtype' => $item::getType(),
+                           'items_id' => $item->getID(),
+                           'id'       => $data['id']
+                        ]) . '
+                     );
+                  };
+               ');
             }
             echo Dropdown::getLanguageName($data['language']);
             echo "</td><td>";
