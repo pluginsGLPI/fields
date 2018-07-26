@@ -127,7 +127,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
          echo "<th colspan='4'>".__("List of translations")."</th></tr>";
          if ($canedit) {
             echo "<th width='10'>";
-            Html::checkAllAsCheckbox('mass'.__CLASS__.$rand);
+            echo Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
             echo "</th>";
          }
          echo "<th>".__("Language", "fields")."</th>";
