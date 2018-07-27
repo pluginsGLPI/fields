@@ -277,6 +277,21 @@ class PluginFieldsContainer extends CommonDBTM {
             $i     = 1;
             foreach ($types as $type) {
                $name_type = getItemForItemtype($type);
+               
+               // Handle case when item type doesn't exist.
+               // Function getItemForItemtype() returns false on error, instead of an object.
+               // Use case: When deleting a GenericObject that has Fields.
+               if( ! is_object($name_type)) {
+                  throw new Exception(
+                     sprintf(
+                        'Undefined item type "%s" in column "%s" of database table "%s".%s',
+                        $type,
+                        'itemtypes',
+                        'glpi_plugin_fields_containers',
+                        ' Check for recently deleted custom objects in plugin GenericObject.'
+                  ));
+               }
+
                $obj .= $name_type->getTypeName(2);
                if ($count > $i) {
                   $obj .= ", ";
