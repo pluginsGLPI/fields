@@ -38,7 +38,7 @@ class PluginFieldsField extends CommonDBTM {
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       }
 
