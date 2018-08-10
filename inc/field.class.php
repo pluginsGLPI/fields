@@ -609,13 +609,11 @@ class PluginFieldsField extends CommonDBTM {
             $items_obj->getEmpty();
          }
 
-         /** Editing fields back on closed and solved tickets
-          *if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
-          *     || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray())
-          *     || $first_found_p['right'] != CREATE) {
-          *    $canedit = false;
-          *}
-          */
+       // Editing fields on closed and solved tickets
+          if ($first_found_p['right'] != CREATE) {
+              $canedit = false;
+          }
+          
       } else {
          if ($first_found_p['right'] != CREATE) {
             $canedit = false;
