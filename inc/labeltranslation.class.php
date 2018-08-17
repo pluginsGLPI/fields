@@ -64,9 +64,13 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      $nb = countElementsInTable(self::getTable(),
-                                 "`plugin_fields_itemtype` = '{$item::getType()}' AND
-                                  `plugin_fields_items_id` = '{$item->getID()}'");
+      $nb = countElementsInTable(
+         self::getTable(),
+         [
+            'plugin_fields_itemtype' => $item::getType(),
+            'plugin_fields_items_id' => $item->getID(),
+         ]
+      );
       return self::createTabEntry(self::getTypeName($nb), $nb);
 
    }

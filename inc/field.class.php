@@ -240,7 +240,7 @@ class PluginFieldsField extends CommonDBTM {
 
       return self::createTabEntry(__("Fields", "fields"),
                    countElementsInTable(self::getTable(),
-                                        "`plugin_fields_containers_id` = '".$item->getID()."'"));
+                                        ['plugin_fields_containers_id' => $item->getID()]));
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
