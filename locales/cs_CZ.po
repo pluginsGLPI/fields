@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 08:22+0000\n"
+"POT-Creation-Date: 2018-08-21 14:44+0000\n"
 "PO-Revision-Date: 2018-06-28 12:37+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -45,63 +45,63 @@ msgstr "Kolonka"
 msgid "Fields"
 msgstr "Kolonky"
 
-#: inc/field.class.php:290
+#: inc/field.class.php:295
 msgid "Add a new field"
 msgstr "Přidat novou kolonku"
 
-#: inc/field.class.php:294
+#: inc/field.class.php:299
 msgid "No field for this block"
 msgstr "Žádná kolonka pro tento blok"
 
-#: inc/field.class.php:306 inc/field.class.php:419
+#: inc/field.class.php:311 inc/field.class.php:424
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure"
 msgstr "Nastavit"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure fields values"
 msgstr "Nastavit hodnoty kolonek"
 
-#: inc/field.class.php:712
+#: inc/field.class.php:717
 msgid "show"
 msgstr "zobrazit"
 
-#: inc/field.class.php:858
+#: inc/field.class.php:863
 msgid "Header"
 msgstr "Hlavička"
 
-#: inc/field.class.php:859
+#: inc/field.class.php:864
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
-#: inc/field.class.php:860
+#: inc/field.class.php:865
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:861
+#: inc/field.class.php:866
 msgid "Number"
 msgstr "Číslo"
 
-#: inc/field.class.php:862
+#: inc/field.class.php:867
 msgid "URL"
 msgstr "URL adresa"
 
-#: inc/field.class.php:863
+#: inc/field.class.php:868
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:869
 msgid "Yes/No"
 msgstr "Ano/Ne"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:870
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:871
 msgid "Date & time"
 msgstr "Datum a čas"
 
@@ -165,11 +165,11 @@ msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
-#: inc/labeltranslation.class.php:129
+#: inc/labeltranslation.class.php:137
 msgid "Language"
 msgstr "Jazyk"
 
-#: inc/labeltranslation.class.php:130
+#: inc/labeltranslation.class.php:138
 msgid "Label"
 msgstr "Štítek"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 08:22+0000\n"
+"POT-Creation-Date: 2018-08-21 14:44+0000\n"
 "PO-Revision-Date: 2018-06-28 08:23+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -44,63 +44,63 @@ msgstr "Camp"
 msgid "Fields"
 msgstr "Campuri"
 
-#: inc/field.class.php:290
+#: inc/field.class.php:295
 msgid "Add a new field"
 msgstr "Add un camp nou"
 
-#: inc/field.class.php:294
+#: inc/field.class.php:299
 msgid "No field for this block"
 msgstr ""
 
-#: inc/field.class.php:306 inc/field.class.php:419
+#: inc/field.class.php:311 inc/field.class.php:424
 msgid "Read only"
 msgstr ""
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure"
 msgstr "Configurare"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure fields values"
 msgstr "Configurare valori campuri"
 
-#: inc/field.class.php:712
+#: inc/field.class.php:717
 msgid "show"
 msgstr ""
 
-#: inc/field.class.php:858
+#: inc/field.class.php:863
 msgid "Header"
 msgstr "Header"
 
-#: inc/field.class.php:859
+#: inc/field.class.php:864
 msgid "Text (single line)"
 msgstr "Text (singura linie)"
 
-#: inc/field.class.php:860
+#: inc/field.class.php:865
 msgid "Text (multiples lines)"
 msgstr "Text (multiple linii)"
 
-#: inc/field.class.php:861
+#: inc/field.class.php:866
 msgid "Number"
 msgstr "Numar"
 
-#: inc/field.class.php:862
+#: inc/field.class.php:867
 msgid "URL"
 msgstr ""
 
-#: inc/field.class.php:863
+#: inc/field.class.php:868
 msgid "Dropdown"
 msgstr "Dropdown"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:869
 msgid "Yes/No"
 msgstr "Da/Nu"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:870
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:871
 msgid "Date & time"
 msgstr "Data & time"
 
@@ -164,11 +164,11 @@ msgstr ""
 msgid "Some URL fields contains invalid links"
 msgstr ""
 
-#: inc/labeltranslation.class.php:129
+#: inc/labeltranslation.class.php:137
 msgid "Language"
 msgstr ""
 
-#: inc/labeltranslation.class.php:130
+#: inc/labeltranslation.class.php:138
 msgid "Label"
 msgstr ""
 
