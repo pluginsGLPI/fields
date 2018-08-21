@@ -30,7 +30,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
                   KEY `plugin_fields_items_id` (`plugin_fields_items_id`),
                   KEY `language`               (`language`),
                   UNIQUE KEY `unicity` (`plugin_fields_itemtype`, `plugin_fields_items_id`, `language`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       }
 
