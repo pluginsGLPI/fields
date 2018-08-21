@@ -15,7 +15,7 @@ env:
 before_script:
   - composer self-update
   - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
-  - composer install --no-dev
+  - composer install
   - mysql -u root -e 'create database glpitest;'
   - php scripts/cliinstall.php --db=glpitest --user=root --tests
   - mv ../fields plugins/fields
