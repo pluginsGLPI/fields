@@ -5,12 +5,37 @@
    <logo>https://raw.githubusercontent.com/pluginsGLPI/fields/master/plugin.png</logo>
    <description>
       <short>
-         <en>The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...</en>
-         <fr>Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs...</fr>
+         <cs>Zásuvný modul kolonky umožňuje přidávat vlastní kolonky do glpi typů: požadavky, počítače, uživatelé…</cs>
+         <en>The fields plugin allows you to add custom fields on glpi types : tickets, computers, users…</en>
+         <fr>Le plugin 'Champs supplémentaires' (Fields) permet d’ajouter des champs personnalisés sur les différents objets gérés par GLPI : tickets, ordinateurs, utilisateurs…</fr>
       </short>
       <long>
+         <cs>
+Zásuvný modul kolonky umožňuje přidávat vlastní kolonky do glpi typů: požadavky, počítače, uživatelé…  
+
+Je možné přidat další údaje do: 
+
+* Karty objektu
+* Hlavního formuláře objektu (nad tlačítko uložit)
+* Formuláře karty (varování – tato funkce je experimentální)
+
+MOžné typy kolonek jsou: 
+
+* Hlavička (blok titulku)
+* Text (jeden řádek)
+* Text (více řádek)
+* Číslo
+* Rozbalovací nabídka (vždy stromová rozbalovací nabídka)
+* Ano/Ne
+* Datum
+* Datum/hodina
+* Seznam Glpi uživatelů
+
+Je k dispozici [skript pro migraci](https://github.com/pluginsGLPI/customfields/blob/master/scripts/migrate-to-fields.php) z modulu „customfields“.  
+**VAROVÁNÍ: tento skript je experimentální a potřebuje být ještě více otestován. Vřele doporučujeme před jeho použitím zálohvat data**
+         </cs>
          <en>
-The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...  
+The fields plugin allows you to add custom fields on glpi types : tickets, computers, users…  
 
 Addionnal data can be added : 
 
@@ -183,17 +208,21 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
       </version>
    </versions>
    <langs>
+      <lang>cs_CZ</lang>
       <lang>en_GB</lang>
       <lang>fr_FR</lang>
    </langs>
    <license>GPL v2+</license>
    <tags>
+      <cs>
+         <tag>vlastní kolonky</tag>
+      </cs>
       <en>
          <tag>custom fields</tag>
       </en>
-      <lang>
+      <fr>
          <tag>champs personnalisés</tag>
-      </lang>
+      </fr>
    </tags>
    <screenshots>
       <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields_bloc.png</screenshot>
