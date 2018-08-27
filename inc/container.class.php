@@ -288,7 +288,7 @@ class PluginFieldsContainer extends CommonDBTM {
                         $type,
                         'itemtypes',
                         'glpi_plugin_fields_containers',
-                        ' Check for recently deleted custom objects in plugin GenericObject.'
+                        ' Check for recently deleted custom objects that had custom fields.'
                   ));
                }
 
