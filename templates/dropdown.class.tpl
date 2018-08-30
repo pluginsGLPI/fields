@@ -37,7 +37,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
                   KEY                                       `is_recursive` (`is_recursive`),
                   KEY                                       `plugin_fields_%%FIELDNAME%%dropdowns_id`
                                                             (`plugin_fields_%%FIELDNAME%%dropdowns_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ($DB->error());
       }
    }

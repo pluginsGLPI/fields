@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 08:22+0000\n"
+"POT-Creation-Date: 2018-08-21 14:44+0000\n"
 "PO-Revision-Date: 2018-06-28 08:23+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
@@ -44,63 +44,63 @@ msgstr "Campo"
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/field.class.php:290
+#: inc/field.class.php:295
 msgid "Add a new field"
 msgstr "Agregar nuevo campo"
 
-#: inc/field.class.php:294
+#: inc/field.class.php:299
 msgid "No field for this block"
 msgstr ""
 
-#: inc/field.class.php:306 inc/field.class.php:419
+#: inc/field.class.php:311 inc/field.class.php:424
 msgid "Read only"
 msgstr "Solo lectura"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure"
 msgstr "Configurar"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure fields values"
 msgstr "Configure valores de los campos"
 
-#: inc/field.class.php:712
+#: inc/field.class.php:717
 msgid "show"
 msgstr ""
 
-#: inc/field.class.php:858
+#: inc/field.class.php:863
 msgid "Header"
 msgstr "Encabezamiento"
 
-#: inc/field.class.php:859
+#: inc/field.class.php:864
 msgid "Text (single line)"
 msgstr "Texto (línea simple)"
 
-#: inc/field.class.php:860
+#: inc/field.class.php:865
 msgid "Text (multiples lines)"
 msgstr "Texto (multiples líneas)"
 
-#: inc/field.class.php:861
+#: inc/field.class.php:866
 msgid "Number"
 msgstr "Número"
 
-#: inc/field.class.php:862
+#: inc/field.class.php:867
 msgid "URL"
 msgstr ""
 
-#: inc/field.class.php:863
+#: inc/field.class.php:868
 msgid "Dropdown"
 msgstr "Menú desplegable"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:869
 msgid "Yes/No"
 msgstr "Si/No"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:870
 msgid "Date"
 msgstr "Fecha"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:871
 msgid "Date & time"
 msgstr "Fecha & Hora"
 
@@ -164,11 +164,11 @@ msgstr "Algunos campos numéricos contienen valores no numéricos"
 msgid "Some URL fields contains invalid links"
 msgstr ""
 
-#: inc/labeltranslation.class.php:129
+#: inc/labeltranslation.class.php:137
 msgid "Language"
 msgstr ""
 
-#: inc/labeltranslation.class.php:130
+#: inc/labeltranslation.class.php:138
 msgid "Label"
 msgstr ""
 

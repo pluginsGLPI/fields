@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 08:22+0000\n"
+"POT-Creation-Date: 2018-08-21 14:44+0000\n"
 "PO-Revision-Date: 2018-06-28 08:23+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -45,63 +45,63 @@ msgstr "Поле"
 msgid "Fields"
 msgstr "Поля"
 
-#: inc/field.class.php:290
+#: inc/field.class.php:295
 msgid "Add a new field"
 msgstr "Добавить новое поле"
 
-#: inc/field.class.php:294
+#: inc/field.class.php:299
 msgid "No field for this block"
 msgstr "Нет поля для этого блока"
 
-#: inc/field.class.php:306 inc/field.class.php:419
+#: inc/field.class.php:311 inc/field.class.php:424
 msgid "Read only"
 msgstr "Только чтение"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure"
 msgstr "Настройка"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure fields values"
 msgstr "Настрить поля значений"
 
-#: inc/field.class.php:712
+#: inc/field.class.php:717
 msgid "show"
 msgstr "показать"
 
-#: inc/field.class.php:858
+#: inc/field.class.php:863
 msgid "Header"
 msgstr "Заголовок"
 
-#: inc/field.class.php:859
+#: inc/field.class.php:864
 msgid "Text (single line)"
 msgstr "Тест (одна строка)"
 
-#: inc/field.class.php:860
+#: inc/field.class.php:865
 msgid "Text (multiples lines)"
 msgstr "Текст (многострочный)"
 
-#: inc/field.class.php:861
+#: inc/field.class.php:866
 msgid "Number"
 msgstr "Номер"
 
-#: inc/field.class.php:862
+#: inc/field.class.php:867
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:863
+#: inc/field.class.php:868
 msgid "Dropdown"
 msgstr "Выпадающий список"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:869
 msgid "Yes/No"
 msgstr "Да/Нет"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:870
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:871
 msgid "Date & time"
 msgstr "Дата и время"
 
@@ -165,11 +165,11 @@ msgstr "Некоторые числовые поля содержат не то�
 msgid "Some URL fields contains invalid links"
 msgstr "Некоторый URL полей содержат недействительные ссылки"
 
-#: inc/labeltranslation.class.php:129
+#: inc/labeltranslation.class.php:137
 msgid "Language"
 msgstr "Язык"
 
-#: inc/labeltranslation.class.php:130
+#: inc/labeltranslation.class.php:138
 msgid "Label"
 msgstr "Метка"
 
