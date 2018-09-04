@@ -38,7 +38,7 @@ class PluginFieldsField extends CommonDBTM {
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       }
 
@@ -240,7 +240,7 @@ class PluginFieldsField extends CommonDBTM {
 
       return self::createTabEntry(__("Fields", "fields"),
                    countElementsInTable(self::getTable(),
-                                        "`plugin_fields_containers_id` = '".$item->getID()."'"));
+                                        ['plugin_fields_containers_id' => $item->getID()]));
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
@@ -275,16 +275,21 @@ class PluginFieldsField extends CommonDBTM {
       $rand   = mt_rand();
 
       echo "<div id='viewField$cID$rand'></div>";
-      Html::scriptStart();
-      echo "viewAddField$cID$rand = function() {";
-      Ajax::updateItemJsCode("viewField" . $cID . "$rand",
-                             $CFG_GLPI["root_doc"]."/ajax/viewsubitem.php",
-                             ['type'                        => __CLASS__,
-                              'parenttype'                  => 'PluginFieldsContainer',
-                              'plugin_fields_containers_id' => $cID,
-                              'id'                          => -1]);
-      echo "};";
-      echo Html::scriptEnd();
+
+      echo Html::scriptBlock('
+         viewAddField' . $cID . $rand . ' = function() {
+            $("#viewField' . $cID . $rand . '").load(
+               "' . $CFG_GLPI['root_doc'] . '/ajax/viewsubitem.php",
+               ' . json_encode([
+                  'type'                        => __CLASS__,
+                  'parenttype'                  => PluginFieldsContainer::class,
+                  'plugin_fields_containers_id' => $cID,
+                  'id'                          => -1
+               ]) . '
+            );
+         };
+      ');
+
       echo "<div class='center'>".
            "<a href='javascript:viewAddField$cID$rand();'>";
       echo __("Add a new field", "fields")."</a></div><br>";

@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
-# Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
+# alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
+# alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
 # Cédric Anne, 2018
 # Johan Cwiklinski <jcwiklinski@teclib.com>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 08:22+0000\n"
+"POT-Creation-Date: 2018-08-21 14:44+0000\n"
 "PO-Revision-Date: 2018-07-06 09:26+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -46,63 +46,63 @@ msgstr "Champ"
 msgid "Fields"
 msgstr "Champs"
 
-#: inc/field.class.php:290
+#: inc/field.class.php:295
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
-#: inc/field.class.php:294
+#: inc/field.class.php:299
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
-#: inc/field.class.php:306 inc/field.class.php:419
+#: inc/field.class.php:311 inc/field.class.php:424
 msgid "Read only"
 msgstr "Lecture seule"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure"
 msgstr "Configuration"
 
-#: inc/field.class.php:396
+#: inc/field.class.php:401
 msgid "Configure fields values"
 msgstr "Configurer les valeurs du champ"
 
-#: inc/field.class.php:712
+#: inc/field.class.php:717
 msgid "show"
 msgstr "afficher"
 
-#: inc/field.class.php:858
+#: inc/field.class.php:863
 msgid "Header"
 msgstr "Entête"
 
-#: inc/field.class.php:859
+#: inc/field.class.php:864
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
-#: inc/field.class.php:860
+#: inc/field.class.php:865
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:861
+#: inc/field.class.php:866
 msgid "Number"
 msgstr "Nombre"
 
-#: inc/field.class.php:862
+#: inc/field.class.php:867
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:863
+#: inc/field.class.php:868
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:869
 msgid "Yes/No"
 msgstr "Oui/Non"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:870
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:871
 msgid "Date & time"
 msgstr "Date & heure"
 
@@ -166,11 +166,11 @@ msgstr "Des champs numériques contiennent des données non numériques"
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
-#: inc/labeltranslation.class.php:129
+#: inc/labeltranslation.class.php:137
 msgid "Language"
 msgstr "Langue"
 
-#: inc/labeltranslation.class.php:130
+#: inc/labeltranslation.class.php:138
 msgid "Label"
 msgstr "Libellé"
 

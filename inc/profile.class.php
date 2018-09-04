@@ -18,7 +18,7 @@ class PluginFieldsProfile extends CommonDBTM {
                   PRIMARY KEY                         (`id`),
                   KEY `profiles_id`                   (`profiles_id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
-               ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
             $DB->query($query) or die ($DB->error());
       }
 
