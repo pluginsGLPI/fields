@@ -1,6 +1,6 @@
 <?php
 
-class PluginFieldsMigration {
+class PluginFieldsMigration extends Migration {
 
    static function install(Migration $migration, $version) {
       global $DB;
@@ -25,6 +25,10 @@ class PluginFieldsMigration {
 
       //TODO : REWRITE customfield update
       return true;
+   }
+
+   function displayMessage($msg) {
+      Session::addMessageAfterRedirect($msg);
    }
 
    function migrateCustomfieldTypes($old_type) {
