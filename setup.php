@@ -174,7 +174,7 @@ function plugin_version_fields() {
       'name'           => __("Additionnal fields", "fields"),
       'version'        => PLUGIN_FIELDS_VERSION,
       'author'         => 'Teclib\', Olivier Moron',
-      'homepage'       => 'teclib.com',
+      'homepage'       => 'https://github.com/pluginsGLPI/fields',
       'license'        => 'GPLv2+',
       'requirements'   => [
          'glpi' => [
