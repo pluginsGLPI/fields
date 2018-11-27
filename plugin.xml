@@ -98,6 +98,10 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
    </authors>
    <versions>
       <version>
+         <num>1.9.0</num>
+         <compatibility>9.4</compatibility>
+      </version>
+      <version>
          <num>1.8.2</num>
          <compatibility>9.3</compatibility>
       </version>

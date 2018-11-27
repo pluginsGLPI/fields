@@ -177,7 +177,7 @@ function plugin_fields_getDropdown() {
    $dropdowns = [];
 
    $field_obj = new PluginFieldsField;
-   $fields    = $field_obj->find("`type` = 'dropdown'");
+   $fields    = $field_obj->find(['type' => 'dropdown']);
    foreach ($fields as $field) {
       $field['itemtype'] = PluginFieldsField::getType();
       $label = PluginFieldsLabelTranslation::getLabelFor($field);
@@ -301,7 +301,7 @@ function plugin_datainjection_populate_fields() {
    global $INJECTABLE_TYPES;
 
    $container = new PluginFieldsContainer();
-   $found     = $container->find("`is_active` = 1");
+   $found     = $container->find(['is_active' => 1]);
    foreach ($found as $id => $values) {
       $types = json_decode($values['itemtypes']);
 

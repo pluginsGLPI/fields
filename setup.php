@@ -26,12 +26,12 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.8.2');
+define ('PLUGIN_FIELDS_VERSION', '1.9.0');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_FIELDS_MIN_GLPI", "9.3");
+define("PLUGIN_FIELDS_MIN_GLPI", "9.4");
 // Maximum GLPI version, exclusive
-define("PLUGIN_FIELDS_MAX_GLPI", "9.4");
+define("PLUGIN_FIELDS_MAX_GLPI", "9.5");
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", GLPI_ROOT . "/plugins/fields");
@@ -257,7 +257,7 @@ function plugin_fields_checkFiles($force = false) {
 
       if ($DB->tableExists(PluginFieldsField::getTable())) {
          $fields_obj = new PluginFieldsField();
-         $fields     = $fields_obj->find("`type` = 'dropdown'");
+         $fields     = $fields_obj->find(['type' => 'dropdown']);
          foreach ($fields as $field) {
             PluginFieldsDropdown::create($field);
          }

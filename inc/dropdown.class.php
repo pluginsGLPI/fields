@@ -20,7 +20,7 @@ class PluginFieldsDropdown {
       // OLD path: GLPI_ROOT."/plugins/fields/front/$class_filename"
       // NEW path: PLUGINFIELDS_FRONT_PATH . "/$class_filename"
       $obj = new PluginFieldsField;
-      $fields = $obj->find('type = "dropdown"');
+      $fields = $obj->find(['type' => 'dropdown']);
       foreach ($fields as $field) {
          //First, drop old fields from plugin directories
          $class_filename = $field['name']."dropdown.class.php";
@@ -52,7 +52,7 @@ class PluginFieldsDropdown {
       if ($DB->tableExists("glpi_plugin_fields_fields")) {
          require_once "field.class.php";
          $field = new PluginFieldsField;
-         $dropdowns = $field->find("`type` = 'dropdown'");
+         $dropdowns = $field->find(['type' => 'dropdown']);
          foreach ($dropdowns as $dropdown) {
             self::destroy($dropdown['name']);
          }
