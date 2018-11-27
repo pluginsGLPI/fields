@@ -115,9 +115,11 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
 
       $obj   = new self;
       $found = $obj->find(
-          "`plugin_fields_itemtype` = '{$item::getType()}' AND
-           `plugin_fields_items_id`='{$item->getID()}'",
-         "`language` ASC"
+         [
+            'plugin_fields_itemtype' => $item::getType(),
+            'plugin_fields_items_id' => $item->getID(),
+         ],
+         "language ASC"
       );
 
       if (count($found) > 0) {
@@ -256,10 +258,9 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
     */
    static public function getLabelFor(array $item) {
       $obj   = new self;
-      $found = $obj->find("`plugin_fields_itemtype` = '{$item['itemtype']}'
-                           AND `plugin_fields_items_id`='{$item['id']}'
-                           AND `language` = '{$_SESSION['glpilanguage']}'"
-      );
+      $found = $obj->find(['plugin_fields_itemtype' => $item['itemtype'],
+                           'plugin_fields_items_id' => $item['id'],
+                           'language' => $_SESSION['glpilanguage']]);
 
       if (count($found) > 0) {
          return array_values($found)[0]['label'];

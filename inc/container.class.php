@@ -55,7 +55,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //add display preferences for this class
       $d_pref = new DisplayPreference;
-      $found  = $d_pref->find("itemtype = '".__CLASS__."'");
+      $found  = $d_pref->find(['itemtype' => __CLASS__]);
       if (count($found) == 0) {
          for ($i = 2; $i <= 5; $i++) {
             $DB->query("REPLACE INTO glpi_displaypreferences VALUES
@@ -81,7 +81,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $compcontainer->getFromDB($comptab);
 
             $fields = new PluginFieldsField();
-            $fields = $fields->find("plugin_fields_containers_id='$ostab'");
+            $fields = $fields->find(['plugin_fields_containers_id' => $ostab]);
 
             $classname = self::getClassname(Computer::getType(), $oscontainer->fields['name']);
             $osdata = new $classname;
@@ -92,7 +92,7 @@ class PluginFieldsContainer extends CommonDBTM {
             //add fields to compcontainer
             foreach ($fields as $field) {
                $newname = $field['name'];
-               $compfields = $fields->find("plugin_fields_containers_id='$comptab' AND name='$newname'");
+               $compfields = $fields->find(['plugin_fields_containers_id' => $comptab, 'name' => $newname]);
                if ($compfields) {
                   $newname = $newname . '_os';
                   $DB->query("UPDATE glpi_plugin_fields_fields SET name='$newname' WHERE name='{$field['name']}' AND plugin_fields_containers_id='$ostab'");
@@ -327,7 +327,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       if ($input['type'] === "dom") {
          //check for already exist dom container with this itemtype
-         $found = $this->find("`type`='dom'");
+         $found = $this->find(['type' => 'dom']);
          if (count($found) > 0) {
             foreach (array_column($found, 'itemtypes') as $founditemtypes) {
                foreach (json_decode($founditemtypes) as $founditemtype) {
@@ -342,7 +342,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       if ($input['type'] === "domtab") {
          //check for already exist domtab container with this itemtype on this tab
-         $found = $this->find("`type`='domtab' AND `subtype`='{$input['subtype']}'");
+         $found = $this->find(['type' => 'domtab', 'subtype' => $input['subtype']]);
          if (count($found) > 0) {
             foreach (array_column( $found, 'itemtypes' ) as $founditemtypes) {
                foreach (json_decode( $founditemtypes ) as $founditemtype) {
@@ -364,7 +364,7 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //check for already existing container with same name
-      $found = $this->find("`name`='".$input['name']."'");
+      $found = $this->find(['name' => $input['name']]);
       if (count($found) > 0) {
          foreach (array_column($found, 'itemtypes') as $founditemtypes) {
             foreach (json_decode($founditemtypes) as $founditemtype) {
@@ -648,7 +648,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
             if (count($tabs)) {
                // delete Log of array (don't work with this tab)
-               $tabs_to_remove = ['Log$1', 'TicketFollowup$1', 'TicketTask$1', 'Document_Item$1'];
+               $tabs_to_remove = ['Log$1', 'Document_Item$1'];
                foreach ($tabs_to_remove as $tab_to_remove) {
                   if (isset($tabs[$tab_to_remove])) {
                      unset($tabs[$tab_to_remove]);
@@ -794,9 +794,11 @@ class PluginFieldsContainer extends CommonDBTM {
    static function getEntries($type = 'tab', $full = false) {
       global $DB;
 
-      $sql_type = "1=1";
+      $condition = [
+         'is_active' => 1,
+      ];
       if ($type !== "all") {
-         $sql_type = "`type` = '$type'";
+         $condition[] = ['type' => $type];
       }
 
       if (!$DB->tableExists(self::getTable())) {
@@ -806,7 +808,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $itemtypes = [];
       $container = new self;
       $profile   = new PluginFieldsProfile;
-      $found     = $container->find("$sql_type AND is_active = 1", "`label`");
+      $found     = $container->find($condition, 'label');
       foreach ($found as $item) {
          //entities restriction
          if (!in_array($item['entities_id'], $_SESSION['glpiactiveentities'])) {
@@ -824,9 +826,9 @@ class PluginFieldsContainer extends CommonDBTM {
             continue;
          }
          //profiles restriction
-         $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                                 AND `plugin_fields_containers_id` = '".$item['id']."'
-                                 AND `right` >= ".READ);
+         $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+                                  'plugin_fields_containers_id' => $item['id'],
+                                  'right' => ['>=', READ]]);
          $first_found = array_shift($found);
          if ($first_found['right'] == null || $first_found['right'] == 0) {
             continue;
@@ -877,7 +879,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $container    = new self;
          foreach ($itemtypes[$item->getType()] as $tab_name => $tab_label) {
             // needs to check if entity of item is in hierachy of $tab_name
-            foreach ($container->find("`is_active` = 1 AND `name` = '$tab_name'") as $data) {
+            foreach ($container->find(['is_active' => 1, 'name' => $tab_name]) as $data) {
                $dataitemtypes = json_decode($data['itemtypes']);
                if (in_array(get_class($item), $dataitemtypes) != false) {
                   $entities = [$data['entities_id']];
@@ -899,7 +901,7 @@ class PluginFieldsContainer extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       //retrieve container for current tab
       $container = new self;
-      $found_c   = $container->find("`type` = 'tab' AND `name` = '$tabnum' AND is_active = 1");
+      $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
       foreach ($found_c as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
          if (in_array(get_class($item), $dataitemtypes) != false) {
@@ -932,7 +934,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       //check if data already inserted
       $obj   = new $classname;
-      $found = $obj->find("items_id = $items_id");
+      $found = $obj->find(['items_id' => $items_id]);
       if (empty($found)) {
          // add fields data
          $obj->add($data);
@@ -1082,8 +1084,9 @@ class PluginFieldsContainer extends CommonDBTM {
       $container->getFromDB($data['plugin_fields_containers_id']);
 
       $field_obj = new PluginFieldsField();
-      $fields = $field_obj->find("plugin_fields_containers_id = ".
-                                 $data['plugin_fields_containers_id']);
+      $fields = $field_obj->find([
+         'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
+      ]);
 
       foreach ($fields as $fields_id => $field) {
          if ($field['type'] == "yesno" || $field['type'] == "header") {
@@ -1165,23 +1168,28 @@ class PluginFieldsContainer extends CommonDBTM {
 
 
    static function findContainer($itemtype, $type = 'tab', $subtype = '') {
-      $sql_type = "`type` = '$type'";
+
+      $condition = [
+         'is_active' => 1,
+         ['type' => $type],
+      ];
+
       $entity = isset($_SESSION['glpiactiveentities'])
                   ? $_SESSION['glpiactiveentities']
                   : 0;
-      $sql_entity = getEntitiesRestrictRequest("AND", "", "", $entity, true, true);
+      $condition += getEntitiesRestrictCriteria("", "", $entity, true, true);
 
-      $sql_subtype = '';
       if ($subtype != '') {
          if ($subtype == $itemtype.'$main') {
-            $sql_subtype = " AND type = 'dom' ";
+            $condition[] = ['type' => 'dom'];
          } else {
-            $sql_subtype = " AND type != 'dom' AND subtype = '$subtype' ";
+            $condition[] = ['type' => ['!=', 'dom']];
+            $condition['subtype'] = $subtype;
          }
       }
 
       $container = new PluginFieldsContainer();
-      $itemtypes = $container->find($sql_type." AND is_active = 1 ".$sql_entity.$sql_subtype);
+      $itemtypes = $container->find($condition);
       $id = 0;
       if (count($itemtypes) < 1) {
          return false;
@@ -1199,13 +1207,8 @@ class PluginFieldsContainer extends CommonDBTM {
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
          $profile = new PluginFieldsProfile();
          if (isset($id)) {
-            if (is_array($id)) {
-               $condition = "`plugin_fields_containers_id` IN (" . implode(", ", $id) . ")";
-            } else {
-               $condition = "`plugin_fields_containers_id` = '$id'";
-            }
-            $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                                    AND $condition");
+            $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+                                     'plugin_fields_containers_id' => $id]);
             $first_found = array_shift($found);
             if ($first_found['right'] == null || $first_found['right'] == 0) {
                return false;
@@ -1331,8 +1334,13 @@ class PluginFieldsContainer extends CommonDBTM {
    static private function populateData($c_id, CommonDBTM $item) {
       //find fields associated to found container
       $field_obj = new PluginFieldsField();
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id
-                                  AND type != 'header'", "ranking");
+      $fields = $field_obj->find(
+         [
+            'plugin_fields_containers_id' => $c_id,
+            'type' => ['!=', 'header']
+         ],
+         "ranking"
+      );
 
       //prepare data to update
       $data = ['plugin_fields_containers_id' => $c_id];
