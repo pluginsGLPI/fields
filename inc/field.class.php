@@ -80,9 +80,12 @@ class PluginFieldsField extends CommonDBTM {
 
       if ($input['type'] === "dropdown") {
          //search if dropdown already exist in this container
-         $found = $this->find("name = '".$input['name']."'
-                               AND plugin_fields_containers_id = '".
-                                   $input['plugin_fields_containers_id']."'");
+         $found = $this->find(
+            [
+               'name' => $input['name'],
+               'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+            ]
+         );
 
          //reject adding for same dropdown on same bloc
          if (!empty($found)) {
@@ -186,7 +189,7 @@ class PluginFieldsField extends CommonDBTM {
 
       //for dropdown, if already exist, link to it
       if (isset($input['type']) && $input['type'] === "dropdown") {
-         $found = $this->find("name = '".$input['name']."'");
+         $found = $this->find(['name' => $input['name']]);
          if (!empty($found)) {
             return $input['name'];
          }
@@ -199,7 +202,7 @@ class PluginFieldsField extends CommonDBTM {
       $field      = new self;
       $field_name = $input['name'];
       $i = 2;
-      while (count($field->find("name = '$field_name'")) > 0) {
+      while (count($field->find(['name' => $field_name])) > 0) {
          $field_name = $input['name'].$i;
          $i++;
       }
@@ -436,14 +439,14 @@ class PluginFieldsField extends CommonDBTM {
 
       //profile restriction (for reading profile)
       $profile = new PluginFieldsProfile;
-      $found = $profile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                               AND `plugin_fields_containers_id` = '$c_id'");
+      $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+                               'plugin_fields_containers_id' => $c_id]);
       $first_found = array_shift($found);
       $canedit = ($first_found['right'] == CREATE);
 
       //get fields for this container
       $field_obj = new self();
-      $fields = $field_obj->find("plugin_fields_containers_id = $c_id AND is_active = 1", "ranking");
+      $fields = $field_obj->find(['plugin_fields_containers_id' => $c_id, 'is_active' => 1], "ranking");
       echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
            "/plugins/fields/front/container.form.php'>";
       echo Html::hidden('plugin_fields_containers_id', ['value' => $c_id]);
@@ -477,19 +480,20 @@ class PluginFieldsField extends CommonDBTM {
     * @return void
     */
    static private function showDomContainer($c_id, $itemtype, $items_id, $type = "dom", $subtype = "") {
-      if (is_array($c_id)) {
-         $condition = "plugin_fields_containers_id IN (".implode(", ", $c_id).")";
+
+      if ($c_id !== false) {
+         //get fields for this container
+         $field_obj = new self();
+         $fields = $field_obj->find(
+            [
+               'plugin_fields_containers_id' => $c_id,
+               'is_active' => 1,
+            ],
+            "ranking"
+         );
       } else {
-         $condition = "plugin_fields_containers_id = $c_id";
+         $fields = [];
       }
-
-      if ($c_id === false) {
-         $condition = "1=0";
-      }
-
-      //get fields for this container
-      $field_obj = new self();
-      $fields = $field_obj->find($condition." AND is_active = 1", "ranking");
 
       echo Html::hidden('_plugin_fields_type', ['value' => $type]);
       echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
@@ -594,15 +598,22 @@ class PluginFieldsField extends CommonDBTM {
       $obj = new $classname;
 
       //find row for this object with the items_id
-      $found_values = $obj->find("plugin_fields_containers_id = ".
-                                 $first_field['plugin_fields_containers_id']." AND items_id = ".
-                                 $items_id);
+      $found_values = $obj->find(
+         [
+            'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
+            'items_id' => $items_id,
+         ]
+      );
       $found_v = array_shift($found_values);
 
       // find profiles (to check if current profile can edit fields)
       $fprofile = new PluginFieldsProfile;
-      $found_p = $fprofile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'
-                                  AND `plugin_fields_containers_id` = '".$first_field['plugin_fields_containers_id']."'");
+      $found_p = $fprofile->find(
+         [
+            'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
+            'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
+         ]
+      );
       $first_found_p = array_shift($found_p);
 
       // test status for "CommonITILObject" objects
@@ -787,7 +798,7 @@ class PluginFieldsField extends CommonDBTM {
                                              'entity'    => -1,
                                              'right'     => 'all',
                                              'display'   => false,
-                                             'condition' => 'is_active=1 && is_deleted=0']);
+                                             'condition' => ['is_active' => 1, 'is_deleted' => 0]]);
                   } else {
                      $showuserlink = 0;
                      if (Session::haveRight('user', 'r')) {
@@ -879,7 +890,7 @@ class PluginFieldsField extends CommonDBTM {
       //dropdowns : create files
       if ($input['type'] === "dropdown") {
          //search if dropdown already exist in other container
-         $found = $this->find("id != " . $input['id'] . " AND name = '" . $input['name'] . "'");
+         $found = $this->find(['id' => ['!=', $input['id']], 'name' => $input['name']]);
          //for dropdown, if already exist, don't create files
          if (empty($found)) {
             PluginFieldsDropdown::create($input);
