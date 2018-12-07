@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Markku Vepsä, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Plugin - Fields\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-21 14:44+0000\n"
+"PO-Revision-Date: 2018-11-12 17:54+0000\n"
+"Last-Translator: Markku Vepsä\n"
+"Language-Team: Finnish (Finland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fi_FI/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi_FI\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Lisäkentät"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "MySQL-taulukoiden asennus"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Liitännäistä ei voi poistaa, kun liitännäinen on poistettu käytöstä"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "MySQL-taulukoiden poistaminen"
+
+#: inc/field.class.php:72
+msgid "Field"
+msgstr "Kenttä"
+
+#: inc/field.class.php:241
+msgid "Fields"
+msgstr "Kentät"
+
+#: inc/field.class.php:295
+msgid "Add a new field"
+msgstr "Lisää uusi kenttä"
+
+#: inc/field.class.php:299
+msgid "No field for this block"
+msgstr "Ei kenttää tälle osiolle"
+
+#: inc/field.class.php:311 inc/field.class.php:424
+msgid "Read only"
+msgstr "Vain luku"
+
+#: inc/field.class.php:401
+msgid "Configure"
+msgstr "Määritä"
+
+#: inc/field.class.php:401
+msgid "Configure fields values"
+msgstr "Määritä kenttien arvot"
+
+#: inc/field.class.php:717
+msgid "show"
+msgstr "näytä"
+
+#: inc/field.class.php:863
+msgid "Header"
+msgstr "Ylätunniste"
+
+#: inc/field.class.php:864
+msgid "Text (single line)"
+msgstr "Teksti (yksi rivi)"
+
+#: inc/field.class.php:865
+msgid "Text (multiples lines)"
+msgstr "Teksti (useita rivejä)"
+
+#: inc/field.class.php:866
+msgid "Number"
+msgstr "Numero"
+
+#: inc/field.class.php:867
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:868
+msgid "Dropdown"
+msgstr "Pudotusvalikko"
+
+#: inc/field.class.php:869
+msgid "Yes/No"
+msgstr "Kyllä/Ei"
+
+#: inc/field.class.php:870
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: inc/field.class.php:871
+msgid "Date & time"
+msgstr "Päivämäärä ja aika"
+
+#: inc/container.class.php:12
+msgid "Regenerate container files"
+msgstr "Luo uudelleen säilötiedostot"
+
+#: inc/container.class.php:127
+msgid "Updating generated containers files"
+msgstr "Päivitetään luodut säilötiedostot"
+
+#: inc/container.class.php:318
+msgid "You cannot add block without associated element type"
+msgstr "Et voi lisätä osiota ilman liittyvää elementtityyppiä"
+
+#: inc/container.class.php:335
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Et voi lisätä useita osioita, joiden tyyppi on \"Lisää lomakkeeseen\" samassa objektissa"
+
+#: inc/container.class.php:350
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Et voi lisätä useita osioita, joissa on tyyppi \"Liitettynä lomakkeeseen tietyssä välilehdessä\" samassa objektin välilehdessä"
+
+#: inc/container.class.php:372
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Et voi lisätä useita osioita samalla nimellä samaan objektiin"
+
+#: inc/container.class.php:512
+msgid "Block"
+msgstr "Osio"
+
+#: inc/container.class.php:583
+msgid "Tab"
+msgstr "Välilehti"
+
+#: inc/container.class.php:788
+msgid "Add tab"
+msgstr "Lisää välilehti"
+
+#: inc/container.class.php:789
+msgid "Insertion in the form (before save button)"
+msgstr "Lisää lomakkeeseen (ennen tallennuspainiketta)"
+
+#: inc/container.class.php:790
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Lisää lomakkeeseen tietyssä välilehdessä (ennen tallennuspainiketta)"
+
+#: inc/container.class.php:1149
+msgid "Some mandatory fields are empty"
+msgstr "Jotkut pakolliset kentät ovat tyhjiä"
+
+#: inc/container.class.php:1154
+msgid "Some numeric fields contains non numeric values"
+msgstr "Jotkin numeeriset kentät sisältävät ei-numeerisia arvoja"
+
+#: inc/container.class.php:1159
+msgid "Some URL fields contains invalid links"
+msgstr "Joissakin URL-kentissä on virheellisiä linkkejä"
+
+#: inc/labeltranslation.class.php:137
+msgid "Language"
+msgstr "Kieli"
+
+#: inc/labeltranslation.class.php:138
+msgid "Label"
+msgstr "Etiketti"
+
+#: inc/dropdown.class.php:16
+msgid "Updating generated dropdown files"
+msgstr "Päivitetään luodut pudotusvalikko tiedostot"
