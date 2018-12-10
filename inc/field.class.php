@@ -801,7 +801,7 @@ class PluginFieldsField extends CommonDBTM {
                                              'condition' => ['is_active' => 1, 'is_deleted' => 0]]);
                   } else {
                      $showuserlink = 0;
-                     if (Session::haveRight('user', 'r')) {
+                     if (Session::haveRight('user', READ)) {
                         $showuserlink = 1;
                      }
                      $html.= getUserName($value, $showuserlink);
