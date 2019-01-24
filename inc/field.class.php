@@ -357,7 +357,7 @@ class PluginFieldsField extends CommonDBTM {
 
 
    function showForm($ID, $options = []) {
-      global $CFG_GLPI;
+      global $CFG_GLPI, $DB;
 
       if (isset($options['parent_id']) && !empty($options['parent_id'])) {
          $container = new PluginFieldsContainer;
@@ -395,14 +395,25 @@ class PluginFieldsField extends CommonDBTM {
       }
       echo "<td>".__("Default values")." : </td>";
       echo "<td>";
-      Html::autocompletionTextField($this, 'default_value',
-                                    ['value' => $this->fields["default_value"]]);
       if ($this->fields["type"] == "dropdown") {
+         $arrayDropdown[0] = "---------";
+         $result = $DB->query("SELECT id,name
+                            FROM glpi_plugin_fields_".$this->fields["name"]."dropdowns");
+         if ($DB->numrows($result) > 0){
+            while($line = $DB->fetch_assoc($result)){
+               $arrayDropdown[$line['id']] = $line['name'];
+            }
+         }
+         Dropdown::showFromArray("default_value",$arrayDropdown,
+             ['value' => $this->fields["default_value"]]);
          echo '<a href="'.$CFG_GLPI['root_doc'].'/plugins/fields/front/commondropdown.php?ddtype='.
                           $this->fields['name'] .'dropdown">
                <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
                     alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
                </a>';
+      } else{
+         Html::autocompletionTextField($this, 'default_value',
+             ['value' => $this->fields["default_value"]]);
       }
       if (in_array($this->fields['type'], ['date', 'datetime'])) {
          echo "<i class='pointer fa fa-info'
