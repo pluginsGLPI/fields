@@ -218,7 +218,7 @@ class PluginFieldsField extends CommonDBTM {
    function getNextRanking() {
       global $DB;
 
-      $sql = "SELECT max(`ranking`) AS rank
+      $sql = "SELECT max(`ranking`) AS `rank`
               FROM `".self::getTable()."`
               WHERE `plugin_fields_containers_id` = '".
                   $this->fields['plugin_fields_containers_id']."'";
