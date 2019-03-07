@@ -13,6 +13,9 @@ class PluginFieldsDropdown {
     * @return void
     */
    static function install(Migration $migration, $version) {
+      $toolbox = new PluginFieldsToolbox();
+      $toolbox->fixFieldsNames($migration, ['type' => 'dropdown']);
+
       $migration->displayMessage(__("Updating generated dropdown files", "fields"));
       // -> 0.90-1.3: generated class moved
       // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"

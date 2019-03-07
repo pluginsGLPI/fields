@@ -57,6 +57,9 @@ class PluginFieldsField extends CommonDBTM {
       }
       $migration->executeMigration();
 
+      $toolbox = new PluginFieldsToolbox();
+      $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
+
       return true;
    }
 
@@ -182,9 +185,11 @@ class PluginFieldsField extends CommonDBTM {
     * @return string  the parsed name
     */
    function prepareName($input) {
+      $toolbox = new PluginFieldsToolbox();
+
       //contruct field name by processing label (remove non alphanumeric char)
       if (empty($input['name'])) {
-         $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", $input['label']))."field";
+         $input['name'] = $toolbox->getSystemNameFromLabel($input['label']) . 'field';
       }
 
       //for dropdown, if already exist, link to it
@@ -203,7 +208,7 @@ class PluginFieldsField extends CommonDBTM {
       $field_name = $input['name'];
       $i = 2;
       while (count($field->find(['name' => $field_name])) > 0) {
-         $field_name = $input['name'].$i;
+         $field_name = $toolbox->getIncrementedSystemName($input['name'], $i);
          $i++;
       }
 

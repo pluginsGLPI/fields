@@ -61,9 +61,10 @@ function plugin_fields_install() {
    echo "<td align='center'>";
 
    //load all classes
+   $dir  = GLPI_ROOT . "/plugins/fields/inc/";
+   include_once ("{$dir}toolbox.class.php");
    foreach ($classesToInstall as $class) {
       if ($plug = isPluginItemType($class)) {
-         $dir  = GLPI_ROOT . "/plugins/fields/inc/";
          $item = strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             include_once ("$dir$item.class.php");
@@ -74,7 +75,6 @@ function plugin_fields_install() {
    //install
    foreach ($classesToInstall as $class) {
       if ($plug = isPluginItemType($class)) {
-         $dir  = GLPI_ROOT . "/plugins/fields/inc/";
          $item =strtolower($plug['class']);
          if (file_exists("$dir$item.class.php")) {
             if (!call_user_func([$class,'install'], $migration, $version)) {

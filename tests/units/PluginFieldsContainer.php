@@ -30,7 +30,7 @@ class PluginFieldsContainer extends \FieldsDbTestCase {
       $newid = $container->add($data);
       $this->integer($newid)->isGreaterThan(0);
 
-      $this->boolean(class_exists('PluginFieldsComputercontainerlabel1'))->isTrue();
+      $this->boolean(class_exists('PluginFieldsComputercontainerlabelOne'))->isTrue();
    }
 
    public function testGetTypes() {
