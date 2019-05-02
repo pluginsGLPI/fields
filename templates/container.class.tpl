@@ -45,14 +45,14 @@ class %%CLASSNAME%% extends CommonDBTM
       if ($type != 'header') {
          $sql_type = PluginFieldsMigration::getSQLType($type);
 
-         $migration = new Migration(0);
+         $migration = new PluginFieldsMigration(0);
          $migration->addField(self::getTable(), $fieldname, $sql_type);
          $migration->migrationOneTable(self::getTable());
       }
    }
 
    static function removeField($fieldname) {
-      $migration = new Migration(0);
+      $migration = new PluginFieldsMigration(0);
       $migration->dropField(self::getTable(), $fieldname);
 
    }
