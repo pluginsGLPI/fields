@@ -795,7 +795,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'dropdownuser':
                   if ($massiveaction) {
-                     continue;
+                     break;
                   }
                   if ($canedit && !$readonly) {
                      $html.= User::dropdown(['name'      => $field['name'],
