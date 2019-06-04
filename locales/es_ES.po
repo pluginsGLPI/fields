@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-02 10:39+0000\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
@@ -145,27 +145,27 @@ msgstr "Bloque"
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/container.class.php:824
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr "Insertando en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserción en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/container.class.php:1188
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1193
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
-#: inc/container.class.php:1198
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen vínculos no válidos"
 

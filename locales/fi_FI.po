@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-02 10:39+0000\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fi_FI/)\n"
@@ -143,27 +143,27 @@ msgstr "Osio"
 msgid "Tab"
 msgstr "Välilehti"
 
-#: inc/container.class.php:824
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "Lisää välilehti"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr "Lisää lomakkeeseen (ennen tallennuspainiketta)"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Lisää lomakkeeseen tietyssä välilehdessä (ennen tallennuspainiketta)"
 
-#: inc/container.class.php:1188
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "Jotkut pakolliset kentät ovat tyhjiä"
 
-#: inc/container.class.php:1193
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr "Jotkin numeeriset kentät sisältävät ei-numeerisia arvoja"
 
-#: inc/container.class.php:1198
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr "Joissakin URL-kentissä on virheellisiä linkkejä"
 
