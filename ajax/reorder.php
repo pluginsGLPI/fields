@@ -1,31 +1,71 @@
 <?php
 include ("../../../inc/includes.php");
 
-$table   = PluginFieldsField::getTable();
-
-// Récupération de l'ID du champ à modifier
-$query   = "SELECT id FROM $table
-            WHERE plugin_fields_containers_id = {$_POST['container_id']}
-            AND `ranking` = {$_POST['old_order']}";
-$result  = $DB->queryOrDie($query, 'Erreur');
-$first   = $result->fetch_assoc();
-$id_item = $first['id'];
-
-// Réorganisation de tout les champs
-if ($_POST['old_order'] < $_POST['new_order']) {
-   $DB->query("UPDATE $table SET
-               `ranking` = `ranking`-1
-               WHERE plugin_fields_containers_id = {$_POST['container_id']}
-               AND `ranking` > {$_POST['old_order']}
-               AND `ranking` <= {$_POST['new_order']}");
-} else {
-   $DB->query("UPDATE $table SET
-               `ranking` = `ranking`+1
-               WHERE plugin_fields_containers_id = {$_POST['container_id']}
-               AND `ranking` < {$_POST['old_order']}
-               AND `ranking` >= {$_POST['new_order']}");
+if (!array_key_exists('container_id', $_POST)
+    || !array_key_exists('old_order', $_POST)
+    || !array_key_exists('new_order', $_POST)) {
+   // Missing input
+   exit();
 }
 
-$DB->query("UPDATE $table SET
-            `ranking` = {$_POST['new_order']}
-            WHERE id = $id_item");
+$table        = PluginFieldsField::getTable();
+$container_id = (int)$_POST['container_id'];
+$old_order    = (int)$_POST['old_order'];
+$new_order    = (int)$_POST['new_order'];
+
+// Retrieve id of field to update
+$field_iterator = $DB->request(
+   [
+      'SELECT' => 'id',
+      'FROM'   => $table,
+      'WHERE'  => [
+         'plugin_fields_containers_id' => $container_id,
+         'ranking'                     => $old_order,
+      ],
+   ]
+);
+
+if (0 === $field_iterator->count()) {
+   // Unknown field
+   exit();
+}
+
+$field_id = $field_iterator->next()['id'];
+
+// Move all elements to their new ranking
+if ($old_order < $new_order) {
+   $DB->update(
+      $table,
+      [
+         'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' - 1'),
+      ],
+      [
+         'plugin_fields_containers_id' => $container_id,
+         ['ranking' => ['>',  $old_order]],
+         ['ranking' => ['<=', $new_order]],
+      ]
+   );
+} else {
+   $DB->update(
+      $table,
+      [
+         'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' + 1'),
+      ],
+      [
+         'plugin_fields_containers_id' => $container_id,
+         ['ranking' => ['<',  $old_order]],
+         ['ranking' => ['>=', $new_order]],
+      ]
+   );
+}
+
+// Update current element
+$DB->update(
+   $table,
+   [
+      'ranking' => $new_order,
+   ],
+   [
+      'id' => $field_id,
+   ]
+);

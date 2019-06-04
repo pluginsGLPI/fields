@@ -5,14 +5,14 @@
 # Translators:
 # David Stepan <stepand@tiscali.cz>, 2016
 # Merlin Merlin <mmerlin10@gmail.com>, 2017
-# Pavel Borecki <pavel.borecki@gmail.com>, 2018
+# Pavel Borecki <pavel.borecki@gmail.com>, 2018-2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-02 10:39+0000\n"
-"PO-Revision-Date: 2019-05-02 10:39+0000\n"
-"Last-Translator: Cédric Anne\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"PO-Revision-Date: 2019-05-03 11:12+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -111,7 +111,7 @@ msgstr "Znovu vytvořit kontejnerové soubory"
 
 #: inc/container.class.php:87
 msgid "Fix container names"
-msgstr ""
+msgstr "Opravit názvy kontejnerů"
 
 #: inc/container.class.php:168
 msgid "Updating generated containers files"
@@ -145,27 +145,27 @@ msgstr "Blok"
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/container.class.php:824
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "Přidat tabulku"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr "Vložení do formuláře (před tlačítkem uložit)"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
 
-#: inc/container.class.php:1188
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1193
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
-#: inc/container.class.php:1198
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
@@ -183,4 +183,4 @@ msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
-msgstr ""
+msgstr "Opravit názvy kolonek"

@@ -755,7 +755,8 @@ class PluginFieldsContainer extends CommonDBTM {
          'Supplier'        => Supplier::getTypeName(2),
          'Contact'         => Contact::getTypeName(2),
          'Contract'        => Contract::getTypeName(2),
-         'Document'        => Document::getTypeName(2)
+         'Document'        => Document::getTypeName(2),
+         'Line'            => Line::getTypeName(2),
       ];
 
       $tabs[__('Tools')] = [
