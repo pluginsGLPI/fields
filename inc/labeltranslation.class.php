@@ -11,6 +11,16 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
     *
     * @return boolean
     */
+// INICIO [CRI] : Crear traducciones y Eliminarlas permanentemente desde el botón eliminar de la traducción
+   static function canCreate() {
+      return self::canUpdate();
+   }	
+   
+   static function canPurge() {  
+      return Session::haveRight(static::$rightname, UPDATE);
+   }   
+// INICIO [CRI] : Crear traducciones y Eliminarlas permanentemente desde el botón eliminar de la traducción
+	
    static function install(Migration $migration, $version) {
       global $DB;
 
@@ -62,7 +72,8 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       ]);
       return true;
    }
-
+   
+ 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       $nb = countElementsInTable(
          self::getTable(),

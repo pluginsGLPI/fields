@@ -59,7 +59,9 @@ class PluginFieldsMigration extends Migration {
          'yesno'        => 'INT(11)      NOT NULL DEFAULT 0',
          'date'         => 'VARCHAR(255) DEFAULT NULL',
          'datetime'     => 'VARCHAR(255) DEFAULT NULL',
-         'dropdownuser' => 'INT(11)  NOT NULL DEFAULT 0'
+         //'dropdownuser' => 'INT(11)  NOT NULL DEFAULT 0',
+		 'dropdownitem' => 'INT(11)  NOT NULL DEFAULT 0',
+         'getdate' => 'TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP'
       ];
 
       return $types[$field_type];

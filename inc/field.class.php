@@ -3,9 +3,19 @@
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
 
+
+
    static function canCreate() {
       return self::canUpdate();
    }
+
+// INICIO [CRI] : Eliminar permanentemente campos
+   
+   static function canPurge() {  
+      return Session::haveRight(static::$rightname, UPDATE);
+   }      
+
+// FINAL [CRI] : Eliminar permanentemente campos
 
    /**
     * Install or update fields
@@ -22,7 +32,9 @@ class PluginFieldsField extends CommonDBTM {
 
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
-
+         
+		 //`condition` VARCHAR(255)   DEFAULT NULL,  //[CRI] : filtro desplegable tipo ObjetoGLPI
+		 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT(11)        NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
@@ -34,6 +46,7 @@ class PluginFieldsField extends CommonDBTM {
                   `is_active`                         TINYINT(1)     NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT(1)     NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT(1)     NOT NULL DEFAULT '0',
+									`condition`                         VARCHAR(255)   DEFAULT NULL, 
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`),
@@ -207,7 +220,8 @@ class PluginFieldsField extends CommonDBTM {
       $field      = new self;
       $field_name = $input['name'];
       $i = 2;
-      while (count($field->find(['name' => $field_name])) > 0) {
+      // INICIO [CRI] : Obtener Array de objetos dinamicamente
+      while (count($field->find(['name' => $field_name,'plugin_fields_containers_id' => $input['plugin_fields_containers_id']])) > 0) {
          $field_name = $toolbox->getIncrementedSystemName($input['name'], $i);
          $i++;
       }
@@ -383,12 +397,19 @@ class PluginFieldsField extends CommonDBTM {
       $this->initForm($ID, $options);
       $this->showFormHeader($ID, $options);
 
+  	  // INICIO [CRI] : Nombre y termino de objetos
       echo "<tr>";
+      echo "<td>".__("Name")." : </td>";
+      echo "<td>";
+      Html::autocompletionTextField($this, ' name', array('value' => $this->fields["name"]));
+      echo "</td>";
+	  // FIN [CRI] : Nombre y termino de objetos
       echo "<td>".__("Label")." : </td>";
       echo "<td>";
       echo Html::hidden('plugin_fields_containers_id', ['value' => $container->getField('id')]);
       Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"]]);
       echo "</td>";
+	  echo "</tr>"; // [CRI] : Nombre y termino de objetos
 
       if (!$edit) {
          echo "</tr>";
@@ -433,6 +454,16 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("is_readonly", $this->fields["is_readonly"]);
       echo "</td>";
+	  
+         //*****//
+		 // INICIO [CRI] : filtro desplegable tipo ObjetoGLPI
+		 //*****//	  
+      echo "<td>".__("Filtros")." : </td>";
+      echo "<td>";	  
+      Html::autocompletionTextField($this, 'condition', array('value' => $this->fields["condition"]));
+      echo "</td>";
+		// FIN [CRI] : filtro desplegable tipo ObjetoGLPI	  
+	  
       echo "</tr>";
 
       $this->showFormButtons($options);
@@ -502,6 +533,7 @@ class PluginFieldsField extends CommonDBTM {
 
       echo Html::hidden('_plugin_fields_type', ['value' => $type]);
       echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
+	  
       echo self::prepareHtmlFields($fields, $items_id, $itemtype);
    }
 
@@ -688,6 +720,16 @@ class PluginFieldsField extends CommonDBTM {
                   $value = $_SESSION["glpi_currenttime"];
                }
             }
+			
+			// INICIO [CRI] : Filtro para desplegable			
+			// Obtener la condicion
+			$condition = array();			
+			if (empty($value) && !empty($field['condition'])) {
+               //$condition = $field['condition'];			   
+			   array_push($condition,$field['condition']);  // [CRI] Añadir filtros desplegable objeto
+            }
+			// FIN [CRI] : Filtro para desplegable
+            //show field			
 
             //show field
             if ($show_table) {
@@ -811,6 +853,69 @@ class PluginFieldsField extends CommonDBTM {
                      }
                      $html.= getUserName($value, $showuserlink);
                   }
+				  
+				  break;
+				  
+				// INICIO [CRI] : Insertar nuevos tipos de Objeto y Fecha de sistema				  
+               case 'dropdownitem':
+                  if ($massiveaction) {
+                     continue;
+                  }
+					if (preg_match("/_id($|\d)$/", $field['name'])) 
+					{
+						$itemtype = getItemTypeForTable(getTableNameForForeignKeyField($field['name']));
+					}
+					
+                  if ($canedit && !$readonly) {
+                     ob_start();
+
+					switch($itemtype)
+					{
+						case 'User':
+							User::dropdown(array('name'   => $field['name'],
+											  'value'  => $value,
+											  'right'  => 'all',
+											  'entity' => $_SESSION['glpiactive_entity'],
+											  'condition' => 'is_active=1 && is_deleted=0'											  
+											  ));								  
+							break;						
+						case 'Group':						
+							Dropdown::show('Group', array('name'      =>  $field['name'],
+									'value'     =>  $value,
+									'entity'    => $_SESSION['glpiactive_entity'],
+									'condition' => $condition));										
+									//'condition' => 'entities_id = 0'));
+									//'condition' => '`is_assign`'));								  
+							break;							
+						default:
+						
+
+						
+							Dropdown::show($itemtype, array(
+								  'name'      => $field['name'],
+								  'value'     => $value,
+								  'entity'    => $_SESSION['glpiactive_entity'],
+								  'condition' => $condition));									  
+							break;	
+					}	
+
+                     $html.= ob_get_contents();
+                     ob_end_clean();
+                  } else {
+					  /*
+                     $showuserlink = 0;
+                     if (Session::haveRight('user','r')) {
+                        $showuserlink = 1;
+                     }*/
+					 $html.= Dropdown::getDropdownName(getTableNameForForeignKeyField($field['name']),$value);
+                  }
+				break;
+               case 'getdate':
+                   $html.= Html::convDateTime($value);
+                  break;
+				  
+				// FIN [CRI] : Insertar nuevos tipos de Objeto y Fecha de sistema				  
+				  
             }
             if ($show_table) {
                $html.= "</td>";
@@ -885,7 +990,11 @@ class PluginFieldsField extends CommonDBTM {
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
-         'dropdownuser' => _n("User", "Users", 2)
+         'dropdownuser' => _n("User", "Users", 2),
+		 // INICIO [CRI] : Insertar nuevos tipos fecha de sistema y tipo objeto
+         'dropdownitem' => _n("Objeto", "Objeto", 2),
+		 'getdate'     => __("Fecha Sistema", "fields")	
+		// FIN [CRI] : Insertar nuevos tipos fecha de sistema y tipo objeto	
       ];
    }
 
