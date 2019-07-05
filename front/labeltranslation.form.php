@@ -35,5 +35,10 @@ if (isset($_POST['add'])) {
 
 } else if (isset($_POST['update'])) {
    $translation->update($_POST);
-}
+} else if (isset($_POST['purge'])) { // INICIO [CRI] : Elimina una traducción permanentemente desde el botón eliminar de la traducción
+   $translation->delete($_POST);
+} // FINAL [CRI] : Elimina una traducción permanentemente desde el botón eliminar de la traducción
+
+
+
 Html::back();

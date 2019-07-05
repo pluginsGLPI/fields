@@ -6,6 +6,11 @@ class PluginFieldsContainer extends CommonDBTM {
    static function canCreate() {
       return self::canUpdate();
    }
+   
+
+   static function canPurge() {  
+      return Session::haveRight(static::$rightname, UPDATE);
+   }   
 
    static function titleList() {
       echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
@@ -520,7 +525,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $rand = mt_rand();
 
       echo "<tr>";
-      echo "<td width='20%'>".__("Label")." : </td>";
+      echo "<td width='20%'>".__("Labels")." : </td>";
       echo "<td width='30%'>";
       Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"]]);
       echo "</td>";
@@ -693,8 +698,12 @@ class PluginFieldsContainer extends CommonDBTM {
       global $PLUGIN_HOOKS;
 
       $tabs = [];
-
-      $tabs[__('Assets')] = [
+	  
+	  	 // INICIO [CRI] : Obtener Array de objetos dinamicamente
+	  $assets = PluginFieldsContainer::ArrayListOfItemtypes();
+	  
+	
+   /*   $tabs[__('Assets')] = [
          'Computer'         => Computer::getTypeName(2),
          'Monitor'          => Monitor::getTypeName(2),
          'Software'         => Software::getTypeName(2),
@@ -704,7 +713,13 @@ class PluginFieldsContainer extends CommonDBTM {
          'CartridgeItem'    => CartridgeItem::getTypeName(2),
          'ConsumableItem'   => ConsumableItem::getTypeName(2),
          'Phone'            => Phone::getTypeName(2)
-      ];
+      ];*/
+
+	   
+	  // FINAL [CRI] : Obtener Array de objetos dinamicamente
+
+   $tabs[__('Assets')] = $assets;
+
 
       $tabs[__('Assistance')] = [
          'Ticket'          => Ticket::getTypeName(2),
@@ -1381,8 +1396,8 @@ class PluginFieldsContainer extends CommonDBTM {
       $opt = [];
 
       $i = 76665;
-
-      $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
+			// INICIO [CRI] : Añadir campo filtro para desplegables ObjetoGLPI
+      $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly, fields.condition,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
          FROM glpi_plugin_fields_containers containers
@@ -1392,6 +1407,7 @@ class PluginFieldsContainer extends CommonDBTM {
          WHERE containers.itemtypes LIKE '%$itemtype%'
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
+			// FIN [CRI] : Añadir campo filtro para desplegables ObjetoGLPI
       $res = $DB->query($query);
       while ($data = $DB->fetch_assoc($res)) {
 
@@ -1456,8 +1472,38 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
+		 
+		// INICIO [CRI] : Procesar nuevos tipos para desplegable Objetos		 
+         if ($data['type'] === "dropdownitem") {
+			 $tableitem = "";
+			if (preg_match("/_id($|\d)$/", $data['name'])) 
+			{
+				$tableitem = getTableNameForForeignKeyField($data['name']);
+			}
+			 
+            $opt[$i]['table']      = $tableitem;
+            $opt[$i]['field']      = 'name';
+            $opt[$i]['linkfield']  = $data['name'];
+            $opt[$i]['right'] = 'all';
+
+            $opt[$i]['forcegroupby'] = true;
+			
+			// Obtener la condicion
+			if (!empty($data['condition'])) {
+               $opt[$i]['condition'] = $data['condition'];
+            }			
+
+            $opt[$i]['joinparams']['jointype'] = "";
+            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+         }
+		// INICIO [CRI] : Procesar nuevos tipos para desplegable Objetos
+		 
          switch ($data['type']) {
             case 'dropdown':
+			case 'dropdownitem': // [CRI] 25/04/2017 Olb26s
+			   $opt[$i]['datatype']      = 'itemlink'; 	
+			   break;			   
             case 'dropdownuser':
                $opt[$i]['datatype'] = "dropdown";
                break;
@@ -1472,8 +1518,9 @@ class PluginFieldsContainer extends CommonDBTM {
                break;
             case 'date':
             case 'datetime':
+			case 'getdate':  // INICIO [CRI] : Procesar nuevos campo fecha de sistema
                $opt[$i]['datatype'] = $data['type'];
-               break;
+               break;		   
             default:
                $opt[$i]['datatype'] = "string";
          }
@@ -1530,6 +1577,26 @@ class PluginFieldsContainer extends CommonDBTM {
 
       return $tabs;
    }
+   
+	// INICIO [CRI] : Funcion para obtener Array de objetos GLPI
+
+    static function ArrayListOfItemtypes() {
+		$activos = array();
+		$a = $_SESSION["glpiactiveprofile"]["helpdesk_item_type"];
+		foreach ($a as $k => $v) {
+			if (class_exists($v)) {
+				$item = getItemForItemtype($v);
+				if (!strpos($v, 'Generic'))
+				{
+					$activos[$v] = $item->getTypeName();
+					//	echo "\$a[$k] => $v.\n";
+				}
+
+			}			
+		}
+		return $activos;
+	}
+	// FIN [CRI] : Funcion para obtener Array de objetos GLPI    
 
    /**
     * Retrieve the classname for a label (raw_name) & an itemtype
