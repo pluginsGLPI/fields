@@ -73,6 +73,47 @@ class PluginFieldsContainer extends CommonDBTM {
          $migration->migrationOneTable($table);
       }
 
+      // Fix containers names that were generated prior to Fields 1.9.2.
+      $glpi_version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+      $bad_named_containers = $DB->request(
+         [
+            'FROM' => self::getTable(),
+            'WHERE' => [
+               'name' => [
+                  'REGEXP',
+                  // Regex will be escaped by PDO in GLPI 10+, but has to be escaped for GLPI < 10
+                  version_compare($glpi_version, '10.0', '>=') ? '\d+' : $DB->escape('\d+')
+               ],
+            ],
+         ]
+      );
+
+      if ($bad_named_containers->count() > 0) {
+         $migration->displayMessage(__("Fix container names", "fields"));
+
+         foreach ($bad_named_containers as $container) {
+            $old_name = $container['name'];
+
+            // Update container name
+            $toolbox = new PluginFieldsToolbox();
+            $container['name'] = $toolbox->getSystemNameFromLabel($container['label']);
+            $container_obj = new PluginFieldsContainer();
+            $container_obj->update(
+               $container,
+               false
+            );
+
+            // Rename container tables
+            foreach (json_decode($container['itemtypes']) as $itemtype) {
+               $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
+               $new_table = getTableForItemType(self::getClassname($itemtype, $container['name']));
+               if ($DB->tableExists($old_table)) {
+                  $migration->renameTable($old_table, $new_table);
+               }
+            }
+         }
+      }
+
       //Computer OS tab is no longer part of computer object. Moving to main
       $ostab = self::findContainer(Computer::getType(), 'domtab', Computer::getType() . '$1');
       if ($ostab) {
@@ -360,13 +401,8 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
-      // construct field name by processing label
-      // (remove non alphanumeric char and any trailing spaces)
-      $input['name'] = strtolower(preg_replace("/[^\da-z]/i", "", preg_replace('/s*$/', '', $input['label'])));
-      // if empty, uses a random number
-      if (strlen($input['name']) == 0) {
-         $input['name'] = rand();
-      }
+      $toolbox = new PluginFieldsToolbox();
+      $input['name'] = $toolbox->getSystemNameFromLabel($input['label']);
 
       //check for already existing container with same name
       $found = $this->find(['name' => $input['name']]);
@@ -734,7 +770,8 @@ class PluginFieldsContainer extends CommonDBTM {
          'Supplier'        => Supplier::getTypeName(2),
          'Contact'         => Contact::getTypeName(2),
          'Contract'        => Contract::getTypeName(2),
-         'Document'        => Document::getTypeName(2)
+         'Document'        => Document::getTypeName(2),
+         'Line'            => Line::getTypeName(2),
       ];
 
       $tabs[__('Tools')] = [

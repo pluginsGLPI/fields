@@ -13,6 +13,7 @@ include_once GLPI_ROOT . '/tests/DbTestCase.php';
 
 //install plugin
 $plugin = new \Plugin();
+$plugin->checkStates(true);
 $plugin->getFromDBbyDir('fields');
 //check from prerequisites as Plugin::install() does not!
 if (!plugin_fields_check_prerequisites()) {
@@ -20,10 +21,10 @@ if (!plugin_fields_check_prerequisites()) {
    die(1);
 }
 if (!$plugin->isInstalled('fields')) {
-   call_user_func([$plugin, 'install'], $plugin->getID());
+   $plugin->install($plugin->getID());
 }
 if (!$plugin->isActivated('fields')) {
-   call_user_func([$plugin, 'activate'], $plugin->getID());
+   $plugin->activate($plugin->getID());
 }
 
 include_once __DIR__ . '/FieldsDbTestCase.php';

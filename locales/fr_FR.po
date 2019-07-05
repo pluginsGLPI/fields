@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 14:44+0000\n"
-"PO-Revision-Date: 2018-07-06 09:26+0000\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -38,71 +38,71 @@ msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 msgid "MySQL tables uninstallation"
 msgstr "Désinstallation des tables MySQL"
 
-#: inc/field.class.php:72
+#: inc/field.class.php:75
 msgid "Field"
 msgstr "Champ"
 
-#: inc/field.class.php:241
+#: inc/field.class.php:249
 msgid "Fields"
 msgstr "Champs"
 
-#: inc/field.class.php:295
+#: inc/field.class.php:303
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
-#: inc/field.class.php:299
+#: inc/field.class.php:307
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
-#: inc/field.class.php:311 inc/field.class.php:424
+#: inc/field.class.php:319 inc/field.class.php:432
 msgid "Read only"
 msgstr "Lecture seule"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure"
 msgstr "Configuration"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure fields values"
 msgstr "Configurer les valeurs du champ"
 
-#: inc/field.class.php:717
+#: inc/field.class.php:733
 msgid "show"
 msgstr "afficher"
 
-#: inc/field.class.php:863
+#: inc/field.class.php:879
 msgid "Header"
 msgstr "Entête"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:880
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:881
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:882
 msgid "Number"
 msgstr "Nombre"
 
-#: inc/field.class.php:867
+#: inc/field.class.php:883
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:868
+#: inc/field.class.php:884
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
-#: inc/field.class.php:869
+#: inc/field.class.php:885
 msgid "Yes/No"
 msgstr "Oui/Non"
 
-#: inc/field.class.php:870
+#: inc/field.class.php:886
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:871
+#: inc/field.class.php:887
 msgid "Date & time"
 msgstr "Date & heure"
 
@@ -110,70 +110,78 @@ msgstr "Date & heure"
 msgid "Regenerate container files"
 msgstr "Régénérer les fichiers des blocs"
 
-#: inc/container.class.php:127
+#: inc/container.class.php:87
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:168
 msgid "Updating generated containers files"
 msgstr "Mettre à jour les fichier de conteneurs générés"
 
-#: inc/container.class.php:318
+#: inc/container.class.php:359
 msgid "You cannot add block without associated element type"
 msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
 
-#: inc/container.class.php:335
+#: inc/container.class.php:376
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
 
-#: inc/container.class.php:350
+#: inc/container.class.php:391
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire d'un onglet spécifique' sur le même onglet d'un objet"
 
-#: inc/container.class.php:372
+#: inc/container.class.php:408
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
 
-#: inc/container.class.php:512
+#: inc/container.class.php:548
 msgid "Block"
 msgstr "Bloc"
 
-#: inc/container.class.php:583
+#: inc/container.class.php:619
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/container.class.php:788
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
-#: inc/container.class.php:789
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:790
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:1149
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
-#: inc/container.class.php:1159
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
-#: inc/labeltranslation.class.php:137
+#: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "Langue"
 
-#: inc/labeltranslation.class.php:138
+#: inc/labeltranslation.class.php:140
 msgid "Label"
 msgstr "Libellé"
 
-#: inc/dropdown.class.php:16
+#: inc/dropdown.class.php:19
 msgid "Updating generated dropdown files"
 msgstr "Mise à jour des fichiers générés des listes déroulantes "
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""

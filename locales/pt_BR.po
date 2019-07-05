@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# polar147 <andrei_simoni@hotmail.com>, 2017
+# Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
 # Arthur Ramos Schaefer <arthur.r.schaefer@gmail.com>, 2017
 # Gilson Gondim <gilsongondim@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 14:44+0000\n"
-"PO-Revision-Date: 2018-06-28 08:23+0000\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -37,71 +37,71 @@ msgstr "O plugin não pode ser desinstalado enquando o plugin estiver desabilita
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalação de tabelas no MySQL"
 
-#: inc/field.class.php:72
+#: inc/field.class.php:75
 msgid "Field"
 msgstr "Campo"
 
-#: inc/field.class.php:241
+#: inc/field.class.php:249
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/field.class.php:295
+#: inc/field.class.php:303
 msgid "Add a new field"
 msgstr "Adicionar um novo campo"
 
-#: inc/field.class.php:299
+#: inc/field.class.php:307
 msgid "No field for this block"
 msgstr "Nenhum campo para este bloco"
 
-#: inc/field.class.php:311 inc/field.class.php:424
+#: inc/field.class.php:319 inc/field.class.php:432
 msgid "Read only"
 msgstr "Somente leitura"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure"
 msgstr "Configurar"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure fields values"
 msgstr "Configurar valores dos campos"
 
-#: inc/field.class.php:717
+#: inc/field.class.php:733
 msgid "show"
 msgstr "Exibir"
 
-#: inc/field.class.php:863
+#: inc/field.class.php:879
 msgid "Header"
 msgstr "Cabeçalho"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:880
 msgid "Text (single line)"
 msgstr "Texto (linha simples)"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:881
 msgid "Text (multiples lines)"
 msgstr "Texto (Multiplas linhas)"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:882
 msgid "Number"
 msgstr "Número"
 
-#: inc/field.class.php:867
+#: inc/field.class.php:883
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:868
+#: inc/field.class.php:884
 msgid "Dropdown"
 msgstr "Suspenso"
 
-#: inc/field.class.php:869
+#: inc/field.class.php:885
 msgid "Yes/No"
 msgstr "Sim/Não"
 
-#: inc/field.class.php:870
+#: inc/field.class.php:886
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:871
+#: inc/field.class.php:887
 msgid "Date & time"
 msgstr "Datar & Hora"
 
@@ -109,70 +109,78 @@ msgstr "Datar & Hora"
 msgid "Regenerate container files"
 msgstr "Regerar arquivos de contêiner"
 
-#: inc/container.class.php:127
+#: inc/container.class.php:87
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:168
 msgid "Updating generated containers files"
 msgstr "Atualizando arquivos de contêineres gerados"
 
-#: inc/container.class.php:318
+#: inc/container.class.php:359
 msgid "You cannot add block without associated element type"
 msgstr "Você não pode adicionar um bloco sem um tipo de elemento associado"
 
-#: inc/container.class.php:335
+#: inc/container.class.php:376
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção no formulário' no mesmo objeto"
 
-#: inc/container.class.php:350
+#: inc/container.class.php:391
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:372
+#: inc/container.class.php:408
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Você não pode adicionar vários blocos com nome idêntico no mesmo objeto"
 
-#: inc/container.class.php:512
+#: inc/container.class.php:548
 msgid "Block"
 msgstr "Bloco"
 
-#: inc/container.class.php:583
+#: inc/container.class.php:619
 msgid "Tab"
 msgstr "Aba"
 
-#: inc/container.class.php:788
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "Adicionar aba"
 
-#: inc/container.class.php:789
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr "Inserção no formulário (antes do botão de salvar)"
 
-#: inc/container.class.php:790
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
 
-#: inc/container.class.php:1149
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "Alguns campos obrigatórios estão vazios"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alguns campos numéricos contém valores não numéricos"
 
-#: inc/container.class.php:1159
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr "Alguns campos de URL contém links inválidos"
 
-#: inc/labeltranslation.class.php:137
+#: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "Idioma"
 
-#: inc/labeltranslation.class.php:138
+#: inc/labeltranslation.class.php:140
 msgid "Label"
 msgstr "Rótulo"
 
-#: inc/dropdown.class.php:16
+#: inc/dropdown.class.php:19
 msgid "Updating generated dropdown files"
 msgstr "Atualizando arquivos que foram baixados"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""

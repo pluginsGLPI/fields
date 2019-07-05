@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 14:44+0000\n"
-"PO-Revision-Date: 2018-07-01 15:42+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"PO-Revision-Date: 2019-05-02 10:39+0000\n"
+"Last-Translator: Cédric Anne\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,71 +35,71 @@ msgstr "插件处于禁用状态时无法卸载"
 msgid "MySQL tables uninstallation"
 msgstr "卸载MySQL数据表"
 
-#: inc/field.class.php:72
+#: inc/field.class.php:75
 msgid "Field"
 msgstr "字段"
 
-#: inc/field.class.php:241
+#: inc/field.class.php:249
 msgid "Fields"
 msgstr "字段"
 
-#: inc/field.class.php:295
+#: inc/field.class.php:303
 msgid "Add a new field"
 msgstr "添加新字段"
 
-#: inc/field.class.php:299
+#: inc/field.class.php:307
 msgid "No field for this block"
 msgstr "此区域无字段"
 
-#: inc/field.class.php:311 inc/field.class.php:424
+#: inc/field.class.php:319 inc/field.class.php:432
 msgid "Read only"
 msgstr "只读"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure"
 msgstr "设置"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure fields values"
 msgstr "设置字段值"
 
-#: inc/field.class.php:717
+#: inc/field.class.php:733
 msgid "show"
 msgstr "显示"
 
-#: inc/field.class.php:863
+#: inc/field.class.php:879
 msgid "Header"
 msgstr "头部"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:880
 msgid "Text (single line)"
 msgstr "文本（单行）"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:881
 msgid "Text (multiples lines)"
 msgstr "文本（多行）"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:882
 msgid "Number"
 msgstr "整数"
 
-#: inc/field.class.php:867
+#: inc/field.class.php:883
 msgid "URL"
 msgstr "网址"
 
-#: inc/field.class.php:868
+#: inc/field.class.php:884
 msgid "Dropdown"
 msgstr "拖动"
 
-#: inc/field.class.php:869
+#: inc/field.class.php:885
 msgid "Yes/No"
 msgstr "是/否"
 
-#: inc/field.class.php:870
+#: inc/field.class.php:886
 msgid "Date"
 msgstr "日期"
 
-#: inc/field.class.php:871
+#: inc/field.class.php:887
 msgid "Date & time"
 msgstr "时间&日期"
 
@@ -107,70 +107,78 @@ msgstr "时间&日期"
 msgid "Regenerate container files"
 msgstr "生成容器文件"
 
-#: inc/container.class.php:127
+#: inc/container.class.php:87
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:168
 msgid "Updating generated containers files"
 msgstr "刷新生成容器文件"
 
-#: inc/container.class.php:318
+#: inc/container.class.php:359
 msgid "You cannot add block without associated element type"
 msgstr "您不能添加没有关联元素类型的块"
 
-#: inc/container.class.php:335
+#: inc/container.class.php:376
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的块"
 
-#: inc/container.class.php:350
+#: inc/container.class.php:391
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“表单中插入特殊标签”类型添加几个块"
 
-#: inc/container.class.php:372
+#: inc/container.class.php:408
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "不能在同一对象上添加名称相同的多个块"
 
-#: inc/container.class.php:512
+#: inc/container.class.php:548
 msgid "Block"
 msgstr "区域"
 
-#: inc/container.class.php:583
+#: inc/container.class.php:619
 msgid "Tab"
 msgstr "标签"
 
-#: inc/container.class.php:788
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "添加标签"
 
-#: inc/container.class.php:789
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr "在窗体中插入(保存按钮前)"
 
-#: inc/container.class.php:790
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "以特定选项卡的形式插入(保存按钮之前)"
 
-#: inc/container.class.php:1149
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "一些强制字段是空的。"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr "一些数值字段包含非数值"
 
-#: inc/container.class.php:1159
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr "有些URL字段包含无效链接"
 
-#: inc/labeltranslation.class.php:137
+#: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "语言"
 
-#: inc/labeltranslation.class.php:138
+#: inc/labeltranslation.class.php:140
 msgid "Label"
 msgstr "标签"
 
-#: inc/dropdown.class.php:16
+#: inc/dropdown.class.php:19
 msgid "Updating generated dropdown files"
 msgstr "更新生成下拉文件"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""

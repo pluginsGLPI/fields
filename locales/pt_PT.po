@@ -3,182 +3,181 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015-2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-04 12:47+0000\n"
-"PO-Revision-Date: 2019-05-03 04:27+0000\n"
-"Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
-"Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
+"PO-Revision-Date: 2019-05-02 10:39+0000\n"
+"Last-Translator: Cédric Anne\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr_TR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pt_PT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
 #: setup.php:174
 msgid "Additionnal fields"
-msgstr "Ek alanlar"
+msgstr "Campos adicionais"
 
 #: hook.php:58
 msgid "MySQL tables installation"
-msgstr "MySQL tabloları yükleme"
+msgstr "Instalação de tabelas MySQL"
 
 #: hook.php:106
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
+msgstr "O plugin não pode ser desinstalado quando o plugin está desativado"
 
 #: hook.php:115
 msgid "MySQL tables uninstallation"
-msgstr "MySQL tabloları kaldırma"
+msgstr "Desinstalação de tabelas MySQL"
 
 #: inc/field.class.php:75
 msgid "Field"
-msgstr "Alan"
+msgstr "Campo"
 
 #: inc/field.class.php:249
 msgid "Fields"
-msgstr "Alanlar"
+msgstr "Campos"
 
 #: inc/field.class.php:303
 msgid "Add a new field"
-msgstr "Alan ekle"
+msgstr "Adicionar um novo campo"
 
 #: inc/field.class.php:307
 msgid "No field for this block"
-msgstr "Bu blokta henüz bir alan yok"
+msgstr "Nenhum campo para este bloco"
 
 #: inc/field.class.php:319 inc/field.class.php:432
 msgid "Read only"
-msgstr "Salt okunur"
+msgstr "Somente leitura"
 
 #: inc/field.class.php:409
 msgid "Configure"
-msgstr "Ayarlar"
+msgstr "Configurar"
 
 #: inc/field.class.php:409
 msgid "Configure fields values"
-msgstr "Alan değerleri ayarları"
+msgstr "Valores por defeito"
 
 #: inc/field.class.php:733
 msgid "show"
-msgstr "görüntüle"
+msgstr "mostrar"
 
 #: inc/field.class.php:879
 msgid "Header"
-msgstr "Üst Bilgi"
+msgstr "De cabeçalho de email"
 
 #: inc/field.class.php:880
 msgid "Text (single line)"
-msgstr "Metin (tek satır)"
+msgstr "Texto de manutenção"
 
 #: inc/field.class.php:881
 msgid "Text (multiples lines)"
-msgstr "Metin (birden çok satır)"
+msgstr "Texto de manutenção"
 
 #: inc/field.class.php:882
 msgid "Number"
-msgstr "Sayı"
+msgstr "Número"
 
 #: inc/field.class.php:883
 msgid "URL"
-msgstr "İnternet Adresi"
+msgstr "URL"
 
 #: inc/field.class.php:884
 msgid "Dropdown"
-msgstr "Açılan Kutu"
+msgstr "Menu de selecção"
 
 #: inc/field.class.php:885
 msgid "Yes/No"
-msgstr "Evet/Hayır"
+msgstr "Sim - Não"
 
 #: inc/field.class.php:886
 msgid "Date"
-msgstr "Tarih"
+msgstr "Data"
 
 #: inc/field.class.php:887
 msgid "Date & time"
-msgstr "Tarih ve Saat"
+msgstr "Data de vencimento"
 
 #: inc/container.class.php:12
 msgid "Regenerate container files"
-msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
+msgstr "Regenerar"
 
 #: inc/container.class.php:87
 msgid "Fix container names"
-msgstr "Kapsayıcı adlarını düzelt"
+msgstr ""
 
 #: inc/container.class.php:168
 msgid "Updating generated containers files"
-msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
+msgstr "Atualizar o container gerado"
 
 #: inc/container.class.php:359
 msgid "You cannot add block without associated element type"
-msgstr "İlişkilendirilmiş bir bileşen tipi olmadan bir blok eklenemez"
+msgstr "Não podes adicionar um block sem um tipo de elemento definido"
 
 #: inc/container.class.php:376
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
+msgstr "Não podes adicionar diversos blocos do mesmo tipo"
 
 #: inc/container.class.php:391
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
+msgstr "Não podes adicionar diversos blocos com o sem especificar a aba"
 
 #: inc/container.class.php:408
 msgid "You cannot add several blocs with identical name on same object"
-msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
+msgstr "Não podes adicionar blocos no o mesmo nome do que o objecto"
 
 #: inc/container.class.php:548
 msgid "Block"
-msgstr "Blok"
+msgstr "Bloco"
 
 #: inc/container.class.php:619
 msgid "Tab"
-msgstr "Sekme"
+msgstr "Aba"
 
 #: inc/container.class.php:825
 msgid "Add tab"
-msgstr "Sekme ekle"
+msgstr "Adicionar aba"
 
 #: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
-msgstr "Forma eklensin (kaydet düğmesinden önce)"
+msgstr "Inserir no formulário (antes de gravar)"
 
 #: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
+msgstr "Inserir o formulário num aba especifica"
 
 #: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
-msgstr "Bazı zorunlu alanlar boş"
+msgstr "Os campos obrigatórios não foram preenchidos"
 
 #: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
-msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
+msgstr "Alguns campos numéricos não contem números"
 
 #: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
-msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
+msgstr "Alguns campos de URL tem links invalidos"
 
 #: inc/labeltranslation.class.php:139
 msgid "Language"
-msgstr "Dil"
+msgstr "Seleccione o idioma"
 
 #: inc/labeltranslation.class.php:140
 msgid "Label"
-msgstr "Etiket"
+msgstr "Rótulo"
 
 #: inc/dropdown.class.php:19
 msgid "Updating generated dropdown files"
-msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
+msgstr "Atualizar as caixas pendentes geradas"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
-msgstr "Alan adlarını düzelt"
+msgstr ""

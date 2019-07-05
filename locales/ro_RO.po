@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 14:44+0000\n"
-"PO-Revision-Date: 2018-06-28 08:23+0000\n"
+"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -36,71 +36,71 @@ msgstr ""
 msgid "MySQL tables uninstallation"
 msgstr "Dezinstalare tabele MySQL"
 
-#: inc/field.class.php:72
+#: inc/field.class.php:75
 msgid "Field"
 msgstr "Camp"
 
-#: inc/field.class.php:241
+#: inc/field.class.php:249
 msgid "Fields"
 msgstr "Campuri"
 
-#: inc/field.class.php:295
+#: inc/field.class.php:303
 msgid "Add a new field"
 msgstr "Add un camp nou"
 
-#: inc/field.class.php:299
+#: inc/field.class.php:307
 msgid "No field for this block"
 msgstr ""
 
-#: inc/field.class.php:311 inc/field.class.php:424
+#: inc/field.class.php:319 inc/field.class.php:432
 msgid "Read only"
 msgstr ""
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure"
 msgstr "Configurare"
 
-#: inc/field.class.php:401
+#: inc/field.class.php:409
 msgid "Configure fields values"
 msgstr "Configurare valori campuri"
 
-#: inc/field.class.php:717
+#: inc/field.class.php:733
 msgid "show"
 msgstr ""
 
-#: inc/field.class.php:863
+#: inc/field.class.php:879
 msgid "Header"
 msgstr "Header"
 
-#: inc/field.class.php:864
+#: inc/field.class.php:880
 msgid "Text (single line)"
 msgstr "Text (singura linie)"
 
-#: inc/field.class.php:865
+#: inc/field.class.php:881
 msgid "Text (multiples lines)"
 msgstr "Text (multiple linii)"
 
-#: inc/field.class.php:866
+#: inc/field.class.php:882
 msgid "Number"
 msgstr "Numar"
 
-#: inc/field.class.php:867
+#: inc/field.class.php:883
 msgid "URL"
 msgstr ""
 
-#: inc/field.class.php:868
+#: inc/field.class.php:884
 msgid "Dropdown"
 msgstr "Dropdown"
 
-#: inc/field.class.php:869
+#: inc/field.class.php:885
 msgid "Yes/No"
 msgstr "Da/Nu"
 
-#: inc/field.class.php:870
+#: inc/field.class.php:886
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:871
+#: inc/field.class.php:887
 msgid "Date & time"
 msgstr "Data & time"
 
@@ -108,70 +108,78 @@ msgstr "Data & time"
 msgid "Regenerate container files"
 msgstr ""
 
-#: inc/container.class.php:127
+#: inc/container.class.php:87
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:168
 msgid "Updating generated containers files"
 msgstr ""
 
-#: inc/container.class.php:318
+#: inc/container.class.php:359
 msgid "You cannot add block without associated element type"
 msgstr ""
 
-#: inc/container.class.php:335
+#: inc/container.class.php:376
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr ""
 
-#: inc/container.class.php:350
+#: inc/container.class.php:391
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:372
+#: inc/container.class.php:408
 msgid "You cannot add several blocs with identical name on same object"
 msgstr ""
 
-#: inc/container.class.php:512
+#: inc/container.class.php:548
 msgid "Block"
 msgstr ""
 
-#: inc/container.class.php:583
+#: inc/container.class.php:619
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/container.class.php:788
+#: inc/container.class.php:825
 msgid "Add tab"
 msgstr "Add tab"
 
-#: inc/container.class.php:789
+#: inc/container.class.php:826
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:790
+#: inc/container.class.php:827
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/container.class.php:1149
+#: inc/container.class.php:1189
 msgid "Some mandatory fields are empty"
 msgstr "Unele campuri obligatorii sunt goale"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1194
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/container.class.php:1159
+#: inc/container.class.php:1199
 msgid "Some URL fields contains invalid links"
 msgstr ""
 
-#: inc/labeltranslation.class.php:137
+#: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr ""
 
-#: inc/labeltranslation.class.php:138
+#: inc/labeltranslation.class.php:140
 msgid "Label"
 msgstr ""
 
-#: inc/dropdown.class.php:16
+#: inc/dropdown.class.php:19
 msgid "Updating generated dropdown files"
+msgstr ""
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
 msgstr ""
