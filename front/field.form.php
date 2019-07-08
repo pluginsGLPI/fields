@@ -16,11 +16,11 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $field->check($_POST['id'], DELETE);
    $field->delete($_POST);
-   Html::back();
+   Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.form.php?id=".$_POST["plugin_fields_containers_id"]);
 } else if (isset($_REQUEST["purge"])) {
    $field->check($_REQUEST['id'], PURGE);
    $field->delete($_REQUEST, 1);
-   Html::back();
+   Html::redirect($CFG_GLPI["root_doc"]."/plugins/fields/front/container.form.php?id=".$_POST["plugin_fields_containers_id"]);
 } else if (isset($_POST["update"])) {
    $field->check($_POST['id'], UPDATE);
    $field->update($_POST);

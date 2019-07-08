@@ -1000,9 +1000,35 @@ class PluginFieldsContainer extends CommonDBTM {
          $data['id'] = $first_found['id'];
          $obj->update($data);
 
-         //construct history on itemtype object (Historical tab)
-         self::constructHistory($data['plugin_fields_containers_id'], $items_id,
-                                $itemtype, $data, $first_found);
+  // INICIO [CRI] : JMZ18G ACTUALIZAR DATE_MOD EN EL ACTIVO E INSERTAR CAMBIO EN EL LOG
+if (!empty($obj->oldvalues)){ 
+
+$objeto = new $itemtype();
+//$found = $objeto->find(['id' => $data["items_id"]]);
+
+$params = [
+"id" => $data["items_id"],
+"date_mod" => $_SESSION["glpi_currenttime"],
+];
+if ($objeto->update($params)){
+
+         if (isset($objeto->input['_no_message_link'])) {
+            $display = $objeto->getNameID();
+         } else {
+            $display = $objeto->getLink();
+         }
+         //TRANS : %s is the description of the updated item
+         Session::addMessageAfterRedirect(sprintf(__('%1$s: %2$s'), __('Item successfully updated'), $display));
+		 
+     if (count($obj->oldvalues)) {
+         Log::constructHistory($objeto, $obj->oldvalues, $obj->fields);
+      }		 
+		 
+}	 		 
+
+
+}
+// FINAL [CRI] : JMZ18G ACTUALIZAR DATE_MOD EN EL ACTIVO E INSERTAR CAMBIO EN EL LOG
       }
 
       return true;
@@ -1554,8 +1580,7 @@ class PluginFieldsContainer extends CommonDBTM {
                $opt[$i]['datatype'] = "number";
                break;
             case 'date':
-            case 'datetime':
-			case 'getdate':  // INICIO [CRI] : Procesar nuevos campo fecha de sistema
+            case 'datetime':			
                $opt[$i]['datatype'] = $data['type'];
                break;		   
             default:

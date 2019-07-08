@@ -93,6 +93,7 @@ class PluginFieldsField extends CommonDBTM {
       global $DB;
       //parse name
       $input['name'] = $this->prepareName($input);
+	  $input['label'] = $this->prepareLabel($input); // INICIO [CRI] : JMZ18G CONTROLA QUE EL CAMPO FIELD NO SE QUEDE VACÍO
 
       if ($input['type'] === "dropdown") {
          //search if dropdown already exist in this container
@@ -191,6 +192,23 @@ class PluginFieldsField extends CommonDBTM {
       return true;
    }
 
+// INICIO [CRI] : JMZ18G CONTROLA QUE EL CAMPO FIELD NO SE QUEDE VACÍO
+   /**
+    * @param  array $input the field form input
+    * @return string  the parsed name
+    */
+   function prepareLabel($input) {
+      $toolbox = new PluginFieldsToolbox();
+
+      //contruct field label by processing name 
+	  if (empty($input['label'])) {
+         $input['label'] = $input['name'];
+      }		  
+
+      return $input['label'];
+   }
+// FINAL [CRI] : JMZ18G CONTROLA QUE EL CAMPO FIELD NO SE QUEDE VACÍO
+
 
    /**
     * parse name for avoid non alphanumeric char in it and conflict with other fields
@@ -202,8 +220,12 @@ class PluginFieldsField extends CommonDBTM {
 
       //contruct field name by processing label (remove non alphanumeric char)
       if (empty($input['name'])) {
-         $input['name'] = $toolbox->getSystemNameFromLabel($input['label']) . 'field';
-      }
+         $input['name'] = $toolbox->getSystemNameFromLabel($input['label']) . 'field';      
+	  }
+	  
+	  if (!empty($input['name'])) {
+         $input['name'] = $toolbox->getSystemNameFromLabel($input['name']);
+      }		  
 
       //for dropdown, if already exist, link to it
       if (isset($input['type']) && $input['type'] === "dropdown") {
@@ -723,9 +745,10 @@ class PluginFieldsField extends CommonDBTM {
 			
 			// INICIO [CRI] : Filtro para desplegable			
 			// Obtener la condicion
-			$condition = array();			
+			$condition = array();		
+		
 			if (empty($value) && !empty($field['condition'])) {
-               //$condition = $field['condition'];			   
+               //$condition = $field['condition'];			 
 			   array_push($condition,$field['condition']);  // [CRI] Añadir filtros desplegable objeto
             }
 			// FIN [CRI] : Filtro para desplegable
@@ -856,7 +879,7 @@ class PluginFieldsField extends CommonDBTM {
 				  
 				  break;
 				  
-				// INICIO [CRI] : Insertar nuevos tipos de Objeto y Fecha de sistema				  
+				// INICIO [CRI] : Insertar nuevo tipo de Objeto				  
                case 'dropdownitem':
                   if ($massiveaction) {
                      continue;
@@ -888,9 +911,7 @@ class PluginFieldsField extends CommonDBTM {
 									//'condition' => '`is_assign`'));								  
 							break;							
 						default:
-						
-
-						
+												
 							Dropdown::show($itemtype, array(
 								  'name'      => $field['name'],
 								  'value'     => $value,
@@ -909,12 +930,8 @@ class PluginFieldsField extends CommonDBTM {
                      }*/
 					 $html.= Dropdown::getDropdownName(getTableNameForForeignKeyField($field['name']),$value);
                   }
-				break;
-               case 'getdate':
-                   $html.= Html::convDateTime($value);
-                  break;
-				  
-				// FIN [CRI] : Insertar nuevos tipos de Objeto y Fecha de sistema				  
+				break;				  
+				// FIN [CRI] : Insertar nuevo tipo de Objeto			  
 				  
             }
             if ($show_table) {
@@ -991,10 +1008,9 @@ class PluginFieldsField extends CommonDBTM {
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
          'dropdownuser' => _n("User", "Users", 2),
-		 // INICIO [CRI] : Insertar nuevos tipos fecha de sistema y tipo objeto
-         'dropdownitem' => _n("Objeto", "Objeto", 2),
-		 'getdate'     => __("Fecha Sistema", "fields")	
-		// FIN [CRI] : Insertar nuevos tipos fecha de sistema y tipo objeto	
+		 // INICIO [CRI] : Insertar nuevo tipo objeto
+         'dropdownitem' => _n("Objeto", "Objeto", 2)
+		// FIN [CRI] : Insertar nuevo tipo objeto	
       ];
    }
 
