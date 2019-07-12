@@ -126,8 +126,9 @@ class PluginFieldsToolbox {
                   'SELECT DISTINCT' => 'TABLE_NAME',
                   'FROM'            => 'INFORMATION_SCHEMA.COLUMNS',
                   'WHERE'           => [
-                     'TABLE_NAME'  => ['LIKE', 'glpi_plugin_fields_%'],
-                     'COLUMN_NAME' => $old_field_name
+                     'TABLE_SCHEMA'  => $DB->dbdefault,
+                     'TABLE_NAME'    => ['LIKE', 'glpi_plugin_fields_%'],
+                     'COLUMN_NAME'   => $old_field_name
                   ],
                ]
             );
