@@ -76,7 +76,7 @@ class PluginFieldsToolbox {
                'name' => [
                   'REGEXP',
                   // Regex will be escaped by PDO in GLPI 10+, but has to be escaped for GLPI < 10
-                  version_compare($glpi_version, '10.0', '>=') ? '\d+' : $DB->escape('\d+')
+                  version_compare($glpi_version, '10.0', '>=') ? '[0-9]+' : $DB->escape('[0-9]+')
                ],
                $condition,
             ],
@@ -126,8 +126,9 @@ class PluginFieldsToolbox {
                   'SELECT DISTINCT' => 'TABLE_NAME',
                   'FROM'            => 'INFORMATION_SCHEMA.COLUMNS',
                   'WHERE'           => [
-                     'TABLE_NAME'  => ['LIKE', 'glpi_plugin_fields_%'],
-                     'COLUMN_NAME' => $old_field_name
+                     'TABLE_SCHEMA'  => $DB->dbdefault,
+                     'TABLE_NAME'    => ['LIKE', 'glpi_plugin_fields_%'],
+                     'COLUMN_NAME'   => $old_field_name
                   ],
                ]
             );
