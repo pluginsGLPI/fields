@@ -317,6 +317,10 @@ class PluginFieldsContainer extends CommonDBTM {
             $count = count($types);
             $i     = 1;
             foreach ($types as $type) {
+               // prevent usage of plugin class if not loaded
+               if (!class_exists($type)) {
+                  continue;
+               }
                $name_type = getItemForItemtype($type);
                $obj .= $name_type->getTypeName(2);
                if ($count > $i) {
@@ -441,6 +445,11 @@ class PluginFieldsContainer extends CommonDBTM {
                      ? json_decode($fields['itemtypes'], true)
                      : [];
       foreach ($itemtypes as $itemtype) {
+         // prevent usage of plugin class if not loaded
+         if (!class_exists($itemtype)) {
+            continue;
+         }
+
          $sysname   = self::getSystemName($itemtype, $fields['name']);
          $classname = self::getClassname($itemtype, $fields['name']);
 
@@ -592,6 +601,11 @@ class PluginFieldsContainer extends CommonDBTM {
          $count = count($types);
          $i = 1;
          foreach ($types as $type) {
+            // prevent usage of plugin class if not loaded
+            if (!class_exists($type)) {
+               continue;
+            }
+
             $name_type = getItemForItemtype($type);
             $obj .= $name_type->getTypeName(2);
             if ($count > $i) {
