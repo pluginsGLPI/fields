@@ -7,6 +7,10 @@ class PluginFieldsContainer extends CommonDBTM {
       return self::canUpdate();
    }
 
+   static function canPurge() {
+      return self::canUpdate();
+   }
+
    static function titleList() {
       echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
             __("Regenerate container files", "fields")."</a></div>";
