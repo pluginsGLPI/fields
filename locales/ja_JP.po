@@ -1,0 +1,184 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# coleyon, 2019
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Plugin - Fields\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"PO-Revision-Date: 2019-09-07 23:02+0000\n"
+"Last-Translator: coleyon\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "追加のフィールド"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "MySQLテーブルのインストール"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "プラグインが無効な場合、プラグインをアンインストールできません。"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "MySQLテーブルのアンインストール"
+
+#: inc/field.class.php:75
+msgid "Field"
+msgstr "フィールド"
+
+#: inc/field.class.php:249
+msgid "Fields"
+msgstr "フィールド"
+
+#: inc/field.class.php:303
+msgid "Add a new field"
+msgstr "新しいフィールドを追加する"
+
+#: inc/field.class.php:307
+msgid "No field for this block"
+msgstr "ブロック内にフィールドはありません"
+
+#: inc/field.class.php:319 inc/field.class.php:432
+msgid "Read only"
+msgstr "読取専用"
+
+#: inc/field.class.php:409
+msgid "Configure"
+msgstr "設定"
+
+#: inc/field.class.php:409
+msgid "Configure fields values"
+msgstr "フィールド値を設定"
+
+#: inc/field.class.php:733
+msgid "show"
+msgstr "参照"
+
+#: inc/field.class.php:879
+msgid "Header"
+msgstr "ヘッダ"
+
+#: inc/field.class.php:880
+msgid "Text (single line)"
+msgstr "テキスト（単一行）"
+
+#: inc/field.class.php:881
+msgid "Text (multiples lines)"
+msgstr "テキスト（複数行）"
+
+#: inc/field.class.php:882
+msgid "Number"
+msgstr "数値"
+
+#: inc/field.class.php:883
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:884
+msgid "Dropdown"
+msgstr "ドロップダウン"
+
+#: inc/field.class.php:885
+msgid "Yes/No"
+msgstr "はい/いいえ"
+
+#: inc/field.class.php:886
+msgid "Date"
+msgstr "日付"
+
+#: inc/field.class.php:887
+msgid "Date & time"
+msgstr "日時"
+
+#: inc/container.class.php:16
+msgid "Regenerate container files"
+msgstr "コンテナファイルを再生成する"
+
+#: inc/container.class.php:91
+msgid "Fix container names"
+msgstr "コンテナ名を変更する"
+
+#: inc/container.class.php:172
+msgid "Updating generated containers files"
+msgstr "生成済みコンテナファイルを更新"
+
+#: inc/container.class.php:367
+msgid "You cannot add block without associated element type"
+msgstr "「関連アイテムタイプ」が空のブロックを追加することはできません。"
+
+#: inc/container.class.php:384
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "同種のオブジェクトに、複数のブロックを追加することはできません。"
+
+#: inc/container.class.php:399
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "同種のオブジェクトのタブに、「ラベル」が同じブロックを複数追加することはできません。"
+
+#: inc/container.class.php:416
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "同種のオブジェクトに、「ラベル」が同じブロックを追加することはできません。"
+
+#: inc/container.class.php:561
+msgid "Block"
+msgstr "ブロック"
+
+#: inc/container.class.php:637
+msgid "Tab"
+msgstr "タブ"
+
+#: inc/container.class.php:843
+msgid "Add tab"
+msgstr "タブを追加する"
+
+#: inc/container.class.php:844
+msgid "Insertion in the form (before save button)"
+msgstr "フォームに追加する（フォーム保存前時点）"
+
+#: inc/container.class.php:845
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "フォームのタブに追加する（フォーム保存前時点）"
+
+#: inc/container.class.php:1207
+msgid "Some mandatory fields are empty"
+msgstr "必須項目が未入力です。"
+
+#: inc/container.class.php:1212
+msgid "Some numeric fields contains non numeric values"
+msgstr "非数値を含む数値フィールドがあります。"
+
+#: inc/container.class.php:1217
+msgid "Some URL fields contains invalid links"
+msgstr "不正なリンクを含むURLフィールドがあります。"
+
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "言語"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "ラベル"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "生成済ドロップダウンフィールドの選択肢を更新"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr "フィールド名を変更する"
