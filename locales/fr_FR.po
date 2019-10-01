@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"POT-Creation-Date: 2019-10-01 07:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -106,67 +106,67 @@ msgstr "Date"
 msgid "Date & time"
 msgstr "Date & heure"
 
-#: inc/container.class.php:12
+#: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Régénérer les fichiers des blocs"
 
-#: inc/container.class.php:87
+#: inc/container.class.php:91
 msgid "Fix container names"
 msgstr ""
 
-#: inc/container.class.php:168
+#: inc/container.class.php:172
 msgid "Updating generated containers files"
 msgstr "Mettre à jour les fichier de conteneurs générés"
 
-#: inc/container.class.php:359
+#: inc/container.class.php:367
 msgid "You cannot add block without associated element type"
 msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
 
-#: inc/container.class.php:376
+#: inc/container.class.php:384
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
 
-#: inc/container.class.php:391
+#: inc/container.class.php:399
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire d'un onglet spécifique' sur le même onglet d'un objet"
 
-#: inc/container.class.php:408
+#: inc/container.class.php:416
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
 
-#: inc/container.class.php:548
+#: inc/container.class.php:561
 msgid "Block"
 msgstr "Bloc"
 
-#: inc/container.class.php:619
+#: inc/container.class.php:637
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:843
 msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:844
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:827
+#: inc/container.class.php:845
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:1189
+#: inc/container.class.php:1207
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:1194
+#: inc/container.class.php:1212
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
-#: inc/container.class.php:1199
+#: inc/container.class.php:1217
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 

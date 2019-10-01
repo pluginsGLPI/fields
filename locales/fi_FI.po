@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"POT-Creation-Date: 2019-10-01 07:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fi_FI/)\n"
@@ -103,67 +103,67 @@ msgstr "Päivämäärä"
 msgid "Date & time"
 msgstr "Päivämäärä ja aika"
 
-#: inc/container.class.php:12
+#: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Luo uudelleen säilötiedostot"
 
-#: inc/container.class.php:87
+#: inc/container.class.php:91
 msgid "Fix container names"
 msgstr ""
 
-#: inc/container.class.php:168
+#: inc/container.class.php:172
 msgid "Updating generated containers files"
 msgstr "Päivitetään luodut säilötiedostot"
 
-#: inc/container.class.php:359
+#: inc/container.class.php:367
 msgid "You cannot add block without associated element type"
 msgstr "Et voi lisätä osiota ilman liittyvää elementtityyppiä"
 
-#: inc/container.class.php:376
+#: inc/container.class.php:384
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Et voi lisätä useita osioita, joiden tyyppi on \"Lisää lomakkeeseen\" samassa objektissa"
 
-#: inc/container.class.php:391
+#: inc/container.class.php:399
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Et voi lisätä useita osioita, joissa on tyyppi \"Liitettynä lomakkeeseen tietyssä välilehdessä\" samassa objektin välilehdessä"
 
-#: inc/container.class.php:408
+#: inc/container.class.php:416
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Et voi lisätä useita osioita samalla nimellä samaan objektiin"
 
-#: inc/container.class.php:548
+#: inc/container.class.php:561
 msgid "Block"
 msgstr "Osio"
 
-#: inc/container.class.php:619
+#: inc/container.class.php:637
 msgid "Tab"
 msgstr "Välilehti"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:843
 msgid "Add tab"
 msgstr "Lisää välilehti"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:844
 msgid "Insertion in the form (before save button)"
 msgstr "Lisää lomakkeeseen (ennen tallennuspainiketta)"
 
-#: inc/container.class.php:827
+#: inc/container.class.php:845
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Lisää lomakkeeseen tietyssä välilehdessä (ennen tallennuspainiketta)"
 
-#: inc/container.class.php:1189
+#: inc/container.class.php:1207
 msgid "Some mandatory fields are empty"
 msgstr "Jotkut pakolliset kentät ovat tyhjiä"
 
-#: inc/container.class.php:1194
+#: inc/container.class.php:1212
 msgid "Some numeric fields contains non numeric values"
 msgstr "Jotkin numeeriset kentät sisältävät ei-numeerisia arvoja"
 
-#: inc/container.class.php:1199
+#: inc/container.class.php:1217
 msgid "Some URL fields contains invalid links"
 msgstr "Joissakin URL-kentissä on virheellisiä linkkejä"
 

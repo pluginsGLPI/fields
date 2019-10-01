@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"POT-Creation-Date: 2019-10-01 07:57+0000\n"
 "PO-Revision-Date: 2019-05-03 11:12+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -105,67 +105,67 @@ msgstr "Datum"
 msgid "Date & time"
 msgstr "Datum a čas"
 
-#: inc/container.class.php:12
+#: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Znovu vytvořit kontejnerové soubory"
 
-#: inc/container.class.php:87
+#: inc/container.class.php:91
 msgid "Fix container names"
 msgstr "Opravit názvy kontejnerů"
 
-#: inc/container.class.php:168
+#: inc/container.class.php:172
 msgid "Updating generated containers files"
 msgstr "Aktualizují se vytvořené soubory kontejnerů"
 
-#: inc/container.class.php:359
+#: inc/container.class.php:367
 msgid "You cannot add block without associated element type"
 msgstr "Není možné přidat blok bez typu přiřazeného prvku"
 
-#: inc/container.class.php:376
+#: inc/container.class.php:384
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
 
-#: inc/container.class.php:391
+#: inc/container.class.php:399
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Není možné přidat několik bloků typu „Vložení ve formuláři konkrétní karty“ na té stejné kartě objektu"
 
-#: inc/container.class.php:408
+#: inc/container.class.php:416
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
 
-#: inc/container.class.php:548
+#: inc/container.class.php:561
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:619
+#: inc/container.class.php:637
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:843
 msgid "Add tab"
 msgstr "Přidat tabulku"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:844
 msgid "Insertion in the form (before save button)"
 msgstr "Vložení do formuláře (před tlačítkem uložit)"
 
-#: inc/container.class.php:827
+#: inc/container.class.php:845
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
 
-#: inc/container.class.php:1189
+#: inc/container.class.php:1207
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1194
+#: inc/container.class.php:1212
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
-#: inc/container.class.php:1199
+#: inc/container.class.php:1217
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 

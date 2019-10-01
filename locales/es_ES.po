@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-04 12:47+0000\n"
+"POT-Creation-Date: 2019-10-01 07:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
@@ -105,67 +105,67 @@ msgstr "Fecha"
 msgid "Date & time"
 msgstr "Fecha & Hora"
 
-#: inc/container.class.php:12
+#: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Regenerar archivos contenedores"
 
-#: inc/container.class.php:87
+#: inc/container.class.php:91
 msgid "Fix container names"
 msgstr ""
 
-#: inc/container.class.php:168
+#: inc/container.class.php:172
 msgid "Updating generated containers files"
 msgstr "Actualizar los archivos de contenedores generados"
 
-#: inc/container.class.php:359
+#: inc/container.class.php:367
 msgid "You cannot add block without associated element type"
 msgstr "No se puede agregar un bloque sin el tipo de elemento asociado"
 
-#: inc/container.class.php:376
+#: inc/container.class.php:384
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No se pueden añadir varios bloques con el tipo 'inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:391
+#: inc/container.class.php:399
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'inserción en forma de una pestaña específica' en la misma pestaña de objeto"
 
-#: inc/container.class.php:408
+#: inc/container.class.php:416
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No se pueden añadir varios bloques con un nombre idéntico en el mismo objeto"
 
-#: inc/container.class.php:548
+#: inc/container.class.php:561
 msgid "Block"
 msgstr "Bloque"
 
-#: inc/container.class.php:619
+#: inc/container.class.php:637
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/container.class.php:825
+#: inc/container.class.php:843
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: inc/container.class.php:826
+#: inc/container.class.php:844
 msgid "Insertion in the form (before save button)"
 msgstr "Insertando en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:827
+#: inc/container.class.php:845
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserción en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/container.class.php:1189
+#: inc/container.class.php:1207
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1194
+#: inc/container.class.php:1212
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
-#: inc/container.class.php:1199
+#: inc/container.class.php:1217
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen vínculos no válidos"
 
