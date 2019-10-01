@@ -7,6 +7,10 @@ class PluginFieldsContainer extends CommonDBTM {
       return self::canUpdate();
    }
 
+   static function canPurge() {
+      return self::canUpdate();
+   }
+
    static function titleList() {
       echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
             __("Regenerate container files", "fields")."</a></div>";
@@ -317,6 +321,10 @@ class PluginFieldsContainer extends CommonDBTM {
             $count = count($types);
             $i     = 1;
             foreach ($types as $type) {
+               // prevent usage of plugin class if not loaded
+               if (!class_exists($type)) {
+                  continue;
+               }
                $name_type = getItemForItemtype($type);
                $obj .= $name_type->getTypeName(2);
                if ($count > $i) {
@@ -441,6 +449,11 @@ class PluginFieldsContainer extends CommonDBTM {
                      ? json_decode($fields['itemtypes'], true)
                      : [];
       foreach ($itemtypes as $itemtype) {
+         // prevent usage of plugin class if not loaded
+         if (!class_exists($itemtype)) {
+            continue;
+         }
+
          $sysname   = self::getSystemName($itemtype, $fields['name']);
          $classname = self::getClassname($itemtype, $fields['name']);
 
@@ -592,6 +605,11 @@ class PluginFieldsContainer extends CommonDBTM {
          $count = count($types);
          $i = 1;
          foreach ($types as $type) {
+            // prevent usage of plugin class if not loaded
+            if (!class_exists($type)) {
+               continue;
+            }
+
             $name_type = getItemForItemtype($type);
             $obj .= $name_type->getTypeName(2);
             if ($count > $i) {
@@ -1419,10 +1437,14 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $i = 76665;
 
-      $query = "SELECT fields.name, fields.label, fields.type, fields.is_readonly,
+      $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
          FROM glpi_plugin_fields_containers containers
+         INNER JOIN glpi_plugin_fields_profiles profiles
+            ON containers.id = profiles.plugin_fields_containers_id
+            AND profiles.right > 0
+            AND profiles.profiles_id = ".(int) $_SESSION['glpiactiveprofile']['id']."
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
