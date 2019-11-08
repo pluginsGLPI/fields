@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2019-11-08 14:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pl_PL/)\n"
@@ -18,23 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Dodatkowe pola"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Instalacja tabel MYSQL"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Wtyczka nie może zostać odinstalowana kiedy jest wyłączona"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Deinstalacja tabel MYSQL"
 
 #: inc/field.class.php:75
 msgid "Field"
@@ -104,6 +87,27 @@ msgstr "Data"
 msgid "Date & time"
 msgstr "Data & czas"
 
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Język"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Etykieta"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Zaktualizowano pliki generowane z list rozwijanych"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""
+
+#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Dodatkowe pola"
+
 #: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Wygeneruj ponownie"
@@ -168,18 +172,14 @@ msgstr "Niektóre pola numeryczne zawierają wartości inne niż liczby"
 msgid "Some URL fields contains invalid links"
 msgstr "Niektóre pola zawierają nieprawidłowe linki URL"
 
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Język"
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "Instalacja tabel MYSQL"
 
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Etykieta"
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Wtyczka nie może zostać odinstalowana kiedy jest wyłączona"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Zaktualizowano pliki generowane z list rozwijanych"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr ""
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "Deinstalacja tabel MYSQL"

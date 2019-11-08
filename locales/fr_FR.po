@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2019-11-08 14:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -20,23 +20,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Champs supplémentaires"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Installation des tables MySQL"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Désinstallation des tables MySQL"
 
 #: inc/field.class.php:75
 msgid "Field"
@@ -106,6 +89,27 @@ msgstr "Date"
 msgid "Date & time"
 msgstr "Date & heure"
 
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Langue"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Libellé"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Mise à jour des fichiers générés des listes déroulantes "
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""
+
+#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Champs supplémentaires"
+
 #: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Régénérer les fichiers des blocs"
@@ -170,18 +174,14 @@ msgstr "Des champs numériques contiennent des données non numériques"
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Langue"
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "Installation des tables MySQL"
 
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Libellé"
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Mise à jour des fichiers générés des listes déroulantes "
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr ""
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "Désinstallation des tables MySQL"

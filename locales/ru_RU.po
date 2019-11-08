@@ -5,12 +5,12 @@
 # Translators:
 # Alexey Petukhov <lexx015@gmail.com>, 2015
 # Mr.GreyWolf, 2017
-# Nikolay <techobsl@yandex.ru>, 2017
+# Nikolai Petrov <techobsl@yandex.ru>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2019-11-08 14:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -19,23 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Дополнительные поля"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Установка таблиц MySQL "
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Плагин не может быть удален пока плагин выключен"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Удаление таблиц MySQL"
 
 #: inc/field.class.php:75
 msgid "Field"
@@ -105,6 +88,27 @@ msgstr "Дата"
 msgid "Date & time"
 msgstr "Дата и время"
 
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Язык"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Метка"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Обновление автоматически раскрывающегося списка файлов"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""
+
+#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Дополнительные поля"
+
 #: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Восстановить файлы контейнера"
@@ -169,18 +173,14 @@ msgstr "Некоторые числовые поля содержат не то�
 msgid "Some URL fields contains invalid links"
 msgstr "Некоторый URL полей содержат недействительные ссылки"
 
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Язык"
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "Установка таблиц MySQL "
 
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Метка"
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Плагин не может быть удален пока плагин выключен"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Обновление автоматически раскрывающегося списка файлов"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr ""
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "Удаление таблиц MySQL"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2019-11-08 14:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_PT/)\n"
@@ -16,23 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Campos adicionais"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Instalação de tabelas MySQL"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "O plugin não pode ser desinstalado quando o plugin está desativado"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Desinstalação de tabelas MySQL"
 
 #: inc/field.class.php:75
 msgid "Field"
@@ -102,6 +85,27 @@ msgstr "Data"
 msgid "Date & time"
 msgstr "Data de vencimento"
 
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Seleccione o idioma"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Rótulo"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Atualizar as caixas pendentes geradas"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""
+
+#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Campos adicionais"
+
 #: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "Regenerar"
@@ -166,18 +170,14 @@ msgstr "Alguns campos numéricos não contem números"
 msgid "Some URL fields contains invalid links"
 msgstr "Alguns campos de URL tem links invalidos"
 
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Seleccione o idioma"
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "Instalação de tabelas MySQL"
 
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Rótulo"
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "O plugin não pode ser desinstalado quando o plugin está desativado"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Atualizar as caixas pendentes geradas"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr ""
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "Desinstalação de tabelas MySQL"

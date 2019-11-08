@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2019-11-08 14:57+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -17,23 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "附加字段"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "安装MySQL数据表"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "插件处于禁用状态时无法卸载"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "卸载MySQL数据表"
 
 #: inc/field.class.php:75
 msgid "Field"
@@ -103,6 +86,27 @@ msgstr "日期"
 msgid "Date & time"
 msgstr "时间&日期"
 
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "语言"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "标签"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "更新生成下拉文件"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr ""
+
+#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "附加字段"
+
 #: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "生成容器文件"
@@ -167,18 +171,14 @@ msgstr "一些数值字段包含非数值"
 msgid "Some URL fields contains invalid links"
 msgstr "有些URL字段包含无效链接"
 
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "语言"
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "安装MySQL数据表"
 
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "标签"
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "插件处于禁用状态时无法卸载"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "更新生成下拉文件"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr ""
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "卸载MySQL数据表"

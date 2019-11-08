@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2019-11-08 14:57+0000\n"
 "PO-Revision-Date: 2019-09-07 23:02+0000\n"
 "Last-Translator: coleyon\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -17,23 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "追加のフィールド"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "MySQLテーブルのインストール"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "プラグインが無効な場合、プラグインをアンインストールできません。"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "MySQLテーブルのアンインストール"
 
 #: inc/field.class.php:75
 msgid "Field"
@@ -103,6 +86,27 @@ msgstr "日付"
 msgid "Date & time"
 msgstr "日時"
 
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "言語"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "ラベル"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "生成済ドロップダウンフィールドの選択肢を更新"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr "フィールド名を変更する"
+
+#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "追加のフィールド"
+
 #: inc/container.class.php:16
 msgid "Regenerate container files"
 msgstr "コンテナファイルを再生成する"
@@ -167,18 +171,14 @@ msgstr "非数値を含む数値フィールドがあります。"
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含むURLフィールドがあります。"
 
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "言語"
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "MySQLテーブルのインストール"
 
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "ラベル"
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "プラグインが無効な場合、プラグインをアンインストールできません。"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "生成済ドロップダウンフィールドの選択肢を更新"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr "フィールド名を変更する"
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "MySQLテーブルのアンインストール"
