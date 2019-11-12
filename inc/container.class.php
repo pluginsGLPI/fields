@@ -247,6 +247,7 @@ class PluginFieldsContainer extends CommonDBTM {
          'field'         => 'label',
          'name'          => __("Label"),
          'massiveaction' => false,
+         'autocomplete'  => true,
       ];
 
       $tab[] = [

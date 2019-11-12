@@ -905,4 +905,28 @@ class PluginFieldsField extends CommonDBTM {
       //Create label translation
       PluginFieldsLabelTranslation::createForItem($this);
    }
+
+   function rawSearchOptions() {
+      $tab = [];
+
+      $tab[] = [
+         'id'            => 2,
+         'table'         => self::getTable(),
+         'field'         => 'label',
+         'name'          => __('Label'),
+         'massiveaction' => false,
+         'autocomplete'  => true,
+      ];
+
+      $tab[] = [
+         'id'            => 3,
+         'table'         => self::getTable(),
+         'field'         => 'default_value',
+         'name'          => __('Default values'),
+         'massiveaction' => false,
+         'autocomplete'  => true,
+      ];
+
+      return $tab;
+   }
 }
