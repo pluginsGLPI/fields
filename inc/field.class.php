@@ -330,7 +330,7 @@ class PluginFieldsField extends CommonDBTM {
 
          Session::initNavigateListItems('PluginFieldsField', __('Fields list'));
 
-         while ($data = $DB->fetch_array($result)) {
+         while ($data = method_exists($DB, 'fetchArray') ? $DB->fetchArray($result) : $DB->fetch_array($result)) {
             if ($this->getFromDB($data['id'])) {
                echo "<tr class='tab_bg_2' style='cursor:pointer'>";
 
