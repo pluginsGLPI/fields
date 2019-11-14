@@ -234,7 +234,7 @@ class PluginFieldsField extends CommonDBTM {
       $result = $DB->query($sql);
 
       if ($DB->numrows($result) > 0) {
-         $data = $DB->fetch_assoc($result);
+         $data = $DB->fetchAssoc($result);
          return $data["rank"] + 1;
       }
       return 0;
@@ -328,12 +328,12 @@ class PluginFieldsField extends CommonDBTM {
 
          Session::initNavigateListItems('PluginFieldsField', __('Fields list'));
 
-         while ($data = $DB->fetch_array($result)) {
+         while ($data = $DB->fetchArray($result)) {
             if ($this->getFromDB($data['id'])) {
                echo "<tr class='tab_bg_2' style='cursor:pointer'>";
 
                echo "<td>";
-               echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/fields/front/field.form.php?id={$this->getID()}'>{$this->fields['label']}</a>";
+               echo "<a href='".Plugin::getWebDir('fields')."/front/field.form.php?id={$this->getID()}'>{$this->fields['label']}</a>";
                echo "</td>";
                echo "<td>".$fields_type[$this->fields['type']]."</td>";
                echo "<td>".$this->fields['default_value']."</td>";
@@ -407,7 +407,7 @@ class PluginFieldsField extends CommonDBTM {
       Html::autocompletionTextField($this, 'default_value',
                                     ['value' => $this->fields["default_value"]]);
       if ($this->fields["type"] == "dropdown") {
-         echo '<a href="'.$CFG_GLPI['root_doc'].'/plugins/fields/front/commondropdown.php?ddtype='.
+         echo '<a href="'.Plugin::getWebDir('fields').'/front/commondropdown.php?ddtype='.
                           $this->fields['name'] .'dropdown">
                <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
                     alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
@@ -456,8 +456,7 @@ class PluginFieldsField extends CommonDBTM {
       //get fields for this container
       $field_obj = new self();
       $fields = $field_obj->find(['plugin_fields_containers_id' => $c_id, 'is_active' => 1], "ranking");
-      echo "<form method='POST' action='".$CFG_GLPI["root_doc"].
-           "/plugins/fields/front/container.form.php'>";
+      echo "<form method='POST' action='".Plugin::getWebDir('fields')."/front/container.form.php'>";
       echo Html::hidden('plugin_fields_containers_id', ['value' => $c_id]);
       echo Html::hidden('items_id', ['value' => $items_id]);
       echo Html::hidden('itemtype', ['value' => $itemtype]);
@@ -849,7 +848,7 @@ class PluginFieldsField extends CommonDBTM {
          return false;
       }
 
-      $data = $DB->fetch_assoc($res);
+      $data = $DB->fetchAssoc($res);
 
       //display an hidden post field to store container id
       echo Html::hidden('c_id', ['value' => $data['plugin_fields_containers_id']]);

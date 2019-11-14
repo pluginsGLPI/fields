@@ -1,15 +1,16 @@
 {
-    "require-dev": {
-        "glpi-project/tools": "^0.1",
-        "atoum/atoum": "^3.1"
-    },
     "require": {
-        "php": ">=5.6"
+        "php": "^7.2"
+    },
+    "require-dev": {
+        "atoum/atoum": "^3.1",
+        "glpi-project/tools": "^0.1"
     },
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "5.6"
-        }
+            "php": "7.2.0"
+        },
+        "sort-packages": true
     }
 }
