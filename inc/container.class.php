@@ -1166,7 +1166,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
             $db_result = [];
             if ($result = $DB->query($query)) {
-               $db_result = $DB->fetch_assoc($result);
+               $db_result = method_exists($DB, 'fetchAssoc')
+                  ? $DB->fetchAssoc($result)
+                  : $DB->fetch_assoc($result);
                if (isset($db_result[$name])) {
                   $value = $db_result[$name];
                }
@@ -1453,7 +1455,7 @@ class PluginFieldsContainer extends CommonDBTM {
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
-      while ($data = $DB->fetch_assoc($res)) {
+      while ($data = (method_exists($DB, 'fetchAssoc') ? $DB->fetchAssoc($res) : $DB->fetch_assoc($res))) {
 
          if ($containers_id !== false) {
             // Filter by container (don't filter by SQL for have $i value with few containers for a itemtype)

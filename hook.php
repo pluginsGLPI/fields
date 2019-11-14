@@ -255,7 +255,9 @@ function plugin_fields_rule_matched($params = []) {
                          WHERE f.name = '$field'";
                $res = $DB->query($query);
                if ($DB->numrows($res) > 0) {
-                  $data = $DB->fetch_assoc($res);
+                  $data = method_exists($DB, 'fetchAssoc')
+                     ? $DB->fetchAssoc($res)
+                     : $DB->fetch_assoc($res);
 
                   //retrieve computer
                   $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
