@@ -61,7 +61,7 @@ function plugin_fields_install() {
    echo "<td align='center'>";
 
    //load all classes
-   $dir  = GLPI_ROOT . "/plugins/fields/inc/";
+   $dir  = PLUGINFIELDS_DIR . "/inc/";
    include_once ("{$dir}toolbox.class.php");
    foreach ($classesToInstall as $class) {
       if ($plug = isPluginItemType($class)) {
@@ -131,7 +131,7 @@ function plugin_fields_uninstall() {
    foreach ($classesToUninstall as $class) {
       if ($plug = isPluginItemType($class)) {
 
-         $dir  = GLPI_ROOT . "/plugins/fields/inc/";
+         $dir  = PLUGINFIELDS_DIR . "/inc/";
          $item = strtolower($plug['class']);
 
          if (file_exists("$dir$item.class.php")) {
@@ -255,7 +255,7 @@ function plugin_fields_rule_matched($params = []) {
                          WHERE f.name = '$field'";
                $res = $DB->query($query);
                if ($DB->numrows($res) > 0) {
-                  $data = $DB->fetch_assoc($res);
+                  $data = $DB->fetchAssoc($res);
 
                   //retrieve computer
                   $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
