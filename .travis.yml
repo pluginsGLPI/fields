@@ -5,7 +5,6 @@ php:
 
 services:
   - mysql
-  
 env:
   global:
     - DB=mysql
