@@ -13,7 +13,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function titleList() {
       echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
-            __("Regenerate container files", "fields")."</a></div>";
+            __("Regenerate container files", "fields")."</a>&nbsp;&nbsp;<a class='vsubmit' href='export_to_yaml.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
+            __("Export to YAML", "fields")."</a></div><br>";
+
    }
 
    /**
@@ -562,6 +564,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
    public function showForm($ID, $options = []) {
       global $CFG_GLPI;
+
+      echo "<div class='center'><a class='vsubmit' href='export_to_yaml.php?id=".$ID."'><i class='pointer fa fa-refresh'></i>&nbsp;".
+      __("Export to YAML", "fields")."</a></div><br>";
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
