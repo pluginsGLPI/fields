@@ -98,6 +98,13 @@ function plugin_init_fields() {
          }
       }
 
+
+      if ($plugin->isActivated('fusioninventory')) {
+         $PLUGIN_HOOKS['fusioninventory_inventory']['fields']
+            = ['PluginFieldsInventory', 'updateInventory'];
+      }
+
+
       // complete rule engine
       $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];
       $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
