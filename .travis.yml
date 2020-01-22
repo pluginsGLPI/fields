@@ -6,6 +6,9 @@ php:
   - 7.2
   - nightly
 
+services:
+  - mysql
+  
 env:
   global:
     - DB=mysql
