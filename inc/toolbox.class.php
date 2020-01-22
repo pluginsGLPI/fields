@@ -93,9 +93,19 @@ class PluginFieldsToolbox {
          $old_name = $field['name'];
 
          // Update field name
-         $field_obj = new PluginFieldsField();
          $field['name'] = null;
-         $field['name'] = $field_obj->prepareName($field);
+         $field_obj = new PluginFieldsField();
+         $new_name = $field_obj->prepareName($field);
+         if ($new_name > 64) {
+            // limit fields names to 64 chars (MySQL limit)
+            $new_name = substr($new_name, 0, 64);
+         }
+         while ('dropdown' === $field['type']
+                && strlen(getTableForItemType(PluginFieldsDropdown::getClassname($new_name))) > 64) {
+            // limit tables names to 64 chars (MySQL limit)
+            $new_name = substr($new_name, 0, -1);
+         }
+         $field['name'] = $new_name;
          $field_obj->update(
             $field,
             false
@@ -109,6 +119,7 @@ class PluginFieldsToolbox {
             // Rename dropdown table
             $old_table = getTableForItemType(PluginFieldsDropdown::getClassname($old_name));
             $new_table = getTableForItemType(PluginFieldsDropdown::getClassname($field['name']));
+
             if ($DB->tableExists($old_table)) {
                $migration->renameTable($old_table, $new_table);
             }
