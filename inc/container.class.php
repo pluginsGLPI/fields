@@ -1576,16 +1576,16 @@ class PluginFieldsContainer extends CommonDBTM {
    private static function getSubtypes($item) {
       $tabs = [];
       switch ($item::getType()) {
-         case Ticket::getType():
+         /*case Ticket::getType():
          case Problem::getType():
             $tabs = [
                $item::getType() . '$2' => __('Solution')
             ];
-            break;
+            break;*/
          case Change::getType():
             $tabs = [
                'Change$1' => __('Analysis'),
-               'Change$2' => __('Solution'),
+               //'Change$2' => __('Solution'),
                'Change$3' => __('Plans')
             ];
             break;
