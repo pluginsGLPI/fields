@@ -520,11 +520,7 @@ class PluginFieldsField extends CommonDBTM {
 
       $functions = array_column(debug_backtrace(), 'function');
 
-      if (!isset($_SESSION['glpi_tabs'][strtolower($item::getType())])) {
-         return;
-      };
-
-      $subtype = $_SESSION['glpi_tabs'][strtolower($item::getType())];
+      $subtype = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : "";
       $type = substr($subtype, -strlen('$main')) === '$main'
               || in_array('showPrimaryForm', $functions)
               || in_array('showFormHelpdesk', $functions)
