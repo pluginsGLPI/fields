@@ -486,7 +486,6 @@ class PluginFieldsField extends CommonDBTM {
     */
    static private function showDomContainer($c_id, $itemtype, $items_id, $type = "dom", $subtype = "") {
 
-      var_dump("ok show dom container");
       if ($c_id !== false) {
          //get fields for this container
          $field_obj = new self();
@@ -500,8 +499,6 @@ class PluginFieldsField extends CommonDBTM {
       } else {
          $fields = [];
       }
-
-      var_dump($fields);
 
       echo Html::hidden('_plugin_fields_type', ['value' => $type]);
       echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
@@ -552,18 +549,16 @@ class PluginFieldsField extends CommonDBTM {
 
       $current_entity = $item::getType() == Entity::getType()
                            ? $item->getID()
-                           : $item->fields['entities_id'];
+                           : isset($item->fields['entities_id']) ? $item->fields['entities_id'] : 0;
       if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
          return false;
       }
 
       //parse REQUEST_URI
       if (!isset($_SERVER['REQUEST_URI'])) {
-         var_dump("return false");
          return false;
       }
 
-      var_dump($_SERVER['REQUEST_URI']);
       $current_url = $_SERVER['REQUEST_URI'];
       if (strpos($current_url, ".form.php") === false
           && strpos($current_url, ".injector.php") === false
@@ -594,9 +589,6 @@ class PluginFieldsField extends CommonDBTM {
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
 
-                                       var_dump("ok prepare feild");
-
-
       if (empty($fields)) {
          return false;
       }
@@ -605,15 +597,11 @@ class PluginFieldsField extends CommonDBTM {
       $tmp = $fields;
       $first_field = array_shift($tmp);
       $container_obj = new PluginFieldsContainer;
-      var_dump("load container");
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
       $classname = "PluginFields".$itemtype.
                                  preg_replace('/s$/', '', $container_obj->fields['name']);
-                                 var_dump($itemtype);
-                                 var_dump($classname);
       $obj = new $classname;
 
-      var_dump("load ");
       //find row for this object with the items_id
       $found_values = $obj->find(
          [
@@ -623,7 +611,6 @@ class PluginFieldsField extends CommonDBTM {
       );
       $found_v = array_shift($found_values);
 
-      var_dump("load profil");
       // find profiles (to check if current profile can edit fields)
       $fprofile = new PluginFieldsProfile;
       $found_p = $fprofile->find(
@@ -633,7 +620,6 @@ class PluginFieldsField extends CommonDBTM {
          ]
       );
       $first_found_p = array_shift($found_p);
-      var_dump("load db");
       // test status for "CommonITILObject" objects
       if (is_subclass_of($itemtype, "CommonITILObject")) {
          $items_obj = new $itemtype();
@@ -653,8 +639,6 @@ class PluginFieldsField extends CommonDBTM {
             $canedit = false;
          }
       }
-
-      var_dump("display field");
 
       //show all fields
       $html = "";
@@ -841,7 +825,6 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       unset($_SESSION['plugin']['fields']['values_sent']);
-      var_dump("return html");
       return $html;
    }
 

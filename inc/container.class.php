@@ -1316,6 +1316,8 @@ class PluginFieldsContainer extends CommonDBTM {
          $container = new self();
          if (count($data) == 0
              || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
+                var_dump("update or add");
+                die;
             return true;
          }
          return $item->input = [];
@@ -1332,6 +1334,10 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return boolean
     */
    static function preItem(CommonDBTM $item) {
+      var_dump("here");
+      var_dump($item->input);
+      var_dump($_REQUEST);
+      
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
@@ -1368,18 +1374,22 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $current_entity = $item::getType() == Entity::getType()
                            ? $item->getID()
-                           : $item->fields['entities_id'];
+                           : isset($item->fields['entities_id']) ? $item->fields['entities_id'] : 0;
       if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
          return false;
       }
 
       if (false !== ($data = self::populateData($c_id, $item))) {
          if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            var_dump("ntovalidate");
             return $item->input = [];
          }
+         var_dump("validate value");
+         die;
          return $item->plugin_fields_data = $data;
       }
-
+      var_dump("not populate");
+      die;
       return;
    }
 
