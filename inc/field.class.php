@@ -532,6 +532,10 @@ class PluginFieldsField extends CommonDBTM {
          $subtype = "";
       }
 
+      if ($item::getType() == 'ITILSolution') {
+         $type = 'dom';
+      }
+
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
@@ -547,11 +551,14 @@ class PluginFieldsField extends CommonDBTM {
          $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
       }
 
-      $current_entity = $item::getType() == Entity::getType()
-                           ? $item->getID()
-                           : $item->fields['entities_id'];
-      if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
-         return false;
+      //test with array key exist because isentityassign return empty object on create
+      if (array_key_exists('entities_id', $item->fields)) {
+         $current_entity = $item::getType() == Entity::getType()
+            ? $item->getID()
+            : $item->fields['entities_id'];
+         if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
+            return false;
+         }
       }
 
       //parse REQUEST_URI
@@ -561,7 +568,8 @@ class PluginFieldsField extends CommonDBTM {
       $current_url = $_SERVER['REQUEST_URI'];
       if (strpos($current_url, ".form.php") === false
           && strpos($current_url, ".injector.php") === false
-          && strpos($current_url, ".public.php") === false) {
+          && strpos($current_url, ".public.php") === false
+          && strpos($current_url, "timeline.php") === false) {
          return false;
       }
 
@@ -584,6 +592,8 @@ class PluginFieldsField extends CommonDBTM {
 
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
+
+                                       var_dump("prepare html field");
 
       if (empty($fields)) {
          return false;

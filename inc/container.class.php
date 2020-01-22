@@ -169,6 +169,22 @@ class PluginFieldsContainer extends CommonDBTM {
          }
       }
 
+      //Ticket Solution tab is no longer part of ticket object. Moving to main itemtype ITILSolution
+      //before -> | 21 | solution | solution | ["Ticket"]       | domtab | Ticket$2 |           0 |            1 |         1 |
+      //after  -> | 21 | solution | solution | ["ITILSolution"] | dom    | NULL     |           0 |            1 |         1 |
+      $container = new self();
+      $soltab = $container->find(["type" =>  "domtab", "subtype" =>  Ticket::getType() . '$2']);
+      if (count($soltab)) {
+         $migration->displayMessage(__("Updating Solution containers", "fields"));
+         foreach ($soltab as $containers_id => $container_data) {
+            $container->getFromDB($containers_id);
+            $container->fields['itemtypes']  = json_encode([ITILSolution::getType()], true);
+            $container->fields['subtype']    = 'NULL';
+            $container->fields['type']       = 'dom';
+            $container->update($container->fields);
+         }
+      }
+
       $migration->displayMessage(__("Updating generated containers files", "fields"));
       // -> 0.90-1.3: generated class moved
       // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
@@ -766,6 +782,7 @@ class PluginFieldsContainer extends CommonDBTM {
          'Problem'         => Problem::getTypeName(2),
          'Change'          => Change::getTypeName(2),
          'TicketRecurrent' => TicketRecurrent::getTypeName(2),
+         'ITILSolution'    => ITILSolution::getTypeName(2),
       ];
 
       $tabs[__('Management')] = [
@@ -1362,11 +1379,14 @@ class PluginFieldsContainer extends CommonDBTM {
          $item->fields = $item->input;
       }
 
-      $current_entity = $item::getType() == Entity::getType()
-                           ? $item->getID()
-                           : $item->fields['entities_id'];
-      if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
-         return false;
+      //test with array key exist because isentityassign return empty object on create
+      if (array_key_exists('entities_id', $item->fields)) {
+         $current_entity = $item::getType() == Entity::getType()
+            ? $item->getID()
+            : $item->fields['entities_id'];
+         if (!in_array($current_entity, $entities)) {
+            return false;
+         }
       }
 
       if (false !== ($data = self::populateData($c_id, $item))) {
