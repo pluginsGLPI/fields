@@ -50,15 +50,8 @@ class PluginFieldsContainer extends \FieldsDbTestCase {
          /*\Computer::getType() => "/<select name='subtype' id='[^']*'[^>]*>" .
                                  "<option value='Computer\\\$1'>Operating system<\/option>" .
                                  "<\/select>/",*/
-         \Ticket::getType()   => "/<select name='subtype' id='[^']*'[^>]*>" .
-                                 "<option value='Ticket\\\$2'>Solution<\/option>" .
-                                 "<\/select>/",
-         \Problem::getType()  => "/<select name='subtype' id='[^']*'[^>]*>" .
-                                 "<option value='Problem\\\$2'>Solution<\/option>" .
-                                 "<\/select>/",
          \Change::getType()   => "/<select name='subtype' id='[^']*'[^>]*>" .
                                  "<option value='Change\\\$1'>Analysis<\/option>" .
-                                 "<option value='Change\\\$2'>Solution<\/option>" .
                                  "<option value='Change\\\$3'>Plans<\/option>" .
                                  "<\/select>/",
          \Entity::getType()   => "/<select name='subtype' id='[^']*'[^>]*>" .
