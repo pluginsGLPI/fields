@@ -81,9 +81,18 @@ class PluginFieldsField extends CommonDBTM {
 
 
    function prepareInputForAdd($input) {
-      global $DB;
       //parse name
       $input['name'] = $this->prepareName($input);
+
+      //reject adding when field name is too long for mysql
+      if (strlen($input['name']) > 64) {
+         Session::AddMessageAfterRedirect(
+            __("Field name is too long for database (digits in name are replaced by characters, try to remove them)", 'fields'),
+            false,
+            ERROR
+         );
+         return false;
+      }
 
       if ($input['type'] === "dropdown") {
          //search if dropdown already exist in this container
@@ -97,6 +106,16 @@ class PluginFieldsField extends CommonDBTM {
          //reject adding for same dropdown on same bloc
          if (!empty($found)) {
             Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields', false, ERROR));
+            return false;
+         }
+
+         //reject adding when dropdown name is too long for mysql table name
+         if (strlen(getTableForItemType(PluginFieldsDropdown::getClassname($input['name']))) > 64) {
+            Session::AddMessageAfterRedirect(
+               __("Field name is too long for database (digits in name are replaced by characters, try to remove them)", 'fields'),
+               false,
+               ERROR
+            );
             return false;
          }
 
