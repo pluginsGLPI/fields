@@ -929,6 +929,7 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+      var_dump("gettabname");
       $itemtypes = self::getEntries('tab', true);
       if (isset($itemtypes[$item->getType()])) {
          $tabs_entries = [];
@@ -960,6 +961,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
       foreach ($found_c as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
+         var_dump(get_class($item), $dataitemtypes);
          if (in_array(get_class($item), $dataitemtypes) != false) {
             return PluginFieldsField::showForTabContainer($data['id'], $item->fields['id'], get_class($item));
          }
@@ -1250,6 +1252,8 @@ class PluginFieldsContainer extends CommonDBTM {
       if (count($itemtypes) < 1) {
          return false;
       }
+
+      if($itemtype == "ITILSolution") $itemtype = "Ticket";
 
       foreach ($itemtypes as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
