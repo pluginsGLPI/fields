@@ -20,7 +20,7 @@ if (isset($_POST["add"])) {
 } else if (isset($_REQUEST["purge"])) {
    $field->check($_REQUEST['id'], PURGE);
    $field->delete($_REQUEST, 1);
-   Html::back();
+   $field->redirectToList();
 } else if (isset($_POST["update"])) {
    $field->check($_POST['id'], UPDATE);
    $field->update($_POST);

@@ -7,6 +7,10 @@ class PluginFieldsField extends CommonDBTM {
       return self::canUpdate();
    }
 
+   static function canPurge() {
+      return self::canUpdate();
+   }
+
    /**
     * Install or update fields
     *
