@@ -7,7 +7,7 @@
 [![GitHub release](https://img.shields.io/github/release/pluginsGLPI/fields.svg)](https://github.com/pluginsGLPI/fields/releases)
 [![GitHub build](https://travis-ci.org/pluginsGLPI/fields.svg?)](https://travis-ci.org/pluginsGLPI/fields/)
 
-![Screenshot](./screenshot.png)
+![Screenshot](./fields.gif)
 
 The fields plugin allows you to add custom fields on glpi types : tickets, computers, users...
 
@@ -37,12 +37,15 @@ Possible fields type are :
 We maintain a detailed documentation here -> [Documentation](http://glpi-plugins.rtfd.io/en/latest/fields/index.html)
 
 
+
 ## Contact
 
 For notices about major changes and general discussion of fields, subscribe to the [/r/glpi](https://www.reddit.com/r/glpi/) subreddit.
 You can also chat with us via IRC in [#glpi on freenode](http://webchat.freenode.net/?channels=glpi) or [@glpi on Telegram](https://t.me/glpien).
 
 ## Professional Services
+
+![GLPI Network](./glpi_network.png "GLPI network")
 
 The GLPI Network services are available through our [Partner's Network](http://www.teclib-edition.com/en/partners/). We provide special training, bug fixes with editor subscription, contributions for new features, and more.
 

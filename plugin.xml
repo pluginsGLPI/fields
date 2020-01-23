@@ -99,7 +99,8 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
    <versions>
       <version>
          <num>1.10.2</num>
-         <compatibility>9.4</compatibility>
+         <compatibility>~9.4.0</compatibility>
+         <download_url>https://github.com/pluginsGLPI/fields/releases/download/1.10.2/glpi-fields-1.10.2.tar.bz2</download_url>
       </version>
       <version>
          <num>1.10.1</num>
@@ -253,7 +254,6 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
       </fr>
    </tags>
    <screenshots>
-      <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields_bloc.png</screenshot>
-      <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields_champ.png</screenshot>
+      <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields.gif</screenshot>
    </screenshots>
 </root>
