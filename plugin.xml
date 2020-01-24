@@ -1,6 +1,6 @@
 <root>
    <name>Fields</name>
-   <key>field</key>
+   <key>fields</key>
    <state>stable</state>
    <logo>https://raw.githubusercontent.com/pluginsGLPI/fields/master/plugin.png</logo>
    <description>
