@@ -254,6 +254,6 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
       </fr>
    </tags>
    <screenshots>
-      <screenshot>https://github.com/pluginsGLPI/fields/raw/0.84/bugfixes/documentation/pics/fields.gif</screenshot>
+      <screenshot>https://raw.githubusercontent.com/pluginsGLPI/fields/master/fields.gif</screenshot>
    </screenshots>
 </root>
