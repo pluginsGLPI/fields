@@ -170,8 +170,8 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       //Ticket Solution tab is no longer part of ticket object. Moving to main itemtype ITILSolution
-      //before -> | 21 | solution | solution | ["Ticket"]       | domtab | Ticket$2 |           0 |            1 |         1 |
-      //after  -> | 21 | solution | solution | ["ITILSolution"] | dom    | NULL     |           0 |            1 |         1 |
+      //before -> | 21 | solution | solution | ["Ticket"]       | domtab  | Ticket$2   |           0 |            1 |         1 |
+      //after  -> | 21 | solution | solution | ["ITILSolution"] | itil_dom| Ticket     |           0 |            1 |         1 |
       $container = new self();
       $soltab = $container->find(["type" =>  "domtab", "subtype" =>  Ticket::getType() . '$2']);
       if (count($soltab)) {
@@ -179,8 +179,8 @@ class PluginFieldsContainer extends CommonDBTM {
          foreach ($soltab as $containers_id => $container_data) {
             $container->getFromDB($containers_id);
             $container->fields['itemtypes']  = json_encode([ITILSolution::getType()], true);
-            $container->fields['subtype']    = 'NULL';
-            $container->fields['type']       = 'dom';
+            $container->fields['subtype']    = json_decode($container_data["itemtypes"])[0];
+            $container->fields['type']       = '_itil_dom';
             $container->update($container->fields);
          }
       }
@@ -681,15 +681,16 @@ class PluginFieldsContainer extends CommonDBTM {
       global $CFG_GLPI;
 
       $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
+      $itil_dom = isset($params['type']) && $params['type'] == 'itil_dom';
 
       $rand = $params['rand'];
-      Dropdown::showFromArray("itemtypes", self::getItemtypes($is_domtab),
+      Dropdown::showFromArray("itemtypes", self::getItemtypes($is_domtab, $itil_dom),
                               ['rand'                => $rand,
-                               'multiple'            => !$is_domtab,
+                               'multiple'            => !$is_domtab && !$itil_dom,
                                'width'               => 200,
-                               'display_emptychoice' => $is_domtab]);
+                               'display_emptychoice' => $is_domtab || $itil_dom]);
 
-      if ($is_domtab) {
+      if ($is_domtab || $itil_dom) {
          Ajax::updateItemOnSelectEvent(["dropdown_type$rand", "dropdown_itemtypes$rand"],
                                        "subtype_$rand",
                                        "../ajax/container_subtype_dropdown.php",
@@ -710,7 +711,7 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    static function showFormSubtype($params, $display = false) {
       $out = "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
-      if (isset($params['type']) && $params['type'] == "domtab") {
+      if (isset($params['type']) && ($params['type'] == "domtab" || $params['type'] == "itil_dom")) {
          if (class_exists($params['itemtype'])) {
             $item = new $params['itemtype'];
             $item->getEmpty();
@@ -760,7 +761,7 @@ class PluginFieldsContainer extends CommonDBTM {
     *
     * @return array
     */
-   static function getItemtypes($is_domtab) {
+   static function getItemtypes($is_domtab, $itil_dom = false) {
       global $PLUGIN_HOOKS;
 
       $tabs = [];
@@ -782,8 +783,9 @@ class PluginFieldsContainer extends CommonDBTM {
          'Problem'         => Problem::getTypeName(2),
          'Change'          => Change::getTypeName(2),
          'TicketRecurrent' => TicketRecurrent::getTypeName(2),
-         'ITILSolution'    => ITILSolution::getTypeName(2),
       ];
+
+
 
       $tabs[__('Management')] = [
          'SoftwareLicense' => SoftwareLicense::getTypeName(2),
@@ -809,6 +811,7 @@ class PluginFieldsContainer extends CommonDBTM {
          'Profile' => Profile::getTypeName(2)
       ];
 
+
       foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
          $isPlugin = isPluginItemType($itemtype);
          if ($isPlugin) {
@@ -832,7 +835,15 @@ class PluginFieldsContainer extends CommonDBTM {
          'NotificationTemplate' => NotificationTemplate::getTypeName(2),
       ];
 
-      if ($is_domtab) {
+      if($itil_dom){
+         $tabs = [];
+         $tabs[__('Assistance')]['ITILSolution']  = ITILSolution::getTypeName(2);
+         //$tabs[__('Assistance')]['ITILSolution_'.Change::getTypeName()]  = ITILSolution::getTypeName(2).__(' for '.Change::getTypeName(2));
+         //$tabs[__('Assistance')]['ITILSolution_'.Problem::getTypeName()] = ITILSolution::getTypeName(2).__(' for '.Problem::getTypeName(2));
+      }
+
+
+      if ($is_domtab || $itil_dom) {
          // Filter items that do not have tab handled
          foreach ($tabs as $group => $items) {
             $tabs[$group] = array_filter(
@@ -858,9 +869,10 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function getTypes() {
       return [
-         'tab'    => __("Add tab", "fields"),
-         'dom'    => __("Insertion in the form (before save button)", "fields"),
-         'domtab' => __("Insertion in the form of a specific tab (before save button)", "fields")
+         'tab'       => __("Add tab", "fields"),
+         'dom'       => __("Insertion in the form (before save button)", "fields"),
+         'domtab'    => __("Insertion in the form of a specific tab (before save button)", "fields"),
+         'itil_dom'  => __("Insertion in solution form (before save button)", "fields"),
       ];
    }
 
@@ -1589,13 +1601,21 @@ class PluginFieldsContainer extends CommonDBTM {
                'Change$3' => __('Plans')
             ];
             break;
-         case Entity::getType():
+            case Entity::getType():
             $tabs = [
                'Entity$2' => __('Address'),
                'Entity$3' => __('Advanced information'),
                'Entity$4' => __('Notifications'),
                'Entity$5' => __('Assistance'),
                'Entity$6' => __('Assets')
+            ];
+            break;
+
+            case ITILSolution::getType():
+            $tabs = [
+               'Ticket'  => Ticket::getTypeName(2),
+               'Change'  => Change::getTypeName(2),
+               'Problem' => Problem::getTypeName(2),
             ];
             break;
          default:

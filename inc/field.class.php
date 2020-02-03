@@ -513,7 +513,6 @@ class PluginFieldsField extends CommonDBTM {
     * @return void
     */
    static function showForTab($params) {
-      global $CFG_GLPI;
 
       $item    = $params['item'];
       $options = $params['options'];
@@ -528,12 +527,23 @@ class PluginFieldsField extends CommonDBTM {
                : 'domtab';
 
       // if we are in 'dom' or 'tab' type, no need for subtype ('domtab' specific)
-      if ($type != 'domtab') {
+      if ($type != 'domtab' && $type != 'itil_dom') {
          $subtype = "";
       }
 
-      if ($item::getType() == 'ITILSolution') {
-         $type = 'dom';
+      if(get_Class($item) == ITILSolution::getType()){
+         $type = 'itil_dom';
+         switch (get_class($options['item'])) {
+            case  Change::getType():
+            $subtype = Change::getType();
+               break;
+            case  Change::getType():
+            $subtype = Ticket::getType();
+               break;
+            case  Change::getType():
+            $subtype = Problem::getType();
+               break;
+         }
       }
 
       //find container (if not exist, do nothing)
@@ -592,8 +602,6 @@ class PluginFieldsField extends CommonDBTM {
 
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
-
-                                       var_dump("prepare html field");
 
       if (empty($fields)) {
          return false;
