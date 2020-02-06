@@ -1,0 +1,184 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# SeongHyeon Cho <jaymz9634@gmail.com>, 2020
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Plugin - Fields\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"PO-Revision-Date: 2020-02-03 04:19+0000\n"
+"Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "추가 항목"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "MySQL 테이블 삽입"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "MySQL 테이블 제거"
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "항목"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "항목"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "새 항목 추가"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "이 블럭에 대한 항목 없음"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "읽기 전용"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "구성"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "항목 값 구성"
+
+#: inc/field.class.php:733
+msgid "show"
+msgstr "표시"
+
+#: inc/field.class.php:879
+msgid "Header"
+msgstr "헤더"
+
+#: inc/field.class.php:880
+msgid "Text (single line)"
+msgstr "문구 (한 줄)"
+
+#: inc/field.class.php:881
+msgid "Text (multiples lines)"
+msgstr "문구 (여러 줄)"
+
+#: inc/field.class.php:882
+msgid "Number"
+msgstr "숫자"
+
+#: inc/field.class.php:883
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:884
+msgid "Dropdown"
+msgstr "드롭다운"
+
+#: inc/field.class.php:885
+msgid "Yes/No"
+msgstr "예/아니오"
+
+#: inc/field.class.php:886
+msgid "Date"
+msgstr "날짜"
+
+#: inc/field.class.php:887
+msgid "Date & time"
+msgstr "날짜 & 시간"
+
+#: inc/container.class.php:16
+msgid "Regenerate container files"
+msgstr "컨테이너 파일 재생성"
+
+#: inc/container.class.php:91
+msgid "Fix container names"
+msgstr "컨테이너 이름 수정"
+
+#: inc/container.class.php:172
+msgid "Updating generated containers files"
+msgstr "생성된 컨테이너 파일 갱신"
+
+#: inc/container.class.php:368
+msgid "You cannot add block without associated element type"
+msgstr "관련된 요소 형식이 없으면 추가할 수 없습니다"
+
+#: inc/container.class.php:385
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "동일한 객체에 '양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
+
+#: inc/container.class.php:400
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "동일한 객체 탭에 '특정 탭의 양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
+
+#: inc/container.class.php:417
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "동일한 객체에 동일한 이름을 가진 몇개의 블록을 추가할 수 없습니다."
+
+#: inc/container.class.php:562
+msgid "Block"
+msgstr "블록"
+
+#: inc/container.class.php:638
+msgid "Tab"
+msgstr "탭"
+
+#: inc/container.class.php:844
+msgid "Add tab"
+msgstr "탭 추가"
+
+#: inc/container.class.php:845
+msgid "Insertion in the form (before save button)"
+msgstr "(저장 버튼 전에) 양식에 삽입"
+
+#: inc/container.class.php:846
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "(저장 버튼 전에) 특정 탭의 양식에 삽입"
+
+#: inc/container.class.php:1208
+msgid "Some mandatory fields are empty"
+msgstr "일부 필수 항목이 비었습니다"
+
+#: inc/container.class.php:1213
+msgid "Some numeric fields contains non numeric values"
+msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
+
+#: inc/container.class.php:1218
+msgid "Some URL fields contains invalid links"
+msgstr "일부 URL 항목에 잘못된 링크가 포함되었습니다"
+
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "언어"
+
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "라벨"
+
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "생성된 드롭다운 파일 갱신"
+
+#: inc/toolbox.class.php:90
+msgid "Fix fields names"
+msgstr "항목 이름 수정"
