@@ -5,12 +5,12 @@
 # Translators:
 # Alexey Petukhov <lexx015@gmail.com>, 2015
 # Mr.GreyWolf, 2017
-# Nikolay <techobsl@yandex.ru>, 2017
+# Nikolai Petrov <techobsl@yandex.ru>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -37,31 +37,31 @@ msgstr "Плагин не может быть удален пока плагин
 msgid "MySQL tables uninstallation"
 msgstr "Удаление таблиц MySQL"
 
-#: inc/field.class.php:75
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Поле"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Поля"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Добавить новое поле"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "Нет поля для этого блока"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "Только чтение"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Настройка"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Настрить поля значений"
 
@@ -117,55 +117,55 @@ msgstr ""
 msgid "Updating generated containers files"
 msgstr "Обновление созданных файлов контейнеров"
 
-#: inc/container.class.php:367
+#: inc/container.class.php:368
 msgid "You cannot add block without associated element type"
 msgstr "Вы не можете добавить блок без связанного типа элемента"
 
-#: inc/container.class.php:384
+#: inc/container.class.php:385
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Вы не можете добавить несколько блоков с типом 'Вставить в виде'  в один и тот же объект"
 
-#: inc/container.class.php:399
+#: inc/container.class.php:400
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:416
+#: inc/container.class.php:417
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Вы не можете добавить несколько блоков с одинаковыми именами на один и тот же объект"
 
-#: inc/container.class.php:561
+#: inc/container.class.php:562
 msgid "Block"
 msgstr "Блок"
 
-#: inc/container.class.php:637
+#: inc/container.class.php:638
 msgid "Tab"
 msgstr "Вкладка"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:844
 msgid "Add tab"
 msgstr "Добавить вкладку"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:845
 msgid "Insertion in the form (before save button)"
 msgstr "Добавить в виде (до кнопки сохранения)"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:846
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Добавить в виде конкретной вкладки (до кнопки сохранения)"
 
-#: inc/container.class.php:1207
+#: inc/container.class.php:1208
 msgid "Some mandatory fields are empty"
 msgstr "Некоторые обязательные поля пусты"
 
-#: inc/container.class.php:1212
+#: inc/container.class.php:1213
 msgid "Some numeric fields contains non numeric values"
 msgstr "Некоторые числовые поля содержат не только цифры"
 
-#: inc/container.class.php:1217
+#: inc/container.class.php:1218
 msgid "Some URL fields contains invalid links"
 msgstr "Некоторый URL полей содержат недействительные ссылки"
 

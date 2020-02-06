@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -36,31 +36,31 @@ msgstr ""
 msgid "MySQL tables uninstallation"
 msgstr "Dezinstalare tabele MySQL"
 
-#: inc/field.class.php:75
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Camp"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Campuri"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Add un camp nou"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr ""
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr ""
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Configurare"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Configurare valori campuri"
 
@@ -116,55 +116,55 @@ msgstr ""
 msgid "Updating generated containers files"
 msgstr ""
 
-#: inc/container.class.php:367
+#: inc/container.class.php:368
 msgid "You cannot add block without associated element type"
 msgstr ""
 
-#: inc/container.class.php:384
+#: inc/container.class.php:385
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr ""
 
-#: inc/container.class.php:399
+#: inc/container.class.php:400
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:416
+#: inc/container.class.php:417
 msgid "You cannot add several blocs with identical name on same object"
 msgstr ""
 
-#: inc/container.class.php:561
+#: inc/container.class.php:562
 msgid "Block"
 msgstr ""
 
-#: inc/container.class.php:637
+#: inc/container.class.php:638
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:844
 msgid "Add tab"
 msgstr "Add tab"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:845
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:845
+#: inc/container.class.php:846
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/container.class.php:1207
+#: inc/container.class.php:1208
 msgid "Some mandatory fields are empty"
 msgstr "Unele campuri obligatorii sunt goale"
 
-#: inc/container.class.php:1212
+#: inc/container.class.php:1213
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/container.class.php:1217
+#: inc/container.class.php:1218
 msgid "Some URL fields contains invalid links"
 msgstr ""
 

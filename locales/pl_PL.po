@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pl_PL/)\n"
@@ -36,31 +36,31 @@ msgstr "Wtyczka nie może zostać odinstalowana kiedy jest wyłączona"
 msgid "MySQL tables uninstallation"
 msgstr "Deinstalacja tabel MYSQL"
 
-#: inc/field.class.php:75
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Pole"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Pola"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Dodaj nowe pole"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "Brak pola dla tego bloku"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "Tylko do odczytu"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Konfiguruj"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Konfiguruj wartości pól"
 
@@ -116,55 +116,55 @@ msgstr ""
 msgid "Updating generated containers files"
 msgstr "Zaktualizowano wygenerowane pliki kontenerów"
 
-#: inc/container.class.php:367
+#: inc/container.class.php:368
 msgid "You cannot add block without associated element type"
 msgstr "Nie można dodać bloku bez powiązanego typu elementu"
 
-#: inc/container.class.php:384
+#: inc/container.class.php:385
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nie możesz dodać kilku bloków z typem 'Dodawanie danych w formularzu' w tym samym obiekcie"
 
-#: inc/container.class.php:399
+#: inc/container.class.php:400
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:416
+#: inc/container.class.php:417
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nie możesz dodać kilku bloków o identycznej nazwie w tym samym obiekcie"
 
-#: inc/container.class.php:561
+#: inc/container.class.php:562
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:637
+#: inc/container.class.php:638
 msgid "Tab"
 msgstr "Zakładka"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:844
 msgid "Add tab"
 msgstr "Dodaj zakładkę"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:845
 msgid "Insertion in the form (before save button)"
 msgstr "Dodawanie danych w formularzu (przed przyciskiem zapisz)"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:846
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Dodawanie danych w formularzu w konkretnej karcie (przed przyciskiem zapisz)"
 
-#: inc/container.class.php:1207
+#: inc/container.class.php:1208
 msgid "Some mandatory fields are empty"
 msgstr "Niektóre wymagane pola są puste"
 
-#: inc/container.class.php:1212
+#: inc/container.class.php:1213
 msgid "Some numeric fields contains non numeric values"
 msgstr "Niektóre pola numeryczne zawierają wartości inne niż liczby"
 
-#: inc/container.class.php:1217
+#: inc/container.class.php:1218
 msgid "Some URL fields contains invalid links"
 msgstr "Niektóre pola zawierają nieprawidłowe linki URL"
 

@@ -7,6 +7,10 @@ class PluginFieldsField extends CommonDBTM {
       return self::canUpdate();
    }
 
+   static function canPurge() {
+      return self::canUpdate();
+   }
+
    /**
     * Install or update fields
     *
@@ -520,11 +524,7 @@ class PluginFieldsField extends CommonDBTM {
 
       $functions = array_column(debug_backtrace(), 'function');
 
-      if (!isset($_SESSION['glpi_tabs'][strtolower($item::getType())])) {
-         return;
-      };
-
-      $subtype = $_SESSION['glpi_tabs'][strtolower($item::getType())];
+      $subtype = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : "";
       $type = substr($subtype, -strlen('$main')) === '$main'
               || in_array('showPrimaryForm', $functions)
               || in_array('showFormHelpdesk', $functions)
@@ -554,7 +554,7 @@ class PluginFieldsField extends CommonDBTM {
       $current_entity = $item::getType() == Entity::getType()
                            ? $item->getID()
                            : $item->fields['entities_id'];
-      if (!in_array($current_entity, $entities)) {
+      if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
          return false;
       }
 
@@ -904,5 +904,29 @@ class PluginFieldsField extends CommonDBTM {
 
       //Create label translation
       PluginFieldsLabelTranslation::createForItem($this);
+   }
+
+   function rawSearchOptions() {
+      $tab = [];
+
+      $tab[] = [
+         'id'            => 2,
+         'table'         => self::getTable(),
+         'field'         => 'label',
+         'name'          => __('Label'),
+         'massiveaction' => false,
+         'autocomplete'  => true,
+      ];
+
+      $tab[] = [
+         'id'            => 3,
+         'table'         => self::getTable(),
+         'field'         => 'default_value',
+         'name'          => __('Default values'),
+         'massiveaction' => false,
+         'autocomplete'  => true,
+      ];
+
+      return $tab;
    }
 }

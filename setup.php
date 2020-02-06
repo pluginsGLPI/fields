@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define ('PLUGIN_FIELDS_VERSION', '1.10.2');
+define ('PLUGIN_FIELDS_VERSION', '1.10.3');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_FIELDS_MIN_GLPI", "9.4");
@@ -77,7 +77,7 @@ function plugin_init_fields() {
    $plugin = new Plugin();
    if ($plugin->isInstalled('fields')
        && $plugin->isActivated('fields')
-       && Session::getLoginUserID() ) {
+       && Session::getLoginUserID()) {
 
       // Init hook about itemtype(s) for plugin fields
       if (!isset($PLUGIN_HOOKS['plugin_fields'])) {

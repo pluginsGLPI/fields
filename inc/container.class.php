@@ -247,6 +247,7 @@ class PluginFieldsContainer extends CommonDBTM {
          'field'         => 'label',
          'name'          => __("Label"),
          'massiveaction' => false,
+         'autocomplete'  => true,
       ];
 
       $tab[] = [
@@ -942,7 +943,7 @@ class PluginFieldsContainer extends CommonDBTM {
                      $entities = getSonsOf(getTableForItemType('Entity'), $data['entities_id']);
                   }
 
-                  if (in_array($item->fields['entities_id'], $entities)) {
+                  if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
                      $tabs_entries[$tab_name] = $tab_label;
                   }
                }
@@ -1364,7 +1365,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $current_entity = $item::getType() == Entity::getType()
                            ? $item->getID()
                            : $item->fields['entities_id'];
-      if (!in_array($current_entity, $entities)) {
+      if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
          return false;
       }
 

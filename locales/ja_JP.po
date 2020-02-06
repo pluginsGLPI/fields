@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# coleyon, 2019
+# admin coleyon, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-09-07 23:02+0000\n"
-"Last-Translator: coleyon\n"
+"Last-Translator: admin coleyon\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,31 +35,31 @@ msgstr "プラグインが無効な場合、プラグインをアンインスト
 msgid "MySQL tables uninstallation"
 msgstr "MySQLテーブルのアンインストール"
 
-#: inc/field.class.php:75
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "フィールド"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "フィールド"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "新しいフィールドを追加する"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "ブロック内にフィールドはありません"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "読取専用"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "設定"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "フィールド値を設定"
 
@@ -115,55 +115,55 @@ msgstr "コンテナ名を変更する"
 msgid "Updating generated containers files"
 msgstr "生成済みコンテナファイルを更新"
 
-#: inc/container.class.php:367
+#: inc/container.class.php:368
 msgid "You cannot add block without associated element type"
 msgstr "「関連アイテムタイプ」が空のブロックを追加することはできません。"
 
-#: inc/container.class.php:384
+#: inc/container.class.php:385
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "同種のオブジェクトに、複数のブロックを追加することはできません。"
 
-#: inc/container.class.php:399
+#: inc/container.class.php:400
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "同種のオブジェクトのタブに、「ラベル」が同じブロックを複数追加することはできません。"
 
-#: inc/container.class.php:416
+#: inc/container.class.php:417
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "同種のオブジェクトに、「ラベル」が同じブロックを追加することはできません。"
 
-#: inc/container.class.php:561
+#: inc/container.class.php:562
 msgid "Block"
 msgstr "ブロック"
 
-#: inc/container.class.php:637
+#: inc/container.class.php:638
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:844
 msgid "Add tab"
 msgstr "タブを追加する"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:845
 msgid "Insertion in the form (before save button)"
 msgstr "フォームに追加する（フォーム保存前時点）"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:846
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "フォームのタブに追加する（フォーム保存前時点）"
 
-#: inc/container.class.php:1207
+#: inc/container.class.php:1208
 msgid "Some mandatory fields are empty"
 msgstr "必須項目が未入力です。"
 
-#: inc/container.class.php:1212
+#: inc/container.class.php:1213
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値を含む数値フィールドがあります。"
 
-#: inc/container.class.php:1217
+#: inc/container.class.php:1218
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含むURLフィールドがあります。"
 

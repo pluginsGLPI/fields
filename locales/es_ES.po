@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 07:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
@@ -37,31 +37,31 @@ msgstr "El plugin no se puede desinstalar el plugin cuando se desactiva"
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalación de las tablas MySQL"
 
-#: inc/field.class.php:75
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Campo"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Agregar nuevo campo"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "Ningún campo para este bloque"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "Solo lectura"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Configurar"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Configure valores de los campos"
 
@@ -117,55 +117,55 @@ msgstr ""
 msgid "Updating generated containers files"
 msgstr "Actualizar los archivos de contenedores generados"
 
-#: inc/container.class.php:367
+#: inc/container.class.php:368
 msgid "You cannot add block without associated element type"
 msgstr "No se puede agregar un bloque sin el tipo de elemento asociado"
 
-#: inc/container.class.php:384
+#: inc/container.class.php:385
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No se pueden añadir varios bloques con el tipo 'inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:399
+#: inc/container.class.php:400
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'inserción en forma de una pestaña específica' en la misma pestaña de objeto"
 
-#: inc/container.class.php:416
+#: inc/container.class.php:417
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No se pueden añadir varios bloques con un nombre idéntico en el mismo objeto"
 
-#: inc/container.class.php:561
+#: inc/container.class.php:562
 msgid "Block"
 msgstr "Bloque"
 
-#: inc/container.class.php:637
+#: inc/container.class.php:638
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:844
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:845
 msgid "Insertion in the form (before save button)"
 msgstr "Insertando en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:846
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserción en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/container.class.php:1207
+#: inc/container.class.php:1208
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1212
+#: inc/container.class.php:1213
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
-#: inc/container.class.php:1217
+#: inc/container.class.php:1218
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen vínculos no válidos"
 
