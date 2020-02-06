@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 14:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -18,31 +18,48 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: inc/field.class.php:75
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "附加字段"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "安装MySQL数据表"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "插件处于禁用状态时无法卸载"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "卸载MySQL数据表"
+
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "字段"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "字段"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "添加新字段"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "此区域无字段"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "只读"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "设置"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "设置字段值"
 
@@ -86,6 +103,70 @@ msgstr "日期"
 msgid "Date & time"
 msgstr "时间&日期"
 
+#: inc/container.class.php:16
+msgid "Regenerate container files"
+msgstr "生成容器文件"
+
+#: inc/container.class.php:91
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:172
+msgid "Updating generated containers files"
+msgstr "刷新生成容器文件"
+
+#: inc/container.class.php:368
+msgid "You cannot add block without associated element type"
+msgstr "您不能添加没有关联元素类型的块"
+
+#: inc/container.class.php:385
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的块"
+
+#: inc/container.class.php:400
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“表单中插入特殊标签”类型添加几个块"
+
+#: inc/container.class.php:417
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "不能在同一对象上添加名称相同的多个块"
+
+#: inc/container.class.php:562
+msgid "Block"
+msgstr "区域"
+
+#: inc/container.class.php:638
+msgid "Tab"
+msgstr "标签"
+
+#: inc/container.class.php:844
+msgid "Add tab"
+msgstr "添加标签"
+
+#: inc/container.class.php:845
+msgid "Insertion in the form (before save button)"
+msgstr "在窗体中插入(保存按钮前)"
+
+#: inc/container.class.php:846
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "以特定选项卡的形式插入(保存按钮之前)"
+
+#: inc/container.class.php:1208
+msgid "Some mandatory fields are empty"
+msgstr "一些强制字段是空的。"
+
+#: inc/container.class.php:1213
+msgid "Some numeric fields contains non numeric values"
+msgstr "一些数值字段包含非数值"
+
+#: inc/container.class.php:1218
+msgid "Some URL fields contains invalid links"
+msgstr "有些URL字段包含无效链接"
+
 #: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "语言"
@@ -101,84 +182,3 @@ msgstr "更新生成下拉文件"
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
-
-#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "附加字段"
-
-#: inc/container.class.php:16
-msgid "Regenerate container files"
-msgstr "生成容器文件"
-
-#: inc/container.class.php:91
-msgid "Fix container names"
-msgstr ""
-
-#: inc/container.class.php:172
-msgid "Updating generated containers files"
-msgstr "刷新生成容器文件"
-
-#: inc/container.class.php:367
-msgid "You cannot add block without associated element type"
-msgstr "您不能添加没有关联元素类型的块"
-
-#: inc/container.class.php:384
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的块"
-
-#: inc/container.class.php:399
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“表单中插入特殊标签”类型添加几个块"
-
-#: inc/container.class.php:416
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "不能在同一对象上添加名称相同的多个块"
-
-#: inc/container.class.php:561
-msgid "Block"
-msgstr "区域"
-
-#: inc/container.class.php:637
-msgid "Tab"
-msgstr "标签"
-
-#: inc/container.class.php:843
-msgid "Add tab"
-msgstr "添加标签"
-
-#: inc/container.class.php:844
-msgid "Insertion in the form (before save button)"
-msgstr "在窗体中插入(保存按钮前)"
-
-#: inc/container.class.php:845
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "以特定选项卡的形式插入(保存按钮之前)"
-
-#: inc/container.class.php:1207
-msgid "Some mandatory fields are empty"
-msgstr "一些强制字段是空的。"
-
-#: inc/container.class.php:1212
-msgid "Some numeric fields contains non numeric values"
-msgstr "一些数值字段包含非数值"
-
-#: inc/container.class.php:1217
-msgid "Some URL fields contains invalid links"
-msgstr "有些URL字段包含无效链接"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "安装MySQL数据表"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "插件处于禁用状态时无法卸载"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "卸载MySQL数据表"

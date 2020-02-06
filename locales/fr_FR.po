@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 14:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -21,31 +21,48 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/field.class.php:75
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Champs supplémentaires"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "Installation des tables MySQL"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "Désinstallation des tables MySQL"
+
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Champ"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Champs"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "Lecture seule"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Configuration"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Configurer les valeurs du champ"
 
@@ -89,6 +106,70 @@ msgstr "Date"
 msgid "Date & time"
 msgstr "Date & heure"
 
+#: inc/container.class.php:16
+msgid "Regenerate container files"
+msgstr "Régénérer les fichiers des blocs"
+
+#: inc/container.class.php:91
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:172
+msgid "Updating generated containers files"
+msgstr "Mettre à jour les fichier de conteneurs générés"
+
+#: inc/container.class.php:368
+msgid "You cannot add block without associated element type"
+msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
+
+#: inc/container.class.php:385
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
+
+#: inc/container.class.php:400
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire d'un onglet spécifique' sur le même onglet d'un objet"
+
+#: inc/container.class.php:417
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
+
+#: inc/container.class.php:562
+msgid "Block"
+msgstr "Bloc"
+
+#: inc/container.class.php:638
+msgid "Tab"
+msgstr "Onglet"
+
+#: inc/container.class.php:844
+msgid "Add tab"
+msgstr "Ajout d'un onglet"
+
+#: inc/container.class.php:845
+msgid "Insertion in the form (before save button)"
+msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
+
+#: inc/container.class.php:846
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
+
+#: inc/container.class.php:1208
+msgid "Some mandatory fields are empty"
+msgstr "Des champs obligatoires sont vides"
+
+#: inc/container.class.php:1213
+msgid "Some numeric fields contains non numeric values"
+msgstr "Des champs numériques contiennent des données non numériques"
+
+#: inc/container.class.php:1218
+msgid "Some URL fields contains invalid links"
+msgstr "Des champs URL contiennent des liens invalides"
+
 #: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "Langue"
@@ -104,84 +185,3 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
-
-#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Champs supplémentaires"
-
-#: inc/container.class.php:16
-msgid "Regenerate container files"
-msgstr "Régénérer les fichiers des blocs"
-
-#: inc/container.class.php:91
-msgid "Fix container names"
-msgstr ""
-
-#: inc/container.class.php:172
-msgid "Updating generated containers files"
-msgstr "Mettre à jour les fichier de conteneurs générés"
-
-#: inc/container.class.php:367
-msgid "You cannot add block without associated element type"
-msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
-
-#: inc/container.class.php:384
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
-
-#: inc/container.class.php:399
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire d'un onglet spécifique' sur le même onglet d'un objet"
-
-#: inc/container.class.php:416
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
-
-#: inc/container.class.php:561
-msgid "Block"
-msgstr "Bloc"
-
-#: inc/container.class.php:637
-msgid "Tab"
-msgstr "Onglet"
-
-#: inc/container.class.php:843
-msgid "Add tab"
-msgstr "Ajout d'un onglet"
-
-#: inc/container.class.php:844
-msgid "Insertion in the form (before save button)"
-msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
-
-#: inc/container.class.php:845
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
-
-#: inc/container.class.php:1207
-msgid "Some mandatory fields are empty"
-msgstr "Des champs obligatoires sont vides"
-
-#: inc/container.class.php:1212
-msgid "Some numeric fields contains non numeric values"
-msgstr "Des champs numériques contiennent des données non numériques"
-
-#: inc/container.class.php:1217
-msgid "Some URL fields contains invalid links"
-msgstr "Des champs URL contiennent des liens invalides"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Installation des tables MySQL"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Désinstallation des tables MySQL"

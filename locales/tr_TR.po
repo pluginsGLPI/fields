@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 14:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-07-30 23:44+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -18,31 +18,48 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/field.class.php:75
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Ek alanlar"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "MySQL tabloları yükleme"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "MySQL tabloları kaldırma"
+
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Alan"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Alanlar"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Alan ekle"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "Bu blokta henüz bir alan yok"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "Salt okunur"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Yapılandırma"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Alan değerleri yapılandırması"
 
@@ -86,6 +103,70 @@ msgstr "Tarih"
 msgid "Date & time"
 msgstr "Tarih ve Saat"
 
+#: inc/container.class.php:16
+msgid "Regenerate container files"
+msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
+
+#: inc/container.class.php:91
+msgid "Fix container names"
+msgstr "Kapsayıcı adlarını düzelt"
+
+#: inc/container.class.php:172
+msgid "Updating generated containers files"
+msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
+
+#: inc/container.class.php:368
+msgid "You cannot add block without associated element type"
+msgstr "İlişkilendirilmiş bir bileşen tipi olmadan bir blok eklenemez"
+
+#: inc/container.class.php:385
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
+
+#: inc/container.class.php:400
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
+
+#: inc/container.class.php:417
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
+
+#: inc/container.class.php:562
+msgid "Block"
+msgstr "Blok"
+
+#: inc/container.class.php:638
+msgid "Tab"
+msgstr "Sekme"
+
+#: inc/container.class.php:844
+msgid "Add tab"
+msgstr "Sekme ekle"
+
+#: inc/container.class.php:845
+msgid "Insertion in the form (before save button)"
+msgstr "Forma eklensin (kaydet düğmesinden önce)"
+
+#: inc/container.class.php:846
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
+
+#: inc/container.class.php:1208
+msgid "Some mandatory fields are empty"
+msgstr "Bazı zorunlu alanlar boş"
+
+#: inc/container.class.php:1213
+msgid "Some numeric fields contains non numeric values"
+msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
+
+#: inc/container.class.php:1218
+msgid "Some URL fields contains invalid links"
+msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
+
 #: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "Dil"
@@ -101,84 +182,3 @@ msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
-
-#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Ek alanlar"
-
-#: inc/container.class.php:16
-msgid "Regenerate container files"
-msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
-
-#: inc/container.class.php:91
-msgid "Fix container names"
-msgstr "Kapsayıcı adlarını düzelt"
-
-#: inc/container.class.php:172
-msgid "Updating generated containers files"
-msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
-
-#: inc/container.class.php:367
-msgid "You cannot add block without associated element type"
-msgstr "İlişkilendirilmiş bir bileşen tipi olmadan bir blok eklenemez"
-
-#: inc/container.class.php:384
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
-
-#: inc/container.class.php:399
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
-
-#: inc/container.class.php:416
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
-
-#: inc/container.class.php:561
-msgid "Block"
-msgstr "Blok"
-
-#: inc/container.class.php:637
-msgid "Tab"
-msgstr "Sekme"
-
-#: inc/container.class.php:843
-msgid "Add tab"
-msgstr "Sekme ekle"
-
-#: inc/container.class.php:844
-msgid "Insertion in the form (before save button)"
-msgstr "Forma eklensin (kaydet düğmesinden önce)"
-
-#: inc/container.class.php:845
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
-
-#: inc/container.class.php:1207
-msgid "Some mandatory fields are empty"
-msgstr "Bazı zorunlu alanlar boş"
-
-#: inc/container.class.php:1212
-msgid "Some numeric fields contains non numeric values"
-msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
-
-#: inc/container.class.php:1217
-msgid "Some URL fields contains invalid links"
-msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "MySQL tabloları yükleme"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "MySQL tabloları kaldırma"

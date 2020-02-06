@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-08 14:57+0000\n"
+"POT-Creation-Date: 2020-02-06 15:26+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fi_FI/)\n"
@@ -18,31 +18,48 @@ msgstr ""
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: inc/field.class.php:75
+#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
+#: setup.php:174
+msgid "Additionnal fields"
+msgstr "Lisäkentät"
+
+#: hook.php:58
+msgid "MySQL tables installation"
+msgstr "MySQL-taulukoiden asennus"
+
+#: hook.php:106
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Liitännäistä ei voi poistaa, kun liitännäinen on poistettu käytöstä"
+
+#: hook.php:115
+msgid "MySQL tables uninstallation"
+msgstr "MySQL-taulukoiden poistaminen"
+
+#: inc/field.class.php:79
 msgid "Field"
 msgstr "Kenttä"
 
-#: inc/field.class.php:249
+#: inc/field.class.php:253
 msgid "Fields"
 msgstr "Kentät"
 
-#: inc/field.class.php:303
+#: inc/field.class.php:307
 msgid "Add a new field"
 msgstr "Lisää uusi kenttä"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:311
 msgid "No field for this block"
 msgstr "Ei kenttää tälle osiolle"
 
-#: inc/field.class.php:319 inc/field.class.php:432
+#: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
 msgstr "Vain luku"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure"
 msgstr "Määritä"
 
-#: inc/field.class.php:409
+#: inc/field.class.php:413
 msgid "Configure fields values"
 msgstr "Määritä kenttien arvot"
 
@@ -86,6 +103,70 @@ msgstr "Päivämäärä"
 msgid "Date & time"
 msgstr "Päivämäärä ja aika"
 
+#: inc/container.class.php:16
+msgid "Regenerate container files"
+msgstr "Luo uudelleen säilötiedostot"
+
+#: inc/container.class.php:91
+msgid "Fix container names"
+msgstr ""
+
+#: inc/container.class.php:172
+msgid "Updating generated containers files"
+msgstr "Päivitetään luodut säilötiedostot"
+
+#: inc/container.class.php:368
+msgid "You cannot add block without associated element type"
+msgstr "Et voi lisätä osiota ilman liittyvää elementtityyppiä"
+
+#: inc/container.class.php:385
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Et voi lisätä useita osioita, joiden tyyppi on \"Lisää lomakkeeseen\" samassa objektissa"
+
+#: inc/container.class.php:400
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Et voi lisätä useita osioita, joissa on tyyppi \"Liitettynä lomakkeeseen tietyssä välilehdessä\" samassa objektin välilehdessä"
+
+#: inc/container.class.php:417
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Et voi lisätä useita osioita samalla nimellä samaan objektiin"
+
+#: inc/container.class.php:562
+msgid "Block"
+msgstr "Osio"
+
+#: inc/container.class.php:638
+msgid "Tab"
+msgstr "Välilehti"
+
+#: inc/container.class.php:844
+msgid "Add tab"
+msgstr "Lisää välilehti"
+
+#: inc/container.class.php:845
+msgid "Insertion in the form (before save button)"
+msgstr "Lisää lomakkeeseen (ennen tallennuspainiketta)"
+
+#: inc/container.class.php:846
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Lisää lomakkeeseen tietyssä välilehdessä (ennen tallennuspainiketta)"
+
+#: inc/container.class.php:1208
+msgid "Some mandatory fields are empty"
+msgstr "Jotkut pakolliset kentät ovat tyhjiä"
+
+#: inc/container.class.php:1213
+msgid "Some numeric fields contains non numeric values"
+msgstr "Jotkin numeeriset kentät sisältävät ei-numeerisia arvoja"
+
+#: inc/container.class.php:1218
+msgid "Some URL fields contains invalid links"
+msgstr "Joissakin URL-kentissä on virheellisiä linkkejä"
+
 #: inc/labeltranslation.class.php:139
 msgid "Language"
 msgstr "Kieli"
@@ -101,84 +182,3 @@ msgstr "Päivitetään luodut pudotusvalikko tiedostot"
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
-
-#: inc/menu.class.php:6 front/container.php:4 front/container.form.php:35
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Lisäkentät"
-
-#: inc/container.class.php:16
-msgid "Regenerate container files"
-msgstr "Luo uudelleen säilötiedostot"
-
-#: inc/container.class.php:91
-msgid "Fix container names"
-msgstr ""
-
-#: inc/container.class.php:172
-msgid "Updating generated containers files"
-msgstr "Päivitetään luodut säilötiedostot"
-
-#: inc/container.class.php:367
-msgid "You cannot add block without associated element type"
-msgstr "Et voi lisätä osiota ilman liittyvää elementtityyppiä"
-
-#: inc/container.class.php:384
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Et voi lisätä useita osioita, joiden tyyppi on \"Lisää lomakkeeseen\" samassa objektissa"
-
-#: inc/container.class.php:399
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Et voi lisätä useita osioita, joissa on tyyppi \"Liitettynä lomakkeeseen tietyssä välilehdessä\" samassa objektin välilehdessä"
-
-#: inc/container.class.php:416
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Et voi lisätä useita osioita samalla nimellä samaan objektiin"
-
-#: inc/container.class.php:561
-msgid "Block"
-msgstr "Osio"
-
-#: inc/container.class.php:637
-msgid "Tab"
-msgstr "Välilehti"
-
-#: inc/container.class.php:843
-msgid "Add tab"
-msgstr "Lisää välilehti"
-
-#: inc/container.class.php:844
-msgid "Insertion in the form (before save button)"
-msgstr "Lisää lomakkeeseen (ennen tallennuspainiketta)"
-
-#: inc/container.class.php:845
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Lisää lomakkeeseen tietyssä välilehdessä (ennen tallennuspainiketta)"
-
-#: inc/container.class.php:1207
-msgid "Some mandatory fields are empty"
-msgstr "Jotkut pakolliset kentät ovat tyhjiä"
-
-#: inc/container.class.php:1212
-msgid "Some numeric fields contains non numeric values"
-msgstr "Jotkin numeeriset kentät sisältävät ei-numeerisia arvoja"
-
-#: inc/container.class.php:1217
-msgid "Some URL fields contains invalid links"
-msgstr "Joissakin URL-kentissä on virheellisiä linkkejä"
-
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "MySQL-taulukoiden asennus"
-
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Liitännäistä ei voi poistaa, kun liitännäinen on poistettu käytöstä"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "MySQL-taulukoiden poistaminen"
