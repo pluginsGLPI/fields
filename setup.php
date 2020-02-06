@@ -77,7 +77,7 @@ function plugin_init_fields() {
    $plugin = new Plugin();
    if ($plugin->isInstalled('fields')
        && $plugin->isActivated('fields')
-       && Session::getLoginUserID() ) {
+       && Session::getLoginUserID()) {
 
       // Init hook about itemtype(s) for plugin fields
       if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
