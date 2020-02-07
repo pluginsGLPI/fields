@@ -1,9 +1,7 @@
 language: php
 php:
   - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
+  - 7.4
   - nightly
 
 services:
@@ -18,15 +16,15 @@ env:
 before_script:
   - composer self-update
   - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
-  - composer install --no-dev
+  - composer install --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-suggest
   - mysql -u root -e 'create database glpitest;'
   - bin/console glpi:database:install --config-dir=./tests --no-interaction --db-name=glpitest --db-host=127.0.0.1 --db-user=root
   - mv ../fields plugins/fields
   - cd plugins/fields
-  - composer install -o
+  - composer install --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-suggest
 
 script:
-  - vendor/bin/robo --no-interaction code:cs
+  - vendor/bin/robo --no-interaction code:cs --strict
   - mysql -u root -e 'select version();'
   - ./vendor/bin/atoum --debug -bf tests/bootstrap.php -d tests/units/
 
@@ -37,12 +35,3 @@ matrix:
 cache:
   directories:
     - $HOME/.composer/cache
-
-#notifications:
-#  irc:
-#    channels:
-#      - "irc.freenode.org#channel"
-#    on_success: change
-#    on_failure: always
-#    use_notice: true
-#    skip_join: true
