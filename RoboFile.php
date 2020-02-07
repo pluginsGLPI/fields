@@ -10,4 +10,8 @@ require_once 'vendor/autoload.php';
 class RoboFile extends Glpi\Tools\RoboFile
 {
     //Own plugin's robo stuff
+
+   public function __construct() {
+      $this->csignore[] = '/js/redips-drag-min.js';
+   }
 }
