@@ -34,15 +34,26 @@
 
 class FieldsDbTestCase extends \DbTestCase {
 
-   public function beforeTestMethod($method) {
+   public function setUp() {
       if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
+         //create data dir
          mkdir(PLUGINFIELDS_DOC_DIR);
-      }
-      parent::beforeTestMethod($method);
-   }
+      } else {
+         //cleanup data dir
+         $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator(
+               PLUGINFIELDS_DOC_DIR,
+               RecursiveDirectoryIterator::SKIP_DOTS
+            ),
+            RecursiveIteratorIterator::CHILD_FIRST
+         );
 
-   public function afterTestMethod($method) {
-      \Toolbox::deleteDir(PLUGINFIELDS_DOC_DIR);
-      parent::afterTestMethod($method);
+         foreach ($files as $fileinfo) {
+            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+            $todo($fileinfo->getRealPath());
+         }
+      }
+
+      parent::setUp();
    }
 }

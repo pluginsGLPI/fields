@@ -17,6 +17,11 @@ include_once GLPI_ROOT . '/tests/DbTestCase.php';
 $plugin = new \Plugin();
 $plugin->checkStates(true);
 $plugin->getFromDBbyDir('fields');
+//check from prerequisites as Plugin::install() does not!
+if (!plugin_fields_check_prerequisites()) {
+   echo "\nPrerequisites are not met!";
+   die(1);
+}
 if (!$plugin->isInstalled('fields')) {
    $plugin->install($plugin->getID());
 }
