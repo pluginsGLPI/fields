@@ -530,8 +530,10 @@ class PluginFieldsField extends CommonDBTM {
               || in_array('showFormHelpdesk', $functions)
                ? 'dom'
                : 'domtab';
-
-      // if we are in 'dom' or 'tab' type, no need for subtype ('domtab' specific)
+      if($subtype == -1) {
+         $type = 'dom';   
+      }
+      // if we are in 'dom' or 'tab'  type, no need for subtype ('domtab' specific)
       if ($type != 'domtab') {
          $subtype = "";
       }
@@ -811,6 +813,23 @@ class PluginFieldsField extends CommonDBTM {
                      }
                      $html.= getUserName($value, $showuserlink);
                   }
+                  break;
+               case 'dropdownoperatingsystems':
+                  if ($massiveaction) {
+                     continue;
+                  }
+                  if ($canedit && !$readonly) {
+                     $html.= OperatingSystem::dropdown(['name'      => $field['name'],
+                                             'value'     => $value,
+                                             'entity'    => -1,
+                                             'right'     => 'all',
+                                             'display'   => false//,
+                                             /*'condition' => 'is_active=1 && is_deleted=0'*/]);
+                  }else {
+                     $os = new OperatingSystem();
+                     $os->getFromDB($value);
+                     $html.= $os->fields['name'];
+                  }
             }
             if ($show_table) {
                $html.= "</td>";
@@ -885,7 +904,9 @@ class PluginFieldsField extends CommonDBTM {
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
-         'dropdownuser' => _n("User", "Users", 2)
+         'dropdownuser' => _n("User", "Users", 2),
+         'dropdownoperatingsystems' => _n("Operating system", "Operating systems", 2),
+
       ];
    }
 
