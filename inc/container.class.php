@@ -1218,7 +1218,7 @@ class PluginFieldsContainer extends CommonDBTM {
          // Check mandatory fields
          if ($field['mandatory'] == 1
              && ($value == ""
-                 || in_array($field['type'], ['dropdown', 'dropdownuser'])
+                 || in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems'])
                  && $value == 0
                  || in_array($field['type'], ['date', 'datetime'])
                  && $value == 'NULL')) {
