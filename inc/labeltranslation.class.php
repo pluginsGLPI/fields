@@ -3,6 +3,14 @@
 class PluginFieldsLabelTranslation extends CommonDBTM {
    static $rightname = 'config';
 
+   static function canCreate() {
+      return self::canUpdate();
+   }
+
+   static function canPurge() {
+      return self::canUpdate();
+   }
+
    /**
     * Install or update fields
     *
