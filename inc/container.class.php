@@ -1548,9 +1548,25 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
+         if ($data['type'] === "dropdownoperatingsystems") {
+            $opt[$i]['table']      = 'glpi_operatingsystems';
+            $opt[$i]['field']      = 'name';
+            $opt[$i]['linkfield']  = $data['name'];
+            $opt[$i]['right'] = 'all';
+
+            $opt[$i]['forcegroupby'] = true;
+
+            $opt[$i]['joinparams']['jointype'] = "";
+            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+         }
+
          switch ($data['type']) {
             case 'dropdown':
             case 'dropdownuser':
+               $opt[$i]['datatype'] = "dropdown";
+               break;
+            case 'dropdownoperatingsystems':
                $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
