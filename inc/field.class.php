@@ -530,14 +530,13 @@ class PluginFieldsField extends CommonDBTM {
               || in_array('showFormHelpdesk', $functions)
                ? 'dom'
                : 'domtab';
-      if($subtype == -1) {
-         $type = 'dom';   
+      if ($subtype == -1) {
+         $type = 'dom';
       }
-      // if we are in 'dom' or 'tab'  type, no need for subtype ('domtab' specific)
+      // if we are in 'dom' or 'tab' type, no need for subtype ('domtab' specific)
       if ($type != 'domtab') {
          $subtype = "";
       }
-
       //find container (if not exist, do nothing)
       if (isset($_REQUEST['c_id'])) {
          $c_id = $_REQUEST['c_id'];
@@ -825,7 +824,7 @@ class PluginFieldsField extends CommonDBTM {
                                              'right'     => 'all',
                                              'display'   => false//,
                                              /*'condition' => 'is_active=1 && is_deleted=0'*/]);
-                  }else {
+                  } else {
                      $os = new OperatingSystem();
                      $os->getFromDB($value);
                      $html.= $os->fields['name'];
