@@ -12,7 +12,7 @@ class PluginFieldsMenu extends CommonGLPI {
          return;
       }
 
-      $front_fields = "/plugins/fields/front";
+      $front_fields = Plugin::getPhpDir('fields', false)."/front";
       $menu = [];
       $menu['title'] = self::getMenuName();
       $menu['page']  = "$front_fields/container.php";

@@ -184,13 +184,13 @@ class PluginFieldsContainer extends CommonDBTM {
          foreach ($itemtypes as $itemtype) {
             $sysname = self::getSystemName($itemtype, $container['name']);
             $class_filename = $sysname.".class.php";
-            if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
-               unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+            if (file_exists(PLUGINFIELDS_DIR."/inc/$class_filename")) {
+               unlink(PLUGINFIELDS_DIR."/inc/$class_filename");
             }
 
             $injclass_filename = $sysname."injection.class.php";
-            if (file_exists(GLPI_ROOT."/plugins/fields/inc/$injclass_filename")) {
-               unlink(GLPI_ROOT."/plugins/fields/inc/$injclass_filename");
+            if (file_exists(PLUGINFIELDS_DIR."/inc/$injclass_filename")) {
+               unlink(PLUGINFIELDS_DIR."/inc/$injclass_filename");
             }
          }
 
@@ -458,8 +458,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $sysname   = self::getSystemName($itemtype, $fields['name']);
          $classname = self::getClassname($itemtype, $fields['name']);
 
-         $template_class = file_get_contents(GLPI_ROOT .
-            "/plugins/fields/templates/container.class.tpl");
+         $template_class = file_get_contents(PLUGINFIELDS_DIR."/templates/container.class.tpl");
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
          $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
          $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
@@ -471,8 +470,7 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          // Generate Datainjection files
-         $template_class = file_get_contents(GLPI_ROOT .
-            "/plugins/fields/templates/injection.class.tpl");
+         $template_class = file_get_contents(PLUGINFIELDS_DIR."/templates/injection.class.tpl");
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
          $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
          $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
@@ -920,7 +918,7 @@ class PluginFieldsContainer extends CommonDBTM {
                 FROM `glpi_plugin_fields_containers`
                 WHERE '.$where;
       $result = $DB->query($query);
-      while (list($data) = $DB->fetch_array($result)) {
+      while (list($data) = $DB->fetchArray($result)) {
          $jsonitemtype = json_decode($data);
          $itemtypes    = array_merge($itemtypes, $jsonitemtype);
       }

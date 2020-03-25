@@ -27,18 +27,18 @@ class PluginFieldsDropdown {
       foreach ($fields as $field) {
          //First, drop old fields from plugin directories
          $class_filename = $field['name']."dropdown.class.php";
-         if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
-            unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
+         if (file_exists(PLUGINFIELDS_DIR."/inc/$class_filename")) {
+            unlink(PLUGINFIELDS_DIR."/inc/$class_filename");
          }
 
          $front_filename = $field['name']."dropdown.php";
-         if (file_exists(GLPI_ROOT."/plugins/fields/front/$front_filename")) {
-            unlink(GLPI_ROOT."/plugins/fields/front/$front_filename");
+         if (file_exists(PLUGINFIELDS_DIR."/front/$front_filename")) {
+            unlink(PLUGINFIELDS_DIR."/front/$front_filename");
          }
 
          $form_filename = $field['name']."dropdown.form.php";
-         if (file_exists(GLPI_ROOT."/plugins/fields/front/$form_filename")) {
-            unlink(GLPI_ROOT."/plugins/fields/front/$form_filename");
+         if (file_exists(PLUGINFIELDS_DIR."/front/$form_filename")) {
+            unlink(PLUGINFIELDS_DIR."/front/$form_filename");
          }
 
          //Second, create new files
@@ -65,7 +65,7 @@ class PluginFieldsDropdown {
 
    static function create($input) {
       //get class template
-      $template_class = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.class.tpl");
+      $template_class = file_get_contents(PLUGINFIELDS_DIR."/templates/dropdown.class.tpl");
       if ($template_class === false) {
          return false;
       }
@@ -101,7 +101,7 @@ class PluginFieldsDropdown {
       }
 
       //get front template
-      $template_front = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.tpl");
+      $template_front = file_get_contents(PLUGINFIELDS_DIR."/templates/dropdown.tpl");
       if ($template_front === false) {
          Toolbox::logDebug("Error : get dropdown front template error");
          return false;
@@ -117,7 +117,7 @@ class PluginFieldsDropdown {
       }
 
       //get form template
-      $template_form = file_get_contents(GLPI_ROOT."/plugins/fields/templates/dropdown.form.tpl");
+      $template_form = file_get_contents(PLUGINFIELDS_DIR."/templates/dropdown.form.tpl");
       if ($template_form === false) {
          return false;
       }

@@ -97,7 +97,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
          echo Html::scriptBlock('
             addTranslation' . $item->getID() . $rand . ' = function() {
                $("#viewtranslation' . $item->getID() . $rand . '").load(
-                  "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
+                  "' . Plugin::getWebDir('fields') . '/ajax/viewtranslations.php",
                   ' . json_encode([
                      'type'     => __CLASS__,
                      'itemtype' => $item::getType(),
@@ -151,7 +151,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
                echo Html::scriptBlock('
                   viewEditTranslation' . $data['id'] . $rand . ' = function() {
                      $("#viewtranslation' . $item->getID() . $rand . '").load(
-                        "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
+                        "' . Plugin::getWebDir('fields') . '/ajax/viewtranslations.php",
                         ' . json_encode([
                            'type'     => __CLASS__,
                            'itemtype' => $item::getType(),
