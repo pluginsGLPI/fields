@@ -234,7 +234,7 @@ class PluginFieldsField extends CommonDBTM {
       $result = $DB->query($sql);
 
       if ($DB->numrows($result) > 0) {
-         $data = $DB->fetch_assoc($result);
+         $data = $DB->fetchAssoc($result);
          return $data["rank"] + 1;
       }
       return 0;
@@ -848,7 +848,7 @@ class PluginFieldsField extends CommonDBTM {
          return false;
       }
 
-      $data = $DB->fetch_assoc($res);
+      $data = $DB->fetchAssoc($res);
 
       //display an hidden post field to store container id
       echo Html::hidden('c_id', ['value' => $data['plugin_fields_containers_id']]);

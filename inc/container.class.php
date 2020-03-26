@@ -155,7 +155,7 @@ class PluginFieldsContainer extends CommonDBTM {
             foreach ($existings as $existing) {
                $data = [];
                foreach ($fieldnames as $oldname => $newname) {
-                  $data[$newname] = $existing[$olddname];
+                  $data[$newname] = $existing[$oldname];
                }
                $compdata->add($data);
             }
@@ -1164,7 +1164,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
             $db_result = [];
             if ($result = $DB->query($query)) {
-               $db_result = $DB->fetch_assoc($result);
+               $db_result = $DB->fetchAssoc($result);
                if (isset($db_result[$name])) {
                   $value = $db_result[$name];
                }
@@ -1451,7 +1451,7 @@ class PluginFieldsContainer extends CommonDBTM {
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
-      while ($data = $DB->fetch_assoc($res)) {
+      while ($data = $DB->fetchAssoc($res)) {
 
          if ($containers_id !== false) {
             // Filter by container (don't filter by SQL for have $i value with few containers for a itemtype)
