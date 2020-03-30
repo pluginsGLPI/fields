@@ -1609,4 +1609,9 @@ class PluginFieldsContainer extends CommonDBTM {
    static function getSystemName($itemtype = "", $raw_name = "") {
       return strtolower($itemtype.preg_replace('/s$/', '', $raw_name));
    }
+
+
+   static function getIcon() {
+      return "fas fa-tasks";
+   }
 }
