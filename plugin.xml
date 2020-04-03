@@ -87,7 +87,7 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
    <homepage>https://github.com/pluginsGLPI/fields</homepage>
    <download>https://github.com/pluginsGLPI/fields/releases</download>
    <issues>https://github.com/pluginsGLPI/fields/issues</issues>
-   <readme>https://github.com/pluginsGLPI/fields/blob/master/README.md</readme>
+   <readme>https://glpi-plugins.readthedocs.io/en/latest/fields/index.html</readme>
    <authors>
       <author>Teclib'</author>
       <author>Alexandre Delaunay</author>
