@@ -16,20 +16,23 @@ class PluginFieldsInventory extends CommonDBTM {
                switch ($itemtype) {
                   case Computer::getType():
                      $items_id = $params['computers_id'];
+                     $module = 'fusioninventorycomputer';
                      break;
 
                      case NetworkEquipment::getType():
                      $items_id = $params['networkequipments_id'];
+                     $module = 'PluginFusioninventoryNetworkEquipment';
                      break;
 
                      case Printer::getType():
                      $items_id = $params['printers_id'];
+                     $module = 'PluginFusioninventoryNetworkEquipment';
                      break;
                }
 
-               //load item
-               $item = new $itemtype();
-               $item->getFromDB($items_id);
+
+
+               //$serialized = gzcompress(serialize($params['inventory_data'][$module]['serialized_inventory']));
 
                //load XML
                $file = self::loadXMLFile($itemtype, $items_id);
@@ -37,36 +40,38 @@ class PluginFieldsInventory extends CommonDBTM {
 
                   $arrayinventory = PluginFusioninventoryFormatconvert::XMLtoArray($file);
                   $dataContainers = [];
+                  $customData = [];
                   $haveCustomField = false;
 
-                  //retrieve custom field here $arrayinventory['CONTENT']['CUSTOM'] for Computer
+
                   if($itemtype == Computer::getType()){
                      if(isset($arrayinventory['CONTENT']['CUSTOM'])){
                         $haveCustomField = true;
-                        $dataContainers = $arrayinventory['CONTENT']['CUSTOM']['CONTAINERS'];
+                        $customData = $arrayinventory['CONTENT']['CUSTOM'];
                      }
-                  //retrieve custom field here $arrayinventory['CONTENT']['CUSTOM'] for Printer and NetworkEquipment
                   }else{
                      if(isset($arrayinventory['CUSTOM'])){
                         $haveCustomField = true;
-                        $dataContainers = $arrayinventory['CUSTOM']['CONTAINERS'];
+                        $customData = $arrayinventory['CUSTOM'];
                      }
                   }
 
                   //manage custom fields
                   if($haveCustomField){
-                     $container = new PluginFieldsContainer();
-                     $container->getFromDB($dataContainers['ID']);
+                     foreach ($customData as $key => $dataContainers) {
 
-                     $data = [];
-                     $data["items_id"] = $items_id;
-                     $data["itemtype"] = $itemtype;
-                     $data["plugin_fields_containers_id"] = $dataContainers['ID'];
-                     foreach ($dataContainers['FIELDS'] as $key => $value) {
-                        $data[strtolower($key)] = $value;
+                        $container = new PluginFieldsContainer();
+                        $container->getFromDB($dataContainers['ID']);
+
+                        $data = [];
+                        $data["items_id"] = $items_id;
+                        $data["itemtype"] = $itemtype;
+                        $data["plugin_fields_containers_id"] = $dataContainers['ID'];
+                        foreach ($dataContainers['FIELDS'] as $key => $value) {
+                           $data[strtolower($key)] = $value;
+                        }
+                        $container->updateFieldsValues($data, $itemtype, false);                        # code...
                      }
-
-                     $container->updateFieldsValues($data, $itemtype, false);
                   }
                }
             }
