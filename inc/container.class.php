@@ -1264,7 +1264,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
                                      'plugin_fields_containers_id' => $id]);
             $first_found = array_shift($found);
-            if ($first_found['right'] == null || $first_found['right'] == 0) {
+            if ($first_found === null || $first_found['right'] == null || $first_found['right'] == 0) {
                return false;
             }
          }
