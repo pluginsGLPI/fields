@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr ""
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -34,72 +29,21 @@ msgstr ""
 msgid "MySQL tables uninstallation"
 msgstr ""
 
-#: inc/field.class.php:79
-msgid "Field"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
 msgstr ""
 
-#: inc/field.class.php:253
-msgid "Fields"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
 msgstr ""
 
-#: inc/field.class.php:307
-msgid "Add a new field"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
 msgstr ""
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr ""
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr ""
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr ""
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr ""
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr ""
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr ""
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr ""
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr ""
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr ""
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr ""
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr ""
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr ""
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr ""
-
-#: inc/field.class.php:887
-msgid "Date & time"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
 msgstr ""
 
 #: inc/container.class.php:16
@@ -134,50 +78,106 @@ msgstr ""
 msgid "You cannot add several blocs with identical name on same object"
 msgstr ""
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr ""
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr ""
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr ""
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr ""
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
-msgstr ""
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr ""
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr ""
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
 msgstr ""
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
+msgstr ""
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr ""
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr ""
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr ""
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr ""
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr ""
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr ""
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr ""
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr ""
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr ""
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr ""
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr ""
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr ""
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr ""
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr ""
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr ""
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr ""
+
+#: inc/field.class.php:886
+msgid "Date & time"
 msgstr ""

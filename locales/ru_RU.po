@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -19,11 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Дополнительные поля"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -37,73 +32,22 @@ msgstr "Плагин не может быть удален пока плагин
 msgid "MySQL tables uninstallation"
 msgstr "Удаление таблиц MySQL"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "Поле"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "Дополнительные поля"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "Поля"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Обновление автоматически раскрывающегося списка файлов"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "Добавить новое поле"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Язык"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "Нет поля для этого блока"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "Только чтение"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "Настройка"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "Настрить поля значений"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "показать"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "Заголовок"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "Тест (одна строка)"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "Текст (многострочный)"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "Номер"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "Выпадающий список"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "Да/Нет"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "Дата"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "Дата и время"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Метка"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -137,50 +81,106 @@ msgstr ""
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Вы не можете добавить несколько блоков с одинаковыми именами на один и тот же объект"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "Блок"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "Вкладка"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "Добавить вкладку"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "Добавить в виде (до кнопки сохранения)"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Добавить в виде конкретной вкладки (до кнопки сохранения)"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "Некоторые обязательные поля пусты"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "Некоторые числовые поля содержат не только цифры"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "Некоторый URL полей содержат недействительные ссылки"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Язык"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Метка"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Обновление автоматически раскрывающегося списка файлов"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "Поле"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "Поля"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "Добавить новое поле"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "Нет поля для этого блока"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "Только чтение"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "Настройка"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "Настрить поля значений"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "показать"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "Заголовок"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "Тест (одна строка)"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "Текст (многострочный)"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "Номер"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "Выпадающий список"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "Да/Нет"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "Дата"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "Дата и время"
