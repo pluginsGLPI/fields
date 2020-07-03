@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "附加字段"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -35,73 +30,22 @@ msgstr "插件处于禁用状态时无法卸载"
 msgid "MySQL tables uninstallation"
 msgstr "卸载MySQL数据表"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "字段"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "附加字段"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "字段"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "更新生成下拉文件"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "添加新字段"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "语言"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "此区域无字段"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "只读"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "设置"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "设置字段值"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "显示"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "头部"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "文本（单行）"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "文本（多行）"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "整数"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "网址"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "拖动"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "是/否"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "日期"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "时间&日期"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "标签"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -135,50 +79,106 @@ msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "不能在同一对象上添加名称相同的多个块"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "区域"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "标签"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "添加标签"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "在窗体中插入(保存按钮前)"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "以特定选项卡的形式插入(保存按钮之前)"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "一些强制字段是空的。"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "一些数值字段包含非数值"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "有些URL字段包含无效链接"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "语言"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "标签"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "更新生成下拉文件"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "字段"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "字段"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "添加新字段"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "此区域无字段"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "只读"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "设置"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "设置字段值"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "显示"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "头部"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "文本（单行）"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "文本（多行）"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "整数"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "网址"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "拖动"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "是/否"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "日期"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "时间&日期"

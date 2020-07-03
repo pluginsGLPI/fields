@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-09-07 23:02+0000\n"
 "Last-Translator: admin coleyon\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "追加のフィールド"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -35,73 +30,22 @@ msgstr "プラグインが無効な場合、プラグインをアンインスト
 msgid "MySQL tables uninstallation"
 msgstr "MySQLテーブルのアンインストール"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "フィールド"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "追加のフィールド"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "フィールド"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "生成済ドロップダウンフィールドの選択肢を更新"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "新しいフィールドを追加する"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "言語"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "ブロック内にフィールドはありません"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "読取専用"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "設定"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "フィールド値を設定"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "参照"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "ヘッダ"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "テキスト（単一行）"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "テキスト（複数行）"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "数値"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "ドロップダウン"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "はい/いいえ"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "日付"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "日時"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "ラベル"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -135,50 +79,106 @@ msgstr "同種のオブジェクトのタブに、「ラベル」が同じブロ
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "同種のオブジェクトに、「ラベル」が同じブロックを追加することはできません。"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "ブロック"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "タブを追加する"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "フォームに追加する（フォーム保存前時点）"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "フォームのタブに追加する（フォーム保存前時点）"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "必須項目が未入力です。"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値を含む数値フィールドがあります。"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含むURLフィールドがあります。"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "言語"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "ラベル"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "生成済ドロップダウンフィールドの選択肢を更新"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr "フィールド名を変更する"
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "フィールド"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "フィールド"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "新しいフィールドを追加する"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "ブロック内にフィールドはありません"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "読取専用"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "設定"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "フィールド値を設定"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "参照"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "ヘッダ"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "テキスト（単一行）"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "テキスト（複数行）"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "数値"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "ドロップダウン"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "はい/いいえ"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "日付"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "日時"
