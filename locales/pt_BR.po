@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-09-24 21:27+0000\n"
 "Last-Translator: Aleson Santos <aleson.s.santos@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_BR/)\n"
@@ -20,11 +20,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Campos adicionais"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -38,73 +33,22 @@ msgstr "O plugin não pode ser desinstalado enquando o plugin estiver desabilita
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalação de tabelas no MySQL"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "Campo"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "Campos adicionais"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "Campos"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Atualizando arquivos que foram baixados"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "Adicionar um novo campo"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Idioma"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "Nenhum campo para este bloco"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "Somente leitura"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "Configurar"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "Configurar valores dos campos"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "Exibir"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "Cabeçalho"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "Texto (linha simples)"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "Texto (Multiplas linhas)"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "Número"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "Suspenso"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "Sim/Não"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "Data"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "Datar & Hora"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Rótulo"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -138,50 +82,106 @@ msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção na forma
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Você não pode adicionar vários blocos com nome idêntico no mesmo objeto"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "Bloco"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "Aba"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "Adicionar aba"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "Inserção no formulário (antes do botão de salvar)"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "Alguns campos obrigatórios estão vazios"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alguns campos numéricos contém valores não numéricos"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "Alguns campos de URL contém links inválidos"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Idioma"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Rótulo"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Atualizando arquivos que foram baixados"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr "Corrigir nomes de campos"
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "Campo"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "Campos"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "Adicionar um novo campo"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "Nenhum campo para este bloco"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "Somente leitura"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "Configurar"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "Configurar valores dos campos"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "Exibir"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "Cabeçalho"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "Texto (linha simples)"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "Texto (Multiplas linhas)"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "Número"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "Suspenso"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "Sim/Não"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "Data"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "Datar & Hora"

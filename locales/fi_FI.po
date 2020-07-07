@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fi_FI/)\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Lisäkentät"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -35,73 +30,22 @@ msgstr "Liitännäistä ei voi poistaa, kun liitännäinen on poistettu käytös
 msgid "MySQL tables uninstallation"
 msgstr "MySQL-taulukoiden poistaminen"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "Kenttä"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "Lisäkentät"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "Kentät"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Päivitetään luodut pudotusvalikko tiedostot"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "Lisää uusi kenttä"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Kieli"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "Ei kenttää tälle osiolle"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "Vain luku"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "Määritä"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "Määritä kenttien arvot"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "näytä"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "Ylätunniste"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "Teksti (yksi rivi)"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "Teksti (useita rivejä)"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "Numero"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "Pudotusvalikko"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "Kyllä/Ei"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "Päivämäärä"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "Päivämäärä ja aika"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Etiketti"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -135,50 +79,106 @@ msgstr "Et voi lisätä useita osioita, joissa on tyyppi \"Liitettynä lomakkees
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Et voi lisätä useita osioita samalla nimellä samaan objektiin"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "Osio"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "Välilehti"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "Lisää välilehti"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "Lisää lomakkeeseen (ennen tallennuspainiketta)"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Lisää lomakkeeseen tietyssä välilehdessä (ennen tallennuspainiketta)"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "Jotkut pakolliset kentät ovat tyhjiä"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "Jotkin numeeriset kentät sisältävät ei-numeerisia arvoja"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "Joissakin URL-kentissä on virheellisiä linkkejä"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Kieli"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Etiketti"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Päivitetään luodut pudotusvalikko tiedostot"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "Kenttä"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "Kentät"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "Lisää uusi kenttä"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "Ei kenttää tälle osiolle"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "Vain luku"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "Määritä"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "Määritä kenttien arvot"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "näytä"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "Ylätunniste"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "Teksti (yksi rivi)"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "Teksti (useita rivejä)"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "Numero"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "Pudotusvalikko"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "Kyllä/Ei"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "Päivämäärä ja aika"

@@ -1,10 +1,7 @@
 language: php
 php:
-  - 5.6
-  - 7.0
-  - 7.1
   - 7.2
-  - nightly
+  - 7.4
 
 services:
   - mysql
@@ -13,36 +10,23 @@ env:
   global:
     - DB=mysql
   matrix:
-    - GLPIVER=9.4/bugfixes
+    - GLPIVER=9.5/bugfixes
 
 before_script:
   - composer self-update
   - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
-  - composer install --no-dev
+  - bin/console dependencies install
   - mysql -u root -e 'create database glpitest;'
   - bin/console glpi:database:install --config-dir=./tests --no-interaction --db-name=glpitest --db-host=127.0.0.1 --db-user=root
   - mv ../fields plugins/fields
   - cd plugins/fields
-  - composer install -o
+  - composer install --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-suggest
 
 script:
-  - vendor/bin/robo --no-interaction code:cs
+  - vendor/bin/robo --no-interaction code:cs --strict
   - mysql -u root -e 'select version();'
-  - ./vendor/bin/atoum --debug -bf tests/bootstrap.php -d tests/units/
-
-matrix:
-  allow_failures:
-    - php: nightly
+  - php vendor/bin/atoum -p 'php -d memory_limit=512M' --debug --force-terminal --use-dot-report --bootstrap-file tests/bootstrap.php --no-code-coverage --max-children-number 1 -d tests/units
 
 cache:
   directories:
     - $HOME/.composer/cache
-
-#notifications:
-#  irc:
-#    channels:
-#      - "irc.freenode.org#channel"
-#    on_success: change
-#    on_failure: always
-#    use_notice: true
-#    skip_join: true

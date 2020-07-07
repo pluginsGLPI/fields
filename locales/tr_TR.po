@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-07-30 23:44+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Ek alanlar"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -35,73 +30,22 @@ msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL tabloları kaldırma"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "Alan"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "Ek alanlar"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "Alanlar"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "Alan ekle"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Dil"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "Bu blokta henüz bir alan yok"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "Salt okunur"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "Yapılandırma"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "Alan değerleri yapılandırması"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "görüntüle"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "Üst Bilgi"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "Metin (tek satır)"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "Metin (birden çok satır)"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "Sayı"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "İnternet Adresi"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "Açılan Kutu"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "Evet/Hayır"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "Tarih"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "Tarih ve Saat"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Etiket"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -135,50 +79,106 @@ msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "Sekme ekle"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "Forma eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "Bazı zorunlu alanlar boş"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Dil"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Etiket"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "Alan"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "Alanlar"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "Alan ekle"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "Bu blokta henüz bir alan yok"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "Salt okunur"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "Yapılandırma"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "Alan değerleri yapılandırması"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "görüntüle"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "Üst Bilgi"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "Metin (tek satır)"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "Metin (birden çok satır)"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "Sayı"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "İnternet Adresi"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "Açılan Kutu"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "Evet/Hayır"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "Tarih"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "Tarih ve Saat"

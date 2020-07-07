@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 15:26+0000\n"
+"POT-Creation-Date: 2020-07-03 18:53+0000\n"
 "PO-Revision-Date: 2019-05-02 10:39+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pl_PL/)\n"
@@ -18,11 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl_PL\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-
-#: front/container.php:4 front/container.form.php:35 inc/menu.class.php:6
-#: setup.php:174
-msgid "Additionnal fields"
-msgstr "Dodatkowe pola"
 
 #: hook.php:58
 msgid "MySQL tables installation"
@@ -36,73 +31,22 @@ msgstr "Wtyczka nie może zostać odinstalowana kiedy jest wyłączona"
 msgid "MySQL tables uninstallation"
 msgstr "Deinstalacja tabel MYSQL"
 
-#: inc/field.class.php:79
-msgid "Field"
-msgstr "Pole"
+#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
+#: setup.php:177
+msgid "Additionnal fields"
+msgstr "Dodatkowe pola"
 
-#: inc/field.class.php:253
-msgid "Fields"
-msgstr "Pola"
+#: inc/dropdown.class.php:19
+msgid "Updating generated dropdown files"
+msgstr "Zaktualizowano pliki generowane z list rozwijanych"
 
-#: inc/field.class.php:307
-msgid "Add a new field"
-msgstr "Dodaj nowe pole"
+#: inc/labeltranslation.class.php:139
+msgid "Language"
+msgstr "Język"
 
-#: inc/field.class.php:311
-msgid "No field for this block"
-msgstr "Brak pola dla tego bloku"
-
-#: inc/field.class.php:323 inc/field.class.php:436
-msgid "Read only"
-msgstr "Tylko do odczytu"
-
-#: inc/field.class.php:413
-msgid "Configure"
-msgstr "Konfiguruj"
-
-#: inc/field.class.php:413
-msgid "Configure fields values"
-msgstr "Konfiguruj wartości pól"
-
-#: inc/field.class.php:733
-msgid "show"
-msgstr "pokaż"
-
-#: inc/field.class.php:879
-msgid "Header"
-msgstr "Nagłówek"
-
-#: inc/field.class.php:880
-msgid "Text (single line)"
-msgstr "Tekst (pojedyncza linia)"
-
-#: inc/field.class.php:881
-msgid "Text (multiples lines)"
-msgstr "Tekst (wiele linii)"
-
-#: inc/field.class.php:882
-msgid "Number"
-msgstr "Liczba"
-
-#: inc/field.class.php:883
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:884
-msgid "Dropdown"
-msgstr "Lista rozwijana"
-
-#: inc/field.class.php:885
-msgid "Yes/No"
-msgstr "Tak/Nie"
-
-#: inc/field.class.php:886
-msgid "Date"
-msgstr "Data"
-
-#: inc/field.class.php:887
-msgid "Date & time"
-msgstr "Data & czas"
+#: inc/labeltranslation.class.php:140
+msgid "Label"
+msgstr "Etykieta"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
@@ -136,50 +80,106 @@ msgstr ""
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nie możesz dodać kilku bloków o identycznej nazwie w tym samym obiekcie"
 
-#: inc/container.class.php:562
+#: inc/container.class.php:560
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:638
+#: inc/container.class.php:636
 msgid "Tab"
 msgstr "Zakładka"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:842
 msgid "Add tab"
 msgstr "Dodaj zakładkę"
 
-#: inc/container.class.php:845
+#: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
 msgstr "Dodawanie danych w formularzu (przed przyciskiem zapisz)"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Dodawanie danych w formularzu w konkretnej karcie (przed przyciskiem zapisz)"
 
-#: inc/container.class.php:1208
+#: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
 msgstr "Niektóre wymagane pola są puste"
 
-#: inc/container.class.php:1213
+#: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
 msgstr "Niektóre pola numeryczne zawierają wartości inne niż liczby"
 
-#: inc/container.class.php:1218
+#: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
 msgstr "Niektóre pola zawierają nieprawidłowe linki URL"
-
-#: inc/labeltranslation.class.php:139
-msgid "Language"
-msgstr "Język"
-
-#: inc/labeltranslation.class.php:140
-msgid "Label"
-msgstr "Etykieta"
-
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Zaktualizowano pliki generowane z list rozwijanych"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
 msgstr ""
+
+#: inc/field.class.php:79
+msgid "Field"
+msgstr "Pole"
+
+#: inc/field.class.php:253
+msgid "Fields"
+msgstr "Pola"
+
+#: inc/field.class.php:307
+msgid "Add a new field"
+msgstr "Dodaj nowe pole"
+
+#: inc/field.class.php:311
+msgid "No field for this block"
+msgstr "Brak pola dla tego bloku"
+
+#: inc/field.class.php:323 inc/field.class.php:436
+msgid "Read only"
+msgstr "Tylko do odczytu"
+
+#: inc/field.class.php:413
+msgid "Configure"
+msgstr "Konfiguruj"
+
+#: inc/field.class.php:413
+msgid "Configure fields values"
+msgstr "Konfiguruj wartości pól"
+
+#: inc/field.class.php:732
+msgid "show"
+msgstr "pokaż"
+
+#: inc/field.class.php:878
+msgid "Header"
+msgstr "Nagłówek"
+
+#: inc/field.class.php:879
+msgid "Text (single line)"
+msgstr "Tekst (pojedyncza linia)"
+
+#: inc/field.class.php:880
+msgid "Text (multiples lines)"
+msgstr "Tekst (wiele linii)"
+
+#: inc/field.class.php:881
+msgid "Number"
+msgstr "Liczba"
+
+#: inc/field.class.php:882
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:883
+msgid "Dropdown"
+msgstr "Lista rozwijana"
+
+#: inc/field.class.php:884
+msgid "Yes/No"
+msgstr "Tak/Nie"
+
+#: inc/field.class.php:885
+msgid "Date"
+msgstr "Data"
+
+#: inc/field.class.php:886
+msgid "Date & time"
+msgstr "Data & czas"

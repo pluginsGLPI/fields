@@ -123,7 +123,8 @@ class PluginFieldsToolbox {
          foreach ($sql_fields_to_rename as $old_field_name => $new_field_name) {
             $tables_to_update = $DB->request(
                [
-                  'SELECT DISTINCT' => 'TABLE_NAME',
+                  'SELECT'          => 'TABLE_NAME',
+                  'DISTINCT'        => true,
                   'FROM'            => 'INFORMATION_SCHEMA.COLUMNS',
                   'WHERE'           => [
                      'TABLE_SCHEMA'  => $DB->dbdefault,

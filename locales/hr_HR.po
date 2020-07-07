@@ -3,165 +3,165 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# SeongHyeon Cho <jaymz9634@gmail.com>, 2020
+# milotype <mail@milotype.de>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-03 18:53+0000\n"
-"PO-Revision-Date: 2020-02-03 04:19+0000\n"
-"Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>\n"
-"Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
+"PO-Revision-Date: 2020-02-12 13:19+0000\n"
+"Last-Translator: milotype <mail@milotype.de>\n"
+"Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko_KR\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: hr_HR\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: hook.php:58
 msgid "MySQL tables installation"
-msgstr "MySQL 테이블 삽입"
+msgstr "Instalacija MySQL tablica"
 
 #: hook.php:106
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다"
+msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
 
 #: hook.php:115
 msgid "MySQL tables uninstallation"
-msgstr "MySQL 테이블 제거"
+msgstr "Deinstalacija MySQL tablica"
 
 #: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
 #: setup.php:177
 msgid "Additionnal fields"
-msgstr "추가 항목"
+msgstr "Dodatna polja"
 
 #: inc/dropdown.class.php:19
 msgid "Updating generated dropdown files"
-msgstr "생성된 드롭다운 파일 갱신"
+msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 
 #: inc/labeltranslation.class.php:139
 msgid "Language"
-msgstr "언어"
+msgstr "Jezik"
 
 #: inc/labeltranslation.class.php:140
 msgid "Label"
-msgstr "라벨"
+msgstr "Oznaka"
 
 #: inc/container.class.php:16
 msgid "Regenerate container files"
-msgstr "컨테이너 파일 재생성"
+msgstr "Ponovo generiraj datoteke spremnika"
 
 #: inc/container.class.php:91
 msgid "Fix container names"
-msgstr "컨테이너 이름 수정"
+msgstr "Ispravi imena spremnika"
 
 #: inc/container.class.php:172
 msgid "Updating generated containers files"
-msgstr "생성된 컨테이너 파일 갱신"
+msgstr "Aktualiziranje generiranih datoteka spremnika"
 
 #: inc/container.class.php:368
 msgid "You cannot add block without associated element type"
-msgstr "관련된 요소 형식이 없으면 추가할 수 없습니다"
+msgstr "Nije moguće dodati blok bez povezane vrste elementa"
 
 #: inc/container.class.php:385
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "동일한 객체에 '양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
+msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
 
 #: inc/container.class.php:400
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr "동일한 객체 탭에 '특정 탭의 양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
+msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
 
 #: inc/container.class.php:417
 msgid "You cannot add several blocs with identical name on same object"
-msgstr "동일한 객체에 동일한 이름을 가진 몇개의 블록을 추가할 수 없습니다."
+msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
 
 #: inc/container.class.php:560
 msgid "Block"
-msgstr "블록"
+msgstr "Blok"
 
 #: inc/container.class.php:636
 msgid "Tab"
-msgstr "탭"
+msgstr "Kartica"
 
 #: inc/container.class.php:842
 msgid "Add tab"
-msgstr "탭 추가"
+msgstr "Dodaj karticu"
 
 #: inc/container.class.php:843
 msgid "Insertion in the form (before save button)"
-msgstr "(저장 버튼 전에) 양식에 삽입"
+msgstr "Umetanje u obrazac (prije gumba za spremanje)"
 
 #: inc/container.class.php:844
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "(저장 버튼 전에) 특정 탭의 양식에 삽입"
+msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
 
 #: inc/container.class.php:1206
 msgid "Some mandatory fields are empty"
-msgstr "일부 필수 항목이 비었습니다"
+msgstr "Neka obavezna polja su prazna"
 
 #: inc/container.class.php:1211
 msgid "Some numeric fields contains non numeric values"
-msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
+msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 
 #: inc/container.class.php:1216
 msgid "Some URL fields contains invalid links"
-msgstr "일부 URL 항목에 잘못된 링크가 포함되었습니다"
+msgstr "Neka URL polja sadrže neispravne poveznice"
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
-msgstr "항목 이름 수정"
+msgstr "Ispravi imena polja"
 
 #: inc/field.class.php:79
 msgid "Field"
-msgstr "항목"
+msgstr "Polje"
 
 #: inc/field.class.php:253
 msgid "Fields"
-msgstr "항목"
+msgstr "Polja"
 
 #: inc/field.class.php:307
 msgid "Add a new field"
-msgstr "새 항목 추가"
+msgstr "Dodaj novo polje"
 
 #: inc/field.class.php:311
 msgid "No field for this block"
-msgstr "이 블럭에 대한 항목 없음"
+msgstr "Nema polja za ovaj blok"
 
 #: inc/field.class.php:323 inc/field.class.php:436
 msgid "Read only"
-msgstr "읽기 전용"
+msgstr "Samo-za-čitanje"
 
 #: inc/field.class.php:413
 msgid "Configure"
-msgstr "구성"
+msgstr "Konfiguriraj"
 
 #: inc/field.class.php:413
 msgid "Configure fields values"
-msgstr "항목 값 구성"
+msgstr "Konfiguriraj vrijednosti polja"
 
 #: inc/field.class.php:732
 msgid "show"
-msgstr "표시"
+msgstr "prikaži"
 
 #: inc/field.class.php:878
 msgid "Header"
-msgstr "헤더"
+msgstr "Zaglavlje"
 
 #: inc/field.class.php:879
 msgid "Text (single line)"
-msgstr "문구 (한 줄)"
+msgstr "Tekst (jednoredni)"
 
 #: inc/field.class.php:880
 msgid "Text (multiples lines)"
-msgstr "문구 (여러 줄)"
+msgstr "Tekst (višeredni)"
 
 #: inc/field.class.php:881
 msgid "Number"
-msgstr "숫자"
+msgstr "Broj"
 
 #: inc/field.class.php:882
 msgid "URL"
@@ -169,16 +169,16 @@ msgstr "URL"
 
 #: inc/field.class.php:883
 msgid "Dropdown"
-msgstr "드롭다운"
+msgstr "Padajući popis"
 
 #: inc/field.class.php:884
 msgid "Yes/No"
-msgstr "예/아니오"
+msgstr "Da/Ne"
 
 #: inc/field.class.php:885
 msgid "Date"
-msgstr "날짜"
+msgstr "Datum"
 
 #: inc/field.class.php:886
 msgid "Date & time"
-msgstr "날짜 & 시간"
+msgstr "Datum i vrijeme"
