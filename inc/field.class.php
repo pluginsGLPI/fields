@@ -516,7 +516,6 @@ class PluginFieldsField extends CommonDBTM {
     * @return void
     */
    static function showForTab($params) {
-      global $CFG_GLPI;
 
       $item    = $params['item'];
       $options = $params['options'];
@@ -531,8 +530,23 @@ class PluginFieldsField extends CommonDBTM {
                : 'domtab';
 
       // if we are in 'dom' or 'tab' type, no need for subtype ('domtab' specific)
-      if ($type != 'domtab') {
+      if ($type != 'domtab' && $type != 'itil_dom') {
          $subtype = "";
+      }
+
+      if(get_Class($item) == ITILSolution::getType()){
+         $type = 'itil_dom';
+         switch (get_class($options['item'])) {
+            case  Change::getType():
+            $subtype = Change::getType();
+               break;
+            case  Change::getType():
+            $subtype = Ticket::getType();
+               break;
+            case  Change::getType():
+            $subtype = Problem::getType();
+               break;
+         }
       }
 
       //find container (if not exist, do nothing)
@@ -550,11 +564,14 @@ class PluginFieldsField extends CommonDBTM {
          $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
       }
 
-      $current_entity = $item::getType() == Entity::getType()
-                           ? $item->getID()
-                           : $item->fields['entities_id'];
-      if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
-         return false;
+      //test with array key exist because isentityassign return empty object on create
+      if (array_key_exists('entities_id', $item->fields)) {
+         $current_entity = $item::getType() == Entity::getType()
+            ? $item->getID()
+            : $item->fields['entities_id'];
+         if ($item->isEntityAssign() && !in_array($current_entity, $entities)) {
+            return false;
+         }
       }
 
       //parse REQUEST_URI
@@ -564,7 +581,8 @@ class PluginFieldsField extends CommonDBTM {
       $current_url = $_SERVER['REQUEST_URI'];
       if (strpos($current_url, ".form.php") === false
           && strpos($current_url, ".injector.php") === false
-          && strpos($current_url, ".public.php") === false) {
+          && strpos($current_url, ".public.php") === false
+          && strpos($current_url, "timeline.php") === false) {
          return false;
       }
 
