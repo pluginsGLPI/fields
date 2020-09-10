@@ -155,7 +155,7 @@ class PluginFieldsContainer extends CommonDBTM {
             foreach ($existings as $existing) {
                $data = [];
                foreach ($fieldnames as $oldname => $newname) {
-                  $data[$newname] = $existing[$oldname];
+                  $data[$newname] = $existing[$olddname];
                }
                $compdata->add($data);
             }
@@ -184,13 +184,13 @@ class PluginFieldsContainer extends CommonDBTM {
          foreach ($itemtypes as $itemtype) {
             $sysname = self::getSystemName($itemtype, $container['name']);
             $class_filename = $sysname.".class.php";
-            if (file_exists(PLUGINFIELDS_DIR."/inc/$class_filename")) {
-               unlink(PLUGINFIELDS_DIR."/inc/$class_filename");
+            if (file_exists(GLPI_ROOT."/plugins/fields/inc/$class_filename")) {
+               unlink(GLPI_ROOT."/plugins/fields/inc/$class_filename");
             }
 
             $injclass_filename = $sysname."injection.class.php";
-            if (file_exists(PLUGINFIELDS_DIR."/inc/$injclass_filename")) {
-               unlink(PLUGINFIELDS_DIR."/inc/$injclass_filename");
+            if (file_exists(GLPI_ROOT."/plugins/fields/inc/$injclass_filename")) {
+               unlink(GLPI_ROOT."/plugins/fields/inc/$injclass_filename");
             }
          }
 
@@ -458,7 +458,8 @@ class PluginFieldsContainer extends CommonDBTM {
          $sysname   = self::getSystemName($itemtype, $fields['name']);
          $classname = self::getClassname($itemtype, $fields['name']);
 
-         $template_class = file_get_contents(PLUGINFIELDS_DIR."/templates/container.class.tpl");
+         $template_class = file_get_contents(GLPI_ROOT .
+            "/plugins/fields/templates/container.class.tpl");
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
          $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
          $template_class = str_replace("%%CONTAINER%%", $fields['id'], $template_class);
@@ -470,7 +471,8 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          // Generate Datainjection files
-         $template_class = file_get_contents(PLUGINFIELDS_DIR."/templates/injection.class.tpl");
+         $template_class = file_get_contents(GLPI_ROOT .
+            "/plugins/fields/templates/injection.class.tpl");
          $template_class = str_replace("%%CLASSNAME%%", $classname, $template_class);
          $template_class = str_replace("%%ITEMTYPE%%", $itemtype, $template_class);
          $template_class = str_replace("%%CONTAINER_ID%%", $fields['id'], $template_class);
@@ -918,7 +920,7 @@ class PluginFieldsContainer extends CommonDBTM {
                 FROM `glpi_plugin_fields_containers`
                 WHERE '.$where;
       $result = $DB->query($query);
-      while (list($data) = $DB->fetchArray($result)) {
+      while (list($data) = $DB->fetch_array($result)) {
          $jsonitemtype = json_decode($data);
          $itemtypes    = array_merge($itemtypes, $jsonitemtype);
       }
@@ -1164,7 +1166,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
             $db_result = [];
             if ($result = $DB->query($query)) {
-               $db_result = $DB->fetchAssoc($result);
+               $db_result = $DB->fetch_assoc($result);
                if (isset($db_result[$name])) {
                   $value = $db_result[$name];
                }
@@ -1264,7 +1266,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
                                      'plugin_fields_containers_id' => $id]);
             $first_found = array_shift($found);
-            if ($first_found === null || $first_found['right'] == null || $first_found['right'] == 0) {
+            if ($first_found['right'] == null || $first_found['right'] == 0) {
                return false;
             }
          }
@@ -1435,7 +1437,18 @@ class PluginFieldsContainer extends CommonDBTM {
       $opt = [];
 
       $i = 76665;
+//MOMI 09 09 20 for execution from CLI or Cron without profile
+         if (!isset($_SESSION['glpiactiveprofile']['id'])) {
+             $actprof = 4; //Super-Admin
+         } else {
+             $actprof = (int) $_SESSION['glpiactiveprofile']['id'];
+         }
+#in query modify:
+#            AND profiles.profiles_id = ".(int) $_SESSION['glpiactiveprofile']['id']."
+# to
+#            AND profiles.profiles_id = ".$actprof."
 
+//END MOMI
       $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
@@ -1443,7 +1456,7 @@ class PluginFieldsContainer extends CommonDBTM {
          INNER JOIN glpi_plugin_fields_profiles profiles
             ON containers.id = profiles.plugin_fields_containers_id
             AND profiles.right > 0
-            AND profiles.profiles_id = ".(int) $_SESSION['glpiactiveprofile']['id']."
+            AND profiles.profiles_id = ".$actprof."
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
@@ -1451,7 +1464,7 @@ class PluginFieldsContainer extends CommonDBTM {
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
-      while ($data = $DB->fetchAssoc($res)) {
+      while ($data = $DB->fetch_assoc($res)) {
 
          if ($containers_id !== false) {
             // Filter by container (don't filter by SQL for have $i value with few containers for a itemtype)
@@ -1608,10 +1621,5 @@ class PluginFieldsContainer extends CommonDBTM {
     */
    static function getSystemName($itemtype = "", $raw_name = "") {
       return strtolower($itemtype.preg_replace('/s$/', '', $raw_name));
-   }
-
-
-   static function getIcon() {
-      return "fas fa-tasks";
    }
 }
