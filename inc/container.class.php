@@ -748,15 +748,19 @@ class PluginFieldsContainer extends CommonDBTM {
       $tabs = [];
 
       $tabs[__('Assets')] = [
-         'Computer'         => Computer::getTypeName(2),
-         'Monitor'          => Monitor::getTypeName(2),
-         'Software'         => Software::getTypeName(2),
-         'NetworkEquipment' => NetworkEquipment::getTypeName(2),
-         'Peripheral'       => Peripheral::getTypeName(2),
-         'Printer'          => Printer::getTypeName(2),
-         'CartridgeItem'    => CartridgeItem::getTypeName(2),
-         'ConsumableItem'   => ConsumableItem::getTypeName(2),
-         'Phone'            => Phone::getTypeName(2)
+         'Computer'           => Computer::getTypeName(2),
+         'Monitor'            => Monitor::getTypeName(2),
+         'Software'           => Software::getTypeName(2),
+         'NetworkEquipment'   => NetworkEquipment::getTypeName(2),
+         'Peripheral'         => Peripheral::getTypeName(2),
+         'Printer'            => Printer::getTypeName(2),
+         'CartridgeItem'      => CartridgeItem::getTypeName(2),
+         'ConsumableItem'     => ConsumableItem::getTypeName(2),
+         'Phone'              => Phone::getTypeName(2),
+         'Rack'               => Rack::getTypeName(2),
+         'Enclosure'          => Enclosure::getTypeName(2),
+         'PDU'                => PDU::getTypeName(2),
+         'PassiveDCEquipment' => PassiveDCEquipment::getTypeName(2),
       ];
 
       $tabs[__('Assistance')] = [
@@ -774,6 +778,11 @@ class PluginFieldsContainer extends CommonDBTM {
          'Contract'        => Contract::getTypeName(2),
          'Document'        => Document::getTypeName(2),
          'Line'            => Line::getTypeName(2),
+         'Certificate'     => Certificate::getTypeName(2),
+         'Datacenter'      => Datacenter::getTypeName(2),
+         'Cluster'         => Cluster::getTypeName(2),
+         'Domain'          => Domain::getTypeName(2),
+         'Appliance'       => Appliance::getTypeName(2),
       ];
 
       $tabs[__('Tools')] = [
