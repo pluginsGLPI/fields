@@ -13,7 +13,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function titleList() {
       echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
-            __("Regenerate container files", "fields")."</a></div>";
+            __("Regenerate container files", "fields")."</a>&nbsp;&nbsp;<a class='vsubmit' href='export_to_yaml.php'><i class='pointer fa fa-refresh'></i>&nbsp;".
+            __("Export to YAML", "fields")."</a></div><br>";
+
    }
 
    /**
@@ -90,25 +92,32 @@ class PluginFieldsContainer extends CommonDBTM {
       if ($bad_named_containers->count() > 0) {
          $migration->displayMessage(__("Fix container names", "fields"));
 
+         $toolbox = new PluginFieldsToolbox();
+
          foreach ($bad_named_containers as $container) {
             $old_name = $container['name'];
 
             // Update container name
-            $toolbox = new PluginFieldsToolbox();
-            $container['name'] = $toolbox->getSystemNameFromLabel($container['label']);
+            $new_name = $toolbox->getSystemNameFromLabel($container['label']);
+            foreach (json_decode($container['itemtypes']) as $itemtype) {
+               while (strlen(getTableForItemType(self::getClassname($itemtype, $new_name))) > 64) {
+                  // limit tables names to 64 chars (MySQL limit)
+                  $new_name = substr($new_name, 0, -1);
+               }
+            }
+            $container['name'] = $new_name;
             $container_obj = new PluginFieldsContainer();
             $container_obj->update(
                $container,
                false
             );
 
-            // Rename container tables
+            // Rename container tables and itemtype if needed
             foreach (json_decode($container['itemtypes']) as $itemtype) {
-               $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
-               $new_table = getTableForItemType(self::getClassname($itemtype, $container['name']));
-               if ($DB->tableExists($old_table)) {
-                  $migration->renameTable($old_table, $new_table);
-               }
+               $migration->renameItemtype(
+                  self::getClassname($itemtype, $old_name),
+                  self::getClassname($itemtype, $new_name)
+               );
             }
          }
       }
@@ -408,6 +417,19 @@ class PluginFieldsContainer extends CommonDBTM {
       $toolbox = new PluginFieldsToolbox();
       $input['name'] = $toolbox->getSystemNameFromLabel($input['label']);
 
+      //reject adding when container name is too long for mysql table name
+      foreach ($input['itemtypes'] as $itemtype) {
+         $tmp = getTableForItemType(self::getClassname($itemtype, $input['name']));
+         if (strlen($tmp) > 64) {
+            Session::AddMessageAfterRedirect(
+               __("Container name is too long for database (digits in name are replaced by characters, try to remove them)", 'fields'),
+               false,
+               ERROR
+            );
+            return false;
+         }
+      }
+
       //check for already existing container with same name
       $found = $this->find(['name' => $input['name']]);
       if (count($found) > 0) {
@@ -562,6 +584,9 @@ class PluginFieldsContainer extends CommonDBTM {
 
    public function showForm($ID, $options = []) {
       global $CFG_GLPI;
+
+      echo "<div class='center'><a class='vsubmit' href='export_to_yaml.php?id=".$ID."'><i class='pointer fa fa-refresh'></i>&nbsp;".
+      __("Export to YAML", "fields")."</a></div><br>";
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -748,15 +773,19 @@ class PluginFieldsContainer extends CommonDBTM {
       $tabs = [];
 
       $tabs[__('Assets')] = [
-         'Computer'         => Computer::getTypeName(2),
-         'Monitor'          => Monitor::getTypeName(2),
-         'Software'         => Software::getTypeName(2),
-         'NetworkEquipment' => NetworkEquipment::getTypeName(2),
-         'Peripheral'       => Peripheral::getTypeName(2),
-         'Printer'          => Printer::getTypeName(2),
-         'CartridgeItem'    => CartridgeItem::getTypeName(2),
-         'ConsumableItem'   => ConsumableItem::getTypeName(2),
-         'Phone'            => Phone::getTypeName(2)
+         'Computer'           => Computer::getTypeName(2),
+         'Monitor'            => Monitor::getTypeName(2),
+         'Software'           => Software::getTypeName(2),
+         'NetworkEquipment'   => NetworkEquipment::getTypeName(2),
+         'Peripheral'         => Peripheral::getTypeName(2),
+         'Printer'            => Printer::getTypeName(2),
+         'CartridgeItem'      => CartridgeItem::getTypeName(2),
+         'ConsumableItem'     => ConsumableItem::getTypeName(2),
+         'Phone'              => Phone::getTypeName(2),
+         'Rack'               => Rack::getTypeName(2),
+         'Enclosure'          => Enclosure::getTypeName(2),
+         'PDU'                => PDU::getTypeName(2),
+         'PassiveDCEquipment' => PassiveDCEquipment::getTypeName(2),
       ];
 
       $tabs[__('Assistance')] = [
@@ -774,6 +803,11 @@ class PluginFieldsContainer extends CommonDBTM {
          'Contract'        => Contract::getTypeName(2),
          'Document'        => Document::getTypeName(2),
          'Line'            => Line::getTypeName(2),
+         'Certificate'     => Certificate::getTypeName(2),
+         'Datacenter'      => Datacenter::getTypeName(2),
+         'Cluster'         => Cluster::getTypeName(2),
+         'Domain'          => Domain::getTypeName(2),
+         'Appliance'       => Appliance::getTypeName(2),
       ];
 
       $tabs[__('Tools')] = [
