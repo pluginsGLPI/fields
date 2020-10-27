@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-03 18:53+0000\n"
-"PO-Revision-Date: 2020-03-24 15:21+0000\n"
-"Last-Translator: Ricardo Herrero <ricardo.herrero@gmail.com>\n"
+"POT-Creation-Date: 2020-10-27 14:42+0000\n"
+"PO-Revision-Date: 2020-10-27 14:43+0000\n"
+"Last-Translator: Cédric Anne\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +34,7 @@ msgid "MySQL tables uninstallation"
 msgstr "Desinstalación de las tablas MySQL"
 
 #: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
-#: setup.php:177
+#: setup.php:187
 msgid "Additionnal fields"
 msgstr "Campos adicionales"
 
@@ -42,11 +42,11 @@ msgstr "Campos adicionales"
 msgid "Updating generated dropdown files"
 msgstr "Actualización de los archivos 'desplegables' generados"
 
-#: inc/labeltranslation.class.php:139
+#: inc/labeltranslation.class.php:147
 msgid "Language"
 msgstr "Idioma"
 
-#: inc/labeltranslation.class.php:140
+#: inc/labeltranslation.class.php:148
 msgid "Label"
 msgstr "Etiqueta"
 
@@ -54,63 +54,73 @@ msgstr "Etiqueta"
 msgid "Regenerate container files"
 msgstr "Regenerar archivos contenedores"
 
-#: inc/container.class.php:91
+#: inc/container.class.php:17 inc/container.class.php:589
+msgid "Export to YAML"
+msgstr ""
+
+#: inc/container.class.php:93
 msgid "Fix container names"
 msgstr "Corrija los nombres de los contenedores"
 
-#: inc/container.class.php:172
+#: inc/container.class.php:181
 msgid "Updating generated containers files"
 msgstr "Actualizar los archivos de contenedores generados"
 
-#: inc/container.class.php:368
+#: inc/container.class.php:377
 msgid "You cannot add block without associated element type"
 msgstr "No se puede agregar un bloque sin el tipo de elemento asociado"
 
-#: inc/container.class.php:385
+#: inc/container.class.php:394
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No se pueden añadir varios bloques con el tipo 'inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:400
+#: inc/container.class.php:409
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'inserción en forma de una pestaña específica' en la misma pestaña de objeto"
 
-#: inc/container.class.php:417
+#: inc/container.class.php:425
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/container.class.php:439
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No se pueden añadir varios bloques con un nombre idéntico en el mismo objeto"
 
-#: inc/container.class.php:560
+#: inc/container.class.php:582
 msgid "Block"
 msgstr "Bloque"
 
-#: inc/container.class.php:636
+#: inc/container.class.php:661
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/container.class.php:842
+#: inc/container.class.php:876
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:877
 msgid "Insertion in the form (before save button)"
 msgstr "Insertando en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:878
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserción en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/container.class.php:1206
+#: inc/container.class.php:1240
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1211
+#: inc/container.class.php:1245
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
-#: inc/container.class.php:1216
+#: inc/container.class.php:1250
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen vínculos no válidos"
 
@@ -122,66 +132,72 @@ msgstr "Corrija los nombres de los campos"
 msgid "Field"
 msgstr "Campo"
 
-#: inc/field.class.php:253
+#: inc/field.class.php:90 inc/field.class.php:115
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/field.class.php:272
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:326
 msgid "Add a new field"
 msgstr "Agregar nuevo campo"
 
-#: inc/field.class.php:311
+#: inc/field.class.php:330
 msgid "No field for this block"
 msgstr "Ningún campo para este bloque"
 
-#: inc/field.class.php:323 inc/field.class.php:436
+#: inc/field.class.php:342 inc/field.class.php:455
 msgid "Read only"
 msgstr "Solo lectura"
 
-#: inc/field.class.php:413
+#: inc/field.class.php:432
 msgid "Configure"
 msgstr "Configurar"
 
-#: inc/field.class.php:413
+#: inc/field.class.php:432
 msgid "Configure fields values"
 msgstr "Configure valores de los campos"
 
-#: inc/field.class.php:732
+#: inc/field.class.php:751
 msgid "show"
 msgstr "mostrar"
 
-#: inc/field.class.php:878
+#: inc/field.class.php:897
 msgid "Header"
 msgstr "Encabezamiento"
 
-#: inc/field.class.php:879
+#: inc/field.class.php:898
 msgid "Text (single line)"
 msgstr "Texto (línea simple)"
 
-#: inc/field.class.php:880
+#: inc/field.class.php:899
 msgid "Text (multiples lines)"
 msgstr "Texto (multiples líneas)"
 
-#: inc/field.class.php:881
+#: inc/field.class.php:900
 msgid "Number"
 msgstr "Número"
 
-#: inc/field.class.php:882
+#: inc/field.class.php:901
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:883
+#: inc/field.class.php:902
 msgid "Dropdown"
 msgstr "Menú desplegable"
 
-#: inc/field.class.php:884
+#: inc/field.class.php:903
 msgid "Yes/No"
 msgstr "Si/No"
 
-#: inc/field.class.php:885
+#: inc/field.class.php:904
 msgid "Date"
 msgstr "Fecha"
 
-#: inc/field.class.php:886
+#: inc/field.class.php:905
 msgid "Date & time"
 msgstr "Fecha & Hora"

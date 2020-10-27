@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-03 18:53+0000\n"
-"PO-Revision-Date: 2019-05-02 10:39+0000\n"
+"POT-Creation-Date: 2020-10-27 14:42+0000\n"
+"PO-Revision-Date: 2020-10-27 14:43+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgid "MySQL tables uninstallation"
 msgstr "Deinstalacja tabel MYSQL"
 
 #: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
-#: setup.php:177
+#: setup.php:187
 msgid "Additionnal fields"
 msgstr "Dodatkowe pola"
 
@@ -40,11 +40,11 @@ msgstr "Dodatkowe pola"
 msgid "Updating generated dropdown files"
 msgstr "Zaktualizowano pliki generowane z list rozwijanych"
 
-#: inc/labeltranslation.class.php:139
+#: inc/labeltranslation.class.php:147
 msgid "Language"
 msgstr "Język"
 
-#: inc/labeltranslation.class.php:140
+#: inc/labeltranslation.class.php:148
 msgid "Label"
 msgstr "Etykieta"
 
@@ -52,63 +52,73 @@ msgstr "Etykieta"
 msgid "Regenerate container files"
 msgstr "Wygeneruj ponownie"
 
-#: inc/container.class.php:91
+#: inc/container.class.php:17 inc/container.class.php:589
+msgid "Export to YAML"
+msgstr ""
+
+#: inc/container.class.php:93
 msgid "Fix container names"
 msgstr ""
 
-#: inc/container.class.php:172
+#: inc/container.class.php:181
 msgid "Updating generated containers files"
 msgstr "Zaktualizowano wygenerowane pliki kontenerów"
 
-#: inc/container.class.php:368
+#: inc/container.class.php:377
 msgid "You cannot add block without associated element type"
 msgstr "Nie można dodać bloku bez powiązanego typu elementu"
 
-#: inc/container.class.php:385
+#: inc/container.class.php:394
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nie możesz dodać kilku bloków z typem 'Dodawanie danych w formularzu' w tym samym obiekcie"
 
-#: inc/container.class.php:400
+#: inc/container.class.php:409
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:417
+#: inc/container.class.php:425
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/container.class.php:439
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nie możesz dodać kilku bloków o identycznej nazwie w tym samym obiekcie"
 
-#: inc/container.class.php:560
+#: inc/container.class.php:582
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:636
+#: inc/container.class.php:661
 msgid "Tab"
 msgstr "Zakładka"
 
-#: inc/container.class.php:842
+#: inc/container.class.php:876
 msgid "Add tab"
 msgstr "Dodaj zakładkę"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:877
 msgid "Insertion in the form (before save button)"
 msgstr "Dodawanie danych w formularzu (przed przyciskiem zapisz)"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:878
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Dodawanie danych w formularzu w konkretnej karcie (przed przyciskiem zapisz)"
 
-#: inc/container.class.php:1206
+#: inc/container.class.php:1240
 msgid "Some mandatory fields are empty"
 msgstr "Niektóre wymagane pola są puste"
 
-#: inc/container.class.php:1211
+#: inc/container.class.php:1245
 msgid "Some numeric fields contains non numeric values"
 msgstr "Niektóre pola numeryczne zawierają wartości inne niż liczby"
 
-#: inc/container.class.php:1216
+#: inc/container.class.php:1250
 msgid "Some URL fields contains invalid links"
 msgstr "Niektóre pola zawierają nieprawidłowe linki URL"
 
@@ -120,66 +130,72 @@ msgstr ""
 msgid "Field"
 msgstr "Pole"
 
-#: inc/field.class.php:253
+#: inc/field.class.php:90 inc/field.class.php:115
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/field.class.php:272
 msgid "Fields"
 msgstr "Pola"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:326
 msgid "Add a new field"
 msgstr "Dodaj nowe pole"
 
-#: inc/field.class.php:311
+#: inc/field.class.php:330
 msgid "No field for this block"
 msgstr "Brak pola dla tego bloku"
 
-#: inc/field.class.php:323 inc/field.class.php:436
+#: inc/field.class.php:342 inc/field.class.php:455
 msgid "Read only"
 msgstr "Tylko do odczytu"
 
-#: inc/field.class.php:413
+#: inc/field.class.php:432
 msgid "Configure"
 msgstr "Konfiguruj"
 
-#: inc/field.class.php:413
+#: inc/field.class.php:432
 msgid "Configure fields values"
 msgstr "Konfiguruj wartości pól"
 
-#: inc/field.class.php:732
+#: inc/field.class.php:751
 msgid "show"
 msgstr "pokaż"
 
-#: inc/field.class.php:878
+#: inc/field.class.php:897
 msgid "Header"
 msgstr "Nagłówek"
 
-#: inc/field.class.php:879
+#: inc/field.class.php:898
 msgid "Text (single line)"
 msgstr "Tekst (pojedyncza linia)"
 
-#: inc/field.class.php:880
+#: inc/field.class.php:899
 msgid "Text (multiples lines)"
 msgstr "Tekst (wiele linii)"
 
-#: inc/field.class.php:881
+#: inc/field.class.php:900
 msgid "Number"
 msgstr "Liczba"
 
-#: inc/field.class.php:882
+#: inc/field.class.php:901
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:883
+#: inc/field.class.php:902
 msgid "Dropdown"
 msgstr "Lista rozwijana"
 
-#: inc/field.class.php:884
+#: inc/field.class.php:903
 msgid "Yes/No"
 msgstr "Tak/Nie"
 
-#: inc/field.class.php:885
+#: inc/field.class.php:904
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:886
+#: inc/field.class.php:905
 msgid "Date & time"
 msgstr "Data & czas"

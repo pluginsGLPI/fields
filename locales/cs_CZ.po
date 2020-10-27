@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-03 18:53+0000\n"
-"PO-Revision-Date: 2019-05-03 11:12+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"POT-Creation-Date: 2020-10-27 14:42+0000\n"
+"PO-Revision-Date: 2020-10-27 14:43+0000\n"
+"Last-Translator: Cédric Anne\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgid "MySQL tables uninstallation"
 msgstr "Odebrání MySQL tabulek"
 
 #: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
-#: setup.php:177
+#: setup.php:187
 msgid "Additionnal fields"
 msgstr "Další kolonky"
 
@@ -41,11 +41,11 @@ msgstr "Další kolonky"
 msgid "Updating generated dropdown files"
 msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 
-#: inc/labeltranslation.class.php:139
+#: inc/labeltranslation.class.php:147
 msgid "Language"
 msgstr "Jazyk"
 
-#: inc/labeltranslation.class.php:140
+#: inc/labeltranslation.class.php:148
 msgid "Label"
 msgstr "Štítek"
 
@@ -53,63 +53,73 @@ msgstr "Štítek"
 msgid "Regenerate container files"
 msgstr "Znovu vytvořit kontejnerové soubory"
 
-#: inc/container.class.php:91
+#: inc/container.class.php:17 inc/container.class.php:589
+msgid "Export to YAML"
+msgstr ""
+
+#: inc/container.class.php:93
 msgid "Fix container names"
 msgstr "Opravit názvy kontejnerů"
 
-#: inc/container.class.php:172
+#: inc/container.class.php:181
 msgid "Updating generated containers files"
 msgstr "Aktualizují se vytvořené soubory kontejnerů"
 
-#: inc/container.class.php:368
+#: inc/container.class.php:377
 msgid "You cannot add block without associated element type"
 msgstr "Není možné přidat blok bez typu přiřazeného prvku"
 
-#: inc/container.class.php:385
+#: inc/container.class.php:394
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
 
-#: inc/container.class.php:400
+#: inc/container.class.php:409
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Není možné přidat několik bloků typu „Vložení ve formuláři konkrétní karty“ na té stejné kartě objektu"
 
-#: inc/container.class.php:417
+#: inc/container.class.php:425
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/container.class.php:439
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
 
-#: inc/container.class.php:560
+#: inc/container.class.php:582
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:636
+#: inc/container.class.php:661
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/container.class.php:842
+#: inc/container.class.php:876
 msgid "Add tab"
 msgstr "Přidat tabulku"
 
-#: inc/container.class.php:843
+#: inc/container.class.php:877
 msgid "Insertion in the form (before save button)"
 msgstr "Vložení do formuláře (před tlačítkem uložit)"
 
-#: inc/container.class.php:844
+#: inc/container.class.php:878
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
 
-#: inc/container.class.php:1206
+#: inc/container.class.php:1240
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1211
+#: inc/container.class.php:1245
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
-#: inc/container.class.php:1216
+#: inc/container.class.php:1250
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
@@ -121,66 +131,72 @@ msgstr "Opravit názvy kolonek"
 msgid "Field"
 msgstr "Kolonka"
 
-#: inc/field.class.php:253
+#: inc/field.class.php:90 inc/field.class.php:115
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/field.class.php:272
 msgid "Fields"
 msgstr "Kolonky"
 
-#: inc/field.class.php:307
+#: inc/field.class.php:326
 msgid "Add a new field"
 msgstr "Přidat novou kolonku"
 
-#: inc/field.class.php:311
+#: inc/field.class.php:330
 msgid "No field for this block"
 msgstr "Žádná kolonka pro tento blok"
 
-#: inc/field.class.php:323 inc/field.class.php:436
+#: inc/field.class.php:342 inc/field.class.php:455
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
-#: inc/field.class.php:413
+#: inc/field.class.php:432
 msgid "Configure"
 msgstr "Nastavit"
 
-#: inc/field.class.php:413
+#: inc/field.class.php:432
 msgid "Configure fields values"
 msgstr "Nastavit hodnoty kolonek"
 
-#: inc/field.class.php:732
+#: inc/field.class.php:751
 msgid "show"
 msgstr "zobrazit"
 
-#: inc/field.class.php:878
+#: inc/field.class.php:897
 msgid "Header"
 msgstr "Hlavička"
 
-#: inc/field.class.php:879
+#: inc/field.class.php:898
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
-#: inc/field.class.php:880
+#: inc/field.class.php:899
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:881
+#: inc/field.class.php:900
 msgid "Number"
 msgstr "Číslo"
 
-#: inc/field.class.php:882
+#: inc/field.class.php:901
 msgid "URL"
 msgstr "URL adresa"
 
-#: inc/field.class.php:883
+#: inc/field.class.php:902
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
-#: inc/field.class.php:884
+#: inc/field.class.php:903
 msgid "Yes/No"
 msgstr "Ano/Ne"
 
-#: inc/field.class.php:885
+#: inc/field.class.php:904
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:886
+#: inc/field.class.php:905
 msgid "Date & time"
 msgstr "Datum a čas"
