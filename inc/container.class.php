@@ -918,7 +918,7 @@ class PluginFieldsContainer extends CommonDBTM {
                                   'plugin_fields_containers_id' => $item['id'],
                                   'right' => ['>=', READ]]);
          $first_found = array_shift($found);
-         if ($first_found['right'] == null || $first_found['right'] == 0) {
+         if ($first_found == null || $first_found['right'] == null || $first_found['right'] == 0) {
             continue;
          }
 
