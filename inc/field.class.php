@@ -651,7 +651,6 @@ class PluginFieldsField extends CommonDBTM {
          }
 
          if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
-             || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray())
              || $first_found_p['right'] != CREATE) {
             $canedit = false;
          }
