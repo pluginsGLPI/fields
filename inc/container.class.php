@@ -1218,7 +1218,7 @@ class PluginFieldsContainer extends CommonDBTM {
          // Check mandatory fields
          if ($field['mandatory'] == 1
              && ($value == ""
-                 || in_array($field['type'], ['dropdown', 'dropdownuser'])
+                 || in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems'])
                  && $value == 0
                  || in_array($field['type'], ['date', 'datetime'])
                  && $value == 'NULL')) {
@@ -1548,9 +1548,25 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
+         if ($data['type'] === "dropdownoperatingsystems") {
+            $opt[$i]['table']      = 'glpi_operatingsystems';
+            $opt[$i]['field']      = 'name';
+            $opt[$i]['linkfield']  = $data['name'];
+            $opt[$i]['right'] = 'all';
+
+            $opt[$i]['forcegroupby'] = true;
+
+            $opt[$i]['joinparams']['jointype'] = "";
+            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+         }
+
          switch ($data['type']) {
             case 'dropdown':
             case 'dropdownuser':
+               $opt[$i]['datatype'] = "dropdown";
+               break;
+            case 'dropdownoperatingsystems':
                $opt[$i]['datatype'] = "dropdown";
                break;
             case 'yesno':
