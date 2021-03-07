@@ -834,7 +834,7 @@ class PluginFieldsField extends CommonDBTM {
                   break;
                case 'dropdownoperatingsystems':
                   if ($massiveaction) {
-                     continue;
+                     break;
                   }
                   if ($canedit && !$readonly) {
                      $html.= OperatingSystem::dropdown(['name'      => $field['name'],
