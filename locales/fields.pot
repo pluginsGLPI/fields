@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 14:42+0000\n"
+"POT-Creation-Date: 2021-03-09 14:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -158,42 +158,42 @@ msgstr ""
 msgid "Configure fields values"
 msgstr ""
 
-#: inc/field.class.php:751
+#: inc/field.class.php:753
 msgid "show"
 msgstr ""
 
-#: inc/field.class.php:897
+#: inc/field.class.php:916
 msgid "Header"
 msgstr ""
 
-#: inc/field.class.php:898
+#: inc/field.class.php:917
 msgid "Text (single line)"
 msgstr ""
 
-#: inc/field.class.php:899
+#: inc/field.class.php:918
 msgid "Text (multiples lines)"
 msgstr ""
 
-#: inc/field.class.php:900
+#: inc/field.class.php:919
 msgid "Number"
 msgstr ""
 
-#: inc/field.class.php:901
+#: inc/field.class.php:920
 msgid "URL"
 msgstr ""
 
-#: inc/field.class.php:902
+#: inc/field.class.php:921
 msgid "Dropdown"
 msgstr ""
 
-#: inc/field.class.php:903
+#: inc/field.class.php:922
 msgid "Yes/No"
 msgstr ""
 
-#: inc/field.class.php:904
+#: inc/field.class.php:923
 msgid "Date"
 msgstr ""
 
-#: inc/field.class.php:905
+#: inc/field.class.php:924
 msgid "Date & time"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 14:42+0000\n"
+"POT-Creation-Date: 2021-03-09 14:29+0000\n"
 "PO-Revision-Date: 2020-10-27 14:43+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -159,42 +159,42 @@ msgstr "設定"
 msgid "Configure fields values"
 msgstr "フィールド値を設定"
 
-#: inc/field.class.php:751
+#: inc/field.class.php:753
 msgid "show"
 msgstr "参照"
 
-#: inc/field.class.php:897
+#: inc/field.class.php:916
 msgid "Header"
 msgstr "ヘッダ"
 
-#: inc/field.class.php:898
+#: inc/field.class.php:917
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
-#: inc/field.class.php:899
+#: inc/field.class.php:918
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:900
+#: inc/field.class.php:919
 msgid "Number"
 msgstr "数値"
 
-#: inc/field.class.php:901
+#: inc/field.class.php:920
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:902
+#: inc/field.class.php:921
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
-#: inc/field.class.php:903
+#: inc/field.class.php:922
 msgid "Yes/No"
 msgstr "はい/いいえ"
 
-#: inc/field.class.php:904
+#: inc/field.class.php:923
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:905
+#: inc/field.class.php:924
 msgid "Date & time"
 msgstr "日時"

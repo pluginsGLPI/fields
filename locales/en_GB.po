@@ -1,14 +1,14 @@
 # English translations for PACKAGE package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2021 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Automatically generated, 2020.
+# Automatically generated, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 14:42+0000\n"
-"PO-Revision-Date: 2020-10-27 14:42+0000\n"
+"POT-Creation-Date: 2021-03-09 14:29+0000\n"
+"PO-Revision-Date: 2021-03-09 14:29+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -166,42 +166,42 @@ msgstr "Configure"
 msgid "Configure fields values"
 msgstr "Configure fields values"
 
-#: inc/field.class.php:751
+#: inc/field.class.php:753
 msgid "show"
 msgstr "show"
 
-#: inc/field.class.php:897
+#: inc/field.class.php:916
 msgid "Header"
 msgstr "Header"
 
-#: inc/field.class.php:898
+#: inc/field.class.php:917
 msgid "Text (single line)"
 msgstr "Text (single line)"
 
-#: inc/field.class.php:899
+#: inc/field.class.php:918
 msgid "Text (multiples lines)"
 msgstr "Text (multiples lines)"
 
-#: inc/field.class.php:900
+#: inc/field.class.php:919
 msgid "Number"
 msgstr "Number"
 
-#: inc/field.class.php:901
+#: inc/field.class.php:920
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:902
+#: inc/field.class.php:921
 msgid "Dropdown"
 msgstr "Dropdown"
 
-#: inc/field.class.php:903
+#: inc/field.class.php:922
 msgid "Yes/No"
 msgstr "Yes/No"
 
-#: inc/field.class.php:904
+#: inc/field.class.php:923
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:905
+#: inc/field.class.php:924
 msgid "Date & time"
 msgstr "Date & time"
