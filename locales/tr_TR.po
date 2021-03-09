@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015-2019
+# Kaya Zeren <kayazeren@gmail.com>, 2015-2020
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 14:42+0000\n"
-"PO-Revision-Date: 2020-10-27 14:43+0000\n"
-"Last-Translator: Cédric Anne\n"
+"POT-Creation-Date: 2021-03-09 14:29+0000\n"
+"PO-Revision-Date: 2020-11-01 20:37+0000\n"
+"Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +53,7 @@ msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
 #: inc/container.class.php:17 inc/container.class.php:589
 msgid "Export to YAML"
-msgstr ""
+msgstr "YAML olarak dışa aktar"
 
 #: inc/container.class.php:93
 msgid "Fix container names"
@@ -83,7 +83,7 @@ msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Kapsayıcı adı veritabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
 #: inc/container.class.php:439
 msgid "You cannot add several blocs with identical name on same object"
@@ -133,7 +133,7 @@ msgstr "Alan"
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Alan adı veritabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
 #: inc/field.class.php:272
 msgid "Fields"
@@ -159,42 +159,42 @@ msgstr "Yapılandırma"
 msgid "Configure fields values"
 msgstr "Alan değerleri yapılandırması"
 
-#: inc/field.class.php:751
+#: inc/field.class.php:753
 msgid "show"
 msgstr "görüntüle"
 
-#: inc/field.class.php:897
+#: inc/field.class.php:916
 msgid "Header"
 msgstr "Üst Bilgi"
 
-#: inc/field.class.php:898
+#: inc/field.class.php:917
 msgid "Text (single line)"
 msgstr "Metin (tek satır)"
 
-#: inc/field.class.php:899
+#: inc/field.class.php:918
 msgid "Text (multiples lines)"
 msgstr "Metin (birden çok satır)"
 
-#: inc/field.class.php:900
+#: inc/field.class.php:919
 msgid "Number"
 msgstr "Sayı"
 
-#: inc/field.class.php:901
+#: inc/field.class.php:920
 msgid "URL"
 msgstr "İnternet Adresi"
 
-#: inc/field.class.php:902
+#: inc/field.class.php:921
 msgid "Dropdown"
 msgstr "Açılan Kutu"
 
-#: inc/field.class.php:903
+#: inc/field.class.php:922
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
-#: inc/field.class.php:904
+#: inc/field.class.php:923
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:905
+#: inc/field.class.php:924
 msgid "Date & time"
 msgstr "Tarih ve Saat"

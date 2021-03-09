@@ -4,13 +4,14 @@
 # 
 # Translators:
 # milotype <mail@milotype.de>, 2020
+# milotype <mail@milotype.de>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 14:42+0000\n"
-"PO-Revision-Date: 2020-10-27 14:43+0000\n"
-"Last-Translator: Cédric Anne\n"
+"POT-Creation-Date: 2021-03-09 14:29+0000\n"
+"PO-Revision-Date: 2020-11-10 13:01+0000\n"
+"Last-Translator: milotype <mail@milotype.de>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "Ponovo generiraj datoteke spremnika"
 
 #: inc/container.class.php:17 inc/container.class.php:589
 msgid "Export to YAML"
-msgstr ""
+msgstr "Izvezi u YAML"
 
 #: inc/container.class.php:93
 msgid "Fix container names"
@@ -83,7 +84,7 @@ msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac o
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
 #: inc/container.class.php:439
 msgid "You cannot add several blocs with identical name on same object"
@@ -133,7 +134,7 @@ msgstr "Polje"
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
 #: inc/field.class.php:272
 msgid "Fields"
@@ -159,42 +160,42 @@ msgstr "Konfiguriraj"
 msgid "Configure fields values"
 msgstr "Konfiguriraj vrijednosti polja"
 
-#: inc/field.class.php:751
+#: inc/field.class.php:753
 msgid "show"
 msgstr "prikaži"
 
-#: inc/field.class.php:897
+#: inc/field.class.php:916
 msgid "Header"
 msgstr "Zaglavlje"
 
-#: inc/field.class.php:898
+#: inc/field.class.php:917
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
-#: inc/field.class.php:899
+#: inc/field.class.php:918
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:900
+#: inc/field.class.php:919
 msgid "Number"
 msgstr "Broj"
 
-#: inc/field.class.php:901
+#: inc/field.class.php:920
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:902
+#: inc/field.class.php:921
 msgid "Dropdown"
 msgstr "Padajući popis"
 
-#: inc/field.class.php:903
+#: inc/field.class.php:922
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: inc/field.class.php:904
+#: inc/field.class.php:923
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:905
+#: inc/field.class.php:924
 msgid "Date & time"
 msgstr "Datum i vrijeme"
