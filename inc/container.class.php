@@ -1566,6 +1566,9 @@ class PluginFieldsContainer extends CommonDBTM {
             case 'datetime':
                $opt[$i]['datatype'] = $data['type'];
                break;
+            case 'url':
+               $opt[$i]['datatype'] = 'weblink';
+               break;
             default:
                $opt[$i]['datatype'] = "string";
          }
