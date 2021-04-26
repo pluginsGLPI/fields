@@ -697,7 +697,7 @@ class PluginFieldsField extends CommonDBTM {
             }
 
             //get default value
-            if ($value === "" && $field['default_value'] !== "") {
+            if ($value === "" && $field['default_value'] !== "" && $itemtype::isNewID($items_id)) {
                $value = $field['default_value'];
 
                // shortcut for date/datetime
