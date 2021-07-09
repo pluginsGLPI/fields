@@ -875,7 +875,7 @@ class PluginFieldsField extends CommonDBTM {
                                         $searchOption['linkfield']);
 
       //find field
-      $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly, default_value
+      $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly, fields.default_value
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
