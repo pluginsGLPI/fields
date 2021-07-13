@@ -651,7 +651,6 @@ class PluginFieldsField extends CommonDBTM {
          }
 
          if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
-             || in_array($items_obj->fields['status'], $items_obj->getSolvedStatusArray())
              || $first_found_p['right'] != CREATE) {
             $canedit = false;
          }
@@ -875,7 +874,7 @@ class PluginFieldsField extends CommonDBTM {
                                         $searchOption['linkfield']);
 
       //find field
-      $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly
+      $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly, fields.default_value
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
@@ -897,7 +896,8 @@ class PluginFieldsField extends CommonDBTM {
          'type'                        => $searchOption['pfields_type'],
          'plugin_fields_containers_id' => $data['plugin_fields_containers_id'],
          'name'                        => $cleaned_linkfield,
-         'is_readonly'                 => $data['is_readonly']
+         'is_readonly'                 => $data['is_readonly'],
+         'default_value'               => $data['default_value']
       ]];
 
       //show field
