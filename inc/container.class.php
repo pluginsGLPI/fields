@@ -1285,8 +1285,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       foreach ($itemtypes as $data) {
          $dataitemtypes = json_decode($data['itemtypes']);
-         $item = new $itemtype();
-         if (in_array($item->getType(), $dataitemtypes) != false) {
+         if (in_array($itemtype, $dataitemtypes) != false) {
             $id = $data['id'];
          }
       }
