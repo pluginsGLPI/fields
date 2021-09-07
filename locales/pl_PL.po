@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 14:29+0000\n"
+"POT-Creation-Date: 2021-09-07 08:38+0000\n"
 "PO-Revision-Date: 2020-10-27 14:43+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pl_PL/)\n"
@@ -160,7 +160,7 @@ msgstr "Konfiguruj"
 msgid "Configure fields values"
 msgstr "Konfiguruj wartości pól"
 
-#: inc/field.class.php:753
+#: inc/field.class.php:752
 msgid "show"
 msgstr "pokaż"
 

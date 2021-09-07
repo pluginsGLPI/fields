@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alexey Petukhov <lexx015@gmail.com>, 2015
+# Alexey Petukhov <lexx015@gmail.com>, 2015,2021
 # Mr.GreyWolf, 2017
 # Nikolai Petrov <techobsl@yandex.ru>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 14:29+0000\n"
-"PO-Revision-Date: 2020-10-27 14:43+0000\n"
-"Last-Translator: Cédric Anne\n"
+"POT-Creation-Date: 2021-09-07 08:38+0000\n"
+"PO-Revision-Date: 2021-08-18 11:06+0000\n"
+"Last-Translator: Alexey Petukhov <lexx015@gmail.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,11 +55,11 @@ msgstr "Восстановить файлы контейнера"
 
 #: inc/container.class.php:17 inc/container.class.php:589
 msgid "Export to YAML"
-msgstr ""
+msgstr "Экспорт в YAML"
 
 #: inc/container.class.php:93
 msgid "Fix container names"
-msgstr ""
+msgstr "Исправить названия контейнеров"
 
 #: inc/container.class.php:181
 msgid "Updating generated containers files"
@@ -79,17 +79,17 @@ msgstr "Вы не можете добавить несколько блоков 
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr ""
+msgstr "Вы не можете добавить несколько блоков с типом 'Вставить в виде определенной вкладки'  в один и тот же объект"
 
 #: inc/container.class.php:425
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Название контейнера слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
 #: inc/container.class.php:439
 msgid "You cannot add several blocs with identical name on same object"
-msgstr "Вы не можете добавить несколько блоков с одинаковыми именами на один и тот же объект"
+msgstr "Вы не можете добавить несколько блоков с одинаковыми названиями на один и тот же объект"
 
 #: inc/container.class.php:582
 msgid "Block"
@@ -125,7 +125,7 @@ msgstr "Некоторый URL полей содержат недействит�
 
 #: inc/toolbox.class.php:90
 msgid "Fix fields names"
-msgstr ""
+msgstr "Исправить названия полей"
 
 #: inc/field.class.php:79
 msgid "Field"
@@ -135,7 +135,7 @@ msgstr "Поле"
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Название поля слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
 #: inc/field.class.php:272
 msgid "Fields"
@@ -161,7 +161,7 @@ msgstr "Настройка"
 msgid "Configure fields values"
 msgstr "Настрить поля значений"
 
-#: inc/field.class.php:753
+#: inc/field.class.php:752
 msgid "show"
 msgstr "показать"
 

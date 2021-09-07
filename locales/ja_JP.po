@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# admin coleyon, 2019
+# sai sai, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 14:29+0000\n"
+"POT-Creation-Date: 2021-09-07 08:38+0000\n"
 "PO-Revision-Date: 2020-10-27 14:43+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -159,7 +159,7 @@ msgstr "設定"
 msgid "Configure fields values"
 msgstr "フィールド値を設定"
 
-#: inc/field.class.php:753
+#: inc/field.class.php:752
 msgid "show"
 msgstr "参照"
 

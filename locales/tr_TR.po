@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 14:29+0000\n"
+"POT-Creation-Date: 2021-09-07 08:38+0000\n"
 "PO-Revision-Date: 2020-11-01 20:37+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -159,7 +159,7 @@ msgstr "Yapılandırma"
 msgid "Configure fields values"
 msgstr "Alan değerleri yapılandırması"
 
-#: inc/field.class.php:753
+#: inc/field.class.php:752
 msgid "show"
 msgstr "görüntüle"
 
