@@ -31,9 +31,9 @@
 define ('PLUGIN_FIELDS_VERSION', '1.12.9');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_FIELDS_MIN_GLPI", "9.5");
+define("PLUGIN_FIELDS_MIN_GLPI", "10.0.0");
 // Maximum GLPI version, exclusive
-define("PLUGIN_FIELDS_MAX_GLPI", "9.6");
+define("PLUGIN_FIELDS_MAX_GLPI", "10.0.99");
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", Plugin::getPhpDir("fields"));

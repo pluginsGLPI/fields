@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
+
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
 
@@ -55,22 +57,25 @@ class PluginFieldsField extends CommonDBTM {
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
+         $default_charset = DBConnection::getDefaultCharset();
+         $default_collation = DBConnection::getDefaultCollation();
+
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                INT(11)        NOT NULL auto_increment,
+                  `id`                                INT            NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
                   `label`                             VARCHAR(255)   DEFAULT NULL,
                   `type`                              VARCHAR(25)    DEFAULT NULL,
-                  `plugin_fields_containers_id`       INT(11)        NOT NULL DEFAULT '0',
-                  `ranking`                           INT(11)        NOT NULL DEFAULT '0',
+                  `plugin_fields_containers_id`       INT            NOT NULL DEFAULT '0',
+                  `ranking`                           INT            NOT NULL DEFAULT '0',
                   `default_value`                     VARCHAR(255)   DEFAULT NULL,
-                  `is_active`                         TINYINT(1)     NOT NULL DEFAULT '1',
-                  `is_readonly`                       TINYINT(1)     NOT NULL DEFAULT '1',
-                  `mandatory`                         TINYINT(1)     NOT NULL DEFAULT '0',
+                  `is_active`                         TINYINT        NOT NULL DEFAULT '1',
+                  `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
+                  `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             $DB->query($query) or die ($DB->error());
       }
 
@@ -396,8 +401,8 @@ class PluginFieldsField extends CommonDBTM {
                echo "</td>";
 
                echo '<td class="rowhandler control center">';
-               echo '<div class="drag row" style="cursor:move;border:none !important;">';
-               echo '<img src="../pics/drag.png" alt="#" title="'.__('Move').'" width="16" height="16">';
+               echo '<div class="drag row" style="cursor:move; border: 0;">';
+               echo '<i class="ti ti-grip-horizontal" title="'.__('Move').'">';
                echo '</div>';
                echo '</td>';
                echo "</tr>";
@@ -438,7 +443,12 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>".__("Label")." : </td>";
       echo "<td>";
       echo Html::hidden('plugin_fields_containers_id', ['value' => $container->getField('id')]);
-      Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"]]);
+      echo Html::input(
+         'label',
+         [
+            'value' => $this->fields['label'],
+         ]
+      );
       echo "</td>";
 
       if (!$edit) {
@@ -451,8 +461,12 @@ class PluginFieldsField extends CommonDBTM {
       }
       echo "<td>".__("Default values")." : </td>";
       echo "<td>";
-      Html::autocompletionTextField($this, 'default_value',
-                                    ['value' => $this->fields["default_value"]]);
+      echo Html::input(
+         'default_value',
+         [
+            'value' => $this->fields['default_value'],
+         ]
+      );
       if ($this->fields["type"] == "dropdown") {
          echo '<a href="'.Plugin::getWebDir('fields').'/front/commondropdown.php?ddtype='.
                           $this->fields['name'] .'dropdown">
@@ -512,7 +526,7 @@ class PluginFieldsField extends CommonDBTM {
 
       if ($canedit) {
          echo "<tr><td class='tab_bg_2 center' colspan='4'>";
-         echo "<input type='submit' name='update_fields_values' value=\"".
+         echo "<input class='btn btn-primary' type='submit' name='update_fields_values' value=\"".
             _sx("button", "Save")."\" class='submit'>";
          echo "</td></tr>";
       }
@@ -566,7 +580,6 @@ class PluginFieldsField extends CommonDBTM {
       global $CFG_GLPI;
 
       $item    = $params['item'];
-      $options = $params['options'];
 
       $functions = array_column(debug_backtrace(), 'function');
 
@@ -689,205 +702,58 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //show all fields
-      $html = "";
-      $odd = 0;
-      foreach ($fields as $field) {
+      foreach ($fields as &$field) {
 
-         if ($field['type'] === 'header') {
-            $html.= "<tr class='tab_bg_2'>";
-            $field['itemtype'] = self::getType();
-            $txt_label = PluginFieldsLabelTranslation::getLabelFor($field);
-            $html.= "<th colspan='4'>$txt_label</th>";
-            $html.= "</tr>";
-            $odd = 0;
-         } else {
-            //get value
-            $value = null;
-            if (is_array($found_v)) {
-               if ($field['type'] == "dropdown") {
-                  $value = $found_v["plugin_fields_".$field['name']."dropdowns_id"];
-               } else {
-                  $value = $found_v[$field['name']];
-               }
-            }
+         $field['itemtype'] = self::getType();
+         $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
-            if (!$field['is_readonly']) {
-               if ($field['type'] == "dropdown") {
-                  if (isset($_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
-                                                                        $field['name'].
-                                                                        "dropdowns_id"])) {
-                     $value = $_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
-                                                                           $field['name'].
-                                                                           "dropdowns_id"];
-                  }
-               } else if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
-                  $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
-               }
-            }
-
-            //get default value
-            if ($value === null && $field['default_value'] !== "") {
-               $value = $field['default_value'];
-
-               // shortcut for date/datetime
-               if (in_array($field['type'], ['date', 'datetime'])
-                   && $value == 'now') {
-                  $value = $_SESSION["glpi_currenttime"];
-               }
-            }
-
-            //show field
-            if ($show_table) {
-               if ($odd%2 == 0) {
-                  $html.= "<tr class='tab_bg_2'>";
-               }
-
-               $required = $field['mandatory'] == 1
-                              ? "<span class='red'>*</span>"
-                              : '';
-
-               $field['itemtype'] = self::getType();
-               $txt_label = PluginFieldsLabelTranslation::getLabelFor($field);
-               $label =" <label for='{$field['name']}'>{$txt_label} $required</label>";
-
-               if (stristr($container_obj->fields['itemtypes'], 'Ticket') !== false
-                   && $container_obj->fields['type'] == 'dom'
-                   && strpos($_SERVER['HTTP_REFERER'], ".injector.php") === false
-                   && strpos($_SERVER['HTTP_REFERER'], ".public.php") === false) {
-                   $html.= "<th width='13%'>$label</th>";
-               } else {
-                  $html.= "<td>$label</td>";
-               }
-               $html.= "<td>";
-            }
-
-            $readonly = $field['is_readonly'];
-            switch ($field['type']) {
-               case 'number':
-               case 'text':
-                  $value = Html::cleanInputText($value);
-                  if ($canedit && !$readonly) {
-                     $html.= Html::input($field['name'], ['value' => $value]);
-                  } else {
-                     $html.= $value;
-                  }
-                  break;
-               case 'url':
-                  $value = Html::cleanInputText($value);
-                  if ($canedit && !$readonly) {
-                     $html.= Html::input($field['name'], ['value' => $value]);
-                     if ($value != '') {
-                        $html .= "<a target=\"_blank\" href=\"$value\">" . __('show', 'fields') . "</a>";
-                     }
-                  } else {
-                     $html .= "<a target=\"_blank\" href=\"$value\">$value</a>";
-                  }
-                  break;
-               case 'textarea':
-                  if ($canedit && !$readonly) {
-                     $html.= Html::textarea([
-                        'name'    => $field['name'],
-                        'value'   => $value,
-                        'cols'    => 45,
-                        'rows'    => 4,
-                        'display' => false,
-                     ]);
-                  } else {
-                     $html.= nl2br($value);
-                  }
-                  break;
-               case 'dropdown':
-                  if ($canedit && !$readonly) {
-                     //find entity on current object
-                     $obj = new $itemtype;
-                     $obj->getFromDB($items_id);
-
-                     if (strpos($field['name'], "dropdowns_id") !== false) {
-                        $dropdown_itemtype = getItemTypeForTable(
-                                             getTableNameForForeignKeyField($field['name']));
-                     } else {
-                        $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
-                     }
-                     $html.= Dropdown::show($dropdown_itemtype,
-                                            ['value'   => $value,
-                                             'entity'  => $obj->getEntityID(),
-                                             'display' => false]);
-                  } else {
-                     $dropdown_table = "glpi_plugin_fields_".$field['name']."dropdowns";
-                     $html.= Dropdown::getDropdownName($dropdown_table, $value);
-                  }
-                  break;
-               case 'yesno':
-                  if ($canedit && !$readonly) {
-                     $html.= Dropdown::showYesNo($field['name'], $value, -1, ['display' => false]);
-                  } else {
-                     $html.= Dropdown::getYesNo($value);
-                  }
-                  break;
-               case 'date':
-                  if ($canedit && !$readonly) {
-                     $html.= Html::showDateField($field['name'], ['value'   => $value,
-                                                                  'display' => false]);
-                  } else {
-                     $html.= Html::convDate($value);
-                  }
-                  break;
-               case 'datetime':
-                  if ($canedit && !$readonly) {
-                     $html.= Html::showDateTimeField($field['name'], ['value'   => $value,
-                                                                      'display' => false]);
-                  } else {
-                     $html.= Html::convDateTime($value);
-                  }
-                  break;
-               case 'dropdownuser':
-                  if ($massiveaction) {
-                     break;
-                  }
-                  if ($canedit && !$readonly) {
-                     $html.= User::dropdown(['name'      => $field['name'],
-                                             'value'     => $value,
-                                             'entity'    => -1,
-                                             'right'     => 'all',
-                                             'display'   => false,
-                                             'condition' => ['is_active' => 1, 'is_deleted' => 0]]);
-                  } else {
-                     $showuserlink = 0;
-                     if (Session::haveRight('user', READ)) {
-                        $showuserlink = 1;
-                     }
-                     $html.= getUserName($value, $showuserlink);
-                  }
-                  break;
-               case 'dropdownoperatingsystems':
-                  if ($massiveaction) {
-                     break;
-                  }
-                  if ($canedit && !$readonly) {
-                     $html.= OperatingSystem::dropdown(['name'      => $field['name'],
-                                             'value'     => $value,
-                                             'entity'    => -1,
-                                             'right'     => 'all',
-                                             'display'   => false//,
-                                             /*'condition' => 'is_active=1 && is_deleted=0'*/]);
-                  } else {
-                     $os = new OperatingSystem();
-                     $os->getFromDB($value);
-                     $html.= $os->fields['name'];
-                  }
-            }
-            if ($show_table) {
-               $html.= "</td>";
-               if ($odd%2 == 1) {
-                  $html.= "</tr>";
-               }
-               $odd++;
+         //get value
+         $value = null;
+         if (is_array($found_v)) {
+            if ($field['type'] == "dropdown") {
+               $value = $found_v["plugin_fields_".$field['name']."dropdowns_id"];
+            } else {
+               $value = $found_v[$field['name']] ?? "";
             }
          }
+
+         if (!$field['is_readonly']) {
+            if ($field['type'] == "dropdown") {
+               if (isset($_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
+                                                                     $field['name'].
+                                                                     "dropdowns_id"])) {
+                  $value = $_SESSION['plugin']['fields']['values_sent']["plugin_fields_".
+                                                                        $field['name'].
+                                                                        "dropdowns_id"];
+               }
+            } else if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
+               $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
+            }
+         }
+
+         //get default value
+         if ($value === null && $field['default_value'] !== "") {
+            $value = $field['default_value'];
+
+            // shortcut for date/datetime
+            if (in_array($field['type'], ['date', 'datetime'])
+                  && $value == 'now') {
+               $value = $_SESSION["glpi_currenttime"];
+            }
+         }
+
+         $field['value'] = $value;
       }
-      if ($show_table && $odd%2 == 1) {
-         $html.= "</tr>";
-      }
+
+      $obj = new $itemtype;
+      $obj->getFromDB($items_id);
+      $html = TemplateRenderer::getInstance()->render('@fields/fields.html.twig', [
+         'fields'        => $fields,
+         'entities_id'   => $obj->getEntityID(),
+         'itemtype'      => self::getType(),
+         'canedit'       => $canedit,
+         'massiveaction' => $massiveaction,
+      ]);
 
       unset($_SESSION['plugin']['fields']['values_sent']);
 
