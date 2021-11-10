@@ -83,12 +83,12 @@ class PluginFieldsMigration extends Migration {
          'url'          => 'TEXT DEFAULT NULL',
          'textarea'     => 'TEXT         DEFAULT NULL',
          'number'       => 'VARCHAR(255) DEFAULT NULL',
-         'dropdown'     => 'INT(11)      NOT NULL DEFAULT 0',
-         'yesno'        => 'INT(11)      NOT NULL DEFAULT 0',
+         'dropdown'     => 'INT          NOT NULL DEFAULT 0',
+         'yesno'        => 'INT          NOT NULL DEFAULT 0',
          'date'         => 'VARCHAR(255) DEFAULT NULL',
          'datetime'     => 'VARCHAR(255) DEFAULT NULL',
-         'dropdownuser' => 'INT(11)  NOT NULL DEFAULT 0',
-         'dropdownoperatingsystems' => 'INT(11)  NOT NULL DEFAULT 0'
+         'dropdownuser' => 'INT          NOT NULL DEFAULT 0',
+         'dropdownoperatingsystems' => 'INT  NOT NULL DEFAULT 0'
       ];
 
       return $types[$field_type];

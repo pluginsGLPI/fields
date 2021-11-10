@@ -62,19 +62,22 @@ class PluginFieldsContainer extends CommonDBTM {
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
+         $default_charset = DBConnection::getDefaultCharset();
+         $default_collation = DBConnection::getDefaultCollation();
+
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`           INT(11)        NOT NULL auto_increment,
+                  `id`           INT            NOT NULL auto_increment,
                   `name`         VARCHAR(255)   DEFAULT NULL,
                   `label`        VARCHAR(255)   DEFAULT NULL,
-                  `itemtypes`     LONGTEXT   DEFAULT NULL,
+                  `itemtypes`    LONGTEXT       DEFAULT NULL,
                   `type`         VARCHAR(255)   DEFAULT NULL,
-                  `subtype`      VARCHAR(255) DEFAULT NULL,
-                  `entities_id`  INT(11)        NOT NULL DEFAULT '0',
-                  `is_recursive` TINYINT(1)     NOT NULL DEFAULT '0',
-                  `is_active`    TINYINT(1)     NOT NULL DEFAULT '0',
+                  `subtype`      VARCHAR(255)   DEFAULT NULL,
+                  `entities_id`  INT            NOT NULL DEFAULT '0',
+                  `is_recursive` TINYINT        NOT NULL DEFAULT '0',
+                  `is_active`    TINYINT        NOT NULL DEFAULT '0',
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
       }
 
@@ -611,19 +614,34 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public function showForm($ID, $options = []) {
-      global $CFG_GLPI;
-
-      echo "<div class='center'><a class='vsubmit' href='export_to_yaml.php?id=".$ID."'><i class='pointer fa fa-refresh'></i>&nbsp;".
-      __("Export to YAML", "fields")."</a></div><br>";
 
       $this->initForm($ID, $options);
+
+      if (!$this->isNewID($ID)) {
+         $btn_url   = Plugin::getWebDir('fields') . '/front/export_to_yaml.php?id=' . $ID;
+         $btn_label = __("Export to YAML", "fields");
+         $export_btn = <<<HTML
+            <a href="{$btn_url}" class="btn btn-ghost-secondary"
+                     title="{$btn_label}"
+                     data-bs-toggle="tooltip" data-bs-placement="bottom">
+               <i class="fas fa-file-export fa-lg"></i>
+            </a>
+         HTML;
+         $options['header_toolbar'] = [$export_btn];
+      }
+
       $this->showFormHeader($options);
       $rand = mt_rand();
 
       echo "<tr>";
       echo "<td width='20%'>".__("Label")." : </td>";
       echo "<td width='30%'>";
-      Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"]]);
+      echo Html::input(
+         'label',
+         [
+            'value' => $this->fields['label'],
+         ]
+      );
       echo "</td>";
       echo "<td width='20%'>&nbsp;</td>";
       echo "<td width='30%'>&nbsp;</td>";

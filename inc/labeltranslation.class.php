@@ -55,10 +55,13 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
+         $default_charset = DBConnection::getDefaultCharset();
+         $default_collation = DBConnection::getDefaultCollation();
+
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                         INT(11)       NOT NULL auto_increment,
+                  `id`                         INT          NOT NULL auto_increment,
                   `plugin_fields_itemtype`     VARCHAR(30)  NOT NULL,
-                  `plugin_fields_items_id`     INT(11)      NOT NULL,
+                  `plugin_fields_items_id`     INT          NOT NULL,
                   `language`                   VARCHAR(5)   NOT NULL,
                   `label`                      VARCHAR(255) DEFAULT NULL,
                   PRIMARY KEY                  (`id`),
@@ -66,7 +69,7 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
                   KEY `plugin_fields_items_id` (`plugin_fields_items_id`),
                   KEY `language`               (`language`),
                   UNIQUE KEY `unicity` (`plugin_fields_itemtype`, `plugin_fields_items_id`, `language`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             $DB->query($query) or die ($DB->error());
       }
 
@@ -222,11 +225,11 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
     *
     * @param string $itemtype Item type
     * @param int    $items_id Item ID
-    * @param innt   $id       Translation ID (defaults to -1)
+    * @param int    $id       Translation ID (defaults to -1)
     *
     * @return void
     */
-   function showForm($itemtype, $items_id, $id = -1) {
+   function showFormForItem($itemtype, $items_id, $id = -1) {
       global $CFG_GLPI;
 
       if ($id > 0) {
