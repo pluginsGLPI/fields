@@ -1,7 +1,7 @@
 {
     "require": {
-        "php": "^7.2",
-        "symfony/yaml": "^4.4"
+        "php": ">=7.4",
+        "symfony/yaml": "^5.4"
     },
     "require-dev": {
         "glpi-project/tools": "^0.4"
@@ -9,7 +9,7 @@
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.2.0"
+            "php": "7.4.0"
         },
         "sort-packages": true
     }
