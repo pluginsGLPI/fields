@@ -1,0 +1,110 @@
+{#
+ # -------------------------------------------------------------------------
+ # Fields plugin for GLPI
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of Fields.
+ #
+ # Fields is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+ #
+ # Fields is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Fields. If not, see <http://www.gnu.org/licenses/>.
+ # -------------------------------------------------------------------------
+ # @copyright Copyright (C) 2013-2022 by Fields plugin team.
+ # @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ # @link      https://github.com/pluginsGLPI/fields
+ # -------------------------------------------------------------------------
+ #}
+
+{% import 'components/form/fields_macros.html.twig' as macros %}
+
+<div class="row">
+    {% for field in fields %}
+
+        {% set type     = field['type'] %}
+        {% set name     = field['name'] %}
+        {% set label    = field['label'] %}
+        {% set value    = field['value'] %}
+        {% set readonly = field['is_readonly'] %}
+
+        {% set field_options = {
+            'readonly': readonly or not canedit,
+            'required': field['mandatory'],
+        } %}
+
+        {% if type == 'header' %}
+            {{ macros.largeTitle(label) }}
+
+        {% elseif type == 'text' %}
+            {{ macros.textField(name, value, label, field_options) }}
+
+        {% elseif type == 'number' %}
+            {{ macros.numberField(name, value, label, field_options) }}
+
+        {% elseif type == 'url' %}
+                {% set ext_link %}
+                {% if value|length %}
+                    <a target="_blank" href="{{ value }}">
+                        <i class="ti ti-external-link"></i>
+                        {{ __('show', 'fields') }}
+                    </a>
+                {% endif %}
+                {% endset %}
+                {{ macros.textField(name, value, label, field_options|merge({
+                    'type': 'url',
+                    'add_field_html': ext_link
+                })) }}
+        {% elseif type == 'textarea' %}
+            {{ macros.textareaField(name, value, label, field_options) }}
+
+        {% elseif type == 'yesno' %}
+            {{ macros.dropdownYesNo(name, value, label, field_options) }}
+
+        {% elseif type == 'date' %}
+            {{ macros.dateField(name, value, label, field_options) }}
+
+        {% elseif type == 'datetime' %}
+            {{ macros.datetimeField(name, value, label, field_options) }}
+
+        {% elseif type == 'dropdown' %}
+            {% if "dropdowns_id" in name %}
+                {% set dropdown_itemtype = call("getItemtypeForForeignKeyField", [name]) %}
+            {% else %}
+                {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [name]) %}
+            {% endif %}
+            {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
+            {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge({
+                'entity': entities_id,
+            })) }}
+        {% elseif type == 'dropdownuser' %}
+            {% if not massiveaction %}
+                {{ macros.dropdownField('User', name, value, label, field_options|merge({
+                    'entity': -1,
+                    'right': 'all',
+                    'condition': {
+                        'is_active': 1,
+                        'is_deleted': 0
+                    }
+                })) }}
+            {% endif %}
+
+        {% elseif type == 'dropdownoperatingsystems' %}
+            {% if not massiveaction %}
+                {{ macros.dropdownField('OperatingSystem', name, value, label, field_options|merge({
+                    'entity': -1,
+                    'right': 'all',
+                })) }}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>

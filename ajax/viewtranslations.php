@@ -45,7 +45,7 @@ if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || !isset($_POST['i
 $translation = new PluginFieldsLabelTranslation();
 $canedit = $translation->can($translation->getID(), CREATE);
 if ($canedit) {
-    $translation->showForm($_POST['itemtype'], $_POST['items_id'], $_POST['id']);
+    $translation->showFormForItem($_POST['itemtype'], $_POST['items_id'], $_POST['id']);
 } else {
    echo __('Access denied');
 }
