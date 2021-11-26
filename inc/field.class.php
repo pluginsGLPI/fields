@@ -674,7 +674,7 @@ class PluginFieldsField extends CommonDBTM {
             $odd = 0;
          } else {
             //get value
-            $value = "";
+            $value = null;
             if (is_array($found_v)) {
                if ($field['type'] == "dropdown") {
                   $value = $found_v["plugin_fields_".$field['name']."dropdowns_id"];
@@ -698,7 +698,7 @@ class PluginFieldsField extends CommonDBTM {
             }
 
             //get default value
-            if ($value === "" && $field['default_value'] !== "" && $itemtype::isNewID($items_id)) {
+            if ($value === null && $field['default_value'] !== "") {
                $value = $field['default_value'];
 
                // shortcut for date/datetime
