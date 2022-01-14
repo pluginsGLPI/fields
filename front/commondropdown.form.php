@@ -1,11 +1,8 @@
 <?php
 
 include "../../../inc/includes.php";
-$path = PLUGINFIELDS_FRONT_PATH . '/' . $_REQUEST['ddtype'] . '.form.php';
-$realpath = str_replace( "\\", "/", realpath($path));
-$frontpath = str_replace("\\", "/", realpath(PLUGINFIELDS_FRONT_PATH));
-if (strpos($realpath, $frontpath) === 0) {
-    include_once $path;
-} else {
-    throw new \RuntimeException('Attempt to load unsecure or missing ' . $path .'!');
+if (preg_match('/[a-z]/i', $_REQUEST['ddtype']) !== 1) {
+   throw new \RuntimeException(sprintf('Invalid itemtype "%"', $_REQUEST['ddtype']));
 }
+$path = PLUGINFIELDS_FRONT_PATH . '/' . $_REQUEST['ddtype'] . '.form.php';
+require_once $path;
