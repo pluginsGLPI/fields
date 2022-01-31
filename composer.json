@@ -4,7 +4,7 @@
         "symfony/yaml": "^4.4"
     },
     "require-dev": {
-        "glpi-project/tools": "^0.1"
+        "glpi-project/tools": "^0.4"
     },
     "config": {
         "optimize-autoloader": true,
