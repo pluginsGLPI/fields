@@ -4,7 +4,6 @@
         "symfony/yaml": "^4.4"
     },
     "require-dev": {
-        "atoum/atoum": "^3.1",
         "glpi-project/tools": "^0.1"
     },
     "config": {
