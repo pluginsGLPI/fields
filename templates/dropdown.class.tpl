@@ -17,23 +17,24 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
    static function install() {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       $obj = new self();
       $table = $obj->getTable();
 
       if (!$DB->tableExists($table)) {
-         $default_charset = DBConnection::getDefaultCharset();
-         $default_collation = DBConnection::getDefaultCollation();
-
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                      INT            NOT NULL auto_increment,
+                  `id`                                      INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                                    VARCHAR(255)   DEFAULT NULL,
                   `completename`                            TEXT           DEFAULT NULL,
                   `comment`                                 TEXT           DEFAULT NULL,
-                  `plugin_fields_%%FIELDNAME%%dropdowns_id` INT            DEFAULT NULL,
+                  `plugin_fields_%%FIELDNAME%%dropdowns_id` INT            {$default_key_sign} DEFAULT NULL,
                   `level`                                   INT            DEFAULT NULL,
                   `ancestors_cache`                         TEXT           DEFAULT NULL,
                   `sons_cache`                              TEXT           DEFAULT NULL,
-                  `entities_id`                             INT            NOT NULL DEFAULT '0',
+                  `entities_id`                             INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `is_recursive`                            TINYINT        NOT NULL DEFAULT '0',
                   PRIMARY KEY                               (`id`),
                   KEY                                       `entities_id`  (`entities_id`),
