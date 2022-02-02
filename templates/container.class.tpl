@@ -7,19 +7,20 @@ class %%CLASSNAME%% extends CommonDBTM
    static function install($containers_id = 0) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       $obj = new self();
       $table = $obj->getTable();
 
       // create Table
       if (!$DB->tableExists($table)) {
-         $default_charset = DBConnection::getDefaultCharset();
-         $default_collation = DBConnection::getDefaultCollation();
-
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                               INT          NOT NULL auto_increment,
-                  `items_id`                         INT          NOT NULL,
+                  `id`                               INT          {$default_key_sign} NOT NULL auto_increment,
+                  `items_id`                         INT          {$default_key_sign} NOT NULL,
                   `itemtype`                         VARCHAR(255) DEFAULT '%%ITEMTYPE%%',
-                  `plugin_fields_containers_id`      INT          NOT NULL DEFAULT '%%CONTAINER%%',
+                  `plugin_fields_containers_id`      INT          {$default_key_sign} NOT NULL DEFAULT '%%CONTAINER%%',
                   PRIMARY KEY                        (`id`),
                   UNIQUE INDEX `itemtype_item_container`
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
