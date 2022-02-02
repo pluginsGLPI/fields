@@ -50,18 +50,19 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
    static function install(Migration $migration, $version) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       $table = self::getTable();
 
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
-         $default_charset = DBConnection::getDefaultCharset();
-         $default_collation = DBConnection::getDefaultCollation();
-
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                         INT          NOT NULL auto_increment,
+                  `id`                         INT          {$default_key_sign} NOT NULL auto_increment,
                   `plugin_fields_itemtype`     VARCHAR(30)  NOT NULL,
-                  `plugin_fields_items_id`     INT          NOT NULL,
+                  `plugin_fields_items_id`     INT          {$default_key_sign} NOT NULL,
                   `language`                   VARCHAR(5)   NOT NULL,
                   `label`                      VARCHAR(255) DEFAULT NULL,
                   PRIMARY KEY                  (`id`),
