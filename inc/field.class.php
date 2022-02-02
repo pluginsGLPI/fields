@@ -52,20 +52,21 @@ class PluginFieldsField extends CommonDBTM {
    static function install(Migration $migration, $version) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       $table = self::getTable();
 
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
-         $default_charset = DBConnection::getDefaultCharset();
-         $default_collation = DBConnection::getDefaultCollation();
-
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                INT            NOT NULL auto_increment,
+                  `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
                   `label`                             VARCHAR(255)   DEFAULT NULL,
                   `type`                              VARCHAR(25)    DEFAULT NULL,
-                  `plugin_fields_containers_id`       INT            NOT NULL DEFAULT '0',
+                  `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `ranking`                           INT            NOT NULL DEFAULT '0',
                   `default_value`                     VARCHAR(255)   DEFAULT NULL,
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
