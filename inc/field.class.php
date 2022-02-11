@@ -424,8 +424,10 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       if ($ID > 0) {
+         $attrs = ['readonly' => 'readonly'];
          $edit = true;
       } else {
+         $attrs = [];
          // Create item
          $edit = false;
          $_SESSION['saveInput'] = ['plugin_fields_containers_id' => $container->getField('id')];
@@ -438,7 +440,7 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>".__("Label")." : </td>";
       echo "<td>";
       echo Html::hidden('plugin_fields_containers_id', ['value' => $container->getField('id')]);
-      Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"]]);
+      Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"], 'attrs' => $attrs]);
       echo "</td>";
 
       if (!$edit) {
