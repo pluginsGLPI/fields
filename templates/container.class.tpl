@@ -54,6 +54,6 @@ class %%CLASSNAME%% extends CommonDBTM
    static function removeField($fieldname) {
       $migration = new PluginFieldsMigration(0);
       $migration->dropField(self::getTable(), $fieldname);
-
+      $migration->migrationOneTable(self::getTable());
    }
 }
