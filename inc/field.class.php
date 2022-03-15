@@ -92,6 +92,9 @@ class PluginFieldsField extends CommonDBTM {
       $toolbox = new PluginFieldsToolbox();
       $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
 
+      //regenerate container files
+      plugin_fields_checkFiles(true);
+
       return true;
    }
 
