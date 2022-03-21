@@ -98,6 +98,13 @@
                 })) }}
             {% endif %}
 
+        {% elseif type == 'dropdowngroup' %}
+            {% if not massiveaction %}
+                {{ macros.dropdownField('Group', name, value, label, field_options|merge({
+                    'entity': entities_id,
+                })) }}
+            {% endif %}
+
         {% elseif type == 'dropdownoperatingsystems' %}
             {% if not massiveaction %}
                 {{ macros.dropdownField('OperatingSystem', name, value, label, field_options|merge({

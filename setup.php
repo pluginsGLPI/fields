@@ -354,6 +354,10 @@ function plugin_fields_exportBlockAsYaml($container_id = null) {
                            $datas = Dropdown::getDropdownUsers(['is_active' => 1,'is_deleted' => 0], false);
                            $tmp_field['possible_value'] = $datas['results'];
                            break;
+                        case 'dropdowngroup':
+                           $datas = Dropdown::show(Group::getType(), []);
+                           $tmp_field['possible_value'] = $datas['results'];
+                           break;
                      }
                      $yaml_conf['container'][$container['id']."-".$itemtype]["fields"][] = $tmp_field;
                   }

@@ -90,6 +90,7 @@ class PluginFieldsMigration extends Migration {
          'date'                     => 'VARCHAR(255) DEFAULT NULL',
          'datetime'                 => 'VARCHAR(255) DEFAULT NULL',
          'dropdownuser'             => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
+         'dropdowngroup'            => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
          'dropdownoperatingsystems' => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
       ];
 

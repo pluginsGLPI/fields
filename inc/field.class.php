@@ -820,6 +820,7 @@ class PluginFieldsField extends CommonDBTM {
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
          'dropdownuser' => _n("User", "Users", 2),
+         'dropdowngroup' => _n("Group", "Groups", 2),
          'dropdownoperatingsystems' => _n("Operating system", "Operating systems", 2),
 
       ];
