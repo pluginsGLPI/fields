@@ -115,6 +115,11 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         parent::post_getFromDB();
     }
 
+    public static function getStatusItemtypes(): array {
+        global $CFG_GLPI;
+        return array_merge(['Ticket', 'Change', 'Problem', 'Project', 'ProjectTask'], $CFG_GLPI['state_types']);
+    }
+
     public static function countOverridesForContainer(int $container_id) {
         global $DB;
 
@@ -184,6 +189,20 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         return $overrides;
     }
 
+    public static function getOverridesForItem(int $container_id, CommonDBTM $item): array {
+        $status_itemtypes = self::getStatusItemtypes();
+        if (!in_array($item->getType(), $status_itemtypes)) {
+            return [];
+        }
+        $status_field_name = self::getStatusFieldName($item->getType());
+        $status = $item->fields[$status_field_name];
+        $overrides = self::getOverridesForContainer($container_id);
+        $overrides = array_filter($overrides, static function($override) use ($status) {
+            return in_array($status, $override['states']);
+        });
+        return $overrides;
+    }
+
     private static function getItemtypesForContainer(int $container_id): array {
         global $DB, $CFG_GLPI;
 
@@ -198,10 +217,10 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         if (count($iterator)) {
             $itemtypes = $iterator->current()['itemtypes'];
             $itemtypes = importArrayFromDB($itemtypes);
-            $state_types = array_merge(['Ticket', 'Change', 'Problem', 'Project', 'ProjectTask'], $CFG_GLPI['state_types']);
+            $status_itemtypes = self::getStatusItemtypes();
             // Get only itemtypes that exist and have a status field
-            $itemtypes = array_filter($itemtypes, static function($itemtype) use ($state_types) {
-                return class_exists($itemtype) && in_array($itemtype, $state_types, true);
+            $itemtypes = array_filter($itemtypes, static function($itemtype) use ($status_itemtypes) {
+                return class_exists($itemtype) && in_array($itemtype, $status_itemtypes, true);
             });
             $results = [];
             foreach ($itemtypes as $itemtype) {

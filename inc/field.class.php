@@ -650,16 +650,31 @@ class PluginFieldsField extends CommonDBTM {
 
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
                                      $show_table = true, $massiveaction = false) {
-
+      global $CFG_GLPI;
       if (empty($fields)) {
          return false;
       }
 
-      //get object associated with this fields
-      $tmp = $fields;
-      $first_field = array_shift($tmp);
-      $container_obj = new PluginFieldsContainer;
-      $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
+       //get object associated with this fields
+       $tmp = $fields;
+       $first_field = array_shift($tmp);
+       $container_obj = new PluginFieldsContainer;
+       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
+
+      // Fill status overrides if needed
+      $status_itemtypes = array_merge(['Ticket', 'Change', 'Problem', 'Project', 'ProjectTask'], $CFG_GLPI['state_types']);
+      if (in_array($itemtype, $status_itemtypes)) {
+         $item = new $itemtype();
+         $item->getFromDB($items_id);
+         $status_overrides = PluginFieldsStatusOverride::getOverridesForItem($container_obj->getID(), $item);
+         foreach ($status_overrides as $status_override) {
+             if (isset($fields[$status_override['plugin_fields_fields_id']])) {
+                 $fields[$status_override['plugin_fields_fields_id']]['is_readonly'] = $status_override['is_readonly'];
+                 $fields[$status_override['plugin_fields_fields_id']]['mandatory'] = $status_override['mandatory'];
+             }
+         }
+      }
+
       $classname = "PluginFields".$itemtype.
                                  preg_replace('/s$/', '', $container_obj->fields['name']);
       $obj = new $classname;
