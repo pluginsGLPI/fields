@@ -401,6 +401,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginFieldsField', $ong, $options);
+      $this->addStandardTab('PluginFieldsStatusOverride', $ong, $options);
       $this->addStandardTab('PluginFieldsProfile', $ong, $options);
       $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
 
