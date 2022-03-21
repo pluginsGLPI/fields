@@ -197,8 +197,9 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         $status_field_name = self::getStatusFieldName($item->getType());
         $status = $item->fields[$status_field_name];
         $overrides = self::getOverridesForContainer($container_id);
-        $overrides = array_filter($overrides, static function($override) use ($status) {
-            return in_array($status, $override['states']);
+        $itemtype = $item->getType();
+        $overrides = array_filter($overrides, static function($override) use ($itemtype, $status) {
+            return $override['itemtype'] === $itemtype && in_array($status, $override['states']);
         });
         return $overrides;
     }
