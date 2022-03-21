@@ -51,7 +51,8 @@ function plugin_fields_install() {
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
       'PluginFieldsProfile',
-      'PluginFieldsMigration'
+      'PluginFieldsMigration',
+      'PluginFieldsStatusOverride'
    ];
 
    $migration = new Migration($version);
