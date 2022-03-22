@@ -30,6 +30,32 @@
 
 class PluginFieldsToolbox {
 
+
+   /**
+    * Migration field type.
+    *
+    * @param string $old_type
+    * @param string $new_type
+    *
+    * @return string
+    */
+   function migrateFieldtype($old_type, $new_type){
+      global $DB;
+      $migration = new Migration(0);
+      $migration->addPostQuery(
+         $DB->buildUpdate(
+             PluginFieldsField::getTable() ,
+             [
+                 'type' => $new_type
+             ],
+             [
+                 'type' => $old_type,
+             ]
+         )
+     );
+     $migration->executeMigration();
+   }
+
    /**
     * Get a clean system name from a label.
     *

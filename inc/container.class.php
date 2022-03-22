@@ -1281,7 +1281,7 @@ class PluginFieldsContainer extends CommonDBTM {
              && (
                  $value === null
                  || $value === ''
-                 || (in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems']) && $value == 0)
+                 || (strpos($field['type'], 'dropdown') && $value == 0)
                  || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
              )
          ) {
@@ -1597,8 +1597,14 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
-         if ($data['type'] === "dropdownuser") {
-            $opt[$i]['table']      = 'glpi_users';
+         if(strpos($data['type'], 'dropdown-') !== false && $data['type'] !== "dropdown"){
+
+            //remove 'dropdown-'
+            $class = str_replace('dropdown-', '' , $data['type']);
+            //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
+            $class = Toolbox::stripslashes_deep($class);
+
+            $opt[$i]['table']      = CommonDBTM::getTable($class);
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = $data['name'];
             $opt[$i]['right'] = 'all';
@@ -1610,42 +1616,25 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
-         if ($data['type'] === "dropdownoperatingsystems") {
-            $opt[$i]['table']      = 'glpi_operatingsystems';
-            $opt[$i]['field']      = 'name';
-            $opt[$i]['linkfield']  = $data['name'];
-            $opt[$i]['right'] = 'all';
-
-            $opt[$i]['forcegroupby'] = true;
-
-            $opt[$i]['joinparams']['jointype'] = "";
-            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         }
-
-         switch ($data['type']) {
-            case 'dropdown':
-            case 'dropdownuser':
-               $opt[$i]['datatype'] = "dropdown";
-               break;
-            case 'dropdownoperatingsystems':
-               $opt[$i]['datatype'] = "dropdown";
-               break;
-            case 'yesno':
+         switch (true) {
+            case $data['type'] === 'yesno':
                $opt[$i]['datatype'] = "bool";
                break;
-            case 'textarea':
+            case $data['type'] === 'textarea':
                $opt[$i]['datatype'] = "text";
                break;
-            case 'number':
+            case $data['type'] === 'number':
                $opt[$i]['datatype'] = "decimal";
                break;
-            case 'date':
-            case 'datetime':
+            case $data['type'] === 'date':
+            case $data['type'] === 'datetime':
                $opt[$i]['datatype'] = $data['type'];
                break;
-            case 'url':
+            case $data['type'] === 'url':
                $opt[$i]['datatype'] = 'weblink';
+               break;
+            case strpos($data['type'], 'dropdown') !== false:
+               $opt[$i]['datatype'] = "dropdown";
                break;
             default:
                $opt[$i]['datatype'] = "string";
