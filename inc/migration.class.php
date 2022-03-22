@@ -93,6 +93,8 @@ class PluginFieldsMigration extends Migration {
          case $field_type === 'yesno':
             $sql_type = 'INT NOT NULL DEFAULT 0';
             break;
+         case $field_type === 'glpi_object':
+            $sql_type = ['itemtype' => 'varchar(100) NOT NULL', 'items_id' => "int {$default_key_sign} NOT NULL DEFAULT 0"]
          case $field_type === 'date':
          case $field_type === 'datetime':
          case $field_type === 'number':

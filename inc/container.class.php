@@ -1093,7 +1093,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $found = $obj->find(['items_id' => $items_id]);
       if (empty($found)) {
          // add fields data
-         $obj->add($data);
+         $obj->add(Toolbox::addslashes_deep($data));
 
          //construct history on itemtype object (Historical tab)
          self::constructHistory($data['plugin_fields_containers_id'], $items_id,
@@ -1102,7 +1102,7 @@ class PluginFieldsContainer extends CommonDBTM {
       } else {
          $first_found = array_pop($found);
          $data['id'] = $first_found['id'];
-         $obj->update($data);
+         $obj->update(Toolbox::addslashes_deep($data));
 
          //construct history on itemtype object (Historical tab)
          self::constructHistory($data['plugin_fields_containers_id'], $items_id,
@@ -1254,19 +1254,27 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          $name  = $field['name'];
-         if (isset($data[$name])) {
-            $value = $data[$name];
-         } else if (isset($data['plugin_fields_'.$name.'dropdowns_id'])) {
-            $value = $data['plugin_fields_'.$name.'dropdowns_id'];
-         } else if ($field['mandatory'] == 1) {
-            $tablename = "glpi_plugin_fields_" . strtolower(
-               $itemtype . getPlural(preg_replace('/s$/', '', $container->fields['name']))
-            );
+         if ($field['type'] == "glpi_object") {
+            //hack to validate itemtype / items_id
+            if (isset($data[$name."_itemtype"]) && (isset($data[$name."_items_id"]) && $data[$name."_items_id"] > 0)){
+               $value = $data[$name."_itemtype"]."_".$data[$name."_items_id"];
+            } else {
+               $value = '';
+            }
+         } else {
+            if (isset($data[$name])) {
+               $value = $data[$name];
+            } else if (isset($data['plugin_fields_'.$name.'dropdowns_id'])) {
+               $value = $data['plugin_fields_'.$name.'dropdowns_id'];
+            } else if ($field['mandatory'] == 1) {
+               $tablename = "glpi_plugin_fields_" . strtolower(
+                  $itemtype . getPlural(preg_replace('/s$/', '', $container->fields['name']))
+               );
 
-            $query = "SELECT * FROM `$tablename` WHERE
-               `itemtype`='$itemtype'
-               AND `items_id`='{$data['items_id']}'
-               AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
+               $query = "SELECT * FROM `$tablename` WHERE
+                  `itemtype`='$itemtype'
+                  AND `items_id`='{$data['items_id']}'
+                  AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
 
             $value = null;
             $db_result = [];
@@ -1275,13 +1283,13 @@ class PluginFieldsContainer extends CommonDBTM {
                if (isset($db_result[$name])) {
                   $value = $db_result[$name];
                }
-            }
 
-         } else {
-            if ($massiveaction) {
-               continue;
+            } else {
+               if ($massiveaction) {
+                  continue;
+               }
+               $value = '';
             }
-            $value = '';
          }
 
          //translate label
@@ -1295,6 +1303,7 @@ class PluginFieldsContainer extends CommonDBTM {
                  $value === null
                  || $value === ''
                  || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', $field['type'])) && $value == 0)
+                 || (in_array($field['type'], ['glpi_object']) && $value == '')
                  || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
              )
          ) {
@@ -1328,8 +1337,8 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       return $valid;
+      }
    }
-
 
    static function findContainer($itemtype, $type = 'tab', $subtype = '') {
 
@@ -1514,20 +1523,26 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $has_fields = false;
       foreach ($fields as $field) {
-         if (isset($item->input[$field['name']])) {
-            //standard field
-            $input = $field['name'];
+
+         if ($field['type'] == 'glpi_object'){
+            $data[$field['name']."_itemtype"] = $item->input[$field['name']."_itemtype"];
+            $data[$field['name']."_items_id"] = $item->input[$field['name']."_items_id"];
          } else {
-            //dropdown field
-            $input = "plugin_fields_".$field['name']."dropdowns_id";
-         }
-         if (isset($item->input[$input])) {
-            $has_fields = true;
-            // Before is_number check, help user to have a number correct, during a massive action of a number field
-            if ($field['type'] == 'number') {
-               $item->input[$input] = str_replace(",", ".", $item->input[$input]);
+            if (isset($item->input[$field['name']])) {
+               //standard field
+               $input = $field['name'];
+            } else {
+               //dropdown field
+               $input = "plugin_fields_".$field['name']."dropdowns_id";
             }
-            $data[$input] = $item->input[$input];
+            if (isset($item->input[$input])) {
+               $has_fields = true;
+               // Before is_number check, help user to have a number correct, during a massive action of a number field
+               if ($field['type'] == 'number') {
+                  $item->input[$input] = str_replace(",", ".", $item->input[$input]);
+               }
+               $data[$input] = $item->input[$input];
+            }
          }
       }
 
@@ -1588,27 +1603,37 @@ class PluginFieldsContainer extends CommonDBTM {
          ];
          $data['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
-         $opt[$i]['table']         = $tablename;
-         $opt[$i]['field']         = $data['name'];
-         $opt[$i]['name']          = $data['container_label']." - ".$data['label'];
-         $opt[$i]['linkfield']     = $data['name'];
-         $opt[$i]['joinparams']['jointype'] = "itemtype_item";
-         $opt[$i]['pfields_type']  = $data['type'];
-         if ($data['is_readonly']) {
-             $opt[$i]['massiveaction'] = false;
-         }
+         if ($data['type'] === "glpi_object") {
 
-         if ($data['type'] === "dropdown") {
-            $opt[$i]['table']      = 'glpi_plugin_fields_'.$data['name'].'dropdowns';
-            $opt[$i]['field']      = 'completename';
-            $opt[$i]['linkfield']  = "plugin_fields_".$data['name']."dropdowns_id";
+            $opt[$i]['table']              = $tablename;
+            $opt[$i]['field']              = $data['name'].'_itemtype';
+            $opt[$i]['linkfield']          = $data['name']."_itemtype";
+            $opt[$i]['name']               = $data['container_label']." - ".$data['label'].' - '._n('Associated item type', 'Associated item types', Session::getPluralNumber());
+            $opt[$i]['datatype']           = 'itemtypename';
+            $opt[$i]['types']              = PluginFieldsField::getDefinedGlpiItemtypes($data['name']);
+            $opt[$i]['additionalfields']   = ['itemtype'];
+            $opt[$i]['joinparams']['jointype'] = 'itemtype_item';
+            $opt[$i]['forcegroupby']       = true;
+            $opt[$i]['massiveaction']      = false;
+            $i++;
 
-            $opt[$i]['forcegroupby'] = true;
+            $opt[$i]['table']              = $tablename;
+            $opt[$i]['field']              = $data['name'].'_items_id';
+            $opt[$i]['linkfield']          = $data['name']."_items_id";
+            $opt[$i]['name']               = $data['container_label']." - ".$data['label'].' - '.__('Associated item ID');
+            $opt[$i]['massiveaction']      = false;
+            $opt[$i]['joinparams']['jointype'] = 'itemtype_item';
+            $opt[$i]['datatype']           = 'text';
+            $opt[$i]['additionalfields']   = ['itemtype'];
 
-            $opt[$i]['joinparams']['jointype'] = "";
-            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         }
+         } else {
+
+            $opt[$i]['table']         = $tablename;
+            $opt[$i]['field']         = $data['name'];
+            $opt[$i]['name']          = $data['container_label']." - ".$data['label'];
+            $opt[$i]['linkfield']     = $data['name'];
+            $opt[$i]['joinparams']['jointype'] = "itemtype_item";
+            $opt[$i]['pfields_type']  = $data['type'];
 
          $is_itemtype_dropdown = false;
          $dropdown_matches     = [];
@@ -1621,7 +1646,10 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['linkfield']  = $data['name'];
             $opt[$i]['right']      = 'all';
 
-            $opt[$i]['forcegroupby'] = true;
+            if ($data['type'] === "dropdown") {
+               $opt[$i]['table']      = 'glpi_plugin_fields_'.$data['name'].'dropdowns';
+               $opt[$i]['field']      = 'completename';
+               $opt[$i]['linkfield']  = "plugin_fields_".$data['name']."dropdowns_id";
 
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;

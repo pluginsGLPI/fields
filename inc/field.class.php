@@ -72,6 +72,7 @@ class PluginFieldsField extends CommonDBTM {
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
+                  `glpi_object`                       LONGTEXT       ,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`),
@@ -96,6 +97,11 @@ class PluginFieldsField extends CommonDBTM {
 
       //increase the size of column 'type' (25 to 255)
       $migration->changeField($table, 'type', 'type', 'string');
+
+      if (!$DB->fieldExists($table, 'glpi_object')) {
+         $migration->addField($table, 'glpi_object', 'longtext');
+      }
+      $migration->executeMigration();
 
       $toolbox = new PluginFieldsToolbox();
       $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
@@ -195,6 +201,14 @@ class PluginFieldsField extends CommonDBTM {
          $input['name'] = $oldname;
       }
 
+      $itemtype = [];
+      if (isset($input['_glpi_object'])) {
+         foreach ($input['_glpi_object'] as $key => $value) {
+            $itemtype[$key] = Toolbox::addslashes_deep($value);
+         }
+      }
+      $input['glpi_object'] = json_encode($itemtype);
+
       return $input;
    }
 
@@ -216,7 +230,7 @@ class PluginFieldsField extends CommonDBTM {
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
          foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
             $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
-            $classname::removeField($this->fields['name']);
+            $classname::removeField($this->fields['type'], $this->fields['name']);
          }
       }
 
@@ -473,34 +487,83 @@ class PluginFieldsField extends CommonDBTM {
       echo "</td>";
 
       if (!$edit) {
+         //if glpi_object selected display dropdown and hide input default_value
+         echo Html::scriptBlock("
+            var display_glpi_object_dropdown = function(selected_val) {
+               if (selected_val == 'glpi_object') {
+                  $(\"#dropdown_glpi_object\").show();
+                  $(\"input[name=default_value]\").parent().parent().hide();
+               } else {
+                  $(\"#dropdown_glpi_object\").hide();
+                  $(\"input[name=default_value]\").parent().parent().show();
+               }
+            };
+         ");
+
          echo "</tr>";
          echo "<tr>";
          echo "<td>".__("Type")." : </td>";
          echo "<td>";
-         Dropdown::showFromArray('type', self::getTypes(false), ['value' => $this->fields["type"]]);
+         Dropdown::showFromArray('type', self::getTypes(false), ['value' => $this->fields["type"], 'on_change' => 'display_glpi_object_dropdown(this.value)']);
          echo "</td>";
       }
-      echo "<td>".__("Default values")." : </td>";
-      echo "<td>";
-      echo Html::input(
-         'default_value',
-         [
-            'value' => $this->fields['default_value'],
-         ]
-      );
-      if ($this->fields["type"] == "dropdown") {
-         echo '<a href="'.Plugin::getWebDir('fields').'/front/commondropdown.php?ddtype='.
-                          $this->fields['name'] .'dropdown">
-               <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
-                    alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
-               </a>';
+
+      if ($this->fields["type"] != "glpi_object") {
+         echo "<td>".__("Default values")." : </td>";
+         echo "<td>";
+         echo Html::input(
+            'default_value',
+            [
+               'value' => $this->fields['default_value'],
+            ]
+         );
+         if ($this->fields["type"] == "dropdown") {
+            echo '<a href="'.Plugin::getWebDir('fields').'/front/commondropdown.php?ddtype='.
+                             $this->fields['name'] .'dropdown">
+                  <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
+                       alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
+                  </a>';
+         }
+         if (in_array($this->fields['type'], ['date', 'datetime'])) {
+            echo "<i class='pointer fa fa-info'
+                     title=\"".__("You can use 'now' for date and datetime field")."\"></i>";
+         }
+         echo "</td>";
+      } else{
+         echo "<td></td>";
+         echo "<td></td>";
       }
-      if (in_array($this->fields['type'], ['date', 'datetime'])) {
-         echo "<i class='pointer fa fa-info'
-                  title=\"".__("You can use 'now' for date and datetime field")."\"></i>";
+      echo "</tr>";
+
+
+      $style = '';
+      if ($this->fields["type"] != "glpi_object") {
+         $style = "style='display: none;'";
+      }
+      echo "<tr id='dropdown_glpi_object' $style>";
+      echo "<td>".__("GLPI Object")." : </td>";
+      echo "<td>";
+
+      if (!$edit) {
+      $used = $edit ? json_decode($this->fields["glpi_object"], JSON_OBJECT_AS_ARRAY) : [];
+      Dropdown::showFromArray('_glpi_object', self::getGlpiItemtypes(), [
+               'display_emptychoice'   => true,
+               'values'   => $used,
+               'multiple' => true
+            ]);
+      } else {
+         $itemtype = json_decode($this->fields["glpi_object"], JSON_OBJECT_AS_ARRAY);
+         foreach ($itemtype as $value) {
+            //remove 'dropdown-'
+            $classname = str_replace('dropdown-', '' , $value);
+            //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
+            $classname = Toolbox::stripslashes_deep($classname);
+            echo $classname::getTypeName(0)."&nbsp;,";
+         }
       }
       echo "</td>";
-
+      echo "<td></td>";
+      echo "<td></td>";
       echo "</tr>";
 
       echo "<tr>";
@@ -519,10 +582,70 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("is_readonly", $this->fields["is_readonly"]);
       echo "</td>";
+      echo "<td></td>";
+      echo "<td></td>";
       echo "</tr>";
 
       $this->showFormButtons($options);
+   }
 
+   static function getGlpiItemtypes(){
+      global $CFG_GLPI;
+
+      $types = [];
+
+      //get All available Model class and assets
+      foreach ($CFG_GLPI['state_types'] as $class) {
+         $itemtype = new $class();
+         $model_class  = $itemtype->getModelClass();
+         if ($model_class != null) {
+            $types[__('Model')]['dropdown-'.$model_class::getType()] = $model_class::getTypeName(2);
+         }
+         $types[__('Asset')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
+      }
+
+      //complete Model / Type list
+      foreach ($CFG_GLPI['dictionnary_types'] as $class) {
+         if (strpos(strtolower($class), "model") !== false) {
+            $types[__('Model')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
+         } else if (strpos(strtolower($class), "type") !== false) {
+            $types[__('Type')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
+         }
+      }
+
+      //complete Asset list
+      foreach ($CFG_GLPI['state_types'] as $class) {
+         $types[__('Asset')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
+      }
+
+      //other
+      $types[__('Administration')]['dropdown-'.User::getType()] = _n("User", "Users", 2);
+      $types[__('Administration')]['dropdown-'.Group::getType()] = _n("Group", "Groups", 2);
+      $types[__('Other')]['dropdown-'.OperatingSystem::getType()] = _n("Operating system", "Operating systems", 2);
+
+      return $types;
+   }
+
+   public static function getDefinedGlpiItemtypes($field_name) {
+      global $DB;
+      $result = $DB->request([
+         'SELECT'          => 'glpi_object',
+         'FROM'            => static::getTable(),
+         'WHERE'           => [
+            'name' => $field_name
+         ]
+      ])->current();
+
+      $types = [];
+      $used = json_decode($result["glpi_object"], JSON_OBJECT_AS_ARRAY);
+      foreach ($used as $value) {
+         $classname = str_replace('dropdown-', '' , $value);
+         //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
+         $classname = Toolbox::stripslashes_deep($classname);
+         $types[] = $classname;
+      }
+
+      return $types;
    }
 
    static function showForTabContainer($c_id, $items_id, $itemtype) {
@@ -771,6 +894,9 @@ class PluginFieldsField extends CommonDBTM {
          if (is_array($found_v)) {
             if ($field['type'] == "dropdown") {
                $value = $found_v["plugin_fields_".$field['name']."dropdowns_id"];
+            } else if ($field['type'] == "glpi_object") {
+              $value["_itemtype"] = $found_v[$field['name']."_itemtype"];
+              $value["_items_id"] = $found_v[$field['name']."_items_id"];
             } else {
                $value = $found_v[$field['name']] ?? "";
             }
@@ -877,6 +1003,7 @@ class PluginFieldsField extends CommonDBTM {
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
+         'glpi_object' => _n("GLPI Object", "GLPI Object", 2),
       ];
       $administration_types = [
           'dropdown-User'  => User::getTypeName(Session::getPluralNumber()),

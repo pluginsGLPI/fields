@@ -46,18 +46,37 @@ class %%CLASSNAME%% extends CommonDBTM
    }
 
    static function addField($fieldname, $type) {
-      if ($type != 'header') {
+      if ($type != 'header' && $type != 'glpi_object') {
          $sql_type = PluginFieldsMigration::getSQLType($type);
 
          $migration = new PluginFieldsMigration(0);
          $migration->addField(self::getTable(), $fieldname, $sql_type);
          $migration->migrationOneTable(self::getTable());
       }
+
+      if ($type != 'header' && $type == 'glpi_object') {
+         $sql_type = PluginFieldsMigration::getSQLType($type);
+
+         $migration = new PluginFieldsMigration(0);
+         foreach ($sql_type as $column_name => $column_definition) {
+            $migration->addField(self::getTable(), $fieldname."_".$column_name, $column_definition);
+         }
+         $migration->migrationOneTable(self::getTable());
+      }
    }
 
-   static function removeField($fieldname) {
-      $migration = new PluginFieldsMigration(0);
-      $migration->dropField(self::getTable(), $fieldname);
-      $migration->migrationOneTable(self::getTable());
+   static function removeField($fieldname, $type) {
+      if ($type != 'header' && $type != 'glpi_object') {
+         $migration = new PluginFieldsMigration(0);
+         $migration->dropField(self::getTable(), $fieldname);
+         $migration->migrationOneTable(self::getTable());
+      }
+
+      if ($type != 'header' && $type == 'glpi_object') {
+         $migration = new PluginFieldsMigration(0);
+         $migration->dropField(self::getTable(), $fieldname.'_itemtype');
+         $migration->dropField(self::getTable(), $fieldname.'_items_id');
+         $migration->migrationOneTable(self::getTable());
+      }
    }
 }
