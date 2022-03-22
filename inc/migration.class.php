@@ -78,6 +78,8 @@ class PluginFieldsMigration extends Migration {
    }
 
    static function getSQLType($field_type) {
+
+      global $CFG_GLPI;
       $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
       $types = [
@@ -89,10 +91,38 @@ class PluginFieldsMigration extends Migration {
          'yesno'                    => 'INT          NOT NULL DEFAULT 0',
          'date'                     => 'VARCHAR(255) DEFAULT NULL',
          'datetime'                 => 'VARCHAR(255) DEFAULT NULL',
-         'dropdownuser'             => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
-         'dropdownoperatingsystems' => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
       ];
 
-      return $types[$field_type];
+
+      //get All available Model class and assets
+      foreach ($CFG_GLPI['state_types'] as $class) {
+         $itemtype = new $class();
+         $model_class  = $itemtype->getModelClass();
+         if ($model_class != null) {
+            $types['dropdown-'.$model_class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";;
+         }
+         $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+      }
+
+      //complete Model / Type list
+      foreach ($CFG_GLPI['dictionnary_types'] as $class) {
+         if (strpos(strtolower($class), "model") !== false) {
+            $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+         } else if (strpos(strtolower($class), "type") !== false) {
+            $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+         }
+      }
+
+      //complete Asset list
+      foreach ($CFG_GLPI['state_types'] as $class) {
+         $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+      }
+
+      $types['dropdown-'.User::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+      $types['dropdown-'.Group::getType()] =  "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+      $types['dropdown-'.OperatingSystem::getType()] =  "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+
+      //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
+      return $types[Toolbox::stripslashes_deep($field_type)];
    }
 }

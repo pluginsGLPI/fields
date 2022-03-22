@@ -45,6 +45,8 @@
     {% set label    = field['label'] %}
     {% set value    = field['value'] %}
     {% set readonly = field['is_readonly'] %}
+    {% set model_class = field['model_class'] %}
+    {% set dropdown_field_options = field['dropdown_field_options'] %}
 
     {% set field_options = {
         'readonly':   readonly or not canedit,
@@ -96,23 +98,13 @@
         {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge({
             'entity': item.getEntityID(),
         })) }}
-    {% elseif type == 'dropdownuser' %}
-        {% if not massiveaction %}
-            {{ macros.dropdownField('User', name, value, label, field_options|merge({
-                'entity': -1,
-                'right': 'all',
-                'condition': {
-                    'is_active': 1,
-                    'is_deleted': 0
-                }
-            })) }}
-        {% endif %}
 
-    {% elseif type == 'dropdownoperatingsystems' %}
+    {% else %}
         {% if not massiveaction %}
-            {{ macros.dropdownField('OperatingSystem', name, value, label, field_options|merge({
-                'entity': -1,
+            {{ macros.dropdownField(model_class, name, value, label, field_options|merge({
+                'entity': entities_id,
                 'right': 'all',
+                'condition': dropdown_field_options
             })) }}
         {% endif %}
     {% endif %}
