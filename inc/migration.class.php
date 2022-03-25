@@ -78,17 +78,19 @@ class PluginFieldsMigration extends Migration {
    }
 
    static function getSQLType($field_type) {
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $types = [
-         'text'         => 'VARCHAR(255) DEFAULT NULL',
-         'url'          => 'TEXT DEFAULT NULL',
-         'textarea'     => 'TEXT         DEFAULT NULL',
-         'number'       => 'VARCHAR(255) DEFAULT NULL',
-         'dropdown'     => 'INT          NOT NULL DEFAULT 0',
-         'yesno'        => 'INT          NOT NULL DEFAULT 0',
-         'date'         => 'VARCHAR(255) DEFAULT NULL',
-         'datetime'     => 'VARCHAR(255) DEFAULT NULL',
-         'dropdownuser' => 'INT          NOT NULL DEFAULT 0',
-         'dropdownoperatingsystems' => 'INT  NOT NULL DEFAULT 0'
+         'text'                     => 'VARCHAR(255) DEFAULT NULL',
+         'url'                      => 'TEXT DEFAULT NULL',
+         'textarea'                 => 'TEXT         DEFAULT NULL',
+         'number'                   => 'VARCHAR(255) DEFAULT NULL',
+         'dropdown'                 => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
+         'yesno'                    => 'INT          NOT NULL DEFAULT 0',
+         'date'                     => 'VARCHAR(255) DEFAULT NULL',
+         'datetime'                 => 'VARCHAR(255) DEFAULT NULL',
+         'dropdownuser'             => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
+         'dropdownoperatingsystems' => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
       ];
 
       return $types[$field_type];
