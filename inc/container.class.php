@@ -1233,6 +1233,10 @@ class PluginFieldsContainer extends CommonDBTM {
       ]);
 
       foreach ($fields as $fields_id => $field) {
+         if (!$field['is_active']) {
+            continue;
+         }
+
          if ($field['type'] == "yesno" || $field['type'] == "header") {
             continue;
          }
@@ -1252,6 +1256,7 @@ class PluginFieldsContainer extends CommonDBTM {
                AND `items_id`='{$data['items_id']}'
                AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
 
+            $value = null;
             $db_result = [];
             if ($result = $DB->query($query)) {
                $db_result = $DB->fetchAssoc($result);
@@ -1272,12 +1277,15 @@ class PluginFieldsContainer extends CommonDBTM {
          $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
          // Check mandatory fields
-         if ($field['mandatory'] == 1
-             && ($value == ""
-                 || in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems'])
-                 && $value == 0
-                 || in_array($field['type'], ['date', 'datetime'])
-                 && $value == 'NULL')) {
+         if (
+             $field['mandatory'] == 1
+             && (
+                 $value === null
+                 || $value === ''
+                 || (in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems']) && $value == 0)
+                 || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
+             )
+         ) {
             $empty_errors[] = $field['label'];
             $valid = false;
          } else if ($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
