@@ -1178,7 +1178,7 @@ class PluginFieldsContainer extends CommonDBTM {
             }
 
             if ($data[$key] !== $old_value) {
-               $updates[$key] = [0, $old_value, $data[$key]];
+               $updates[$key] = [0, $old_value ?? '', $data[$key]];
             }
          }
 
