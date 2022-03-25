@@ -1622,7 +1622,7 @@ class PluginFieldsContainer extends CommonDBTM {
                $opt[$i]['datatype'] = "text";
                break;
             case 'number':
-               $opt[$i]['datatype'] = "number";
+               $opt[$i]['datatype'] = "decimal";
                break;
             case 'date':
             case 'datetime':
