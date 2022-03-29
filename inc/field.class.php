@@ -756,6 +756,7 @@ class PluginFieldsField extends CommonDBTM {
          'itemtype'      => self::getType(),
          'canedit'       => $canedit,
          'massiveaction' => $massiveaction,
+         'cont_type'     => $container_obj->fields['type'],
       ]);
 
       unset($_SESSION['plugin']['fields']['values_sent']);
