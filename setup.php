@@ -97,7 +97,7 @@ function plugin_init_fields() {
       // When a Category is changed during ticket creation
       if (isset($_POST) && !empty($_POST)
           && isset($_POST['_plugin_fields_type'])
-          && $_SERVER['REQUEST_URI'] == Ticket::getFormURL()) {
+          && $_SERVER['REQUEST_URI'] ?? '' == Ticket::getFormURL()) {
          foreach ($_POST as $key => $value) {
             if (!is_array($value)) {
                $_SESSION['plugin']['fields']['values_sent'][$key] = stripcslashes($value);
