@@ -34,10 +34,16 @@
  * @return boolean
  */
 function plugin_fields_install() {
-   global $CFG_GLPI;
 
-   set_time_limit(900);
-   ini_set('memory_limit', '2048M');
+   // Regenerating tables/files can consume lot of memory/time
+   $memory_limit       = (int)Toolbox::getMemoryLimit();
+   $max_execution_time = ini_get('max_execution_time');
+   if ($memory_limit > 0 && $memory_limit < (512 * 1024 * 1024)) {
+      ini_set('memory_limit', '512M');
+   }
+   if ($max_execution_time > 0 && $max_execution_time < 300) {
+      ini_set('max_execution_time', '300');
+   }
 
    $plugin_fields = new Plugin;
    $plugin_fields->getFromDBbyDir('fields');
