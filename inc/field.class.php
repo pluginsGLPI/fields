@@ -748,12 +748,11 @@ class PluginFieldsField extends CommonDBTM {
          $field['value'] = $value;
       }
 
-      $obj = new $itemtype;
-      $obj->getFromDB($items_id);
+      $item = new $itemtype;
+      $item->getFromDB($items_id);
       $html = TemplateRenderer::getInstance()->render('@fields/fields.html.twig', [
+         'item'          => $item,
          'fields'        => $fields,
-         'entities_id'   => $obj->getEntityID(),
-         'itemtype'      => self::getType(),
          'canedit'       => $canedit,
          'massiveaction' => $massiveaction,
       ]);
