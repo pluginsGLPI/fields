@@ -97,6 +97,11 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
       <author>Johan Cwiklinski</author>
    </authors>
    <versions>
+    <version>
+         <num>1.13.0-rc5</num>
+         <compatibility>~10.0.0</compatibility>
+         <download_url>https://github.com/pluginsGLPI/fields/releases/download/1.13.0-rc5/glpi-fields-1.13.0-rc5.tar.bz2</download_url>
+      </version>
      <version>
          <num>1.13.0-rc4</num>
          <compatibility>~10.0.0</compatibility>
