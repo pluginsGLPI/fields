@@ -28,83 +28,98 @@
 
 {% import 'components/form/fields_macros.html.twig' as macros %}
 
-<div class="row">
-    {% for field in fields %}
+{% if item is not instanceof('CommonITILObject') %}
+    <div class="card-body d-flex flex-wrap">
+        <div class="col-12 col-xxl-12 flex-column">
+            <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
+                <div class="row flex-row align-items-start flex-grow-1">
+                    <div class="row flex-row">
+{% endif %}
 
-        {% set type     = field['type'] %}
-        {% set name     = field['name'] %}
-        {% set label    = field['label'] %}
-        {% set value    = field['value'] %}
-        {% set readonly = field['is_readonly'] %}
+{% for field in fields %}
 
-        {% set field_options = {
-            'readonly': readonly or not canedit,
-            'required': field['mandatory'],
-        } %}
+    {% set type     = field['type'] %}
+    {% set name     = field['name'] %}
+    {% set label    = field['label'] %}
+    {% set value    = field['value'] %}
+    {% set readonly = field['is_readonly'] %}
 
-        {% if type == 'header' %}
-            {{ macros.largeTitle(label) }}
+    {% set field_options = {
+        'readonly':   readonly or not canedit,
+        'required':   field['mandatory'],
+        'full_width': item is instanceof('CommonITILObject')
+    } %}
 
-        {% elseif type == 'text' %}
-            {{ macros.textField(name, value, label, field_options) }}
+    {% if type == 'header' %}
+        {{ macros.largeTitle(label) }}
 
-        {% elseif type == 'number' %}
-            {{ macros.numberField(name, value, label, field_options|merge({step: 'any'})) }}
+    {% elseif type == 'text' %}
+        {{ macros.textField(name, value, label, field_options) }}
 
-        {% elseif type == 'url' %}
-                {% set ext_link %}
-                {% if value|length %}
-                    <a target="_blank" href="{{ value }}">
-                        <i class="ti ti-external-link"></i>
-                        {{ __('show', 'fields') }}
-                    </a>
-                {% endif %}
-                {% endset %}
-                {{ macros.textField(name, value, label, field_options|merge({
-                    'type': 'url',
-                    'add_field_html': ext_link
-                })) }}
-        {% elseif type == 'textarea' %}
-            {{ macros.textareaField(name, value, label, field_options) }}
+    {% elseif type == 'number' %}
+        {{ macros.numberField(name, value, label, field_options|merge({step: 'any'})) }}
 
-        {% elseif type == 'yesno' %}
-            {{ macros.dropdownYesNo(name, value, label, field_options) }}
-
-        {% elseif type == 'date' %}
-            {{ macros.dateField(name, value, label, field_options) }}
-
-        {% elseif type == 'datetime' %}
-            {{ macros.datetimeField(name, value, label, field_options) }}
-
-        {% elseif type == 'dropdown' %}
-            {% if "dropdowns_id" in name %}
-                {% set dropdown_itemtype = call("getItemtypeForForeignKeyField", [name]) %}
-            {% else %}
-                {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [name]) %}
+    {% elseif type == 'url' %}
+            {% set ext_link %}
+            {% if value|length %}
+                <a target="_blank" href="{{ value }}">
+                    <i class="ti ti-external-link"></i>
+                    {{ __('show', 'fields') }}
+                </a>
             {% endif %}
-            {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
-            {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge({
-                'entity': entities_id,
+            {% endset %}
+            {{ macros.textField(name, value, label, field_options|merge({
+                'type': 'url',
+                'add_field_html': ext_link
             })) }}
-        {% elseif type == 'dropdownuser' %}
-            {% if not massiveaction %}
-                {{ macros.dropdownField('User', name, value, label, field_options|merge({
-                    'entity': -1,
-                    'right': 'all',
-                    'condition': {
-                        'is_active': 1,
-                        'is_deleted': 0
-                    }
-                })) }}
-            {% endif %}
+    {% elseif type == 'textarea' %}
+        {{ macros.textareaField(name, value, label, field_options) }}
 
-        {% elseif type == 'dropdownoperatingsystems' %}
-            {% if not massiveaction %}
-                {{ macros.dropdownField('OperatingSystem', name, value, label, field_options|merge({
-                    'entity': -1,
-                    'right': 'all',
-                })) }}
-            {% endif %}
+    {% elseif type == 'yesno' %}
+        {{ macros.dropdownYesNo(name, value, label, field_options) }}
+
+    {% elseif type == 'date' %}
+        {{ macros.dateField(name, value, label, field_options) }}
+
+    {% elseif type == 'datetime' %}
+        {{ macros.datetimeField(name, value, label, field_options) }}
+
+    {% elseif type == 'dropdown' %}
+        {% if "dropdowns_id" in name %}
+            {% set dropdown_itemtype = call("getItemtypeForForeignKeyField", [name]) %}
+        {% else %}
+            {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [name]) %}
         {% endif %}
-    {% endfor %}
-</div>
+        {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
+        {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge({
+            'entity': item.getEntityID(),
+        })) }}
+    {% elseif type == 'dropdownuser' %}
+        {% if not massiveaction %}
+            {{ macros.dropdownField('User', name, value, label, field_options|merge({
+                'entity': -1,
+                'right': 'all',
+                'condition': {
+                    'is_active': 1,
+                    'is_deleted': 0
+                }
+            })) }}
+        {% endif %}
+
+    {% elseif type == 'dropdownoperatingsystems' %}
+        {% if not massiveaction %}
+            {{ macros.dropdownField('OperatingSystem', name, value, label, field_options|merge({
+                'entity': -1,
+                'right': 'all',
+            })) }}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if item is not instanceof('CommonITILObject') %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
