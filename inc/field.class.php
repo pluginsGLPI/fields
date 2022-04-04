@@ -751,10 +751,11 @@ class PluginFieldsField extends CommonDBTM {
       $item = new $itemtype;
       $item->getFromDB($items_id);
       $html = TemplateRenderer::getInstance()->render('@fields/fields.html.twig', [
-         'item'          => $item,
-         'fields'        => $fields,
-         'canedit'       => $canedit,
-         'massiveaction' => $massiveaction,
+         'item'           => $item,
+         'fields'         => $fields,
+         'canedit'        => $canedit,
+         'massiveaction'  => $massiveaction,
+         'container'      => $container_obj,
       ]);
 
       unset($_SESSION['plugin']['fields']['values_sent']);
