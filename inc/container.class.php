@@ -207,11 +207,12 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $migration->displayMessage(__("Updating generated containers files", "fields"));
+      $obj        = new self;
+      $containers = $obj->find();
+
       // -> 0.90-1.3: generated class moved
       // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
       // NEW path: PLUGINFIELDS_CLASS_PATH . "/$class_filename"
-      $obj        = new self;
-      $containers = $obj->find();
       foreach ($containers as $container) {
          //First, drop old fields from plugin directories
          $itemtypes = !empty($container['itemtypes'])
@@ -230,9 +231,11 @@ class PluginFieldsContainer extends CommonDBTM {
                unlink(PLUGINFIELDS_DIR."/inc/$injclass_filename");
             }
          }
+      }
 
-         //Second, create new files
-         self::generateTemplate($container);
+      // Regenerate files and install missing tables
+      foreach ($fields as $field) {
+         self::create($field);
       }
 
       return true;
@@ -484,13 +487,18 @@ class PluginFieldsContainer extends CommonDBTM {
       //Create label translation
       PluginFieldsLabelTranslation::createForItem($this);
 
+      self::create($this->fields);
+   }
+
+   public static function create($fields) {
       //create class file
-      if (!self::generateTemplate($this->fields)) {
+      if (!self::generateTemplate($fields)) {
          return false;
       }
-      foreach (json_decode($this->fields['itemtypes']) as $itemtype) {
+
+      foreach (json_decode($fields['itemtypes']) as $itemtype) {
          //install table for receive field
-         $classname = self::getClassname($itemtype, $this->fields['name']);
+         $classname = self::getClassname($itemtype, $fields['name']);
          $classname::install();
       }
    }

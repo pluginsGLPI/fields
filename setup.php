@@ -221,34 +221,23 @@ function plugin_fields_check_prerequisites() {
  *
  * @return void
  */
-function plugin_fields_checkFiles($force = false) {
+function plugin_fields_checkFiles() {
    global $DB;
 
-   if ($force) {
-      //clean all existing files
-      array_map('unlink', glob(PLUGINFIELDS_DOC_DIR.'/*/*'));
-   }
+   // Clean all existing files
+   array_map('unlink', glob(PLUGINFIELDS_DOC_DIR.'/*/*'));
 
+   // Regenerate containers
    if ($DB->tableExists(PluginFieldsContainer::getTable())) {
       $container_obj = new PluginFieldsContainer();
       $containers    = $container_obj->find();
 
       foreach ($containers as $container) {
-         $itemtypes = (strlen($container['itemtypes']) > 0)
-            ? json_decode($container['itemtypes'], true)
-            : [];
-         foreach ($itemtypes as $itemtype) {
-            $classname = PluginFieldsContainer::getClassname($itemtype, $container['name']);
-            if (!class_exists($classname)) {
-               PluginFieldsContainer::generateTemplate($container);
-            }
-
-            // regenerate table (and fields) also
-            $classname::install($container['id']);
-         }
+         PluginFieldsContainer::create($container);
       }
    }
 
+   // Regenerate dropdowns
    if ($DB->tableExists(PluginFieldsField::getTable())) {
       $fields_obj = new PluginFieldsField();
       $fields     = $fields_obj->find(['type' => 'dropdown']);

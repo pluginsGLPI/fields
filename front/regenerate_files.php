@@ -33,6 +33,6 @@ include ("../hook.php");
 
 Session::checkRight('entity', READ);
 
-plugin_fields_checkFiles(true);
+plugin_fields_checkFiles();
 
 Html::back();
