@@ -224,44 +224,36 @@ function plugin_fields_check_prerequisites() {
 function plugin_fields_checkFiles($force = false) {
    global $DB;
 
-   $plugin = new Plugin();
-
    if ($force) {
       //clean all existing files
       array_map('unlink', glob(PLUGINFIELDS_DOC_DIR.'/*/*'));
    }
 
-   if (isset($_SESSION['glpiactiveentities'])
-      && $plugin->isInstalled('fields')
-      && $plugin->isActivated('fields')
-      && Session::getLoginUserID()) {
+   if ($DB->tableExists(PluginFieldsContainer::getTable())) {
+      $container_obj = new PluginFieldsContainer();
+      $containers    = $container_obj->find();
 
-      if ($DB->tableExists(PluginFieldsContainer::getTable())) {
-         $container_obj = new PluginFieldsContainer();
-         $containers    = $container_obj->find();
-
-         foreach ($containers as $container) {
-            $itemtypes = (strlen($container['itemtypes']) > 0)
-               ? json_decode($container['itemtypes'], true)
-               : [];
-            foreach ($itemtypes as $itemtype) {
-               $classname = PluginFieldsContainer::getClassname($itemtype, $container['name']);
-               if (!class_exists($classname)) {
-                  PluginFieldsContainer::generateTemplate($container);
-               }
-
-               // regenerate table (and fields) also
-               $classname::install($container['id']);
+      foreach ($containers as $container) {
+         $itemtypes = (strlen($container['itemtypes']) > 0)
+            ? json_decode($container['itemtypes'], true)
+            : [];
+         foreach ($itemtypes as $itemtype) {
+            $classname = PluginFieldsContainer::getClassname($itemtype, $container['name']);
+            if (!class_exists($classname)) {
+               PluginFieldsContainer::generateTemplate($container);
             }
+
+            // regenerate table (and fields) also
+            $classname::install($container['id']);
          }
       }
+   }
 
-      if ($DB->tableExists(PluginFieldsField::getTable())) {
-         $fields_obj = new PluginFieldsField();
-         $fields     = $fields_obj->find(['type' => 'dropdown']);
-         foreach ($fields as $field) {
-            PluginFieldsDropdown::create($field);
-         }
+   if ($DB->tableExists(PluginFieldsField::getTable())) {
+      $fields_obj = new PluginFieldsField();
+      $fields     = $fields_obj->find(['type' => 'dropdown']);
+      foreach ($fields as $field) {
+         PluginFieldsDropdown::create($field);
       }
    }
 }
