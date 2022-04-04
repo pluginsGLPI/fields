@@ -45,13 +45,15 @@ class PluginFieldsDropdown {
       $toolbox->fixFieldsNames($migration, ['type' => 'dropdown']);
 
       $migration->displayMessage(__("Updating generated dropdown files", "fields"));
+
+      $obj = new PluginFieldsField;
+      $fields = $obj->find(['type' => 'dropdown']);
+
       // -> 0.90-1.3: generated class moved
       // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
       // NEW path: PLUGINFIELDS_CLASS_PATH . "/$class_filename"
       // OLD path: GLPI_ROOT."/plugins/fields/front/$class_filename"
       // NEW path: PLUGINFIELDS_FRONT_PATH . "/$class_filename"
-      $obj = new PluginFieldsField;
-      $fields = $obj->find(['type' => 'dropdown']);
       foreach ($fields as $field) {
          //First, drop old fields from plugin directories
          $class_filename = $field['name']."dropdown.class.php";
@@ -68,8 +70,10 @@ class PluginFieldsDropdown {
          if (file_exists(PLUGINFIELDS_DIR."/front/$form_filename")) {
             unlink(PLUGINFIELDS_DIR."/front/$form_filename");
          }
+      }
 
-         //Second, create new files
+      // Regenerate files and install missing tables
+      foreach ($fields as $field) {
          self::create($field);
       }
 

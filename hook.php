@@ -90,9 +90,6 @@ function plugin_fields_install() {
    echo "</tr>";
    echo "</table></center>";
 
-   // Check class and front files for existing containers and dropdown fields
-   plugin_fields_checkFiles(true);
-
    return true;
 }
 
