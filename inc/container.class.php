@@ -238,8 +238,9 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       // Regenerate files and install missing tables
-      foreach ($fields as $field) {
-         self::create($field);
+      $containers = (new self())->find();
+      foreach ($containers as $container) {
+         self::create($container);
       }
 
       return true;
