@@ -844,10 +844,11 @@ class PluginFieldsContainer extends CommonDBTM {
       ];
 
       $tabs[__('Assistance')] = [
-         'Ticket'          => Ticket::getTypeName(2),
-         'Problem'         => Problem::getTypeName(2),
-         'Change'          => Change::getTypeName(2),
-         'TicketRecurrent' => TicketRecurrent::getTypeName(2),
+         'Ticket'                => Ticket::getTypeName(2),
+         'Problem'               => Problem::getTypeName(2),
+         'Change'                => Change::getTypeName(2),
+         'TicketRecurrent'       => TicketRecurrent::getTypeName(2),
+         'PlanningExternalEvent' => PlanningExternalEvent::getTypeName(2),
       ];
 
       $tabs[__('Management')] = [
