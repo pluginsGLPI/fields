@@ -14,7 +14,7 @@ jobs:
         run: |
           echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
       - name: "Build package"
         id: "build-package"
         uses: "glpi-project/tools/github-actions/build-package@0.1.15"
