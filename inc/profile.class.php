@@ -33,20 +33,24 @@ class PluginFieldsProfile extends CommonDBTM {
    static function install(Migration $migration) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $table = self::getTable();
 
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                INT(11)  NOT NULL auto_increment,
-                  `profiles_id`                       INT(11)  NOT NULL DEFAULT '0',
-                  `plugin_fields_containers_id`       INT(11)  NOT NULL DEFAULT '0',
+                  `id`                                INT {$default_key_sign} NOT NULL auto_increment,
+                  `profiles_id`                       INT {$default_key_sign} NOT NULL DEFAULT '0',
+                  `plugin_fields_containers_id`       INT {$default_key_sign} NOT NULL DEFAULT '0',
                   `right`                             CHAR(1)  DEFAULT NULL,
                   PRIMARY KEY                         (`id`),
                   KEY `profiles_id`                   (`profiles_id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             $DB->query($query) or die ($DB->error());
       }
 

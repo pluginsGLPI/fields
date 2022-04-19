@@ -57,24 +57,28 @@ class PluginFieldsContainer extends CommonDBTM {
    static function install(Migration $migration, $version) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $table = self::getTable();
 
       if (!$DB->tableExists($table)) {
          $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`           INT(11)        NOT NULL auto_increment,
+                  `id`           INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`         VARCHAR(255)   DEFAULT NULL,
                   `label`        VARCHAR(255)   DEFAULT NULL,
-                  `itemtypes`     LONGTEXT   DEFAULT NULL,
+                  `itemtypes`    LONGTEXT       DEFAULT NULL,
                   `type`         VARCHAR(255)   DEFAULT NULL,
-                  `subtype`      VARCHAR(255) DEFAULT NULL,
-                  `entities_id`  INT(11)        NOT NULL DEFAULT '0',
-                  `is_recursive` TINYINT(1)     NOT NULL DEFAULT '0',
-                  `is_active`    TINYINT(1)     NOT NULL DEFAULT '0',
+                  `subtype`      VARCHAR(255)   DEFAULT NULL,
+                  `entities_id`  INT            {$default_key_sign} NOT NULL DEFAULT '0',
+                  `is_recursive` TINYINT        NOT NULL DEFAULT '0',
+                  `is_active`    TINYINT        NOT NULL DEFAULT '0',
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
       }
 
@@ -619,19 +623,34 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    public function showForm($ID, $options = []) {
-      global $CFG_GLPI;
-
-      echo "<div class='center'><a class='vsubmit' href='export_to_yaml.php?id=".$ID."'><i class='pointer fa fa-refresh'></i>&nbsp;".
-      __("Export to YAML", "fields")."</a></div><br>";
 
       $this->initForm($ID, $options);
+
+      if (!$this->isNewID($ID)) {
+         $btn_url   = Plugin::getWebDir('fields') . '/front/export_to_yaml.php?id=' . $ID;
+         $btn_label = __("Export to YAML", "fields");
+         $export_btn = <<<HTML
+            <a href="{$btn_url}" class="btn btn-ghost-secondary"
+                     title="{$btn_label}"
+                     data-bs-toggle="tooltip" data-bs-placement="bottom">
+               <i class="fas fa-file-export fa-lg"></i>
+            </a>
+         HTML;
+         $options['header_toolbar'] = [$export_btn];
+      }
+
       $this->showFormHeader($options);
       $rand = mt_rand();
 
       echo "<tr>";
       echo "<td width='20%'>".__("Label")." : </td>";
       echo "<td width='30%'>";
-      Html::autocompletionTextField($this, 'label', ['value' => $this->fields["label"]]);
+      echo Html::input(
+         'label',
+         [
+            'value' => $this->fields['label'],
+         ]
+      );
       echo "</td>";
       echo "<td width='20%'>&nbsp;</td>";
       echo "<td width='30%'>&nbsp;</td>";
@@ -1160,7 +1179,7 @@ class PluginFieldsContainer extends CommonDBTM {
             }
 
             if ($data[$key] !== $old_value) {
-               $updates[$key] = [0, $old_value, $data[$key]];
+               $updates[$key] = [0, $old_value ?? '', $data[$key]];
             }
          }
 
@@ -1214,6 +1233,10 @@ class PluginFieldsContainer extends CommonDBTM {
       ]);
 
       foreach ($fields as $fields_id => $field) {
+         if (!$field['is_active']) {
+            continue;
+         }
+
          if ($field['type'] == "yesno" || $field['type'] == "header") {
             continue;
          }
@@ -1233,6 +1256,7 @@ class PluginFieldsContainer extends CommonDBTM {
                AND `items_id`='{$data['items_id']}'
                AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
 
+            $value = null;
             $db_result = [];
             if ($result = $DB->query($query)) {
                $db_result = $DB->fetchAssoc($result);
@@ -1253,12 +1277,15 @@ class PluginFieldsContainer extends CommonDBTM {
          $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
          // Check mandatory fields
-         if ($field['mandatory'] == 1
-             && ($value == ""
-                 || in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems'])
-                 && $value == 0
-                 || in_array($field['type'], ['date', 'datetime'])
-                 && $value == 'NULL')) {
+         if (
+             $field['mandatory'] == 1
+             && (
+                 $value === null
+                 || $value === ''
+                 || (in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems']) && $value == 0)
+                 || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
+             )
+         ) {
             $empty_errors[] = $field['label'];
             $valid = false;
          } else if ($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
@@ -1612,7 +1639,7 @@ class PluginFieldsContainer extends CommonDBTM {
                $opt[$i]['datatype'] = "text";
                break;
             case 'number':
-               $opt[$i]['datatype'] = "number";
+               $opt[$i]['datatype'] = "decimal";
                break;
             case 'date':
             case 'datetime':

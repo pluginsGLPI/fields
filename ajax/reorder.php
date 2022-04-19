@@ -59,7 +59,7 @@ if (0 === $field_iterator->count()) {
    exit();
 }
 
-$field_id = $field_iterator->next()['id'];
+$field_id = $field_iterator->current()['id'];
 
 // Move all elements to their new ranking
 if ($old_order < $new_order) {

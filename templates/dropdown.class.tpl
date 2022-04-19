@@ -17,27 +17,31 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
    static function install() {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $obj = new self();
       $table = $obj->getTable();
 
       if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                                      INT(11)        NOT NULL auto_increment,
+                  `id`                                      INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                                    VARCHAR(255)   DEFAULT NULL,
                   `completename`                            TEXT           DEFAULT NULL,
                   `comment`                                 TEXT           DEFAULT NULL,
-                  `plugin_fields_%%FIELDNAME%%dropdowns_id` INT(11)        DEFAULT NULL,
-                  `level`                                   INT(11)        DEFAULT NULL,
+                  `plugin_fields_%%FIELDNAME%%dropdowns_id` INT            {$default_key_sign} DEFAULT NULL,
+                  `level`                                   INT            DEFAULT NULL,
                   `ancestors_cache`                         TEXT           DEFAULT NULL,
                   `sons_cache`                              TEXT           DEFAULT NULL,
-                  `entities_id`                             INT(11)        NOT NULL DEFAULT '0',
-                  `is_recursive`                            TINYINT(1)     NOT NULL DEFAULT '0',
+                  `entities_id`                             INT            {$default_key_sign} NOT NULL DEFAULT '0',
+                  `is_recursive`                            TINYINT        NOT NULL DEFAULT '0',
                   PRIMARY KEY                               (`id`),
                   KEY                                       `entities_id`  (`entities_id`),
                   KEY                                       `is_recursive` (`is_recursive`),
                   KEY                                       `plugin_fields_%%FIELDNAME%%dropdowns_id`
                                                             (`plugin_fields_%%FIELDNAME%%dropdowns_id`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
       }
    }

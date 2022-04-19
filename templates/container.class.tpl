@@ -7,20 +7,24 @@ class %%CLASSNAME%% extends CommonDBTM
    static function install($containers_id = 0) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $obj = new self();
       $table = $obj->getTable();
 
       // create Table
       if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-                  `id`                               INT(11)      NOT NULL auto_increment,
-                  `items_id`                         INT(11)      NOT NULL,
+                  `id`                               INT          {$default_key_sign} NOT NULL auto_increment,
+                  `items_id`                         INT          {$default_key_sign} NOT NULL,
                   `itemtype`                         VARCHAR(255) DEFAULT '%%ITEMTYPE%%',
-                  `plugin_fields_containers_id`      INT(11)      NOT NULL DEFAULT '%%CONTAINER%%',
+                  `plugin_fields_containers_id`      INT          {$default_key_sign} NOT NULL DEFAULT '%%CONTAINER%%',
                   PRIMARY KEY                        (`id`),
                   UNIQUE INDEX `itemtype_item_container`
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+               ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
       }
 

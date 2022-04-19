@@ -31,9 +31,9 @@
 define ('PLUGIN_FIELDS_VERSION', '1.13.0');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_FIELDS_MIN_GLPI", "9.5");
+define("PLUGIN_FIELDS_MIN_GLPI", "10.0.0");
 // Maximum GLPI version, exclusive
-define("PLUGIN_FIELDS_MAX_GLPI", "9.6");
+define("PLUGIN_FIELDS_MAX_GLPI", "10.0.99");
 
 if (!defined("PLUGINFIELDS_DIR")) {
    define("PLUGINFIELDS_DIR", Plugin::getPhpDir("fields"));
@@ -97,7 +97,7 @@ function plugin_init_fields() {
       // When a Category is changed during ticket creation
       if (isset($_POST) && !empty($_POST)
           && isset($_POST['_plugin_fields_type'])
-          && $_SERVER['REQUEST_URI'] == Ticket::getFormURL()) {
+          && $_SERVER['REQUEST_URI'] ?? '' == Ticket::getFormURL()) {
          foreach ($_POST as $key => $value) {
             if (!is_array($value)) {
                $_SESSION['plugin']['fields']['values_sent'][$key] = stripcslashes($value);
