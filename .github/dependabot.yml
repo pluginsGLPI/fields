@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Ensure GitHub Actions are used in their latest version
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+  # Strategy for composer dependencies on develop branch.
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    allow:
+      - dependency-type: "direct"
+    open-pull-requests-limit: 100
+    target-branch: "develop"
+    versioning-strategy: "lockfile-only"
