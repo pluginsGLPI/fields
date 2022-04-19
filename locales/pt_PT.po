@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-07 08:38+0000\n"
-"PO-Revision-Date: 2020-10-27 14:43+0000\n"
-"Last-Translator: Cédric Anne\n"
+"POT-Creation-Date: 2022-04-19 13:12+0000\n"
+"PO-Revision-Date: 2015-09-18 09:34+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,183 +17,155 @@ msgstr ""
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Instalação de tabelas MySQL"
+#: inc/field.class.php:360
+msgid "Add a new field"
+msgstr "Adicionar um novo campo"
 
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "O plugin não pode ser desinstalado quando o plugin está desativado"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Desinstalação de tabelas MySQL"
-
-#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
-#: setup.php:187
+#: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
+#: setup.php:189
 msgid "Additionnal fields"
 msgstr "Campos adicionais"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Atualizar as caixas pendentes geradas"
+#: inc/container.class.php:622
+msgid "Block"
+msgstr "Bloco"
 
-#: inc/labeltranslation.class.php:147
-msgid "Language"
-msgstr "Seleccione o idioma"
+#: inc/field.class.php:477
+msgid "Configure"
+msgstr "Configurar"
 
-#: inc/labeltranslation.class.php:148
-msgid "Label"
-msgstr "Rótulo"
+#: inc/field.class.php:477
+msgid "Configure fields values"
+msgstr "Valores por defeito"
 
-#: inc/container.class.php:16
-msgid "Regenerate container files"
-msgstr "Regenerar"
-
-#: inc/container.class.php:17 inc/container.class.php:589
-msgid "Export to YAML"
-msgstr ""
-
-#: inc/container.class.php:93
-msgid "Fix container names"
-msgstr ""
-
-#: inc/container.class.php:181
-msgid "Updating generated containers files"
-msgstr "Atualizar o container gerado"
-
-#: inc/container.class.php:377
-msgid "You cannot add block without associated element type"
-msgstr "Não podes adicionar um block sem um tipo de elemento definido"
-
-#: inc/container.class.php:394
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Não podes adicionar diversos blocos do mesmo tipo"
-
-#: inc/container.class.php:409
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Não podes adicionar diversos blocos com o sem especificar a aba"
-
-#: inc/container.class.php:425
+#: inc/container.class.php:460
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/container.class.php:439
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Não podes adicionar blocos no o mesmo nome do que o objecto"
+#: inc/field.class.php:820
+msgid "Date"
+msgstr "Data"
 
-#: inc/container.class.php:582
-msgid "Block"
-msgstr "Bloco"
+#: inc/field.class.php:821
+msgid "Date & time"
+msgstr "Data de vencimento"
 
-#: inc/container.class.php:661
-msgid "Tab"
-msgstr "Aba"
+#: inc/field.class.php:818
+msgid "Dropdown"
+msgstr "Menu de selecção"
 
-#: inc/container.class.php:876
-msgid "Add tab"
-msgstr "Adicionar aba"
-
-#: inc/container.class.php:877
-msgid "Insertion in the form (before save button)"
-msgstr "Inserir no formulário (antes de gravar)"
-
-#: inc/container.class.php:878
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Inserir o formulário num aba especifica"
-
-#: inc/container.class.php:1240
-msgid "Some mandatory fields are empty"
-msgstr "Os campos obrigatórios não foram preenchidos"
-
-#: inc/container.class.php:1245
-msgid "Some numeric fields contains non numeric values"
-msgstr "Alguns campos numéricos não contem números"
-
-#: inc/container.class.php:1250
-msgid "Some URL fields contains invalid links"
-msgstr "Alguns campos de URL tem links invalidos"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
+#: inc/container.class.php:45 inc/container.class.php:631
+msgid "Export to YAML"
 msgstr ""
 
-#: inc/field.class.php:79
+#: inc/field.class.php:113
 msgid "Field"
 msgstr "Campo"
 
-#: inc/field.class.php:90 inc/field.class.php:115
+#: inc/field.class.php:124 inc/field.class.php:149
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:272
+#: inc/field.class.php:306
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/field.class.php:326
-msgid "Add a new field"
-msgstr "Adicionar um novo campo"
+#: inc/container.class.php:125
+msgid "Fix container names"
+msgstr ""
 
-#: inc/field.class.php:330
-msgid "No field for this block"
-msgstr "Nenhum campo para este bloco"
+#: inc/toolbox.class.php:118
+msgid "Fix fields names"
+msgstr ""
 
-#: inc/field.class.php:342 inc/field.class.php:455
-msgid "Read only"
-msgstr "Somente leitura"
-
-#: inc/field.class.php:432
-msgid "Configure"
-msgstr "Configurar"
-
-#: inc/field.class.php:432
-msgid "Configure fields values"
-msgstr "Valores por defeito"
-
-#: inc/field.class.php:752
-msgid "show"
-msgstr "mostrar"
-
-#: inc/field.class.php:916
+#: inc/field.class.php:813
 msgid "Header"
 msgstr "De cabeçalho de email"
 
-#: inc/field.class.php:917
-msgid "Text (single line)"
-msgstr "Texto de manutenção"
+#: inc/labeltranslation.class.php:180
+msgid "Label"
+msgstr "Rótulo"
 
-#: inc/field.class.php:918
-msgid "Text (multiples lines)"
-msgstr "Texto de manutenção"
+#: inc/labeltranslation.class.php:179
+msgid "Language"
+msgstr "Seleccione o idioma"
 
-#: inc/field.class.php:919
+#: hook.php:66
+msgid "MySQL tables installation"
+msgstr "Instalação de tabelas MySQL"
+
+#: hook.php:120
+msgid "MySQL tables uninstallation"
+msgstr "Desinstalação de tabelas MySQL"
+
+#: inc/field.class.php:364
+msgid "No field for this block"
+msgstr "Nenhum campo para este bloco"
+
+#: inc/field.class.php:816
 msgid "Number"
 msgstr "Número"
 
-#: inc/field.class.php:920
+#: inc/field.class.php:376 inc/field.class.php:500
+msgid "Read only"
+msgstr "Somente leitura"
+
+#: inc/container.class.php:44
+msgid "Regenerate container files"
+msgstr "Regenerar"
+
+#: inc/field.class.php:815
+msgid "Text (multiples lines)"
+msgstr "Texto de manutenção"
+
+#: inc/field.class.php:814
+msgid "Text (single line)"
+msgstr "Texto de manutenção"
+
+#: hook.php:111
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "O plugin não pode ser desinstalado quando o plugin está desativado"
+
+#: inc/field.class.php:817
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:921
-msgid "Dropdown"
-msgstr "Menu de selecção"
+#: inc/container.class.php:213
+msgid "Updating generated containers files"
+msgstr "Atualizar o container gerado"
 
-#: inc/field.class.php:922
+#: inc/dropdown.class.php:47
+msgid "Updating generated dropdown files"
+msgstr "Atualizar as caixas pendentes geradas"
+
+#: inc/field.class.php:819
 msgid "Yes/No"
 msgstr "Sim - Não"
 
-#: inc/field.class.php:923
-msgid "Date"
-msgstr "Data"
+#: inc/container.class.php:412
+msgid "You cannot add block without associated element type"
+msgstr "Não podes adicionar um block sem um tipo de elemento definido"
 
-#: inc/field.class.php:924
-msgid "Date & time"
-msgstr "Data de vencimento"
+#: inc/container.class.php:444
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Não podes adicionar diversos blocos com o sem especificar a aba"
+
+#: inc/container.class.php:429
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Não podes adicionar diversos blocos do mesmo tipo"
+
+#: inc/container.class.php:474
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Não podes adicionar blocos no o mesmo nome do que o objecto"
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr "mostrar"

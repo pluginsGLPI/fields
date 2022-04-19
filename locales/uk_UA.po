@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-07 08:38+0000\n"
-"PO-Revision-Date: 2020-10-27 14:43+0000\n"
-"Last-Translator: Cédric Anne\n"
+"POT-Creation-Date: 2022-04-19 13:12+0000\n"
+"PO-Revision-Date: 2015-09-18 09:34+0000\n"
+"Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2020\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,183 +18,155 @@ msgstr ""
 "Language: uk_UA\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: hook.php:58
-msgid "MySQL tables installation"
-msgstr "Встановлення таблиць MySQL"
+#: inc/field.class.php:360
+msgid "Add a new field"
+msgstr "Додати нове поле"
 
-#: hook.php:106
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Плугін не можна видалити коли він вимкнений"
-
-#: hook.php:115
-msgid "MySQL tables uninstallation"
-msgstr "Видалення таблиць MySQL"
-
-#: front/container.form.php:35 front/container.php:4 inc/menu.class.php:6
-#: setup.php:187
+#: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
+#: setup.php:189
 msgid "Additionnal fields"
 msgstr "Додаткові поля"
 
-#: inc/dropdown.class.php:19
-msgid "Updating generated dropdown files"
-msgstr "Оновлюю згенеровані файли випадаючих списків"
+#: inc/container.class.php:622
+msgid "Block"
+msgstr "Блок"
 
-#: inc/labeltranslation.class.php:147
-msgid "Language"
-msgstr "Мова"
+#: inc/field.class.php:477
+msgid "Configure"
+msgstr "Налаштувати"
 
-#: inc/labeltranslation.class.php:148
-msgid "Label"
-msgstr "Мітка"
+#: inc/field.class.php:477
+msgid "Configure fields values"
+msgstr "Налаштувати значення полів"
 
-#: inc/container.class.php:16
-msgid "Regenerate container files"
-msgstr "Перегенерувати файли контейнеру"
-
-#: inc/container.class.php:17 inc/container.class.php:589
-msgid "Export to YAML"
-msgstr ""
-
-#: inc/container.class.php:93
-msgid "Fix container names"
-msgstr "Виправити назви контейнерів"
-
-#: inc/container.class.php:181
-msgid "Updating generated containers files"
-msgstr "Оновлення згенерованих файлів контейнерів"
-
-#: inc/container.class.php:377
-msgid "You cannot add block without associated element type"
-msgstr "Не можна додати блок без визначеного типу елементу"
-
-#: inc/container.class.php:394
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Не можна до одного об'єкту додати декілька блоків з типом 'Вставка в форму'"
-
-#: inc/container.class.php:409
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Не можна до однієї закладки додати декілька блоків з типом 'Вставка в форму закладки'"
-
-#: inc/container.class.php:425
+#: inc/container.class.php:460
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/container.class.php:439
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Не можна до одного об'єкту додати декілька блоків з однаковою назвою"
+#: inc/field.class.php:820
+msgid "Date"
+msgstr "Дата"
 
-#: inc/container.class.php:582
-msgid "Block"
-msgstr "Блок"
+#: inc/field.class.php:821
+msgid "Date & time"
+msgstr "Дата і час"
 
-#: inc/container.class.php:661
-msgid "Tab"
-msgstr "Закладка"
+#: inc/field.class.php:818
+msgid "Dropdown"
+msgstr "Випадаючий список"
 
-#: inc/container.class.php:876
-msgid "Add tab"
-msgstr "Додати закладку"
+#: inc/container.class.php:45 inc/container.class.php:631
+msgid "Export to YAML"
+msgstr ""
 
-#: inc/container.class.php:877
-msgid "Insertion in the form (before save button)"
-msgstr "Вставка в форму (до кнопки Зберегти)"
-
-#: inc/container.class.php:878
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Вставка в форму закладки (до кнопки Зберегти)"
-
-#: inc/container.class.php:1240
-msgid "Some mandatory fields are empty"
-msgstr "Деякі обов'язкові поля порожні"
-
-#: inc/container.class.php:1245
-msgid "Some numeric fields contains non numeric values"
-msgstr "Деякі числові поля містять не цифрові значення"
-
-#: inc/container.class.php:1250
-msgid "Some URL fields contains invalid links"
-msgstr "Деякі поля URL містять невірні посилання"
-
-#: inc/toolbox.class.php:90
-msgid "Fix fields names"
-msgstr "Виправити назви полів"
-
-#: inc/field.class.php:79
+#: inc/field.class.php:113
 msgid "Field"
 msgstr "Поле"
 
-#: inc/field.class.php:90 inc/field.class.php:115
+#: inc/field.class.php:124 inc/field.class.php:149
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:272
+#: inc/field.class.php:306
 msgid "Fields"
 msgstr "Поля"
 
-#: inc/field.class.php:326
-msgid "Add a new field"
-msgstr "Додати нове поле"
+#: inc/container.class.php:125
+msgid "Fix container names"
+msgstr "Виправити назви контейнерів"
 
-#: inc/field.class.php:330
-msgid "No field for this block"
-msgstr "Для цього блоку ще немає полів"
+#: inc/toolbox.class.php:118
+msgid "Fix fields names"
+msgstr "Виправити назви полів"
 
-#: inc/field.class.php:342 inc/field.class.php:455
-msgid "Read only"
-msgstr "Тільки читання"
-
-#: inc/field.class.php:432
-msgid "Configure"
-msgstr "Налаштувати"
-
-#: inc/field.class.php:432
-msgid "Configure fields values"
-msgstr "Налаштувати значення полів"
-
-#: inc/field.class.php:752
-msgid "show"
-msgstr "показати"
-
-#: inc/field.class.php:916
+#: inc/field.class.php:813
 msgid "Header"
 msgstr "Заголовок"
 
-#: inc/field.class.php:917
-msgid "Text (single line)"
-msgstr "Текст (в одну лінію)"
+#: inc/labeltranslation.class.php:180
+msgid "Label"
+msgstr "Мітка"
 
-#: inc/field.class.php:918
-msgid "Text (multiples lines)"
-msgstr "Текст (декілька ліній)"
+#: inc/labeltranslation.class.php:179
+msgid "Language"
+msgstr "Мова"
 
-#: inc/field.class.php:919
+#: hook.php:66
+msgid "MySQL tables installation"
+msgstr "Встановлення таблиць MySQL"
+
+#: hook.php:120
+msgid "MySQL tables uninstallation"
+msgstr "Видалення таблиць MySQL"
+
+#: inc/field.class.php:364
+msgid "No field for this block"
+msgstr "Для цього блоку ще немає полів"
+
+#: inc/field.class.php:816
 msgid "Number"
 msgstr "Число"
 
-#: inc/field.class.php:920
+#: inc/field.class.php:376 inc/field.class.php:500
+msgid "Read only"
+msgstr "Тільки читання"
+
+#: inc/container.class.php:44
+msgid "Regenerate container files"
+msgstr "Перегенерувати файли контейнеру"
+
+#: inc/field.class.php:815
+msgid "Text (multiples lines)"
+msgstr "Текст (декілька ліній)"
+
+#: inc/field.class.php:814
+msgid "Text (single line)"
+msgstr "Текст (в одну лінію)"
+
+#: hook.php:111
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Плугін не можна видалити коли він вимкнений"
+
+#: inc/field.class.php:817
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:921
-msgid "Dropdown"
-msgstr "Випадаючий список"
+#: inc/container.class.php:213
+msgid "Updating generated containers files"
+msgstr "Оновлення згенерованих файлів контейнерів"
 
-#: inc/field.class.php:922
+#: inc/dropdown.class.php:47
+msgid "Updating generated dropdown files"
+msgstr "Оновлюю згенеровані файли випадаючих списків"
+
+#: inc/field.class.php:819
 msgid "Yes/No"
 msgstr "Так/Ні"
 
-#: inc/field.class.php:923
-msgid "Date"
-msgstr "Дата"
+#: inc/container.class.php:412
+msgid "You cannot add block without associated element type"
+msgstr "Не можна додати блок без визначеного типу елементу"
 
-#: inc/field.class.php:924
-msgid "Date & time"
-msgstr "Дата і час"
+#: inc/container.class.php:444
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Не можна до однієї закладки додати декілька блоків з типом 'Вставка в форму закладки'"
+
+#: inc/container.class.php:429
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Не можна до одного об'єкту додати декілька блоків з типом 'Вставка в форму'"
+
+#: inc/container.class.php:474
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Не можна до одного об'єкту додати декілька блоків з однаковою назвою"
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr "показати"
