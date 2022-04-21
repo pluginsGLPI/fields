@@ -30,16 +30,11 @@
 
 use Glpi\Application\View\TemplateRenderer;
 
-class PluginFieldsStatusOverride extends CommonDBTM {
-    static $rightname = 'config';
+class PluginFieldsStatusOverride extends CommonDBChild {
+    use Glpi\Features\Clonable;
 
-    static function canCreate() {
-        return self::canUpdate();
-    }
-
-    static function canPurge() {
-        return self::canUpdate();
-    }
+    public static $itemtype = PluginFieldsField::class;
+    public static $items_id = 'plugin_fields_fields_id';
 
     static function install(Migration $migration, $version) {
         global $DB;
@@ -95,22 +90,22 @@ class PluginFieldsStatusOverride extends CommonDBTM {
 
     public function prepareInputForAdd($input) {
         if (isset($input['states']) && is_array($input['states'])) {
-            $input['states'] = exportArrayToDB($input['states']);
+            $input['states'] = json_encode($input['states']);
         }
         return parent::prepareInputForAdd($input);
     }
 
     public function prepareInputForUpdate($input) {
         if (isset($input['states']) && is_array($input['states'])) {
-            $input['states'] = exportArrayToDB($input['states']);
+            $input['states'] = json_encode($input['states']);
         }
         return parent::prepareInputForUpdate($input);
     }
 
     public function post_getFromDB()
     {
-        if (isset($this->fields['states']) && is_string($this->fields['states'])) {
-            $this->fields['states'] = importArrayFromDB($this->fields['states']);
+        if (isset($this->fields['states']) && !empty($this->fields['states'])) {
+            $this->fields['states'] = json_decode($this->fields['states']);
         }
         parent::post_getFromDB();
     }
@@ -182,7 +177,7 @@ class PluginFieldsStatusOverride extends CommonDBTM {
 
         $overrides = [];
         foreach ($iterator as $data) {
-            $data['states'] = importArrayFromDB($data['states']);
+            $data['states'] = !empty($data['states']) ? json_decode($data['states']) : [];
             $overrides[] = $data;
         }
         self::addStatusNames($overrides);

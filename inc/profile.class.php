@@ -28,7 +28,13 @@
  * -------------------------------------------------------------------------
  */
 
-class PluginFieldsProfile extends CommonDBTM {
+class PluginFieldsProfile extends CommonDBRelation {
+   use Glpi\Features\Clonable;
+
+   public static $itemtype_1 = PluginFieldsContainer::class;
+   public static $items_id_1 = 'plugin_fields_containers_id';
+   public static $itemtype_2 = Profile::class;
+   public static $items_id_2 = 'profiles_id';
 
    static function install(Migration $migration) {
       global $DB;

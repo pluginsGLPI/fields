@@ -31,16 +31,11 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
 
-class PluginFieldsField extends CommonDBTM {
-   static $rightname = 'config';
+class PluginFieldsField extends CommonDBChild {
+   use Glpi\Features\Clonable;
 
-   static function canCreate() {
-      return self::canUpdate();
-   }
-
-   static function canPurge() {
-      return self::canUpdate();
-   }
+   public static $itemtype = PluginFieldsContainer::class;
+   public static $items_id = 'plugin_fields_containers_id';
 
    /**
     * Install or update fields
@@ -233,8 +228,8 @@ class PluginFieldsField extends CommonDBTM {
       //delete label translations
       $translation_obj = new PluginFieldsLabelTranslation();
       $translation_obj->deleteByCriteria([
-         'plugin_fields_itemtype' => self::getType(),
-         'plugin_fields_items_id' => $this->fields['id']
+         'itemtype' => self::getType(),
+         'items_id' => $this->fields['id']
       ]);
 
       if (isset($oldname)) {
@@ -466,7 +461,7 @@ class PluginFieldsField extends CommonDBTM {
          $attrs = [];
          // Create item
          $edit = false;
-         $_SESSION['saveInput'] = ['plugin_fields_containers_id' => $container->getField('id')];
+         $options['plugin_fields_containers_id'] = $container->getField('id');
       }
 
       $this->initForm($ID, $options);
@@ -578,7 +573,9 @@ JAVASCRIPT
             'multiple' => true
          ]);
       } else {
-         $allowed_itemtypes = json_decode($this->fields['allowed_values']) ?: [];
+         $allowed_itemtypes = !empty($this->fields['allowed_values'])
+            ? json_decode($this->fields['allowed_values'])
+            : [];
          echo implode(
              ', ',
              array_map(
@@ -1016,7 +1013,9 @@ JAVASCRIPT
       }
 
       //Create label translation
-      PluginFieldsLabelTranslation::createForItem($this);
+      if (!isset($this->input['clone']) || !$this->input['clone']) {
+         PluginFieldsLabelTranslation::createForItem($this);
+      }
    }
 
    function rawSearchOptions() {
@@ -1041,5 +1040,25 @@ JAVASCRIPT
       ];
 
       return $tab;
+   }
+
+   function prepareInputForClone($input) {
+      if (array_key_exists('allowed_values', $input) && !empty($input['allowed_values'])) {
+         // $input has been transformed with `Toolbox::addslashes_deep()`, and `self::prepareInputForAdd()`
+         // is expecting an array, so it have to be unslashed then json decoded.
+         $input['allowed_values'] = json_decode(Sanitizer::dbUnescape($input['allowed_values']));
+      } else {
+         unset($input['allowed_values']);
+      }
+
+      return $input;
+   }
+
+   public function getCloneRelations(): array
+   {
+      return [
+         PluginFieldsStatusOverride::class,
+         PluginFieldsLabelTranslation::class,
+      ];
    }
 }
