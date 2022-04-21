@@ -31,6 +31,8 @@
 use Glpi\Toolbox\Sanitizer;
 
 class PluginFieldsContainer extends CommonDBTM {
+   use Glpi\Features\Clonable;
+
    static $rightname = 'config';
 
    static function canCreate() {
@@ -488,10 +490,13 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    function post_addItem() {
-      //create profiles associated to this container
-      PluginFieldsProfile::createForContainer($this);
-      //Create label translation
-      PluginFieldsLabelTranslation::createForItem($this);
+
+      if (!isset($this->input['clone']) || !$this->input['clone']) {
+         //create profiles associated to this container
+         PluginFieldsProfile::createForContainer($this);
+         //Create label translation
+         PluginFieldsLabelTranslation::createForItem($this);
+      }
 
       self::create($this->fields);
    }
@@ -580,8 +585,8 @@ class PluginFieldsContainer extends CommonDBTM {
          //delete label translations
          $translation_obj = new PluginFieldsLabelTranslation();
          $translation_obj->deleteByCriteria([
-            'plugin_fields_itemtype' => self::getType(),
-            'plugin_fields_items_id' => $this->fields['id']
+            'itemtype' => self::getType(),
+            'items_id' => $this->fields['id']
          ]);
 
          //delete table
@@ -1704,5 +1709,31 @@ class PluginFieldsContainer extends CommonDBTM {
 
    static function getIcon() {
       return "fas fa-tasks";
+   }
+
+   static function getNameField() {
+      return 'label';
+   }
+
+   function prepareInputForClone($input) {
+      if (array_key_exists('itemtypes', $input) && !empty($input['itemtypes'])) {
+         // $input has been transformed with `Toolbox::addslashes_deep()`, and `self::prepareInputForAdd()`
+         // is expecting an array, so it have to be unslashed then json decoded.
+         $input['itemtypes'] = json_decode(Sanitizer::dbUnescape($input['itemtypes']));
+      } else {
+         unset($input['itemtypes']);
+      }
+
+      return $input;
+   }
+
+   public function getCloneRelations(): array
+   {
+      return [
+         PluginFieldsContainerDisplayCondition::class,
+         PluginFieldsField::class,
+         PluginFieldsLabelTranslation::class,
+         PluginFieldsProfile::class,
+      ];
    }
 }

@@ -31,22 +31,17 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
 
-class PluginFieldsContainerDisplayCondition extends CommonDBTM {
-    static $rightname = 'config';
+class PluginFieldsContainerDisplayCondition extends CommonDBChild {
+    use Glpi\Features\Clonable;
+
+    public static $itemtype = PluginFieldsContainer::class;
+    public static $items_id = 'plugin_fields_containers_id';
 
     const SHOW_CONDITION_EQ     = 1;
     const SHOW_CONDITION_NE     = 2;
     const SHOW_CONDITION_LT     = 3;
     const SHOW_CONDITION_GT     = 4;
     const SHOW_CONDITION_REGEX  = 5;
-
-    static function canCreate() {
-        return self::canUpdate();
-    }
-
-    static function canPurge() {
-        return self::canUpdate();
-    }
 
     static function install(Migration $migration, $version) {
         global $DB;
@@ -457,5 +452,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
                 : self::removeBlackListedOption(Search::getOptions($this->fields['itemtype']), $this->fields['itemtype']),
         ];
         TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition.html.twig', $twig_params);
+    }
+
+    public function getCloneRelations(): array {
+        return [];
     }
 }

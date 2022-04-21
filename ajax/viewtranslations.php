@@ -43,7 +43,11 @@ if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || !isset($_POST['i
 }
 
 $translation = new PluginFieldsLabelTranslation();
-$canedit = $translation->can($translation->getID(), CREATE);
+if ($_POST['id'] == -1) {
+   $canedit = $translation->can(-1, CREATE, $_POST);
+} else {
+   $canedit = $translation->can($_POST['id'], UPDATE);
+}
 if ($canedit) {
     $translation->showFormForItem($_POST['itemtype'], $_POST['items_id'], $_POST['id']);
 } else {
