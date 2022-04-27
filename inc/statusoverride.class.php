@@ -1,7 +1,5 @@
 <?php
 
-use Glpi\Application\View\TemplateRenderer;
-
 /**
  * -------------------------------------------------------------------------
  * Fields plugin for GLPI
@@ -30,6 +28,8 @@ use Glpi\Application\View\TemplateRenderer;
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
+
 class PluginFieldsStatusOverride extends CommonDBTM {
     static $rightname = 'config';
 
@@ -46,7 +46,7 @@ class PluginFieldsStatusOverride extends CommonDBTM {
 
         $default_charset = DBConnection::getDefaultCharset();
         $default_collation = DBConnection::getDefaultCollation();
-        $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+        $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
         $table = self::getTable();
 
@@ -156,24 +156,24 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         $fields_table = PluginFieldsField::getTable();
         $container_table = PluginFieldsContainer::getTable();
         $iterator = $DB->request([
-            'SELECT' => [
-                self::getTable().'.*',
-                $fields_table.'.name AS field_name',
-            ],
-            'FROM'   => self::getTable(),
-            'LEFT JOIN' => [
-                $fields_table   => [
-                    'ON' => [
-                        self::getTable() => 'plugin_fields_fields_id',
-                        $fields_table   => 'id'
-                    ]
-                ],
-                $container_table => [
-                    'ON' => [
-                        $fields_table => 'plugin_fields_containers_id',
-                        $container_table => 'id'
-                    ]
-                ]
+           'SELECT' => [
+              self::getTable().'.*',
+              $fields_table.'.label AS field_name',
+           ],
+           'FROM'   => self::getTable(),
+           'LEFT JOIN' => [
+               $fields_table   => [
+                  'ON' => [
+                     self::getTable() => 'plugin_fields_fields_id',
+                     $fields_table   => 'id'
+                  ]
+               ],
+               $container_table => [
+                  'ON' => [
+                     $fields_table => 'plugin_fields_containers_id',
+                     $container_table => 'id'
+                  ]
+               ],
             ],
             'WHERE'  => [
                 'plugin_fields_containers_id' => $container_id,
@@ -205,7 +205,7 @@ class PluginFieldsStatusOverride extends CommonDBTM {
     }
 
     private static function getItemtypesForContainer(int $container_id): array {
-        global $DB, $CFG_GLPI;
+        global $DB;
 
         $iterator = $DB->request([
             'SELECT' => ['itemtypes'],
@@ -246,7 +246,7 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         }
     }
 
-    private static function addStatusNames(array &$data): void {
+    private static function addStatusNames(array &$overrides): void {
         global $DB;
 
         $statuses = [
@@ -275,16 +275,41 @@ class PluginFieldsStatusOverride extends CommonDBTM {
             $statuses['Other'][$row['id']] = $row['name'];
         }
 
-        foreach ($data as &$row) {
-            $names = $statuses[$row['itemtype']] ?? $statuses['Other'];
-            $t = $names;
-            $row['status_names'] = array_filter($names, static function($name, $id) use ($row) {
-                return in_array($id, $row['states']);
+        foreach ($overrides as &$override) {
+            $names = $statuses[$override['itemtype']] ?? $statuses['Other'];
+            $override['status_names'] = array_filter($names, static function($name, $id) use ($override) {
+                return in_array($id, $override['states']);
             }, ARRAY_FILTER_USE_BOTH);
         }
     }
 
-    public static function getStatusDropdownForItemtype(string $itemtype): string {
+    private static function getFieldsChoiceForContainer(int $container_id): array {
+        global $DB;
+
+        $iterator = $DB->request([
+            'SELECT' => ['glpi_plugin_fields_fields.*'],
+            'FROM'   => 'glpi_plugin_fields_fields',
+            'LEFT JOIN' => [
+               'glpi_plugin_fields_containers' => [
+                  'ON' => [
+                     'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
+                     'glpi_plugin_fields_containers' => 'id'
+                  ]
+               ]
+            ],
+            'WHERE'  => [
+               'plugin_fields_containers_id' => $container_id,
+            ]
+        ]);
+
+        $fields = [];
+        foreach ($iterator as $data) {
+            $fields[$data['id']] = $data['label'];
+        }
+        return $fields;
+    }
+
+    public static function getStatusDropdownForItemtype(string $itemtype, array $values): string {
         global $DB;
 
         $statuses = [];
@@ -312,40 +337,39 @@ class PluginFieldsStatusOverride extends CommonDBTM {
                 break;
             default:
                 return State::dropdown([
-                    'name'  => 'states',
-                    'display' => false,
+                    'name'     => 'states[]',
+                    'value'    => $values,
+                    'display'  => false,
                     'multiple' => true,
                 ]);
         }
 
         return Dropdown::showFromArray('states', $statuses, [
-            'display' => false,
+            'values'   => $values,
+            'display'  => false,
             'multiple' => true,
         ]);
     }
 
     public static function showForTabContainer(CommonGLPI $item, $options = []) {
-        $override_id = $options['statusoverride_id'] ?? 0;
-        $override = null;
-        if ($override_id) {
-            $so = new self();
-            $so->getFromDB($override_id);
-            $override = $so->fields;
-        }
         $container_id = $item->getID();
         $twig_params = [
             'container_id'          => $container_id,
-            'override'              => $override,
             'overrides'             => self::getOverridesForContainer($container_id),
-            'container_itemtypes'   => self::getItemtypesForContainer($container_id),
-            'target'                => self::getFormURL(),
-            'form_only'             => $override !== null || (($options['action'] ?? '') === 'get_add_form'),
+            'container_itemtypes'   => self::getItemtypesForContainer($container_id)
         ];
-        if ($override === null) {
-            TemplateRenderer::getInstance()->display('@fields/forms/status_overrides.html.twig', $twig_params);
-        } else {
-            return TemplateRenderer::getInstance()->render('@fields/forms/status_overrides.html.twig', $twig_params);
-        }
-        return '';
+        TemplateRenderer::getInstance()->display('@fields/status_overrides.html.twig', $twig_params);
+    }
+
+    public function showForm($ID, array $options = []) {
+        $container_id = $options['container_id'];
+
+        $twig_params = [
+            'override'            => $this,
+            'container_id'        => $container_id,
+            'container_itemtypes' => self::getItemtypesForContainer($container_id),
+            'container_fields'    => self::getFieldsChoiceForContainer($container_id),
+        ];
+        TemplateRenderer::getInstance()->display('@fields/forms/status_override.html.twig', $twig_params);
     }
 }

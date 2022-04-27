@@ -1,0 +1,106 @@
+{#
+ # -------------------------------------------------------------------------
+ # Fields plugin for GLPI
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of Fields.
+ #
+ # Fields is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+ #
+ # Fields is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Fields. If not, see <http://www.gnu.org/licenses/>.
+ # -------------------------------------------------------------------------
+ # @copyright Copyright (C) 2013-2022 by Fields plugin team.
+ # @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ # @link      https://github.com/pluginsGLPI/fields
+ # -------------------------------------------------------------------------
+ #}
+
+{% import 'components/form/fields_macros.html.twig' as fields %}
+{% set rand = random() %}
+
+<form id="form{{ rand }}" method="post" action="{{ 'PluginFieldsStatusOverride'|itemtype_form_path }}" enctype="multipart/form-data" data-submit-once>
+   <input type="hidden" name="container_id" value="{{ container_id }}" />
+   <div class="card-body pe-1 d-flex flex-wrap">
+      <div class="col-12 flex-column">
+         <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
+            <div class="row flex-row align-items-start flex-grow-1">
+               <div class="row flex-row">
+                  {{ fields.dropdownArrayField('itemtype', override.fields['itemtype']|default(null), container_itemtypes, __('Item type')) }}
+                  {{ fields.dropdownArrayField('plugin_fields_fields_id', override.fields['plugin_fields_fields_id']|default(null), container_fields, __('Field', 'fields')) }}
+                  {{ fields.htmlField('status_inner_container', '<div id="status_inner_container' ~ rand ~ '"></div>', __('Status'), {
+                     add_field_attribs: {
+                        hidden: 'hidden'
+                     }
+                  }) }}
+                  {{ fields.dropdownYesNo('mandatory', override.fields['mandatory']|default(null), __('Mandatory field'), {
+                     add_field_attribs: {
+                        hidden: 'hidden'
+                     }
+                  }) }}
+                  {{ fields.dropdownYesNo('is_readonly', override.fields['is_readonly']|default(null), __("Read only", "fields"), {
+                     add_field_attribs: {
+                        hidden: 'hidden'
+                     }
+                  }) }}
+               </div> {# .row #}
+               <div class="mx-n2 d-flex flex-row-reverse align-items-start">
+                  {% if override.isNewItem() %}
+                     <button class="btn btn-primary me-2" type="submit" name="add" value="1">
+                        <i class="far fa-plus"></i>
+                        <span>{{ _x('button', 'Add') }}</span>
+                     </button>
+                  {% else %}
+                     <input type="hidden" name="id" value="{{ override.fields['id'] }}" />
+                     <button class="btn btn-primary me-2" type="submit" name="update" value="1">
+                        <i class="far fa-save"></i>
+                        <span>{{ _x('button', 'Update') }}</span>
+                     </button>
+                  {% endif %}
+                  <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}" />
+               </div>
+            </div> {# .row #}
+         </div> {# .flex-row #}
+      </div>
+   </div> {# .card-body #}
+</form>
+<script>
+   $(document).ready(() => {
+      const refresh_status_dropdown = (values = []) => {
+         const itemtype = $('#form{{ rand }}').find('select[name="itemtype"]').val();
+         $.ajax({
+            url: CFG_GLPI.root_doc + '/' + GLPI_PLUGINS_PATH.fields + '/ajax/status_override.php',
+            method: 'GET',
+            data: {
+                action: 'get_status_dropdown',
+                itemtype: itemtype,
+                values: values
+            }
+         }).then((result) => {
+            const status_container = $('#status_inner_container{{ rand }}');
+            status_container.parent().removeClass('form-control-plaintext');
+            status_container.html(result);
+
+            status_container.closest('.form-field').attr('hidden', false);
+            $('#form{{ rand }}').find('select[name="mandatory"]').closest('.form-field').attr('hidden', false);
+            $('#form{{ rand }}').find('select[name="is_readonly"]').closest('.form-field').attr('hidden', false);
+         });
+      }
+
+      $('#form{{ rand }}').on('change', 'select[name="itemtype"]', () => {
+         refresh_status_dropdown();
+      });
+
+      refresh_status_dropdown({{ override.fields['states']|default([])|json_encode|raw }});
+   });
+</script>

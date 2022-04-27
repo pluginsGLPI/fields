@@ -32,15 +32,14 @@ include ("../../../inc/includes.php");
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_status_dropdown') {
-        echo PluginFieldsStatusOverride::getStatusDropdownForItemtype($_GET['itemtype']);
-    } else if ($_GET['action'] === 'get_edit_form') {
-        $container = new PluginFieldsContainer();
-        $container->getFromDB($_GET['container_id']);
-        echo PluginFieldsStatusOverride::showForTabContainer($container, $_GET);
+        echo PluginFieldsStatusOverride::getStatusDropdownForItemtype($_GET['itemtype'], $_GET['values'] ?? []);
     } else if ($_GET['action'] === 'get_add_form') {
-        $container = new PluginFieldsContainer();
-        $container->getFromDB($_GET['container_id']);
-        echo PluginFieldsStatusOverride::showForTabContainer($container, $_GET);
+        $status_override = new PluginFieldsStatusOverride();
+        $status_override->showForm(0, $_GET);
+    } else if ($_GET['action'] === 'get_edit_form') {
+        $status_override = new PluginFieldsStatusOverride();
+        $status_override->getFromDB($_GET['id']);
+        $status_override->showForm($_GET['id'], $_GET);
     }
 } else {
     http_response_code(400);
