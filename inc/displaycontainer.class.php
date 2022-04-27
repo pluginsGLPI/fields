@@ -1,8 +1,6 @@
 <?php
 
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\Toolbox\Sanitizer;
-use PhpParser\Node\Stmt\Foreach_;
 
 /**
  * -------------------------------------------------------------------------
@@ -227,8 +225,6 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
                 && !isset($subArray["forcegroupby"]) //Exclude 1-n relation ex: Ticket_User
                 && !isset($subArray["computation"])){ //Exclude SO with computation Ex : Ticket -> Time to own exceeded
                 $allowed_so[$subKey] = $subArray["name"];
-            }else{
-                Toolbox::logError($subArray);
             }
         }
 
