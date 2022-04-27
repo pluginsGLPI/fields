@@ -287,6 +287,7 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
             case 'number':
             case 'decimal':
             case 'integer':
+            case 'bool':
                 $value = $valueToCheck;
                 break;
         }
