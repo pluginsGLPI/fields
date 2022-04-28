@@ -221,6 +221,9 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
 
     public static function showSearchOptionCondition($searchoption_id, $itemtype) {
         $so = Search::getOptions($itemtype)[$searchoption_id];
+
+        $itemtypetable = $itemtype::getTable();
+
         $twig_params = [];
         $twig_params['rand'] = rand();
 
@@ -228,7 +231,7 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
         $twig_params['is_specific'] = false;
         $twig_params['is_list_values'] = false;
 
-        if ($so['datatype'] == 'dropdown'){
+        if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)){
             $twig_params['is_dropdown'] = true;
             $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
             $twig_params['list_conditions']   = self::getEnumCondition(true);
