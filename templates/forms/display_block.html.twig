@@ -31,13 +31,13 @@
 
 {% if form_only is not defined or form_only == false %}
 <div id="container{{ rand }}" class="asset {{ bg }}">
-{% endif %}
-
    <div class="flash-messages">
       <div class="alert alert-info">
          {{ __('The engine is used for hide block when main object meets condition')}}
       </div>
    </div>
+{% endif %}
+
    <form name="asset_form" method="post" action="{{ target }}" {{ formoptions|raw }} enctype="multipart/form-data" data-submit-once>
       <input type="hidden" name="plugin_fields_containers_id" value="{{ container_id }}" />
       {% if display_condition is null %}
