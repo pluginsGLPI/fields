@@ -183,7 +183,6 @@
                   }
               }).then((result) => {
                   $('form[name="asset_form"]').replaceWith(result);
-                  refresh_status_dropdown(true);
               });
           });
           $('#container{{ rand }}').on('click', 'button[name="switch_add"]', (e) => {
@@ -198,7 +197,6 @@
                   }
               }).then((result) => {
                   $('form[name="asset_form"]').replaceWith(result);
-                  refresh_status_dropdown(true);
               });
           });
       });
