@@ -32,7 +32,7 @@
 
 {{ fields.dropdownArrayField(
    'condition',
-   display_condition.fields['value']|default(null),
+   display_condition.fields['condition']|default(null),
    list_conditions,
    __('Condition'),
    {'rand': rand, 'display_emptychoice': false}
