@@ -307,8 +307,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
 
         //remove "Common"
         unset($array['common']);
-        //remove ID
-        //unset($array[2]);
 
         $allowed_table = [getTableForItemType($itemtype_class), getTableForItemType(User::getType()), getTableForItemType(Group::getType())];
 
@@ -424,7 +422,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
                     //'regex';
                     if(self::checkRegex($value)) {
                         $value = Sanitizer::unsanitize($value);
-                        if (preg_match_all($value . "i", $item->fields[$searchOption['linkfield']], $results) > 0) {
+                        if (preg_match_all($value . "i", $item->fields[$searchOption['linkfield']]) > 0) {
                             return false;
                         }
                     }
