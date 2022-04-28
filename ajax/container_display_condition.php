@@ -50,7 +50,7 @@ if (isset($_GET['action'])) {
         }
     } else if($_POST['action'] === 'get_condition_switch_so') {
         if(isset($_POST['search_option_id']) && (isset($_POST['itemtype']) && class_exists($_POST['itemtype']))) {
-            echo PluginFieldsContainerDisplayCondition::showSearchOptionCondition($_POST['search_option_id'], $_POST['itemtype']) ;
+            echo PluginFieldsContainerDisplayCondition::showSearchOptionCondition($_POST['search_option_id'], $_POST['itemtype']);
         } else {
             echo "";
         }

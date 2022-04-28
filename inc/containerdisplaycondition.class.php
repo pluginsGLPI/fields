@@ -220,24 +220,25 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
     }
 
 
-    public static function showSearchOptionCondition($searchoption_id, $itemtype) {
+    public static function showSearchOptionCondition($searchoption_id, $itemtype, ?string $condition = null, ?string $value = null) {
         $so = Search::getOptions($itemtype)[$searchoption_id];
 
         $itemtypetable = $itemtype::getTable();
 
-        $twig_params = [];
-        $twig_params['rand'] = rand();
-
-        $twig_params['is_dropdown'] = false;
-        $twig_params['is_specific'] = false;
-        $twig_params['is_list_values'] = false;
+        $twig_params = [
+            'rand'           => rand(),
+            'is_dropdown'    => false,
+            'is_specific'    => false,
+            'is_list_values' => false,
+            'condition'      => $value,
+            'value'          => $value,
+        ];
 
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)){
             $twig_params['is_dropdown'] = true;
             $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
             $twig_params['list_conditions']   = self::getEnumCondition(true);
-
-        } else if ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
+        } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
             $twig_params['list_conditions']   = self::getEnumCondition(true);
             $twig_params['is_specific'] = true;
             switch ($so['field']) {
@@ -259,9 +260,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
                     $twig_params['is_list_values'] = true;
                     $twig_params['list_values'] = CommonITILValidation::getAllStatusArray(false, true);
                     break;
-
             }
-        }else{
+        } else {
             $twig_params['list_conditions']   = self::getEnumCondition(false);
         }
 

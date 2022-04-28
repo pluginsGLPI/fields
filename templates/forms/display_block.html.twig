@@ -89,7 +89,15 @@
 
                      <div id='results_condition' class='row flex-row'>
                         {% if display_condition is not null %}
-                           {{ include('@fields/forms/display_condition_block.html.twig') }}
+                           {{ call(
+                              'PluginFieldsContainerDisplayCondition::showSearchOptionCondition',
+                              [
+                                 display_condition.fields['search_option'],
+                                 display_condition.fields['itemtype'],
+                                 display_condition.fields['condition'],
+                                 display_condition.fields['value']
+                              ]
+                           )|raw }}
                         {% endif %}
                      </div>
 
