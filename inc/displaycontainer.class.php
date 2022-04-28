@@ -244,6 +244,10 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
                     $twig_params['is_list_values'] = true;
                     $twig_params['list_values'] = $itemtype::getAllStatusArray(false);
                     break;
+                case 'type':
+                        $twig_params['is_list_values'] = true;
+                        $twig_params['list_values'] = $itemtype::getTypes();
+                    break;
                 case 'impact':
                 case 'urgency':
                 case 'priority':
@@ -281,6 +285,9 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
                     break;
                 case 'impact':
                     $raw_value = $itemtype::getImpactName($value);
+                    break;
+                case 'type':
+                    $raw_value = $itemtype::getTicketTypeName($value);
                     break;
                 case 'urgency':
                     $raw_value = $itemtype::getUrgencyName($value);
@@ -475,6 +482,12 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
                     case 'status':
                         $twig_params['is_list_values'] = true;
                         $twig_params['list_values'] =$display_condition->fields['itemtype']::getAllStatusArray(false);
+                        break;
+                    case 'type':
+                        if($display_condition->fields['itemtype'] == Ticket::getType()){
+                            $twig_params['is_list_values'] = true;
+                            $twig_params['list_values'] =$display_condition->fields['itemtype']::getTypes();
+                        }
                         break;
                     case 'impact':
                     case 'urgency':
