@@ -219,7 +219,7 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
 
         foreach($array as $subKey => $subArray){
             if(isset($subArray["table"]) && in_array($subArray["table"], $allowed_table)
-                && in_array($subArray["datatype"], $allowed_datatype)
+                && isset($subArray["datatype"]) && in_array($subArray["datatype"], $allowed_datatype)
                 && !isset($subArray["nosearch"]) //Exclude SO with no search
                 && !isset($subArray["usehaving"]) //Exclude count SO ex: Ticket -> Number of sons tickets
                 && !isset($subArray["forcegroupby"]) //Exclude 1-n relation ex: Ticket_User
