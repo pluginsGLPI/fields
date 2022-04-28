@@ -31,15 +31,15 @@
 
 {% if form_only is not defined or form_only == false %}
 <div id="container{{ rand }}" class="asset {{ bg }}">
-   <div class="flash-messages">
-      <div class="alert alert-info">
-         {{ __('The engine is used for hide block when main object meets condition')}}
-      </div>
-   </div>
 {% endif %}
 
    <form name="asset_form" method="post" action="{{ target }}" {{ formoptions|raw }} enctype="multipart/form-data" data-submit-once>
       <input type="hidden" name="plugin_fields_containers_id" value="{{ container_id }}" />
+         <div class="flash-messages">
+            <div class="alert alert-info">
+               {{ __('The engine is used for hide block when main object meets condition')}}
+            </div>
+         </div>
       {% if display_condition is null %}
          {{ fields.largeTitle(__('Add condition to hide block', 'fields'), '', true) }}
       {% else %}
@@ -69,14 +69,17 @@
                               }
                         ])
                      %}
-                     <span id='results_fields' class='form-field row col-12 col-sm-6  mb-2'>
-                     {% if display_condition is not null %}
-                        {{ fields.dropdownArrayField('fields', display_condition.fields['fields']|default(null), list_fields, '', {'no_label': true, 'rand': rand, 'display_emptychoice': false}) }}
-                     {% endif %}
-                     </span>
+                     <div id='results_fields' class='form-field row col-12 col-sm-6  mb-2'>
+                        {% if display_condition is not null %}
+                           {{ fields.dropdownArrayField('search_option', display_condition.fields['search_option']|default(null), list_search_option, '', {'no_label': true, 'rand': rand, 'display_emptychoice': false}) }}
+                        {% endif %}
+                     </div>
 
-                     {{ fields.dropdownArrayField('condition', display_condition.fields['condition']|default(null), list_conditions, __('Condition'), {'rand': rand, 'display_emptychoice': false}) }}
-                     {{ fields.textField('value', display_condition.fields['value']|default(null), __('Value'), {}) }}
+                     <div id='results_condition' class='row flex-row'>
+                        {% if display_condition is not null %}
+                           {{ include('@fields/forms/display_condition_block.html.twig') }}
+                        {% endif %}
+                     </div>
 
                   </div> {# .row #}
                   <div class="mx-n2 d-flex flex-row-reverse align-items-start">
@@ -126,14 +129,18 @@
                                  {% endset %}
 
                                  {% set field_name %}
-                                    {% do call('PluginFieldsDisplayContainer::getFieldName', [data_display_condition.fields, data_display_condition.itemtype]) %}
+                                    {% do call('PluginFieldsDisplayContainer::getFieldName', [data_display_condition.search_option, data_display_condition.itemtype]) %}
+                                 {% endset %}
+
+                                 {% set raw_value %}
+                                    {% do call('PluginFieldsDisplayContainer::getRawValue', [data_display_condition.search_option, data_display_condition.itemtype, data_display_condition.value]) %}
                                  {% endset %}
 
                                  <tr>
                                     <td>{{ data_display_condition.itemtype }}</td>
                                     <td>{{ field_name }}</td>
                                     <td>{{ condition }}</td>
-                                    <td>{{ data_display_condition.value}}</td>
+                                    <td>{{ raw_value}}</td>
                                     <td>
                                        <input type="hidden" name="id" value="{{ data_display_condition.id }}" />
                                        <button type="button" class="btn btn-sm btn-primary" name="edit"

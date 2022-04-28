@@ -1,0 +1,71 @@
+
+{% import 'components/form/fields_macros.html.twig' as fields %}
+{% set rand = random() %}
+
+{{ fields.dropdownArrayField('condition', display_condition.fields['value']|default(null), list_conditions, __('Condition'), {'rand': rand, 'display_emptychoice': false}) }}
+
+{% if is_dropdown %}
+
+                  {{ fields.dropdownField(
+                     dropdown_itemtype,
+                     'value',
+                     display_condition.fields['value']|default(null),
+                     __('Value'),
+                     {}
+                  ) }}
+
+{% elseif is_specific %}
+
+   {% if is_list_values %}
+      {{ fields.dropdownArrayField('value', display_condition.fields['value']|default(null), list_values, __('Value'), {'rand': rand, 'display_emptychoice': false}) }}
+   {% else %}
+
+      {% if itemtype_field == 'urgency' %}
+         {{ fields.field(
+                  'value',
+                  item.dropdownUrgency({
+                     'value': display_condition.fields['value']|default(null),
+                     'name': 'value',
+                     'width': '100%',
+                     'display': false,
+                  }),
+                  __('Value'),
+                  {}
+               ) }}
+      {% elseif itemtype_field == 'impact' %}
+         {{ fields.field(
+                  'value',
+                  item.dropdownImpact({
+                     'value': display_condition.fields['value']|default(null),
+                     'name': 'value',
+                     'width': '100%',
+                     'display': false,
+                  }),
+                  __('Value'),
+                  {}
+               ) }}
+
+      {% else %}
+         {{ fields.field(
+                  'value',
+                  item.dropdownPriority({
+                     'value': display_condition.fields['value']|default(null),
+                     'name': 'value',
+                     'width': '100%',
+                     'display': false,
+                  }),
+                  __('Value'),
+                  {}
+               ) }}
+      {% endif %}
+
+
+
+
+
+   {% endif %}
+
+
+{% else %}
+   {{ fields.textField('value', display_condition.fields['value']|default(null), __('Value'), {}) }}
+{% endif %}
