@@ -234,7 +234,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
             'value'          => $value,
         ];
 
-        if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)){
+        if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $twig_params['is_dropdown'] = true;
             $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
             $twig_params['list_conditions']   = self::getEnumCondition(true);
@@ -272,9 +272,11 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
     public static function getRawValue($searchoption_id, $itemtype, $value) {
 
         $so = Search::getOptions($itemtype)[$searchoption_id];
+        $itemtypetable = $itemtype::getTable();
+
         $raw_value = '';
 
-        if ($so['datatype'] == 'dropdown'){
+        if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $dropdown_itemtype = getItemTypeForTable($so['table']);
             $dropdown = new $dropdown_itemtype();
             $dropdown->getFromDB($value);
