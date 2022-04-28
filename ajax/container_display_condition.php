@@ -31,14 +31,13 @@
 include ("../../../inc/includes.php");
 
 if (isset($_GET['action'])) {
-    if ($_GET['action'] === 'get_edit_form') {
-        $container = new PluginFieldsContainer();
-        $container->getFromDB($_GET['plugin_fields_containers_id']);
-        echo PluginFieldsContainerDisplayCondition::showForTabContainer($container, $_GET);
-    } else if ($_GET['action'] === 'get_add_form') {
-        $container = new PluginFieldsContainer();
-        $container->getFromDB($_GET['plugin_fields_containers_id']);
-        echo PluginFieldsContainerDisplayCondition::showForTabContainer($container, $_GET);
+    if ($_GET['action'] === 'get_add_form') {
+        $status_override = new PluginFieldsContainerDisplayCondition();
+        $status_override->showForm(0, $_GET);
+    } else if ($_GET['action'] === 'get_edit_form') {
+        $status_override = new PluginFieldsContainerDisplayCondition();
+        $status_override->getFromDB($_GET['id']);
+        $status_override->showForm($_GET['id'], $_GET);
     }
 
 } else if (isset($_POST['action'])) {

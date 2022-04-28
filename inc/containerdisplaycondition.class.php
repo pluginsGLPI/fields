@@ -459,31 +459,32 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
 
         $displayCondition_id = $options['displaycondition_id'] ?? 0;
         $display_condition = null;
-        $search_option = null;
 
         if ($displayCondition_id) {
             $display_condition = new self();
             $display_condition->getFromDB($displayCondition_id);
-            $search_option = self::removeBlackListedOption(Search::getOptions($display_condition->fields['itemtype']),$display_condition->fields['itemtype']);
         }
 
         $container_id = $item->getID();
-        $twig_params = [];
-        $twig_params['container_id']              = $container_id;
-        $twig_params['display_condition']         = $display_condition;
-        $twig_params['list_search_option']        = $search_option;
-        $twig_params['list_display_conditions']   = self::getDisplayConditionForContainer($container_id);
-        $twig_params['container_itemtypes']       = self::getItemtypesForContainer($container_id);
-        $twig_params['target']                    = self::getFormURL();
-        $twig_params['url_for_on_change']         = Plugin::getWebDir('fields') . '/ajax/container_display_condition.php';
-        $twig_params['form_only']                 = $display_condition !== null || (($options['action'] ?? '') === 'get_add_form');
+        $twig_params = [
+            'container_id' => $container_id,
+            'container_display_conditions' => self::getDisplayConditionForContainer($container_id),
+        ];
 
-        if ($display_condition === null) {
-            TemplateRenderer::getInstance()->display('@fields/forms/display_block.html.twig', $twig_params);
-        } else {
-            return TemplateRenderer::getInstance()->render('@fields/forms/display_block.html.twig', $twig_params);
-        }
+        TemplateRenderer::getInstance()->display('@fields/container_display_conditions.html.twig', $twig_params);
+    }
 
-        return '';
+    public function showForm($ID, array $options = []) {
+        $container_id = $options['plugin_fields_containers_id'];
+
+        $twig_params = [
+            'container_display_condition' => $this,
+            'container_id'                => $container_id,
+            'container_itemtypes'         => self::getItemtypesForContainer($container_id),
+            'search_options'              => $this->isNewItem()
+                ? []
+                : self::removeBlackListedOption(Search::getOptions($this->fields['itemtype']), $this->fields['itemtype']),
+        ];
+        TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition.html.twig', $twig_params);
     }
 }

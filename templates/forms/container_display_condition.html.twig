@@ -1,0 +1,103 @@
+{#
+ # -------------------------------------------------------------------------
+ # Fields plugin for GLPI
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of Fields.
+ #
+ # Fields is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+ #
+ # Fields is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Fields. If not, see <http://www.gnu.org/licenses/>.
+ # -------------------------------------------------------------------------
+ # @copyright Copyright (C) 2013-2022 by Fields plugin team.
+ # @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ # @link      https://github.com/pluginsGLPI/fields
+ # -------------------------------------------------------------------------
+ #}
+
+{% import 'components/form/fields_macros.html.twig' as fields %}
+{% set rand = random() %}
+
+<form name="asset_form" method="post" action="{{ 'PluginFieldsContainerDisplayCondition'|itemtype_form_path }}" enctype="multipart/form-data" data-submit-once>
+   <input type="hidden" name="plugin_fields_containers_id" value="{{ container_id }}" />
+   <div class="card-body pe-1 d-flex flex-wrap">
+      <div class="col-10 flex-column">
+         <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
+            <div class="row flex-row align-items-start flex-grow-1">
+               <div class="row flex-row">
+                  {{ fields.dropdownArrayField('itemtype', container_display_condition.fields['itemtype']|default(null), container_itemtypes, __('Item type'), {'rand': rand, 'display_emptychoice': true}) }}
+                  {% do call('Ajax::updateItemOnSelectEvent',
+                     [
+                        'dropdown_itemtype'~ rand,
+                        'results_fields',
+                        get_plugin_web_dir('fields') ~ '/ajax/container_display_condition.php',
+                        {
+                           'itemtype': '__VALUE__',
+                           'action'  : 'get_itemtype_so',
+                        }
+                     ])
+                  %}
+                  <div id='results_fields' class='form-field row col-12 col-sm-6  mb-2'>
+                     {% if not container_display_condition.isNewItem() %}
+                        {{ fields.dropdownArrayField('search_option', container_display_condition.fields['search_option']|default(null), search_options, '', {'no_label': true, 'rand': rand, 'display_emptychoice': false}) }}
+                        {% do call('Ajax::updateItemOnSelectEvent',
+                           [
+                              'dropdown_search_option'~ rand,
+                              'results_condition',
+                              get_plugin_web_dir('fields') ~ '/ajax/container_display_condition.php',
+                              {
+                                 'search_option_id'  : '__VALUE__',
+                                 'itemtype'  : container_display_condition.fields['itemtype'],
+                                 'action'     : 'get_condition_switch_so'
+                              }
+                           ])
+                        %}
+                     {% endif %}
+                  </div>
+
+                  <div id='results_condition' class='row flex-row'>
+                     {% if not container_display_condition.isNewItem() %}
+                        {{ call(
+                           'PluginFieldsContainerDisplayCondition::showSearchOptionCondition',
+                           [
+                              container_display_condition.fields['search_option'],
+                              container_display_condition.fields['itemtype'],
+                              container_display_condition.fields['condition'],
+                              container_display_condition.fields['value']
+                           ]
+                        )|raw }}
+                     {% endif %}
+                  </div>
+
+               </div> {# .row #}
+               <div class="mx-n2 d-flex flex-row-reverse align-items-start">
+                  {% if not container_display_condition.isNewItem() %}
+                     <input type="hidden" name="id" value="{{ container_display_condition.fields['id'] }}" />
+                     <button class="btn btn-primary me-2" type="submit" name="update" value="1">
+                        <i class="far fa-save"></i>
+                        <span>{{ _x('button', 'Update') }}</span>
+                     </button>
+                  {% else %}
+                     <button class="btn btn-primary me-2" type="submit" name="add" value="1">
+                        <i class="far fa-plus"></i>
+                        <span>{{ _x('button', 'Add') }}</span>
+                     </button>
+                  {% endif %}
+                  <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}" />
+               </div>
+            </div> {# .row #}
+         </div> {# .flex-row #}
+      </div>
+   </div> {# .card-body #}
+</form>
