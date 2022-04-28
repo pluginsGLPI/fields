@@ -265,7 +265,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
             $twig_params['list_conditions']   = self::getEnumCondition(false);
         }
 
-        TemplateRenderer::getInstance()->display('@fields/forms/display_condition_block.html.twig', $twig_params);
+        TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition_so_condition.html.twig', $twig_params);
     }
 
 
@@ -460,55 +460,15 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
         $displayCondition_id = $options['displaycondition_id'] ?? 0;
         $display_condition = null;
         $search_option = null;
-        $twig_params = [];
 
         if ($displayCondition_id) {
             $display_condition = new self();
             $display_condition->getFromDB($displayCondition_id);
             $search_option = self::removeBlackListedOption(Search::getOptions($display_condition->fields['itemtype']),$display_condition->fields['itemtype']);
-
-            $so = Search::getOptions($display_condition->fields['itemtype'])[$display_condition->fields['search_option']];
-
-            $twig_params['is_dropdown'] = false;
-            $twig_params['is_specific'] = false;
-            $twig_params['is_list_values'] = false;
-
-            if ($so['datatype'] == 'dropdown'){
-                $twig_params['is_dropdown'] = true;
-                $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
-                $twig_params['list_conditions']   = self::getEnumCondition(true);
-
-            } else if ($so['datatype'] == 'specific' && get_parent_class($display_condition->fields['itemtype']) == CommonITILObject::getType()) {
-                $twig_params['list_conditions']   = self::getEnumCondition(true);
-                $twig_params['is_specific'] = true;
-                switch ($so['field']) {
-                    case 'status':
-                        $twig_params['is_list_values'] = true;
-                        $twig_params['list_values'] =$display_condition->fields['itemtype']::getAllStatusArray(false);
-                        break;
-                    case 'type':
-                        if($display_condition->fields['itemtype'] == Ticket::getType()){
-                            $twig_params['is_list_values'] = true;
-                            $twig_params['list_values'] =$display_condition->fields['itemtype']::getTypes();
-                        }
-                        break;
-                    case 'impact':
-                    case 'urgency':
-                    case 'priority':
-                        $twig_params['item'] = new $display_condition->fields['itemtype']();
-                        $twig_params['itemtype_field'] = $so['field'];
-                        break;
-                    case 'global_validation':
-                        $twig_params['is_list_values'] = true;
-                        $twig_params['list_values'] = CommonITILValidation::getAllStatusArray(false, true);
-                        break;
-                }
-            }else{
-                $twig_params['list_conditions']   = self::getEnumCondition(false);
-            }
         }
 
         $container_id = $item->getID();
+        $twig_params = [];
         $twig_params['container_id']              = $container_id;
         $twig_params['display_condition']         = $display_condition;
         $twig_params['list_search_option']        = $search_option;
