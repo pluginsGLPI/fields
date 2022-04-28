@@ -140,16 +140,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
     }
 
 
-    public function prepareInputForAdd($input) {
-        return Toolbox::addslashes_deep($input);
-    }
-
-
-    public function prepareInputForUpdate($input) {
-        return Toolbox::addslashes_deep($input);
-    }
-
-
     public static function getDisplayConditionForContainer(int $container_id): array {
         global $DB;
         $iterator = $DB->request([
