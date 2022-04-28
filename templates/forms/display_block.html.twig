@@ -72,6 +72,18 @@
                      <div id='results_fields' class='form-field row col-12 col-sm-6  mb-2'>
                         {% if display_condition is not null %}
                            {{ fields.dropdownArrayField('search_option', display_condition.fields['search_option']|default(null), list_search_option, '', {'no_label': true, 'rand': rand, 'display_emptychoice': false}) }}
+                           {% do call('Ajax::updateItemOnSelectEvent',
+                           [
+                                 'dropdown_search_option'~ rand,
+                                 'results_condition',
+                                 url_for_on_change,
+                                 {
+                                    'search_option_id'  : '__VALUE__',
+                                    'itemtype'  : display_condition.fields['itemtype'],
+                                    'action'     : 'get_condition_switch_so'
+                                 }
+                           ])
+                        %}
                         {% endif %}
                      </div>
 
