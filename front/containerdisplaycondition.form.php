@@ -30,14 +30,14 @@
 
 include ("../../../inc/includes.php");
 
-$status_override = new PluginFieldsDisplayContainer();
+$status_override = new PluginFieldsContainerDisplayCondition();
 if (isset($_POST["add"])) {
     $status_override->check(-1, CREATE, $_POST);
-    $newID = $status_override->add($_POST);
+    $status_override->add($_POST);
     Html::back();
 } else if (isset($_POST["update"])) {
-    $status_override->check(-1, UPDATE, $_POST);
-    $newID = $status_override->update($_POST);
+    $status_override->check(-1, UPDATE);
+    $status_override->update($_POST);
     Html::back();
 } else if (isset($_POST["delete"])) {
     $status_override->check($_POST['id'], PURGE);

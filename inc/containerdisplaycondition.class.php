@@ -1,7 +1,5 @@
 <?php
 
-use Glpi\Application\View\TemplateRenderer;
-
 /**
  * -------------------------------------------------------------------------
  * Fields plugin for GLPI
@@ -30,7 +28,10 @@ use Glpi\Application\View\TemplateRenderer;
  * -------------------------------------------------------------------------
  */
 
-class PluginFieldsDisplayContainer extends CommonDBTM {
+use Glpi\Application\View\TemplateRenderer;
+use Glpi\Toolbox\Sanitizer;
+
+class PluginFieldsContainerDisplayCondition extends CommonDBTM {
     static $rightname = 'config';
 
     const SHOW_CONDITION_EQ     = 1;
@@ -51,7 +52,7 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
         global $DB;
         $default_charset = DBConnection::getDefaultCharset();
         $default_collation = DBConnection::getDefaultCollation();
-        $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+        $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
@@ -206,7 +207,7 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
         $out .= Ajax::updateItemOnSelectEvent(
             "dropdown_search_option" . $rand,
             "results_condition",
-            Plugin::getWebDir('fields') . '/ajax/display_container.php',
+            Plugin::getWebDir('fields') . '/ajax/container_display_condition.php',
             [
                 'search_option_id'  => '__VALUE__',
                 'itemtype'  => $itemtype,
@@ -512,7 +513,7 @@ class PluginFieldsDisplayContainer extends CommonDBTM {
         $twig_params['list_display_conditions']   = self::getDisplayConditionForContainer($container_id);
         $twig_params['container_itemtypes']       = self::getItemtypesForContainer($container_id);
         $twig_params['target']                    = self::getFormURL();
-        $twig_params['url_for_on_change']         = Plugin::getWebDir('fields') . '/ajax/display_container.php';
+        $twig_params['url_for_on_change']         = Plugin::getWebDir('fields') . '/ajax/container_display_condition.php';
         $twig_params['form_only']                 = $display_condition !== null || (($options['action'] ?? '') === 'get_add_form');
 
         if ($display_condition === null) {

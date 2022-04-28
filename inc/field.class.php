@@ -641,7 +641,7 @@ class PluginFieldsField extends CommonDBTM {
          return false;
       }
 
-      $display_condition = new PluginFieldsDisplayContainer();
+      $display_condition = new PluginFieldsContainerDisplayCondition();
       if($display_condition->computeDisplayContainer($item, $c_id)) {
          self::showDomContainer(
             $c_id,

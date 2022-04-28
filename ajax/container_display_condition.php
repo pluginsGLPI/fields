@@ -34,23 +34,23 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_edit_form') {
         $container = new PluginFieldsContainer();
         $container->getFromDB($_GET['plugin_fields_containers_id']);
-        echo PluginFieldsDisplayContainer::showForTabContainer($container, $_GET);
+        echo PluginFieldsContainerDisplayCondition::showForTabContainer($container, $_GET);
     } else if ($_GET['action'] === 'get_add_form') {
         $container = new PluginFieldsContainer();
         $container->getFromDB($_GET['plugin_fields_containers_id']);
-        echo PluginFieldsDisplayContainer::showForTabContainer($container, $_GET);
+        echo PluginFieldsContainerDisplayCondition::showForTabContainer($container, $_GET);
     }
 
 } else if (isset($_POST['action'])) {
     if($_POST['action'] === 'get_itemtype_so') {
         if(isset($_POST['itemtype']) && class_exists($_POST['itemtype'])) {
-            echo PluginFieldsDisplayContainer::showItemtypeFieldForm($_POST['itemtype']) ;
+            echo PluginFieldsContainerDisplayCondition::showItemtypeFieldForm($_POST['itemtype']) ;
         } else {
             echo "";
         }
     } else if($_POST['action'] === 'get_condition_switch_so') {
         if(isset($_POST['search_option_id']) && (isset($_POST['itemtype']) && class_exists($_POST['itemtype']))) {
-            echo PluginFieldsDisplayContainer::showSearchOptionCondition($_POST['search_option_id'], $_POST['itemtype']) ;
+            echo PluginFieldsContainerDisplayCondition::showSearchOptionCondition($_POST['search_option_id'], $_POST['itemtype']) ;
         } else {
             echo "";
         }

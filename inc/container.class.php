@@ -403,7 +403,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $this->addStandardTab('PluginFieldsField', $ong, $options);
       $this->addStandardTab('PluginFieldsStatusOverride', $ong, $options);
       $this->addStandardTab('PluginFieldsProfile', $ong, $options);
-      $this->addStandardTab('PluginFieldsDisplayContainer', $ong, $options);
+      $this->addStandardTab('PluginFieldsContainerDisplayCondition', $ong, $options);
       $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
 
       return $ong;
@@ -566,7 +566,7 @@ class PluginFieldsContainer extends CommonDBTM {
          ]);
 
          //delete display condition
-         $field_obj = new PluginFieldsDisplayContainer();
+         $field_obj = new PluginFieldsContainerDisplayCondition();
          $field_obj->deleteByCriteria([
             'plugin_fields_containers_id' => $this->fields['id']
          ]);
@@ -1041,7 +1041,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
                   if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
 
-                     $display_condition = new PluginFieldsDisplayContainer();
+                     $display_condition = new PluginFieldsContainerDisplayCondition();
                      if($display_condition->computeDisplayContainer($item, $data['id'])) {
                         $tabs_entries[$tab_name] = $tab_label;
                      }

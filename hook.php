@@ -59,7 +59,7 @@ function plugin_fields_install() {
       'PluginFieldsProfile',
       'PluginFieldsMigration',
       'PluginFieldsStatusOverride',
-      'PluginFieldsDisplayContainer',
+      'PluginFieldsContainerDisplayCondition',
    ];
 
    $migration = new Migration($version);
@@ -133,7 +133,7 @@ function plugin_fields_uninstall() {
       'PluginFieldsValue',
       'PluginFieldsProfile',
       'PluginFieldsMigration',
-      'PluginFieldsDisplayContainer'
+      'PluginFieldsContainerDisplayCondition'
    ];
 
    foreach ($classesToUninstall as $class) {
