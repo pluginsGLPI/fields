@@ -36,23 +36,20 @@
          <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
             <div class="row flex-row align-items-start flex-grow-1">
                <div class="row flex-row">
-                  {{ fields.dropdownArrayField('itemtype', override.fields['itemtype']|default(null), container_itemtypes, __('Item type')) }}
-                  {{ fields.dropdownArrayField('plugin_fields_fields_id', override.fields['plugin_fields_fields_id']|default(null), container_fields, __('Field', 'fields')) }}
-                  {{ fields.htmlField('status_inner_container', '<div id="status_inner_container' ~ rand ~ '"></div>', __('Status'), {
-                     add_field_attribs: {
-                        hidden: 'hidden'
-                     }
-                  }) }}
-                  {{ fields.dropdownYesNo('mandatory', override.fields['mandatory']|default(null), __('Mandatory field'), {
-                     add_field_attribs: {
-                        hidden: 'hidden'
-                     }
-                  }) }}
-                  {{ fields.dropdownYesNo('is_readonly', override.fields['is_readonly']|default(null), __("Read only", "fields"), {
-                     add_field_attribs: {
-                        hidden: 'hidden'
-                     }
-                  }) }}
+                  {% set itemtype = override.fields['itemtype']|default(container_itemtypes|first) %}
+
+                  {{ fields.dropdownArrayField('itemtype', itemtype, container_itemtypes, __('Item type')) }}
+                  {{ fields.dropdownArrayField('plugin_fields_fields_id', itemtype, container_fields, __('Field', 'fields')) }}
+
+                  {% set status_field_html %}
+                     <div id="status_inner_container{{ rand }}">
+                        {{ call('PluginFieldsStatusOverride::getStatusDropdownForItemtype', [itemtype, override.fields['states']|default([])])|raw }}
+                     </div>
+                  {% endset %}
+                  {{ fields.field('status_inner_container', status_field_html, __('Status')) }}
+
+                  {{ fields.dropdownYesNo('mandatory', override.fields['mandatory']|default(null), __('Mandatory field')) }}
+                  {{ fields.dropdownYesNo('is_readonly', override.fields['is_readonly']|default(null), __("Read only", "fields")) }}
                </div> {# .row #}
                <div class="mx-n2 d-flex flex-row-reverse align-items-start">
                   {% if override.isNewItem() %}
@@ -76,31 +73,22 @@
 </form>
 <script>
    $(document).ready(() => {
-      const refresh_status_dropdown = (values = []) => {
+      const refresh_status_dropdown = () => {
          const itemtype = $('#form{{ rand }}').find('select[name="itemtype"]').val();
          $.ajax({
             url: CFG_GLPI.root_doc + '/' + GLPI_PLUGINS_PATH.fields + '/ajax/status_override.php',
             method: 'GET',
             data: {
                 action: 'get_status_dropdown',
-                itemtype: itemtype,
-                values: values
+                itemtype: itemtype
             }
          }).then((result) => {
-            const status_container = $('#status_inner_container{{ rand }}');
-            status_container.parent().removeClass('form-control-plaintext');
-            status_container.html(result);
-
-            status_container.closest('.form-field').attr('hidden', false);
-            $('#form{{ rand }}').find('select[name="mandatory"]').closest('.form-field').attr('hidden', false);
-            $('#form{{ rand }}').find('select[name="is_readonly"]').closest('.form-field').attr('hidden', false);
+            $('#status_inner_container{{ rand }}').html(result);
          });
       }
 
       $('#form{{ rand }}').on('change', 'select[name="itemtype"]', () => {
          refresh_status_dropdown();
       });
-
-      refresh_status_dropdown({{ override.fields['states']|default([])|json_encode|raw }});
    });
 </script>

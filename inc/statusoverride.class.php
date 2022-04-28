@@ -309,7 +309,7 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         return $fields;
     }
 
-    public static function getStatusDropdownForItemtype(string $itemtype, array $values): string {
+    public static function getStatusDropdownForItemtype(string $itemtype, array $values = []): string {
         global $DB;
 
         $statuses = [];

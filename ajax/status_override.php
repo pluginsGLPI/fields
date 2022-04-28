@@ -32,7 +32,7 @@ include ("../../../inc/includes.php");
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_status_dropdown') {
-        echo PluginFieldsStatusOverride::getStatusDropdownForItemtype($_GET['itemtype'], $_GET['values'] ?? []);
+        echo PluginFieldsStatusOverride::getStatusDropdownForItemtype($_GET['itemtype']);
     } else if ($_GET['action'] === 'get_add_form') {
         $status_override = new PluginFieldsStatusOverride();
         $status_override->showForm(0, $_GET);
