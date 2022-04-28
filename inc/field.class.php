@@ -662,6 +662,19 @@ class PluginFieldsField extends CommonDBTM {
       $first_field = array_shift($tmp);
       $container_obj = new PluginFieldsContainer;
       $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
+
+      // Fill status overrides if needed
+      $item = new $itemtype();
+      if (in_array($itemtype, PluginFieldsStatusOverride::getStatusItemtypes()) && $item->getFromDB($items_id)) {
+         $status_overrides = PluginFieldsStatusOverride::getOverridesForItem($container_obj->getID(), $item);
+         foreach ($status_overrides as $status_override) {
+             if (isset($fields[$status_override['plugin_fields_fields_id']])) {
+                 $fields[$status_override['plugin_fields_fields_id']]['is_readonly'] = $status_override['is_readonly'];
+                 $fields[$status_override['plugin_fields_fields_id']]['mandatory'] = $status_override['mandatory'];
+             }
+         }
+      }
+
       $classname = "PluginFields".$itemtype.
                                  preg_replace('/s$/', '', $container_obj->fields['name']);
       $obj = new $classname;
