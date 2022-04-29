@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Toolbox\Sanitizer;
+
 class PluginFieldsContainer extends CommonDBTM {
    static $rightname = 'config';
 
@@ -479,8 +481,8 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       $input['itemtypes'] = isset($input['itemtypes'])
-                              ? json_encode($input['itemtypes'], true)
-                              : null;
+         ? Sanitizer::dbEscape(json_encode($input['itemtypes']))
+         : null;
 
       return $input;
    }
@@ -587,9 +589,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $classname::uninstall();
          } else {
             //class does not exists; try to remove any existing table
-            $tablename = "glpi_plugin_fields_" . strtolower(
-               $itemtype . getPlural(preg_replace('/s$/', '', $this->fields['name']))
-            );
+            $tablename = getTableForItemType($classname);
             $DB->query("DROP TABLE IF EXISTS `$tablename`");
          }
 
@@ -1271,9 +1271,7 @@ class PluginFieldsContainer extends CommonDBTM {
          } else if (isset($data['plugin_fields_'.$name.'dropdowns_id'])) {
             $value = $data['plugin_fields_'.$name.'dropdowns_id'];
          } else if ($field['mandatory'] == 1) {
-            $tablename = "glpi_plugin_fields_" . strtolower(
-               $itemtype . getPlural(preg_replace('/s$/', '', $container->fields['name']))
-            );
+            $tablename = getTableForItemType(self::getClassname($itemtype, $container->fields['name']));
 
             $query = "SELECT * FROM `$tablename` WHERE
                `itemtype`='$itemtype'
@@ -1571,6 +1569,13 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $i = 76665;
 
+      $search_string = json_encode($itemtype);
+      // Backslashes must be doubled in LIKE clause, according to MySQL documentation:
+      // > To search for \, specify it as \\\\; this is because the backslashes are stripped
+      // > once by the parser and again when the pattern match is made,
+      // > leaving a single backslash to be matched against.
+      $search_string = str_replace('\\', '\\\\', $search_string);
+
       $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly, fields.allowed_values,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
@@ -1582,7 +1587,7 @@ class PluginFieldsContainer extends CommonDBTM {
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
-         WHERE containers.itemtypes LIKE '%$itemtype%'
+         WHERE containers.itemtypes LIKE '%" . $DB->escape($search_string) . "%'
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
       $res = $DB->query($query);
@@ -1595,9 +1600,7 @@ class PluginFieldsContainer extends CommonDBTM {
                continue;
             }
          }
-
-         $tablename = "glpi_plugin_fields_".strtolower($itemtype.
-                        getPlural(preg_replace('/s$/', '', $data['container_name'])));
+         $tablename = getTableForItemType(self::getClassname($itemtype, $data['container_name']));
 
          //get translations
          $container = [
@@ -1752,24 +1755,32 @@ class PluginFieldsContainer extends CommonDBTM {
    }
 
    /**
-    * Retrieve the classname for a label (raw_name) & an itemtype
-    * @param  string $itemtype the name of associated CommonDBTM class
-    * @param  string $raw_name the label of container
-    * @return string the classname
+    * Retrieve the class name corresponding to an itemtype for given container.
+    *
+    * @param string $itemtype       Name of associated itemtype
+    * @param string $container_name Name of container
+    * @param string $suffix         Suffix to add
+    *
+    * @return string
     */
-   static function getClassname($itemtype = "", $raw_name = "") {
-      return "PluginFields".ucfirst(self::getSystemName($itemtype, $raw_name));
+   public static function getClassname(string $itemtype, string $container_name, string $suffix = ''): string {
+      return sprintf(
+          'PluginFields%s%s',
+          ucfirst(self::getSystemName($itemtype, $container_name)),
+          $suffix
+      );
    }
 
    /**
-    * Retrieve the systemname for a label (raw_name) & an itemtype
-    * Used to generate class files
-    * @param  string $itemtype the name of associated CommonDBTM class
-    * @param  string $raw_name the label of container
-    * @return string the classname
+    * Retrieve the system name corresponding to an itemtype for given container.
+    *
+    * @param string $itemtype       Name of associated itemtype
+    * @param string $container_name Name of container
+    *
+    * @return string
     */
-   static function getSystemName($itemtype = "", $raw_name = "") {
-      return strtolower($itemtype.preg_replace('/s$/', '', $raw_name));
+   protected static function getSystemName(string $itemtype, string $container_name): string {
+      return strtolower(str_replace('\\', '', $itemtype) . preg_replace('/s$/', '', $container_name));
    }
 
 
