@@ -36,7 +36,7 @@
          <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
             <div class="row flex-row align-items-start flex-grow-1">
                <div class="row flex-row">
-                  {% set itemtype = override.fields['itemtype']|default(container_itemtypes|first) %}
+                  {% set itemtype = override.fields['itemtype']|default(container_itemtypes|keys|first) %}
 
                   {{ fields.dropdownArrayField('itemtype', itemtype, container_itemtypes, __('Item type')) }}
                   {{ fields.dropdownArrayField('plugin_fields_fields_id', itemtype, container_fields, __('Field', 'fields')) }}
