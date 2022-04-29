@@ -356,7 +356,6 @@ class PluginFieldsStatusOverride extends CommonDBTM {
         $twig_params = [
             'container_id'          => $container_id,
             'overrides'             => self::getOverridesForContainer($container_id),
-            'container_itemtypes'   => self::getItemtypesForContainer($container_id)
         ];
         TemplateRenderer::getInstance()->display('@fields/status_overrides.html.twig', $twig_params);
     }
