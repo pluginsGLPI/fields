@@ -94,6 +94,8 @@ function plugin_fields_install() {
       }
    }
 
+   $migration->executeMigration();
+
    echo "</td>";
    echo "</tr>";
    echo "</table></center>";

@@ -1294,7 +1294,7 @@ class PluginFieldsContainer extends CommonDBTM {
              && (
                  $value === null
                  || $value === ''
-                 || (in_array($field['type'], ['dropdown', 'dropdownuser', 'dropdownoperatingsystems']) && $value == 0)
+                 || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', $field['type'])) && $value == 0)
                  || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
              )
          ) {
@@ -1610,55 +1610,46 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
-         if ($data['type'] === "dropdownuser") {
-            $opt[$i]['table']      = 'glpi_users';
+         $is_itemtype_dropdown = false;
+         $dropdown_matches     = [];
+         if (
+             preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
+             && class_exists($dropdown_matches['class'])
+         ) {
+            $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = $data['name'];
-            $opt[$i]['right'] = 'all';
+            $opt[$i]['right']      = 'all';
 
             $opt[$i]['forcegroupby'] = true;
 
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+
+            $is_itemtype_dropdown = true;
          }
 
-         if ($data['type'] === "dropdownoperatingsystems") {
-            $opt[$i]['table']      = 'glpi_operatingsystems';
-            $opt[$i]['field']      = 'name';
-            $opt[$i]['linkfield']  = $data['name'];
-            $opt[$i]['right'] = 'all';
-
-            $opt[$i]['forcegroupby'] = true;
-
-            $opt[$i]['joinparams']['jointype'] = "";
-            $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-            $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         }
-
-         switch ($data['type']) {
-            case 'dropdown':
-            case 'dropdownuser':
-               $opt[$i]['datatype'] = "dropdown";
-               break;
-            case 'dropdownoperatingsystems':
-               $opt[$i]['datatype'] = "dropdown";
-               break;
-            case 'yesno':
+         switch (true) {
+            case $data['type'] === 'yesno':
                $opt[$i]['datatype'] = "bool";
                break;
-            case 'textarea':
+            case $data['type'] === 'textarea':
                $opt[$i]['datatype'] = "text";
                break;
-            case 'number':
+            case $data['type'] === 'number':
                $opt[$i]['datatype'] = "decimal";
                break;
-            case 'date':
-            case 'datetime':
+            case $data['type'] === 'date':
+            case $data['type'] === 'datetime':
                $opt[$i]['datatype'] = $data['type'];
                break;
-            case 'url':
+            case $data['type'] === 'url':
                $opt[$i]['datatype'] = 'weblink';
+               break;
+            case $data['type'] === 'dropdown':
+            case $is_itemtype_dropdown:
+               $opt[$i]['datatype'] = "dropdown";
                break;
             default:
                $opt[$i]['datatype'] = "string";

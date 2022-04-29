@@ -96,23 +96,13 @@
         {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge({
             'entity': item.getEntityID(),
         })) }}
-    {% elseif type == 'dropdownuser' %}
-        {% if not massiveaction %}
-            {{ macros.dropdownField('User', name, value, label, field_options|merge({
-                'entity': -1,
-                'right': 'all',
-                'condition': {
-                    'is_active': 1,
-                    'is_deleted': 0
-                }
-            })) }}
-        {% endif %}
 
-    {% elseif type == 'dropdownoperatingsystems' %}
+    {% elseif type matches '/^dropdown-.+/i' %}
         {% if not massiveaction %}
-            {{ macros.dropdownField('OperatingSystem', name, value, label, field_options|merge({
-                'entity': -1,
+            {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge({
+                'entity': field['model_class'] == 'User' ? -1 : item.getEntityID(),
                 'right': 'all',
+                'condition': field['dropdown_condition']
             })) }}
         {% endif %}
     {% endif %}

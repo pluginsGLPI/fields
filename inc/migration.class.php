@@ -78,21 +78,30 @@ class PluginFieldsMigration extends Migration {
    }
 
    static function getSQLType($field_type) {
-      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
-      $types = [
-         'text'                     => 'VARCHAR(255) DEFAULT NULL',
-         'url'                      => 'TEXT DEFAULT NULL',
-         'textarea'                 => 'TEXT         DEFAULT NULL',
-         'number'                   => 'VARCHAR(255) DEFAULT NULL',
-         'dropdown'                 => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
-         'yesno'                    => 'INT          NOT NULL DEFAULT 0',
-         'date'                     => 'VARCHAR(255) DEFAULT NULL',
-         'datetime'                 => 'VARCHAR(255) DEFAULT NULL',
-         'dropdownuser'             => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
-         'dropdownoperatingsystems' => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
-      ];
+      $sql_type = '';
+      switch (true) {
+         case $field_type === 'dropdown':
+         case preg_match('/^dropdown-.+/i', $field_type):
+            $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+            $sql_type = "INT {$default_key_sign} NOT NULL DEFAULT 0";
+            break;
+         case $field_type === 'textarea':
+         case $field_type === 'url':
+            $sql_type = 'TEXT DEFAULT NULL';
+            break;
+         case $field_type === 'yesno':
+            $sql_type = 'INT NOT NULL DEFAULT 0';
+            break;
+         case $field_type === 'date':
+         case $field_type === 'datetime':
+         case $field_type === 'number':
+         case $field_type === 'text':
+         default:
+            $sql_type = 'VARCHAR(255) DEFAULT NULL';
+            break;
+      }
 
-      return $types[$field_type];
+      return $sql_type;
    }
 }

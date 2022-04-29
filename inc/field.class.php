@@ -65,7 +65,7 @@ class PluginFieldsField extends CommonDBTM {
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
                   `label`                             VARCHAR(255)   DEFAULT NULL,
-                  `type`                              VARCHAR(25)    DEFAULT NULL,
+                  `type`                              VARCHAR(255)    DEFAULT NULL,
                   `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `ranking`                           INT            NOT NULL DEFAULT '0',
                   `default_value`                     VARCHAR(255)   DEFAULT NULL,
@@ -93,10 +93,28 @@ class PluginFieldsField extends CommonDBTM {
       if (!$DB->fieldExists($table, 'mandatory')) {
          $migration->addField($table, 'mandatory', 'bool', ['value' => 0]);
       }
-      $migration->executeMigration();
+
+      //increase the size of column 'type' (25 to 255)
+      $migration->changeField($table, 'type', 'type', 'string');
 
       $toolbox = new PluginFieldsToolbox();
       $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
+
+      //move old types to new format
+      $migration->addPostQuery(
+         $DB->buildUpdate(
+             PluginFieldsField::getTable() ,
+             ['type' => 'dropdown-User'],
+             ['type' => 'dropdownusers']
+         )
+      );
+      $migration->addPostQuery(
+         $DB->buildUpdate(
+             PluginFieldsField::getTable() ,
+             ['type' => 'dropdown-User'],
+             ['type' => 'dropdownusers']
+         )
+      );
 
       return true;
    }
@@ -459,7 +477,7 @@ class PluginFieldsField extends CommonDBTM {
          echo "<tr>";
          echo "<td>".__("Type")." : </td>";
          echo "<td>";
-         Dropdown::showFromArray('type', self::getTypes(), ['value' => $this->fields["type"]]);
+         Dropdown::showFromArray('type', self::getTypes(false), ['value' => $this->fields["type"]]);
          echo "</td>";
       }
       echo "<td>".__("Default values")." : </td>";
@@ -728,6 +746,26 @@ class PluginFieldsField extends CommonDBTM {
          $field['itemtype'] = self::getType();
          $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
+         //compute classname for 'dropdown-XXXXXX' field
+         $dropdown_matches = [];
+         if (
+             preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
+             && class_exists($dropdown_matches['class'])
+         ) {
+            $dropdown_class = $dropdown_matches['class'];
+
+            $field['dropdown_class'] = $dropdown_class;
+            $field['dropdown_condition'] = [];
+
+            $object = new $dropdown_class();
+            if ($object->maybeDeleted()){
+               $field['dropdown_condition']['is_deleted'] = false;
+            }
+            if ($object->maybeActive()){
+               $field['dropdown_condition']['is_active'] = true;
+            }
+         }
+
          //get value
          $value = null;
          if (is_array($found_v)) {
@@ -826,8 +864,10 @@ class PluginFieldsField extends CommonDBTM {
       $this->fields['type']      = 'text';
    }
 
-   static function getTypes() {
-      return [
+   static function getTypes(bool $flat_list = true) {
+      global $CFG_GLPI;
+
+      $common_types = [
          'header'       => __("Header", "fields"),
          'text'         => __("Text (single line)", "fields"),
          'textarea'     => __("Text (multiples lines)", "fields"),
@@ -837,10 +877,47 @@ class PluginFieldsField extends CommonDBTM {
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
-         'dropdownuser' => _n("User", "Users", 2),
-         'dropdownoperatingsystems' => _n("Operating system", "Operating systems", 2),
-
       ];
+      $administration_types = [
+          'dropdown-User'  => User::getTypeName(Session::getPluralNumber()),
+          'dropdown-Group' => Group::getTypeName(Session::getPluralNumber()),
+      ];
+      $other_types = [
+          'dropdown-OperatingSystem' => OperatingSystem::getTypeName(Session::getPluralNumber()),
+      ];
+
+      //get All available Model class and assets
+      $asset_types = [];
+      $model_types = [];
+      $type_types  = [];
+      foreach ($CFG_GLPI['state_types'] as $class) {
+         $asset_types['dropdown-'.$class::getType()] = $class::getTypeName(Session::getPluralNumber());
+
+         $itemtype = new $class();
+         $model_class  = $itemtype->getModelClass();
+         if ($model_class != null) {
+            $model_types['dropdown-'.$model_class::getType()] = $model_class::getTypeName(Session::getPluralNumber());
+         }
+      }
+      //complete Model / Type list
+      foreach ($CFG_GLPI['dictionnary_types'] as $class) {
+         if (strpos(strtolower($class), "model") !== false) {
+            $model_types['dropdown-'.$class::getType()] = $class::getTypeName(Session::getPluralNumber());
+         } else if (strpos(strtolower($class), "type") !== false) {
+            $type_types['dropdown-'.$class::getType()] = $class::getTypeName(Session::getPluralNumber());
+         }
+      }
+
+      $all_types = [
+          __('Common')         => $common_types,
+          __('Asset')          => $asset_types,
+          __('Model')          => $model_types,
+          __('Type')           => $type_types,
+          __('Administration') => $administration_types,
+          __('Other')          => $other_types,
+      ];
+
+      return $flat_list ? array_merge([], ...array_values($all_types)) : $all_types;
    }
 
    function post_addItem() {
