@@ -316,9 +316,7 @@ function plugin_datainjection_populate_fields() {
       $types = json_decode($values['itemtypes']);
 
       foreach ($types as $type) {
-         $classname = "PluginFields"
-                     . ucfirst($type. preg_replace('/s$/', '', $values['name']))
-                     . 'Injection';
+         $classname = PluginFieldsContainer::getClassname($type, $values['name'], 'Injection');
          $INJECTABLE_TYPES[$classname] = 'fields';
       }
    }

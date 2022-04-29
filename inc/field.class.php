@@ -789,8 +789,7 @@ JAVASCRIPT
          }
       }
 
-      $classname = "PluginFields".$itemtype.
-                                 preg_replace('/s$/', '', $container_obj->fields['name']);
+      $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
       $obj = new $classname;
 
       //find row for this object with the items_id
