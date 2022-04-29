@@ -641,13 +641,18 @@ class PluginFieldsField extends CommonDBTM {
          return false;
       }
 
-      self::showDomContainer(
-         $c_id,
-         $item::getType(),
-         $item->getID(),
-         $type,
-         $subtype
-      );
+      $display_condition = new PluginFieldsContainerDisplayCondition();
+      if($display_condition->computeDisplayContainer($item, $c_id)) {
+         self::showDomContainer(
+            $c_id,
+            $item::getType(),
+            $item->getID(),
+            $type,
+            $subtype
+         );
+      }
+
+
    }
 
    static function prepareHtmlFields($fields, $items_id, $itemtype, $canedit = true,
