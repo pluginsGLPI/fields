@@ -1294,7 +1294,7 @@ class PluginFieldsContainer extends CommonDBTM {
              && (
                  $value === null
                  || $value === ''
-                 || (($field['type'] === 'dropdown' || preg_match('/^dropdown-[a-z]+/i', $field['type'])) && $value == 0)
+                 || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', $field['type'])) && $value == 0)
                  || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
              )
          ) {
@@ -1612,7 +1612,10 @@ class PluginFieldsContainer extends CommonDBTM {
 
          $is_itemtype_dropdown = false;
          $dropdown_matches     = [];
-         if (preg_match('/^dropdown-(?<class>[a-z]+)/i', $data['type'], $dropdown_matches)) {
+         if (
+             preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
+             && class_exists($dropdown_matches['class'])
+         ) {
             $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = $data['name'];

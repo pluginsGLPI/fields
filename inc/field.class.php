@@ -748,7 +748,10 @@ class PluginFieldsField extends CommonDBTM {
 
          //compute classname for 'dropdown-XXXXXX' field
          $dropdown_matches = [];
-         if (preg_match('/^dropdown-(?<class>[a-z]+)/i', $field['type'], $dropdown_matches)) {
+         if (
+             preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
+             && class_exists($dropdown_matches['class'])
+         ) {
             $dropdown_class = $dropdown_matches['class'];
 
             $field['dropdown_class'] = $dropdown_class;

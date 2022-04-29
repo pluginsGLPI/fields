@@ -97,7 +97,7 @@
             'entity': item.getEntityID(),
         })) }}
 
-    {% elseif type matches '/^dropdown-[a-z]+/i' %}
+    {% elseif type matches '/^dropdown-.+/i' %}
         {% if not massiveaction %}
             {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge({
                 'entity': field['model_class'] == 'User' ? -1 : item.getEntityID(),
