@@ -79,50 +79,29 @@ class PluginFieldsMigration extends Migration {
 
    static function getSQLType($field_type) {
 
-      global $CFG_GLPI;
-      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
-
-      $types = [
-         'text'                     => 'VARCHAR(255) DEFAULT NULL',
-         'url'                      => 'TEXT DEFAULT NULL',
-         'textarea'                 => 'TEXT         DEFAULT NULL',
-         'number'                   => 'VARCHAR(255) DEFAULT NULL',
-         'dropdown'                 => "INT          {$default_key_sign} NOT NULL DEFAULT 0",
-         'yesno'                    => 'INT          NOT NULL DEFAULT 0',
-         'date'                     => 'VARCHAR(255) DEFAULT NULL',
-         'datetime'                 => 'VARCHAR(255) DEFAULT NULL',
-      ];
-
-
-      //get All available Model class and assets
-      foreach ($CFG_GLPI['state_types'] as $class) {
-         $itemtype = new $class();
-         $model_class  = $itemtype->getModelClass();
-         if ($model_class != null) {
-            $types['dropdown-'.$model_class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";;
-         }
-         $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
+      $sql_type = '';
+      switch (true) {
+         case $field_type === 'dropdown':
+         case preg_match('/^dropdown-[a-z]+/i', $field_type):
+            $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+            $sql_type = "INT {$default_key_sign} NOT NULL DEFAULT 0";
+            break;
+         case $field_type === 'textarea':
+         case $field_type === 'url':
+            $sql_type = 'TEXT DEFAULT NULL';
+            break;
+         case $field_type === 'yesno':
+            $sql_type = 'INT NOT NULL DEFAULT 0';
+            break;
+         case $field_type === 'date':
+         case $field_type === 'datetime':
+         case $field_type === 'number':
+         case $field_type === 'text':
+         default:
+            $sql_type = 'VARCHAR(255) DEFAULT NULL';
+            break;
       }
 
-      //complete Model / Type list
-      foreach ($CFG_GLPI['dictionnary_types'] as $class) {
-         if (strpos(strtolower($class), "model") !== false) {
-            $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
-         } else if (strpos(strtolower($class), "type") !== false) {
-            $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
-         }
-      }
-
-      //complete Asset list
-      foreach ($CFG_GLPI['state_types'] as $class) {
-         $types['dropdown-'.$class::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
-      }
-
-      $types['dropdown-'.User::getType()] = "INT {$default_key_sign}  NOT NULL DEFAULT 0";
-      $types['dropdown-'.Group::getType()] =  "INT {$default_key_sign}  NOT NULL DEFAULT 0";
-      $types['dropdown-'.OperatingSystem::getType()] =  "INT {$default_key_sign}  NOT NULL DEFAULT 0";
-
-      //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
-      return $types[Toolbox::stripslashes_deep($field_type)];
+      return $sql_type;
    }
 }

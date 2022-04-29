@@ -74,8 +74,6 @@ class PluginFieldsLabelTranslation extends CommonDBTM {
             $DB->query($query) or die ($DB->error());
       }
 
-      $migration->displayMessage("Updating $table");
-      $migration->executeMigration();
       return true;
    }
 

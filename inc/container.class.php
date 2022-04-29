@@ -1294,7 +1294,7 @@ class PluginFieldsContainer extends CommonDBTM {
              && (
                  $value === null
                  || $value === ''
-                 || (strpos($field['type'], 'dropdown') && $value == 0)
+                 || (($field['type'] === 'dropdown' || preg_match('/^dropdown-[a-z]+/i', $field['type'])) && $value == 0)
                  || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
              )
          ) {
@@ -1610,23 +1610,21 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          }
 
-         if(strpos($data['type'], 'dropdown-') !== false && $data['type'] !== "dropdown"){
-
-            //remove 'dropdown-'
-            $class = str_replace('dropdown-', '' , $data['type']);
-            //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
-            $class = Toolbox::stripslashes_deep($class);
-
-            $opt[$i]['table']      = CommonDBTM::getTable($class);
+         $is_itemtype_dropdown = false;
+         $dropdown_matches     = [];
+         if (preg_match('/^dropdown-(?<class>[a-z]+)/i', $data['type'], $dropdown_matches)) {
+            $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = $data['name'];
-            $opt[$i]['right'] = 'all';
+            $opt[$i]['right']      = 'all';
 
             $opt[$i]['forcegroupby'] = true;
 
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+
+            $is_itemtype_dropdown = true;
          }
 
          switch (true) {
@@ -1646,7 +1644,8 @@ class PluginFieldsContainer extends CommonDBTM {
             case $data['type'] === 'url':
                $opt[$i]['datatype'] = 'weblink';
                break;
-            case strpos($data['type'], 'dropdown') !== false:
+            case $data['type'] === 'dropdown':
+            case $is_itemtype_dropdown:
                $opt[$i]['datatype'] = "dropdown";
                break;
             default:
