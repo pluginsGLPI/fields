@@ -372,63 +372,46 @@ class PluginFieldsContainerDisplayCondition extends CommonDBTM {
 
 
     public function checkCondition($item){
-        $valueToCheck = $this->fields['value'];
+        $value = $this->fields['value'];
         $condition = $this->fields['condition'];
         $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
 
-        $value = null;
-        switch ($searchOption['datatype']) {
-            case 'dropdown':
-            case 'email':
-            case 'weblink':
-            case 'itemlink':
-            case 'string':
-            case 'text':
-            case 'number':
-            case 'decimal':
-            case 'integer':
-            case 'bool':
-                $value = $valueToCheck;
+        switch ($condition) {
+            case self::SHOW_CONDITION_EQ:
+                // '='
+                if ($value == $item->fields[$searchOption['linkfield']]){
+                    return false;
+                }
+                break;
+            case self::SHOW_CONDITION_NE:
+                // '≠'
+                if ($value != $item->fields[$searchOption['linkfield']]){
+                    return false;
+                }
+                break;
+            case self::SHOW_CONDITION_LT:
+                // '<';
+                if ($item->fields[$searchOption['linkfield']] > $value){
+                    return false;
+                }
+                break;
+            case self::SHOW_CONDITION_GT:
+                //'>';
+                if ($item->fields[$searchOption['linkfield']] > $value){
+                    return false;
+                }
+                break;
+            case self::SHOW_CONDITION_REGEX:
+                //'regex';
+                if(self::checkRegex($value)) {
+                    $value = Sanitizer::unsanitize($value);
+                    if (preg_match_all($value . "i", $item->fields[$searchOption['linkfield']]) > 0) {
+                        return false;
+                    }
+                }
                 break;
         }
 
-        if($value !== null){
-            switch ($condition) {
-                case self::SHOW_CONDITION_EQ:
-                    // '='
-                    if ($value == $item->fields[$searchOption['linkfield']]){
-                        return false;
-                    }
-                    break;
-                case self::SHOW_CONDITION_NE:
-                    // '≠'
-                    if ($value != $item->fields[$searchOption['linkfield']]){
-                        return false;
-                    }
-                    break;
-                case self::SHOW_CONDITION_LT:
-                    // '<';
-                    if ($item->fields[$searchOption['linkfield']] > $value){
-                        return false;
-                    }
-                    break;
-                case self::SHOW_CONDITION_GT:
-                    //'>';
-                    if ($item->fields[$searchOption['linkfield']] > $value){
-                        return false;
-                    }
-                    break;
-                case self::SHOW_CONDITION_REGEX:
-                    //'regex';
-                    if(self::checkRegex($value)) {
-                        $value = Sanitizer::unsanitize($value);
-                        if (preg_match_all($value . "i", $item->fields[$searchOption['linkfield']]) > 0) {
-                            return false;
-                        }
-                    }
-                    break;
-            }
-        }
         return true;
     }
 
