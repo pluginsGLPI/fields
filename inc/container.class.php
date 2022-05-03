@@ -879,6 +879,27 @@ class PluginFieldsContainer extends CommonDBTM {
          'RSSFeed'     => RSSFeed::getTypeName(2),
       ];
 
+      $tabs[__('Components')] = [
+         'DeviceBattery'     => DeviceBattery::getTypeName(2),
+         'DeviceCamera'      => DeviceCamera::getTypeName(2),
+         'DeviceCase'        => DeviceCase::getTypeName(2),
+         'DeviceControl'     => DeviceControl::getTypeName(2),
+         'DeviceDrive'       => DeviceDrive::getTypeName(2),
+         'DeviceFirmware'    => DeviceFirmware::getTypeName(2),
+         'DeviceGeneric'     => DeviceGeneric::getTypeName(2),
+         'DeviceGraphicCard' => DeviceGraphicCard::getTypeName(2),
+         'DeviceHardDrive'   => DeviceHardDrive::getTypeName(2),
+         'DeviceMemory'      => DeviceMemory::getTypeName(2),
+         'DeviceNetworkCard' => DeviceNetworkCard::getTypeName(2),
+         'DevicePci'         => DevicePci::getTypeName(2),
+         'DevicePowerSupply' => DevicePowerSupply::getTypeName(2),
+         'DeviceProcessor'   => DeviceProcessor::getTypeName(2),
+         'DeviceSensor'      => DeviceSensor::getTypeName(2),
+         'DeviceSimcard'     => DeviceSimcard::getTypeName(2),
+         'DeviceSoundCard'   => DeviceSoundCard::getTypeName(2),
+         'DeviceMotherboard' => DeviceMotherboard::getTypeName(2),
+      ];
+      
       $tabs[__('Administration')] = [
          'User'    => User::getTypeName(2),
          'Group'   => Group::getTypeName(2),
