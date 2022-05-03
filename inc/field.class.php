@@ -869,23 +869,37 @@ class PluginFieldsField extends CommonDBTM {
          $field['itemtype'] = self::getType();
          $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
-         //compute classname for 'dropdown-XXXXXX' field
-         $dropdown_matches = [];
-         if (
-             preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
-             && class_exists($dropdown_matches['class'])
-         ) {
-            $dropdown_class = $dropdown_matches['class'];
-
-            $field['dropdown_class'] = $dropdown_class;
-            $field['dropdown_condition'] = [];
-
-            $object = new $dropdown_class();
-            if ($object->maybeDeleted()){
-               $field['dropdown_condition']['is_deleted'] = false;
+         $glpi_object = json_decode($field['glpi_object'], JSON_OBJECT_AS_ARRAY);
+         if (count($glpi_object)) {
+            $glpi_itemtype = [];
+            foreach ($glpi_object as $value) {
+               //remove 'dropdown-'
+               $classname = str_replace('dropdown-', '' , $value);
+               //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
+               $classname = Toolbox::stripslashes_deep($classname);
+               $label = $classname::getTypeName(0);
+               $glpi_itemtype[$classname] = $label;
             }
-            if ($object->maybeActive()){
-               $field['dropdown_condition']['is_active'] = true;
+            $field['glpi_object'] = $glpi_itemtype;
+
+            //compute classname for 'dropdown-XXXXXX' field
+            $dropdown_matches = [];
+            if (
+               preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
+               && class_exists($dropdown_matches['class'])
+            ) {
+               $dropdown_class = $dropdown_matches['class'];
+
+               $field['dropdown_class'] = $dropdown_class;
+               $field['dropdown_condition'] = [];
+
+               $object = new $dropdown_class();
+               if ($object->maybeDeleted()){
+                  $field['dropdown_condition']['is_deleted'] = false;
+               }
+               if ($object->maybeActive()){
+                  $field['dropdown_condition']['is_active'] = true;
+               }
             }
          }
 
