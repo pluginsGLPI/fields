@@ -29,6 +29,7 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Toolbox\Sanitizer;
 
 class PluginFieldsField extends CommonDBTM {
    static $rightname = 'config';
@@ -72,7 +73,7 @@ class PluginFieldsField extends CommonDBTM {
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
-                  `glpi_object`                       LONGTEXT       ,
+                  `allowed_values`                    TEXT           ,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
                   KEY `is_active`                     (`is_active`),
@@ -98,8 +99,8 @@ class PluginFieldsField extends CommonDBTM {
       //increase the size of column 'type' (25 to 255)
       $migration->changeField($table, 'type', 'type', 'string');
 
-      if (!$DB->fieldExists($table, 'glpi_object')) {
-         $migration->addField($table, 'glpi_object', 'longtext');
+      if (!$DB->fieldExists($table, 'allowed_values')) {
+         $migration->addField($table, 'allowed_values', 'text');
       }
 
       $toolbox = new PluginFieldsToolbox();
@@ -200,13 +201,9 @@ class PluginFieldsField extends CommonDBTM {
          $input['name'] = $oldname;
       }
 
-      $itemtype = [];
-      if (isset($input['_glpi_object'])) {
-         foreach ($input['_glpi_object'] as $key => $value) {
-            $itemtype[$key] = Toolbox::addslashes_deep($value);
-         }
+      if (isset($input['allowed_values'])) {
+         $input['allowed_values'] = Sanitizer::dbEscape(json_encode($input['allowed_values']));
       }
-      $input['glpi_object'] = json_encode($itemtype);
 
       return $input;
    }
@@ -486,14 +483,14 @@ class PluginFieldsField extends CommonDBTM {
       echo "</td>";
 
       if (!$edit) {
-         //if glpi_object selected display dropdown and hide input default_value
+         // if glpi_item selected display dropdown and hide input default_value
          echo Html::scriptBlock("
-            var display_glpi_object_dropdown = function(selected_val) {
-               if (selected_val == 'glpi_object') {
-                  $(\"#dropdown_glpi_object\").show();
+            var display_glpi_item_dropdown = function(selected_val) {
+               if (selected_val == 'glpi_item') {
+                  $(\"#dropdown_glpi_item\").show();
                   $(\"input[name=default_value]\").parent().parent().hide();
                } else {
-                  $(\"#dropdown_glpi_object\").hide();
+                  $(\"#dropdown_glpi_item\").hide();
                   $(\"input[name=default_value]\").parent().parent().show();
                }
             };
@@ -503,11 +500,11 @@ class PluginFieldsField extends CommonDBTM {
          echo "<tr>";
          echo "<td>".__("Type")." : </td>";
          echo "<td>";
-         Dropdown::showFromArray('type', self::getTypes(false), ['value' => $this->fields["type"], 'on_change' => 'display_glpi_object_dropdown(this.value)']);
+         Dropdown::showFromArray('type', self::getTypes(false), ['value' => $this->fields["type"], 'on_change' => 'display_glpi_item_dropdown(this.value)']);
          echo "</td>";
       }
 
-      if ($this->fields["type"] != "glpi_object") {
+      if ($this->fields["type"] != "glpi_item") {
          echo "<td>".__("Default values")." : </td>";
          echo "<td>";
          echo Html::input(
@@ -536,22 +533,22 @@ class PluginFieldsField extends CommonDBTM {
 
 
       $style = '';
-      if ($this->fields["type"] != "glpi_object") {
+      if ($this->fields["type"] != "glpi_item") {
          $style = "style='display: none;'";
       }
-      echo "<tr id='dropdown_glpi_object' $style>";
-      echo "<td>".__("GLPI Object")." : </td>";
+      echo "<tr id='dropdown_glpi_item' $style>";
+      echo "<td>".__('Allowed itemtypes', 'fields')." : </td>";
       echo "<td>";
 
       if (!$edit) {
-      $used = $edit ? json_decode($this->fields["glpi_object"], JSON_OBJECT_AS_ARRAY) : [];
-      Dropdown::showFromArray('_glpi_object', self::getGlpiItemtypes(), [
-               'display_emptychoice'   => true,
-               'values'   => $used,
-               'multiple' => true
-            ]);
+         $used = $edit ? json_decode($this->fields["glpi_item"]) : [];
+         Dropdown::showFromArray('allowed_values', self::getGlpiItemtypes(), [
+            'display_emptychoice'   => true,
+            'values'   => $used,
+            'multiple' => true
+         ]);
       } else {
-         $itemtype = json_decode($this->fields["glpi_object"], JSON_OBJECT_AS_ARRAY);
+         $itemtype = json_decode($this->fields["allowed_values"]);
          foreach ($itemtype as $value) {
             //remove 'dropdown-'
             $classname = str_replace('dropdown-', '' , $value);
@@ -628,7 +625,7 @@ class PluginFieldsField extends CommonDBTM {
    public static function getDefinedGlpiItemtypes(int $field_id): array {
       global $DB;
       $result = $DB->request([
-         'SELECT'          => 'glpi_object',
+         'SELECT'          => 'allowed_values',
          'FROM'            => static::getTable(),
          'WHERE'           => [
             'id' => $field_id
@@ -636,7 +633,7 @@ class PluginFieldsField extends CommonDBTM {
       ])->current();
 
       $types = [];
-      $used = json_decode($result['glpi_object']);
+      $used = json_decode($result['allowed_values']);
       foreach ($used as $value) {
          $classname = str_replace('dropdown-', '' , $value);
          //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
@@ -868,18 +865,18 @@ class PluginFieldsField extends CommonDBTM {
          $field['itemtype'] = self::getType();
          $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
-         $glpi_object = json_decode($field['glpi_object'], JSON_OBJECT_AS_ARRAY);
-         if (count($glpi_object)) {
+         $allowed_itemtypes = json_decode($field['allowed_values'], JSON_OBJECT_AS_ARRAY);
+         if (count($allowed_itemtypes)) {
             $glpi_itemtype = [];
-            foreach ($glpi_object as $value) {
+            foreach ($allowed_itemtypes as $allowed_itemtype) {
                //remove 'dropdown-'
-               $classname = str_replace('dropdown-', '' , $value);
+               $classname = str_replace('dropdown-', '' , $allowed_itemtype);
                //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
                $classname = Toolbox::stripslashes_deep($classname);
                $label = $classname::getTypeName(0);
                $glpi_itemtype[$classname] = $label;
             }
-            $field['glpi_object'] = $glpi_itemtype;
+            $field['allowed_values'] = $glpi_itemtype;
          }
 
          //compute classname for 'dropdown-XXXXXX' field
@@ -907,9 +904,13 @@ class PluginFieldsField extends CommonDBTM {
          if (is_array($found_v)) {
             if ($field['type'] == "dropdown") {
                $value = $found_v["plugin_fields_".$field['name']."dropdowns_id"];
-            } else if ($field['type'] == "glpi_object") {
-              $value["_itemtype"] = $found_v[$field['name']."_itemtype"];
-              $value["_items_id"] = $found_v[$field['name']."_items_id"];
+            } else if ($field['type'] == "glpi_item") {
+               $itemtype_key = sprintf('itemtype_%s', $field['name']);
+               $items_id_key = sprintf('items_id_%s', $field['name']);
+               $value = [
+                   'itemtype' => $found_v[$itemtype_key],
+                   'items_id' => $found_v[$items_id_key],
+               ];
             } else {
                $value = $found_v[$field['name']] ?? "";
             }
@@ -1016,7 +1017,7 @@ class PluginFieldsField extends CommonDBTM {
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
-         'glpi_object' => _n("GLPI Object", "GLPI Object", 2),
+         'glpi_item'    => _n("GLPI item", "GLPI item", 2, "fields"),
       ];
       $administration_types = [
           'dropdown-User'  => User::getTypeName(Session::getPluralNumber()),

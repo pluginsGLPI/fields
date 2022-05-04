@@ -45,7 +45,6 @@
     {% set label    = field['label'] %}
     {% set value    = field['value'] %}
     {% set readonly = field['is_readonly'] %}
-    {% set glpi_object = field['glpi_object'] %}
     {% set rand = random() %}
 
     {% set field_options = {
@@ -108,36 +107,36 @@
             })) }}
         {% endif %}
 
-    {% elseif type == 'glpi_object' %}
+    {% elseif type == 'glpi_item' %}
         {% if not massiveaction %}
-            {% set suffixe_itemtype = '_itemtype' %}
-            {% set suffixe_items_id = '_items_id' %}
+            {% set itemtype_prefix = 'itemtype_' %}
+            {% set items_id_prefix = 'items_id_' %}
 
             <div class='form-field row col-12 col-sm-6  mb-2'>
-                {{ macros.dropdownArrayField((name ~ suffixe_itemtype), value._itemtype, glpi_object, label, field_options|merge({
+                {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype, field['allowed_values'], label, field_options|merge({
                     'rand': rand,
                     'display_emptychoice': true,
                 })) }}
 
                 {% do call('Ajax::updateItemOnSelectEvent',
                     [
-                        'dropdown_' ~ (name ~ suffixe_itemtype) ~ rand,
+                        'dropdown_' ~ itemtype_prefix ~ name ~ rand,
                         'results_items_id' ~ (rand),
                         config('root_doc') ~ '/ajax/dropdownAllItems.php',
                         {
-                            'idtable'        : '__VALUE__',
-                            'name' : (name ~ suffixe_items_id),
-                            'entity_restrict' : item.getEntityID(),
-                            'dom_name' : name ~ suffixe_items_id,
+                            'idtable'             : '__VALUE__',
+                            'name'                : items_id_prefix ~ name,
+                            'entity_restrict'     : item.getEntityID(),
+                            'dom_name'            : items_id_prefix ~ name,
                             'display_emptychoice' : false,
-                            'action': 'get_items_from_itemtype',
-                            'dom_rand': rand,
+                            'action'              : 'get_items_from_itemtype',
+                            'dom_rand'            : rand,
                         }
                 ]) %}
 
                 <span id='results_items_id{{rand}}' class='form-field row col-12 col-sm-6  mb-2'>
-                    {% if value._itemtype != '' %}
-                        {{ macros.dropdownField(value._itemtype, (name ~ suffixe_items_id), value._items_id, label, field_options|merge({
+                    {% if value.itemtype != '' %}
+                        {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, label, field_options|merge({
                             'entity': -1,
                             'rand': rand,
                             'right': 'all',
