@@ -96,15 +96,13 @@ class PluginFieldsToolbox {
    public function fixFieldsNames(Migration $migration, $condition) {
       global $DB;
 
-      $glpi_version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
       $bad_named_fields = $DB->request(
          [
             'FROM' => PluginFieldsField::getTable(),
             'WHERE' => [
                'name' => [
                   'REGEXP',
-                  // Regex will be escaped by PDO in GLPI 10+, but has to be escaped for GLPI < 10
-                  version_compare($glpi_version, '10.0', '>=') ? '[0-9]+' : $DB->escape('[0-9]+')
+                  $DB->escape('[0-9]+')
                ],
                $condition,
             ],
