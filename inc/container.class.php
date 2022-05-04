@@ -107,15 +107,13 @@ class PluginFieldsContainer extends CommonDBTM {
       }
 
       // Fix containers names that were generated prior to Fields 1.9.2.
-      $glpi_version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
       $bad_named_containers = $DB->request(
          [
             'FROM' => self::getTable(),
             'WHERE' => [
                'name' => [
                   'REGEXP',
-                  // Regex will be escaped by PDO in GLPI 10+, but has to be escaped for GLPI < 10
-                  version_compare($glpi_version, '10.0', '>=') ? '\d+' : $DB->escape('\d+')
+                  $DB->escape('\d+')
                ],
             ],
          ]
