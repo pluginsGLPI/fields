@@ -625,18 +625,18 @@ class PluginFieldsField extends CommonDBTM {
       return $types;
    }
 
-   public static function getDefinedGlpiItemtypes($field_name) {
+   public static function getDefinedGlpiItemtypes(int $field_id): array {
       global $DB;
       $result = $DB->request([
          'SELECT'          => 'glpi_object',
          'FROM'            => static::getTable(),
          'WHERE'           => [
-            'name' => $field_name
+            'id' => $field_id
          ]
       ])->current();
 
       $types = [];
-      $used = json_decode($result["glpi_object"], JSON_OBJECT_AS_ARRAY);
+      $used = json_decode($result['glpi_object']);
       foreach ($used as $value) {
          $classname = str_replace('dropdown-', '' , $value);
          //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)

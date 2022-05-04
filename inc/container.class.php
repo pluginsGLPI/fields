@@ -1611,7 +1611,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['linkfield']          = $data['name']."_itemtype";
             $opt[$i]['name']               = $data['container_label']." - ".$data['label'].' - '._n('Associated item type', 'Associated item types', Session::getPluralNumber());
             $opt[$i]['datatype']           = 'itemtypename';
-            $opt[$i]['types']              = PluginFieldsField::getDefinedGlpiItemtypes($data['name']);
+            $opt[$i]['types']              = PluginFieldsField::getDefinedGlpiItemtypes($data['field_id']);
             $opt[$i]['additionalfields']   = ['itemtype'];
             $opt[$i]['joinparams']['jointype'] = 'itemtype_item';
             $opt[$i]['forcegroupby']       = true;
