@@ -1660,8 +1660,8 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
          } elseif (
-            preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
-            && class_exists($dropdown_matches['class'])
+             preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
+             && class_exists($dropdown_matches['class'])
          ) {
             $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
             $opt[$i]['field']      = 'name';
