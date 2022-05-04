@@ -79,11 +79,12 @@ class PluginFieldsMigration extends Migration {
 
    static function getSQLType($field_type) {
 
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $sql_type = '';
       switch (true) {
          case $field_type === 'dropdown':
          case preg_match('/^dropdown-.+/i', $field_type):
-            $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
             $sql_type = "INT {$default_key_sign} NOT NULL DEFAULT 0";
             break;
          case $field_type === 'textarea':
