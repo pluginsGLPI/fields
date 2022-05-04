@@ -1635,18 +1635,25 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['linkfield']     = $data['name'];
             $opt[$i]['joinparams']['jointype'] = "itemtype_item";
             $opt[$i]['pfields_type']  = $data['type'];
-
             if ($data['is_readonly']) {
                $opt[$i]['massiveaction'] = false;
             }
 
+            if ($data['type'] === "dropdown") {
+               $opt[$i]['table']      = 'glpi_plugin_fields_'.$data['name'].'dropdowns';
+               $opt[$i]['field']      = 'completename';
+               $opt[$i]['linkfield']  = "plugin_fields_".$data['name']."dropdowns_id";
+
+               $opt[$i]['joinparams']['jointype'] = "";
+               $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+               $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+            }
 
             $dropdown_matches     = [];
             if (
                preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
                && class_exists($dropdown_matches['class'])
             ) {
-               var_dump("here");
                $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
                $opt[$i]['field']      = 'name';
                $opt[$i]['linkfield']  = $data['name'];
@@ -1661,19 +1668,7 @@ class PluginFieldsContainer extends CommonDBTM {
                $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
 
                $is_itemtype_dropdown = true;
-               }
-
-               if ($data['type'] === "dropdown") {
-                  $opt[$i]['table']      = 'glpi_plugin_fields_'.$data['name'].'dropdowns';
-                  $opt[$i]['field']      = 'completename';
-                  $opt[$i]['linkfield']  = "plugin_fields_".$data['name']."dropdowns_id";
-
-                  $opt[$i]['joinparams']['jointype'] = "";
-                  $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-                  $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-
-                  $is_itemtype_dropdown = true;
-               }
+            }
          }
 
          switch (true) {

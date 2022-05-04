@@ -101,7 +101,6 @@ class PluginFieldsField extends CommonDBTM {
       if (!$DB->fieldExists($table, 'glpi_object')) {
          $migration->addField($table, 'glpi_object', 'longtext');
       }
-      $migration->executeMigration();
 
       $toolbox = new PluginFieldsToolbox();
       $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
@@ -881,25 +880,25 @@ class PluginFieldsField extends CommonDBTM {
                $glpi_itemtype[$classname] = $label;
             }
             $field['glpi_object'] = $glpi_itemtype;
+         }
 
-            //compute classname for 'dropdown-XXXXXX' field
-            $dropdown_matches = [];
-            if (
-               preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
-               && class_exists($dropdown_matches['class'])
-            ) {
-               $dropdown_class = $dropdown_matches['class'];
+         //compute classname for 'dropdown-XXXXXX' field
+         $dropdown_matches = [];
+         if (
+            preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
+            && class_exists($dropdown_matches['class'])
+         ) {
+            $dropdown_class = $dropdown_matches['class'];
 
-               $field['dropdown_class'] = $dropdown_class;
-               $field['dropdown_condition'] = [];
+            $field['dropdown_class'] = $dropdown_class;
+            $field['dropdown_condition'] = [];
 
-               $object = new $dropdown_class();
-               if ($object->maybeDeleted()){
-                  $field['dropdown_condition']['is_deleted'] = false;
-               }
-               if ($object->maybeActive()){
-                  $field['dropdown_condition']['is_active'] = true;
-               }
+            $object = new $dropdown_class();
+            if ($object->maybeDeleted()){
+               $field['dropdown_condition']['is_deleted'] = false;
+            }
+            if ($object->maybeActive()){
+               $field['dropdown_condition']['is_active'] = true;
             }
          }
 
