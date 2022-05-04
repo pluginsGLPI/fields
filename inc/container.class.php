@@ -1531,15 +1531,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $itemtype_key = sprintf('itemtype_%s', $field['name']);
             $items_id_key = sprintf('items_id_%s', $field['name']);
 
-            if (
-               !isset($item->input[$itemtype_key], $item->input[$items_id_key])
-               || !is_a($item->input[$itemtype_key], CommonDBTM::class, true)
-               && $item->input[$items_id_key] <= 0
-            ) {
-               continue; // not a valid input
-            }
-            $glpi_item = new $data[$itemtype_key]();
-            if (!$glpi_item->getFromDB($item->input[$items_id_key])) {
+            if (!isset($item->input[$itemtype_key], $item->input[$items_id_key])) {
                continue; // not a valid input
             }
 
