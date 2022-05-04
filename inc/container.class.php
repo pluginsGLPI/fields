@@ -1254,19 +1254,19 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          $name  = $field['name'];
+         $value = null;
+
          if ($field['type'] == "glpi_item") {
             $itemtype_key = sprintf('itemtype_%s', $name);
             $items_id_key = sprintf('items_id_%s', $name);
+
             if (
-               isset($data[$itemtype_key])
-               && class_exists($data[$itemtype_key])
-               && isset($data[$items_id_key])
+               isset($data[$itemtype_key], $data[$items_id_key])
+               && is_a($data[$itemtype_key], CommonDBTM::class, true)
                && $data[$items_id_key] > 0
             ) {
-               // TODO Check that object can be loaded
-               $value = $data[$items_id_key];
-            } else {
-               $value = null;
+               $glpi_item = new $data[$itemtype_key]();
+               $value = $glpi_item->getFromDB($data[$items_id_key]) ? $data[$items_id_key] : null;
             }
          } elseif (isset($data[$name])) {
             $value = $data[$name];
@@ -1282,7 +1282,6 @@ class PluginFieldsContainer extends CommonDBTM {
                AND `items_id`='{$data['items_id']}'
                AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
 
-            $value = null;
             $db_result = [];
             if ($result = $DB->query($query)) {
                $db_result = $DB->fetchAssoc($result);
@@ -1295,7 +1294,6 @@ class PluginFieldsContainer extends CommonDBTM {
             if ($massiveaction) {
                continue;
             }
-            $value = '';
          }
 
          //translate label
@@ -1533,7 +1531,17 @@ class PluginFieldsContainer extends CommonDBTM {
             $itemtype_key = sprintf('itemtype_%s', $field['name']);
             $items_id_key = sprintf('items_id_%s', $field['name']);
 
-            // TODO Check that itemtype/items_id are valid
+            if (
+               !isset($item->input[$itemtype_key], $item->input[$items_id_key])
+               || !is_a($item->input[$itemtype_key], CommonDBTM::class, true)
+               && $item->input[$items_id_key] <= 0
+            ) {
+               continue; // not a valid input
+            }
+            $glpi_item = new $data[$itemtype_key]();
+            if (!$glpi_item->getFromDB($item->input[$items_id_key])) {
+               continue; // not a valid input
+            }
 
             $has_fields = true;
             $data[$itemtype_key] = $item->input[$itemtype_key];
@@ -1616,7 +1624,6 @@ class PluginFieldsContainer extends CommonDBTM {
          ];
          $data['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
-
          // Default SO params
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $data['name'];
@@ -1625,7 +1632,7 @@ class PluginFieldsContainer extends CommonDBTM {
          $opt[$i]['joinparams']['jointype'] = "itemtype_item";
          $opt[$i]['pfields_type']  = $data['type'];
          if ($data['is_readonly']) {
-            $opt[$i]['massiveaction'] = false;
+             $opt[$i]['massiveaction'] = false;
          }
          switch ($data['type']) {
             case 'yesno':
