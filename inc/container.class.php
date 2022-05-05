@@ -1093,7 +1093,7 @@ class PluginFieldsContainer extends CommonDBTM {
       $found = $obj->find(['items_id' => $items_id]);
       if (empty($found)) {
          // add fields data
-         $obj->add(Toolbox::addslashes_deep($data));
+         $obj->add($data);
 
          //construct history on itemtype object (Historical tab)
          self::constructHistory($data['plugin_fields_containers_id'], $items_id,
@@ -1102,7 +1102,7 @@ class PluginFieldsContainer extends CommonDBTM {
       } else {
          $first_found = array_pop($found);
          $data['id'] = $first_found['id'];
-         $obj->update(Toolbox::addslashes_deep($data));
+         $obj->update($data);
 
          //construct history on itemtype object (Historical tab)
          self::constructHistory($data['plugin_fields_containers_id'], $items_id,
