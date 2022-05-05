@@ -548,14 +548,18 @@ class PluginFieldsField extends CommonDBTM {
             'multiple' => true
          ]);
       } else {
-         $itemtype = json_decode($this->fields["allowed_values"]);
-         foreach ($itemtype as $value) {
-            //remove 'dropdown-'
-            $classname = str_replace('dropdown-', '' , $value);
-            //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
-            $classname = Toolbox::stripslashes_deep($classname);
-            echo $classname::getTypeName(0)."&nbsp;,";
-         }
+         $allowed_itemtypes = json_decode($this->fields['allowed_values']) ?: [];
+         echo implode(
+             ', ',
+             array_map(
+                 function ($itemtype) {
+                     return is_a($itemtype, CommonDBTM::class, true)
+                        ? $itemtype::getTypeName(Session::getPluralNumber())
+                        : $itemtype;
+                 },
+                 $allowed_itemtypes
+             )
+         );
       }
       echo "</td>";
       echo "<td></td>";
