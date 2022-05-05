@@ -541,10 +541,8 @@ class PluginFieldsField extends CommonDBTM {
       echo "<td>";
 
       if (!$edit) {
-         $used = $edit ? json_decode($this->fields["glpi_item"]) : [];
          Dropdown::showFromArray('allowed_values', self::getGlpiItemtypes(), [
             'display_emptychoice'   => true,
-            'values'   => $used,
             'multiple' => true
          ]);
       } else {
