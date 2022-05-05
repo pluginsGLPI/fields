@@ -174,12 +174,17 @@ class PluginFieldsToolbox {
             );
 
             foreach ($tables_to_update as $table_to_update) {
-               $sql_type = PluginFieldsMigration::getSQLType($field['type']);
+               $sql_fields = PluginFieldsMigration::getSQLFields($new_field_name, $field['type']);
+               if (count($sql_fields) !== 1 || !array_key_exists($new_field_name, $sql_fields)) {
+                   // when this method has been made, only fields types that were matching a unique SQL field were existing
+                   // other cases can be ignored
+                   continue;
+               }
                $migration->changeField(
                   $table_to_update['TABLE_NAME'],
                   $old_field_name,
                   $new_field_name,
-                  $sql_type
+                  $sql_fields[$new_field_name]
                );
                $migration->migrationOneTable($table_to_update['TABLE_NAME']);
             }

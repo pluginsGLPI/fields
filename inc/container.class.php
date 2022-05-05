@@ -1254,7 +1254,21 @@ class PluginFieldsContainer extends CommonDBTM {
          }
 
          $name  = $field['name'];
-         if (isset($data[$name])) {
+         $value = null;
+
+         if ($field['type'] == "glpi_item") {
+            $itemtype_key = sprintf('itemtype_%s', $name);
+            $items_id_key = sprintf('items_id_%s', $name);
+
+            if (
+               isset($data[$itemtype_key], $data[$items_id_key])
+               && is_a($data[$itemtype_key], CommonDBTM::class, true)
+               && $data[$items_id_key] > 0
+            ) {
+               $glpi_item = new $data[$itemtype_key]();
+               $value = $glpi_item->getFromDB($data[$items_id_key]) ? $data[$items_id_key] : null;
+            }
+         } elseif (isset($data[$name])) {
             $value = $data[$name];
          } else if (isset($data['plugin_fields_'.$name.'dropdowns_id'])) {
             $value = $data['plugin_fields_'.$name.'dropdowns_id'];
@@ -1268,7 +1282,6 @@ class PluginFieldsContainer extends CommonDBTM {
                AND `items_id`='{$data['items_id']}'
                AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
 
-            $value = null;
             $db_result = [];
             if ($result = $DB->query($query)) {
                $db_result = $DB->fetchAssoc($result);
@@ -1281,7 +1294,6 @@ class PluginFieldsContainer extends CommonDBTM {
             if ($massiveaction) {
                continue;
             }
-            $value = '';
          }
 
          //translate label
@@ -1295,6 +1307,7 @@ class PluginFieldsContainer extends CommonDBTM {
                  $value === null
                  || $value === ''
                  || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', $field['type'])) && $value == 0)
+                 || ($field['type'] === 'glpi_item' && $value === null)
                  || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
              )
          ) {
@@ -1514,6 +1527,21 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $has_fields = false;
       foreach ($fields as $field) {
+         if ($field['type'] == 'glpi_item') {
+            $itemtype_key = sprintf('itemtype_%s', $field['name']);
+            $items_id_key = sprintf('items_id_%s', $field['name']);
+
+            if (!isset($item->input[$itemtype_key], $item->input[$items_id_key])) {
+               continue; // not a valid input
+            }
+
+            $has_fields = true;
+            $data[$itemtype_key] = $item->input[$itemtype_key];
+            $data[$items_id_key] = $item->input[$items_id_key];
+
+            continue; // bypass unique field handling
+         }
+
          if (isset($item->input[$field['name']])) {
             //standard field
             $input = $field['name'];
@@ -1545,7 +1573,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $i = 76665;
 
-      $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly,
+      $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly, fields.allowed_values,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
          FROM glpi_plugin_fields_containers containers
@@ -1588,6 +1616,7 @@ class PluginFieldsContainer extends CommonDBTM {
          ];
          $data['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
+         // Default SO params
          $opt[$i]['table']         = $tablename;
          $opt[$i]['field']         = $data['name'];
          $opt[$i]['name']          = $data['container_label']." - ".$data['label'];
@@ -1597,22 +1626,40 @@ class PluginFieldsContainer extends CommonDBTM {
          if ($data['is_readonly']) {
              $opt[$i]['massiveaction'] = false;
          }
+         switch ($data['type']) {
+            case 'yesno':
+               $opt[$i]['datatype'] = "bool";
+               break;
+            case 'textarea':
+               $opt[$i]['datatype'] = "text";
+               break;
+            case 'number':
+               $opt[$i]['datatype'] = "decimal";
+               break;
+            case 'date':
+            case 'datetime':
+               $opt[$i]['datatype'] = $data['type'];
+               break;
+            case 'url':
+               $opt[$i]['datatype'] = 'weblink';
+               break;
+            default:
+               $opt[$i]['datatype'] = "string";
+         }
 
+         $dropdown_matches     = [];
          if ($data['type'] === "dropdown") {
             $opt[$i]['table']      = 'glpi_plugin_fields_'.$data['name'].'dropdowns';
             $opt[$i]['field']      = 'completename';
             $opt[$i]['linkfield']  = "plugin_fields_".$data['name']."dropdowns_id";
+            $opt[$i]['datatype']   = "dropdown";
 
             $opt[$i]['forcegroupby'] = true;
 
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
-         }
-
-         $is_itemtype_dropdown = false;
-         $dropdown_matches     = [];
-         if (
+         } elseif (
              preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
              && class_exists($dropdown_matches['class'])
          ) {
@@ -1620,39 +1667,37 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['field']      = 'name';
             $opt[$i]['linkfield']  = $data['name'];
             $opt[$i]['right']      = 'all';
+            $opt[$i]['datatype']   = "dropdown";
 
             $opt[$i]['forcegroupby'] = true;
 
             $opt[$i]['joinparams']['jointype'] = "";
             $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
             $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+         } elseif ($data['type'] === "glpi_item") {
+            $itemtype_field = sprintf('itemtype_%s', $data['name']);
+            $items_id_field = sprintf('items_id_%s', $data['name']);
 
-            $is_itemtype_dropdown = true;
-         }
+            $opt[$i]['table']              = $tablename;
+            $opt[$i]['field']              = $itemtype_field;
+            $opt[$i]['linkfield']          = $itemtype_field;
+            $opt[$i]['name']               = $data['container_label']." - ".$data['label'].' - '._n('Associated item type', 'Associated item types', Session::getPluralNumber());
+            $opt[$i]['datatype']           = 'itemtypename';
+            $opt[$i]['types']              = !empty($data['allowed_values']) ? json_decode($data['allowed_values']) : [];
+            $opt[$i]['additionalfields']   = ['itemtype'];
+            $opt[$i]['joinparams']['jointype'] = 'itemtype_item';
+            $opt[$i]['forcegroupby']       = true;
+            $opt[$i]['massiveaction']      = false;
+            $i++;
 
-         switch (true) {
-            case $data['type'] === 'yesno':
-               $opt[$i]['datatype'] = "bool";
-               break;
-            case $data['type'] === 'textarea':
-               $opt[$i]['datatype'] = "text";
-               break;
-            case $data['type'] === 'number':
-               $opt[$i]['datatype'] = "decimal";
-               break;
-            case $data['type'] === 'date':
-            case $data['type'] === 'datetime':
-               $opt[$i]['datatype'] = $data['type'];
-               break;
-            case $data['type'] === 'url':
-               $opt[$i]['datatype'] = 'weblink';
-               break;
-            case $data['type'] === 'dropdown':
-            case $is_itemtype_dropdown:
-               $opt[$i]['datatype'] = "dropdown";
-               break;
-            default:
-               $opt[$i]['datatype'] = "string";
+            $opt[$i]['table']              = $tablename;
+            $opt[$i]['field']              = $items_id_field;
+            $opt[$i]['linkfield']          = $items_id_field;
+            $opt[$i]['name']               = $data['container_label']." - ".$data['label'].' - '.__('Associated item ID');
+            $opt[$i]['massiveaction']      = false;
+            $opt[$i]['joinparams']['jointype'] = 'itemtype_item';
+            $opt[$i]['datatype']           = 'text';
+            $opt[$i]['additionalfields']   = ['itemtype'];
          }
 
          $i++;

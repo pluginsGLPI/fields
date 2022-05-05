@@ -77,31 +77,47 @@ class PluginFieldsMigration extends Migration {
       return $types[$old_type];
    }
 
-   static function getSQLType($field_type) {
+   /**
+    * Return SQL fields corresponding to given additionnal field.
+    *
+    * @param string $field_name
+    * @param string $field_type
+    *
+    * @return array
+    */
+   public static function getSQLFields(string $field_name, string $field_type): array {
 
-      $sql_type = '';
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
+      $fields = [];
       switch (true) {
+         case $field_type === 'header':
+            // header type is for read-only display purpose only and has no SQL field
+            break;
          case $field_type === 'dropdown':
          case preg_match('/^dropdown-.+/i', $field_type):
-            $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
-            $sql_type = "INT {$default_key_sign} NOT NULL DEFAULT 0";
+            $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
             break;
          case $field_type === 'textarea':
          case $field_type === 'url':
-            $sql_type = 'TEXT DEFAULT NULL';
+            $fields[$field_name] = 'TEXT DEFAULT NULL';
             break;
          case $field_type === 'yesno':
-            $sql_type = 'INT NOT NULL DEFAULT 0';
+            $fields[$field_name] = 'INT NOT NULL DEFAULT 0';
+            break;
+         case $field_type === 'glpi_item':
+            $fields[sprintf('itemtype_%s', $field_name)] = 'varchar(100) NOT NULL';
+            $fields[sprintf('items_id_%s', $field_name)] = "int {$default_key_sign} NOT NULL DEFAULT 0";
             break;
          case $field_type === 'date':
          case $field_type === 'datetime':
          case $field_type === 'number':
          case $field_type === 'text':
          default:
-            $sql_type = 'VARCHAR(255) DEFAULT NULL';
+            $fields[$field_name] = 'VARCHAR(255) DEFAULT NULL';
             break;
       }
 
-      return $sql_type;
+      return $fields;
    }
 }

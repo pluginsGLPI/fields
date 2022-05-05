@@ -45,6 +45,7 @@
     {% set label    = field['label'] %}
     {% set value    = field['value'] %}
     {% set readonly = field['is_readonly'] %}
+    {% set rand = random() %}
 
     {% set field_options = {
         'readonly':   readonly or not canedit,
@@ -105,6 +106,47 @@
                 'condition': field['dropdown_condition']
             })) }}
         {% endif %}
+
+    {% elseif type == 'glpi_item' %}
+        {% if not massiveaction %}
+            {% set itemtype_prefix = 'itemtype_' %}
+            {% set items_id_prefix = 'items_id_' %}
+
+            <div class='form-field row col-12 col-sm-6  mb-2'>
+                {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype, field['allowed_values'], label, field_options|merge({
+                    'rand': rand,
+                    'display_emptychoice': true,
+                })) }}
+
+                {% do call('Ajax::updateItemOnSelectEvent',
+                    [
+                        'dropdown_' ~ itemtype_prefix ~ name ~ rand,
+                        'results_items_id' ~ (rand),
+                        config('root_doc') ~ '/ajax/dropdownAllItems.php',
+                        {
+                            'idtable'             : '__VALUE__',
+                            'name'                : items_id_prefix ~ name,
+                            'entity_restrict'     : item.getEntityID(),
+                            'dom_name'            : items_id_prefix ~ name,
+                            'display_emptychoice' : false,
+                            'action'              : 'get_items_from_itemtype',
+                            'dom_rand'            : rand,
+                        }
+                ]) %}
+
+                <span id='results_items_id{{rand}}' class='form-field row col-12 col-sm-6  mb-2'>
+                    {% if value.itemtype != '' %}
+                        {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, label, field_options|merge({
+                            'entity': value.itemtype == 'User' ? -1 : item.getEntityID(),
+                            'rand': rand,
+                            'right': 'all',
+                            'display_emptychoice' : false,
+                            'no_label': true
+                        })) }}
+                    {% endif %}
+                </span>
+            {% endif %}
+        </div>
     {% endif %}
 {% endfor %}
 

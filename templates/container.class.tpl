@@ -46,18 +46,24 @@ class %%CLASSNAME%% extends CommonDBTM
    }
 
    static function addField($fieldname, $type) {
-      if ($type != 'header') {
-         $sql_type = PluginFieldsMigration::getSQLType($type);
+      $migration = new PluginFieldsMigration(0);
 
-         $migration = new PluginFieldsMigration(0);
-         $migration->addField(self::getTable(), $fieldname, $sql_type);
-         $migration->migrationOneTable(self::getTable());
+      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type);
+      foreach ($sql_fields as $sql_field_name => $sql_field_type) {
+         $migration->addField(self::getTable(), $sql_field_name, $sql_field_type);
       }
+
+      $migration->migrationOneTable(self::getTable());
    }
 
-   static function removeField($fieldname) {
+   static function removeField($fieldname, $type) {
       $migration = new PluginFieldsMigration(0);
-      $migration->dropField(self::getTable(), $fieldname);
+
+      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type);
+      foreach (array_keys($sql_fields) as $sql_field_name) {
+         $migration->dropField(self::getTable(), $sql_field_name);
+      }
+
       $migration->migrationOneTable(self::getTable());
    }
 }
