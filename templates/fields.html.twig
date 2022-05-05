@@ -137,7 +137,7 @@
                 <span id='results_items_id{{rand}}' class='form-field row col-12 col-sm-6  mb-2'>
                     {% if value.itemtype != '' %}
                         {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, label, field_options|merge({
-                            'entity': -1,
+                            'entity': value.itemtype == 'User' ? -1 : item.getEntityID(),
                             'rand': rand,
                             'right': 'all',
                             'display_emptychoice' : false,
