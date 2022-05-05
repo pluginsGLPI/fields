@@ -449,6 +449,8 @@ class PluginFieldsField extends CommonDBTM {
    function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
+      $rand = mt_rand();
+
       if (isset($options['parent_id']) && !empty($options['parent_id'])) {
          $container = new PluginFieldsContainer;
          $container->getFromDB($options['parent_id']);
@@ -472,7 +474,7 @@ class PluginFieldsField extends CommonDBTM {
 
       echo "<tr>";
       echo "<td>".__("Label")." : </td>";
-      echo "<td>";
+      echo "<td colspan='3'>";
       echo Html::hidden('plugin_fields_containers_id', ['value' => $container->getField('id')]);
       echo Html::input(
          'label',
@@ -482,64 +484,82 @@ class PluginFieldsField extends CommonDBTM {
       );
       echo "</td>";
 
-      if (!$edit) {
+      echo "</tr>";
+      echo "<tr>";
+      echo "<td>".__("Type")." : </td>";
+      echo "<td colspan='3'>";
+      if ($edit) {
+         echo self::getTypes(true)[$this->fields['type']];
+      } else {
          // if glpi_item selected display dropdown and hide input default_value
-         echo Html::scriptBlock("
-            var display_glpi_item_dropdown = function(selected_val) {
-               if (selected_val == 'glpi_item') {
-                  $(\"#dropdown_glpi_item\").show();
-                  $(\"input[name=default_value]\").parent().parent().hide();
+         echo Html::scriptBlock(<<<JAVASCRIPT
+            var plugin_fields_change_field_type_{$rand} = function(selected_val) {
+               if (selected_val === 'glpi_item') {
+                  $('#plugin_fields_default_value_label_{$rand}').hide();
+                  $('#plugin_fields_default_value_field_{$rand}').find('[name="default_value"]').val(null).trigger('change');
+                  $('#plugin_fields_default_value_field_{$rand}').hide();
+                  $('#plugin_fields_allowed_values_label_{$rand}').show();
+                  $('#plugin_fields_allowed_values_field_{$rand}').show();
                } else {
-                  $(\"#dropdown_glpi_item\").hide();
-                  $(\"input[name=default_value]\").parent().parent().show();
+                  $('#plugin_fields_default_value_label_{$rand}').show();
+                  $('#plugin_fields_default_value_field_{$rand}').show();
+                  $('#plugin_fields_allowed_values_label_{$rand}').hide();
+                  $('#plugin_fields_allowed_values_field_{$rand}').find('[name="allowed_values\[\]"]').val(null).trigger('change');
+                  $('#plugin_fields_allowed_values_field_{$rand}').hide();
                }
             };
-         ");
-
-         echo "</tr>";
-         echo "<tr>";
-         echo "<td>".__("Type")." : </td>";
-         echo "<td>";
-         Dropdown::showFromArray('type', self::getTypes(false), ['value' => $this->fields["type"], 'on_change' => 'display_glpi_item_dropdown(this.value)']);
-         echo "</td>";
-      }
-
-      if ($this->fields["type"] != "glpi_item") {
-         echo "<td>".__("Default values")." : </td>";
-         echo "<td>";
-         echo Html::input(
-            'default_value',
-            [
-               'value' => $this->fields['default_value'],
-            ]
+            $(
+               function () {
+                  plugin_fields_change_field_type_{$rand}();
+               }
+            );
+JAVASCRIPT
          );
-         if ($this->fields["type"] == "dropdown") {
-            echo '<a href="'.Plugin::getWebDir('fields').'/front/commondropdown.php?ddtype='.
-                             $this->fields['name'] .'dropdown">
-                  <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
-                       alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
-                  </a>';
-         }
-         if (in_array($this->fields['type'], ['date', 'datetime'])) {
-            echo "<i class='pointer fa fa-info'
-                     title=\"".__("You can use 'now' for date and datetime field")."\"></i>";
-         }
-         echo "</td>";
-      } else{
-         echo "<td></td>";
-         echo "<td></td>";
+
+         Dropdown::showFromArray(
+             'type',
+             self::getTypes(false),
+             [
+                 'value'     => $this->fields['type'],
+                 'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)'
+             ]
+         );
       }
+      echo "</td>";
       echo "</tr>";
 
-
-      $style = '';
-      if ($this->fields["type"] != "glpi_item") {
-         $style = "style='display: none;'";
-      }
-      echo "<tr id='dropdown_glpi_item' $style>";
-      echo "<td>".__('Allowed itemtypes', 'fields')." : </td>";
+      $style_default = $this->fields['type'] === 'glpi_item' ? 'style="display:none;"' : '';
+      $style_allowed = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
+      echo "<tr>";
       echo "<td>";
-
+      echo '<div id="plugin_fields_default_value_label_' . $rand . '" ' . $style_default . '>';
+      echo __("Default values")." : ";
+      echo '</div>';
+      echo '<div id="plugin_fields_allowed_values_label_' . $rand . '" ' . $style_allowed . '>';
+      echo __('Allowed values', 'fields')." : ";
+      echo '</div>';
+      echo "</td>";
+      echo "<td colspan='3'>";
+      echo '<div id="plugin_fields_default_value_field_' . $rand . '" ' . $style_default . '>';
+      echo Html::input(
+         'default_value',
+         [
+            'value' => $this->fields['default_value'],
+         ]
+      );
+      if ($this->fields["type"] == "dropdown") {
+         echo '<a href="'.Plugin::getWebDir('fields').'/front/commondropdown.php?ddtype='.
+                          $this->fields['name'] .'dropdown">
+               <img src="'.$CFG_GLPI['root_doc'].'/pics/options_search.png" class="pointer"
+                    alt="'.__('Configure', 'fields').'" title="'.__('Configure fields values', 'fields').'">
+               </a>';
+      }
+      if (in_array($this->fields['type'], ['date', 'datetime'])) {
+         echo "<i class='pointer fa fa-info'
+                  title=\"".__("You can use 'now' for date and datetime field")."\"></i>";
+      }
+      echo '</div>';
+      echo '<div id="plugin_fields_allowed_values_field_' . $rand . '" ' . $style_allowed . '>';
       if (!$edit) {
          Dropdown::showFromArray('allowed_values', self::getGlpiItemtypes(), [
             'display_emptychoice'   => true,
@@ -559,9 +579,8 @@ class PluginFieldsField extends CommonDBTM {
              )
          );
       }
+      echo '</div>';
       echo "</td>";
-      echo "<td></td>";
-      echo "<td></td>";
       echo "</tr>";
 
       echo "<tr>";
@@ -577,11 +596,9 @@ class PluginFieldsField extends CommonDBTM {
 
       echo "<tr>";
       echo "<td>".__("Read only", "fields")." :</td>";
-      echo "<td>";
+      echo "<td colspan='3'>";
       Dropdown::showYesNo("is_readonly", $this->fields["is_readonly"]);
       echo "</td>";
-      echo "<td></td>";
-      echo "<td></td>";
       echo "</tr>";
 
       $this->showFormButtons($options);
