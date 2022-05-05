@@ -26,7 +26,78 @@ Possible fields type are :
  * Yes / No
  * Date
  * Date / Hour
- * Glpi User list
+ * Glpi item (itemtype items_id)
+ * Glpi object (dropdown)
+    * <details>
+        <summary>Click to expand list</summary>
+            * Asset
+                * Computers
+                * Monitors
+                * Network devices
+                * Phones
+                * Printers
+                * Licenses
+                * Certificates
+                * Enclosures
+                * PDUs
+                * Lines
+                * Racks
+                * Clusters
+                * Contracts
+                * Appliances
+                * Databases instances
+                * Cables
+            * Model
+                * Computer models
+                * Moniotr models
+                * Network equipment models
+                * Phone models
+                * Enclosure models
+                * PDU models
+                * Rack models
+            * Type
+                * Computer types
+                * Moniotr types
+                * Network equipment types
+                * Devices types
+                * Phone types
+                * Printer types
+                * Database instance types
+            * Component
+                * Battery
+                * Camera
+                * Case
+                * Control
+                * Drive
+                * Firmware
+                * Generic
+                * Graphic Card
+                * HardDrive
+                * Memory
+                * Network Card
+                * Pci
+                * Power Supply
+                * Processor
+                * Sensor
+                * Simcard
+                * SoundCard
+                * Motherboard
+            * Administration
+                * Users
+                * Groups
+            * Other
+                * Operating systems
+        </details>
+
+
+
+The block can be hidden according to conditions (rules on the value of the fields of the main object)
+
+![Screenshot](./pics/hide_block.png)
+
+Fields option (mandatory / read only) can be overrides according to conditions (rules on status value of the main object)
+
+![Screenshot](./pics/override_by_status.png)
 
 ## Download
 
