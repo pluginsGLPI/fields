@@ -808,18 +808,16 @@ class PluginFieldsField extends CommonDBTM {
          $field['itemtype'] = self::getType();
          $field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
 
-         $allowed_itemtypes = json_decode($field['allowed_values'], JSON_OBJECT_AS_ARRAY);
-         if (count($allowed_itemtypes)) {
-            $glpi_itemtype = [];
-            foreach ($allowed_itemtypes as $allowed_itemtype) {
-               //remove 'dropdown-'
-               $classname = str_replace('dropdown-', '' , $allowed_itemtype);
-               //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
-               $classname = Toolbox::stripslashes_deep($classname);
-               $label = $classname::getTypeName(0);
-               $glpi_itemtype[$classname] = $label;
+         $field['allowed_values'] = !empty($field['allowed_values']) ? json_decode($field['allowed_values']) : [];
+         if ($field['type'] === 'glpi_item') {
+            // Convert allowed values to [$itemtype_class => $itemtype_name] format
+            $allowed_itemtypes = [];
+            foreach ($field['allowed_values'] as $allowed_itemtype) {
+               if (is_a($allowed_itemtype, CommonDBTM::class, true)) {
+                  $allowed_itemtypes[$allowed_itemtype] = $allowed_itemtype::getTypeName(Session::getPluralNumber());
+               }
             }
-            $field['allowed_values'] = $glpi_itemtype;
+            $field['allowed_values'] = $allowed_itemtypes;
          }
 
          //compute classname for 'dropdown-XXXXXX' field
