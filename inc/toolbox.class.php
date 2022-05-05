@@ -189,4 +189,138 @@ class PluginFieldsToolbox {
          }
       }
    }
+
+   /**
+    * Return a list of GLPI itemtypes.
+    * These itemtypes will be available to attach fields containers on them,
+    * and will be usable in dropdown / glpi_item fields.
+    *
+    * @return array
+    */
+   public static function getGlpiItemtypes(): array {
+      global $CFG_GLPI, $PLUGIN_HOOKS;
+
+      $assets_itemtypes = [
+          Computer::class,
+          Monitor::class,
+          Software::class,
+          NetworkEquipment::class,
+          Peripheral::class,
+          Printer::class,
+          CartridgeItem::class,
+          ConsumableItem::class,
+          Phone::class,
+          Rack::class,
+          Enclosure::class,
+          PDU::class,
+          PassiveDCEquipment::class,
+          Cable::class,
+      ];
+
+      $assistance_itemtypes = [
+          Ticket::class,
+          Problem::class,
+          Change::class,
+          TicketRecurrent::class,
+          RecurrentChange::class,
+          PlanningExternalEvent::class,
+      ];
+
+      $management_itemtypes = [
+          SoftwareLicense::class,
+          SoftwareVersion::class,
+          Budget::class,
+          Supplier::class,
+          Contact::class,
+          Contract::class,
+          Document::class,
+          Line::class,
+          Certificate::class,
+          Datacenter::class,
+          Cluster::class,
+          Domain::class,
+          Appliance::class,
+          Database::class,
+          DatabaseInstance::class,
+      ];
+
+      $tools_itemtypes = [
+          Project::class,
+          ProjectTask::class,
+          Reminder::class,
+          RSSFeed::class,
+      ];
+
+      $administration_itemtypes = [
+          User::class,
+          Group::class,
+          Entity::class,
+          Profile::class,
+      ];
+
+      $components_itemtypes = [];
+      foreach ($CFG_GLPI['device_types'] as $device_itemtype) {
+         $components_itemtypes[] = $device_itemtype;
+      }
+      sort($components_itemtypes, SORT_NATURAL);
+
+      $plugins_itemtypes = [];
+      foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
+         $itemtype_specs = isPluginItemType($itemtype);
+         if ($itemtype_specs) {
+            $plugins_itemtypes[] = $itemtype;
+         }
+      }
+
+      $dropdowns_sections  = [];
+      foreach (Dropdown::getStandardDropdownItemTypes() as $section => $itemtypes) {
+          $section_name = sprintf(
+             __('%s: %s'),
+             _n('Dropdown', 'Dropdowns', Session::getPluralNumber()),
+             $section
+          );
+          $dropdowns_sections[$section_name] = array_keys($itemtypes);
+      }
+
+      $other_itemtypes = [
+          NetworkPort::class,
+          Notification::class,
+          NotificationTemplate::class,
+      ];
+
+      $all_itemtypes = [
+          _n('Asset', 'Assets', Session::getPluralNumber())         => $assets_itemtypes,
+          __('Assistance')                                          => $assistance_itemtypes,
+          __('Management')                                          => $management_itemtypes,
+          __('Tools')                                               => $tools_itemtypes,
+          __('Administration')                                      => $administration_itemtypes,
+          _n('Plugin', 'Plugins', Session::getPluralNumber())       => $plugins_itemtypes,
+          _n('Component', 'Components', Session::getPluralNumber()) => $components_itemtypes,
+      ] + $dropdowns_sections + [
+          __('Other')                                               => $other_itemtypes,
+      ];
+
+      $plugins_names = [];
+      foreach ($all_itemtypes as $section => $itemtypes) {
+          $named_itemtypes = [];
+          foreach ($itemtypes as $itemtype) {
+              $prefix = '';
+              if ($itemtype_specs = isPluginItemType($itemtype)) {
+                 $plugin_key = $itemtype_specs['plugin'];
+                 if (!array_key_exists($plugin_key, $plugins_names)) {
+                    $plugins_names[$plugin_key] = Plugin::getInfo($plugin_key, 'name');
+                 }
+                 $prefix = $plugins_names[$plugin_key] . ' - ';
+              }
+
+              $named_itemtypes[$itemtype] = $prefix . $itemtype::getTypeName(Session::getPluralNumber());
+          }
+          $all_itemtypes[$section] = $named_itemtypes;
+      }
+
+      // Remove empty lists (e.g. Plugin list).
+      $all_itemtypes = array_filter($all_itemtypes);
+
+      return $all_itemtypes;
+   }
 }
