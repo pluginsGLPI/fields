@@ -1573,7 +1573,7 @@ class PluginFieldsContainer extends CommonDBTM {
 
       $i = 76665;
 
-      $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly,
+      $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly, fields.allowed_values,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
          FROM glpi_plugin_fields_containers containers
@@ -1683,7 +1683,7 @@ class PluginFieldsContainer extends CommonDBTM {
             $opt[$i]['linkfield']          = $itemtype_field;
             $opt[$i]['name']               = $data['container_label']." - ".$data['label'].' - '._n('Associated item type', 'Associated item types', Session::getPluralNumber());
             $opt[$i]['datatype']           = 'itemtypename';
-            $opt[$i]['types']              = PluginFieldsField::getDefinedGlpiItemtypes($data['field_id']);
+            $opt[$i]['types']              = !empty($data['allowed_values']) ? json_decode($data['allowed_values']) : [];
             $opt[$i]['additionalfields']   = ['itemtype'];
             $opt[$i]['joinparams']['jointype'] = 'itemtype_item';
             $opt[$i]['forcegroupby']       = true;

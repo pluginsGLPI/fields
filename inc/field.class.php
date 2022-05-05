@@ -585,65 +585,6 @@ class PluginFieldsField extends CommonDBTM {
       $this->showFormButtons($options);
    }
 
-   static function getGlpiItemtypes(){
-      global $CFG_GLPI;
-
-      $types = [];
-
-      //get All available Model class and assets
-      foreach ($CFG_GLPI['state_types'] as $class) {
-         $itemtype = new $class();
-         $model_class  = $itemtype->getModelClass();
-         if ($model_class != null) {
-            $types[__('Model')]['dropdown-'.$model_class::getType()] = $model_class::getTypeName(2);
-         }
-         $types[__('Asset')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
-      }
-
-      //complete Model / Type list
-      foreach ($CFG_GLPI['dictionnary_types'] as $class) {
-         if (strpos(strtolower($class), "model") !== false) {
-            $types[__('Model')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
-         } else if (strpos(strtolower($class), "type") !== false) {
-            $types[__('Type')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
-         }
-      }
-
-      //complete Asset list
-      foreach ($CFG_GLPI['state_types'] as $class) {
-         $types[__('Asset')]['dropdown-'.$class::getType()] = $class::getTypeName(2);
-      }
-
-      //other
-      $types[__('Administration')]['dropdown-'.User::getType()] = _n("User", "Users", 2);
-      $types[__('Administration')]['dropdown-'.Group::getType()] = _n("Group", "Groups", 2);
-      $types[__('Other')]['dropdown-'.OperatingSystem::getType()] = _n("Operating system", "Operating systems", 2);
-
-      return $types;
-   }
-
-   public static function getDefinedGlpiItemtypes(int $field_id): array {
-      global $DB;
-      $result = $DB->request([
-         'SELECT'          => 'allowed_values',
-         'FROM'            => static::getTable(),
-         'WHERE'           => [
-            'id' => $field_id
-         ]
-      ])->current();
-
-      $types = [];
-      $used = json_decode($result['allowed_values']);
-      foreach ($used as $value) {
-         $classname = str_replace('dropdown-', '' , $value);
-         //remove slashes added by GLPI (useful for namespaced GLPI Object ie: GLPI\SocketModel)
-         $classname = Toolbox::stripslashes_deep($classname);
-         $types[] = $classname;
-      }
-
-      return $types;
-   }
-
    static function showForTabContainer($c_id, $items_id, $itemtype) {
       global $CFG_GLPI;
 
@@ -1005,7 +946,6 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function getTypes(bool $flat_list = true) {
-      global $CFG_GLPI;
 
       $common_types = [
          'header'       => __("Header", "fields"),
@@ -1019,46 +959,77 @@ class PluginFieldsField extends CommonDBTM {
          'datetime'     => __("Date & time", "fields"),
          'glpi_item'    => _n("GLPI item", "GLPI item", 2, "fields"),
       ];
-      $administration_types = [
-          'dropdown-User'  => User::getTypeName(Session::getPluralNumber()),
-          'dropdown-Group' => Group::getTypeName(Session::getPluralNumber()),
-      ];
-      $other_types = [
-          'dropdown-OperatingSystem' => OperatingSystem::getTypeName(Session::getPluralNumber()),
+
+      $all_types = [
+          __('Common') => $common_types,
       ];
 
-      //get All available Model class and assets
-      $asset_types = [];
-      $model_types = [];
-      $type_types  = [];
+      foreach (self::getGlpiItemtypes() as $section => $itemtypes) {
+          $all_types[$section] = [];
+          foreach ($itemtypes as $itemtype => $itemtype_name) {
+              $all_types[$section]['dropdown-' . $itemtype] = $itemtype_name;
+          }
+      }
+
+      return $flat_list ? array_merge([], ...array_values($all_types)) : $all_types;
+   }
+
+   /**
+    * Return a list of GLPI itemtypes that can be used in dropdown / glpi_item fields.
+    *
+    * @return array
+    */
+   public static function getGlpiItemtypes(): array {
+      global $CFG_GLPI;
+
+      $administration_itemtypes = [
+          User::class,
+          Group::class,
+      ];
+      $other_itemtypes = [
+          OperatingSystem::class,
+      ];
+
+      // Get all available Model class and assets
+      $asset_itemtypes = [];
+      $model_itemtypes = [];
+      $type_itemtypes  = [];
       foreach ($CFG_GLPI['state_types'] as $class) {
-         $asset_types['dropdown-'.$class::getType()] = $class::getTypeName(Session::getPluralNumber());
+         $asset_itemtypes[] = $class;
 
          $itemtype = new $class();
          $model_class  = $itemtype->getModelClass();
          if ($model_class != null) {
-            $model_types['dropdown-'.$model_class::getType()] = $model_class::getTypeName(Session::getPluralNumber());
+            $model_itemtypes[] = $model_class;
          }
       }
-      //complete Model / Type list
+
+      // Complete Model / Type list
       foreach ($CFG_GLPI['dictionnary_types'] as $class) {
          if (strpos(strtolower($class), "model") !== false) {
-            $model_types['dropdown-'.$class::getType()] = $class::getTypeName(Session::getPluralNumber());
+            $model_itemtypes[] = $class;
          } else if (strpos(strtolower($class), "type") !== false) {
-            $type_types['dropdown-'.$class::getType()] = $class::getTypeName(Session::getPluralNumber());
+            $type_itemtypes[] = $class;
          }
       }
 
-      $all_types = [
-          __('Common')         => $common_types,
-          __('Asset')          => $asset_types,
-          __('Model')          => $model_types,
-          __('Type')           => $type_types,
-          __('Administration') => $administration_types,
-          __('Other')          => $other_types,
+      $all_itemtypes = [
+          __('Asset')          => $asset_itemtypes,
+          __('Model')          => $model_itemtypes,
+          __('Type')           => $type_itemtypes,
+          __('Administration') => $administration_itemtypes,
+          __('Other')          => $other_itemtypes,
       ];
 
-      return $flat_list ? array_merge([], ...array_values($all_types)) : $all_types;
+      foreach ($all_itemtypes as $section => $itemtypes) {
+          $named_itemtypes = [];
+          foreach ($itemtypes as $itemtype) {
+              $named_itemtypes[$itemtype] = $itemtype::getTypeName(Session::getPluralNumber());
+          }
+          $all_itemtypes[$section] = $named_itemtypes;
+      }
+
+      return $all_itemtypes;
    }
 
    function post_addItem() {
