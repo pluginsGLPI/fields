@@ -2,7 +2,7 @@
    <name>Fields</name>
    <key>fields</key>
    <state>stable</state>
-   <logo>https://raw.githubusercontent.com/pluginsGLPI/fields/master/plugin.png</logo>
+   <logo>https://raw.githubusercontent.com/pluginsGLPI/fields/master/docs/logo.png</logo>
    <description>
       <short>
          <cs>Zásuvný modul kolonky umožňuje přidávat vlastní kolonky do glpi typů: požadavky, počítače, uživatelé…</cs>
@@ -339,6 +339,6 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
       </fr>
    </tags>
    <screenshots>
-      <screenshot>https://raw.githubusercontent.com/pluginsGLPI/fields/master/fields.gif</screenshot>
+      <screenshot>https://raw.githubusercontent.com/pluginsGLPI/fields/master/docs/screenshots/fields.gif</screenshot>
    </screenshots>
 </root>
