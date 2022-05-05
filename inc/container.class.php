@@ -829,129 +829,26 @@ class PluginFieldsContainer extends CommonDBTM {
     * @return array
     */
    static function getItemtypes($is_domtab) {
-      global $PLUGIN_HOOKS;
 
-      $tabs = [];
-
-      $tabs[__('Assets')] = [
-         'Computer'           => Computer::getTypeName(2),
-         'Monitor'            => Monitor::getTypeName(2),
-         'Software'           => Software::getTypeName(2),
-         'NetworkEquipment'   => NetworkEquipment::getTypeName(2),
-         'Peripheral'         => Peripheral::getTypeName(2),
-         'Printer'            => Printer::getTypeName(2),
-         'CartridgeItem'      => CartridgeItem::getTypeName(2),
-         'ConsumableItem'     => ConsumableItem::getTypeName(2),
-         'Phone'              => Phone::getTypeName(2),
-         'Rack'               => Rack::getTypeName(2),
-         'Enclosure'          => Enclosure::getTypeName(2),
-         'PDU'                => PDU::getTypeName(2),
-         'PassiveDCEquipment' => PassiveDCEquipment::getTypeName(2),
-      ];
-
-      $tabs[__('Assistance')] = [
-         'Ticket'                => Ticket::getTypeName(2),
-         'Problem'               => Problem::getTypeName(2),
-         'Change'                => Change::getTypeName(2),
-         'TicketRecurrent'       => TicketRecurrent::getTypeName(2),
-         'PlanningExternalEvent' => PlanningExternalEvent::getTypeName(2),
-      ];
-
-      $tabs[__('Management')] = [
-         'SoftwareLicense' => SoftwareLicense::getTypeName(2),
-         'Budget'          => Budget::getTypeName(2),
-         'Supplier'        => Supplier::getTypeName(2),
-         'Contact'         => Contact::getTypeName(2),
-         'Contract'        => Contract::getTypeName(2),
-         'Document'        => Document::getTypeName(2),
-         'Line'            => Line::getTypeName(2),
-         'Certificate'     => Certificate::getTypeName(2),
-         'Datacenter'      => Datacenter::getTypeName(2),
-         'Cluster'         => Cluster::getTypeName(2),
-         'Domain'          => Domain::getTypeName(2),
-         'Appliance'       => Appliance::getTypeName(2),
-      ];
-
-      $tabs[__('Tools')] = [
-         'Project'     => Project::getTypeName(2),
-         'ProjectTask' => ProjectTask::getTypeName(2),
-         'Reminder'    => Reminder::getTypeName(2),
-         'RSSFeed'     => RSSFeed::getTypeName(2),
-      ];
-
-      $tabs[__('Components')] = [
-         'DeviceBattery'     => DeviceBattery::getTypeName(2),
-         'DeviceCamera'      => DeviceCamera::getTypeName(2),
-         'DeviceCase'        => DeviceCase::getTypeName(2),
-         'DeviceControl'     => DeviceControl::getTypeName(2),
-         'DeviceDrive'       => DeviceDrive::getTypeName(2),
-         'DeviceFirmware'    => DeviceFirmware::getTypeName(2),
-         'DeviceGeneric'     => DeviceGeneric::getTypeName(2),
-         'DeviceGraphicCard' => DeviceGraphicCard::getTypeName(2),
-         'DeviceHardDrive'   => DeviceHardDrive::getTypeName(2),
-         'DeviceMemory'      => DeviceMemory::getTypeName(2),
-         'DeviceNetworkCard' => DeviceNetworkCard::getTypeName(2),
-         'DevicePci'         => DevicePci::getTypeName(2),
-         'DevicePowerSupply' => DevicePowerSupply::getTypeName(2),
-         'DeviceProcessor'   => DeviceProcessor::getTypeName(2),
-         'DeviceSensor'      => DeviceSensor::getTypeName(2),
-         'DeviceSimcard'     => DeviceSimcard::getTypeName(2),
-         'DeviceSoundCard'   => DeviceSoundCard::getTypeName(2),
-         'DeviceMotherboard' => DeviceMotherboard::getTypeName(2),
-      ];
-      
-      $tabs[__('Administration')] = [
-         'User'    => User::getTypeName(2),
-         'Group'   => Group::getTypeName(2),
-         'Entity'  => Entity::getTypeName(2),
-         'Profile' => Profile::getTypeName(2)
-      ];
-
-      foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
-         $isPlugin = isPluginItemType($itemtype);
-         if ($isPlugin) {
-            $plugin_name = Plugin::getInfo($isPlugin['plugin'], 'name');
-
-            $tabs[__("Plugins")][$itemtype] = $plugin_name.' - '.$itemtype::getTypeName(2);
-         }
-      }
-
-      $dropdowns = [];
-      // flatten dropdows
-      $raw_dropdowns = Dropdown::getStandardDropdownItemTypes();
-      array_walk_recursive($raw_dropdowns, function($val, $key) use (&$dropdowns) {
-         $dropdowns[$key] = $val;
-      });
-      $tabs[__('Dropdowns')] = $dropdowns;
-
-      $tabs[__('Other')] = [
-         'NetworkPort'          => NetworkPort::getTypeName(2),
-         'Notification'         => Notification::getTypeName(2),
-         'NotificationTemplate' => NotificationTemplate::getTypeName(2),
-      ];
+      $all_itemtypes = PluginFieldsToolbox::getGlpiItemtypes();
 
       if ($is_domtab) {
          // Filter items that do not have tab handled
-         foreach ($tabs as $group => $items) {
-            $tabs[$group] = array_filter(
-               $items,
-               function ($item) {
-                  return count(self::getSubtypes($item)) > 0;
+         foreach ($all_itemtypes as $section => $itemtypes) {
+            $all_itemtypes[$section] = array_filter(
+               $itemtypes,
+               function ($itemtype) {
+                  return count(self::getSubtypes($itemtype)) > 0;
                },
                ARRAY_FILTER_USE_KEY
             );
          }
 
          // Filter groupts that do not have items handled
-         $tabs = array_filter(
-            $tabs,
-            function ($items) {
-               return count($items) > 0;
-            }
-         );
+         $all_itemtypes = array_filter($all_itemtypes);
       }
 
-      return $tabs;
+      return $all_itemtypes;
    }
 
    static function getTypes() {

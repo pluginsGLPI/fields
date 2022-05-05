@@ -573,7 +573,7 @@ JAVASCRIPT
       echo '</div>';
       echo '<div id="plugin_fields_allowed_values_field_' . $rand . '" ' . $style_allowed . '>';
       if (!$edit) {
-         Dropdown::showFromArray('allowed_values', self::getGlpiItemtypes(), [
+         Dropdown::showFromArray('allowed_values', PluginFieldsToolbox::getGlpiItemtypes(), [
             'display_emptychoice'   => true,
             'multiple' => true
          ]);
@@ -992,7 +992,7 @@ JAVASCRIPT
           __('Common') => $common_types,
       ];
 
-      foreach (self::getGlpiItemtypes() as $section => $itemtypes) {
+      foreach (PluginFieldsToolbox::getGlpiItemtypes() as $section => $itemtypes) {
           $all_types[$section] = [];
           foreach ($itemtypes as $itemtype => $itemtype_name) {
               $all_types[$section]['dropdown-' . $itemtype] = $itemtype_name;
@@ -1000,64 +1000,6 @@ JAVASCRIPT
       }
 
       return $flat_list ? array_merge([], ...array_values($all_types)) : $all_types;
-   }
-
-   /**
-    * Return a list of GLPI itemtypes that can be used in dropdown / glpi_item fields.
-    *
-    * @return array
-    */
-   public static function getGlpiItemtypes(): array {
-      global $CFG_GLPI;
-
-      $administration_itemtypes = [
-          User::class,
-          Group::class,
-      ];
-      $other_itemtypes = [
-          OperatingSystem::class,
-      ];
-
-      // Get all available Model class and assets
-      $asset_itemtypes = [];
-      $model_itemtypes = [];
-      $type_itemtypes  = [];
-      foreach ($CFG_GLPI['state_types'] as $class) {
-         $asset_itemtypes[] = $class;
-
-         $itemtype = new $class();
-         $model_class  = $itemtype->getModelClass();
-         if ($model_class != null) {
-            $model_itemtypes[] = $model_class;
-         }
-      }
-
-      // Complete Model / Type list
-      foreach ($CFG_GLPI['dictionnary_types'] as $class) {
-         if (strpos(strtolower($class), "model") !== false) {
-            $model_itemtypes[] = $class;
-         } else if (strpos(strtolower($class), "type") !== false) {
-            $type_itemtypes[] = $class;
-         }
-      }
-
-      $all_itemtypes = [
-          __('Asset')          => $asset_itemtypes,
-          __('Model')          => $model_itemtypes,
-          __('Type')           => $type_itemtypes,
-          __('Administration') => $administration_itemtypes,
-          __('Other')          => $other_itemtypes,
-      ];
-
-      foreach ($all_itemtypes as $section => $itemtypes) {
-          $named_itemtypes = [];
-          foreach ($itemtypes as $itemtype) {
-              $named_itemtypes[$itemtype] = $itemtype::getTypeName(Session::getPluralNumber());
-          }
-          $all_itemtypes[$section] = $named_itemtypes;
-      }
-
-      return $all_itemtypes;
    }
 
    function post_addItem() {
