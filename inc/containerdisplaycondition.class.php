@@ -215,7 +215,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
             'is_dropdown'    => false,
             'is_specific'    => false,
             'is_list_values' => false,
-            'condition'      => $value,
+            'condition'      => $condition,
             'value'          => $value,
         ];
 
