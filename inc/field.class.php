@@ -982,7 +982,7 @@ JAVASCRIPT
          'yesno'        => __("Yes/No", "fields"),
          'date'         => __("Date", "fields"),
          'datetime'     => __("Date & time", "fields"),
-         'glpi_item'    => _n("GLPI item", "GLPI item", 2, "fields"),
+         'glpi_item'    => __("GLPI item", "fields"),
       ];
 
       $all_types = [

@@ -646,7 +646,7 @@ class PluginFieldsContainer extends CommonDBTM {
                      data-bs-toggle="tooltip" data-bs-placement="bottom">
                <i class="fas fa-file-export fa-lg"></i>
             </a>
-         HTML;
+HTML;
          $options['header_toolbar'] = [$export_btn];
       }
 

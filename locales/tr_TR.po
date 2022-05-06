@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 13:12+0000\n"
+"POT-Creation-Date: 2022-05-06 07:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2021\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -18,124 +18,188 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/field.class.php:360
+#: inc/field.class.php:383
 msgid "Add a new field"
 msgstr "Alan ekle"
+
+#: templates/container_display_conditions.html.twig
+msgid "Add condition to hide block"
+msgstr ""
+
+#: templates/status_overrides.html.twig
+msgid "Add new status override"
+msgstr ""
+
+#: inc/container.class.php:861
+msgid "Add tab"
+msgstr "Sekme ekle"
 
 #: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
 #: setup.php:189
 msgid "Additionnal fields"
 msgstr "Ek alanlar"
 
-#: inc/container.class.php:622
+#: inc/field.class.php:546
+msgid "Allowed values"
+msgstr ""
+
+#: inc/container.class.php:633
 msgid "Block"
 msgstr "Blok"
 
-#: inc/field.class.php:477
+#: templates/container_display_conditions.html.twig
+#: inc/containerdisplaycondition.class.php:119
+msgid "Condition to hide block"
+msgid_plural "Conditions to hide block"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/field.class.php:561
 msgid "Configure"
 msgstr "Yapılandırma"
 
-#: inc/field.class.php:477
+#: inc/field.class.php:561
 msgid "Configure fields values"
 msgstr "Alan değerleri yapılandırması"
 
-#: inc/container.class.php:460
+#: inc/container.class.php:464
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Kapsayıcı adı veritabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/field.class.php:820
+#: inc/field.class.php:983
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:821
+#: inc/field.class.php:984
 msgid "Date & time"
-msgstr "Tarih ve saat"
+msgstr "Tarih ve Saat"
 
-#: inc/field.class.php:818
+#: inc/field.class.php:981
 msgid "Dropdown"
-msgstr "Açılan kutu"
+msgstr "Açılan Kutu"
 
-#: inc/container.class.php:45 inc/container.class.php:631
+#: inc/container.class.php:49 inc/container.class.php:642
 msgid "Export to YAML"
 msgstr "YAML olarak dışa aktar"
 
-#: inc/field.class.php:113
+#: templates/forms/status_override.html.twig inc/field.class.php:132
 msgid "Field"
 msgstr "Alan"
 
-#: inc/field.class.php:124 inc/field.class.php:149
+#: inc/field.class.php:143 inc/field.class.php:168
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Alan adı veritabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/field.class.php:306
+#: inc/field.class.php:329
 msgid "Fields"
 msgstr "Alanlar"
 
-#: inc/container.class.php:125
+#: inc/container.class.php:127
 msgid "Fix container names"
 msgstr "Kapsayıcı adlarını düzelt"
 
-#: inc/toolbox.class.php:118
+#: inc/toolbox.class.php:116
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
 
-#: inc/field.class.php:813
-msgid "Header"
-msgstr "Üst bilgi"
+#: inc/field.class.php:985
+msgid "GLPI item"
+msgstr ""
 
-#: inc/labeltranslation.class.php:180
+#: inc/field.class.php:976
+msgid "Header"
+msgstr "Üst Bilgi"
+
+#: inc/container.class.php:862
+msgid "Insertion in the form (before save button)"
+msgstr "Forma eklensin (kaydet düğmesinden önce)"
+
+#: inc/container.class.php:863
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
+
+#: inc/labeltranslation.class.php:187
 msgid "Label"
 msgstr "Etiket"
 
-#: inc/labeltranslation.class.php:179
+#: inc/labeltranslation.class.php:186
 msgid "Language"
 msgstr "Dil"
 
-#: hook.php:66
+#: hook.php:68
 msgid "MySQL tables installation"
 msgstr "MySQL tabloları yükleme"
 
-#: hook.php:120
+#: hook.php:124
 msgid "MySQL tables uninstallation"
 msgstr "MySQL tabloları kaldırma"
 
-#: inc/field.class.php:364
+#: inc/field.class.php:387
 msgid "No field for this block"
 msgstr "Bu blokta henüz bir alan yok"
 
-#: inc/field.class.php:816
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr ""
+
+#: inc/field.class.php:979
 msgid "Number"
 msgstr "Sayı"
 
-#: inc/field.class.php:376 inc/field.class.php:500
+#: inc/statusoverride.class.php:76
+msgid "Override by status"
+msgstr ""
+
+#: templates/forms/status_override.html.twig inc/field.class.php:399
+#: inc/field.class.php:607
 msgid "Read only"
 msgstr "Salt okunur"
 
-#: inc/container.class.php:44
+#: inc/container.class.php:48
 msgid "Regenerate container files"
 msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
-#: inc/field.class.php:815
+#: inc/container.class.php:1258
+msgid "Some URL fields contains invalid links"
+msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
+
+#: inc/container.class.php:1248
+msgid "Some mandatory fields are empty"
+msgstr "Bazı zorunlu alanlar boş"
+
+#: inc/container.class.php:1253
+msgid "Some numeric fields contains non numeric values"
+msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
+
+#: templates/status_overrides.html.twig
+msgid "Status overrides"
+msgstr ""
+
+#: inc/container.class.php:727
+msgid "Tab"
+msgstr "Sekme"
+
+#: inc/field.class.php:978
 msgid "Text (multiples lines)"
 msgstr "Metin (birden çok satır)"
 
-#: inc/field.class.php:814
+#: inc/field.class.php:977
 msgid "Text (single line)"
 msgstr "Metin (tek satır)"
 
-#: hook.php:111
+#: hook.php:115
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
 
-#: inc/field.class.php:817
+#: inc/field.class.php:980
 msgid "URL"
-msgstr "Adres"
+msgstr "İnternet Adresi"
 
-#: inc/container.class.php:213
+#: inc/container.class.php:215
 msgid "Updating generated containers files"
 msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 
@@ -143,30 +207,35 @@ msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 msgid "Updating generated dropdown files"
 msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 
-#: inc/field.class.php:819
+#: inc/field.class.php:982
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
-#: inc/container.class.php:412
+#: inc/container.class.php:416
 msgid "You cannot add block without associated element type"
 msgstr "İlişkilendirilmiş bir bileşen tipi olmadan bir blok eklenemez"
 
-#: inc/container.class.php:444
+#: inc/container.class.php:448
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:429
+#: inc/container.class.php:433
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:474
+#: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 
+#: inc/containerdisplaycondition.class.php:85
+#: inc/containerdisplaycondition.class.php:105
+msgid "regular expression matches"
+msgstr ""
+
 #: templates/fields.html.twig
 msgid "show"
-msgstr "Görüntüle"
+msgstr "görüntüle"

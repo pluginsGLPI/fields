@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 13:12+0000\n"
+"POT-Creation-Date: 2022-05-06 07:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2020\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/uk_UA/)\n"
@@ -18,124 +18,190 @@ msgstr ""
 "Language: uk_UA\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: inc/field.class.php:360
+#: inc/field.class.php:383
 msgid "Add a new field"
 msgstr "Додати нове поле"
+
+#: templates/container_display_conditions.html.twig
+msgid "Add condition to hide block"
+msgstr ""
+
+#: templates/status_overrides.html.twig
+msgid "Add new status override"
+msgstr ""
+
+#: inc/container.class.php:861
+msgid "Add tab"
+msgstr "Додати закладку"
 
 #: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
 #: setup.php:189
 msgid "Additionnal fields"
 msgstr "Додаткові поля"
 
-#: inc/container.class.php:622
+#: inc/field.class.php:546
+msgid "Allowed values"
+msgstr ""
+
+#: inc/container.class.php:633
 msgid "Block"
 msgstr "Блок"
 
-#: inc/field.class.php:477
+#: templates/container_display_conditions.html.twig
+#: inc/containerdisplaycondition.class.php:119
+msgid "Condition to hide block"
+msgid_plural "Conditions to hide block"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: inc/field.class.php:561
 msgid "Configure"
 msgstr "Налаштувати"
 
-#: inc/field.class.php:477
+#: inc/field.class.php:561
 msgid "Configure fields values"
 msgstr "Налаштувати значення полів"
 
-#: inc/container.class.php:460
+#: inc/container.class.php:464
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:820
+#: inc/field.class.php:983
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:821
+#: inc/field.class.php:984
 msgid "Date & time"
 msgstr "Дата і час"
 
-#: inc/field.class.php:818
+#: inc/field.class.php:981
 msgid "Dropdown"
 msgstr "Випадаючий список"
 
-#: inc/container.class.php:45 inc/container.class.php:631
+#: inc/container.class.php:49 inc/container.class.php:642
 msgid "Export to YAML"
 msgstr ""
 
-#: inc/field.class.php:113
+#: templates/forms/status_override.html.twig inc/field.class.php:132
 msgid "Field"
 msgstr "Поле"
 
-#: inc/field.class.php:124 inc/field.class.php:149
+#: inc/field.class.php:143 inc/field.class.php:168
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:306
+#: inc/field.class.php:329
 msgid "Fields"
 msgstr "Поля"
 
-#: inc/container.class.php:125
+#: inc/container.class.php:127
 msgid "Fix container names"
 msgstr "Виправити назви контейнерів"
 
-#: inc/toolbox.class.php:118
+#: inc/toolbox.class.php:116
 msgid "Fix fields names"
 msgstr "Виправити назви полів"
 
-#: inc/field.class.php:813
+#: inc/field.class.php:985
+msgid "GLPI item"
+msgstr ""
+
+#: inc/field.class.php:976
 msgid "Header"
 msgstr "Заголовок"
 
-#: inc/labeltranslation.class.php:180
+#: inc/container.class.php:862
+msgid "Insertion in the form (before save button)"
+msgstr "Вставка в форму (до кнопки Зберегти)"
+
+#: inc/container.class.php:863
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Вставка в форму закладки (до кнопки Зберегти)"
+
+#: inc/labeltranslation.class.php:187
 msgid "Label"
 msgstr "Мітка"
 
-#: inc/labeltranslation.class.php:179
+#: inc/labeltranslation.class.php:186
 msgid "Language"
 msgstr "Мова"
 
-#: hook.php:66
+#: hook.php:68
 msgid "MySQL tables installation"
 msgstr "Встановлення таблиць MySQL"
 
-#: hook.php:120
+#: hook.php:124
 msgid "MySQL tables uninstallation"
 msgstr "Видалення таблиць MySQL"
 
-#: inc/field.class.php:364
+#: inc/field.class.php:387
 msgid "No field for this block"
 msgstr "Для цього блоку ще немає полів"
 
-#: inc/field.class.php:816
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr ""
+
+#: inc/field.class.php:979
 msgid "Number"
 msgstr "Число"
 
-#: inc/field.class.php:376 inc/field.class.php:500
+#: inc/statusoverride.class.php:76
+msgid "Override by status"
+msgstr ""
+
+#: templates/forms/status_override.html.twig inc/field.class.php:399
+#: inc/field.class.php:607
 msgid "Read only"
 msgstr "Тільки читання"
 
-#: inc/container.class.php:44
+#: inc/container.class.php:48
 msgid "Regenerate container files"
 msgstr "Перегенерувати файли контейнеру"
 
-#: inc/field.class.php:815
+#: inc/container.class.php:1258
+msgid "Some URL fields contains invalid links"
+msgstr "Деякі поля URL містять невірні посилання"
+
+#: inc/container.class.php:1248
+msgid "Some mandatory fields are empty"
+msgstr "Деякі обов'язкові поля порожні"
+
+#: inc/container.class.php:1253
+msgid "Some numeric fields contains non numeric values"
+msgstr "Деякі числові поля містять не цифрові значення"
+
+#: templates/status_overrides.html.twig
+msgid "Status overrides"
+msgstr ""
+
+#: inc/container.class.php:727
+msgid "Tab"
+msgstr "Закладка"
+
+#: inc/field.class.php:978
 msgid "Text (multiples lines)"
 msgstr "Текст (декілька ліній)"
 
-#: inc/field.class.php:814
+#: inc/field.class.php:977
 msgid "Text (single line)"
 msgstr "Текст (в одну лінію)"
 
-#: hook.php:111
+#: hook.php:115
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Плугін не можна видалити коли він вимкнений"
 
-#: inc/field.class.php:817
+#: inc/field.class.php:980
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:213
+#: inc/container.class.php:215
 msgid "Updating generated containers files"
 msgstr "Оновлення згенерованих файлів контейнерів"
 
@@ -143,29 +209,34 @@ msgstr "Оновлення згенерованих файлів контейн�
 msgid "Updating generated dropdown files"
 msgstr "Оновлюю згенеровані файли випадаючих списків"
 
-#: inc/field.class.php:819
+#: inc/field.class.php:982
 msgid "Yes/No"
 msgstr "Так/Ні"
 
-#: inc/container.class.php:412
+#: inc/container.class.php:416
 msgid "You cannot add block without associated element type"
 msgstr "Не можна додати блок без визначеного типу елементу"
 
-#: inc/container.class.php:444
+#: inc/container.class.php:448
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Не можна до однієї закладки додати декілька блоків з типом 'Вставка в форму закладки'"
 
-#: inc/container.class.php:429
+#: inc/container.class.php:433
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Не можна до одного об'єкту додати декілька блоків з типом 'Вставка в форму'"
 
-#: inc/container.class.php:474
+#: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Не можна до одного об'єкту додати декілька блоків з однаковою назвою"
+
+#: inc/containerdisplaycondition.class.php:85
+#: inc/containerdisplaycondition.class.php:105
+msgid "regular expression matches"
+msgstr ""
 
 #: templates/fields.html.twig
 msgid "show"

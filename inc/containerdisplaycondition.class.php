@@ -116,13 +116,15 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
 
 
     static function getTypeName($nb = 0) {
-        return __('Condition to hide block', 'fields');
+        return _n('Condition to hide block', 'Conditions to hide block', $nb, 'fields');
     }
 
 
     function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-        return self::createTabEntry(self::getTypeName(), countElementsInTable(self::getTable(),
-        ['plugin_fields_containers_id' => $item->getID()]));
+        return self::createTabEntry(
+            self::getTypeName(Session::getPluralNumber()),
+            countElementsInTable(self::getTable(), ['plugin_fields_containers_id' => $item->getID()])
+        );
     }
 
 
