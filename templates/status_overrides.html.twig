@@ -31,15 +31,17 @@
 
 <div id="container{{ rand }}" class="asset {{ bg }}">
 
-   <div class="d-flex align-items-start mb-3">
-      <button class="btn btn-primary me-2"
-              type="button"
-              name="switch_add"
-              data-container-id="{{ container_id }}">
-         <i class="far fa-plus"></i>
-         <span>{{ __('Add new status override', 'fields') }}</span>
-      </button>
-   </div>
+   {% if has_fields %}
+      <div class="d-flex align-items-start mb-3">
+         <button class="btn btn-primary me-2"
+                 type="button"
+                 name="switch_add"
+                 data-container-id="{{ container_id }}">
+            <i class="far fa-plus"></i>
+            <span>{{ __('Add new status override', 'fields') }}</span>
+         </button>
+      </div>
+   {% endif %}
 
    {{ fields.largeTitle(__('Status overrides', 'fields'), '', false) }}
    <div class="card-body d-flex flex-wrap">
