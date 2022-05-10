@@ -353,9 +353,11 @@ class PluginFieldsStatusOverride extends CommonDBTM {
 
     public static function showForTabContainer(CommonGLPI $item, $options = []) {
         $container_id = $item->getID();
+        $has_fields = count(self::getFieldsChoiceForContainer($container_id)) > 0;
         $twig_params = [
             'container_id'          => $container_id,
             'overrides'             => self::getOverridesForContainer($container_id),
+            'has_fields'            => $has_fields,
         ];
         TemplateRenderer::getInstance()->display('@fields/status_overrides.html.twig', $twig_params);
     }
