@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015-2021
+# Kaya Zeren <kayazeren@gmail.com>, 2015-2022
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-06 07:55+0000\n"
+"POT-Creation-Date: 2022-05-17 13:20+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2021\n"
+"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2022\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,11 +24,11 @@ msgstr "Alan ekle"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Bloğu gizleyecek bir koşul ekle"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Yeni bir durum değişikliği ekle"
 
 #: inc/container.class.php:861
 msgid "Add tab"
@@ -41,7 +41,7 @@ msgstr "Ek alanlar"
 
 #: inc/field.class.php:546
 msgid "Allowed values"
-msgstr ""
+msgstr "İzin verilen değerler"
 
 #: inc/container.class.php:633
 msgid "Block"
@@ -51,12 +51,12 @@ msgstr "Blok"
 #: inc/containerdisplaycondition.class.php:119
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Bloğu gizleyecek koşul"
+msgstr[1] "Bloğu gizleyecek koşullar"
 
 #: inc/field.class.php:561
 msgid "Configure"
-msgstr "Yapılandırma"
+msgstr "Yapılandır"
 
 #: inc/field.class.php:561
 msgid "Configure fields values"
@@ -74,11 +74,11 @@ msgstr "Tarih"
 
 #: inc/field.class.php:984
 msgid "Date & time"
-msgstr "Tarih ve Saat"
+msgstr "Tarih ve saat"
 
 #: inc/field.class.php:981
 msgid "Dropdown"
-msgstr "Açılan Kutu"
+msgstr "Açılan kutu"
 
 #: inc/container.class.php:49 inc/container.class.php:642
 msgid "Export to YAML"
@@ -108,11 +108,11 @@ msgstr "Alan adlarını düzelt"
 
 #: inc/field.class.php:985
 msgid "GLPI item"
-msgstr ""
+msgstr "GLPI ögesi"
 
 #: inc/field.class.php:976
 msgid "Header"
-msgstr "Üst Bilgi"
+msgstr "Üst bilgi"
 
 #: inc/container.class.php:862
 msgid "Insertion in the form (before save button)"
@@ -144,7 +144,7 @@ msgstr "Bu blokta henüz bir alan yok"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr ""
+msgstr "Herhangi bir öge bulunamadı"
 
 #: inc/field.class.php:979
 msgid "Number"
@@ -152,7 +152,7 @@ msgstr "Sayı"
 
 #: inc/statusoverride.class.php:76
 msgid "Override by status"
-msgstr ""
+msgstr "Duruma göre değiştir"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:399
 #: inc/field.class.php:607
@@ -165,7 +165,7 @@ msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
 #: inc/container.class.php:1258
 msgid "Some URL fields contains invalid links"
-msgstr "Bazı İnternet adresi alanlarında geçersiz bağlantılar var"
+msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 
 #: inc/container.class.php:1248
 msgid "Some mandatory fields are empty"
@@ -177,7 +177,7 @@ msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "Durum değişiklikleri"
 
 #: inc/container.class.php:727
 msgid "Tab"
@@ -197,7 +197,7 @@ msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
 
 #: inc/field.class.php:980
 msgid "URL"
-msgstr "İnternet Adresi"
+msgstr "Adres"
 
 #: inc/container.class.php:215
 msgid "Updating generated containers files"
@@ -234,7 +234,7 @@ msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105
 msgid "regular expression matches"
-msgstr ""
+msgstr "kurallı ifade eşleşmeleri"
 
 #: templates/fields.html.twig
 msgid "show"
