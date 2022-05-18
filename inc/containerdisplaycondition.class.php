@@ -422,6 +422,34 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         return $isValid;
     }
 
+    public function prepareInputForAdd($input)
+    {
+        // itemtype, search_option, condition, value must all be set
+        if (!isset($input['itemtype'], $input['search_option'], $input['condition'])) {
+            Session::addMessageAfterRedirect(
+                __('You must specify an item type, search option and condition.', 'fields'),
+                true,
+                ERROR
+            );
+            return false;
+        }
+
+        return parent::prepareInputForAdd($input);
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        // itemtype, search_option, condition, value must all be set
+        if (!isset($input['itemtype'], $input['search_option'], $input['condition'])) {
+            Session::addMessageAfterRedirect(
+                __('You must specify an item type, search option and condition.', 'fields'),
+                true,
+                ERROR
+            );
+            return false;
+        }
+        return parent::prepareInputForUpdate($input);
+    }
 
     public static function showForTabContainer(CommonGLPI $item, $options = []) {
 
@@ -434,9 +462,13 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         }
 
         $container_id = $item->getID();
+        $has_fields = countElementsInTable(PluginFieldsField::getTable(), [
+            'plugin_fields_containers_id' => $container_id
+        ]) > 0;
         $twig_params = [
-            'container_id' => $container_id,
-            'container_display_conditions' => self::getDisplayConditionForContainer($container_id),
+            'container_id'                  => $container_id,
+            'container_display_conditions'  => self::getDisplayConditionForContainer($container_id),
+            'has_fields'                    => $has_fields,
         ];
 
         TemplateRenderer::getInstance()->display('@fields/container_display_conditions.html.twig', $twig_params);

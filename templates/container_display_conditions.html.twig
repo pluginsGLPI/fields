@@ -36,14 +36,16 @@
       </div>
    </div>
    <div class="d-flex align-items-start mb-3">
-      <button class="btn btn-primary me-2"
-              type="button"
-              name="switch_add"
-              value="1"
-              data-container-id="{{ container_id }}">
-         <i class="far fa-plus"></i>
-         <span>{{ __('Add condition to hide block', 'fields') }}</span>
-      </button>
+      {% if has_fields %}
+         <button class="btn btn-primary me-2"
+                 type="button"
+                 name="switch_add"
+                 value="1"
+                 data-container-id="{{ container_id }}">
+            <i class="far fa-plus"></i>
+            <span>{{ __('Add condition to hide block', 'fields') }}</span>
+         </button>
+      {% endif %}
    </div>
 
    {{ fields.largeTitle(_n('Condition to hide block', 'Conditions to hide block', get_plural_number(), 'fields'), '', false) }}
