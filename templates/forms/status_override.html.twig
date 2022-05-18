@@ -39,7 +39,7 @@
                   {% set itemtype = override.fields['itemtype']|default(container_itemtypes|keys|first) %}
 
                   {{ fields.dropdownArrayField('itemtype', itemtype, container_itemtypes, __('Item type')) }}
-                  {{ fields.dropdownArrayField('plugin_fields_fields_id', itemtype, container_fields, __('Field', 'fields')) }}
+                  {{ fields.dropdownArrayField('plugin_fields_fields_id', override.fields['plugin_fields_fields_id'], container_fields, __('Field', 'fields')) }}
 
                   {% set status_field_html %}
                      <div id="status_inner_container{{ rand }}">
