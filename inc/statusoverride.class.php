@@ -348,7 +348,9 @@ class PluginFieldsStatusOverride extends CommonDBChild {
 
     public static function showForTabContainer(CommonGLPI $item, $options = []) {
         $container_id = $item->getID();
-        $has_fields = count(self::getFieldsChoiceForContainer($container_id)) > 0;
+        $has_fields = countElementsInTable(PluginFieldsField::getTable(), [
+                'plugin_fields_containers_id' => $container_id
+        ]) > 0;
         $twig_params = [
             'container_id'          => $container_id,
             'overrides'             => self::getOverridesForContainer($container_id),
