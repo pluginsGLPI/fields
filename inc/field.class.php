@@ -897,13 +897,17 @@ JAVASCRIPT
          }
 
          //get default value
-         if ($value === null && $field['default_value'] !== "") {
-            $value = $field['default_value'];
+         if  ($value === null) {
+            if ($field['type'] === 'dropdown' && $field['default_value'] === '') {
+                $value = 0;
+            } else if ($field['default_value'] !== "") {
+                $value = $field['default_value'];
 
-            // shortcut for date/datetime
-            if (in_array($field['type'], ['date', 'datetime'])
-                  && $value == 'now') {
-               $value = $_SESSION["glpi_currenttime"];
+                // shortcut for date/datetime
+                if (in_array($field['type'], ['date', 'datetime'])
+                   && $value == 'now') {
+                   $value = $_SESSION["glpi_currenttime"];
+                }
             }
          }
 
