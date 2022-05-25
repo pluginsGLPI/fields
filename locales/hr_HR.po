@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -71,15 +71,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "Padajući popis"
 
@@ -109,11 +109,11 @@ msgstr "Ispravi imena spremnika"
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "Zaglavlje"
 
@@ -149,7 +149,7 @@ msgstr "Nema polja za ovaj blok"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "Broj"
 
@@ -186,11 +186,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
@@ -198,7 +198,7 @@ msgstr "Tekst (jednoredni)"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "URL"
 
@@ -210,7 +210,7 @@ msgstr "Aktualiziranje generiranih datoteka spremnika"
 msgid "Updating generated dropdown files"
 msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "Da/Ne"
 
@@ -233,6 +233,11 @@ msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac�
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

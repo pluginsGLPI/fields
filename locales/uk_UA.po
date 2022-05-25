@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2020\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/uk_UA/)\n"
@@ -70,15 +70,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "Дата і час"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "Випадаючий список"
 
@@ -108,11 +108,11 @@ msgstr "Виправити назви контейнерів"
 msgid "Fix fields names"
 msgstr "Виправити назви полів"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "Заголовок"
 
@@ -148,7 +148,7 @@ msgstr "Для цього блоку ще немає полів"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "Число"
 
@@ -185,11 +185,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Закладка"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "Текст (декілька ліній)"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "Текст (в одну лінію)"
 
@@ -197,7 +197,7 @@ msgstr "Текст (в одну лінію)"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Плугін не можна видалити коли він вимкнений"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "URL"
 
@@ -209,7 +209,7 @@ msgstr "Оновлення згенерованих файлів контейн�
 msgid "Updating generated dropdown files"
 msgstr "Оновлюю згенеровані файли випадаючих списків"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "Так/Ні"
 
@@ -232,6 +232,11 @@ msgstr "Не можна до одного об'єкту додати декіл�
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Не можна до одного об'єкту додати декілька блоків з однаковою назвою"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

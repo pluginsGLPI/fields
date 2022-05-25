@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Nikolai Petrov <techobsl@yandex.ru>, 2017\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -74,15 +74,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Название контейнера слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "Дата и время"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "Выпадающий список"
 
@@ -112,11 +112,11 @@ msgstr "Исправить названия контейнеров"
 msgid "Fix fields names"
 msgstr "Исправить названия полей"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "Заголовок"
 
@@ -152,7 +152,7 @@ msgstr "Нет поля для этого блока"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "Номер"
 
@@ -189,11 +189,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Вкладка"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "Текст (многострочный)"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "Тест (одна строка)"
 
@@ -201,7 +201,7 @@ msgstr "Тест (одна строка)"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Плагин не может быть удален пока плагин выключен"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "URL"
 
@@ -213,7 +213,7 @@ msgstr "Обновление созданных файлов контейнер�
 msgid "Updating generated dropdown files"
 msgstr "Обновление автоматически раскрывающегося списка файлов"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "Да/Нет"
 
@@ -236,6 +236,11 @@ msgstr "Вы не можете добавить несколько блоков 
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Вы не можете добавить несколько блоков с одинаковыми названиями на один и тот же объект"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

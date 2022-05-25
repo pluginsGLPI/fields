@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Diego Giacani <diego.giacani@gmail.com>, 2020\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/it_IT/)\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it_IT\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: inc/field.class.php:383
 msgid "Add a new field"
@@ -53,6 +53,7 @@ msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: inc/field.class.php:561
 msgid "Configure"
@@ -68,15 +69,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "Data & ora"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "A tendina"
 
@@ -106,11 +107,11 @@ msgstr "Ripara i nomi dei contenitori"
 msgid "Fix fields names"
 msgstr "Ripara i nomi dei campi"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "Intestazione"
 
@@ -146,7 +147,7 @@ msgstr "Nessun campo per questo blocco"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "Numero"
 
@@ -183,11 +184,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Scheda"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "Testo (righe multiple)"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "Testo (riga singola)"
 
@@ -195,7 +196,7 @@ msgstr "Testo (riga singola)"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Il plugin non può essere disinstallato quando è disabilitato"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "URL"
 
@@ -207,7 +208,7 @@ msgstr "Aggiornamento dei file dei contenitori generati"
 msgid "Updating generated dropdown files"
 msgstr "Aggiornamento dei file a tendina generati"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "Sì/No"
 
@@ -230,6 +231,11 @@ msgstr "Non è possibile aggiungere più blocchi con il tipo 'Inserimento nel mo
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Non è possibile aggiungere più blocchi con lo stesso nome sullo stesso oggetto"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

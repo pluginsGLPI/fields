@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2022\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -68,15 +68,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Kapsayıcı adı veritabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "Tarih ve saat"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "Açılan kutu"
 
@@ -106,11 +106,11 @@ msgstr "Kapsayıcı adlarını düzelt"
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr "GLPI ögesi"
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "Üst bilgi"
 
@@ -146,7 +146,7 @@ msgstr "Bu blokta henüz bir alan yok"
 msgid "No item found"
 msgstr "Herhangi bir öge bulunamadı"
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "Sayı"
 
@@ -183,11 +183,11 @@ msgstr "Durum değişiklikleri"
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "Metin (birden çok satır)"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "Metin (tek satır)"
 
@@ -195,7 +195,7 @@ msgstr "Metin (tek satır)"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Bu uygulama eki devre dışı iken kaldırılamaz"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "Adres"
 
@@ -207,7 +207,7 @@ msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 msgid "Updating generated dropdown files"
 msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
@@ -230,6 +230,11 @@ msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

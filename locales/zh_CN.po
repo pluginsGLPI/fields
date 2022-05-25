@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -67,15 +67,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "日期"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "时间&日期"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "拖动"
 
@@ -105,11 +105,11 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "头部"
 
@@ -145,7 +145,7 @@ msgstr "此区域无字段"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "整数"
 
@@ -182,11 +182,11 @@ msgstr ""
 msgid "Tab"
 msgstr "标签"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "文本（多行）"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "文本（单行）"
 
@@ -194,7 +194,7 @@ msgstr "文本（单行）"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "插件处于禁用状态时无法卸载"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "网址"
 
@@ -206,7 +206,7 @@ msgstr "刷新生成容器文件"
 msgid "Updating generated dropdown files"
 msgstr "更新生成下拉文件"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "是/否"
 
@@ -229,6 +229,11 @@ msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的�
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "不能在同一对象上添加名称相同的多个块"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

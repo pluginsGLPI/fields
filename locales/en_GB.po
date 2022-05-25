@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 13:20+0000\n"
+"POT-Creation-Date: 2022-05-25 09:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Automatically generated, 2021-2022\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_GB/)\n"
@@ -68,15 +68,15 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Container name is too long for database (digits in name are replaced by characters, try to remove them)"
 
-#: inc/field.class.php:983
+#: inc/field.class.php:987
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:984
+#: inc/field.class.php:988
 msgid "Date & time"
 msgstr "Date & time"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:985
 msgid "Dropdown"
 msgstr "Dropdown"
 
@@ -106,11 +106,11 @@ msgstr "Fix container names"
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:989
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:976
+#: inc/field.class.php:980
 msgid "Header"
 msgstr "Header"
 
@@ -146,7 +146,7 @@ msgstr "No field for this block"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:979
+#: inc/field.class.php:983
 msgid "Number"
 msgstr "Number"
 
@@ -183,11 +183,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:978
+#: inc/field.class.php:982
 msgid "Text (multiples lines)"
 msgstr "Text (multiples lines)"
 
-#: inc/field.class.php:977
+#: inc/field.class.php:981
 msgid "Text (single line)"
 msgstr "Text (single line)"
 
@@ -195,7 +195,7 @@ msgstr "Text (single line)"
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "The plugin can't be uninstalled when the plugin is disabled"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:984
 msgid "URL"
 msgstr "URL"
 
@@ -207,7 +207,7 @@ msgstr "Updating generated containers files"
 msgid "Updating generated dropdown files"
 msgstr "Updating generated dropdown files"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:986
 msgid "Yes/No"
 msgstr "Yes/No"
 
@@ -230,6 +230,11 @@ msgstr "You cannot add several blocks with type 'Insertion in the form' on same 
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "You cannot add several blocs with identical name on same object"
+
+#: inc/containerdisplaycondition.class.php:430
+#: inc/containerdisplaycondition.class.php:445
+msgid "You must specify an item type, search option and condition."
+msgstr ""
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105
