@@ -1025,6 +1025,11 @@ HTML;
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
+        if ($withtemplate) {
+            //Do not display tab from template or from item created from template
+            return [];
+        }
+
         //retrieve container for current tab
         $container = new self();
         $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
