@@ -198,18 +198,27 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public static function getOverridesForItem(int $container_id, CommonDBTM $item): array
     {
-        $status_itemtypes = self::getStatusItemtypes();
-        if (!in_array($item->getType(), $status_itemtypes)) {
+        if (!in_array($item::getType(), self::getStatusItemtypes(), true)) {
             return [];
         }
+
         $status_field_name = self::getStatusFieldName($item->getType());
         $status = $item->fields[$status_field_name];
+        return $status !== null
+           ? self::getOverridesForItemtypeAndStatus($container_id, $item->getType(), $status)
+           : [];
+    }
+
+    public static function getOverridesForItemtypeAndStatus(int $container_id, string $itemtype, int $status): array
+    {
+        if (!in_array($itemtype, self::getStatusItemtypes(), true)) {
+            return [];
+        }
+
         $overrides = self::getOverridesForContainer($container_id);
-        $itemtype = $item->getType();
-        $overrides = array_filter($overrides, static function ($override) use ($itemtype, $status) {
-            return $override['itemtype'] === $itemtype && in_array($status, $override['states']);
+        return array_filter($overrides, static function ($override) use ($itemtype, $status) {
+            return $override['itemtype'] === $itemtype && in_array($status, $override['states'], false);
         });
-        return $overrides;
     }
 
     private static function getItemtypesForContainer(int $container_id): array
