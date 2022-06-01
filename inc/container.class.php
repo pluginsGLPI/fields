@@ -1229,14 +1229,16 @@ HTML;
             'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
         ]);
 
-        // Apply status overrides
-        $status_overrides = $data['status'] !== null
-            ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data['status'])
-            : [];
-        foreach ($status_overrides as $status_override) {
-            if (isset($fields[$status_override['plugin_fields_fields_id']])) {
-                $fields[$status_override['plugin_fields_fields_id']]['is_readonly'] = $status_override['is_readonly'];
-                $fields[$status_override['plugin_fields_fields_id']]['mandatory'] = $status_override['mandatory'];
+        if (isset($data['items_id'])) { // $data['items_id'] is defined only on update
+            // Apply status overrides
+            $status_overrides = $data['status'] !== null
+                ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data['status'])
+                : [];
+            foreach ($status_overrides as $status_override) {
+                if (isset($fields[$status_override['plugin_fields_fields_id']])) {
+                    $fields[$status_override['plugin_fields_fields_id']]['is_readonly'] = $status_override['is_readonly'];
+                    $fields[$status_override['plugin_fields_fields_id']]['mandatory'] = $status_override['mandatory'];
+                }
             }
         }
 
