@@ -221,7 +221,7 @@ class PluginFieldsField extends CommonDBChild {
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
          foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
             $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
-            $classname::removeField($this->fields['type'], $this->fields['name']);
+            $classname::removeField($this->fields['name'], $this->fields['type']);
          }
       }
 
