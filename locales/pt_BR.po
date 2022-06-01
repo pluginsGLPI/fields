@@ -6,8 +6,8 @@
 # Aleson Santos <aleson.s.santos@hotmail.com>, 2019
 # Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
 # Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
-# Arthur Ramos Schaefer <arthur.r.schaefer@gmail.com>, 2017
-# Arthur Ramos Schaefer <arthur.r.schaefer@gmail.com>, 2017
+# Arthur Schaefer <arthur.r.schaefer@gmail.com>, 2017
+# Arthur Schaefer <arthur.r.schaefer@gmail.com>, 2017
 # Gilson Gondim <gilsongondim@gmail.com>, 2017
 msgid ""
 msgstr ""

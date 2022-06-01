@@ -234,7 +234,7 @@ msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 #: inc/containerdisplaycondition.class.php:430
 #: inc/containerdisplaycondition.class.php:445
 msgid "You must specify an item type, search option and condition."
-msgstr ""
+msgstr "Bir öge türü, arama seçeneği ve koşulu belirtmelisiniz."
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105

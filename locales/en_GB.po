@@ -1,21 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# English translations for PACKAGE package.
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
-# Translators:
-# Automatically generated, 2021-2022
+# Automatically generated, 2022.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Plugin - Fields\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-25 09:47+0000\n"
-"PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Automatically generated, 2021-2022\n"
-"Language-Team: English (United Kingdom) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_GB/)\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-06-01 14:10+0000\n"
+"PO-Revision-Date: 2022-06-01 14:10+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
 "Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: inc/field.class.php:383
@@ -24,11 +23,11 @@ msgstr "Add a new field"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Add condition to hide block"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Add new status override"
 
 #: inc/container.class.php:861
 msgid "Add tab"
@@ -41,7 +40,7 @@ msgstr "Additionnal fields"
 
 #: inc/field.class.php:546
 msgid "Allowed values"
-msgstr ""
+msgstr "Allowed values"
 
 #: inc/container.class.php:633
 msgid "Block"
@@ -51,8 +50,8 @@ msgstr "Block"
 #: inc/containerdisplaycondition.class.php:119
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Condition to hide block"
+msgstr[1] "Conditions to hide block"
 
 #: inc/field.class.php:561
 msgid "Configure"
@@ -66,7 +65,9 @@ msgstr "Configure fields values"
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "Container name is too long for database (digits in name are replaced by characters, try to remove them)"
+msgstr ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
 
 #: inc/field.class.php:987
 msgid "Date"
@@ -92,7 +93,9 @@ msgstr "Field"
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "Field name is too long for database (digits in name are replaced by characters, try to remove them)"
+msgstr ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
 
 #: inc/field.class.php:329
 msgid "Fields"
@@ -108,7 +111,7 @@ msgstr "Fix fields names"
 
 #: inc/field.class.php:989
 msgid "GLPI item"
-msgstr ""
+msgstr "GLPI item"
 
 #: inc/field.class.php:980
 msgid "Header"
@@ -144,7 +147,7 @@ msgstr "No field for this block"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr ""
+msgstr "No item found"
 
 #: inc/field.class.php:983
 msgid "Number"
@@ -152,7 +155,7 @@ msgstr "Number"
 
 #: inc/statusoverride.class.php:76
 msgid "Override by status"
-msgstr ""
+msgstr "Override by status"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:399
 #: inc/field.class.php:607
@@ -177,7 +180,7 @@ msgstr "Some numeric fields contains non numeric values"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "Status overrides"
 
 #: inc/container.class.php:727
 msgid "Tab"
@@ -217,15 +220,19 @@ msgstr "You cannot add block without associated element type"
 
 #: inc/container.class.php:448
 msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab"
+"You cannot add several blocks with type 'Insertion in the form of a specific "
+"tab' on same object tab"
+msgstr ""
+"You cannot add several blocks with type 'Insertion in the form of a specific "
+"tab' on same object tab"
 
 #: inc/container.class.php:433
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "You cannot add several blocks with type 'Insertion in the form' on same object"
+msgstr ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
 
 #: inc/container.class.php:478
 msgid "You cannot add several blocs with identical name on same object"
@@ -234,12 +241,12 @@ msgstr "You cannot add several blocs with identical name on same object"
 #: inc/containerdisplaycondition.class.php:430
 #: inc/containerdisplaycondition.class.php:445
 msgid "You must specify an item type, search option and condition."
-msgstr ""
+msgstr "You must specify an item type, search option and condition."
 
 #: inc/containerdisplaycondition.class.php:85
 #: inc/containerdisplaycondition.class.php:105
 msgid "regular expression matches"
-msgstr ""
+msgstr "regular expression matches"
 
 #: templates/fields.html.twig
 msgid "show"
