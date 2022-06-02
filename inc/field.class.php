@@ -171,10 +171,6 @@ class PluginFieldsField extends CommonDBChild {
             );
             return false;
          }
-
-         $oldname = $input['name'];
-         $input['name'] = getForeignKeyFieldForItemType(
-            PluginFieldsDropdown::getClassname($input['name']));
       }
 
       // Before adding, add the ranking of the new field
@@ -192,10 +188,6 @@ class PluginFieldsField extends CommonDBChild {
          }
       }
 
-      if (isset($oldname)) {
-         $input['name'] = $oldname;
-      }
-
       if (isset($input['allowed_values'])) {
          $input['allowed_values'] = Sanitizer::dbEscape(json_encode($input['allowed_values']));
       }
@@ -210,12 +202,6 @@ class PluginFieldsField extends CommonDBChild {
       if ($this->fields['type'] !== "header"
           && !isset($_SESSION['uninstall_fields'])
           && !isset($_SESSION['delete_container'])) {
-
-         if ($this->fields['type'] === "dropdown") {
-            $oldname = $this->fields['name'];
-            $this->fields['name'] = getForeignKeyFieldForItemType(
-               PluginFieldsDropdown::getClassname($this->fields['name']));
-         }
 
          $container_obj = new PluginFieldsContainer;
          $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
@@ -232,10 +218,6 @@ class PluginFieldsField extends CommonDBChild {
          'itemtype' => self::getType(),
          'items_id' => $this->fields['id']
       ]);
-
-      if (isset($oldname)) {
-         $this->fields['name'] = $oldname;
-      }
 
       if ($this->fields['type'] === "dropdown") {
          return PluginFieldsDropdown::destroy($this->fields['name']);
