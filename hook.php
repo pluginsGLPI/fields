@@ -57,7 +57,6 @@ function plugin_fields_install() {
       'PluginFieldsContainer_Field',
       'PluginFieldsValue',
       'PluginFieldsProfile',
-      'PluginFieldsMigration',
       'PluginFieldsStatusOverride',
       'PluginFieldsContainerDisplayCondition',
    ];
@@ -134,7 +133,6 @@ function plugin_fields_uninstall() {
       'PluginFieldsField',
       'PluginFieldsValue',
       'PluginFieldsProfile',
-      'PluginFieldsMigration',
       'PluginFieldsContainerDisplayCondition'
    ];
 

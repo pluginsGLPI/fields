@@ -30,51 +30,8 @@
 
 class PluginFieldsMigration extends Migration {
 
-   function __construct($ver = "") {
-      parent::__construct($ver);
-   }
-
-   static function install(Migration $migration, $version) {
-      global $DB;
-
-      $fields_migration = new self;
-
-      if ($DB->tableExists("glpi_plugin_customfields_fields")) {
-         if (!$fields_migration->updateFromCustomfields()) {
-            return false;
-         }
-      }
-
-      return true;
-   }
-
-   static function uninstall() {
-      return true;
-   }
-
-   function updateFromCustomfields($glpi_version = "0.80") {
-      //TODO : REWRITE customfield update
-      return true;
-   }
-
    function displayMessage($msg) {
       Session::addMessageAfterRedirect($msg);
-   }
-
-   function migrateCustomfieldTypes($old_type) {
-      $types = [
-         'sectionhead' => 'header',
-         'general'     => 'text',
-         'money'       => 'text',
-         'note'        => 'textarea',
-         'text'        => 'textarea',
-         'number'      => 'number',
-         'dropdown'    => 'dropdown',
-         'yesno'       => 'yesno',
-         'date'        => 'date'
-      ];
-
-      return $types[$old_type];
    }
 
    /**
