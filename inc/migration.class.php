@@ -81,4 +81,124 @@ class PluginFieldsMigration extends Migration
 
         return $fields;
     }
+
+    /**
+     * An issue affected field removal in 1.15.0, 1.15.1 and 1.15.2.
+     * Using these versions, removing a field from a container would drop the
+     * field from glpi_plugin_fields_fields but not from the custom container
+     * table
+     *
+     * This function find looks into containers tables for these fields that
+     * should have been removed and list them (dry_run = true) or delete them
+     * (dry_run = false)
+     *
+     * @param bool $dry_run
+     *
+     * @return array
+     */
+    public static function fixDroppedFields(bool $dry_run = true): array
+    {
+        /** @var DBMysql $DB */
+        global $DB;
+
+        // Keep track of dropped fields
+        $dropped = [];
+
+        // For each existing container
+        foreach ((new PluginFieldsContainer())->find([]) as $row) {
+            // Get expected fields
+            $valid_fields = self::getValidFieldsForContainer($row['id']);
+
+            // Read itemtypes and container name
+            $itemtypes = importArrayFromDB($row['itemtypes']);
+            $name = $row['name'];
+
+            // One table to handle per itemtype
+            foreach ($itemtypes as $itemtype) {
+                // Build table name
+                $table = getTableForItemType("PluginFields{$itemtype}{$name}");
+
+                if (!$DB->tableExists($table)) {
+                    // Missing table; skip (abnormal)
+                    continue;
+                }
+
+                // Get the actual fields defined in the container table
+                $found_fields = self::getCustomFieldsInContainerTable($table);
+
+                // Compute which fields should be removed
+                $fields_to_drop = array_diff($found_fields, $valid_fields);
+
+                // Drop fields
+                $migration = new PluginFieldsMigration(0);
+
+                foreach ($fields_to_drop as $field) {
+                    $dropped[] = "$table.$field";
+                    $migration->dropField($table, $field);
+                }
+
+                if (!$dry_run) {
+                    $migration->migrationOneTable($table);
+                }
+            }
+        }
+
+        return $dropped;
+    }
+
+    /**
+     * Get all fields defined for a container in glpi_plugin_fields_fields
+     *
+     * @param int $container_id Id of the container
+     *
+     * @return array
+     */
+    private static function getValidFieldsForContainer(int $container_id): array
+    {
+        // Keep track of fields found
+        $valid_fields = [];
+
+        // For each defined fields in the given container
+        foreach (
+            (new PluginFieldsField())->find([
+                'plugin_fields_containers_id' => $container_id
+            ]) as $row
+        ) {
+            $fields = self::getSQLFields($row['name'], $row['type']);
+            array_push($valid_fields, ...array_keys($fields));
+        }
+
+        return $valid_fields;
+    }
+
+    /**
+     * Get custom fields in a given container table
+     * This means all fields found in the table expect those defined in
+     * $basic_fields
+     *
+     * @param string $table
+     *
+     * @return array
+     */
+    private static function getCustomFieldsInContainerTable(
+        string $table
+    ): array {
+        /** @var DBMysql $DB */
+        global $DB;
+
+        // Read table fields
+        $fields = $DB->listFields($table);
+
+        // Reduce to fields name only
+        $fields = array_column($fields, "Field");
+
+        // Remove basic fields
+        $basic_fields = [
+            'id',
+            'items_id',
+            'itemtype',
+            'plugin_fields_containers_id',
+        ];
+        return array_filter($fields, fn($f) => !in_array($f, $basic_fields));
+    }
 }
