@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-include ("../../../inc/includes.php");
+include("../../../inc/includes.php");
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_status_dropdown') {

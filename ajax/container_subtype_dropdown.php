@@ -28,6 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-include ("../../../inc/includes.php");
+include("../../../inc/includes.php");
 
 PluginFieldsContainer::showFormSubtype($_REQUEST, true);

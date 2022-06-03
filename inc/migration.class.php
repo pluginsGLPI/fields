@@ -28,56 +28,57 @@
  * -------------------------------------------------------------------------
  */
 
-class PluginFieldsMigration extends Migration {
+class PluginFieldsMigration extends Migration
+{
+    public function displayMessage($msg)
+    {
+        Session::addMessageAfterRedirect($msg);
+    }
 
-   function displayMessage($msg) {
-      Session::addMessageAfterRedirect($msg);
-   }
+    /**
+     * Return SQL fields corresponding to given additionnal field.
+     *
+     * @param string $field_name
+     * @param string $field_type
+     *
+     * @return array
+     */
+    public static function getSQLFields(string $field_name, string $field_type): array
+    {
+        $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
-   /**
-    * Return SQL fields corresponding to given additionnal field.
-    *
-    * @param string $field_name
-    * @param string $field_type
-    *
-    * @return array
-    */
-   public static function getSQLFields(string $field_name, string $field_type): array {
+        $fields = [];
+        switch (true) {
+            case $field_type === 'header':
+                // header type is for read-only display purpose only and has no SQL field
+                break;
+            case $field_type === 'dropdown':
+            case preg_match('/^dropdown-.+/i', $field_type):
+                if ($field_type === 'dropdown') {
+                    $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
+                }
+                $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
+                break;
+            case $field_type === 'textarea':
+            case $field_type === 'url':
+                $fields[$field_name] = 'TEXT DEFAULT NULL';
+                break;
+            case $field_type === 'yesno':
+                $fields[$field_name] = 'INT NOT NULL DEFAULT 0';
+                break;
+            case $field_type === 'glpi_item':
+                $fields[sprintf('itemtype_%s', $field_name)] = 'varchar(100) NOT NULL';
+                $fields[sprintf('items_id_%s', $field_name)] = "int {$default_key_sign} NOT NULL DEFAULT 0";
+                break;
+            case $field_type === 'date':
+            case $field_type === 'datetime':
+            case $field_type === 'number':
+            case $field_type === 'text':
+            default:
+                $fields[$field_name] = 'VARCHAR(255) DEFAULT NULL';
+                break;
+        }
 
-      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
-
-      $fields = [];
-      switch (true) {
-         case $field_type === 'header':
-            // header type is for read-only display purpose only and has no SQL field
-            break;
-         case $field_type === 'dropdown':
-         case preg_match('/^dropdown-.+/i', $field_type):
-            if ($field_type === 'dropdown') {
-               $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
-            }
-            $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
-            break;
-         case $field_type === 'textarea':
-         case $field_type === 'url':
-            $fields[$field_name] = 'TEXT DEFAULT NULL';
-            break;
-         case $field_type === 'yesno':
-            $fields[$field_name] = 'INT NOT NULL DEFAULT 0';
-            break;
-         case $field_type === 'glpi_item':
-            $fields[sprintf('itemtype_%s', $field_name)] = 'varchar(100) NOT NULL';
-            $fields[sprintf('items_id_%s', $field_name)] = "int {$default_key_sign} NOT NULL DEFAULT 0";
-            break;
-         case $field_type === 'date':
-         case $field_type === 'datetime':
-         case $field_type === 'number':
-         case $field_type === 'text':
-         default:
-            $fields[$field_name] = 'VARCHAR(255) DEFAULT NULL';
-            break;
-      }
-
-      return $fields;
-   }
+        return $fields;
+    }
 }

@@ -28,27 +28,29 @@
  * -------------------------------------------------------------------------
  */
 
-class PluginFieldsProfile extends CommonDBRelation {
-   use Glpi\Features\Clonable;
+class PluginFieldsProfile extends CommonDBRelation
+{
+    use Glpi\Features\Clonable;
 
-   public static $itemtype_1 = PluginFieldsContainer::class;
-   public static $items_id_1 = 'plugin_fields_containers_id';
-   public static $itemtype_2 = Profile::class;
-   public static $items_id_2 = 'profiles_id';
+    public static $itemtype_1 = PluginFieldsContainer::class;
+    public static $items_id_1 = 'plugin_fields_containers_id';
+    public static $itemtype_2 = Profile::class;
+    public static $items_id_2 = 'profiles_id';
 
-   static function install(Migration $migration) {
-      global $DB;
+    public static function install(Migration $migration)
+    {
+        global $DB;
 
-      $default_charset = DBConnection::getDefaultCharset();
-      $default_collation = DBConnection::getDefaultCollation();
-      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+        $default_charset = DBConnection::getDefaultCharset();
+        $default_collation = DBConnection::getDefaultCollation();
+        $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
-      $table = self::getTable();
+        $table = self::getTable();
 
-      if (!$DB->tableExists($table)) {
-         $migration->displayMessage(sprintf(__("Installing %s"), $table));
+        if (!$DB->tableExists($table)) {
+            $migration->displayMessage(sprintf(__("Installing %s"), $table));
 
-         $query = "CREATE TABLE IF NOT EXISTS `$table` (
+            $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT {$default_key_sign} NOT NULL auto_increment,
                   `profiles_id`                       INT {$default_key_sign} NOT NULL DEFAULT '0',
                   `plugin_fields_containers_id`       INT {$default_key_sign} NOT NULL DEFAULT '0',
@@ -57,128 +59,133 @@ class PluginFieldsProfile extends CommonDBRelation {
                   KEY `profiles_id`                   (`profiles_id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query) or die ($DB->error());
-      }
+            $DB->query($query) or die($DB->error());
+        }
 
-      return true;
-   }
+        return true;
+    }
 
+    public static function uninstall()
+    {
+        global $DB;
 
-   static function uninstall() {
-      global $DB;
+        $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
 
-      $DB->query("DROP TABLE IF EXISTS `".self::getTable()."`");
-
-      return true;
-   }
-
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      return self::createTabEntry(_n("Profile", "Profiles", 2));
-   }
+        return true;
+    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      $profile = new Profile;
-      $found_profiles = $profile->find();
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        return self::createTabEntry(_n("Profile", "Profiles", 2));
+    }
 
-      $fields_profile = new self;
-      echo "<form name='form' method='post' action='".$fields_profile->getFormURL()."'>";
-      echo "<div class='spaced' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe'>";
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        $profile = new Profile();
+        $found_profiles = $profile->find();
 
-      echo "<tr><th colspan='2'>" . _n("Profile", "Profiles", 2) ."</th></tr>";
-      foreach ($found_profiles as $profile_item) {
-         //get right for current profile
-         $found = $fields_profile->find(['profiles_id' => $profile_item['id'],
-                                         'plugin_fields_containers_id' => $item->fields['id']]);
-         $first_found = array_shift($found);
+        $fields_profile = new self();
+        echo "<form name='form' method='post' action='" . $fields_profile->getFormURL() . "'>";
+        echo "<div class='spaced' id='tabsbody'>";
+        echo "<table class='tab_cadre_fixe'>";
 
-         //display right
-         echo "<tr>";
-         echo "<td>".$profile_item['name']."</td>";
-         echo "<td>";
-         Profile::dropdownRight("rights[".$profile_item['id']."]",
-                                ['value' => $first_found['right']]);
-         echo "</td>";
-         echo "<tr>";
-      }
-      echo "<ul>";
-      echo "<tr><td class='tab_bg_2 center' colspan='2'>";
-      echo "<input type='hidden' name='plugin_fields_containers_id' value='".
-            $item->fields['id']."' />";
-      echo "<input type='submit' name='update' value=\""._sx("button", "Save")."\" class='submit'>";
-      echo "</td>";
-      echo "</tr>";
-      echo "</table></div>";
-      Html::closeForm();
-   }
-
-
-
-   static function updateProfile($input) {
-      $fields_profile = new self;
-      foreach ($input['rights'] as $profiles_id => $right) {
-         $found = $fields_profile->find(
-            [
-               'profiles_id' => $profiles_id,
-               'plugin_fields_containers_id' => $input['plugin_fields_containers_id']
-            ]
-         );
-         if (count( $found ) > 0) {
+        echo "<tr><th colspan='2'>" . _n("Profile", "Profiles", 2) . "</th></tr>";
+        foreach ($found_profiles as $profile_item) {
+            //get right for current profile
+            $found = $fields_profile->find([
+                'profiles_id' => $profile_item['id'],
+                'plugin_fields_containers_id' => $item->fields['id']
+            ]);
             $first_found = array_shift($found);
 
-            $fields_profile->update([
-               'id'                          => $first_found['id'],
-               'profiles_id'                 => $profiles_id,
-               'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
-               'right'                       => $right
-            ]);
-         } else {
+            //display right
+            echo "<tr>";
+            echo "<td>" . $profile_item['name'] . "</td>";
+            echo "<td>";
+            Profile::dropdownRight(
+                "rights[" . $profile_item['id'] . "]",
+                ['value' => $first_found['right']]
+            );
+            echo "</td>";
+            echo "<tr>";
+        }
+        echo "<ul>";
+        echo "<tr><td class='tab_bg_2 center' colspan='2'>";
+        echo "<input type='hidden' name='plugin_fields_containers_id' value='" . $item->fields['id'] . "' />";
+        echo "<input type='submit' name='update' value=\"" . _sx("button", "Save") . "\" class='submit'>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table></div>";
+        Html::closeForm();
+    }
+
+    public static function updateProfile($input)
+    {
+        $fields_profile = new self();
+        foreach ($input['rights'] as $profiles_id => $right) {
+            $found = $fields_profile->find(
+                [
+                    'profiles_id' => $profiles_id,
+                    'plugin_fields_containers_id' => $input['plugin_fields_containers_id']
+                ]
+            );
+            if (count($found) > 0) {
+                 $first_found = array_shift($found);
+
+                 $fields_profile->update([
+                     'id'                          => $first_found['id'],
+                     'profiles_id'                 => $profiles_id,
+                     'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+                     'right'                       => $right
+                 ]);
+            } else {
+                $fields_profile->add([
+                    'profiles_id'                 => $profiles_id,
+                    'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+                    'right'                       => $right
+                ]);
+            }
+        }
+
+        return true;
+    }
+
+    public static function createForContainer(PluginFieldsContainer $container)
+    {
+        $profile = new Profile();
+        $found_profiles = $profile->find();
+
+        $fields_profile = new self();
+        foreach ($found_profiles as $profile_item) {
             $fields_profile->add([
-               'profiles_id'                 => $profiles_id,
-               'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
-               'right'                       => $right
+                'profiles_id'                 => $profile_item['id'],
+                'plugin_fields_containers_id' => $container->fields['id'],
+                'right'                       => CREATE
             ]);
-         }
-      }
+        }
+        return true;
+    }
 
-      return true;
-   }
+    public static function addNewProfile(Profile $profile)
+    {
+        $containers = new PluginFieldsContainer();
+        $found_containers = $containers->find();
 
+        $fields_profile = new self();
+        foreach ($found_containers as $container) {
+            $fields_profile->add([
+                'profiles_id'                 => $profile->fields['id'],
+                'plugin_fields_containers_id' => $container['id']
+            ]);
+        }
+        return true;
+    }
 
-   static function createForContainer(PluginFieldsContainer $container) {
-      $profile = new Profile;
-      $found_profiles = $profile->find();
-
-      $fields_profile = new self;
-      foreach ($found_profiles as $profile_item) {
-         $fields_profile->add([
-            'profiles_id'                 => $profile_item['id'],
-            'plugin_fields_containers_id' => $container->fields['id'],
-            'right'                       => CREATE
-         ]);
-      }
-      return true;
-   }
-
-   static function addNewProfile(Profile $profile) {
-      $containers = new PluginFieldsContainer;
-      $found_containers = $containers->find();
-
-      $fields_profile = new self;
-      foreach ($found_containers as $container) {
-         $fields_profile->add([
-            'profiles_id'                 => $profile->fields['id'],
-            'plugin_fields_containers_id' => $container['id']
-         ]);
-      }
-      return true;
-   }
-
-   static function deleteProfile(Profile $profile) {
-      $fields_profile = new self;
-      $fields_profile->deleteByCriteria(['profiles_id' => $profile->fields['id']]);
-      return true;
-   }
+    public static function deleteProfile(Profile $profile)
+    {
+        $fields_profile = new self();
+        $fields_profile->deleteByCriteria(['profiles_id' => $profile->fields['id']]);
+        return true;
+    }
 }
