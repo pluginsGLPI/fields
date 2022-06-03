@@ -37,7 +37,7 @@ class PluginFieldsInventory extends CommonDBTM {
          && isset($params['inventory_data']) && !empty($params['inventory_data'])) {
 
          $availaibleItemType = ["Computer","Printer","NetworkEquipment"];
-         foreach ($params['inventory_data'] as $itemtype => $inventories) {
+         foreach (array_keys($params['inventory_data']) as $itemtype) {
 
             if (in_array($itemtype, $availaibleItemType)) {
                //retrive items id switch itemtype

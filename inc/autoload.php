@@ -52,6 +52,7 @@ class PluginFieldsAutoloader
    }
 
    public function processClassname($classname) {
+      $matches = [];
       preg_match("/Plugin([A-Z][a-z0-9]+)([A-Z]\w+)/", $classname, $matches);
 
       if (count($matches) < 3) {

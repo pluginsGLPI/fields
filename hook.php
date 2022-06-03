@@ -108,7 +108,6 @@ function plugin_fields_install() {
  * @return boolean
  */
 function plugin_fields_uninstall() {
-   global $DB;
 
    if (!class_exists('PluginFieldsProfile')) {
       Session::addMessageAfterRedirect(__("The plugin can't be uninstalled when the plugin is disabled", 'fields'),
@@ -219,8 +218,8 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = []) {
  *
  * Actions for rules
  * @since 0.84
- * @param $params input data
- * @return an array of actions
+ * @param array $params input data
+ * @return array    an array of actions
  */
 function plugin_fields_getRuleActions($params = []) {
    $actions = [];
@@ -228,7 +227,7 @@ function plugin_fields_getRuleActions($params = []) {
    switch ($params['rule_itemtype']) {
       case "PluginFusioninventoryTaskpostactionRule":
          $options = PluginFieldsContainer::getAddSearchOptions("Computer");
-         foreach ($options as $num => $option) {
+         foreach ($options as $option) {
             $actions[$option['linkfield']]['name'] = $option['name'];
             $actions[$option['linkfield']]['type'] = $option['pfields_type'];
             if ($option['pfields_type'] == 'dropdown') {
@@ -288,7 +287,6 @@ function plugin_fields_rule_matched($params = []) {
 function plugin_fields_giveItem($itemtype, $ID, $data, $num) {
    $searchopt = &Search::getOptions($itemtype);
    $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
 
    //fix glpi default Search::giveItem who for empty date display "--"
    if (strpos($table, "glpi_plugin_fields") !== false
@@ -310,7 +308,7 @@ function plugin_datainjection_populate_fields() {
 
    $container = new PluginFieldsContainer();
    $found     = $container->find(['is_active' => 1]);
-   foreach ($found as $id => $values) {
+   foreach ($found as $values) {
       $types = json_decode($values['itemtypes']);
 
       foreach ($types as $type) {

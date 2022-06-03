@@ -134,8 +134,6 @@ class PluginFieldsLabelTranslation extends CommonDBChild {
     * @return void
    **/
    static function showTranslations(CommonDBTM $item) {
-      global $DB, $CFG_GLPI;
-
       $canedit = $item->can($item->getID(), UPDATE);
       $rand    = mt_rand();
       if ($canedit) {
@@ -238,8 +236,6 @@ class PluginFieldsLabelTranslation extends CommonDBChild {
     * @return void
     */
    function showFormForItem($itemtype, $items_id, $id = -1) {
-      global $CFG_GLPI;
-
       if ($id > 0) {
          $this->check($id, READ);
       } else {

@@ -308,7 +308,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         $allowed_table = [getTableForItemType($itemtype_class), getTableForItemType(User::getType()), getTableForItemType(Group::getType())];
 
         //use relation.constant.php to allow some tables (exclude Location which is managed later)
-        foreach (getDbRelations() as $tablename => $relation) {
+        foreach (getDbRelations() as $relation) {
             foreach ($relation as $main_table => $foreignKey) {
                 if($main_table == getTableForItemType($itemtype_class)
                     && !is_array($foreignKey)

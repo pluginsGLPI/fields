@@ -253,8 +253,8 @@ class PluginFieldsContainer extends CommonDBTM {
       //uninstall container table and class
       $obj = new self;
       $containers = $obj->find();
-      foreach ($containers as $containers_id => $container) {
-         $obj->delete(['id' => $containers_id]);
+      foreach ($containers as $container) {
+         $obj->delete(['id' => $container['id']]);
       }
 
       //drop global container table
@@ -751,8 +751,6 @@ HTML;
    }
 
    static function showFormItemtype($params = []) {
-      global $CFG_GLPI;
-
       $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
 
       $rand = $params['rand'];
@@ -800,7 +798,7 @@ HTML;
                }
 
                // For delete <sup class='tab_nb'>number</sup> :
-               foreach ($tabs as $key => &$value) {
+               foreach ($tabs as &$value) {
                   $results = [];
                   if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
                      $value = str_replace($results[0][0], "", $value);
@@ -909,7 +907,7 @@ HTML;
 
          $jsonitemtypes = json_decode($item['itemtypes']);
          //show more info or not
-         foreach ($jsonitemtypes as $k => $v) {
+         foreach ($jsonitemtypes as $v) {
             if ($full) {
                //check for translation
                $item['itemtype'] = self::getType();
@@ -997,8 +995,6 @@ HTML;
     * @return boolean
     */
    function updateFieldsValues($data, $itemtype, $massiveaction = false) {
-      global $DB;
-
       if (self::validateValues($data, $itemtype, $massiveaction) === false) {
           return false;
       }
@@ -1040,7 +1036,7 @@ HTML;
     * @param  string $itemtype      item type
     * @param  array  $data          values send by update form
     * @param  array  $old_values    old values, if empty -> values add
-    * @return nothing
+    * @return void
     */
    static function constructHistory($containers_id, $items_id, $itemtype, $data,
                                     $old_values = []) {
@@ -1165,7 +1161,7 @@ HTML;
          'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
       ]);
 
-      foreach ($fields as $fields_id => $field) {
+      foreach ($fields as $field) {
          if (!$field['is_active']) {
             continue;
          }

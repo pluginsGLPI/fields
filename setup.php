@@ -315,7 +315,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null) {
                            $dropdown_obj = new $dropdown_itemtype();
                            $dropdown_datas = $dropdown_obj->find();
                            $datas = [];
-                           foreach ($dropdown_datas as $key => $value) {
+                           foreach ($dropdown_datas as $value) {
                               $items = [];
                               $items['id'] = (int)$value['id'];
                               $items['value'] = $value['name'];
