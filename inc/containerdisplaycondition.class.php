@@ -31,7 +31,8 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
 
-class PluginFieldsContainerDisplayCondition extends CommonDBChild {
+class PluginFieldsContainerDisplayCondition extends CommonDBChild
+{
     use Glpi\Features\Clonable;
 
     public static $itemtype = PluginFieldsContainer::class;
@@ -43,7 +44,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     const SHOW_CONDITION_GT     = 4;
     const SHOW_CONDITION_REGEX  = 5;
 
-    static function install(Migration $migration, $version) {
+    public static function install(Migration $migration, $version)
+    {
         global $DB;
         $default_charset = DBConnection::getDefaultCharset();
         $default_collation = DBConnection::getDefaultCollation();
@@ -63,19 +65,20 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id_itemtype`       (`plugin_fields_containers_id`, `itemtype`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query) or die ($DB->error());
+            $DB->query($query) or die($DB->error());
         }
 
         return true;
     }
 
-    public static function getEnumCondition($is_dropdown = false) : array {
+    public static function getEnumCondition($is_dropdown = false): array
+    {
 
-        if ($is_dropdown){
+        if ($is_dropdown) {
             return [
                 self::SHOW_CONDITION_EQ => '=',
                 self::SHOW_CONDITION_NE => '≠'
-                ];
+            ];
         } else {
             return [
                 self::SHOW_CONDITION_EQ => '=',
@@ -83,12 +86,12 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
                 self::SHOW_CONDITION_LT => '<',
                 self::SHOW_CONDITION_GT => '>',
                 self::SHOW_CONDITION_REGEX => __('regular expression matches', 'fields'),
-                ];
+            ];
         }
-
     }
 
-    public static function getConditionName($condition) {
+    public static function getConditionName($condition)
+    {
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:
                 echo '=';
@@ -101,6 +104,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
                 break;
             case self::SHOW_CONDITION_GT:
                 echo '>';
+                break;
             case self::SHOW_CONDITION_REGEX:
                 echo __('regular expression matches', 'fields');
                 break;
@@ -108,19 +112,22 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    static function uninstall() {
+    public static function uninstall()
+    {
         global $DB;
-        $DB->query("DROP TABLE IF EXISTS `".self::getTable()."`");
+        $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
         return true;
     }
 
 
-    static function getTypeName($nb = 0) {
+    public static function getTypeName($nb = 0)
+    {
         return _n('Condition to hide block', 'Conditions to hide block', $nb, 'fields');
     }
 
 
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
         return self::createTabEntry(
             self::getTypeName(Session::getPluralNumber()),
             countElementsInTable(self::getTable(), ['plugin_fields_containers_id' => $item->getID()])
@@ -128,7 +135,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
         if ($item instanceof PluginFieldsContainer) {
             self::showForTabContainer($item);
             return true;
@@ -137,11 +145,12 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    public static function getDisplayConditionForContainer(int $container_id): array {
+    public static function getDisplayConditionForContainer(int $container_id): array
+    {
         global $DB;
         $iterator = $DB->request([
             'SELECT' => [
-                self::getTable().'.*',
+                self::getTable() . '.*',
             ],
             'FROM'   => self::getTable(),
             'WHERE'  => [
@@ -157,7 +166,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    private static function getItemtypesForContainer(int $container_id): array {
+    private static function getItemtypesForContainer(int $container_id): array
+    {
         global $DB;
 
         $iterator = $DB->request([
@@ -180,16 +190,18 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    public static function getFieldName($so_id, $itemtype) {
+    public static function getFieldName($so_id, $itemtype)
+    {
         echo Search::getOptions($itemtype)[$so_id]['name'];
     }
 
 
-    public static function showItemtypeFieldForm($itemtype) {
+    public static function showItemtypeFieldForm($itemtype)
+    {
 
         $rand = mt_rand();
         $out = "";
-        $out .= Dropdown::showFromArray("search_option",self::removeBlackListedOption(Search::getOptions($itemtype), $itemtype),["display_emptychoice" => true, "display" => false, 'rand' => $rand]);
+        $out .= Dropdown::showFromArray("search_option", self::removeBlackListedOption(Search::getOptions($itemtype), $itemtype), ["display_emptychoice" => true, "display" => false, 'rand' => $rand]);
 
         $out .= Ajax::updateItemOnSelectEvent(
             "dropdown_search_option" . $rand,
@@ -203,11 +215,11 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         );
 
         echo $out;
-
     }
 
 
-    public static function showSearchOptionCondition($searchoption_id, $itemtype, ?string $condition = null, ?string $value = null) {
+    public static function showSearchOptionCondition($searchoption_id, $itemtype, ?string $condition = null, ?string $value = null)
+    {
         $so = Search::getOptions($itemtype)[$searchoption_id];
 
         $itemtypetable = $itemtype::getTable();
@@ -256,7 +268,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    public static function getRawValue($searchoption_id, $itemtype, $value) {
+    public static function getRawValue($searchoption_id, $itemtype, $value)
+    {
 
         $so = Search::getOptions($itemtype)[$searchoption_id];
         $itemtypetable = $itemtype::getTable();
@@ -289,7 +302,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
                     $raw_value = CommonITILValidation::getStatus($value);
                     break;
             }
-        }else{
+        } else {
             $raw_value = $value;
         }
 
@@ -297,7 +310,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    public static function removeBlackListedOption($array, $itemtype_class){
+    public static function removeBlackListedOption($array, $itemtype_class)
+    {
 
         $itemtype_object = new $itemtype_class();
         $allowed_so = [];
@@ -310,33 +324,37 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         //use relation.constant.php to allow some tables (exclude Location which is managed later)
         foreach (getDbRelations() as $relation) {
             foreach ($relation as $main_table => $foreignKey) {
-                if($main_table == getTableForItemType($itemtype_class)
+                if (
+                    $main_table == getTableForItemType($itemtype_class)
                     && !is_array($foreignKey)
-                    && getTableNameForForeignKeyField($foreignKey) != getTableForItemType(Location::getType())) {
+                    && getTableNameForForeignKeyField($foreignKey) != getTableForItemType(Location::getType())
+                ) {
                     $allowed_table[] = getTableNameForForeignKeyField($foreignKey);
                 }
             }
         }
 
-        if($itemtype_object->isEntityAssign()){
+        if ($itemtype_object->isEntityAssign()) {
             $allowed_table[] = getTableForItemType(Entity::getType());
         }
 
-        //allew specific datatype
+        //allow specific datatype
         $allowed_datatype = ["email", "weblink", "specific", "itemlink", "string", "text","number", "dropdown", "decimal", "integer", "bool"];
 
-        foreach($array as $subKey => $subArray){
-            if(isset($subArray["table"]) && in_array($subArray["table"], $allowed_table)
+        foreach ($array as $subKey => $subArray) {
+            if (
+                isset($subArray["table"]) && in_array($subArray["table"], $allowed_table)
                 && (isset($subArray["datatype"]) && in_array($subArray["datatype"], $allowed_datatype))
                 && !isset($subArray["nosearch"]) //Exclude SO with no search
                 && !isset($subArray["usehaving"]) //Exclude count SO ex: Ticket -> Number of sons tickets
                 && !isset($subArray["forcegroupby"]) //Exclude 1-n relation ex: Ticket_User
-                && !isset($subArray["computation"])){ //Exclude SO with computation Ex : Ticket -> Time to own exceeded
+                && !isset($subArray["computation"]) //Exclude SO with computation Ex : Ticket -> Time to own exceeded
+            ) {
                 $allowed_so[$subKey] = $subArray["name"];
             }
         }
 
-        if($itemtype_object->maybeLocated()){
+        if ($itemtype_object->maybeLocated()) {
             $allowed_so[80] = Location::getTypeName(0);
         }
 
@@ -344,31 +362,32 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    public function computeDisplayContainer($item, $container_id){
+    public function computeDisplayContainer($item, $container_id)
+    {
         //load all condition for itemtype and container
         $displayCondition = new self();
         $found_dc   = $displayCondition->find(['itemtype' => get_class($item), 'plugin_fields_containers_id' => $container_id]);
 
-        if (count($found_dc)){
+        if (count($found_dc)) {
             $display = true;
             foreach ($found_dc as $data) {
-
                 $displayCondition->getFromDB($data['id']);
                 $result = $displayCondition->checkCondition($item);
-                if(!$result){
+                if (!$result) {
                     return $result;
                 }
             }
 
             return $display;
-        }else {
+        } else {
             //no condition found -> display container
             return true;
         }
     }
 
 
-    public function checkCondition($item){
+    public function checkCondition($item)
+    {
         $value = $this->fields['value'];
         $condition = $this->fields['condition'];
         $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
@@ -376,31 +395,31 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:
                 // '='
-                if ($value == $item->fields[$searchOption['linkfield']]){
+                if ($value == $item->fields[$searchOption['linkfield']]) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_NE:
                 // '≠'
-                if ($value != $item->fields[$searchOption['linkfield']]){
+                if ($value != $item->fields[$searchOption['linkfield']]) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_LT:
                 // '<';
-                if ($item->fields[$searchOption['linkfield']] > $value){
+                if ($item->fields[$searchOption['linkfield']] > $value) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_GT:
                 //'>';
-                if ($item->fields[$searchOption['linkfield']] > $value){
+                if ($item->fields[$searchOption['linkfield']] > $value) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_REGEX:
                 //'regex';
-                if(self::checkRegex($value)) {
+                if (self::checkRegex($value)) {
                     $value = Sanitizer::unsanitize($value);
                     if (preg_match_all($value . "i", $item->fields[$searchOption['linkfield']]) > 0) {
                         return false;
@@ -413,7 +432,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
     }
 
 
-    public static function checkRegex($regex) {
+    public static function checkRegex($regex)
+    {
         // Avoid php notice when validating the regular expression
         set_error_handler(function ($errno, $errstr, $errfile, $errline) {
         });
@@ -451,7 +471,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         return parent::prepareInputForUpdate($input);
     }
 
-    public static function showForTabContainer(CommonGLPI $item, $options = []) {
+    public static function showForTabContainer(CommonGLPI $item, $options = [])
+    {
 
         $displayCondition_id = $options['displaycondition_id'] ?? 0;
         $display_condition = null;
@@ -474,7 +495,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         TemplateRenderer::getInstance()->display('@fields/container_display_conditions.html.twig', $twig_params);
     }
 
-    public function showForm($ID, array $options = []) {
+    public function showForm($ID, array $options = [])
+    {
         $container_id = $options['plugin_fields_containers_id'];
 
         $twig_params = [
@@ -488,7 +510,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild {
         TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition.html.twig', $twig_params);
     }
 
-    public function getCloneRelations(): array {
+    public function getCloneRelations(): array
+    {
         return [];
     }
 }

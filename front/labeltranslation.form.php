@@ -28,16 +28,14 @@
  * -------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 $translation = new PluginFieldsLabelTranslation();
 if (isset($_POST['add'])) {
-   $translation->add($_POST);
-
+    $translation->add($_POST);
 } else if (isset($_POST['update'])) {
-   $translation->update($_POST);
-
+    $translation->update($_POST);
 } else if (isset($_POST['purge'])) {
-   $translation->delete($_POST, true);
+    $translation->delete($_POST, true);
 }
 Html::back();
