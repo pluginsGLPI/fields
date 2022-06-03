@@ -4,7 +4,7 @@ class %%CLASSNAME%% extends CommonDBTM
 {
    static $rightname = '%%ITEMTYPE_RIGHT%%';
 
-   static function install($containers_id = 0) {
+   static function install() {
       global $DB;
 
       $default_charset = DBConnection::getDefaultCharset();
@@ -26,15 +26,6 @@ class %%CLASSNAME%% extends CommonDBTM
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
-      }
-
-      // and its fields
-      if ($containers_id) {
-         foreach ($DB->request(PluginFieldsField::getTable(), [
-            'plugin_fields_containers_id' => $containers_id
-         ]) as $field) {
-            self::addField($field['name'], $field['type']);
-         }
       }
    }
 
