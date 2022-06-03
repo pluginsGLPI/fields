@@ -54,8 +54,6 @@ function plugin_fields_install() {
       'PluginFieldsDropdown',
       'PluginFieldsLabelTranslation',
       'PluginFieldsContainer',
-      'PluginFieldsContainer_Field',
-      'PluginFieldsValue',
       'PluginFieldsProfile',
       'PluginFieldsStatusOverride',
       'PluginFieldsContainerDisplayCondition',
@@ -127,11 +125,10 @@ function plugin_fields_uninstall() {
    $classesToUninstall = [
       'PluginFieldsDropdown',
       'PluginFieldsContainer',
-      'PluginFieldsContainer_Field',
       'PluginFieldsLabelTranslation',
       'PluginFieldsField',
-      'PluginFieldsValue',
       'PluginFieldsProfile',
+      'PluginFieldsStatusOverride',
       'PluginFieldsContainerDisplayCondition'
    ];
 
