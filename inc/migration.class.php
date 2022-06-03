@@ -96,6 +96,9 @@ class PluginFieldsMigration extends Migration {
             break;
          case $field_type === 'dropdown':
          case preg_match('/^dropdown-.+/i', $field_type):
+            if ($field_type === 'dropdown') {
+               $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
+            }
             $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
             break;
          case $field_type === 'textarea':
