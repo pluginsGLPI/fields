@@ -196,8 +196,6 @@ class PluginFieldsField extends CommonDBChild {
    }
 
    function pre_deleteItem() {
-      global $DB;
-
       //remove field in container table
       if ($this->fields['type'] !== "header"
           && !isset($_SESSION['uninstall_fields'])
@@ -299,7 +297,6 @@ class PluginFieldsField extends CommonDBChild {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if (!$withtemplate) {
-         $nb = 0;
          switch ($item->getType()) {
             case __CLASS__ :
                $ong[1] = $this->getTypeName(1);
@@ -332,9 +329,6 @@ class PluginFieldsField extends CommonDBChild {
       $cID = $container->fields['id'];
 
       // Display existing Fields
-      $tmp    = ['plugin_fields_containers_id' => $cID];
-      $canadd = $this->can(-1, CREATE, $tmp);
-
       $query  = "SELECT `id`, `label`
                 FROM `".$this->getTable()."`
                 WHERE `plugin_fields_containers_id` = '$cID'
@@ -595,8 +589,6 @@ JAVASCRIPT
    }
 
    static function showForTabContainer($c_id, $items_id, $itemtype) {
-      global $CFG_GLPI;
-
       //profile restriction (for reading profile)
       $profile = new PluginFieldsProfile;
       $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
@@ -667,8 +659,6 @@ JAVASCRIPT
     * @return void
     */
    static function showForTab($params) {
-      global $CFG_GLPI;
-
       $item    = $params['item'];
 
       $functions = array_column(debug_backtrace(), 'function');
