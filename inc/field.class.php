@@ -783,7 +783,8 @@ JAVASCRIPT
 
         // Fill status overrides if needed
         $item = new $itemtype();
-        if (in_array($itemtype, PluginFieldsStatusOverride::getStatusItemtypes()) && $item->getFromDB($items_id)) {
+        $new_item = !$item->getFromDB($items_id);
+        if (in_array($itemtype, PluginFieldsStatusOverride::getStatusItemtypes()) && $new_item) {
             $status_overrides = PluginFieldsStatusOverride::getOverridesForItem($container_obj->getID(), $item);
             foreach ($status_overrides as $status_override) {
                 if (isset($fields[$status_override['plugin_fields_fields_id']])) {
@@ -796,14 +797,18 @@ JAVASCRIPT
         $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
         $obj = new $classname();
 
-        //find row for this object with the items_id
-        $found_values = $obj->find(
-            [
-                'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
-                'items_id' => $items_id,
-            ]
-        );
-        $found_v = array_shift($found_values);
+        if (!$new_item) {
+            //find row for this object with the items_id
+            $found_values = $obj->find(
+                [
+                    'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
+                    'items_id' => $items_id,
+                ]
+            );
+            $found_v = array_shift($found_values);
+        } else {
+            $found_v = null;
+        }
 
         // find profiles (to check if current profile can edit fields)
         $fprofile = new PluginFieldsProfile();
