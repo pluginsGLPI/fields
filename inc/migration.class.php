@@ -67,7 +67,7 @@ class PluginFieldsMigration extends Migration
                 $fields[$field_name] = 'INT NOT NULL DEFAULT 0';
                 break;
             case $field_type === 'glpi_item':
-                $fields[sprintf('itemtype_%s', $field_name)] = 'varchar(100) NOT NULL';
+                $fields[sprintf('itemtype_%s', $field_name)] = "varchar(100) NOT NULL DEFAULT ''";
                 $fields[sprintf('items_id_%s', $field_name)] = "int {$default_key_sign} NOT NULL DEFAULT 0";
                 break;
             case $field_type === 'date':
