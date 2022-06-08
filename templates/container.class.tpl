@@ -10,6 +10,7 @@ class %%CLASSNAME%% extends CommonDBTM
       $default_charset = DBConnection::getDefaultCharset();
       $default_collation = DBConnection::getDefaultCollation();
       $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+      $migration = new PluginFieldsMigration(0);
 
       $obj = new self();
       $table = $obj->getTable();
@@ -26,6 +27,19 @@ class %%CLASSNAME%% extends CommonDBTM
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
+      } else {
+         $result = $DB->query("SHOW COLUMNS FROM `$table`");
+         if ($result) {
+            if ($DB->numrows($result) > 0) {
+               while ($data = $DB->fetchAssoc($result)) {
+                  //set default value for type 'glpi_item'
+                  if (str_starts_with($data['Field'], 'itemtype_') ) {
+                     $migration->changeField($table, $data['Field'], $data['Field'], "varchar(100) NOT NULL DEFAULT ''");
+                     $migration->migrationOneTable(self::getTable());
+                  }
+               }
+            }
+         }
       }
    }
 
