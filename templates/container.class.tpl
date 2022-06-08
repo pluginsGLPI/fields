@@ -33,7 +33,7 @@ class %%CLASSNAME%% extends CommonDBTM
             if ($DB->numrows($result) > 0) {
                while ($data = $DB->fetchAssoc($result)) {
                   //set default value for type 'glpi_item'
-                  if (str_starts_with($data['Field'], 'itemtype_')) {
+                  if (str_starts_with($data['Field'], 'itemtype_') && $data['Default'] != 'NULL') {
                      $migration->changeField($table, $data['Field'], $data['Field'], "varchar(100) DEFAULT NULL");
                      $migration->migrationOneTable(self::getTable());
                   }
