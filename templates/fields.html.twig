@@ -60,7 +60,7 @@
         {{ macros.textField(name, value, label, field_options) }}
 
     {% elseif type == 'number' %}
-        {{ macros.numberField(name, value, label, field_options|merge({step: 'any'})) }}
+        {{ macros.numberField(name, value, label, field_options|merge({step: 'any', min: ''})) }}
 
     {% elseif type == 'url' %}
             {% set ext_link %}
