@@ -10,7 +10,6 @@ class %%CLASSNAME%% extends CommonDBTM
       $default_charset = DBConnection::getDefaultCharset();
       $default_collation = DBConnection::getDefaultCollation();
       $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
-      $migration = new PluginFieldsMigration(0);
 
       $obj = new self();
       $table = $obj->getTable();
@@ -28,16 +27,21 @@ class %%CLASSNAME%% extends CommonDBTM
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die ($DB->error());
       } else {
+         // 1.15.4
+         // fix nullable state for 'glpi_item' field
          $result = $DB->query("SHOW COLUMNS FROM `$table`");
-         if ($result) {
-            if ($DB->numrows($result) > 0) {
-               while ($data = $DB->fetchAssoc($result)) {
-                  //set default value for type 'glpi_item'
-                  if (str_starts_with($data['Field'], 'itemtype_') && $data['Default'] != 'NULL') {
-                     $migration->changeField($table, $data['Field'], $data['Field'], "varchar(100) DEFAULT NULL");
-                     $migration->migrationOneTable(self::getTable());
-                  }
+         if ($result && $DB->numrows($result) > 0) {
+            $changed = false;
+            $migration = new PluginFieldsMigration(0);
+            while ($data = $DB->fetchAssoc($result)) {
+               if (str_starts_with($data['Field'], 'itemtype_') && $data['Null'] !== 'YES') {
+               Toolbox::logDebug($data);
+                  $migration->changeField($table, $data['Field'], $data['Field'], "varchar(100) DEFAULT NULL");
+                  $changed = true;
                }
+            }
+            if ($changed) {
+               $migration->executeMigration();
             }
          }
       }
