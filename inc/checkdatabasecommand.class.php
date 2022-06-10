@@ -34,65 +34,72 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PluginFieldsFixDroppedFieldsCommand extends AbstractCommand
+class PluginFieldsCheckDatabaseCommand extends AbstractCommand
 {
     protected function configure()
     {
-        $this->setName('plugin:fields:fixdroppedfields');
-        $this->setAliases(['fields:fixdroppedfields']);
-        $this->setDescription(
-            'Remove fields that were wrongly kept in the database following an '
-            . 'issue introduced in 1.15.0 and fixed in 1.15.3.'
+        $this->setName('plugin:fields:check_database');
+        $this->setDescription(__('Check database to detect inconsistencies.', 'fields'));
+        $this->setHelp(
+            __('This command will chec database to detect following inconsistencies:', 'fields')
+            . "\n"
+            . sprintf(
+                __('- some deleted fields may still be present in database (bug introduced in %s and fixed in version %s)', 'fields'),
+                '1.15.0',
+                '1.15.3'
+            )
         );
 
         $this->addOption(
-            "delete",
+            'fix',
             null,
             InputOption::VALUE_NONE,
-            "Use this option to actually delete data"
+            __('Use this option to actually fix database', 'fields')
         );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Read option
-        $delete = $input->getOption("delete");
+        $fix = $input->getOption('fix');
 
-        $fields = PluginFieldsMigration::fixDroppedFields(!$delete);
+        $dead_fields = PluginFieldsMigration::checkDeadFields($fix);
+        $dead_fields_count = count($dead_fields, COUNT_RECURSIVE) - count($dead_fields);
 
         // No invalid fields found
-        if (!count($fields)) {
+        if ($dead_fields_count === 0) {
             $output->writeln(
-                __("Everything is in order - no action needed.", 'fields'),
+                '<info>' . __('Everything is in order - no action needed.', 'fields') . '</info>',
             );
             return Command::SUCCESS;
         }
 
         // Indicate which fields will have been or must be deleted
-        foreach ($fields as $field) {
-            if ($delete) {
-                $info = sprintf(__("-> %s was deleted.", 'fields'), $field);
-            } else {
-                $info = sprintf(__("-> %s must be deleted.", 'fields'), $field);
-            }
+        $error = $fix
+            ? sprintf(__('Database was containing %s gone field(s).', 'fields'), $dead_fields_count)
+            : sprintf(__('Database contains %s gone field(s).', 'fields'), $dead_fields_count);
+        $output->writeln('<error>' . $error . '</error>', OutputInterface::VERBOSITY_QUIET);
 
-            $output->writeln($info);
+        foreach ($dead_fields as $table => $fields) {
+            foreach ($fields as $field) {
+                $info = $fix
+                    ? sprintf(__('-> "%s.%s" has been deleted.', 'fields'), $table, $field)
+                    : sprintf(__('-> "%s.%s" should be deleted.', 'fields'), $table, $field);
+                $output->writeln($info);
+            }
         }
 
         // Show extra info in dry-run mode
-        if (!$delete) {
-            $fields_found = sprintf(
-                __("%s field(s) need to be deleted.", 'fields'),
-                count($fields)
-            );
-            $output->writeln($fields_found);
-
+        if (!$fix) {
             // Print command to do the actual deletion
             $next_command = sprintf(
-                __("Run \"%s\" to delete the found field(s).", 'fields'),
-                "php bin/console plugin:fields:fixdroppedfields --delete"
+                __('Run "%s" to delete the found field(s).', 'fields'),
+                sprintf("php bin/console %s --fix", $this->getName())
             );
-            $output->writeln($next_command);
+            $output->writeln(
+                '<comment>' . $next_command . '</comment>',
+                OutputInterface::VERBOSITY_QUIET
+            );
         }
 
         return Command::SUCCESS;

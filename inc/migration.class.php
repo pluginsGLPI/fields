@@ -88,24 +88,24 @@ class PluginFieldsMigration extends Migration
      * field from glpi_plugin_fields_fields but not from the custom container
      * table
      *
-     * This function find looks into containers tables for these fields that
-     * should have been removed and list them (dry_run = true) or delete them
-     * (dry_run = false)
+     * This function looks into containers tables for fields that
+     * should have been removed and list them.
+     * If parameter $fix is true, fields are deleted from database.
      *
-     * @param bool $dry_run
+     * @param bool $fix
      *
      * @return array
      */
-    public static function fixDroppedFields(bool $dry_run = true): array
+    public static function checkDeadFields(bool $fix): array
     {
         /** @var DBMysql $DB */
         global $DB;
 
-        // Keep track of dropped fields
-        $dropped = [];
+        $dead_fields = [];
 
         // For each existing container
-        foreach ((new PluginFieldsContainer())->find([]) as $row) {
+        $containers = (new PluginFieldsContainer())->find([]);
+        foreach ($containers as $row) {
             // Get expected fields
             $valid_fields = self::getValidFieldsForContainer($row['id']);
 
@@ -129,21 +129,25 @@ class PluginFieldsMigration extends Migration
                 // Compute which fields should be removed
                 $fields_to_drop = array_diff($found_fields, $valid_fields);
 
-                // Drop fields
-                $migration = new PluginFieldsMigration(0);
-
-                foreach ($fields_to_drop as $field) {
-                    $dropped[] = "$table.$field";
-                    $migration->dropField($table, $field);
-                }
-
-                if (!$dry_run) {
-                    $migration->migrationOneTable($table);
+                if (count($fields_to_drop) > 0) {
+                    $dead_fields[$table] = $fields_to_drop;
                 }
             }
         }
 
-        return $dropped;
+        if ($fix) {
+            $migration = new PluginFieldsMigration(0);
+
+            foreach ($dead_fields as $table => $fields) {
+                foreach ($fields as $field) {
+                    $migration->dropField($table, $field);
+                }
+            }
+
+            $migration->executeMigration();
+        }
+
+        return $dead_fields;
     }
 
     /**
@@ -155,15 +159,11 @@ class PluginFieldsMigration extends Migration
      */
     private static function getValidFieldsForContainer(int $container_id): array
     {
-        // Keep track of fields found
         $valid_fields = [];
 
         // For each defined fields in the given container
-        foreach (
-            (new PluginFieldsField())->find([
-                'plugin_fields_containers_id' => $container_id
-            ]) as $row
-        ) {
+        $fields = (new PluginFieldsField())->find(['plugin_fields_containers_id' => $container_id]);
+        foreach ($fields as $row) {
             $fields = self::getSQLFields($row['name'], $row['type']);
             array_push($valid_fields, ...array_keys($fields));
         }
@@ -199,6 +199,11 @@ class PluginFieldsMigration extends Migration
             'itemtype',
             'plugin_fields_containers_id',
         ];
-        return array_filter($fields, fn($f) => !in_array($f, $basic_fields));
+        return array_filter(
+            $fields,
+            function (string $field) use ($basic_fields) {
+                return !in_array($field, $basic_fields);
+            }
+        );
     }
 }
