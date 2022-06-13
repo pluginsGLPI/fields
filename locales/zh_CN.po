@@ -36,7 +36,7 @@ msgstr "添加标签"
 
 #: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
 #: setup.php:189
-msgid "Additionnal fields"
+msgid "Additional fields"
 msgstr "附加字段"
 
 #: inc/field.class.php:546

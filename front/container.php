@@ -31,7 +31,7 @@
 include("../../../inc/includes.php");
 
 Html::header(
-    __("Additionnal fields", "fields"),
+    __("Additional fields", "fields"),
     $_SERVER['PHP_SELF'],
     "config",
     "pluginfieldsmenu",
