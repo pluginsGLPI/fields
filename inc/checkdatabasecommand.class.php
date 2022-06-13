@@ -76,8 +76,8 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
 
         // Indicate which fields will have been or must be deleted
         $error = $fix
-            ? sprintf(__('Database was containing %s gone field(s).', 'fields'), $dead_fields_count)
-            : sprintf(__('Database contains %s gone field(s).', 'fields'), $dead_fields_count);
+            ? sprintf(__('Database was containing orphaned data from %s improperly deleted field(s).', 'fields'), $dead_fields_count)
+            : sprintf(__('Database contains orphaned data from %s improperly deleted field(s).', 'fields'), $dead_fields_count);
         $output->writeln('<error>' . $error . '</error>', OutputInterface::VERBOSITY_QUIET);
 
         foreach ($dead_fields as $table => $fields) {
@@ -93,7 +93,7 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
         if (!$fix) {
             // Print command to do the actual deletion
             $next_command = sprintf(
-                __('Run "%s" to delete the found field(s).', 'fields'),
+                __('Run "%s" to fix database inconsistencies.', 'fields'),
                 sprintf("php bin/console %s --fix", $this->getName())
             );
             $output->writeln(
