@@ -271,6 +271,12 @@ class PluginFieldsToolbox
         }
         sort($components_itemtypes, SORT_NATURAL);
 
+        $component_items_itemtypes = [];
+        foreach ($CFG_GLPI['itemdevices'] as $deviceitem_itemtype) {
+            $component_items_itemtypes[] = $deviceitem_itemtype;
+        }
+        sort($component_items_itemtypes, SORT_NATURAL);
+
         $plugins_itemtypes = [];
         foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
             $itemtype_specs = isPluginItemType($itemtype);
@@ -303,6 +309,7 @@ class PluginFieldsToolbox
             __('Administration')                                      => $administration_itemtypes,
             _n('Plugin', 'Plugins', Session::getPluralNumber())       => $plugins_itemtypes,
             _n('Component', 'Components', Session::getPluralNumber()) => $components_itemtypes,
+            __('Component items', 'fields')                           => $component_items_itemtypes,
         ] + $dropdowns_sections + [
             __('Other')                                               => $other_itemtypes,
         ];
