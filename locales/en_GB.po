@@ -35,8 +35,8 @@ msgstr "Add tab"
 
 #: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
 #: setup.php:189
-msgid "Additionnal fields"
-msgstr "Additionnal fields"
+msgid "Additional fields"
+msgstr "Additional fields"
 
 #: inc/field.class.php:546
 msgid "Allowed values"

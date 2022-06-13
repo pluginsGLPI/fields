@@ -199,7 +199,7 @@ function plugin_init_fields()
 function plugin_version_fields()
 {
     return [
-        'name'           => __("Additionnal fields", "fields"),
+        'name'           => __("Additional fields", "fields"),
         'version'        => PLUGIN_FIELDS_VERSION,
         'author'         => 'Teclib\', Olivier Moron',
         'homepage'       => 'https://github.com/pluginsGLPI/fields',

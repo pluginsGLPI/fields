@@ -34,7 +34,7 @@ class PluginFieldsMenu extends CommonGLPI
 
     public static function getMenuName()
     {
-        return __("Additionnal fields", "fields");
+        return __("Additional fields", "fields");
     }
 
     public static function getMenuContent()

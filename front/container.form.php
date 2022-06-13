@@ -57,7 +57,7 @@ if (isset($_POST["add"])) {
     Html::back();
 } else {
     Html::header(
-        __("Additionnal fields", "fields"),
+        __("Additional fields", "fields"),
         $_SERVER['PHP_SELF'],
         "config",
         "pluginfieldsmenu",
