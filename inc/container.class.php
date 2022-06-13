@@ -1631,10 +1631,8 @@ HTML;
                     $opt[$i]['datatype'] = "bool";
                     break;
                 case 'textarea':
-                    $opt[$i]['datatype'] = "text";
-                    break;
                 case 'number':
-                    $opt[$i]['datatype'] = "decimal";
+                    $opt[$i]['datatype'] = "text";
                     break;
                 case 'date':
                 case 'datetime':
