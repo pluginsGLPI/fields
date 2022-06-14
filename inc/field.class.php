@@ -751,7 +751,7 @@ JAVASCRIPT
         }
 
         $display_condition = new PluginFieldsContainerDisplayCondition();
-        if ($display_condition->computeDisplayContainer($item, $c_id)) {
+        if ($display_condition->computeDisplayContainer($item, $c_id, $params['options'])) {
             self::showDomContainer(
                 $c_id,
                 $item::getType(),
