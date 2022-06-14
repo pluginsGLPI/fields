@@ -402,7 +402,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:
                 // '='
-                if ($value ==$object_fields[$searchOption['linkfield']]) {
+                if ($value == $object_fields[$searchOption['linkfield']]) {
                     return false;
                 }
                 break;
