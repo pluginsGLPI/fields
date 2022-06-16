@@ -362,7 +362,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     }
 
 
-    public function computeDisplayContainer($item, $container_id, $params = null)
+    public function computeDisplayContainer($item, $container_id, $input)
     {
         //load all condition for itemtype and container
         $displayCondition = new self();
@@ -372,7 +372,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             $display = true;
             foreach ($found_dc as $data) {
                 $displayCondition->getFromDB($data['id']);
-                $result = $displayCondition->checkCondition($item, $params);
+                $result = $displayCondition->checkCondition($item, $input);
                 if (!$result) {
                     return $result;
                 }
@@ -386,13 +386,13 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     }
 
 
-    public function checkCondition($item, $params = null)
+    public function checkCondition($item, array $input)
     {
         $value = $this->fields['value'];
         $condition = $this->fields['condition'];
         $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
 
-        $object_fields = array_merge($item->fields, $params);
+        $object_fields = array_merge($item->fields, $input);
 
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:

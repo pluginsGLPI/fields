@@ -750,13 +750,26 @@ JAVASCRIPT
             return false;
         }
 
+        echo "<div id='fields_container'>";
+        $display_condition = new PluginFieldsContainerDisplayCondition();
+        if ($display_condition->computeDisplayContainer($item, $c_id, $params['options'])) {
+            self::showDomContainer(
+                $c_id,
+                $item::getType(),
+                $item->getID(),
+                $type,
+                $subtype
+            );
+        }
+        echo "</div>";
+
         //JS to trigger any change and check if container need to be display or not
         $ajax_url   = Plugin::getWebDir('fields') . '/ajax/container_display_condition.php';
-        $items_id = $item->getID() ? $item->getID() : 0;
+        $items_id = !$item->isNewItem() ? $item->getID() : 0;
         echo Html::scriptBlock(<<<JAVASCRIPT
 
             function checkContainerVisibility(){
-                var data = $('#itil-form').serializeArray().reduce(function(obj, item) {
+                var data = $('#fields_container').closest('form').serializeArray().reduce(function(obj, item) {
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
@@ -780,24 +793,21 @@ JAVASCRIPT
             }
 
             //do not check select DOM -> reload page is triggered on change
-            $('#itil-form').on('keyup change paste', 'input, select', function(){
+            $('#fields_container').closest('form').on('keyup change paste', 'input, select', function(){
                 checkContainerVisibility();
             });
+
+            setTimeout(function(){
+                tinymce.on('keyup copy change paste', function (e) {
+                    console.log("TINYMCE Change");
+                });
+            }, 2000);
+
+
             JAVASCRIPT
         );
 
-        echo "<div id='fields_container'>";
-        $display_condition = new PluginFieldsContainerDisplayCondition();
-        if ($display_condition->computeDisplayContainer($item, $c_id, $params['options'])) {
-            self::showDomContainer(
-                $c_id,
-                $item::getType(),
-                $item->getID(),
-                $type,
-                $subtype
-            );
-        }
-        echo "</div>";
+
     }
 
     public static function prepareHtmlFields(
