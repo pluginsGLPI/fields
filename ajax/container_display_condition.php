@@ -38,6 +38,29 @@ if (isset($_GET['action'])) {
         $status_override = new PluginFieldsContainerDisplayCondition();
         $status_override->getFromDB($_GET['id']);
         $status_override->showForm($_GET['id'], $_GET);
+    } else if ($_GET['action'] === 'get_html_fields') {
+        $c_id       = $_GET['c_id'];
+        $itemtype   = $_GET['itemtype'];
+        $items_id   = $_GET['items_id'];
+        $type       = $_GET['type'];
+        $subtype    = $_GET['subtype'];
+        $input      = $_GET['values'];
+
+        $item = new $itemtype();
+        $item->getFromDB($items_id);
+
+        $display_condition = new PluginFieldsContainerDisplayCondition();
+        if ($display_condition->computeDisplayContainer($item, $c_id, $input)) {
+            PluginFieldsField::showDomContainer(
+                $c_id,
+                $itemtype,
+                $items_id,
+                $type,
+                $subtype
+            );
+        } else {
+            echo "";
+        }
     }
 } else if (isset($_POST['action'])) {
     if ($_POST['action'] === 'get_itemtype_so') {

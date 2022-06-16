@@ -658,7 +658,7 @@ JAVASCRIPT
      *
      * @return void
      */
-    private static function showDomContainer($c_id, $itemtype, $items_id, $type = "dom", $subtype = "")
+    public static function showDomContainer($c_id, $itemtype, $items_id, $type = "dom", $subtype = "")
     {
 
         if ($c_id !== false) {
@@ -750,6 +750,43 @@ JAVASCRIPT
             return false;
         }
 
+        //JS to trigger any change and check if container need to be display or not
+        $ajax_url   = Plugin::getWebDir('fields') . '/ajax/container_display_condition.php';
+        $items_id = $item->getID() ? $item->getID() : 0;
+        echo Html::scriptBlock(<<<JAVASCRIPT
+
+            function checkContainerVisibility(){
+                var data = $('#itil-form').serializeArray().reduce(function(obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {});
+
+                $.ajax({
+                    url : '{$ajax_url}',
+                    type : 'GET',
+                    data : {
+                        'action' : 'get_html_fields',
+                        'c_id' : {$c_id},
+                        'itemtype' : '{$item::getType()}',
+                        'items_id' : {$items_id},
+                        'type' : '{$type}',
+                        'subtype' : '{$subtype}',
+                        'values' : data
+                    },
+                    success : function(data) {
+                        $("#fields_container").html(data);
+                    }
+                });
+            }
+
+            //do not check select DOM -> reload page is triggered on change
+            $('#itil-form').on('keyup change paste', 'input', function(){
+                checkContainerVisibility();
+            });
+            JAVASCRIPT
+        );
+
+        echo "<div id='fields_container'>";
         $display_condition = new PluginFieldsContainerDisplayCondition();
         if ($display_condition->computeDisplayContainer($item, $c_id, $params['options'])) {
             self::showDomContainer(
@@ -760,6 +797,7 @@ JAVASCRIPT
                 $subtype
             );
         }
+        echo "</div>";
     }
 
     public static function prepareHtmlFields(
