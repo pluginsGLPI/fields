@@ -802,12 +802,8 @@ JAVASCRIPT
                     console.log("TINYMCE Change");
                 });
             }, 2000);
-
-
             JAVASCRIPT
         );
-
-
     }
 
     public static function prepareHtmlFields(
