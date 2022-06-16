@@ -392,12 +392,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $condition = $this->fields['condition'];
         $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
 
-        //if from self-service form
-        if ($params != null) {
-            $object_fields = $params;
-        } else {
-            $object_fields = $item->fields;
-        }
+        $object_fields = array_merge($item->fields, $params);
 
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:

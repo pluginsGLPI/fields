@@ -780,7 +780,7 @@ JAVASCRIPT
             }
 
             //do not check select DOM -> reload page is triggered on change
-            $('#itil-form').on('keyup change paste', 'input', function(){
+            $('#itil-form').on('keyup change paste', 'input, select', function(){
                 checkContainerVisibility();
             });
             JAVASCRIPT
