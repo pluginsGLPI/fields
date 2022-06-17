@@ -314,6 +314,20 @@ class PluginFieldsToolbox
             __('Other')                                               => $other_itemtypes,
         ];
 
+        $plugin = new Plugin();
+        if ($plugin->isActivated('genericobject') && method_exists('PluginGenericobjectType', 'getTypes')) {
+            $go_itemtypes = [];
+            foreach (array_keys(PluginGenericobjectType::getTypes()) as $go_itemtype) {
+                if (!class_exists($go_itemtype)) {
+                    continue;
+                }
+                $go_itemtypes[] = $go_itemtype;
+            }
+            if (count($go_itemtypes) > 0) {
+                $all_itemtypes[$plugin->getInfo('genericobject', 'name')] = $go_itemtypes;
+            }
+        }
+
         $plugins_names = [];
         foreach ($all_itemtypes as $section => $itemtypes) {
             $named_itemtypes = [];
