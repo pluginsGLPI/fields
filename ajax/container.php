@@ -30,30 +30,33 @@
 
 include("../../../inc/includes.php");
 
-if (isset($_GET['action'])) {
-    if ($_GET['action'] === 'get_add_form') {
-        $status_override = new PluginFieldsContainerDisplayCondition();
-        $status_override->showForm(0, $_GET);
-    } else if ($_GET['action'] === 'get_edit_form') {
-        $status_override = new PluginFieldsContainerDisplayCondition();
-        $status_override->getFromDB($_GET['id']);
-        $status_override->showForm($_GET['id'], $_GET);
+use Glpi\Http\Response;
+
+if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
+    $containers_id = $_GET['id'];
+    $itemtype      = $_GET['itemtype'];
+    $items_id      = (int)$_GET['items_id'];
+    $type          = $_GET['type'];
+    $subtype       = $_GET['subtype'];
+    $input         = $_GET['input'];
+
+    $item = new $itemtype();
+    if ($items_id > 0 && !$item->getFromDB($items_id)) {
+        Response::sendError(404, 'Not Found');
     }
-} else if (isset($_POST['action'])) {
-    if ($_POST['action'] === 'get_itemtype_so') {
-        if (isset($_POST['itemtype']) && class_exists($_POST['itemtype'])) {
-            echo PluginFieldsContainerDisplayCondition::showItemtypeFieldForm($_POST['itemtype']) ;
-        } else {
-            echo "";
-        }
-    } else if ($_POST['action'] === 'get_condition_switch_so') {
-        if (isset($_POST['search_option_id']) && (isset($_POST['itemtype']) && class_exists($_POST['itemtype']))) {
-            echo PluginFieldsContainerDisplayCondition::showSearchOptionCondition($_POST['search_option_id'], $_POST['itemtype']);
-        } else {
-            echo "";
-        }
+    $item->input = $input;
+
+    $display_condition = new PluginFieldsContainerDisplayCondition();
+    if ($display_condition->computeDisplayContainer($item, $containers_id)) {
+        PluginFieldsField::showDomContainer(
+            $containers_id,
+            $item,
+            $type,
+            $subtype
+        );
+    } else {
+        echo "";
     }
 } else {
-    http_response_code(400);
-    die();
+    Response::sendError(404, 'Not Found');
 }

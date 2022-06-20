@@ -1036,7 +1036,7 @@ HTML;
         foreach ($found_c as $data) {
             $dataitemtypes = json_decode($data['itemtypes']);
             if (in_array(get_class($item), $dataitemtypes) != false) {
-                return PluginFieldsField::showForTabContainer($data['id'], $item->fields['id'], get_class($item));
+                return PluginFieldsField::showForTabContainer($data['id'], $item);
             }
         }
     }

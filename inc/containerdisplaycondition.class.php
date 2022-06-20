@@ -362,7 +362,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     }
 
 
-    public function computeDisplayContainer($item, $container_id, $input)
+    public function computeDisplayContainer($item, $container_id)
     {
         //load all condition for itemtype and container
         $displayCondition = new self();
@@ -372,7 +372,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             $display = true;
             foreach ($found_dc as $data) {
                 $displayCondition->getFromDB($data['id']);
-                $result = $displayCondition->checkCondition($item, $input);
+                $result = $displayCondition->checkCondition($item);
                 if (!$result) {
                     return $result;
                 }
@@ -386,36 +386,36 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     }
 
 
-    public function checkCondition($item, array $input)
+    public function checkCondition($item)
     {
         $value = $this->fields['value'];
         $condition = $this->fields['condition'];
         $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
 
-        $object_fields = array_merge($item->fields, $input);
+        $fields = array_merge($item->fields, $item->input);
 
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:
                 // '='
-                if ($value == $object_fields[$searchOption['linkfield']]) {
+                if ($value == $fields[$searchOption['linkfield']]) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_NE:
                 // '≠'
-                if ($value != $object_fields[$searchOption['linkfield']]) {
+                if ($value != $fields[$searchOption['linkfield']]) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_LT:
                 // '<';
-                if ($object_fields[$searchOption['linkfield']] > $value) {
+                if ($fields[$searchOption['linkfield']] > $value) {
                     return false;
                 }
                 break;
             case self::SHOW_CONDITION_GT:
                 //'>';
-                if ($object_fields[$searchOption['linkfield']] > $value) {
+                if ($fields[$searchOption['linkfield']] > $value) {
                     return false;
                 }
                 break;
@@ -423,7 +423,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 //'regex';
                 if (self::checkRegex($value)) {
                     $value = Sanitizer::unsanitize($value);
-                    if (preg_match_all($value . "i", $object_fields[$searchOption['linkfield']]) > 0) {
+                    if (preg_match_all($value . "i", $fields[$searchOption['linkfield']]) > 0) {
                         return false;
                     }
                 }
