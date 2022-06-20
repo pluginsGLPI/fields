@@ -855,7 +855,8 @@ JAVASCRIPT
         $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
 
         // Fill status overrides if needed
-        if (!$item->isNewItem() && in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
+        if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
+            Toolbox::logDebug($item->fields);
             $status_overrides = PluginFieldsStatusOverride::getOverridesForItem($container_obj->getID(), $item);
             foreach ($status_overrides as $status_override) {
                 if (isset($fields[$status_override['plugin_fields_fields_id']])) {

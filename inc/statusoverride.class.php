@@ -203,7 +203,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
             return [];
         }
         $status_field_name = self::getStatusFieldName($item->getType());
-        $status = $item->fields[$status_field_name];
+        $status = $item->input[$status_field_name] ?? $item->fields[$status_field_name] ?? null;
         $overrides = self::getOverridesForContainer($container_id);
         $itemtype = $item->getType();
         $overrides = array_filter($overrides, static function ($override) use ($itemtype, $status) {
