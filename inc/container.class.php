@@ -1273,7 +1273,7 @@ HTML;
                 $value = $data[$name];
             } else if (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
                 $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } else if ($field['mandatory'] == 1) {
+            } else if ($field['mandatory'] == 1 && isset($data['items_id'])) {
                 $tablename = getTableForItemType(self::getClassname($itemtype, $container->fields['name']));
 
                 $query = "SELECT * FROM `$tablename` WHERE
