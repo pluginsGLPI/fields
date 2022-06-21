@@ -1235,8 +1235,9 @@ HTML;
         ]);
 
         // Apply status overrides
-        $status_overrides = $data['status'] !== null
-            ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data['status'])
+        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($itemtype);
+        $status_overrides = $data[$status_field_name] !== null
+            ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data[$status_field_name])
             : [];
         foreach ($status_overrides as $status_override) {
             if (isset($fields[$status_override['plugin_fields_fields_id']])) {
@@ -1532,7 +1533,13 @@ HTML;
         }
 
         // Add status so it can be used with status overrides
-        $data['status'] = $item->fields['status'] ?? null;
+        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item->getType());
+        $data[$status_field_name] = null;
+        if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
+            $data[$status_field_name] = (int)$item->input[$status_field_name];
+        } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
+            $data[$status_field_name] = (int)$item->fields[$status_field_name];
+        }
 
         $has_fields = false;
         foreach ($fields as $field) {
