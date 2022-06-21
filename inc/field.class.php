@@ -795,6 +795,9 @@ JAVASCRIPT
                             input:    data
                         },
                         success: function(data) {
+                            // Close open select2 dropdown that will be replaced
+                            $('#{$html_id}').find('.select2-hidden-accessible').select2('close');
+                            // Refresh fields HTML
                             $('#{$html_id}').html(data);
                         }
                     }
@@ -814,6 +817,7 @@ JAVASCRIPT
                         }
                     );
 
+                    var refresh_timeout = null;
                     form.find('textarea').each(
                         function () {
                             const editor = tinymce.get(this.id);
@@ -824,7 +828,11 @@ JAVASCRIPT
                                         if ($(evt.target.targetElm).closest('#{$html_id}').length > 0) {
                                             return; // Do nothing if element is inside fields container
                                         }
-                                        refreshContainer();
+
+                                        if (refresh_timeout !== null) {
+                                            window.clearTimeout(refresh_timeout);
+                                        }
+                                        refresh_timeout = window.setTimeout(refreshContainer, 1000);
                                     }
                                 );
                             }
@@ -856,7 +864,6 @@ JAVASCRIPT
 
         // Fill status overrides if needed
         if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
-            Toolbox::logDebug($item->fields);
             $status_overrides = PluginFieldsStatusOverride::getOverridesForItem($container_obj->getID(), $item);
             foreach ($status_overrides as $status_override) {
                 if (isset($fields[$status_override['plugin_fields_fields_id']])) {
