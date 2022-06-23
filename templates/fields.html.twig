@@ -43,7 +43,7 @@
     {% set type     = field['type'] %}
     {% set name     = field['name'] %}
     {% set label    = field['label'] %}
-    {% set value    = field['value'] %}
+    {% set value    = item.input[name] ?: field['value'] %}
     {% set readonly = field['is_readonly'] %}
     {% set rand = random() %}
 

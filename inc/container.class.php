@@ -1036,7 +1036,7 @@ HTML;
         foreach ($found_c as $data) {
             $dataitemtypes = json_decode($data['itemtypes']);
             if (in_array(get_class($item), $dataitemtypes) != false) {
-                return PluginFieldsField::showForTabContainer($data['id'], $item->fields['id'], get_class($item));
+                return PluginFieldsField::showForTabContainer($data['id'], $item);
             }
         }
     }
@@ -1234,6 +1234,18 @@ HTML;
             'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
         ]);
 
+        // Apply status overrides
+        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($itemtype);
+        $status_overrides = $data[$status_field_name] !== null
+            ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data[$status_field_name])
+            : [];
+        foreach ($status_overrides as $status_override) {
+            if (isset($fields[$status_override['plugin_fields_fields_id']])) {
+                $fields[$status_override['plugin_fields_fields_id']]['is_readonly'] = $status_override['is_readonly'];
+                $fields[$status_override['plugin_fields_fields_id']]['mandatory'] = $status_override['mandatory'];
+            }
+        }
+
         foreach ($fields as $field) {
             if (!$field['is_active']) {
                 continue;
@@ -1262,7 +1274,7 @@ HTML;
                 $value = $data[$name];
             } else if (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
                 $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } else if ($field['mandatory'] == 1) {
+            } else if ($field['mandatory'] == 1 && isset($data['items_id'])) {
                 $tablename = getTableForItemType(self::getClassname($itemtype, $container->fields['name']));
 
                 $query = "SELECT * FROM `$tablename` WHERE
@@ -1518,6 +1530,15 @@ HTML;
         if (!$item->isNewItem()) {
            //no ID yet while creating
             $data['items_id'] = $item->getID();
+        }
+
+        // Add status so it can be used with status overrides
+        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item->getType());
+        $data[$status_field_name] = null;
+        if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
+            $data[$status_field_name] = (int)$item->input[$status_field_name];
+        } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
+            $data[$status_field_name] = (int)$item->fields[$status_field_name];
         }
 
         $has_fields = false;

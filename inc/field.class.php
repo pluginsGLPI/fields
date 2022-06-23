@@ -614,7 +614,7 @@ JAVASCRIPT
         $this->showFormButtons($options);
     }
 
-    public static function showForTabContainer($c_id, $items_id, $itemtype)
+    public static function showForTabContainer($c_id, $item)
     {
         //profile restriction (for reading profile)
         $profile = new PluginFieldsProfile();
@@ -629,10 +629,10 @@ JAVASCRIPT
         $fields = $field_obj->find(['plugin_fields_containers_id' => $c_id, 'is_active' => 1], "ranking");
         echo "<form method='POST' action='" . Plugin::getWebDir('fields') . "/front/container.form.php'>";
         echo Html::hidden('plugin_fields_containers_id', ['value' => $c_id]);
-        echo Html::hidden('items_id', ['value' => $items_id]);
-        echo Html::hidden('itemtype', ['value' => $itemtype]);
+        echo Html::hidden('items_id', ['value' => $item->getID()]);
+        echo Html::hidden('itemtype', ['value' => $item->getType()]);
         echo "<table class='tab_cadre_fixe'>";
-        echo self::prepareHtmlFields($fields, $items_id, $itemtype, $canedit);
+        echo self::prepareHtmlFields($fields, $item, $canedit);
 
         if ($canedit) {
             echo "<tr><td class='tab_bg_2 center' colspan='4'>";
@@ -650,23 +650,22 @@ JAVASCRIPT
     /**
      * Display dom container
      *
-     * @param integer $c_id     Container's ID
-     * @param string  $itemtype Item type
-     * @param integer $items_id Item ID
-     * @param string  $type     Type (either 'dom' or 'domtab'
-     * @param string  $subtype  Requested subtype (used for domtab only)
+     * @param int         $id       Container's ID
+     * @param CommonDBTM  $item     Item
+     * @param string      $type     Type (either 'dom' or 'domtab'
+     * @param string      $subtype  Requested subtype (used for domtab only)
      *
      * @return void
      */
-    private static function showDomContainer($c_id, $itemtype, $items_id, $type = "dom", $subtype = "")
+    public static function showDomContainer($id, $item, $type = "dom", $subtype = "")
     {
 
-        if ($c_id !== false) {
+        if ($id !== false) {
             //get fields for this container
             $field_obj = new self();
             $fields = $field_obj->find(
                 [
-                    'plugin_fields_containers_id' => $c_id,
+                    'plugin_fields_containers_id' => $id,
                     'is_active' => 1,
                 ],
                 "ranking"
@@ -677,7 +676,7 @@ JAVASCRIPT
 
         echo Html::hidden('_plugin_fields_type', ['value' => $type]);
         echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
-        echo self::prepareHtmlFields($fields, $items_id, $itemtype);
+        echo self::prepareHtmlFields($fields, $item);
     }
 
     /**
@@ -690,6 +689,12 @@ JAVASCRIPT
     public static function showForTab($params)
     {
         $item    = $params['item'];
+
+        if (count($item->input) === 0 && count($params['options']) > 0) {
+            // On simplified interface, when form is reloaded (e.g. on category change), existing input is located
+            // `$params['options']` instead of being in `$item->input`.
+            $item->input = $params['options'];
+        }
 
         $functions = array_column(debug_backtrace(), 'function');
 
@@ -750,22 +755,98 @@ JAVASCRIPT
             return false;
         }
 
+        $html_id = 'plugin_fields_container_' . mt_rand();
+        echo "<div id='{$html_id}'>";
         $display_condition = new PluginFieldsContainerDisplayCondition();
         if ($display_condition->computeDisplayContainer($item, $c_id)) {
             self::showDomContainer(
                 $c_id,
-                $item::getType(),
-                $item->getID(),
+                $item,
                 $type,
                 $subtype
             );
         }
+        echo "</div>";
+
+        //JS to trigger any change and check if container need to be display or not
+        $ajax_url   = Plugin::getWebDir('fields') . '/ajax/container.php';
+        $items_id = !$item->isNewItem() ? $item->getID() : 0;
+        echo Html::scriptBlock(<<<JAVASCRIPT
+            function refreshContainer() {
+                const data = $('#{$html_id}').closest('form').serializeArray().reduce(
+                    function(obj, item) {
+                        obj[item.name] = item.value;
+                        return obj;
+                    },
+                    {}
+                );
+
+                $.ajax(
+                    {
+                        url: '{$ajax_url}',
+                        type: 'GET',
+                        data: {
+                            action:   'get_fields_html',
+                            id:       {$c_id},
+                            itemtype: '{$item::getType()}',
+                            items_id: {$items_id},
+                            type:     '{$type}',
+                            subtype:  '{$subtype}',
+                            input:    data
+                        },
+                        success: function(data) {
+                            // Close open select2 dropdown that will be replaced
+                            $('#{$html_id}').find('.select2-hidden-accessible').select2('close');
+                            // Refresh fields HTML
+                            $('#{$html_id}').html(data);
+                        }
+                    }
+                );
+            }
+            $(
+                function () {
+                    const form = $('#{$html_id}').closest('form');
+                    form.on(
+                        'change',
+                        'input, select, textarea',
+                        function(evt) {
+                            if ($(evt.target).closest('#{$html_id}').length > 0) {
+                                return; // Do nothing if element is inside fields container
+                            }
+                            refreshContainer();
+                        }
+                    );
+
+                    var refresh_timeout = null;
+                    form.find('textarea').each(
+                        function () {
+                            const editor = tinymce.get(this.id);
+                            if (editor !== null) {
+                                editor.on(
+                                    'change',
+                                    function(evt) {
+                                        if ($(evt.target.targetElm).closest('#{$html_id}').length > 0) {
+                                            return; // Do nothing if element is inside fields container
+                                        }
+
+                                        if (refresh_timeout !== null) {
+                                            window.clearTimeout(refresh_timeout);
+                                        }
+                                        refresh_timeout = window.setTimeout(refreshContainer, 1000);
+                                    }
+                                );
+                            }
+                        }
+                    );
+                }
+            );
+JAVASCRIPT
+        );
     }
 
     public static function prepareHtmlFields(
         $fields,
-        $items_id,
-        $itemtype,
+        $item,
         $canedit = true,
         $show_table = true,
         $massiveaction = false
@@ -782,12 +863,7 @@ JAVASCRIPT
         $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
 
         // Fill status overrides if needed
-        $item = new $itemtype();
-        if (!empty($items_id)) {
-            $item->getFromDB($items_id);
-        }
-
-        if (!$item->isNewItem() && in_array($itemtype, PluginFieldsStatusOverride::getStatusItemtypes())) {
+        if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
             $status_overrides = PluginFieldsStatusOverride::getOverridesForItem($container_obj->getID(), $item);
             foreach ($status_overrides as $status_override) {
                 if (isset($fields[$status_override['plugin_fields_fields_id']])) {
@@ -800,12 +876,12 @@ JAVASCRIPT
         $found_v = null;
         if (!$item->isNewItem()) {
             //find row for this object with the items_id
-            $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
+            $classname = PluginFieldsContainer::getClassname($item->getType(), $container_obj->fields['name']);
             $obj = new $classname();
             $found_values = $obj->find(
                 [
                     'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
-                    'items_id' => $items_id,
+                    'items_id' => $item->getID(),
                 ]
             );
             $found_v = array_shift($found_values);
@@ -822,16 +898,10 @@ JAVASCRIPT
         $first_found_p = array_shift($found_p);
 
         // test status for "CommonITILObject" objects
-        if (is_subclass_of($itemtype, "CommonITILObject")) {
-            $items_obj = new $itemtype();
-            if ($items_id > 0) {
-                $items_obj->getFromDB($items_id);
-            } else {
-                $items_obj->getEmpty();
-            }
-
+        if ($item instanceof CommonITILObject) {
+            $status = $item->fields['status'] ?? null;
             if (
-                in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
+                ($status !== null && in_array($status, $item->getClosedStatusArray()))
                 || $first_found_p['right'] != CREATE
             ) {
                 $canedit = false;
@@ -932,8 +1002,6 @@ JAVASCRIPT
             $field['value'] = $value;
         }
 
-        $item = new $itemtype();
-        $item->getFromDB($items_id);
         $html = TemplateRenderer::getInstance()->render('@fields/fields.html.twig', [
             'item'           => $item,
             'fields'         => $fields,
@@ -987,7 +1055,10 @@ JAVASCRIPT
         ];
 
         //show field
-        echo self::prepareHtmlFields($fields, 0, $itemtype, true, false, $massiveaction);
+        $item = new $itemtype();
+        $itemtype->getEmpty();
+
+        echo self::prepareHtmlFields($fields, $item, true, false, $massiveaction);
 
         return true;
     }
