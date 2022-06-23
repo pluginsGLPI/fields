@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-25 09:47+0000\n"
+"POT-Creation-Date: 2022-06-23 10:30+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
@@ -18,7 +18,24 @@ msgstr ""
 "Language: ko_KR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: inc/field.class.php:383
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:86
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr ""
+
+#: inc/field.class.php:380
 msgid "Add a new field"
 msgstr "새 항목 추가"
 
@@ -30,114 +47,137 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:861
+#: inc/container.class.php:910
 msgid "Add tab"
 msgstr "탭 추가"
 
-#: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
-#: setup.php:189
+#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: setup.php:202
 msgid "Additional fields"
 msgstr "추가 항목"
 
-#: inc/field.class.php:546
+#: inc/field.class.php:547
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:633
+#: inc/container.class.php:658
 msgid "Block"
 msgstr "블록"
 
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr ""
+
+#: inc/toolbox.class.php:312
+msgid "Component items"
+msgstr ""
+
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:119
+#: inc/containerdisplaycondition.class.php:125
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/field.class.php:561
+#: inc/field.class.php:562
 msgid "Configure"
 msgstr "구성"
 
-#: inc/field.class.php:561
+#: inc/field.class.php:562
 msgid "Configure fields values"
 msgstr "항목 값 구성"
 
-#: inc/container.class.php:464
+#: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "컨테이너 이름이 데이터베이스 용으로 너무 깁니다 (이름의 숫자는 문자로 대체되니, 제거해 보세요)"
 
-#: inc/field.class.php:987
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:79
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/field.class.php:1083
 msgid "Date"
 msgstr "날짜"
 
-#: inc/field.class.php:988
+#: inc/field.class.php:1084
 msgid "Date & time"
 msgstr "날짜 & 시간"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:1081
 msgid "Dropdown"
 msgstr "드롭다운"
 
-#: inc/container.class.php:49 inc/container.class.php:642
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr ""
+
+#: inc/container.class.php:53 inc/container.class.php:668
 msgid "Export to YAML"
 msgstr "YAML로 내보내기"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:132
+#: templates/forms/status_override.html.twig inc/field.class.php:136
 msgid "Field"
 msgstr "항목"
 
-#: inc/field.class.php:143 inc/field.class.php:168
+#: inc/field.class.php:148 inc/field.class.php:173
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "항목 이름이 데이터베이스 용으로 너무 깁니다 (이름의 숫자는 문자로 대체되니, 제거해 보세요)"
 
-#: inc/field.class.php:329
+#: inc/field.class.php:322
 msgid "Fields"
 msgstr "항목"
 
-#: inc/container.class.php:127
+#: inc/container.class.php:131
 msgid "Fix container names"
 msgstr "컨테이너 이름 수정"
 
-#: inc/toolbox.class.php:116
+#: inc/toolbox.class.php:120
 msgid "Fix fields names"
 msgstr "항목 이름 수정"
 
-#: inc/field.class.php:989
+#: inc/field.class.php:1085
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:980
+#: inc/field.class.php:1076
 msgid "Header"
 msgstr "헤더"
 
-#: inc/container.class.php:862
+#: inc/container.class.php:911
 msgid "Insertion in the form (before save button)"
 msgstr "(저장 버튼 전에) 양식에 삽입"
 
-#: inc/container.class.php:863
+#: inc/container.class.php:912
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "(저장 버튼 전에) 특정 탭의 양식에 삽입"
 
-#: inc/labeltranslation.class.php:187
+#: inc/labeltranslation.class.php:192
 msgid "Label"
 msgstr "라벨"
 
-#: inc/labeltranslation.class.php:186
+#: inc/labeltranslation.class.php:191
 msgid "Language"
 msgstr "언어"
 
-#: hook.php:68
+#: hook.php:65
 msgid "MySQL tables installation"
 msgstr "MySQL 테이블 삽입"
 
-#: hook.php:124
+#: hook.php:125
 msgid "MySQL tables uninstallation"
 msgstr "MySQL 테이블 제거"
 
-#: inc/field.class.php:387
+#: inc/field.class.php:384
 msgid "No field for this block"
 msgstr "이 블럭에 대한 항목 없음"
 
@@ -145,32 +185,37 @@ msgstr "이 블럭에 대한 항목 없음"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:983
+#: inc/field.class.php:1079
 msgid "Number"
 msgstr "숫자"
 
-#: inc/statusoverride.class.php:76
+#: inc/statusoverride.class.php:80
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:399
-#: inc/field.class.php:607
+#: templates/forms/status_override.html.twig inc/field.class.php:397
+#: inc/field.class.php:608
 msgid "Read only"
 msgstr "읽기 전용"
 
-#: inc/container.class.php:48
+#: inc/container.class.php:52
 msgid "Regenerate container files"
 msgstr "컨테이너 파일 재생성"
 
-#: inc/container.class.php:1258
+#: inc/checkdatabasecommand.class.php:96
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr ""
+
+#: inc/container.class.php:1338
 msgid "Some URL fields contains invalid links"
 msgstr "일부 URL 항목에 잘못된 링크가 포함되었습니다"
 
-#: inc/container.class.php:1248
+#: inc/container.class.php:1328
 msgid "Some mandatory fields are empty"
 msgstr "일부 필수 항목이 비었습니다"
 
-#: inc/container.class.php:1253
+#: inc/container.class.php:1333
 msgid "Some numeric fields contains non numeric values"
 msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
 
@@ -178,65 +223,73 @@ msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:727
+#: inc/container.class.php:762
 msgid "Tab"
 msgstr "탭"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:1078
 msgid "Text (multiples lines)"
 msgstr "문구 (여러 줄)"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:1077
 msgid "Text (single line)"
 msgstr "문구 (한 줄)"
 
-#: hook.php:115
+#: hook.php:113
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다"
 
-#: inc/field.class.php:984
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr ""
+
+#: inc/field.class.php:1080
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:215
+#: inc/container.class.php:219
 msgid "Updating generated containers files"
 msgstr "생성된 컨테이너 파일 갱신"
 
-#: inc/dropdown.class.php:47
+#: inc/dropdown.class.php:49
 msgid "Updating generated dropdown files"
 msgstr "생성된 드롭다운 파일 갱신"
 
-#: inc/field.class.php:986
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr ""
+
+#: inc/field.class.php:1082
 msgid "Yes/No"
 msgstr "예/아니오"
 
-#: inc/container.class.php:416
+#: inc/container.class.php:430
 msgid "You cannot add block without associated element type"
 msgstr "관련된 요소 형식이 없으면 추가할 수 없습니다"
 
-#: inc/container.class.php:448
+#: inc/container.class.php:465
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "동일한 객체 탭에 '특정 탭의 양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/container.class.php:433
+#: inc/container.class.php:450
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "동일한 객체에 '양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/container.class.php:478
+#: inc/container.class.php:495
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "동일한 객체에 동일한 이름을 가진 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/containerdisplaycondition.class.php:430
-#: inc/containerdisplaycondition.class.php:445
+#: inc/containerdisplaycondition.class.php:452
+#: inc/containerdisplaycondition.class.php:467
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:85
-#: inc/containerdisplaycondition.class.php:105
+#: inc/containerdisplaycondition.class.php:88
+#: inc/containerdisplaycondition.class.php:109
 msgid "regular expression matches"
 msgstr ""
 

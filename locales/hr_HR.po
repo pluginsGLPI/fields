@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Milo Ivir <mail@milotype.de>, 2020
-# Milo Ivir <mail@milotype.de>, 2020
+# Milo Ivir <mail@milotype.de>, 2020,2022
 # Milo Ivir <mail@milotype.de>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-25 09:47+0000\n"
+"POT-Creation-Date: 2022-06-23 10:30+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Milo Ivir <mail@milotype.de>, 2020\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,229 +20,282 @@ msgstr ""
 "Language: hr_HR\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: inc/field.class.php:383
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:86
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> „%s.%s” je izbrisana."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> „%s.%s” treba izbrisati."
+
+#: inc/field.class.php:380
 msgid "Add a new field"
 msgstr "Dodaj novo polje"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Dodaj uvjet za skrivanje bloka"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Dodaj novu zamjenu stanja"
 
-#: inc/container.class.php:861
+#: inc/container.class.php:910
 msgid "Add tab"
 msgstr "Dodaj karticu"
 
-#: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
-#: setup.php:189
+#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: setup.php:202
 msgid "Additional fields"
 msgstr "Dodatna polja"
 
-#: inc/field.class.php:546
+#: inc/field.class.php:547
 msgid "Allowed values"
-msgstr ""
+msgstr "Dozvoljene vrijednosti"
 
-#: inc/container.class.php:633
+#: inc/container.class.php:658
 msgid "Block"
 msgstr "Blok"
 
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Provjeri bazu podataka za otkrivanje nedosljednosti."
+
+#: inc/toolbox.class.php:312
+msgid "Component items"
+msgstr ""
+
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:119
+#: inc/containerdisplaycondition.class.php:125
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Uvjet za skrivanje bloka"
+msgstr[1] "Uvjeti za skrivanje bloka"
+msgstr[2] "Uvjeti za skrivanje bloka"
 
-#: inc/field.class.php:561
+#: inc/field.class.php:562
 msgid "Configure"
 msgstr "Konfiguriraj"
 
-#: inc/field.class.php:561
+#: inc/field.class.php:562
 msgid "Configure fields values"
 msgstr "Konfiguriraj vrijednosti polja"
 
-#: inc/container.class.php:464
+#: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:987
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:79
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/field.class.php:1083
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:988
+#: inc/field.class.php:1084
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:1081
 msgid "Dropdown"
 msgstr "Padajući popis"
 
-#: inc/container.class.php:49 inc/container.class.php:642
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Sve je u redu – nije potrebna nijedna radnja."
+
+#: inc/container.class.php:53 inc/container.class.php:668
 msgid "Export to YAML"
 msgstr "Izvezi u YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:132
+#: templates/forms/status_override.html.twig inc/field.class.php:136
 msgid "Field"
 msgstr "Polje"
 
-#: inc/field.class.php:143 inc/field.class.php:168
+#: inc/field.class.php:148 inc/field.class.php:173
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:329
+#: inc/field.class.php:322
 msgid "Fields"
 msgstr "Polja"
 
-#: inc/container.class.php:127
+#: inc/container.class.php:131
 msgid "Fix container names"
 msgstr "Ispravi imena spremnika"
 
-#: inc/toolbox.class.php:116
+#: inc/toolbox.class.php:120
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/field.class.php:989
+#: inc/field.class.php:1085
 msgid "GLPI item"
-msgstr ""
+msgstr "GLPI predmet"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:1076
 msgid "Header"
 msgstr "Zaglavlje"
 
-#: inc/container.class.php:862
+#: inc/container.class.php:911
 msgid "Insertion in the form (before save button)"
 msgstr "Umetanje u obrazac (prije gumba za spremanje)"
 
-#: inc/container.class.php:863
+#: inc/container.class.php:912
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
 
-#: inc/labeltranslation.class.php:187
+#: inc/labeltranslation.class.php:192
 msgid "Label"
 msgstr "Oznaka"
 
-#: inc/labeltranslation.class.php:186
+#: inc/labeltranslation.class.php:191
 msgid "Language"
 msgstr "Jezik"
 
-#: hook.php:68
+#: hook.php:65
 msgid "MySQL tables installation"
 msgstr "Instalacija MySQL tablica"
 
-#: hook.php:124
+#: hook.php:125
 msgid "MySQL tables uninstallation"
 msgstr "Deinstalacija MySQL tablica"
 
-#: inc/field.class.php:387
+#: inc/field.class.php:384
 msgid "No field for this block"
 msgstr "Nema polja za ovaj blok"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr ""
+msgstr "Nijedan predmet nije pronađen"
 
-#: inc/field.class.php:983
+#: inc/field.class.php:1079
 msgid "Number"
 msgstr "Broj"
 
-#: inc/statusoverride.class.php:76
+#: inc/statusoverride.class.php:80
 msgid "Override by status"
-msgstr ""
+msgstr "Zamijeni po stanju"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:399
-#: inc/field.class.php:607
+#: templates/forms/status_override.html.twig inc/field.class.php:397
+#: inc/field.class.php:608
 msgid "Read only"
 msgstr "Samo-za-čitanje"
 
-#: inc/container.class.php:48
+#: inc/container.class.php:52
 msgid "Regenerate container files"
 msgstr "Ponovo generiraj datoteke spremnika"
 
-#: inc/container.class.php:1258
+#: inc/checkdatabasecommand.class.php:96
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr ""
+
+#: inc/container.class.php:1338
 msgid "Some URL fields contains invalid links"
 msgstr "Neka URL polja sadrže neispravne poveznice"
 
-#: inc/container.class.php:1248
+#: inc/container.class.php:1328
 msgid "Some mandatory fields are empty"
 msgstr "Neka obavezna polja su prazna"
 
-#: inc/container.class.php:1253
+#: inc/container.class.php:1333
 msgid "Some numeric fields contains non numeric values"
 msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "Zamjene stanja"
 
-#: inc/container.class.php:727
+#: inc/container.class.php:762
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:1078
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:1077
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
-#: hook.php:115
+#: hook.php:113
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
 
-#: inc/field.class.php:984
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr ""
+
+#: inc/field.class.php:1080
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:215
+#: inc/container.class.php:219
 msgid "Updating generated containers files"
 msgstr "Aktualiziranje generiranih datoteka spremnika"
 
-#: inc/dropdown.class.php:47
+#: inc/dropdown.class.php:49
 msgid "Updating generated dropdown files"
 msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 
-#: inc/field.class.php:986
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
+
+#: inc/field.class.php:1082
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: inc/container.class.php:416
+#: inc/container.class.php:430
 msgid "You cannot add block without associated element type"
 msgstr "Nije moguće dodati blok bez povezane vrste elementa"
 
-#: inc/container.class.php:448
+#: inc/container.class.php:465
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
 
-#: inc/container.class.php:433
+#: inc/container.class.php:450
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
 
-#: inc/container.class.php:478
+#: inc/container.class.php:495
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
 
-#: inc/containerdisplaycondition.class.php:430
-#: inc/containerdisplaycondition.class.php:445
+#: inc/containerdisplaycondition.class.php:452
+#: inc/containerdisplaycondition.class.php:467
 msgid "You must specify an item type, search option and condition."
-msgstr ""
+msgstr "Moraš navesti vrstu predmeta, opciju pretraživanja i uvjet."
 
-#: inc/containerdisplaycondition.class.php:85
-#: inc/containerdisplaycondition.class.php:105
+#: inc/containerdisplaycondition.class.php:88
+#: inc/containerdisplaycondition.class.php:109
 msgid "regular expression matches"
-msgstr ""
+msgstr "regularni izraz se podudara"
 
 #: templates/fields.html.twig
 msgid "show"

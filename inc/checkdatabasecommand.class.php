@@ -41,10 +41,10 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
         $this->setName('plugin:fields:check_database');
         $this->setDescription(__('Check database to detect inconsistencies.', 'fields'));
         $this->setHelp(
-            __('This command will chec database to detect following inconsistencies:', 'fields')
+            __('This command will check database to detect following inconsistencies:', 'fields')
             . "\n"
             . sprintf(
-                __('- some deleted fields may still be present in database (bug introduced in %s and fixed in version %s)', 'fields'),
+                __('- some deleted fields may still be present in database (bug introduced in version %s and fixed in version %s)', 'fields'),
                 '1.15.0',
                 '1.15.3'
             )

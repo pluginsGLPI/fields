@@ -5,7 +5,8 @@
 # Translators:
 # 5b63a00e0726b96d7ef35c99d5553cd0_b787b5f <8bb2d0f7e8927228f17fba8639d787be_31711>, 2016
 # Alexander Salas Bastidas <alexander.salas@gmail.com>, 2016
-# 5b63a00e0726b96d7ef35c99d5553cd0_b787b5f <8bb2d0f7e8927228f17fba8639d787be_31711>, 2016
+# Alexander Salas Bastidas <alexander.salas@gmail.com>, 2016
+# Óscar Suárez, 2022
 # Pruebas, 2019
 # Pruebas, 2019
 # Ricardo Herrero <ricardo.herrero@gmail.com>, 2020
@@ -13,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-25 09:47+0000\n"
+"POT-Creation-Date: 2022-06-23 10:30+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Ricardo Herrero <ricardo.herrero@gmail.com>, 2020\n"
+"Last-Translator: Óscar Suárez, 2022\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,128 +24,168 @@ msgstr ""
 "Language: es_ES\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: inc/field.class.php:383
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:86
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr ""
+
+#: inc/field.class.php:380
 msgid "Add a new field"
 msgstr "Agregar nuevo campo"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Agregar condición para ocultar bloque"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Agregar nueva anulación de estado"
 
-#: inc/container.class.php:861
+#: inc/container.class.php:910
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: front/container.form.php:64 front/container.php:33 inc/menu.class.php:35
-#: setup.php:189
+#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: setup.php:202
 msgid "Additional fields"
 msgstr "Campos adicionales"
 
-#: inc/field.class.php:546
+#: inc/field.class.php:547
 msgid "Allowed values"
-msgstr ""
+msgstr "Permitir valores"
 
-#: inc/container.class.php:633
+#: inc/container.class.php:658
 msgid "Block"
 msgstr "Bloque"
 
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Verificar la base de datos para detectar inconsistencias."
+
+#: inc/toolbox.class.php:312
+msgid "Component items"
+msgstr ""
+
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:119
+#: inc/containerdisplaycondition.class.php:125
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: inc/field.class.php:561
+#: inc/field.class.php:562
 msgid "Configure"
 msgstr "Configurar"
 
-#: inc/field.class.php:561
+#: inc/field.class.php:562
 msgid "Configure fields values"
 msgstr "Configure valores de los campos"
 
-#: inc/container.class.php:464
+#: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:987
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:79
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/field.class.php:1083
 msgid "Date"
 msgstr "Fecha"
 
-#: inc/field.class.php:988
+#: inc/field.class.php:1084
 msgid "Date & time"
 msgstr "Fecha & Hora"
 
-#: inc/field.class.php:985
+#: inc/field.class.php:1081
 msgid "Dropdown"
 msgstr "Menú desplegable"
 
-#: inc/container.class.php:49 inc/container.class.php:642
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr ""
+
+#: inc/container.class.php:53 inc/container.class.php:668
 msgid "Export to YAML"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:132
+#: templates/forms/status_override.html.twig inc/field.class.php:136
 msgid "Field"
 msgstr "Campo"
 
-#: inc/field.class.php:143 inc/field.class.php:168
+#: inc/field.class.php:148 inc/field.class.php:173
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:329
+#: inc/field.class.php:322
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/container.class.php:127
+#: inc/container.class.php:131
 msgid "Fix container names"
 msgstr "Corrija los nombres de los contenedores"
 
-#: inc/toolbox.class.php:116
+#: inc/toolbox.class.php:120
 msgid "Fix fields names"
 msgstr "Corrija los nombres de los campos"
 
-#: inc/field.class.php:989
+#: inc/field.class.php:1085
 msgid "GLPI item"
-msgstr ""
+msgstr "Elemento de GLPI"
 
-#: inc/field.class.php:980
+#: inc/field.class.php:1076
 msgid "Header"
 msgstr "Encabezamiento"
 
-#: inc/container.class.php:862
+#: inc/container.class.php:911
 msgid "Insertion in the form (before save button)"
 msgstr "Insertando en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:863
+#: inc/container.class.php:912
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserción en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/labeltranslation.class.php:187
+#: inc/labeltranslation.class.php:192
 msgid "Label"
 msgstr "Etiqueta"
 
-#: inc/labeltranslation.class.php:186
+#: inc/labeltranslation.class.php:191
 msgid "Language"
 msgstr "Idioma"
 
-#: hook.php:68
+#: hook.php:65
 msgid "MySQL tables installation"
 msgstr "Instalación de las tablas MySQL"
 
-#: hook.php:124
+#: hook.php:125
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalación de las tablas MySQL"
 
-#: inc/field.class.php:387
+#: inc/field.class.php:384
 msgid "No field for this block"
 msgstr "Ningún campo para este bloque"
 
@@ -152,32 +193,37 @@ msgstr "Ningún campo para este bloque"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:983
+#: inc/field.class.php:1079
 msgid "Number"
 msgstr "Número"
 
-#: inc/statusoverride.class.php:76
+#: inc/statusoverride.class.php:80
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:399
-#: inc/field.class.php:607
+#: templates/forms/status_override.html.twig inc/field.class.php:397
+#: inc/field.class.php:608
 msgid "Read only"
 msgstr "Solo lectura"
 
-#: inc/container.class.php:48
+#: inc/container.class.php:52
 msgid "Regenerate container files"
 msgstr "Regenerar archivos contenedores"
 
-#: inc/container.class.php:1258
+#: inc/checkdatabasecommand.class.php:96
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr ""
+
+#: inc/container.class.php:1338
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen vínculos no válidos"
 
-#: inc/container.class.php:1248
+#: inc/container.class.php:1328
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1253
+#: inc/container.class.php:1333
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
@@ -185,65 +231,73 @@ msgstr "Algunos campos numéricos contienen valores no numéricos"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:727
+#: inc/container.class.php:762
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/field.class.php:982
+#: inc/field.class.php:1078
 msgid "Text (multiples lines)"
 msgstr "Texto (multiples líneas)"
 
-#: inc/field.class.php:981
+#: inc/field.class.php:1077
 msgid "Text (single line)"
 msgstr "Texto (línea simple)"
 
-#: hook.php:115
+#: hook.php:113
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "El plugin no se puede desinstalar el plugin cuando se desactiva"
 
-#: inc/field.class.php:984
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr ""
+
+#: inc/field.class.php:1080
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:215
+#: inc/container.class.php:219
 msgid "Updating generated containers files"
 msgstr "Actualizar los archivos de contenedores generados"
 
-#: inc/dropdown.class.php:47
+#: inc/dropdown.class.php:49
 msgid "Updating generated dropdown files"
 msgstr "Actualización de los archivos 'desplegables' generados"
 
-#: inc/field.class.php:986
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr ""
+
+#: inc/field.class.php:1082
 msgid "Yes/No"
 msgstr "Si/No"
 
-#: inc/container.class.php:416
+#: inc/container.class.php:430
 msgid "You cannot add block without associated element type"
 msgstr "No se puede agregar un bloque sin el tipo de elemento asociado"
 
-#: inc/container.class.php:448
+#: inc/container.class.php:465
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'inserción en forma de una pestaña específica' en la misma pestaña de objeto"
 
-#: inc/container.class.php:433
+#: inc/container.class.php:450
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No se pueden añadir varios bloques con el tipo 'inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:478
+#: inc/container.class.php:495
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No se pueden añadir varios bloques con un nombre idéntico en el mismo objeto"
 
-#: inc/containerdisplaycondition.class.php:430
-#: inc/containerdisplaycondition.class.php:445
+#: inc/containerdisplaycondition.class.php:452
+#: inc/containerdisplaycondition.class.php:467
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:85
-#: inc/containerdisplaycondition.class.php:105
+#: inc/containerdisplaycondition.class.php:88
+#: inc/containerdisplaycondition.class.php:109
 msgid "regular expression matches"
 msgstr ""
 
