@@ -100,11 +100,13 @@
 
     {% elseif type matches '/^dropdown-.+/i' %}
         {% if not massiveaction %}
-            {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge({
-                'entity': field['model_class'] == 'User' ? -1 : item.getEntityID(),
-                'right': 'all',
-                'condition': field['dropdown_condition']
-            })) }}
+            {% set dropdown_options = {'condition': field['dropdown_condition'], 'entity': item.getEntityID()} %}
+            {% if field['dropdown_class'] == 'User' %}
+                {% set dropdown_options = dropdown_options|merge({'entity': -1, 'right': 'all'}) %}
+            {% elseif field['dropdown_class'] == 'Entity' %}
+                {% set dropdown_options = dropdown_options|merge({'entity_sons': true}) %}
+            {% endif %}
+            {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge(dropdown_options)) }}
         {% endif %}
 
     {% elseif type == 'glpi_item' %}
