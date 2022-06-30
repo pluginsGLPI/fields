@@ -43,6 +43,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     const SHOW_CONDITION_LT     = 3;
     const SHOW_CONDITION_GT     = 4;
     const SHOW_CONDITION_REGEX  = 5;
+    const SHOW_CONDITION_UN     = 6;
+    const SHOW_CONDITION_NU     = 7;
 
     public static function install(Migration $migration, $version)
     {
@@ -74,11 +76,18 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     public static function getEnumCondition($is_dropdown = false): array
     {
 
-        if ($is_dropdown) {
+        if ($is_dropdown == 1) {
             return [
                 self::SHOW_CONDITION_EQ => '=',
-                self::SHOW_CONDITION_NE => '≠'
+                self::SHOW_CONDITION_NE => '≠',
             ];
+        } else if ($is_dropdown == 2) {
+           return [
+              self::SHOW_CONDITION_EQ => '=',
+              self::SHOW_CONDITION_NE => '≠',
+              self::SHOW_CONDITION_UN => __('under'),
+              self::SHOW_CONDITION_NU => __('not under'),
+           ];
         } else {
             return [
                 self::SHOW_CONDITION_EQ => '=',
@@ -108,6 +117,12 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             case self::SHOW_CONDITION_REGEX:
                 echo __('regular expression matches', 'fields');
                 break;
+           case self::SHOW_CONDITION_UN:
+              echo __('under');
+              break;
+           case self::SHOW_CONDITION_NU:
+              echo __('not under');
+              break;
         }
     }
 
@@ -236,9 +251,14 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $twig_params['is_dropdown'] = true;
             $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
-            $twig_params['list_conditions']   = self::getEnumCondition(true);
+            $dropdown_itemtype = new $twig_params['dropdown_itemtype']();
+           if ($dropdown_itemtype instanceof CommonTreeDropdown) {
+              $twig_params['list_conditions']   = self::getEnumCondition(2);
+           } else {
+              $twig_params['list_conditions']   = self::getEnumCondition(1);
+           }
         } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
-            $twig_params['list_conditions']   = self::getEnumCondition(true);
+            $twig_params['list_conditions']   = self::getEnumCondition(1);
             $twig_params['is_specific'] = true;
             switch ($so['field']) {
                 case 'status':
@@ -428,6 +448,19 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                     }
                 }
                 break;
+           case self::SHOW_CONDITION_UN:
+              $sons = getSonsOf($searchOption['table'], $value);
+              if (in_array($fields[$searchOption['linkfield']], $sons)) {
+                 return false;
+              }
+              break;
+           case self::SHOW_CONDITION_NU:
+              // 'notunder'
+              $sons = getSonsOf($searchOption['table'], $value);
+              if (!in_array($fields[$searchOption['linkfield']], $sons)) {
+                 return false;
+              }
+              break;
         }
 
         return true;
