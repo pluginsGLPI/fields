@@ -256,12 +256,10 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $twig_params['is_dropdown'] = true;
             $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
-            $dropdown_itemtype = new $twig_params['dropdown_itemtype']();
-            if ($dropdown_itemtype instanceof CommonTreeDropdown) {
-                $twig_params['list_conditions']   = self::getComparisonOperators(true, true);
-            } else {
-                $twig_params['list_conditions']   = self::getComparisonOperators(true);
-            }
+            $twig_params['list_conditions']   = self::getComparisonOperators(
+                true,
+                is_a($twig_params['dropdown_itemtype'], CommonTreeDropdown::class, true)
+            );
         } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
             $twig_params['list_conditions']   = self::getComparisonOperators(true);
             $twig_params['is_specific'] = true;
