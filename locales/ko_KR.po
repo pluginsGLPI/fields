@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-23 10:30+0000\n"
+"POT-Creation-Date: 2022-07-04 14:12+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
@@ -73,7 +73,7 @@ msgid "Component items"
 msgstr ""
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:125
+#: inc/containerdisplaycondition.class.php:145
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
@@ -283,16 +283,26 @@ msgstr "동일한 객체에 '양식에 삽입' 유형이 있는 몇개의 블록
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "동일한 객체에 동일한 이름을 가진 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/containerdisplaycondition.class.php:452
-#: inc/containerdisplaycondition.class.php:467
+#: inc/containerdisplaycondition.class.php:487
+#: inc/containerdisplaycondition.class.php:502
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:88
-#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:95
+#: inc/containerdisplaycondition.class.php:129
+msgid "not under"
+msgstr ""
+
+#: inc/containerdisplaycondition.class.php:101
+#: inc/containerdisplaycondition.class.php:123
 msgid "regular expression matches"
 msgstr ""
 
 #: templates/fields.html.twig
 msgid "show"
 msgstr "표시"
+
+#: inc/containerdisplaycondition.class.php:94
+#: inc/containerdisplaycondition.class.php:126
+msgid "under"
+msgstr ""
