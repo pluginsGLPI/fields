@@ -688,13 +688,7 @@ JAVASCRIPT
      */
     public static function showForTab($params)
     {
-        $item    = $params['item'];
-
-        if (count($item->input) === 0 && count($params['options']) > 0) {
-            // On simplified interface, when form is reloaded (e.g. on category change), existing input is located
-            // `$params['options']` instead of being in `$item->input`.
-            $item->input = $params['options'];
-        }
+        $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
 
