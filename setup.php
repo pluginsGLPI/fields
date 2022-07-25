@@ -85,12 +85,7 @@ function plugin_init_fields()
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
-    $plugin = new Plugin();
-    if (
-        $plugin->isInstalled('fields')
-        && $plugin->isActivated('fields')
-        && Session::getLoginUserID()
-    ) {
+    if (Session::getLoginUserID() && Plugin::isPluginActive('fields')) {
         // Init hook about itemtype(s) for plugin fields
         if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
             $PLUGIN_HOOKS['plugin_fields'] = [];
@@ -109,7 +104,7 @@ function plugin_init_fields()
             }
         }
 
-        if ($plugin->isActivated('fusioninventory')) {
+        if (Plugin::isPluginActive('fusioninventory')) {
             $PLUGIN_HOOKS['fusioninventory_inventory']['fields']
             = ['PluginFieldsInventory', 'updateInventory'];
         }
@@ -154,7 +149,7 @@ function plugin_init_fields()
         }
 
         // Add Fields to Datainjection
-        if ($plugin->isActivated('datainjection')) {
+        if (Plugin::isPluginActive('datainjection')) {
             $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
         }
 
@@ -266,16 +261,14 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
 {
     global $DB;
 
-    $plugin = new Plugin();
     $yaml_conf = [
         'container' => [],
     ];
 
     if (
         isset($_SESSION['glpiactiveentities'])
-        && $plugin->isInstalled('fields')
-        && $plugin->isActivated('fields')
         && Session::getLoginUserID()
+        && Plugin::isPluginActive('fields')
     ) {
         if ($DB->tableExists(PluginFieldsContainer::getTable())) {
             $where = [];
