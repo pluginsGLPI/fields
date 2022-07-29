@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 14:12+0000\n"
+"POT-Creation-Date: 2022-07-29 09:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -54,7 +54,7 @@ msgid "Add tab"
 msgstr "Dodaj karticu"
 
 #: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
-#: setup.php:202
+#: setup.php:197
 msgid "Additional fields"
 msgstr "Dodatna polja"
 
@@ -107,15 +107,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1083
+#: inc/field.class.php:1077
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1084
+#: inc/field.class.php:1078
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
-#: inc/field.class.php:1081
+#: inc/field.class.php:1075
 msgid "Dropdown"
 msgstr "Padajući popis"
 
@@ -149,11 +149,11 @@ msgstr "Ispravi imena spremnika"
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/field.class.php:1085
+#: inc/field.class.php:1079
 msgid "GLPI item"
 msgstr "GLPI predmet"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1070
 msgid "Header"
 msgstr "Zaglavlje"
 
@@ -189,7 +189,7 @@ msgstr "Nema polja za ovaj blok"
 msgid "No item found"
 msgstr "Nijedan predmet nije pronađen"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1073
 msgid "Number"
 msgstr "Broj"
 
@@ -231,11 +231,11 @@ msgstr "Zamjene stanja"
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1072
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1071
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
@@ -247,7 +247,7 @@ msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1074
 msgid "URL"
 msgstr "URL"
 
@@ -263,7 +263,7 @@ msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 msgid "Use this option to actually fix database"
 msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
 
-#: inc/field.class.php:1082
+#: inc/field.class.php:1076
 msgid "Yes/No"
 msgstr "Da/Ne"
 

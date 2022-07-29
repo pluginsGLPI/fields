@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 14:12+0000\n"
+"POT-Creation-Date: 2022-07-29 09:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: sai sai, 2019\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -53,7 +53,7 @@ msgid "Add tab"
 msgstr "タブを追加する"
 
 #: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
-#: setup.php:202
+#: setup.php:197
 msgid "Additional fields"
 msgstr "追加のフィールド"
 
@@ -104,15 +104,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1083
+#: inc/field.class.php:1077
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1084
+#: inc/field.class.php:1078
 msgid "Date & time"
 msgstr "日時"
 
-#: inc/field.class.php:1081
+#: inc/field.class.php:1075
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -146,11 +146,11 @@ msgstr "コンテナ名を変更する"
 msgid "Fix fields names"
 msgstr "フィールド名を変更する"
 
-#: inc/field.class.php:1085
+#: inc/field.class.php:1079
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1070
 msgid "Header"
 msgstr "ヘッダ"
 
@@ -186,7 +186,7 @@ msgstr "ブロック内にフィールドはありません"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1073
 msgid "Number"
 msgstr "数値"
 
@@ -228,11 +228,11 @@ msgstr ""
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1072
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1071
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
@@ -244,7 +244,7 @@ msgstr "プラグインが無効な場合、プラグインをアンインスト
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1074
 msgid "URL"
 msgstr "URL"
 
@@ -260,7 +260,7 @@ msgstr "生成済ドロップダウンフィールドの選択肢を更新"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1082
+#: inc/field.class.php:1076
 msgid "Yes/No"
 msgstr "はい/いいえ"
 

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 14:12+0000\n"
+"POT-Creation-Date: 2022-07-29 09:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Óscar Suárez, 2022\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_ES/)\n"
@@ -58,7 +58,7 @@ msgid "Add tab"
 msgstr "Agregar pestaña"
 
 #: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
-#: setup.php:202
+#: setup.php:197
 msgid "Additional fields"
 msgstr "Campos adicionales"
 
@@ -111,15 +111,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1083
+#: inc/field.class.php:1077
 msgid "Date"
 msgstr "Fecha"
 
-#: inc/field.class.php:1084
+#: inc/field.class.php:1078
 msgid "Date & time"
 msgstr "Fecha & Hora"
 
-#: inc/field.class.php:1081
+#: inc/field.class.php:1075
 msgid "Dropdown"
 msgstr "Menú desplegable"
 
@@ -153,11 +153,11 @@ msgstr "Corrija los nombres de los contenedores"
 msgid "Fix fields names"
 msgstr "Corrija los nombres de los campos"
 
-#: inc/field.class.php:1085
+#: inc/field.class.php:1079
 msgid "GLPI item"
 msgstr "Elemento de GLPI"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1070
 msgid "Header"
 msgstr "Encabezamiento"
 
@@ -193,7 +193,7 @@ msgstr "Ningún campo para este bloque"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1073
 msgid "Number"
 msgstr "Número"
 
@@ -235,11 +235,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1072
 msgid "Text (multiples lines)"
 msgstr "Texto (multiples líneas)"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1071
 msgid "Text (single line)"
 msgstr "Texto (línea simple)"
 
@@ -251,7 +251,7 @@ msgstr "El plugin no se puede desinstalar el plugin cuando se desactiva"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1074
 msgid "URL"
 msgstr "URL"
 
@@ -267,7 +267,7 @@ msgstr "Actualización de los archivos 'desplegables' generados"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1082
+#: inc/field.class.php:1076
 msgid "Yes/No"
 msgstr "Si/No"
 

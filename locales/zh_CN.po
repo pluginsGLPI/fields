@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 14:12+0000\n"
+"POT-Creation-Date: 2022-07-29 09:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -52,7 +52,7 @@ msgid "Add tab"
 msgstr "添加标签"
 
 #: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
-#: setup.php:202
+#: setup.php:197
 msgid "Additional fields"
 msgstr "附加字段"
 
@@ -103,15 +103,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1083
+#: inc/field.class.php:1077
 msgid "Date"
 msgstr "日期"
 
-#: inc/field.class.php:1084
+#: inc/field.class.php:1078
 msgid "Date & time"
 msgstr "时间&日期"
 
-#: inc/field.class.php:1081
+#: inc/field.class.php:1075
 msgid "Dropdown"
 msgstr "拖动"
 
@@ -145,11 +145,11 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:1085
+#: inc/field.class.php:1079
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1070
 msgid "Header"
 msgstr "头部"
 
@@ -185,7 +185,7 @@ msgstr "此区域无字段"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1073
 msgid "Number"
 msgstr "整数"
 
@@ -227,11 +227,11 @@ msgstr ""
 msgid "Tab"
 msgstr "标签"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1072
 msgid "Text (multiples lines)"
 msgstr "文本（多行）"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1071
 msgid "Text (single line)"
 msgstr "文本（单行）"
 
@@ -243,7 +243,7 @@ msgstr "插件处于禁用状态时无法卸载"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1074
 msgid "URL"
 msgstr "网址"
 
@@ -259,7 +259,7 @@ msgstr "更新生成下拉文件"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1082
+#: inc/field.class.php:1076
 msgid "Yes/No"
 msgstr "是/否"
 

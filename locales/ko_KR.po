@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021
+# 조성현 <jaymz9634@gmail.com>, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 14:12+0000\n"
+"POT-Creation-Date: 2022-07-29 09:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021\n"
+"Last-Translator: 조성현 <jaymz9634@gmail.com>, 2020-2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +52,7 @@ msgid "Add tab"
 msgstr "탭 추가"
 
 #: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
-#: setup.php:202
+#: setup.php:197
 msgid "Additional fields"
 msgstr "추가 항목"
 
@@ -103,15 +103,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1083
+#: inc/field.class.php:1077
 msgid "Date"
 msgstr "날짜"
 
-#: inc/field.class.php:1084
+#: inc/field.class.php:1078
 msgid "Date & time"
 msgstr "날짜 & 시간"
 
-#: inc/field.class.php:1081
+#: inc/field.class.php:1075
 msgid "Dropdown"
 msgstr "드롭다운"
 
@@ -145,11 +145,11 @@ msgstr "컨테이너 이름 수정"
 msgid "Fix fields names"
 msgstr "항목 이름 수정"
 
-#: inc/field.class.php:1085
+#: inc/field.class.php:1079
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1070
 msgid "Header"
 msgstr "헤더"
 
@@ -185,7 +185,7 @@ msgstr "이 블럭에 대한 항목 없음"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1073
 msgid "Number"
 msgstr "숫자"
 
@@ -227,11 +227,11 @@ msgstr ""
 msgid "Tab"
 msgstr "탭"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1072
 msgid "Text (multiples lines)"
 msgstr "문구 (여러 줄)"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1071
 msgid "Text (single line)"
 msgstr "문구 (한 줄)"
 
@@ -243,7 +243,7 @@ msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1074
 msgid "URL"
 msgstr "URL"
 
@@ -259,7 +259,7 @@ msgstr "생성된 드롭다운 파일 갱신"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1082
+#: inc/field.class.php:1076
 msgid "Yes/No"
 msgstr "예/아니오"
 

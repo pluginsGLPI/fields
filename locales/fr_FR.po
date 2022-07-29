@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 14:12+0000\n"
+"POT-Creation-Date: 2022-07-29 09:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Cédric Anne, 2018,2022\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -56,7 +56,7 @@ msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
 #: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
-#: setup.php:202
+#: setup.php:197
 msgid "Additional fields"
 msgstr "Champs supplémentaires"
 
@@ -109,15 +109,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de données contenait des données orphelines des champs %s incorrectement supprimés."
 
-#: inc/field.class.php:1083
+#: inc/field.class.php:1077
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1084
+#: inc/field.class.php:1078
 msgid "Date & time"
 msgstr "Date & heure"
 
-#: inc/field.class.php:1081
+#: inc/field.class.php:1075
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
@@ -151,11 +151,11 @@ msgstr "Correction du nom des conteneurs"
 msgid "Fix fields names"
 msgstr "Correction du nom des champs"
 
-#: inc/field.class.php:1085
+#: inc/field.class.php:1079
 msgid "GLPI item"
 msgstr "Objet GLPI"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1070
 msgid "Header"
 msgstr "Entête"
 
@@ -191,7 +191,7 @@ msgstr "Aucun champ pour ce bloc"
 msgid "No item found"
 msgstr "Aucun objet trouvé"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1073
 msgid "Number"
 msgstr "Nombre"
 
@@ -233,11 +233,11 @@ msgstr "Surcharges par statut"
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1072
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1071
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
@@ -249,7 +249,7 @@ msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr "Cette commande va vérifier la base de données pour détecter les éventuelles incohérences suivantes :"
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1074
 msgid "URL"
 msgstr "URL"
 
@@ -265,7 +265,7 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 msgid "Use this option to actually fix database"
 msgstr "Utilisez cette option pour corriger les incohérences en base de données"
 
-#: inc/field.class.php:1082
+#: inc/field.class.php:1076
 msgid "Yes/No"
 msgstr "Oui/Non"
 
