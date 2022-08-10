@@ -1050,7 +1050,7 @@ JAVASCRIPT
 
         //show field
         $item = new $itemtype();
-        $itemtype->getEmpty();
+        $item->getEmpty();
 
         echo self::prepareHtmlFields($fields, $item, true, false, $massiveaction);
 
