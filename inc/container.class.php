@@ -1587,13 +1587,6 @@ HTML;
 
         $i = 76665;
 
-        $search_string = json_encode($itemtype);
-        // Backslashes must be doubled in LIKE clause, according to MySQL documentation:
-        // > To search for \, specify it as \\\\; this is because the backslashes are stripped
-        // > once by the parser and again when the pattern match is made,
-        // > leaving a single backslash to be matched against.
-        $search_string = str_replace('\\', '\\\\', $search_string);
-
         $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly, fields.allowed_values,
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id
@@ -1605,7 +1598,7 @@ HTML;
          INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
-         WHERE containers.itemtypes LIKE '%" . $DB->escape($search_string) . "%'
+         WHERE containers.itemtypes LIKE '%" . $itemtype . "%'
             AND fields.type != 'header'
             ORDER BY fields.id ASC";
         $res = $DB->query($query);
@@ -1616,9 +1609,23 @@ HTML;
                     $i++;
                     continue;
                 }
+            }  
+            
+            // reset $CurrentItemType to initial itemtype
+            $CurrentItemType = $itemtype;
+            //get all types in itemtypes
+            $it = json_decode($data['itemtypes']);
+            foreach ($it as $label) {
+               // set $CurrentItemType with the real current type
+               // if $label is in ['itemtypeModel', 'itemtypeType']
+               $re = "/$itemtype(Model|Type)/";
+               if (preg_match($re, $label)) {
+                  $CurrentItemType = $label;
+                  break;
+               }
             }
-            $tablename = getTableForItemType(self::getClassname($itemtype, $data['container_name']));
-
+            $tablename = "glpi_plugin_fields_".strtolower($CurrentItemType . getPlural(preg_replace('/s$/', '', $data['container_name'])));
+   
             //get translations
             $container = [
                 'itemtype' => PluginFieldsContainer::getType(),
@@ -1690,6 +1697,11 @@ HTML;
                 $opt[$i]['joinparams']['jointype'] = "";
                 $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
                 $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                $opt[$i]['joinparams']['beforejoin']['joinparams']['specific_itemtype'] = $CurrentItemType; //set itemtype customfield in join
+                // needs to add a ref to the $itemtype
+                $opt[$i]['joinparams']['beforejoin']['joinparams']['beforejoin'] = [
+                   'table' => getTableForItemType($CurrentItemType)
+                ];
             } elseif ($data['type'] === "glpi_item") {
                 $itemtype_field = sprintf('itemtype_%s', $data['name']);
                 $items_id_field = sprintf('items_id_%s', $data['name']);

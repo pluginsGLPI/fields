@@ -512,24 +512,12 @@ class PluginFieldsField extends CommonDBChild
 JAVASCRIPT
             );
 
-            // Exclude dropdown that corresponds to itemtypes targetted by container.
-            // This will prevent issues with search options.
-            // FIXME: Fix search options handling and remove this limitation.
-            $itemtypes_to_exclude = !empty($container->fields['itemtypes'])
-                ? array_map(
-                    function ($itemtype) {
-                        return 'dropdown-' . $itemtype;
-                    },
-                    json_decode($container->fields['itemtypes'])
-                )
-                : [];
             Dropdown::showFromArray(
                 'type',
-                self::getTypes(false),
+                self::getTypes(),
                 [
                     'value'     => $this->fields['type'],
-                    'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)',
-                    'used'      => array_combine($itemtypes_to_exclude, $itemtypes_to_exclude),
+                    'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)'
                 ]
             );
         }
