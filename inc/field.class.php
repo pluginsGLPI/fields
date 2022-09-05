@@ -108,7 +108,7 @@ class PluginFieldsField extends CommonDBChild
             $DB->buildUpdate(
                 PluginFieldsField::getTable(),
                 ['type' => 'dropdown-User'],
-                ['type' => 'dropdownusers']
+                ['type' => 'dropdownuser']
             )
         );
         $migration->addPostQuery(
