@@ -111,6 +111,15 @@ class PluginFieldsField extends CommonDBChild
                 ['type' => 'dropdownuser']
             )
         );
+
+        $migration->addPostQuery(
+            $DB->buildUpdate(
+                PluginFieldsField::getTable(),
+                ['type' => 'dropdown-OperatingSystem'],
+                ['type' => 'dropdownoperatingsystems']
+            )
+        );
+
         return true;
     }
 
