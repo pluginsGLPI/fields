@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
-# alexandre delaunay <delaunay.alexandre@gmail.com>, 2016
+# Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
+# Alexandre Delaunay <delaunay.alexandre@gmail.com>, 2016
 # Cédric Anne, 2018,2022
 # Cédric Anne, 2018,2022
 # Johan Cwiklinski, 2016-2017
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-29 09:46+0000\n"
+"POT-Creation-Date: 2022-09-13 09:03+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Cédric Anne, 2018,2022\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -39,7 +39,7 @@ msgstr "-> \"%s.%s\" a été supprimé."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" devrait être supprimé."
 
-#: inc/field.class.php:380
+#: inc/field.class.php:381
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
@@ -55,12 +55,12 @@ msgstr "Ajouter une nouvelle surcharge par statut"
 msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
-#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:60
 #: setup.php:197
 msgid "Additional fields"
 msgstr "Champs supplémentaires"
 
-#: inc/field.class.php:547
+#: inc/field.class.php:548
 msgid "Allowed values"
 msgstr "Valeurs autorisées"
 
@@ -84,11 +84,11 @@ msgstr[0] "Condition pour masquer le bloc"
 msgstr[1] "Conditions pour masquer le bloc"
 msgstr[2] "Conditions pour masquer le bloc"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure"
 msgstr "Configuration"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure fields values"
 msgstr "Configurer les valeurs du champ"
 
@@ -109,15 +109,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de données contenait des données orphelines des champs %s incorrectement supprimés."
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1078
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1079
 msgid "Date & time"
 msgstr "Date & heure"
 
-#: inc/field.class.php:1075
+#: inc/field.class.php:1076
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
@@ -129,17 +129,17 @@ msgstr "Tout est en ordre - aucune action n'est requise."
 msgid "Export to YAML"
 msgstr "Exporter vers YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:136
+#: templates/forms/status_override.html.twig inc/field.class.php:137
 msgid "Field"
 msgstr "Champ"
 
-#: inc/field.class.php:148 inc/field.class.php:173
+#: inc/field.class.php:149 inc/field.class.php:174
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Le nom du champ est trop long pour la base de données (les nombres dans le nom sont automatiquement remplacés par des caractères, essayez de les enlever)"
 
-#: inc/field.class.php:322
+#: inc/field.class.php:323
 msgid "Fields"
 msgstr "Champs"
 
@@ -151,11 +151,11 @@ msgstr "Correction du nom des conteneurs"
 msgid "Fix fields names"
 msgstr "Correction du nom des champs"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1080
 msgid "GLPI item"
 msgstr "Objet GLPI"
 
-#: inc/field.class.php:1070
+#: inc/field.class.php:1071
 msgid "Header"
 msgstr "Entête"
 
@@ -183,7 +183,7 @@ msgstr "Installation des tables MySQL"
 msgid "MySQL tables uninstallation"
 msgstr "Désinstallation des tables MySQL"
 
-#: inc/field.class.php:384
+#: inc/field.class.php:385
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
@@ -191,7 +191,7 @@ msgstr "Aucun champ pour ce bloc"
 msgid "No item found"
 msgstr "Aucun objet trouvé"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1074
 msgid "Number"
 msgstr "Nombre"
 
@@ -199,8 +199,8 @@ msgstr "Nombre"
 msgid "Override by status"
 msgstr "Surcharge par statut"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:397
-#: inc/field.class.php:608
+#: templates/forms/status_override.html.twig inc/field.class.php:398
+#: inc/field.class.php:609
 msgid "Read only"
 msgstr "Lecture seule"
 
@@ -233,11 +233,11 @@ msgstr "Surcharges par statut"
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1073
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1072
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
@@ -249,7 +249,7 @@ msgstr "Le plugin ne peut etre désinstallé quand le plugin est désactivé"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr "Cette commande va vérifier la base de données pour détecter les éventuelles incohérences suivantes :"
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1075
 msgid "URL"
 msgstr "URL"
 
@@ -265,7 +265,7 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 msgid "Use this option to actually fix database"
 msgstr "Utilisez cette option pour corriger les incohérences en base de données"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1077
 msgid "Yes/No"
 msgstr "Oui/Non"
 

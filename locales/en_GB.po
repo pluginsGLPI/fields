@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-29 09:46+0000\n"
+"POT-Creation-Date: 2022-09-13 09:03+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Automatically generated, 2021-2022\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_GB/)\n"
@@ -35,7 +35,7 @@ msgstr "-> \"%s.%s\" has been deleted."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" should be deleted."
 
-#: inc/field.class.php:380
+#: inc/field.class.php:381
 msgid "Add a new field"
 msgstr "Add a new field"
 
@@ -51,12 +51,12 @@ msgstr "Add new status override"
 msgid "Add tab"
 msgstr "Add tab"
 
-#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:60
 #: setup.php:197
 msgid "Additional fields"
 msgstr "Additional fields"
 
-#: inc/field.class.php:547
+#: inc/field.class.php:548
 msgid "Allowed values"
 msgstr "Allowed values"
 
@@ -79,11 +79,11 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Condition to hide block"
 msgstr[1] "Conditions to hide block"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure"
 msgstr "Configure"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure fields values"
 msgstr "Configure fields values"
 
@@ -104,15 +104,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1078
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1079
 msgid "Date & time"
 msgstr "Date & time"
 
-#: inc/field.class.php:1075
+#: inc/field.class.php:1076
 msgid "Dropdown"
 msgstr "Dropdown"
 
@@ -124,17 +124,17 @@ msgstr "Everything is in order - no action needed."
 msgid "Export to YAML"
 msgstr "Export to YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:136
+#: templates/forms/status_override.html.twig inc/field.class.php:137
 msgid "Field"
 msgstr "Field"
 
-#: inc/field.class.php:148 inc/field.class.php:173
+#: inc/field.class.php:149 inc/field.class.php:174
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Field name is too long for database (digits in name are replaced by characters, try to remove them)"
 
-#: inc/field.class.php:322
+#: inc/field.class.php:323
 msgid "Fields"
 msgstr "Fields"
 
@@ -146,11 +146,11 @@ msgstr "Fix container names"
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1080
 msgid "GLPI item"
 msgstr "GLPI item"
 
-#: inc/field.class.php:1070
+#: inc/field.class.php:1071
 msgid "Header"
 msgstr "Header"
 
@@ -178,7 +178,7 @@ msgstr "MySQL tables installation"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL tables uninstallation"
 
-#: inc/field.class.php:384
+#: inc/field.class.php:385
 msgid "No field for this block"
 msgstr "No field for this block"
 
@@ -186,7 +186,7 @@ msgstr "No field for this block"
 msgid "No item found"
 msgstr "No item found"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1074
 msgid "Number"
 msgstr "Number"
 
@@ -194,8 +194,8 @@ msgstr "Number"
 msgid "Override by status"
 msgstr "Override by status"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:397
-#: inc/field.class.php:608
+#: templates/forms/status_override.html.twig inc/field.class.php:398
+#: inc/field.class.php:609
 msgid "Read only"
 msgstr "Read only"
 
@@ -228,11 +228,11 @@ msgstr "Status overrides"
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1073
 msgid "Text (multiples lines)"
 msgstr "Text (multiples lines)"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1072
 msgid "Text (single line)"
 msgstr "Text (single line)"
 
@@ -244,7 +244,7 @@ msgstr "The plugin can't be uninstalled when the plugin is disabled"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1075
 msgid "URL"
 msgstr "URL"
 
@@ -260,7 +260,7 @@ msgstr "Updating generated dropdown files"
 msgid "Use this option to actually fix database"
 msgstr "Use this option to actually fix database"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1077
 msgid "Yes/No"
 msgstr "Yes/No"
 

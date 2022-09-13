@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Alexander Sokolov <a.sokolov@outlook.com>, 2022
 # Alexey Petukhov <lexx015@gmail.com>, 2015,2021
 # Mr.GreyWolf, 2017
 # Mr.GreyWolf, 2017
@@ -12,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-29 09:46+0000\n"
+"POT-Creation-Date: 2022-09-13 09:03+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Nikolai Petrov <techobsl@yandex.ru>, 2017\n"
+"Last-Translator: Alexander Sokolov <a.sokolov@outlook.com>, 2022\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,42 +28,42 @@ msgstr ""
 msgid ""
 "- some deleted fields may still be present in database (bug introduced in "
 "version %s and fixed in version %s)"
-msgstr ""
+msgstr "- некоторые удаленные поля могут все еще присутствовать в базе данных (ошибка введена в версию %s и исправлена в версии %s)"
 
 #: inc/checkdatabasecommand.class.php:86
 #, php-format
 msgid "-> \"%s.%s\" has been deleted."
-msgstr ""
+msgstr "->\"%s.%s\" было удалено."
 
 #: inc/checkdatabasecommand.class.php:87
 #, php-format
 msgid "-> \"%s.%s\" should be deleted."
-msgstr ""
+msgstr "-> \"%s.%s\" должно быть удалено."
 
-#: inc/field.class.php:380
+#: inc/field.class.php:381
 msgid "Add a new field"
 msgstr "Добавить новое поле"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Добавить условие для скрытия блока"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Добавить новое переопределение статуса"
 
 #: inc/container.class.php:910
 msgid "Add tab"
 msgstr "Добавить вкладку"
 
-#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:60
 #: setup.php:197
 msgid "Additional fields"
 msgstr "Дополнительные поля"
 
-#: inc/field.class.php:547
+#: inc/field.class.php:548
 msgid "Allowed values"
-msgstr ""
+msgstr "Допустимые значения"
 
 #: inc/container.class.php:658
 msgid "Block"
@@ -70,26 +71,26 @@ msgstr "Блок"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
-msgstr ""
+msgstr "Проверьте базу данных на наличие несоответствий."
 
 #: inc/toolbox.class.php:312
 msgid "Component items"
-msgstr ""
+msgstr "Составные элементы"
 
 #: templates/container_display_conditions.html.twig
 #: inc/containerdisplaycondition.class.php:145
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Условие для скрытия блока"
+msgstr[1] "Условия для скрытия блока"
+msgstr[2] "Условия для скрытия блока"
+msgstr[3] "Условия для скрытия блока"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure"
 msgstr "Настройка"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure fields values"
 msgstr "Настрить поля значений"
 
@@ -102,45 +103,45 @@ msgstr "Название контейнера слишком длинное дл
 #: inc/checkdatabasecommand.class.php:80
 #, php-format
 msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr ""
+msgstr "База данных содержит потерянные данные из %s неправильно удаленных полей."
 
 #: inc/checkdatabasecommand.class.php:79
 #, php-format
 msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr ""
+msgstr "База данных может содержать потерянные данные из %s неправильно удаленных полей."
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1078
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1079
 msgid "Date & time"
 msgstr "Дата и время"
 
-#: inc/field.class.php:1075
+#: inc/field.class.php:1076
 msgid "Dropdown"
 msgstr "Выпадающий список"
 
 #: inc/checkdatabasecommand.class.php:72
 msgid "Everything is in order - no action needed."
-msgstr ""
+msgstr "Все в порядке - никаких действий не требуется."
 
 #: inc/container.class.php:53 inc/container.class.php:668
 msgid "Export to YAML"
 msgstr "Экспорт в YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:136
+#: templates/forms/status_override.html.twig inc/field.class.php:137
 msgid "Field"
 msgstr "Поле"
 
-#: inc/field.class.php:148 inc/field.class.php:173
+#: inc/field.class.php:149 inc/field.class.php:174
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Название поля слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
-#: inc/field.class.php:322
+#: inc/field.class.php:323
 msgid "Fields"
 msgstr "Поля"
 
@@ -152,11 +153,11 @@ msgstr "Исправить названия контейнеров"
 msgid "Fix fields names"
 msgstr "Исправить названия полей"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1080
 msgid "GLPI item"
-msgstr ""
+msgstr "GLPI объект"
 
-#: inc/field.class.php:1070
+#: inc/field.class.php:1071
 msgid "Header"
 msgstr "Заголовок"
 
@@ -184,24 +185,24 @@ msgstr "Установка таблиц MySQL "
 msgid "MySQL tables uninstallation"
 msgstr "Удаление таблиц MySQL"
 
-#: inc/field.class.php:384
+#: inc/field.class.php:385
 msgid "No field for this block"
 msgstr "Нет поля для этого блока"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr ""
+msgstr "Объект не найден"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1074
 msgid "Number"
 msgstr "Номер"
 
 #: inc/statusoverride.class.php:80
 msgid "Override by status"
-msgstr ""
+msgstr "Переопределение по статусу"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:397
-#: inc/field.class.php:608
+#: templates/forms/status_override.html.twig inc/field.class.php:398
+#: inc/field.class.php:609
 msgid "Read only"
 msgstr "Только чтение"
 
@@ -212,7 +213,7 @@ msgstr "Восстановить файлы контейнера"
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
-msgstr ""
+msgstr "Запустите \"%s\" для устранения несоответствий базы данных."
 
 #: inc/container.class.php:1338
 msgid "Some URL fields contains invalid links"
@@ -228,17 +229,17 @@ msgstr "Некоторые числовые поля содержат не то�
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "Переопределение статуса"
 
 #: inc/container.class.php:762
 msgid "Tab"
 msgstr "Вкладка"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1073
 msgid "Text (multiples lines)"
 msgstr "Текст (многострочный)"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1072
 msgid "Text (single line)"
 msgstr "Тест (одна строка)"
 
@@ -248,9 +249,9 @@ msgstr "Плагин не может быть удален пока плагин
 
 #: inc/checkdatabasecommand.class.php:44
 msgid "This command will check database to detect following inconsistencies:"
-msgstr ""
+msgstr "Эта команда проверит базу данных на наличие следующих несоответствий:"
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1075
 msgid "URL"
 msgstr "URL"
 
@@ -264,9 +265,9 @@ msgstr "Обновление автоматически раскрывающег
 
 #: inc/checkdatabasecommand.class.php:57
 msgid "Use this option to actually fix database"
-msgstr ""
+msgstr "Используйте это условие чтобы исправить базу данных"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1077
 msgid "Yes/No"
 msgstr "Да/Нет"
 
@@ -293,17 +294,17 @@ msgstr "Вы не можете добавить несколько блоков 
 #: inc/containerdisplaycondition.class.php:487
 #: inc/containerdisplaycondition.class.php:502
 msgid "You must specify an item type, search option and condition."
-msgstr ""
+msgstr "Необходимо указать тип элемента, вариант поиска и условие."
 
 #: inc/containerdisplaycondition.class.php:95
 #: inc/containerdisplaycondition.class.php:129
 msgid "not under"
-msgstr ""
+msgstr "не под"
 
 #: inc/containerdisplaycondition.class.php:101
 #: inc/containerdisplaycondition.class.php:123
 msgid "regular expression matches"
-msgstr ""
+msgstr "соответствует регулярному выражению"
 
 #: templates/fields.html.twig
 msgid "show"
@@ -312,4 +313,4 @@ msgstr "показать"
 #: inc/containerdisplaycondition.class.php:94
 #: inc/containerdisplaycondition.class.php:126
 msgid "under"
-msgstr ""
+msgstr "под"

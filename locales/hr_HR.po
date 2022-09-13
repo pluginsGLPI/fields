@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-29 09:46+0000\n"
+"POT-Creation-Date: 2022-09-13 09:03+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -37,7 +37,7 @@ msgstr "-> „%s.%s” je izbrisana."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> „%s.%s” treba izbrisati."
 
-#: inc/field.class.php:380
+#: inc/field.class.php:381
 msgid "Add a new field"
 msgstr "Dodaj novo polje"
 
@@ -53,12 +53,12 @@ msgstr "Dodaj novu zamjenu stanja"
 msgid "Add tab"
 msgstr "Dodaj karticu"
 
-#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:60
 #: setup.php:197
 msgid "Additional fields"
 msgstr "Dodatna polja"
 
-#: inc/field.class.php:547
+#: inc/field.class.php:548
 msgid "Allowed values"
 msgstr "Dozvoljene vrijednosti"
 
@@ -82,11 +82,11 @@ msgstr[0] "Uvjet za skrivanje bloka"
 msgstr[1] "Uvjeti za skrivanje bloka"
 msgstr[2] "Uvjeti za skrivanje bloka"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure"
 msgstr "Konfiguriraj"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure fields values"
 msgstr "Konfiguriraj vrijednosti polja"
 
@@ -107,15 +107,15 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1078
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1079
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
-#: inc/field.class.php:1075
+#: inc/field.class.php:1076
 msgid "Dropdown"
 msgstr "Padajući popis"
 
@@ -127,17 +127,17 @@ msgstr "Sve je u redu – nije potrebna nijedna radnja."
 msgid "Export to YAML"
 msgstr "Izvezi u YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:136
+#: templates/forms/status_override.html.twig inc/field.class.php:137
 msgid "Field"
 msgstr "Polje"
 
-#: inc/field.class.php:148 inc/field.class.php:173
+#: inc/field.class.php:149 inc/field.class.php:174
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:322
+#: inc/field.class.php:323
 msgid "Fields"
 msgstr "Polja"
 
@@ -149,11 +149,11 @@ msgstr "Ispravi imena spremnika"
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1080
 msgid "GLPI item"
 msgstr "GLPI predmet"
 
-#: inc/field.class.php:1070
+#: inc/field.class.php:1071
 msgid "Header"
 msgstr "Zaglavlje"
 
@@ -181,7 +181,7 @@ msgstr "Instalacija MySQL tablica"
 msgid "MySQL tables uninstallation"
 msgstr "Deinstalacija MySQL tablica"
 
-#: inc/field.class.php:384
+#: inc/field.class.php:385
 msgid "No field for this block"
 msgstr "Nema polja za ovaj blok"
 
@@ -189,7 +189,7 @@ msgstr "Nema polja za ovaj blok"
 msgid "No item found"
 msgstr "Nijedan predmet nije pronađen"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1074
 msgid "Number"
 msgstr "Broj"
 
@@ -197,8 +197,8 @@ msgstr "Broj"
 msgid "Override by status"
 msgstr "Zamijeni po stanju"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:397
-#: inc/field.class.php:608
+#: templates/forms/status_override.html.twig inc/field.class.php:398
+#: inc/field.class.php:609
 msgid "Read only"
 msgstr "Samo-za-čitanje"
 
@@ -231,11 +231,11 @@ msgstr "Zamjene stanja"
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1073
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1072
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
@@ -247,7 +247,7 @@ msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1075
 msgid "URL"
 msgstr "URL"
 
@@ -263,7 +263,7 @@ msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 msgid "Use this option to actually fix database"
 msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1077
 msgid "Yes/No"
 msgstr "Da/Ne"
 

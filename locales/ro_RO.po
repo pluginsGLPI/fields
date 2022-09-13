@@ -5,13 +5,14 @@
 # Translators:
 # Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2015-2016
 # Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2015
+# Virgiliu Antonescu, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-29 09:46+0000\n"
+"POT-Creation-Date: 2022-09-13 09:03+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2015\n"
+"Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,288 +25,288 @@ msgstr ""
 msgid ""
 "- some deleted fields may still be present in database (bug introduced in "
 "version %s and fixed in version %s)"
-msgstr ""
+msgstr "- unele câmpuri șterse pot fi încă prezente în baza de date (bug existent in versiunea %s și remediat în versiunea %s)"
 
 #: inc/checkdatabasecommand.class.php:86
 #, php-format
 msgid "-> \"%s.%s\" has been deleted."
-msgstr ""
+msgstr "-> \"%s.%s\" a fost șters."
 
 #: inc/checkdatabasecommand.class.php:87
 #, php-format
 msgid "-> \"%s.%s\" should be deleted."
-msgstr ""
+msgstr "-> \"%s.%s\" trebuie șters."
 
-#: inc/field.class.php:380
+#: inc/field.class.php:381
 msgid "Add a new field"
-msgstr "Add un camp nou"
+msgstr "Adaugă un câmp nou"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Adăugați o condiție pentru a ascunde blocul"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Adăugați un status suplimentar"
 
 #: inc/container.class.php:910
 msgid "Add tab"
-msgstr "Add tab"
+msgstr "Adăugați un tab"
 
-#: front/container.form.php:60 front/container.php:34 inc/menu.class.php:37
+#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:60
 #: setup.php:197
 msgid "Additional fields"
-msgstr "Campuri aditionale"
+msgstr "Câmpuri adiționale"
 
-#: inc/field.class.php:547
+#: inc/field.class.php:548
 msgid "Allowed values"
-msgstr ""
+msgstr "Valorile permise"
 
 #: inc/container.class.php:658
 msgid "Block"
-msgstr ""
+msgstr "Bloc"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
-msgstr ""
+msgstr "Verificați baza de date pentru a detecta inconsecvența datelor."
 
 #: inc/toolbox.class.php:312
 msgid "Component items"
-msgstr ""
+msgstr "Elemente componente"
 
 #: templates/container_display_conditions.html.twig
 #: inc/containerdisplaycondition.class.php:145
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Condiții pentru ascunderea blocului"
+msgstr[1] "Condiții ascundere bloc"
+msgstr[2] "Condiții pentru ascunderea blocului"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure"
 msgstr "Configurare"
 
-#: inc/field.class.php:562
+#: inc/field.class.php:563
 msgid "Configure fields values"
-msgstr "Configurare valori campuri"
+msgstr "Configurați valorile câmpurilor"
 
 #: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Numele conținut este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
 
 #: inc/checkdatabasecommand.class.php:80
 #, php-format
 msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr ""
+msgstr "Baza de date conține date orfane din %s câmp(uri) șterse incorect."
 
 #: inc/checkdatabasecommand.class.php:79
 #, php-format
 msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr ""
-
-#: inc/field.class.php:1077
-msgid "Date"
-msgstr "Data"
+msgstr "Baza de date conținea date orfane din %s câmp(uri) șterse incorect."
 
 #: inc/field.class.php:1078
-msgid "Date & time"
-msgstr "Data & time"
+msgid "Date"
+msgstr "Dată"
 
-#: inc/field.class.php:1075
+#: inc/field.class.php:1079
+msgid "Date & time"
+msgstr "Dată & oră"
+
+#: inc/field.class.php:1076
 msgid "Dropdown"
-msgstr "Dropdown"
+msgstr "Desfășurător"
 
 #: inc/checkdatabasecommand.class.php:72
 msgid "Everything is in order - no action needed."
-msgstr ""
+msgstr "Totul este în ordine - nu este necesară nicio acțiune."
 
 #: inc/container.class.php:53 inc/container.class.php:668
 msgid "Export to YAML"
-msgstr ""
+msgstr "Exportați în YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:136
+#: templates/forms/status_override.html.twig inc/field.class.php:137
 msgid "Field"
-msgstr "Camp"
+msgstr "Câmp"
 
-#: inc/field.class.php:148 inc/field.class.php:173
+#: inc/field.class.php:149 inc/field.class.php:174
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Numele câmpului este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
 
-#: inc/field.class.php:322
+#: inc/field.class.php:323
 msgid "Fields"
-msgstr "Campuri"
+msgstr "Câmpuri"
 
 #: inc/container.class.php:131
 msgid "Fix container names"
-msgstr ""
+msgstr "Remediați numele containerelor"
 
 #: inc/toolbox.class.php:120
 msgid "Fix fields names"
-msgstr ""
+msgstr "Remediați numele câmpurilor"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1080
 msgid "GLPI item"
-msgstr ""
+msgstr "Element GLPI"
 
-#: inc/field.class.php:1070
+#: inc/field.class.php:1071
 msgid "Header"
-msgstr "Header"
+msgstr "Antet"
 
 #: inc/container.class.php:911
 msgid "Insertion in the form (before save button)"
-msgstr ""
+msgstr "Inserare în formular (înainte de butonul de salvare)"
 
 #: inc/container.class.php:912
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr ""
+msgstr "Inserarea într-un tab separat (înainte de butonul de salvare)"
 
 #: inc/labeltranslation.class.php:192
 msgid "Label"
-msgstr ""
+msgstr "Eticheta"
 
 #: inc/labeltranslation.class.php:191
 msgid "Language"
-msgstr ""
+msgstr "Limba"
 
 #: hook.php:65
 msgid "MySQL tables installation"
-msgstr "Instalare tabele MySQL"
+msgstr "Generarea tabelelor MySQL pentru instalare "
 
 #: hook.php:125
 msgid "MySQL tables uninstallation"
-msgstr "Dezinstalare tabele MySQL"
+msgstr "Ștergerea tabelelor MySQL instalate"
 
-#: inc/field.class.php:384
+#: inc/field.class.php:385
 msgid "No field for this block"
-msgstr ""
+msgstr "Nu există niciun câmp pentru acest bloc"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr ""
+msgstr "Nu a fost găsit niciun element"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1074
 msgid "Number"
-msgstr "Numar"
+msgstr "Număr"
 
 #: inc/statusoverride.class.php:80
 msgid "Override by status"
-msgstr ""
+msgstr "Ignorați în funcție de stare"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:397
-#: inc/field.class.php:608
+#: templates/forms/status_override.html.twig inc/field.class.php:398
+#: inc/field.class.php:609
 msgid "Read only"
-msgstr ""
+msgstr "Nu poate fi editat"
 
 #: inc/container.class.php:52
 msgid "Regenerate container files"
-msgstr ""
+msgstr "Regenerați fișierele container"
 
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
-msgstr ""
+msgstr "Rulați „%s” pentru a remedia inconsecvențele bazei de date."
 
 #: inc/container.class.php:1338
 msgid "Some URL fields contains invalid links"
-msgstr ""
+msgstr "Unele câmpuri URL conțin linkuri nevalide"
 
 #: inc/container.class.php:1328
 msgid "Some mandatory fields are empty"
-msgstr "Unele campuri obligatorii sunt goale"
+msgstr "Unele câmpuri obligatorii sunt goale"
 
 #: inc/container.class.php:1333
 msgid "Some numeric fields contains non numeric values"
-msgstr ""
+msgstr "Unele câmpuri numerice conțin valori non numerice"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "Status nepreluat"
 
 #: inc/container.class.php:762
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1073
 msgid "Text (multiples lines)"
-msgstr "Text (multiple linii)"
+msgstr "Text (mai multe rânduri)"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1072
 msgid "Text (single line)"
-msgstr "Text (singura linie)"
+msgstr "Text (un singur rând)"
 
 #: hook.php:113
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr ""
+msgstr "Plugin-ul nu poate fi dezinstalat când este dezactivat"
 
 #: inc/checkdatabasecommand.class.php:44
 msgid "This command will check database to detect following inconsistencies:"
-msgstr ""
+msgstr "Această comandă va verifica baza de date pentru a detecta următoarele inconsecvențe:"
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1075
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: inc/container.class.php:219
 msgid "Updating generated containers files"
-msgstr ""
+msgstr "Actualizarea fișierelor container generate"
 
 #: inc/dropdown.class.php:49
 msgid "Updating generated dropdown files"
-msgstr ""
+msgstr "Actualizarea fișierelor tip desfășurător generate"
 
 #: inc/checkdatabasecommand.class.php:57
 msgid "Use this option to actually fix database"
-msgstr ""
+msgstr "Utilizați această opțiune pentru a remedia baza de date"
 
-#: inc/field.class.php:1076
+#: inc/field.class.php:1077
 msgid "Yes/No"
 msgstr "Da/Nu"
 
 #: inc/container.class.php:430
 msgid "You cannot add block without associated element type"
-msgstr ""
+msgstr "Nu puteți adăuga bloc fără un tip de element asociat"
 
 #: inc/container.class.php:465
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr ""
+msgstr "Nu puteți adăuga blocuri multiple folosind „Inserare formular într-un tab specific”."
 
 #: inc/container.class.php:450
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr ""
+msgstr "Nu puteți adăuga mai multe blocuri de tipul „Inserare în formular” pe același obiect"
 
 #: inc/container.class.php:495
 msgid "You cannot add several blocs with identical name on same object"
-msgstr ""
+msgstr "Nu puteți adăuga mai multe blocuri cu nume identic pe același obiect"
 
 #: inc/containerdisplaycondition.class.php:487
 #: inc/containerdisplaycondition.class.php:502
 msgid "You must specify an item type, search option and condition."
-msgstr ""
+msgstr "Trebuie să specificați un tip de articol, o opțiune de căutare și o condiție."
 
 #: inc/containerdisplaycondition.class.php:95
 #: inc/containerdisplaycondition.class.php:129
 msgid "not under"
-msgstr ""
+msgstr "nu sub"
 
 #: inc/containerdisplaycondition.class.php:101
 #: inc/containerdisplaycondition.class.php:123
 msgid "regular expression matches"
-msgstr ""
+msgstr "expresia se potrivește"
 
 #: templates/fields.html.twig
 msgid "show"
-msgstr ""
+msgstr "arată"
 
 #: inc/containerdisplaycondition.class.php:94
 #: inc/containerdisplaycondition.class.php:126
 msgid "under"
-msgstr ""
+msgstr "sub"
