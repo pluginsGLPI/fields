@@ -1609,8 +1609,8 @@ HTML;
                     $i++;
                     continue;
                 }
-            }  
-            
+            }
+
             // reset $CurrentItemType to initial itemtype
             $CurrentItemType = $itemtype;
             //get all types in itemtypes
@@ -1618,14 +1618,14 @@ HTML;
             foreach ($it as $label) {
                // set $CurrentItemType with the real current type
                // if $label is in ['itemtypeModel', 'itemtypeType']
-               $re = "/$itemtype(Model|Type)/";
-               if (preg_match($re, $label)) {
-                  $CurrentItemType = $label;
-                  break;
-               }
+                $re = "/$itemtype(Model|Type)/";
+                if (preg_match($re, $label)) {
+                    $CurrentItemType = $label;
+                    break;
+                }
             }
-            $tablename = "glpi_plugin_fields_".strtolower($CurrentItemType . getPlural(preg_replace('/s$/', '', $data['container_name'])));
-   
+            $tablename = "glpi_plugin_fields_" . strtolower($CurrentItemType . getPlural(preg_replace('/s$/', '', $data['container_name'])));
+
             //get translations
             $container = [
                 'itemtype' => PluginFieldsContainer::getType(),
@@ -1700,7 +1700,7 @@ HTML;
                 $opt[$i]['joinparams']['beforejoin']['joinparams']['specific_itemtype'] = $CurrentItemType; //set itemtype customfield in join
                 // needs to add a ref to the $itemtype
                 $opt[$i]['joinparams']['beforejoin']['joinparams']['beforejoin'] = [
-                   'table' => getTableForItemType($CurrentItemType)
+                    'table' => getTableForItemType($CurrentItemType)
                 ];
             } elseif ($data['type'] === "glpi_item") {
                 $itemtype_field = sprintf('itemtype_%s', $data['name']);
