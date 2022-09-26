@@ -60,12 +60,16 @@ function plugin_fields_install()
     ];
 
     $migration = new Migration($version);
-    echo "<center>";
-    echo "<table class='tab_cadre_fixe'>";
-    echo "<tr><th>" . __("MySQL tables installation", "fields") . "<th></tr>";
+    if (isCommandLine()) {
+        echo __("MySQL tables installation", "fields") . "\n";
+    } else {
+        echo "<center>";
+        echo "<table class='tab_cadre_fixe'>";
+        echo "<tr><th>" . __("MySQL tables installation", "fields") . "<th></tr>";
 
-    echo "<tr class='tab_bg_1'>";
-    echo "<td align='center'>";
+        echo "<tr class='tab_bg_1'>";
+        echo "<td align='center'>";
+    }
 
     //load all classes
     $dir  = PLUGINFIELDS_DIR . "/inc/";
@@ -93,10 +97,11 @@ function plugin_fields_install()
 
     $migration->executeMigration();
 
-    echo "</td>";
-    echo "</tr>";
-    echo "</table></center>";
-
+    if (!isCommandLine()) {
+        echo "</td>";
+        echo "</tr>";
+        echo "</table></center>";
+    }
     return true;
 }
 
