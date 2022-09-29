@@ -268,7 +268,7 @@ class PluginFieldsField extends CommonDBChild
         $re = "/^dropdown-(?<type>.+)$/";
         $match = [];
         if (preg_match($re, $input['type'], $match) === 1) {
-           $input['name'] = getForeignKeyFieldForItemType($match['type']) . "_" . $input['name'];
+            $input['name'] = getForeignKeyFieldForItemType($match['type']) . "_" . $input['name'];
         }
 
         //for dropdown, if already exists, link to it
@@ -296,8 +296,8 @@ class PluginFieldsField extends CommonDBChild
         // but there is a bug when trying to drop the column and the real max len is 53 chars
         // FIXME: see: https://bugs.mysql.com/bug.php?id=107165
         if (strlen($field_name) > 52) {
-           $rand = rand();
-           $field_name = substr($field_name, 0, 52 - strlen($rand)) . $rand;
+            $rand = rand();
+            $field_name = substr($field_name, 0, 52 - strlen($rand)) . $rand;
         }
 
         return $field_name;
