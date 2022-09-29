@@ -264,19 +264,18 @@ class PluginFieldsField extends CommonDBChild
             $input['name'] = $toolbox->getSystemNameFromLabel($input['label']) . 'field';
         }
 
-        // for dropdowns like dropdown-User, dropdown-Computer, etc...
-        $re = "/^dropdown-(?<type>.+)$/";
-        $match = [];
-        if (preg_match($re, $input['type'], $match) === 1) {
-            $input['name'] = getForeignKeyFieldForItemType($match['type']) . "_" . $input['name'];
-        }
-
         //for dropdown, if already exists, link to it
         if (isset($input['type']) && $input['type'] === "dropdown") {
             $found = $this->find(['name' => $input['name']]);
             if (!empty($found)) {
                 return $input['name'];
             }
+        }
+
+        // for dropdowns like dropdown-User, dropdown-Computer, etc...
+        $match = [];
+        if (isset($input['type']) && preg_match('/^dropdown-(?<type>.+)$/', $input['type'], $match) === 1) {
+            $input['name'] = getForeignKeyFieldForItemType($match['type']) . '_' . $input['name'];
         }
 
         //check if field name not already exist and not in conflict with itemtype fields name
