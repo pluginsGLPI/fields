@@ -264,12 +264,18 @@ class PluginFieldsField extends CommonDBChild
             $input['name'] = $toolbox->getSystemNameFromLabel($input['label']) . 'field';
         }
 
-        //for dropdown, if already exist, link to it
+        //for dropdown, if already exists, link to it
         if (isset($input['type']) && $input['type'] === "dropdown") {
             $found = $this->find(['name' => $input['name']]);
             if (!empty($found)) {
                 return $input['name'];
             }
+        }
+
+        // for dropdowns like dropdown-User, dropdown-Computer, etc...
+        $match = [];
+        if (isset($input['type']) && preg_match('/^dropdown-(?<type>.+)$/', $input['type'], $match) === 1) {
+            $input['name'] = getForeignKeyFieldForItemType($match['type']) . '_' . $input['name'];
         }
 
         //check if field name not already exist and not in conflict with itemtype fields name
@@ -282,6 +288,15 @@ class PluginFieldsField extends CommonDBChild
         while (count($field->find(['name' => $field_name])) > 0) {
             $field_name = $toolbox->getIncrementedSystemName($input['name'], $i);
             $i++;
+        }
+
+        // if it's too long then use a random postfix
+        // MySQL/MariaDB official limit for a column name is 64 chars,
+        // but there is a bug when trying to drop the column and the real max len is 53 chars
+        // FIXME: see: https://bugs.mysql.com/bug.php?id=107165
+        if (strlen($field_name) > 52) {
+            $rand = rand();
+            $field_name = substr($field_name, 0, 52 - strlen($rand)) . $rand;
         }
 
         return $field_name;
@@ -513,24 +528,12 @@ class PluginFieldsField extends CommonDBChild
 JAVASCRIPT
             );
 
-            // Exclude dropdown that corresponds to itemtypes targetted by container.
-            // This will prevent issues with search options.
-            // FIXME: Fix search options handling and remove this limitation.
-            $itemtypes_to_exclude = !empty($container->fields['itemtypes'])
-                ? array_map(
-                    function ($itemtype) {
-                        return 'dropdown-' . $itemtype;
-                    },
-                    json_decode($container->fields['itemtypes'])
-                )
-                : [];
             Dropdown::showFromArray(
                 'type',
                 self::getTypes(false),
                 [
                     'value'     => $this->fields['type'],
                     'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)',
-                    'used'      => array_combine($itemtypes_to_exclude, $itemtypes_to_exclude),
                 ]
             );
         }
