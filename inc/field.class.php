@@ -692,6 +692,8 @@ JAVASCRIPT
      */
     public static function showForTab($params)
     {
+        Html::requireJs('tinymce');
+
         $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
