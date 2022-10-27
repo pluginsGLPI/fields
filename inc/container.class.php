@@ -1601,10 +1601,10 @@ HTML;
          INNER JOIN glpi_plugin_fields_profiles profiles
             ON containers.id = profiles.plugin_fields_containers_id
             AND profiles.right > 0";
-			if (!Session::isCron()){ # || !isset($_SESSION['glpiactiveprofile']['id'])) {				
-				$query .= " AND profiles.profiles_id = ".(int) $_SESSION['glpiactiveprofile']['id'];
-			}
-		$query .= " INNER JOIN glpi_plugin_fields_fields fields
+            if (!Session::isCron()) {
+                $query .= " AND profiles.profiles_id = " . (int)$_SESSION['glpiactiveprofile']['id'];
+            }
+            $query .= " INNER JOIN glpi_plugin_fields_fields fields
             ON containers.id = fields.plugin_fields_containers_id
             AND containers.is_active = 1
          WHERE containers.itemtypes LIKE '%" . $DB->escape($search_string) . "%'
