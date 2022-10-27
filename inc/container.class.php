@@ -1065,6 +1065,11 @@ HTML;
         //check if data already inserted
         $obj   = new $classname();
         $found = $obj->find(['items_id' => $items_id]);
+        foreach ($data as $key => $value) {
+           if (gettype($value) == "array") {
+              $data[$key] = json_encode($value);
+           }
+        }
         if (empty($found)) {
             // add fields data
             $obj->add($data);
@@ -1406,6 +1411,32 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
+        // Add customtab's default value on new item
+        if ($item) {
+            $DbUtils = new DbUtils;
+            $itemtype = $item->getType();
+            $restrict = $DbUtils->getEntitiesRestrictCriteria("glpi_plugin_fields_containers", "", $item->fields['entities_id'], true);
+            $containers = getAllDataFromTable("glpi_plugin_fields_containers", [
+                'type'      => 'tab',
+                'is_active' => 1,
+                'itemtypes' => ['LIKE', "%\"$itemtype\"%"] 
+            ] + $restrict);
+            $container_temp = new self();
+            foreach ($containers as $container) {
+                $fields = getAllDataFromTable("glpi_plugin_fields_fields", [
+                    'plugin_fields_containers_id' => $container['id'],
+                    'is_active'                   => 1
+                ]);
+                foreach ($fields as $field) {
+                    if ($field['default_value'] != '') {
+                        $data[$field['name']] = $field['default_value'];
+                    }
+                }
+                $data['items_id'] = $item->getID();
+                $data['plugin_fields_containers_id'] = $container['id'];
+                $container_temp->updateFieldsValues($data, $itemtype, isset($_REQUEST['massiveaction']));
+            }
+        }
         if (property_exists($item, 'plugin_fields_data')) {
             $data = $item->plugin_fields_data;
             $data['items_id'] = $item->getID();

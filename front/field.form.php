@@ -37,7 +37,21 @@ if (empty($_GET["id"])) {
 Session::checkRight('entity', READ);
 
 $field = new PluginFieldsField();
+if (isset($_POST["plugin_fields_multiple_default_value_field_"])) {
+    if (isset($_POST['multiple_dropdown']) && $_POST['multiple_dropdown'] == 1) {
+        $_POST['default_value'] = json_encode($_POST['plugin_fields_multiple_default_value_field_']);
+    }
+} else if (isset($_POST['multiple_dropdown'])) {
+    if ( $_POST['multiple_dropdown'] == 1) {
+    $_POST['default_value'] = "";
 
+    }
+}
+if (isset($_POST["plugin_fields_dropdown_default_value_field_"])) {
+    if (isset($_POST['multiple_dropdown']) && $_POST['multiple_dropdown'] == 0) {
+        $_POST['default_value'] = json_encode($_POST['plugin_fields_dropdown_default_value_field_']);
+    }
+}
 if (isset($_POST["add"])) {
     $field->check(-1, CREATE, $_POST);
     $field->add($_POST);

@@ -70,6 +70,7 @@ class PluginFieldsField extends CommonDBChild
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
+                  `multiple_dropdown`                 BOOLEAN        NOT NULL DEFAULT '0',
                   `allowed_values`                    TEXT           ,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
@@ -91,6 +92,9 @@ class PluginFieldsField extends CommonDBChild
         }
         if (!$DB->fieldExists($table, 'mandatory')) {
             $migration->addField($table, 'mandatory', 'bool', ['value' => 0]);
+        }
+        if (!$DB->fieldExists($table, 'multiple_dropdown')) {
+           $migration->addField($table, 'multiple_dropdown', 'bool', ['value' => 0]);
         }
 
         //increase the size of column 'type' (25 to 255)
@@ -143,6 +147,15 @@ class PluginFieldsField extends CommonDBChild
         //parse name
         $input['name'] = $this->prepareName($input);
 
+        $regExp = '/^dropdown-.+/m';
+        if (preg_match($regExp, $input['type']) == true) {
+           if ($input['multiple_dropdown']) {
+              $input['default_value'] = json_encode($input['plugin_fields_multiple_default_value_field_']);
+           } else {
+              $input['default_value'] = $input['plugin_fields_dropdown_default_value_field_'];
+           }
+        }
+
         //reject adding when field name is too long for mysql
         if (strlen($input['name']) > 64) {
             Session::AddMessageAfterRedirect(
@@ -187,10 +200,14 @@ class PluginFieldsField extends CommonDBChild
         //add field to container table
         if ($input['type'] !== "header") {
             $container_obj = new PluginFieldsContainer();
+            $multiple = false;
             $container_obj->getFromDB($input['plugin_fields_containers_id']);
             foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
-                $classname::addField($input['name'], $input['type']);
+                if ($input['multiple_dropdown'] == 1) {
+                   $multiple = true;
+                }
+                $classname::addField($input['name'], $input['type'], $multiple);
             }
         }
 
@@ -460,6 +477,7 @@ class PluginFieldsField extends CommonDBChild
         global $CFG_GLPI;
 
         $rand = mt_rand();
+        $rand2 = mt_rand();
 
         if (isset($options['parent_id']) && !empty($options['parent_id'])) {
             $container = new PluginFieldsContainer();
@@ -499,13 +517,31 @@ class PluginFieldsField extends CommonDBChild
         echo "</tr>";
         echo "<tr>";
         echo "<td>" . __("Type") . " : </td>";
-        echo "<td colspan='3'>";
+        echo "<td>";
         if ($edit) {
+            $itemtype = $this->fields['type'];
             echo self::getTypes(true)[$this->fields['type']];
+            echo Html::scriptBlock(<<<JAVASCRIPT
+            var regExp = new RegExp("^dropdown-.+");
+                if (regExp.test("$itemtype")) {
+                    $('#plugin_fields_default_value_field_{$rand}').hide();
+                    if ($('#plugin_fields_multiple_dropdown_field_{$rand} input[name="multiple_dropdown"]').val() == 1) {
+                        $('#plugin_fields_multiple_default_value_field_{$rand}').show();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand2}').hide();
+                    } else {
+                        $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand2}').show();
+                    }
+                }
+JAVASCRIPT
+        );
         } else {
             // if glpi_item selected display dropdown and hide input default_value
+            // if a dropdown is selected display dropdown, hide input default_value and hide multiple dropdown default_value
+            // if a dropdown is selected and multiple_dropdown on yes display multiple dropdown, hide input default_value and hide simple dropdown default_value
             echo Html::scriptBlock(<<<JAVASCRIPT
                 var plugin_fields_change_field_type_{$rand} = function(selected_val) {
+                    var regExp = new RegExp("^dropdown-.+");
                     if (selected_val === 'glpi_item') {
                         $('#plugin_fields_default_value_label_{$rand}').hide();
                         $('#plugin_fields_default_value_field_{$rand}').find('[name="default_value"]').val(null).trigger('change');
@@ -514,10 +550,39 @@ class PluginFieldsField extends CommonDBChild
                         $('#plugin_fields_allowed_values_field_{$rand}').show();
                     } else {
                         $('#plugin_fields_default_value_label_{$rand}').show();
-                        $('#plugin_fields_default_value_field_{$rand}').show();
                         $('#plugin_fields_allowed_values_label_{$rand}').hide();
                         $('#plugin_fields_allowed_values_field_{$rand}').find('[name="allowed_values\[\]"]').val(null).trigger('change');
                         $('#plugin_fields_allowed_values_field_{$rand}').hide();
+                        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
+                        $('#plugin_fields_multiple_dropdown_field_{$rand}').hide();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_default_value_field_{$rand}').show();
+                    }
+                    if (regExp.test(selected_val) == true) {
+                        $('#plugin_fields_multiple_dropdown_label_{$rand}').show();
+                        $('#plugin_fields_multiple_dropdown_field_{$rand}').show();
+                        $('#plugin_fields_default_value_field_{$rand}').hide();
+                        if ($('#dropdown_multiple_dropdown{$rand}').val() == 1) {
+                           $('#plugin_fields_multiple_default_value_field_{$rand}').show();
+
+                        } else {
+                           $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
+                           $('#plugin_fields_dropdown_default_value_field_{$rand}').show();
+                        }
+                    }
+                };
+                var plugin_fields_multiple_dropdown_field_{$rand} = function(selected_val) {
+                    if (selected_val == 1) {
+                        $('#plugin_fields_multiple_default_value_field_{$rand}').show();
+                        $('#plugin_fields_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
+
+                    } else {
+                        $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand}').show();
+                        $('#plugin_fields_default_value_field_{$rand}').hide();
+
                     }
                 };
                 $(
@@ -534,6 +599,31 @@ JAVASCRIPT
                 [
                     'value'     => $this->fields['type'],
                     'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)',
+                    'rand'      => $rand
+                ]
+            );
+        }
+        echo "</td>";
+        echo "<td id='plugin_fields_multiple_dropdown_label_{$rand}'>" . __("multiple dropdown", "fields") . " :</td>";
+        // dropdownYesNo for multiple dropdown
+        echo "<td id='plugin_fields_multiple_dropdown_field_{$rand}'>";
+        if ($edit) {
+            Dropdown::showYesNo("multiple_dropdown",
+                             $this->fields["multiple_dropdown"],
+                            -1,
+                            [
+                                'on_change' => 'plugin_fields_multiple_dropdown_field_' . $rand . '(this.value)',
+                                'rand'      => $rand,
+                                'readonly'  => true
+                            ]
+            );
+        } else if (!$edit) {
+            Dropdown::showYesNo("multiple_dropdown",
+                            $this->fields["multiple_dropdown"],
+                            -1,
+                            [
+                            'on_change' => 'plugin_fields_multiple_dropdown_field_' . $rand . '(this.value)',
+                            'rand'      => $rand
                 ]
             );
         }
@@ -551,7 +641,7 @@ JAVASCRIPT
         echo __('Allowed values', 'fields') . " : ";
         echo '</div>';
         echo "</td>";
-        echo "<td colspan='3'>";
+        echo "<td colspan='3' name='default_value" . $rand . "'>";
         echo '<div id="plugin_fields_default_value_field_' . $rand . '" ' . $style_default . '>';
         echo Html::input(
             'default_value',
@@ -594,6 +684,75 @@ JAVASCRIPT
             );
         }
         echo '</div>';
+        // default value on field creation
+        if (!$edit) {
+           echo '<div id="plugin_fields_multiple_default_value_field_' . $rand . '" ' . $style_default . '>';
+           $p = ['itemtype'        => '__VALUE__',
+                 'entity_restrict' => -1,
+                 'admin'           => 0,
+                 'value'            => [],
+                 'values'            => [],
+                 'rand'            => $rand,
+                 'myname'          => "plugin_fields_multiple_default_value_field_",
+           ];
+           ajax::updateitemonselectevent(
+               "dropdown_type$rand",
+               "plugin_fields_multiple_default_value_field_$rand",
+               "../ajax/dropdownMultipleDefaultValue.php",
+               $p
+           );
+
+           echo '</div>';
+           echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand . '" ' . $style_default . '>';
+           $p = ['itemtype'        => '__VALUE__',
+                 'entity_restrict' => -1,
+                 'admin'           => 0,
+                 'rand'            => $rand,
+                 'myname'          => "plugin_fields_dropdown_default_value_field_",
+           ];
+           Ajax::updateItemOnSelectEvent(
+               "dropdown_type$rand",
+               "plugin_fields_dropdown_default_value_field_$rand",
+               "../ajax/dropdownDefaultValue.php",
+               $p
+           );
+           echo '</div>';
+        }
+        // default value on field edit
+        if ($edit) {
+            $dropdown_matches = [];
+            preg_match('/^dropdown-(?<class>.+)$/i', $this->fields['type'], $dropdown_matches);
+            $regex = '/^dropdown-.+/';
+            if (preg_match($regex, $this->fields['type'])) {
+                $default_value = json_decode($this->fields['default_value']);
+                echo '<div id="plugin_fields_multiple_default_value_field_' . $rand . '" ' . $style_default . '>';
+                $multiplep = [
+                      'width'           => '80%',
+                      'entity_restrict' => -1,
+                      'admin'           => 0,
+                      'rand'            => $rand,
+                      'value'           => is_array($default_value) ? $default_value : [],
+                      'multiple'        => 1,
+                      'name'          => "plugin_fields_multiple_default_value_field_[]",
+                ];
+                Dropdown::show($dropdown_matches['class'], $multiplep);
+    
+    
+                echo '</div>';
+                echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand2 . '" ' . $style_default . '>';
+                $dropdownp = [
+                      'entity_restrict' => -1,
+                      'admin'           => 0,
+                      'value'           => is_array($default_value) ? '' : $default_value,
+                      'rand'            => $rand2,
+                      'name'          => "plugin_fields_dropdown_default_value_field_",
+                ];
+               Dropdown::show($dropdown_matches['class'], $dropdownp);
+                echo '</div>';
+            }
+         }
+
+
         echo "</td>";
         echo "</tr>";
 
@@ -610,7 +769,7 @@ JAVASCRIPT
 
         echo "<tr>";
         echo "<td>" . __("Read only", "fields") . " :</td>";
-        echo "<td colspan='3'>";
+        echo "<td>";
         Dropdown::showYesNo("is_readonly", $this->fields["is_readonly"]);
         echo "</td>";
         echo "</tr>";
@@ -998,7 +1157,14 @@ JAVASCRIPT
                     }
                 }
             }
+            if ($field['multiple_dropdown'] == 1) {
+               if ($value != '') {
+                  $value = json_decode($value);
+               } else {
+                  $value = [];
+               }
 
+            }
             $field['value'] = $value;
         }
 
