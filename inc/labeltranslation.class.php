@@ -333,6 +333,6 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             return array_values($found)[0]['label'];
         }
 
-        return isset($item['label']) ? $item['label'] : '';
+        return $item['label'] ?? '';
     }
 }
