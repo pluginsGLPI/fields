@@ -1285,7 +1285,9 @@ HTML;
                 $db_result = [];
                 if ($result = $DB->query($query)) {
                     $db_result = $DB->fetchAssoc($result);
-                    if (isset($db_result[$name])) {
+                    if (isset($db_result['plugin_fields_' . $name . 'dropdowns_id'])) {
+                        $value = $db_result['plugin_fields_' . $name . 'dropdowns_id'];
+                    } else if (isset($db_result[$name])) {
                         $value = $db_result[$name];
                     }
                 }
