@@ -1066,9 +1066,9 @@ HTML;
         $obj   = new $classname();
         $found = $obj->find(['items_id' => $items_id]);
         foreach ($data as $key => $value) {
-           if (gettype($value) == "array") {
-              $data[$key] = json_encode($value);
-           }
+            if (gettype($value) == "array") {
+                $data[$key] = json_encode($value);
+            }
         }
         if (empty($found)) {
             // add fields data
@@ -1413,13 +1413,13 @@ HTML;
     {
         // Add customtab's default value on new item
         if ($item) {
-            $DbUtils = new DbUtils;
+            $DbUtils = new DbUtils();
             $itemtype = $item->getType();
             $restrict = $DbUtils->getEntitiesRestrictCriteria("glpi_plugin_fields_containers", "", $item->fields['entities_id'], true);
             $containers = getAllDataFromTable("glpi_plugin_fields_containers", [
                 'type'      => 'tab',
                 'is_active' => 1,
-                'itemtypes' => ['LIKE', "%\"$itemtype\"%"] 
+                'itemtypes' => ['LIKE', "%\"$itemtype\"%"]
             ] + $restrict);
             $container_temp = new self();
             foreach ($containers as $container) {

@@ -42,9 +42,8 @@ if (isset($_POST["plugin_fields_multiple_default_value_field_"])) {
         $_POST['default_value'] = json_encode($_POST['plugin_fields_multiple_default_value_field_']);
     }
 } else if (isset($_POST['multiple_dropdown'])) {
-    if ( $_POST['multiple_dropdown'] == 1) {
-    $_POST['default_value'] = "";
-
+    if ($_POST['multiple_dropdown'] == 1) {
+        $_POST['default_value'] = "";
     }
 }
 if (isset($_POST["plugin_fields_dropdown_default_value_field_"])) {

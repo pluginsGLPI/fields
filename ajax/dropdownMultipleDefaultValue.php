@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------------------------
  *
@@ -37,13 +38,10 @@ use Glpi\Http\Response;
 include('../../../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
-
 Session::checkLoginUser();
-
 // Read parameters
 $context  = $_POST['context'] ?? '';
-$itemtype = str_replace("dropdown-","", $_POST["itemtype"]) ?? '';
-
+$itemtype = str_replace("dropdown-", "", $_POST["itemtype"]) ?? '';
 /** @global array $CFG_GLPI */
 
 // Check for required params
@@ -53,9 +51,7 @@ if (empty($itemtype)) {
 }
 
 $table = getTableForItemType($itemtype);
-
 $rand = $_POST["rand"] ?? mt_rand();
-
 // Message for post-only
 if (!isset($_POST["admin"]) || ($_POST["admin"] == 0)) {
     echo "<span class='text-muted'>" .
@@ -77,7 +73,6 @@ $p = [
         'entity_restrict' => $_POST['entity_restrict'],
     ]),
 ];
-
 if (isset($_POST["used"]) && !empty($_POST["used"])) {
     if (isset($_POST["used"][$itemtype])) {
         $p["used"] = $_POST["used"][$itemtype];
@@ -89,14 +84,4 @@ if (!empty($context)) {
     $p["context"] = $context;
 }
 
-echo Html::jsAjaxDropdown(
-    $_POST['myname'] . '[]',
-    $field_id,
-    $CFG_GLPI['root_doc'] . "/ajax/getDropdownFindNum.php",
-    $p
-);
-
-
-
-
-?>
+echo Html::jsAjaxDropdown($_POST['myname'] . '[]', $field_id, $CFG_GLPI['root_doc'] . "/ajax/getDropdownFindNum.php", $p);
