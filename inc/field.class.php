@@ -70,7 +70,7 @@ class PluginFieldsField extends CommonDBChild
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
-                  `multiple_dropdown`                 BOOLEAN        NOT NULL DEFAULT '0',
+                  `multiple_dropdown`                 TINYINT        NOT NULL DEFAULT '0',
                   `allowed_values`                    TEXT           ,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
