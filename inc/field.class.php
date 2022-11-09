@@ -550,6 +550,8 @@ JAVASCRIPT
                         $('#plugin_fields_default_value_field_{$rand}').hide();
                         $('#plugin_fields_allowed_values_label_{$rand}').show();
                         $('#plugin_fields_allowed_values_field_{$rand}').show();
+                        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
+                        $('#plugin_fields_multiple_dropdown_field_{$rand}').hide();
                         $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
                         $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
                     } else {
