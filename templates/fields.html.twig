@@ -100,7 +100,7 @@
 
     {% elseif type matches '/^dropdown-.+/i' %}
         {% if not massiveaction %}
-            {% set dropdown_options = {'condition': field['dropdown_condition'], 'entity': item.getEntityID(),'entity_sons': true} %}
+            {% set dropdown_options = {'condition': field['dropdown_condition'], 'entity': item.getEntityID()} %}
             {% if field['dropdown_class'] == 'User' %}
                 {% set dropdown_options = dropdown_options|merge({'entity': -1, 'right': 'all'}) %}
             {% elseif field['dropdown_class'] == 'Entity' %}
