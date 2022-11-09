@@ -525,6 +525,8 @@ class PluginFieldsField extends CommonDBChild
             var regExp = new RegExp("^dropdown-.+");
                 if (regExp.test("$itemtype")) {
                     $('#plugin_fields_default_value_field_{$rand}').hide();
+                    $('#plugin_fields_allowed_values_label_{$rand}').hide();
+                    $('#plugin_fields_allowed_values_field_{$rand}').hide();
                     if ($('#plugin_fields_multiple_dropdown_field_{$rand} input[name="multiple_dropdown"]').val() == 1) {
                         $('#plugin_fields_multiple_default_value_field_{$rand}').show();
                         $('#plugin_fields_dropdown_default_value_field_{$rand2}').hide();
@@ -548,6 +550,8 @@ JAVASCRIPT
                         $('#plugin_fields_default_value_field_{$rand}').hide();
                         $('#plugin_fields_allowed_values_label_{$rand}').show();
                         $('#plugin_fields_allowed_values_field_{$rand}').show();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand2}').hide();
+                        $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
                     } else {
                         $('#plugin_fields_default_value_label_{$rand}').show();
                         $('#plugin_fields_allowed_values_label_{$rand}').hide();
@@ -573,16 +577,16 @@ JAVASCRIPT
                     }
                 };
                 var plugin_fields_multiple_dropdown_field_{$rand} = function(selected_val) {
-                    if (selected_val == 1) {
-                        $('#plugin_fields_multiple_default_value_field_{$rand}').show();
-                        $('#plugin_fields_default_value_field_{$rand}').hide();
-                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
-
-                    } else {
-                        $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
-                        $('#plugin_fields_dropdown_default_value_field_{$rand}').show();
-                        $('#plugin_fields_default_value_field_{$rand}').hide();
-
+                    if ($('#dropdown_type{$rand}').val() !== 'glpi_item') {
+                        if (selected_val == 1) {
+                            $('#plugin_fields_multiple_default_value_field_{$rand}').show();
+                            $('#plugin_fields_default_value_field_{$rand}').hide();
+                            $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
+                        } else {
+                            $('#plugin_fields_multiple_default_value_field_{$rand}').hide();
+                            $('#plugin_fields_dropdown_default_value_field_{$rand}').show();
+                            $('#plugin_fields_default_value_field_{$rand}').hide();
+                        }
                     }
                 };
                 $(
