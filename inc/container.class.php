@@ -1600,7 +1600,7 @@ HTML;
             containers.name as container_name, containers.label as container_label,
             containers.itemtypes, containers.id as container_id, fields.id as field_id";
         if (Session::isCron()) {
-            $query .= ", '" . READ + CREATE . "' as `right`"; // Grant READ and WRITE right to Cron
+            $query .= ", '" . (READ + CREATE) . "' as `right`"; // Grant READ and WRITE right to Cron
         } else {
             $query .= ", `profiles`.`right` as `right`";
         }
