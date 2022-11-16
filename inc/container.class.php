@@ -1615,6 +1615,7 @@ HTML;
             AND containers.is_active = 1
          WHERE containers.itemtypes LIKE '%" . $DB->escape($search_string) . "%'
             AND fields.type != 'header'
+            AND fields.is_active = 1
             ORDER BY fields.id ASC";
         $res = $DB->query($query);
         while ($data = $DB->fetchAssoc($res)) {
@@ -1624,7 +1625,7 @@ HTML;
                     continue;
                 }
             }
-            $i = 76665 + $data['field_id'];
+            $i = PluginFieldsField::SEARCH_OPTION_STARTING_INDEX + $data['field_id'];
 
             $tablename = getTableForItemType(self::getClassname($itemtype, $data['container_name']));
 

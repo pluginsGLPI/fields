@@ -35,6 +35,12 @@ class PluginFieldsField extends CommonDBChild
 {
     use Glpi\Features\Clonable;
 
+    /**
+     * Starting index for search options.
+     * @var integer
+     */
+    public const SEARCH_OPTION_STARTING_INDEX = 76665;
+
     public static $itemtype = PluginFieldsContainer::class;
     public static $items_id = 'plugin_fields_containers_id';
 
@@ -120,7 +126,89 @@ class PluginFieldsField extends CommonDBChild
             )
         );
 
+        // 1.18.3 Make search options ID stable over time ad constant across profiles
+        if (Config::getConfigurationValue('plugin:fields', 'stable_search_options') !== 'yes') {
+            self::migrateToStableSO($migration);
+            $migration->addConfig(['stable_search_options' => 'yes'], 'plugin:fields');
+        }
+
         return true;
+    }
+
+    /**
+     * Migrate search options ID stored in DB to their new stable ID.
+     *
+     * Prior to 1.18.3, search options ID were built using a simple increment and filtered using current profile rights,
+     * resulting in following behaviours:
+     * - when a container was activated/deactivated/removed, SO ID were potentially changed;
+     * - when a field was removed, SO ID were potentially changed;
+     * - in a sessionless context (e.g. CLI command/crontask), no SO were available;
+     * - when user added a SO in its display preference from a A profile, this SO was sometimes targetting a completely different field on a B profile.
+     * All of these behaviours were resulting in unstable display preferences and saved searches.
+     *
+     * Producing an exact mapping between previous unstable SO ID and new stable SO ID is almost impossible in many cases, due to
+     * previously described behaviours. Basically, we cannot know if the current SO ID in database is still correct
+     * and what were the profile rights when it was generated.
+     *
+     * @param Migration $migration
+     */
+    private static function migrateToStableSO(Migration $migration): void
+    {
+        global $DB;
+
+        // Flatten itemtype list
+        $itemtypes = array_keys(array_merge([], ...array_values(PluginFieldsToolbox::getGlpiItemtypes())));
+
+        foreach ($itemtypes as $itemtype) {
+            // itemtype is stored in a JSON array, so entry is surrounded by double quotes
+            $search_string = json_encode($itemtype);
+            // Backslashes must be doubled in LIKE clause, according to MySQL documentation:
+            // > To search for \, specify it as \\\\; this is because the backslashes are stripped
+            // > once by the parser and again when the pattern match is made,
+            // > leaving a single backslash to be matched against.
+            $search_string = str_replace('\\', '\\\\', $search_string);
+
+            $fields = $DB->request(
+                [
+                    'SELECT'     => [
+                        'glpi_plugin_fields_fields.id',
+                    ],
+                    'FROM'       => 'glpi_plugin_fields_fields',
+                    'INNER JOIN' => [
+                        'glpi_plugin_fields_containers' => [
+                            'FKEY' => [
+                                'glpi_plugin_fields_containers' => 'id',
+                                'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
+                                [
+                                    'AND' => [
+                                        'glpi_plugin_fields_containers.is_active' => 1,
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ],
+                    'WHERE' => [
+                        'glpi_plugin_fields_containers.itemtypes' => ['LIKE', '%' . $DB->escape($search_string) . '%'],
+                        ['NOT' => ['glpi_plugin_fields_fields.type' => 'header']],
+                    ],
+                    'ORDERBY'      => [
+                        'glpi_plugin_fields_fields.id',
+                    ],
+                ]
+            );
+
+            $i = PluginFieldsField::SEARCH_OPTION_STARTING_INDEX;
+
+            foreach ($fields as $field_data) {
+                $migration->changeSearchOption(
+                    $itemtype,
+                    $i,
+                    PluginFieldsField::SEARCH_OPTION_STARTING_INDEX + $field_data['id']
+                );
+
+                $i++;
+            }
+        }
     }
 
     public static function uninstall()
