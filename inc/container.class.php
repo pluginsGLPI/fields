@@ -1598,12 +1598,16 @@ HTML;
 
         $query = "SELECT DISTINCT fields.id, fields.name, fields.label, fields.type, fields.is_readonly, fields.allowed_values,
             containers.name as container_name, containers.label as container_label,
-            containers.itemtypes, containers.id as container_id, fields.id as field_id
-         FROM glpi_plugin_fields_containers containers";
+            containers.itemtypes, containers.id as container_id, fields.id as field_id";
+        if (Session::isCron()) {
+            $query .= ", '" . READ + CREATE . "' as `right`"; // Grant READ and WRITE right to Cron
+        } else {
+            $query .= ", `profiles`.`right` as `right`";
+        }
+        $query .= " FROM glpi_plugin_fields_containers containers";
         if (!Session::isCron()) {
             $query .= " INNER JOIN glpi_plugin_fields_profiles profiles
             ON containers.id = profiles.plugin_fields_containers_id
-            AND profiles.right > 0
             AND profiles.profiles_id = " . (int)$_SESSION['glpiactiveprofile']['id'];
         }
         $query .= " INNER JOIN glpi_plugin_fields_fields fields
@@ -1620,6 +1624,11 @@ HTML;
                     $i++;
                     continue;
                 }
+            }
+            if ($data['right'] == 0) {
+                // No right to read or write this field; but need to make search option ID consistent accross all profiles
+                $i++;
+                continue;
             }
             $tablename = getTableForItemType(self::getClassname($itemtype, $data['container_name']));
 
