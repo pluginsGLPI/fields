@@ -1587,7 +1587,6 @@ HTML;
 
         $opt = [];
 
-        $i = 76665;
 
         $search_string = json_encode($itemtype);
         // Backslashes must be doubled in LIKE clause, according to MySQL documentation:
@@ -1608,6 +1607,7 @@ HTML;
         if (!Session::isCron()) {
             $query .= " INNER JOIN glpi_plugin_fields_profiles profiles
             ON containers.id = profiles.plugin_fields_containers_id
+            AND profiles.right > 0
             AND profiles.profiles_id = " . (int)$_SESSION['glpiactiveprofile']['id'];
         }
         $query .= " INNER JOIN glpi_plugin_fields_fields fields
@@ -1621,15 +1621,11 @@ HTML;
             if ($containers_id !== false) {
                 // Filter by container (don't filter by SQL for have $i value with few containers for a itemtype)
                 if ($data['container_id'] != $containers_id) {
-                    $i++;
                     continue;
                 }
             }
-            if ($data['right'] == 0) {
-                // No right to read or write this field; but need to make search option ID consistent accross all profiles
-                $i++;
-                continue;
-            }
+            $i = 76665 + $data['field_id'];
+
             $tablename = getTableForItemType(self::getClassname($itemtype, $data['container_name']));
 
             //get translations
@@ -1728,8 +1724,6 @@ HTML;
                 $opt[$i]['datatype']           = 'text';
                 $opt[$i]['additionalfields']   = ['itemtype'];
             }
-
-            $i++;
         }
 
         return $opt;
