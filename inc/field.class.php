@@ -467,8 +467,6 @@ class PluginFieldsField extends CommonDBChild
 
     public function showForm($ID, $options = [])
     {
-        global $CFG_GLPI;
-
         $rand = mt_rand();
 
         if (isset($options['parent_id']) && !empty($options['parent_id'])) {
