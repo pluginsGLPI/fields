@@ -440,7 +440,7 @@ class PluginFieldsField extends CommonDBChild
                     } else {
                         echo $this->fields['default_value'];
                     }
-                     echo "</td>";
+                    echo "</td>";
                     echo "<td align='center'>" . Dropdown::getYesNo($this->fields["mandatory"]) . "</td>";
                     echo "<td align='center'>";
                     echo ($this->isActive())
