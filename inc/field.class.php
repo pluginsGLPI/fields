@@ -430,6 +430,9 @@ class PluginFieldsField extends CommonDBChild
                     if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
                         $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
                         echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                    } elseif ($this->fields['type'] === 'dropdown') {
+                        $table = getTableForItemType(PluginFieldsDropdown::getClassname($this->fields['name']));
+                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
                     } else {
                         echo $this->fields['default_value'];
                     }
