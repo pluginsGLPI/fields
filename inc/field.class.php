@@ -143,11 +143,6 @@ class PluginFieldsField extends CommonDBChild
         //parse name
         $input['name'] = $this->prepareName($input);
 
-        $regExp = '/^dropdown-.+/m';
-        if (preg_match($regExp, $input['type']) == true) {
-            $input['default_value'] = $input['plugin_fields_dropdown_default_value_field_'];
-        }
-
         //reject adding when field name is too long for mysql
         if (strlen($input['name']) > 64) {
             Session::AddMessageAfterRedirect(
@@ -432,10 +427,8 @@ class PluginFieldsField extends CommonDBChild
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
                     echo "<td>" ;
-                    $regexp = '/^dropdown-.+/';
-                    if (preg_match($regexp, $this->fields['type'])) {
-                        $typetmp = $this->fields['type'];
-                        $table = getTableForItemType(preg_replace('/dropdown-/', "", $typetmp));
+                    if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
+                        $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
                         echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
                     } else {
                         echo $this->fields['default_value'];
@@ -474,7 +467,6 @@ class PluginFieldsField extends CommonDBChild
         global $CFG_GLPI;
 
         $rand = mt_rand();
-        $rand2 = mt_rand();
 
         if (isset($options['parent_id']) && !empty($options['parent_id'])) {
             $container = new PluginFieldsContainer();
@@ -516,18 +508,7 @@ class PluginFieldsField extends CommonDBChild
         echo "<td>" . __("Type") . " : </td>";
         echo "<td colspan='3'>";
         if ($edit) {
-            $itemtype = $this->fields['type'];
             echo self::getTypes(true)[$this->fields['type']];
-            echo Html::scriptBlock(<<<JAVASCRIPT
-            var regExp = new RegExp("^dropdown-.+");
-                if (regExp.test("$itemtype")) {
-                    $('#plugin_fields_default_value_field_{$rand}').hide();
-                    $('#plugin_fields_allowed_values_label_{$rand}').hide();
-                    $('#plugin_fields_allowed_values_field_{$rand}').hide();
-                    $('#plugin_fields_dropdown_default_value_field_{$rand2}').show();
-                }
-JAVASCRIPT
-            );
         } else {
             // if glpi_item selected display dropdown and hide input default_value
             echo Html::scriptBlock(<<<JAVASCRIPT
@@ -538,27 +519,15 @@ JAVASCRIPT
                         $('#plugin_fields_default_value_field_{$rand}').hide();
                         $('#plugin_fields_allowed_values_label_{$rand}').show();
                         $('#plugin_fields_allowed_values_field_{$rand}').show();
-                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
                     } else {
                         $('#plugin_fields_default_value_label_{$rand}').show();
                         $('#plugin_fields_default_value_field_{$rand}').show();
                         $('#plugin_fields_allowed_values_label_{$rand}').hide();
                         $('#plugin_fields_allowed_values_field_{$rand}').find('[name="allowed_values\[\]"]').val(null).trigger('change');
                         $('#plugin_fields_allowed_values_field_{$rand}').hide();
-                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
                         $('#plugin_fields_default_value_field_{$rand}').show();
                     }
-                    var regExp = new RegExp("^dropdown-.+");
-                    if (regExp.test(selected_val) == true) {
-                        $('#plugin_fields_default_value_field_{$rand}').hide();
-                        $('#plugin_fields_dropdown_default_value_field_{$rand}').show();
-                    }
                 };
-                $(
-                    function () {
-                        plugin_fields_change_field_type_{$rand}();
-                    }
-                );
 JAVASCRIPT
             );
 
@@ -568,7 +537,7 @@ JAVASCRIPT
                 [
                     'value'     => $this->fields['type'],
                     'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)',
-                    'rand'      => $rand
+                    'rand'      => $rand,
                 ]
             );
         }
@@ -587,25 +556,44 @@ JAVASCRIPT
         echo '</div>';
         echo "</td>";
         echo "<td colspan='3'>";
-        echo '<div id="plugin_fields_default_value_field_' . $rand . '" ' . $style_default . '>';
-        echo Html::input(
-            'default_value',
-            [
-                'value' => $this->fields['default_value'],
-            ]
-        );
-        if ($this->fields["type"] == "dropdown") {
-            echo '<a href="' . Plugin::getWebDir('fields') . '/front/commondropdown.php?ddtype=' .
-                          $this->fields['name'] . 'dropdown">
-               <img src="' . $CFG_GLPI['root_doc'] . '/pics/options_search.png" class="pointer"
-                    alt="' . __('Configure', 'fields') . '" title="' . __('Configure fields values', 'fields') . '">
-               </a>';
-        }
-        if (in_array($this->fields['type'], ['date', 'datetime'])) {
-            echo "<i class='pointer fa fa-info'
-                  title=\"" . __("You can use 'now' for date and datetime field") . "\"></i>";
-        }
+        echo '<div id="plugin_fields_default_value_field_' . $rand . '">';
         echo '</div>';
+        if ($edit) {
+            $load_params = json_encode(
+                [
+                    'id'   => $ID,
+                    'type' => $this->fields['type'],
+                    'rand' => $rand,
+                ]
+            );
+            echo Html::scriptBlock(<<<JAVASCRIPT
+                $(
+                    function () {
+                        $('#plugin_fields_default_value_field_$rand').load('../ajax/field_default_value.php', $load_params);
+                    }
+                );
+JAVASCRIPT
+            );
+        } else {
+            Ajax::updateItemOnSelectEvent(
+                "dropdown_type$rand",
+                "plugin_fields_default_value_field_$rand",
+                "../ajax/field_default_value.php",
+                [
+                    'id'   => $ID,
+                    'type' => '__VALUE__',
+                    'rand' => $rand,
+                ]
+            );
+            echo Html::scriptBlock(<<<JAVASCRIPT
+                $(
+                    function () {
+                        $('#dropdown_type$rand').trigger('change');
+                    }
+                );
+JAVASCRIPT
+            );
+        }
         echo '<div id="plugin_fields_allowed_values_field_' . $rand . '" ' . $style_allowed . '>';
         if (!$edit) {
             Dropdown::showFromArray('allowed_values', PluginFieldsToolbox::getGlpiItemtypes(), [
@@ -629,44 +617,6 @@ JAVASCRIPT
             );
         }
         echo '</div>';
-        // default value on field creation
-        if (!$edit) {
-            echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand . '" ' . $style_default . '>';
-            $p = ['itemtype'      => '__VALUE__',
-                'entity_restrict' => -1,
-                'admin'           => 0,
-                'rand'            => $rand,
-                'myname'          => "plugin_fields_dropdown_default_value_field_",
-            ];
-            Ajax::updateItemOnSelectEvent(
-                "dropdown_type$rand",
-                "plugin_fields_dropdown_default_value_field_$rand",
-                "../ajax/dropdownDefaultValue.php",
-                $p
-            );
-            echo '</div>';
-        }
-        // default value on field edit
-        if ($edit) {
-            $dropdown_matches = [];
-            preg_match('/^dropdown-(?<class>.+)$/i', $this->fields['type'], $dropdown_matches);
-            $regex = '/^dropdown-.+/';
-            if (preg_match($regex, $this->fields['type'])) {
-                $default_value = json_decode($this->fields['default_value']);
-                echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand2 . '" ' . $style_default . '>';
-                $dropdownp = [
-                    'entity_restrict' => -1,
-                    'admin'           => 0,
-                    'value'           => is_array($default_value) ? '' : $default_value,
-                    'rand'            => $rand2,
-                    'name'            => "plugin_fields_dropdown_default_value_field_",
-                ];
-                Dropdown::show($dropdown_matches['class'], $dropdownp);
-                echo '</div>';
-            }
-        }
-
-
         echo "</td>";
         echo "</tr>";
 

@@ -31,53 +31,50 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Http\Response;
+/** @global array $CFG_GLPI */
 
 include('../../../inc/includes.php');
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 Session::checkLoginUser();
-// Read parameters
-$context  = $_POST['context'] ?? '';
-$itemtype = str_replace("dropdown-", "", $_POST["itemtype"]) ?? '';
-/** @global array $CFG_GLPI */
 
-// Check for required params
-if (empty($itemtype)) {
-    Response::sendError(400, "Bad request: itemtype cannot be empty", Response::CONTENT_TYPE_TEXT_HTML);
-    die;
+$id   = $_POST['id'];
+$type = $_POST['type'];
+$rand = $_POST['rand'];
+
+$field = new PluginFieldsField();
+if ($id > 0) {
+    $field->getFromDB($id);
+} else {
+    $field->getEmpty();
 }
 
-$table = getTableForItemType($itemtype);
-$rand = $_POST["rand"] ?? mt_rand();
-// Message for post-only
-if (!isset($_POST["admin"]) || ($_POST["admin"] == 0)) {
-    echo "<span class='text-muted'>" .
-    __('Enter the first letters (user, item name, serial or asset number)')
-    . "</span>";
-}
-$field_id = Html::cleanId("dropdown_" . $_POST['myname'] . $rand);
-$p = [
-    'itemtype'            => $itemtype,
-    'entity_restrict'     => $_POST['entity_restrict'],
-    'table'               => $table,
-    'myname'              => $_POST["myname"],
-    'rand'                => $_POST["rand"],
-    'display_emptychoice' => 0,
-    'width'               => 'calc(100% - 25px)',
-    '_idor_token'         => Session::getNewIDORToken($itemtype, [
-        'entity_restrict' => $_POST['entity_restrict'],
-    ]),
-];
-if (isset($_POST["used"]) && !empty($_POST["used"])) {
-    if (isset($_POST["used"][$itemtype])) {
-        $p["used"] = $_POST["used"][$itemtype];
+if (preg_match('/^dropdown-.+/', $type) === 1) {
+    Dropdown::show(
+        preg_replace('/^dropdown-/', '', $type),
+        [
+            'name'            => 'default_value',
+            'value'           => $field->fields['default_value'],
+            'entity_restrict' => -1,
+            'rand'            => $rand,
+        ]
+    );
+} else {
+    echo Html::input(
+        'default_value',
+        [
+            'value' => $field->fields['default_value'],
+        ]
+    );
+    if ($type == "dropdown") {
+        echo '<a href="' . Plugin::getWebDir('fields') . '/front/commondropdown.php?ddtype=' .
+                      $field->fields['name'] . 'dropdown">
+           <img src="' . $CFG_GLPI['root_doc'] . '/pics/options_search.png" class="pointer"
+                alt="' . __('Configure', 'fields') . '" title="' . __('Configure fields values', 'fields') . '">
+           </a>';
+    }
+    if (in_array($type, ['date', 'datetime'])) {
+        echo "<i class='pointer fa fa-info'
+              title=\"" . __("You can use 'now' for date and datetime field") . "\"></i>";
     }
 }
-
-// Add context if defined
-if (!empty($context)) {
-    $p["context"] = $context;
-}
-
-echo Html::jsAjaxDropdown($_POST['myname'], $field_id, $CFG_GLPI['root_doc'] . "/ajax/getDropdownFindNum.php", $p);
