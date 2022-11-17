@@ -432,9 +432,11 @@ class PluginFieldsField extends CommonDBChild
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
                     echo "<td>" ;
-                    
-                    if ($this->fields['type'] == "dropdown-Computer") {
-                        echo Dropdown::getDropdownName("glpi_computers", $this->fields["default_value"]);
+                    $regexp = '/^dropdown-.+/';
+                    if (preg_match($regexp, $this->fields['type'])) {
+                        $typetmp = $this->fields['type'];
+                        $table = getTableForItemType(preg_replace('/dropdown-/', "", $typetmp));
+                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
                     } else {
                         echo $this->fields['default_value'];
                     }
@@ -650,6 +652,7 @@ JAVASCRIPT
             preg_match('/^dropdown-(?<class>.+)$/i', $this->fields['type'], $dropdown_matches);
             $regex = '/^dropdown-.+/';
             if (preg_match($regex, $this->fields['type'])) {
+                $default_value = json_decode($this->fields['default_value']);
                 echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand2 . '" ' . $style_default . '>';
                 $dropdownp = [
                     'entity_restrict' => -1,
