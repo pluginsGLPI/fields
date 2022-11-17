@@ -143,6 +143,11 @@ class PluginFieldsField extends CommonDBChild
         //parse name
         $input['name'] = $this->prepareName($input);
 
+        $regExp = '/^dropdown-.+/m';
+        if (preg_match($regExp, $input['type']) == true) {
+            $input['default_value'] = $input['plugin_fields_dropdown_default_value_field_'];
+        }
+
         //reject adding when field name is too long for mysql
         if (strlen($input['name']) > 64) {
             Session::AddMessageAfterRedirect(
@@ -426,7 +431,14 @@ class PluginFieldsField extends CommonDBChild
                     echo "<a href='" . Plugin::getWebDir('fields') . "/front/field.form.php?id={$this->getID()}'>{$this->fields['label']}</a>";
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
-                    echo "<td>" . $this->fields['default_value'] . "</td>";
+                    echo "<td>" ;
+                    
+                    if ($this->fields['type'] == "dropdown-Computer") {
+                        echo Dropdown::getDropdownName("glpi_computers", $this->fields["default_value"]);
+                    } else {
+                        echo $this->fields['default_value'];
+                    }
+                     echo "</td>";
                     echo "<td align='center'>" . Dropdown::getYesNo($this->fields["mandatory"]) . "</td>";
                     echo "<td align='center'>";
                     echo ($this->isActive())
@@ -460,6 +472,7 @@ class PluginFieldsField extends CommonDBChild
         global $CFG_GLPI;
 
         $rand = mt_rand();
+        $rand2 = mt_rand();
 
         if (isset($options['parent_id']) && !empty($options['parent_id'])) {
             $container = new PluginFieldsContainer();
@@ -501,7 +514,18 @@ class PluginFieldsField extends CommonDBChild
         echo "<td>" . __("Type") . " : </td>";
         echo "<td colspan='3'>";
         if ($edit) {
+            $itemtype = $this->fields['type'];
             echo self::getTypes(true)[$this->fields['type']];
+            echo Html::scriptBlock(<<<JAVASCRIPT
+            var regExp = new RegExp("^dropdown-.+");
+                if (regExp.test("$itemtype")) {
+                    $('#plugin_fields_default_value_field_{$rand}').hide();
+                    $('#plugin_fields_allowed_values_label_{$rand}').hide();
+                    $('#plugin_fields_allowed_values_field_{$rand}').hide();
+                    $('#plugin_fields_dropdown_default_value_field_{$rand2}').show();
+                }
+JAVASCRIPT
+            );
         } else {
             // if glpi_item selected display dropdown and hide input default_value
             echo Html::scriptBlock(<<<JAVASCRIPT
@@ -512,12 +536,20 @@ class PluginFieldsField extends CommonDBChild
                         $('#plugin_fields_default_value_field_{$rand}').hide();
                         $('#plugin_fields_allowed_values_label_{$rand}').show();
                         $('#plugin_fields_allowed_values_field_{$rand}').show();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
                     } else {
                         $('#plugin_fields_default_value_label_{$rand}').show();
                         $('#plugin_fields_default_value_field_{$rand}').show();
                         $('#plugin_fields_allowed_values_label_{$rand}').hide();
                         $('#plugin_fields_allowed_values_field_{$rand}').find('[name="allowed_values\[\]"]').val(null).trigger('change');
                         $('#plugin_fields_allowed_values_field_{$rand}').hide();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_default_value_field_{$rand}').show();
+                    }
+                    var regExp = new RegExp("^dropdown-.+");
+                    if (regExp.test(selected_val) == true) {
+                        $('#plugin_fields_default_value_field_{$rand}').hide();
+                        $('#plugin_fields_dropdown_default_value_field_{$rand}').show();
                     }
                 };
                 $(
@@ -534,6 +566,7 @@ JAVASCRIPT
                 [
                     'value'     => $this->fields['type'],
                     'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)',
+                    'rand'      => $rand
                 ]
             );
         }
@@ -594,6 +627,43 @@ JAVASCRIPT
             );
         }
         echo '</div>';
+        // default value on field creation
+        if (!$edit) {
+            echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand . '" ' . $style_default . '>';
+            $p = ['itemtype'      => '__VALUE__',
+                'entity_restrict' => -1,
+                'admin'           => 0,
+                'rand'            => $rand,
+                'myname'          => "plugin_fields_dropdown_default_value_field_",
+            ];
+            Ajax::updateItemOnSelectEvent(
+                "dropdown_type$rand",
+                "plugin_fields_dropdown_default_value_field_$rand",
+                "../ajax/dropdownDefaultValue.php",
+                $p
+            );
+            echo '</div>';
+        }
+        // default value on field edit
+        if ($edit) {
+            $dropdown_matches = [];
+            preg_match('/^dropdown-(?<class>.+)$/i', $this->fields['type'], $dropdown_matches);
+            $regex = '/^dropdown-.+/';
+            if (preg_match($regex, $this->fields['type'])) {
+                echo '<div id="plugin_fields_dropdown_default_value_field_' . $rand2 . '" ' . $style_default . '>';
+                $dropdownp = [
+                    'entity_restrict' => -1,
+                    'admin'           => 0,
+                    'value'           => is_array($default_value) ? '' : $default_value,
+                    'rand'            => $rand2,
+                    'name'            => "plugin_fields_dropdown_default_value_field_",
+                ];
+                Dropdown::show($dropdown_matches['class'], $dropdownp);
+                echo '</div>';
+            }
+        }
+
+
         echo "</td>";
         echo "</tr>";
 
