@@ -426,7 +426,17 @@ class PluginFieldsField extends CommonDBChild
                     echo "<a href='" . Plugin::getWebDir('fields') . "/front/field.form.php?id={$this->getID()}'>{$this->fields['label']}</a>";
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
-                    echo "<td>" . $this->fields['default_value'] . "</td>";
+                    echo "<td>" ;
+                    if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
+                        $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
+                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                    } elseif ($this->fields['type'] === 'dropdown') {
+                        $table = getTableForItemType(PluginFieldsDropdown::getClassname($this->fields['name']));
+                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                    } else {
+                        echo $this->fields['default_value'];
+                    }
+                    echo "</td>";
                     echo "<td align='center'>" . Dropdown::getYesNo($this->fields["mandatory"]) . "</td>";
                     echo "<td align='center'>";
                     echo ($this->isActive())
@@ -457,8 +467,6 @@ class PluginFieldsField extends CommonDBChild
 
     public function showForm($ID, $options = [])
     {
-        global $CFG_GLPI;
-
         $rand = mt_rand();
 
         if (isset($options['parent_id']) && !empty($options['parent_id'])) {
@@ -503,37 +511,12 @@ class PluginFieldsField extends CommonDBChild
         if ($edit) {
             echo self::getTypes(true)[$this->fields['type']];
         } else {
-            // if glpi_item selected display dropdown and hide input default_value
-            echo Html::scriptBlock(<<<JAVASCRIPT
-                var plugin_fields_change_field_type_{$rand} = function(selected_val) {
-                    if (selected_val === 'glpi_item') {
-                        $('#plugin_fields_default_value_label_{$rand}').hide();
-                        $('#plugin_fields_default_value_field_{$rand}').find('[name="default_value"]').val(null).trigger('change');
-                        $('#plugin_fields_default_value_field_{$rand}').hide();
-                        $('#plugin_fields_allowed_values_label_{$rand}').show();
-                        $('#plugin_fields_allowed_values_field_{$rand}').show();
-                    } else {
-                        $('#plugin_fields_default_value_label_{$rand}').show();
-                        $('#plugin_fields_default_value_field_{$rand}').show();
-                        $('#plugin_fields_allowed_values_label_{$rand}').hide();
-                        $('#plugin_fields_allowed_values_field_{$rand}').find('[name="allowed_values\[\]"]').val(null).trigger('change');
-                        $('#plugin_fields_allowed_values_field_{$rand}').hide();
-                    }
-                };
-                $(
-                    function () {
-                        plugin_fields_change_field_type_{$rand}();
-                    }
-                );
-JAVASCRIPT
-            );
-
             Dropdown::showFromArray(
                 'type',
                 self::getTypes(false),
                 [
-                    'value'     => $this->fields['type'],
-                    'on_change' => 'plugin_fields_change_field_type_' . $rand . '(this.value)',
+                    'value' => $this->fields['type'],
+                    'rand'  => $rand,
                 ]
             );
         }
@@ -552,48 +535,44 @@ JAVASCRIPT
         echo '</div>';
         echo "</td>";
         echo "<td colspan='3'>";
-        echo '<div id="plugin_fields_default_value_field_' . $rand . '" ' . $style_default . '>';
-        echo Html::input(
-            'default_value',
-            [
-                'value' => $this->fields['default_value'],
-            ]
-        );
-        if ($this->fields["type"] == "dropdown") {
-            echo '<a href="' . Plugin::getWebDir('fields') . '/front/commondropdown.php?ddtype=' .
-                          $this->fields['name'] . 'dropdown">
-               <img src="' . $CFG_GLPI['root_doc'] . '/pics/options_search.png" class="pointer"
-                    alt="' . __('Configure', 'fields') . '" title="' . __('Configure fields values', 'fields') . '">
-               </a>';
-        }
-        if (in_array($this->fields['type'], ['date', 'datetime'])) {
-            echo "<i class='pointer fa fa-info'
-                  title=\"" . __("You can use 'now' for date and datetime field") . "\"></i>";
-        }
+        echo '<div id="plugin_fields_specific_fields_' . $rand . '">';
         echo '</div>';
-        echo '<div id="plugin_fields_allowed_values_field_' . $rand . '" ' . $style_allowed . '>';
-        if (!$edit) {
-            Dropdown::showFromArray('allowed_values', PluginFieldsToolbox::getGlpiItemtypes(), [
-                'display_emptychoice'   => true,
-                'multiple' => true
-            ]);
+        if ($edit) {
+            $load_params = json_encode(
+                [
+                    'id'   => $ID,
+                    'type' => $this->fields['type'],
+                    'rand' => $rand,
+                ]
+            );
+            echo Html::scriptBlock(<<<JAVASCRIPT
+                $(
+                    function () {
+                        $('#plugin_fields_specific_fields_$rand').load('../ajax/field_specific_fields.php', $load_params);
+                    }
+                );
+JAVASCRIPT
+            );
         } else {
-            $allowed_itemtypes = !empty($this->fields['allowed_values'])
-            ? json_decode($this->fields['allowed_values'])
-            : [];
-            echo implode(
-                ', ',
-                array_map(
-                    function ($itemtype) {
-                        return is_a($itemtype, CommonDBTM::class, true)
-                        ? $itemtype::getTypeName(Session::getPluralNumber())
-                        : $itemtype;
-                    },
-                    $allowed_itemtypes
-                )
+            Ajax::updateItemOnSelectEvent(
+                "dropdown_type$rand",
+                "plugin_fields_specific_fields_$rand",
+                "../ajax/field_specific_fields.php",
+                [
+                    'id'   => $ID,
+                    'type' => '__VALUE__',
+                    'rand' => $rand,
+                ]
+            );
+            echo Html::scriptBlock(<<<JAVASCRIPT
+                $(
+                    function () {
+                        $('#dropdown_type$rand').trigger('change');
+                    }
+                );
+JAVASCRIPT
             );
         }
-        echo '</div>';
         echo "</td>";
         echo "</tr>";
 
