@@ -54,10 +54,10 @@ class %%CLASSNAME%% extends CommonDBTM
       return $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
    }
 
-   static function addField($fieldname, $type) {
+   static function addField($fieldname, $type, $multiple = false) {
       $migration = new PluginFieldsMigration(0);
 
-      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type);
+      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type, $multiple);
       foreach ($sql_fields as $sql_field_name => $sql_field_type) {
          $migration->addField(self::getTable(), $sql_field_name, $sql_field_type);
       }

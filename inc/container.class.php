@@ -1065,6 +1065,11 @@ HTML;
         //check if data already inserted
         $obj   = new $classname();
         $found = $obj->find(['items_id' => $items_id]);
+        foreach ($data as $key => $value) {
+            if (gettype($value) == "array") {
+                $data[$key] = json_encode($value);
+            }
+        }
         if (empty($found)) {
             // add fields data
             $obj->add($data);

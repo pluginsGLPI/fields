@@ -43,7 +43,7 @@ class PluginFieldsMigration extends Migration
      *
      * @return array
      */
-    public static function getSQLFields(string $field_name, string $field_type): array
+    public static function getSQLFields(string $field_name, string $field_type, bool $multiple = false): array
     {
         $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 

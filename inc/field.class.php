@@ -72,10 +72,11 @@ class PluginFieldsField extends CommonDBChild
                   `type`                              VARCHAR(255)    DEFAULT NULL,
                   `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `ranking`                           INT            NOT NULL DEFAULT '0',
-                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
+                  `default_value`                     LONGTEXT   DEFAULT NULL,
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
+                  `multiple_dropdown`                 TINYINT        NOT NULL DEFAULT '0',
                   `allowed_values`                    TEXT           ,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
@@ -97,6 +98,9 @@ class PluginFieldsField extends CommonDBChild
         }
         if (!$DB->fieldExists($table, 'mandatory')) {
             $migration->addField($table, 'mandatory', 'bool', ['value' => 0]);
+        }
+        if (!$DB->fieldExists($table, 'multiple_dropdown')) {
+            $migration->addField($table, 'multiple_dropdown', 'bool', ['value' => 0]);
         }
 
         //increase the size of column 'type' (25 to 255)
@@ -231,6 +235,13 @@ class PluginFieldsField extends CommonDBChild
         //parse name
         $input['name'] = $this->prepareName($input);
 
+        $regExp = '/^dropdown-.+/m';
+        if (preg_match($regExp, $input['type']) == true) {
+            if ($input['multiple_dropdown']) {
+                $input['default_value'] = json_encode($input['multiple_default_value']);
+            }
+        }
+
         //reject adding when field name is too long for mysql
         if (strlen($input['name']) > 64) {
             Session::AddMessageAfterRedirect(
@@ -278,7 +289,7 @@ class PluginFieldsField extends CommonDBChild
             $container_obj->getFromDB($input['plugin_fields_containers_id']);
             foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
-                $classname::addField($input['name'], $input['type']);
+                $classname::addField($input['name'], $input['type'], $input['multiple_dropdown'] == 1);
             }
         }
 
@@ -517,7 +528,11 @@ class PluginFieldsField extends CommonDBChild
                     echo "<td>" ;
                     if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
                         $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
-                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                        if ($this->fields['multiple_dropdown'] == 1) {
+                            echo implode(", ", Dropdown::getDropdownArrayNames($table, json_decode($this->fields["default_value"])));
+                        } else {
+                            echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                        }
                     } elseif ($this->fields['type'] === 'dropdown') {
                         $table = getTableForItemType(PluginFieldsDropdown::getClassname($this->fields['name']));
                         echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
@@ -610,6 +625,37 @@ class PluginFieldsField extends CommonDBChild
         }
         echo "</td>";
         echo "</tr>";
+        echo "<tr>";
+        $style_multiple = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
+        echo "<td>";
+        echo '<div id="plugin_fields_multiple_dropdown_label_' . $rand . '" ' . $style_multiple . '>';
+        echo __("multiple dropdown", "fields") . " : ";
+        echo "</div>";
+        echo "</td>";
+        echo "<td colspan='3' id='plugin_fields_multiple_dropdown_field_{$rand}' " . $style_multiple . ">";
+        if ($edit) {
+            Dropdown::showYesNo(
+                "multiple_dropdown",
+                $this->fields["multiple_dropdown"],
+                -1,
+                [
+                    'rand'      => $rand,
+                    'readonly'  => true,
+                ]
+            );
+        } else if (!$edit) {
+            Dropdown::showYesNo(
+                "multiple_dropdown",
+                $this->fields["multiple_dropdown"],
+                -1,
+                [
+                    'rand'      => $rand,
+                ]
+            );
+        }
+        echo "</td>";
+        echo "</tr>";
+
 
         $style_default = $this->fields['type'] === 'glpi_item' ? 'style="display:none;"' : '';
         $style_allowed = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
@@ -628,9 +674,9 @@ class PluginFieldsField extends CommonDBChild
         if ($edit) {
             $load_params = json_encode(
                 [
-                    'id'   => $ID,
-                    'type' => $this->fields['type'],
-                    'rand' => $rand,
+                    'id'                => $ID,
+                    'type'              => $this->fields['type'],
+                    'rand'              => $rand,
                 ]
             );
             echo Html::scriptBlock(<<<JAVASCRIPT
@@ -647,9 +693,9 @@ JAVASCRIPT
                 "plugin_fields_specific_fields_$rand",
                 "../ajax/field_specific_fields.php",
                 [
-                    'id'   => $ID,
-                    'type' => '__VALUE__',
-                    'rand' => $rand,
+                    'id'                => $ID,
+                    'type'              => '__VALUE__',
+                    'rand'              => $rand,
                 ]
             );
             echo Html::scriptBlock(<<<JAVASCRIPT
@@ -1065,7 +1111,13 @@ JAVASCRIPT
                     }
                 }
             }
-
+            if ($field['multiple_dropdown'] == 1) {
+                if ($value != '') {
+                    $value = json_decode($value);
+                } else {
+                    $value = [];
+                }
+            }
             $field['value'] = $value;
         }
 

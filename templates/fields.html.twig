@@ -106,6 +106,9 @@
             {% elseif field['dropdown_class'] == 'Entity' %}
                 {% set dropdown_options = dropdown_options|merge({'entity_sons': true}) %}
             {% endif %}
+            {% if field['multiple_dropdown'] == true %}
+                {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
+            {% endif %}
             {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge(dropdown_options)) }}
         {% endif %}
 
