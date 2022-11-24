@@ -39,6 +39,7 @@ Session::checkLoginUser();
 $id   = $_POST['id'];
 $type = $_POST['type'];
 $rand = $_POST['rand'];
+$edit = $_POST['edit'] == "true" ? true : false;
 
 $field = new PluginFieldsField();
 if ($id > 0) {
@@ -52,8 +53,8 @@ if ($type === 'glpi_item') {
     echo Html::scriptBlock(<<<JAVASCRIPT
         $('#plugin_fields_default_value_label_{$rand}').hide();
         $('#plugin_fields_allowed_values_label_{$rand}').show();
-        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
         $('#plugin_fields_multiple_dropdown_field_{$rand}').hide();
+        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
 JAVASCRIPT
     );
 
@@ -84,8 +85,8 @@ JAVASCRIPT
     echo Html::scriptBlock(<<<JAVASCRIPT
         $('#plugin_fields_default_value_label_{$rand}').show();
         $('#plugin_fields_allowed_values_label_{$rand}').hide();
-        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
         $('#plugin_fields_multiple_dropdown_field_{$rand}').hide();
+        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
 JAVASCRIPT
     );
 
@@ -96,10 +97,10 @@ JAVASCRIPT
         $('#plugin_fields_multiple_dropdown_field_{$rand}').show();
 JAVASCRIPT
         );
-        if ($field->fields['multiple_dropdown'] == 1 || $field->fields['multiple_dropdown'] == 0) {
+        if ($edit) {
             Ajax::updateItem(
                 "plugin_fields_specific_fields_$rand",
-                "../ajax/field_is_multiple.php",
+                "../ajax/field_default_value.php",
                 [
                     'id'                => $id,
                     'is_multiple'       => $field->fields['multiple_dropdown'],
@@ -108,26 +109,17 @@ JAVASCRIPT
                 ]
             );
         } else {
-            Ajax::updateItemOnSelectEvent(
-                "dropdown_multiple_dropdown$rand",
-                "plugin_fields_specific_fields_$rand",
-                "../ajax/field_is_multiple.php",
+            Ajax::updateItem(
+                "plugin_fields_multiple_dropdown_field_$rand",
+                "../ajax/field_yesno.php",
                 [
                     'id'                => $id,
-                    'is_multiple'       => '__VALUE__',
                     'rand'              => $rand,
                     'type'              => $type,
+                    'field'             => $field->fields,
                 ]
             );
         }
-        echo Html::scriptBlock(<<<JAVASCRIPT
-                $(
-                    function () {
-                        $('#dropdown_multiple_dropdown$rand').trigger('change');
-                    }
-                );
-JAVASCRIPT
-        );
     } elseif ($type == 'dropdown') {
         if ($field->isNewItem()) {
             echo '<em class="form-control-plaintext">';

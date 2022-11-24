@@ -634,16 +634,8 @@ class PluginFieldsField extends CommonDBChild
         echo "</td>";
         echo "<td colspan='3' id='plugin_fields_multiple_dropdown_field_{$rand}' " . $style_multiple . ">";
         if ($edit) {
-            Dropdown::showYesNo(
-                "multiple_dropdown",
-                $this->fields["multiple_dropdown"],
-                -1,
-                [
-                    'rand'      => $rand,
-                    'readonly'  => true,
-                ]
-            );
-        } else if (!$edit) {
+            echo Dropdown::getYesNo($this->fields["multiple_dropdown"]);
+        } else {
             Dropdown::showYesNo(
                 "multiple_dropdown",
                 $this->fields["multiple_dropdown"],
@@ -653,9 +645,9 @@ class PluginFieldsField extends CommonDBChild
                 ]
             );
         }
+
         echo "</td>";
         echo "</tr>";
-
 
         $style_default = $this->fields['type'] === 'glpi_item' ? 'style="display:none;"' : '';
         $style_allowed = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
@@ -674,9 +666,10 @@ class PluginFieldsField extends CommonDBChild
         if ($edit) {
             $load_params = json_encode(
                 [
-                    'id'                => $ID,
-                    'type'              => $this->fields['type'],
-                    'rand'              => $rand,
+                    'id'   => $ID,
+                    'type' => $this->fields['type'],
+                    'rand' => $rand,
+                    'edit' => $edit,
                 ]
             );
             echo Html::scriptBlock(<<<JAVASCRIPT
@@ -693,9 +686,10 @@ JAVASCRIPT
                 "plugin_fields_specific_fields_$rand",
                 "../ajax/field_specific_fields.php",
                 [
-                    'id'                => $ID,
-                    'type'              => '__VALUE__',
-                    'rand'              => $rand,
+                    'id'   => $ID,
+                    'type' => '__VALUE__',
+                    'rand' => $rand,
+                    'edit' => $edit,
                 ]
             );
             echo Html::scriptBlock(<<<JAVASCRIPT

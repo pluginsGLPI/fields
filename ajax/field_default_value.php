@@ -39,7 +39,7 @@ Session::checkLoginUser();
 $id   = $_POST['id'];
 $type = $_POST['type'];
 $rand = $_POST['rand'];
-$multiple_dropdown = $_POST['is_multiple'];
+$multiple_dropdown = $_POST['is_multiple'] == 1;
 
 $field = new PluginFieldsField();
 if ($id > 0) {
@@ -48,25 +48,17 @@ if ($id > 0) {
     $field->getEmpty();
 }
 
-if (!$_POST['is_multiple']) {
-    Dropdown::show(
-        preg_replace('/^dropdown-/', '', $type),
-        [
-            'name'            => 'default_value',
-            'value'           => $field->fields['default_value'],
-            'entity_restrict' => -1,
-            'rand'            => $rand,
-        ]
-    );
-} else {
-    Dropdown::show(
-        preg_replace('/^dropdown-/', '', $type),
-        [
-            'name'            => 'multiple_default_value[]',
-            'value'           => $field->fields['default_value'] ? json_decode($field->fields['default_value']) : [],
-            'entity_restrict' => -1,
-            'rand'            => $rand,
-            'multiple'        => 1,
-        ]
-    );
-}
+$multiple_default = ($field->fields['default_value'] ? json_decode($field->fields['default_value']) : []);
+
+Dropdown::show(
+    preg_replace('/^dropdown-/', '', $type),
+    [
+        'name'                => $multiple_dropdown ? 'multiple_default_value[]' : 'default_value',
+        'value'               => $multiple_dropdown ? $multiple_default : $field->fields['default_value'],
+        'entity_restrict'     => -1,
+        'rand'                => $rand,
+        'multiple'            => $multiple_dropdown,
+        'display_emptychoice' => $multiple_dropdown ? false : true,
+        'width'               => "100%",
+    ]
+);
