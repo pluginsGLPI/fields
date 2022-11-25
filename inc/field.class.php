@@ -72,7 +72,7 @@ class PluginFieldsField extends CommonDBChild
                   `type`                              VARCHAR(255)   DEFAULT NULL,
                   `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `ranking`                           INT            NOT NULL DEFAULT '0',
-                  `default_value`                     LONGTEXT       DEFAULT NULL,
+                  `default_value`                     LONGTEXT       ,
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',

@@ -58,7 +58,7 @@ class PluginFieldsMigration extends Migration
                     $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
                 }
                 if ($multiple == 1) {
-                    $fields[$field_name] = "LONGTEXT DEFAULT NULL";
+                    $fields[$field_name] = "LONGTEXT";
                 } else {
                     $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
                 }
