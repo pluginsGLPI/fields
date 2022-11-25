@@ -626,76 +626,33 @@ class PluginFieldsField extends CommonDBChild
                 ]
             );
         }
-        echo "</td>";
-        echo "</tr>";
-        echo "<tr>";
-        echo "<td>";
-        echo "<div id='plugin_fields_multiple_dropdown_label_{$rand}'  style='display:none'>";
-        echo __("multiple dropdown", "fields") . " : ";
-        echo "</div>";
-        echo "</td>";
-        echo "<td colspan='3' id='plugin_fields_multiple_dropdown_field_{$rand}' style='display:none'>";
-        if ($edit) {
-            echo Dropdown::getYesNo($this->fields["multiple_dropdown"]);
-        }
 
         echo "</td>";
         echo "</tr>";
 
-        $style_default = $this->fields['type'] === 'glpi_item' ? 'style="display:none;"' : '';
-        $style_allowed = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
-        echo "<tr>";
-        echo "<td>";
-        echo '<div id="plugin_fields_default_value_label_' . $rand . '" ' . $style_default . '>';
-        echo __("Default values") . " : ";
-        echo '</div>';
-        echo '<div id="plugin_fields_allowed_values_label_' . $rand . '" ' . $style_allowed . '>';
-        echo __('Allowed values', 'fields') . " : ";
-        echo '</div>';
-        echo "</td>";
-        echo "<td colspan='3'>";
-        echo '<div id="plugin_fields_specific_fields_' . $rand . '">';
-        echo '</div>';
-        if ($edit) {
-            $load_params = json_encode(
-                [
-                    'id'   => $ID,
-                    'type' => $this->fields['type'],
-                    'rand' => $rand,
-                    'edit' => $edit,
-                ]
-            );
-            echo Html::scriptBlock(<<<JAVASCRIPT
-                $(
-                    function () {
-                        $('#plugin_fields_specific_fields_$rand').load('../ajax/field_specific_fields.php', $load_params);
-                    }
-                );
-JAVASCRIPT
-            );
-        } else {
-            Ajax::updateItemOnSelectEvent(
-                "dropdown_type$rand",
-                "plugin_fields_specific_fields_$rand",
-                "../ajax/field_specific_fields.php",
-                [
-                    'id'   => $ID,
-                    'type' => '__VALUE__',
-                    'rand' => $rand,
-                    'edit' => $edit,
-                ]
-            );
-            echo Html::scriptBlock(<<<JAVASCRIPT
-                $(
-                    function () {
-                        $('#dropdown_type$rand').trigger('change');
-                    }
-                );
-JAVASCRIPT
-            );
-        }
-        echo "</td>";
-        echo "</tr>";
+        echo '<tr id="plugin_fields_specific_fields_' . $rand . '" style="line-height: 46px;">';
+        echo '<td>';
+        Ajax::updateItemOnSelectEvent(
+            "dropdown_type$rand",
+            "plugin_fields_specific_fields_$rand",
+            "../ajax/field_specific_fields.php",
+            [
+                'id'   => $ID,
+                'type' => '__VALUE__',
+                'rand' => $rand,
+            ]
+        );
+        Ajax::updateItem(
+            "plugin_fields_specific_fields_$rand",
+            "../ajax/field_specific_fields.php",
+            [
+                'id'   => $ID,
+                'type' => $this->fields['type'] ?? '',
+                'rand' => $rand,
+            ]
+        );
+        echo '</td>';
+        echo '</tr>';
 
         echo "<tr>";
         echo "<td>" . __('Active') . " :</td>";

@@ -39,7 +39,6 @@ Session::checkLoginUser();
 $id   = $_POST['id'];
 $type = $_POST['type'];
 $rand = $_POST['rand'];
-$edit = $_POST['edit'] == "true" ? true : false;
 
 $field = new PluginFieldsField();
 if ($id > 0) {
@@ -49,16 +48,12 @@ if ($id > 0) {
 }
 
 if ($type === 'glpi_item') {
-    // Display correct label
-    echo Html::scriptBlock(<<<JAVASCRIPT
-        $('#plugin_fields_default_value_label_{$rand}').hide();
-        $('#plugin_fields_allowed_values_label_{$rand}').show();
-        $('#plugin_fields_multiple_dropdown_field_{$rand}').hide();
-        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
-JAVASCRIPT
-    );
-
     // Display "allowed values" field
+    echo '<td>';
+    echo __('Allowed values', 'fields') . ' :';
+    echo '</td>';
+
+    echo '<td style="line-height:var(--tblr-body-line-height);">';
     if ($field->isNewItem()) {
         Dropdown::showFromArray('allowed_values', PluginFieldsToolbox::getGlpiItemtypes(), [
             'display_emptychoice' => true,
@@ -80,46 +75,57 @@ JAVASCRIPT
             )
         );
     }
+    echo '</td>';
 } else {
-    // Display correct label
-    echo Html::scriptBlock(<<<JAVASCRIPT
-        $('#plugin_fields_default_value_label_{$rand}').show();
-        $('#plugin_fields_allowed_values_label_{$rand}').hide();
-        $('#plugin_fields_multiple_dropdown_field_{$rand}').hide();
-        $('#plugin_fields_multiple_dropdown_label_{$rand}').hide();
-JAVASCRIPT
-    );
 
-    // Display "default values" field
+    // Display "default value(s)" field
+    echo '<td>';
     if (preg_match('/^dropdown-.+/', $type) === 1) {
-        echo Html::scriptBlock(<<<JAVASCRIPT
-        $('#plugin_fields_multiple_dropdown_label_{$rand}').show();
-        $('#plugin_fields_multiple_dropdown_field_{$rand}').show();
-JAVASCRIPT
+        echo __('Multiple dropdown', 'fields') . ' :';
+        echo '<br />';
+    }
+    echo __('Default value', 'fields') . ' :';
+    if (in_array($type, ['date', 'datetime'])) {
+        echo '<i class="pointer fa fa-info" title="' . __s("You can use 'now' for date and datetime field") . '"></i>';
+    }
+    echo '</td>';
+
+    echo '<td>';
+    if (preg_match('/^dropdown-.+/', $type) === 1) {
+        $is_multiple_dropdown = (bool)($_POST['multiple_dropdown'] ?? $field->fields['multiple_dropdown']);
+        $default_value = $is_multiple_dropdown ? json_decode($field->fields['default_value']) : $is_multiple_dropdown;
+        Dropdown::showYesNo(
+            'multiple_dropdown',
+            $is_multiple_dropdown,
+            -1,
+            [
+                'rand' => $rand,
+            ]
         );
-        if ($edit) {
-            Ajax::updateItem(
-                "plugin_fields_specific_fields_$rand",
-                "../ajax/field_default_value.php",
-                [
-                    'id'          => $id,
-                    'is_multiple' => $field->fields['multiple_dropdown'],
-                    'rand'        => $rand,
-                    'type'        => $type,
-                ]
-            );
-        } else {
-            Ajax::updateItem(
-                "plugin_fields_multiple_dropdown_field_$rand",
-                "../ajax/field_yesno.php",
-                [
-                    'id'    => $id,
-                    'rand'  => $rand,
-                    'type'  => $type,
-                    'field' => $field->fields,
-                ]
-            );
-        }
+        echo '<br />';
+        echo '<div style="line-height:var(--tblr-body-line-height);">';
+        Dropdown::show(
+            preg_replace('/^dropdown-/', '', $type),
+            [
+                'name'            => 'default_value',
+                'value'           => $default_value,
+                'entity_restrict' => -1,
+                'multiple'        => $is_multiple_dropdown,
+                'rand'            => $rand,
+            ]
+        );
+        echo '</div>';
+        Ajax::updateItemOnSelectEvent(
+            "dropdown_multiple_dropdown$rand",
+            "plugin_fields_specific_fields_$rand",
+            "../ajax/field_specific_fields.php",
+            [
+                'id'   => $id,
+                'type' => $type,
+                'multiple_dropdown' => '__VALUE__',
+                'rand' => $rand,
+            ]
+        );
     } elseif ($type == 'dropdown') {
         if ($field->isNewItem()) {
             echo '<em class="form-control-plaintext">';
@@ -144,7 +150,5 @@ JAVASCRIPT
             ]
         );
     }
-    if (in_array($type, ['date', 'datetime'])) {
-        echo '<i class="pointer fa fa-info" title="' . __s("You can use 'now' for date and datetime field") . '"></i>';
-    }
+    echo '</td>';
 }
