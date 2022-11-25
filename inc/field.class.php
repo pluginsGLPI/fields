@@ -30,7 +30,6 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
-use Laminas\Validator\File\Exists;
 
 class PluginFieldsField extends CommonDBChild
 {
