@@ -1241,7 +1241,7 @@ HTML;
 
         // Apply status overrides
         $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($itemtype);
-        $status_overrides = $data[$status_field_name] !== null
+        $status_overrides = key_exists($status_field_name, $data)
             ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data[$status_field_name])
             : [];
         foreach ($status_overrides as $status_override) {

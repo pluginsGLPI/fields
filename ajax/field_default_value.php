@@ -36,9 +36,9 @@ header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 Session::checkLoginUser();
 
-$id   = $_POST['id'];
-$type = $_POST['type'];
-$rand = $_POST['rand'];
+$id                = $_POST['id'];
+$type              = $_POST['type'];
+$rand              = $_POST['rand'];
 $multiple_dropdown = $_POST['is_multiple'] == 1;
 
 $field = new PluginFieldsField();
@@ -48,7 +48,7 @@ if ($id > 0) {
     $field->getEmpty();
 }
 
-$multiple_default = ($field->fields['default_value'] ? json_decode($field->fields['default_value']) : []);
+$multiple_default = $field->fields['default_value'] ? json_decode($field->fields['default_value']) : [];
 
 Dropdown::show(
     preg_replace('/^dropdown-/', '', $type),

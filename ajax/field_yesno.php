@@ -36,38 +36,37 @@ header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 Session::checkLoginUser();
 
-
-$id   = $_POST['id'];
-$type = $_POST['type'];
-$rand = $_POST['rand'];
+$id    = $_POST['id'];
+$type  = $_POST['type'];
+$rand  = $_POST['rand'];
 $field = $_POST['field'];
 
-if (preg_match('/^dropdown-.+/', $type) === 1) {
-    Dropdown::showYesNo(
-        "multiple_dropdown",
-        $field['multiple_dropdown'],
-        -1,
-        [
-            'rand'      => $rand,
-        ]
+Dropdown::showYesNo(
+    "multiple_dropdown",
+    $field['multiple_dropdown'],
+    -1,
+    [
+        'rand' => $rand,
+    ]
+);
+
+Ajax::updateItemOnSelectEvent(
+    "dropdown_multiple_dropdown$rand",
+    "plugin_fields_specific_fields_$rand",
+    "../ajax/field_default_value.php",
+    [
+        'id'          => $id,
+        'is_multiple' => '__VALUE__',
+        'rand'        => $rand,
+        'type'        => $type,
+    ]
+);
+
+echo Html::scriptBlock(<<<JAVASCRIPT
+    $(
+        function () {
+            $('#dropdown_multiple_dropdown$rand').trigger('change');
+        }
     );
-    Ajax::updateItemOnSelectEvent(
-        "dropdown_multiple_dropdown$rand",
-        "plugin_fields_specific_fields_$rand",
-        "../ajax/field_default_value.php",
-        [
-            'id'                => $id,
-            'is_multiple'       => '__VALUE__',
-            'rand'              => $rand,
-            'type'              => $type,
-        ]
-    );
-    echo Html::scriptBlock(<<<JAVASCRIPT
-                $(
-                    function () {
-                        $('#dropdown_multiple_dropdown$rand').trigger('change');
-                    }
-                );
 JAVASCRIPT
-            );
-}
+);

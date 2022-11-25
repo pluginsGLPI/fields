@@ -61,8 +61,8 @@ JAVASCRIPT
     // Display "allowed values" field
     if ($field->isNewItem()) {
         Dropdown::showFromArray('allowed_values', PluginFieldsToolbox::getGlpiItemtypes(), [
-            'display_emptychoice'   => true,
-            'multiple' => true
+            'display_emptychoice' => true,
+            'multiple'            => true
         ]);
     } else {
         $allowed_itemtypes = !empty($field->fields['allowed_values'])
@@ -102,10 +102,10 @@ JAVASCRIPT
                 "plugin_fields_specific_fields_$rand",
                 "../ajax/field_default_value.php",
                 [
-                    'id'                => $id,
-                    'is_multiple'       => $field->fields['multiple_dropdown'],
-                    'rand'              => $rand,
-                    'type'              => $type,
+                    'id'          => $id,
+                    'is_multiple' => $field->fields['multiple_dropdown'],
+                    'rand'        => $rand,
+                    'type'        => $type,
                 ]
             );
         } else {
@@ -113,10 +113,10 @@ JAVASCRIPT
                 "plugin_fields_multiple_dropdown_field_$rand",
                 "../ajax/field_yesno.php",
                 [
-                    'id'                => $id,
-                    'rand'              => $rand,
-                    'type'              => $type,
-                    'field'             => $field->fields,
+                    'id'    => $id,
+                    'rand'  => $rand,
+                    'type'  => $type,
+                    'field' => $field->fields,
                 ]
             );
         }

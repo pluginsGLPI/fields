@@ -30,6 +30,7 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
+use Laminas\Validator\File\Exists;
 
 class PluginFieldsField extends CommonDBChild
 {
@@ -69,10 +70,10 @@ class PluginFieldsField extends CommonDBChild
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
                   `label`                             VARCHAR(255)   DEFAULT NULL,
-                  `type`                              VARCHAR(255)    DEFAULT NULL,
+                  `type`                              VARCHAR(255)   DEFAULT NULL,
                   `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `ranking`                           INT            NOT NULL DEFAULT '0',
-                  `default_value`                     LONGTEXT   DEFAULT NULL,
+                  `default_value`                     LONGTEXT       DEFAULT NULL,
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
@@ -101,6 +102,9 @@ class PluginFieldsField extends CommonDBChild
         }
         if (!$DB->fieldExists($table, 'multiple_dropdown')) {
             $migration->addField($table, 'multiple_dropdown', 'bool', ['value' => 0]);
+        }
+        if ($DB->getField($table, 'default_value')['Type'] !== 'longtext') {
+            $migration->changeField($table, 'default_value', 'default_value', 'longtext');
         }
 
         //increase the size of column 'type' (25 to 255)
@@ -237,7 +241,7 @@ class PluginFieldsField extends CommonDBChild
 
         $regExp = '/^dropdown-.+/m';
         if (preg_match($regExp, $input['type']) == true) {
-            if ($input['multiple_dropdown']) {
+            if ($input['multiple_dropdown'] && key_exists('multiple_default_value', $input)) {
                 $input['default_value'] = json_encode($input['multiple_default_value']);
             }
         }
@@ -528,7 +532,7 @@ class PluginFieldsField extends CommonDBChild
                     echo "<td>" ;
                     if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
                         $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
-                        if ($this->fields['multiple_dropdown'] == 1) {
+                        if ($this->fields['multiple_dropdown'] == 1 && $this->fields["default_value"]) {
                             echo implode(", ", Dropdown::getDropdownArrayNames($table, json_decode($this->fields["default_value"])));
                         } else {
                             echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
@@ -626,24 +630,14 @@ class PluginFieldsField extends CommonDBChild
         echo "</td>";
         echo "</tr>";
         echo "<tr>";
-        $style_multiple = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
         echo "<td>";
-        echo '<div id="plugin_fields_multiple_dropdown_label_' . $rand . '" ' . $style_multiple . '>';
+        echo "<div id='plugin_fields_multiple_dropdown_label_{$rand}'  style='display:none'>";
         echo __("multiple dropdown", "fields") . " : ";
         echo "</div>";
         echo "</td>";
-        echo "<td colspan='3' id='plugin_fields_multiple_dropdown_field_{$rand}' " . $style_multiple . ">";
+        echo "<td colspan='3' id='plugin_fields_multiple_dropdown_field_{$rand}' style='display:none'>";
         if ($edit) {
             echo Dropdown::getYesNo($this->fields["multiple_dropdown"]);
-        } else {
-            Dropdown::showYesNo(
-                "multiple_dropdown",
-                $this->fields["multiple_dropdown"],
-                -1,
-                [
-                    'rand'      => $rand,
-                ]
-            );
         }
 
         echo "</td>";
