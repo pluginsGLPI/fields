@@ -1742,7 +1742,7 @@ HTML;
             if ($data['type'] === "dropdown") {
                 $field_name = "plugin_fields_" . $data['field_name'] . "dropdowns_id";
 
-                if ($data['multiple']) {;
+                if ($data['multiple']) {
                     $opt[$i]['table']      = $tablename;
                     $opt[$i]['field']      = $field_name;
                     $opt[$i]['datatype']   = 'specific';
