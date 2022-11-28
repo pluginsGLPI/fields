@@ -1,6 +1,6 @@
 <?php
 
-class %%CLASSNAME%% extends CommonDBTM
+class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
 {
    static $rightname = '%%ITEMTYPE_RIGHT%%';
 
@@ -54,10 +54,10 @@ class %%CLASSNAME%% extends CommonDBTM
       return $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
    }
 
-   static function addField($fieldname, $type, $multiple = false) {
+   static function addField($fieldname, $type, array $options) {
       $migration = new PluginFieldsMigration(0);
 
-      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type, $multiple);
+      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type, $options);
       foreach ($sql_fields as $sql_field_name => $sql_field_type) {
          $migration->addField(self::getTable(), $sql_field_name, $sql_field_type);
       }

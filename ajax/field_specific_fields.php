@@ -92,38 +92,43 @@ if ($type === 'glpi_item') {
 
     echo '<td>';
     if (preg_match('/^dropdown-.+/', $type) === 1) {
-        $is_multiple_dropdown = (bool)($_POST['multiple_dropdown'] ?? $field->fields['multiple_dropdown']);
-        $default_value = $is_multiple_dropdown ? json_decode($field->fields['default_value']) : $is_multiple_dropdown;
-        Dropdown::showYesNo(
-            'multiple_dropdown',
-            $is_multiple_dropdown,
-            -1,
-            [
-                'rand' => $rand,
-            ]
-        );
+        $multiple = (bool)($_POST['multiple'] ?? $field->fields['multiple']);
+
+        if ($field->isNewItem()) {
+            Dropdown::showYesNo(
+                'multiple',
+                $multiple,
+                -1,
+                [
+                    'rand' => $rand,
+                ]
+            );
+        } else {
+            echo Dropdown::getYesNo($multiple);
+        }
         echo '<br />';
         echo '<div style="line-height:var(--tblr-body-line-height);">';
+        $default_value = $multiple ? json_decode($field->fields['default_value']) : $field->fields['default_value'];
         Dropdown::show(
             preg_replace('/^dropdown-/', '', $type),
             [
-                'name'            => 'default_value',
+                'name'            => 'default_value' . ($multiple ? '[]' : ''),
                 'value'           => $default_value,
                 'entity_restrict' => -1,
-                'multiple'        => $is_multiple_dropdown,
+                'multiple'        => $multiple,
                 'rand'            => $rand,
             ]
         );
         echo '</div>';
         Ajax::updateItemOnSelectEvent(
-            "dropdown_multiple_dropdown$rand",
+            "dropdown_multiple$rand",
             "plugin_fields_specific_fields_$rand",
             "../ajax/field_specific_fields.php",
             [
-                'id'   => $id,
-                'type' => $type,
-                'multiple_dropdown' => '__VALUE__',
-                'rand' => $rand,
+                'id'       => $id,
+                'type'     => $type,
+                'multiple' => '__VALUE__',
+                'rand'     => $rand,
             ]
         );
     } elseif ($type == 'dropdown') {
