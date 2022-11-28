@@ -67,6 +67,23 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
                 }
 
                 return implode($options['separator'] ?? '<br />', $names);
+            } elseif (
+                $field_specs->fields['type'] === 'dropdown'
+                && $field_specs->fields['multiple']
+            ) {
+                $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
+                if (empty($values[$field])) {
+                    return ''; // Value not defined
+                }
+                $values = json_decode($values[$field]);
+                if (!is_array($values)) {
+                    return ''; // Invalid value
+                }
+
+                return implode(
+                    $options['separator'] ?? '<br />',
+                    Dropdown::getDropdownArrayNames($itemtype::getTable(), $values)
+                );
             }
         }
 

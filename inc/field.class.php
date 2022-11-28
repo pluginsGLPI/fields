@@ -238,11 +238,8 @@ class PluginFieldsField extends CommonDBChild
         //parse name
         $input['name'] = $this->prepareName($input);
 
-        if (
-            preg_match('/^dropdown-.+/', $input['type']) === 1
-            && ($input['multiple'] ?? false)
-        ) {
-            $input['default_value'] = json_encode($input['default_value'] ?: []);
+        if ($input['multiple'] ?? false) {
+            $input['default_value'] = json_encode($input['default_value'] ?? []);
         }
 
         //reject adding when field name is too long for mysql
@@ -314,7 +311,6 @@ class PluginFieldsField extends CommonDBChild
     {
         if (
             array_key_exists('default_value', $input)
-            && preg_match('/^dropdown-.+/', $this->fields['type']) === 1
             && $this->fields['multiple']
         ) {
             $input['default_value'] = json_encode($input['default_value'] ?: []);
@@ -550,10 +546,13 @@ class PluginFieldsField extends CommonDBChild
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
                     echo "<td>" ;
                     $dropdown_matches = [];
-                    if (preg_match('/^dropdown-(?<class>.+)$/', $this->fields['type'], $dropdown_matches) === 1) {
+                    if (
+                        preg_match('/^dropdown-(?<class>.+)$/', $this->fields['type'], $dropdown_matches) === 1
+                        && !empty($this->fields['default_value'])
+                    ) {
                         $itemtype = $dropdown_matches['class'];
                         // Itemtype may not exists (for instance for a deactivated plugin)
-                        if (is_a($itemtype, CommonDBTM::class, true) && !empty($this->fields['default_value'])) {
+                        if (is_a($itemtype, CommonDBTM::class, true)) {
                             $item = new $itemtype();
                             if ($this->fields['multiple']) {
                                 $values = json_decode($this->fields['default_value']);
@@ -572,9 +571,16 @@ class PluginFieldsField extends CommonDBChild
                                 }
                             }
                         }
-                    } elseif ($this->fields['type'] === 'dropdown') {
+                    } elseif ($this->fields['type'] === 'dropdown' && !empty($this->fields['default_value'])) {
                         $table = getTableForItemType(PluginFieldsDropdown::getClassname($this->fields['name']));
-                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                        if ($this->fields['multiple']) {
+                            echo implode(
+                                ', ',
+                                Dropdown::getDropdownArrayNames($table, json_decode($this->fields['default_value']))
+                            );
+                        } else {
+                            echo Dropdown::getDropdownName($table, $this->fields['default_value']);
+                        }
                     } else {
                         echo $this->fields['default_value'];
                     }

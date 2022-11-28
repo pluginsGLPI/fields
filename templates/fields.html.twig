@@ -88,15 +88,17 @@
         {{ macros.datetimeField(name, value, label, field_options) }}
 
     {% elseif type == 'dropdown' %}
+        {% set dropdown_options = {'entity': item.getEntityID()} %}
+        {% if field['multiple'] %}
+            {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
+        {% endif %}
         {% if "dropdowns_id" in name %}
             {% set dropdown_itemtype = call("getItemtypeForForeignKeyField", [name]) %}
         {% else %}
             {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [name]) %}
         {% endif %}
         {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
-        {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge({
-            'entity': item.getEntityID(),
-        })) }}
+        {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge(dropdown_options)) }}
 
     {% elseif type matches '/^dropdown-.+/i' %}
         {% if not massiveaction %}

@@ -77,9 +77,12 @@ if ($type === 'glpi_item') {
     }
     echo '</td>';
 } else {
+    $dropdown_matches = [];
+    $is_dropdown = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', $type, $dropdown_matches) === 1;
+
     // Display "default value(s)" field
     echo '<td>';
-    if (preg_match('/^dropdown-.+/', $type) === 1) {
+    if ($is_dropdown) {
         echo __('Multiple dropdown', 'fields') . ' :';
         echo '<br />';
     }
@@ -90,7 +93,8 @@ if ($type === 'glpi_item') {
     echo '</td>';
 
     echo '<td>';
-    if (preg_match('/^dropdown-.+/', $type) === 1) {
+    $dropdown_matches = [];
+    if ($is_dropdown) {
         $multiple = (bool)($_POST['multiple'] ?? $field->fields['multiple']);
 
         if ($field->isNewItem()) {
@@ -106,18 +110,28 @@ if ($type === 'glpi_item') {
             echo Dropdown::getYesNo($multiple);
         }
         echo '<br />';
+
         echo '<div style="line-height:var(--tblr-body-line-height);">';
-        $default_value = $multiple ? json_decode($field->fields['default_value']) : $field->fields['default_value'];
-        Dropdown::show(
-            preg_replace('/^dropdown-/', '', $type),
-            [
-                'name'            => 'default_value' . ($multiple ? '[]' : ''),
-                'value'           => $default_value,
-                'entity_restrict' => -1,
-                'multiple'        => $multiple,
-                'rand'            => $rand,
-            ]
-        );
+        if ($field->isNewItem() && $type == 'dropdown') {
+            echo '<em class="form-control-plaintext">';
+            echo __s('Default value will be configurable once field will be created.', 'fields');
+            echo '</em>';
+        } else {
+            $itemtype = $type == 'dropdown'
+                ? PluginFieldsDropdown::getClassname($field->fields['name'])
+                : $dropdown_matches['class'];
+            $default_value = $multiple ? json_decode($field->fields['default_value']) : $field->fields['default_value'];
+            Dropdown::show(
+                $itemtype,
+                [
+                    'name'            => 'default_value' . ($multiple ? '[]' : ''),
+                    'value'           => $default_value,
+                    'entity_restrict' => -1,
+                    'multiple'        => $multiple,
+                    'rand'            => $rand,
+                ]
+            );
+        }
         echo '</div>';
         Ajax::updateItemOnSelectEvent(
             "dropdown_multiple$rand",
@@ -130,22 +144,6 @@ if ($type === 'glpi_item') {
                 'rand'     => $rand,
             ]
         );
-    } elseif ($type == 'dropdown') {
-        if ($field->isNewItem()) {
-            echo '<em class="form-control-plaintext">';
-            echo __s('Default value will be configurable once field will be created.', 'fields');
-            echo '</em>';
-        } else {
-            Dropdown::show(
-                PluginFieldsDropdown::getClassname($field->fields['name']),
-                [
-                    'name'            => 'default_value',
-                    'value'           => $field->fields['default_value'],
-                    'entity_restrict' => -1,
-                    'rand'            => $rand,
-                ]
-            );
-        }
     } else {
         echo Html::input(
             'default_value',
