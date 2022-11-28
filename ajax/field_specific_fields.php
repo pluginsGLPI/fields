@@ -77,7 +77,6 @@ if ($type === 'glpi_item') {
     }
     echo '</td>';
 } else {
-
     // Display "default value(s)" field
     echo '<td>';
     if (preg_match('/^dropdown-.+/', $type) === 1) {
