@@ -1739,34 +1739,43 @@ HTML;
             }
 
             $dropdown_matches     = [];
-            if ($data['multiple']) {
-                $opt[$i]['datatype']   = 'specific';
-            } elseif ($data['type'] === "dropdown") {
-                $opt[$i]['table']      = 'glpi_plugin_fields_' . $data['field_name'] . 'dropdowns';
-                $opt[$i]['field']      = 'completename';
-                $opt[$i]['linkfield']  = "plugin_fields_" . $data['field_name'] . "dropdowns_id";
-                $opt[$i]['datatype']   = "dropdown";
+            if ($data['type'] === "dropdown") {
+                $field_name = "plugin_fields_" . $data['field_name'] . "dropdowns_id";
 
-                $opt[$i]['forcegroupby'] = true;
+                if ($data['multiple']) {;
+                    $opt[$i]['table']      = $tablename;
+                    $opt[$i]['field']      = $field_name;
+                    $opt[$i]['datatype']   = 'specific';
+                } else {
+                    $opt[$i]['table']      = 'glpi_plugin_fields_' . $data['field_name'] . 'dropdowns';
+                    $opt[$i]['field']      = 'completename';
+                    $opt[$i]['linkfield']  = $field_name;
+                    $opt[$i]['datatype']   = "dropdown";
 
-                $opt[$i]['joinparams']['jointype'] = "";
-                $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-                $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                    $opt[$i]['forcegroupby'] = true;
+
+                    $opt[$i]['joinparams']['jointype'] = "";
+                    $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+                    $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                }
             } elseif (
                 preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
                 && class_exists($dropdown_matches['class'])
             ) {
-                $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
-                $opt[$i]['field']      = 'name';
-                $opt[$i]['linkfield']  = $data['field_name'];
-                $opt[$i]['right']      = 'all';
-                $opt[$i]['datatype']   = "dropdown";
+                if ($data['multiple']) {
+                    $opt[$i]['datatype']   = 'specific';
+                } else {
+                    $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
+                    $opt[$i]['field']      = 'name';
+                    $opt[$i]['right']      = 'all';
+                    $opt[$i]['datatype']   = "dropdown";
 
-                $opt[$i]['forcegroupby'] = true;
+                    $opt[$i]['forcegroupby'] = true;
 
-                $opt[$i]['joinparams']['jointype'] = "";
-                $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-                $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                    $opt[$i]['joinparams']['jointype'] = "";
+                    $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+                    $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                }
             } elseif ($data['type'] === "glpi_item") {
                 $itemtype_field = sprintf('itemtype_%s', $data['field_name']);
                 $items_id_field = sprintf('items_id_%s', $data['field_name']);
