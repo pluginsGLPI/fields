@@ -40,10 +40,11 @@ class PluginFieldsMigration extends Migration
      *
      * @param string $field_name
      * @param string $field_type
+     * @param array  $options
      *
      * @return array
      */
-    public static function getSQLFields(string $field_name, string $field_type): array
+    public static function getSQLFields(string $field_name, string $field_type, array $options = []): array
     {
         $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
@@ -57,7 +58,11 @@ class PluginFieldsMigration extends Migration
                 if ($field_type === 'dropdown') {
                     $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
                 }
-                $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
+                if ($options['multiple'] ?? false) {
+                    $fields[$field_name] = "LONGTEXT";
+                } else {
+                    $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
+                }
                 break;
             case $field_type === 'textarea':
             case $field_type === 'url':

@@ -69,13 +69,14 @@ class PluginFieldsField extends CommonDBChild
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
                   `label`                             VARCHAR(255)   DEFAULT NULL,
-                  `type`                              VARCHAR(255)    DEFAULT NULL,
+                  `type`                              VARCHAR(255)   DEFAULT NULL,
                   `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `ranking`                           INT            NOT NULL DEFAULT '0',
-                  `default_value`                     VARCHAR(255)   DEFAULT NULL,
+                  `default_value`                     LONGTEXT       ,
                   `is_active`                         TINYINT        NOT NULL DEFAULT '1',
                   `is_readonly`                       TINYINT        NOT NULL DEFAULT '1',
                   `mandatory`                         TINYINT        NOT NULL DEFAULT '0',
+                  `multiple`                          TINYINT        NOT NULL DEFAULT '0',
                   `allowed_values`                    TEXT           ,
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`),
@@ -98,6 +99,9 @@ class PluginFieldsField extends CommonDBChild
         if (!$DB->fieldExists($table, 'mandatory')) {
             $migration->addField($table, 'mandatory', 'bool', ['value' => 0]);
         }
+        if (!$DB->fieldExists($table, 'multiple')) {
+            $migration->addField($table, 'multiple', 'bool', ['value' => 0]);
+        }
 
         //increase the size of column 'type' (25 to 255)
         $migration->changeField($table, 'type', 'type', 'string');
@@ -105,6 +109,9 @@ class PluginFieldsField extends CommonDBChild
         if (!$DB->fieldExists($table, 'allowed_values')) {
             $migration->addField($table, 'allowed_values', 'text');
         }
+
+        // change default_value from varchar to longtext
+        $migration->changeField($table, 'default_value', 'default_value', 'longtext');
 
         $toolbox = new PluginFieldsToolbox();
         $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
@@ -231,6 +238,10 @@ class PluginFieldsField extends CommonDBChild
         //parse name
         $input['name'] = $this->prepareName($input);
 
+        if ($input['multiple'] ?? false) {
+            $input['default_value'] = json_encode($input['default_value'] ?? []);
+        }
+
         //reject adding when field name is too long for mysql
         if (strlen($input['name']) > 64) {
             Session::AddMessageAfterRedirect(
@@ -278,12 +289,31 @@ class PluginFieldsField extends CommonDBChild
             $container_obj->getFromDB($input['plugin_fields_containers_id']);
             foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
-                $classname::addField($input['name'], $input['type']);
+                $classname::addField(
+                    $input['name'],
+                    $input['type'],
+                    [
+                        'multiple' => (bool)($input['multiple'] ?? false)
+                    ]
+                );
             }
         }
 
         if (isset($input['allowed_values'])) {
             $input['allowed_values'] = Sanitizer::dbEscape(json_encode($input['allowed_values']));
+        }
+
+        return $input;
+    }
+
+
+    public function prepareInputForUpdate($input)
+    {
+        if (
+            array_key_exists('default_value', $input)
+            && $this->fields['multiple']
+        ) {
+            $input['default_value'] = json_encode($input['default_value'] ?: []);
         }
 
         return $input;
@@ -515,12 +545,42 @@ class PluginFieldsField extends CommonDBChild
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
                     echo "<td>" ;
-                    if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
-                        $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
-                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
-                    } elseif ($this->fields['type'] === 'dropdown') {
+                    $dropdown_matches = [];
+                    if (
+                        preg_match('/^dropdown-(?<class>.+)$/', $this->fields['type'], $dropdown_matches) === 1
+                        && !empty($this->fields['default_value'])
+                    ) {
+                        $itemtype = $dropdown_matches['class'];
+                        // Itemtype may not exists (for instance for a deactivated plugin)
+                        if (is_a($itemtype, CommonDBTM::class, true)) {
+                            $item = new $itemtype();
+                            if ($this->fields['multiple']) {
+                                $values = json_decode($this->fields['default_value']);
+
+                                $names = [];
+                                foreach ($values as $value) {
+                                    if ($item->getFromDB($value)) {
+                                        $names[] = $item->getName();
+                                    }
+                                }
+
+                                echo implode(', ', $names);
+                            } else {
+                                if ($item->getFromDB($this->fields['default_value'])) {
+                                    echo $item->getName();
+                                }
+                            }
+                        }
+                    } elseif ($this->fields['type'] === 'dropdown' && !empty($this->fields['default_value'])) {
                         $table = getTableForItemType(PluginFieldsDropdown::getClassname($this->fields['name']));
-                        echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                        if ($this->fields['multiple']) {
+                            echo implode(
+                                ', ',
+                                Dropdown::getDropdownArrayNames($table, json_decode($this->fields['default_value']))
+                            );
+                        } else {
+                            echo Dropdown::getDropdownName($table, $this->fields['default_value']);
+                        }
                     } else {
                         echo $this->fields['default_value'];
                     }
@@ -608,61 +668,33 @@ class PluginFieldsField extends CommonDBChild
                 ]
             );
         }
+
         echo "</td>";
         echo "</tr>";
 
-        $style_default = $this->fields['type'] === 'glpi_item' ? 'style="display:none;"' : '';
-        $style_allowed = $this->fields['type'] !== 'glpi_item' ? 'style="display:none;"' : '';
-        echo "<tr>";
-        echo "<td>";
-        echo '<div id="plugin_fields_default_value_label_' . $rand . '" ' . $style_default . '>';
-        echo __("Default values") . " : ";
-        echo '</div>';
-        echo '<div id="plugin_fields_allowed_values_label_' . $rand . '" ' . $style_allowed . '>';
-        echo __('Allowed values', 'fields') . " : ";
-        echo '</div>';
-        echo "</td>";
-        echo "<td colspan='3'>";
-        echo '<div id="plugin_fields_specific_fields_' . $rand . '">';
-        echo '</div>';
-        if ($edit) {
-            $load_params = json_encode(
-                [
-                    'id'   => $ID,
-                    'type' => $this->fields['type'],
-                    'rand' => $rand,
-                ]
-            );
-            echo Html::scriptBlock(<<<JAVASCRIPT
-                $(
-                    function () {
-                        $('#plugin_fields_specific_fields_$rand').load('../ajax/field_specific_fields.php', $load_params);
-                    }
-                );
-JAVASCRIPT
-            );
-        } else {
-            Ajax::updateItemOnSelectEvent(
-                "dropdown_type$rand",
-                "plugin_fields_specific_fields_$rand",
-                "../ajax/field_specific_fields.php",
-                [
-                    'id'   => $ID,
-                    'type' => '__VALUE__',
-                    'rand' => $rand,
-                ]
-            );
-            echo Html::scriptBlock(<<<JAVASCRIPT
-                $(
-                    function () {
-                        $('#dropdown_type$rand').trigger('change');
-                    }
-                );
-JAVASCRIPT
-            );
-        }
-        echo "</td>";
-        echo "</tr>";
+        echo '<tr id="plugin_fields_specific_fields_' . $rand . '" style="line-height: 46px;">';
+        echo '<td>';
+        Ajax::updateItemOnSelectEvent(
+            "dropdown_type$rand",
+            "plugin_fields_specific_fields_$rand",
+            "../ajax/field_specific_fields.php",
+            [
+                'id'   => $ID,
+                'type' => '__VALUE__',
+                'rand' => $rand,
+            ]
+        );
+        Ajax::updateItem(
+            "plugin_fields_specific_fields_$rand",
+            "../ajax/field_specific_fields.php",
+            [
+                'id'   => $ID,
+                'type' => $this->fields['type'] ?? '',
+                'rand' => $rand,
+            ]
+        );
+        echo '</td>';
+        echo '</tr>';
 
         echo "<tr>";
         echo "<td>" . __('Active') . " :</td>";
@@ -1064,6 +1096,10 @@ JAVASCRIPT
                         $value = $_SESSION["glpi_currenttime"];
                     }
                 }
+            }
+
+            if ($field['multiple']) {
+                $value = json_decode($value);
             }
 
             $field['value'] = $value;

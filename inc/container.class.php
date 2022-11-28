@@ -1056,6 +1056,14 @@ HTML;
             return false;
         }
 
+        // Normalize values
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                // Convert "multiple" values into a JSON string
+                $data[$key] = json_encode($value);
+            }
+        }
+
         $container_obj = new PluginFieldsContainer();
         $container_obj->getFromDB($data['plugin_fields_containers_id']);
 
@@ -1146,17 +1154,29 @@ HTML;
                         if ($searchoption['linkfield'] == $key) {
                              $changes[0] = $id_search_option;
 
-                            //manage dropdown values
                             if ($searchoption['datatype'] === 'dropdown') {
+                                //manage dropdown values
                                 $changes = [$id_search_option,
                                     "",
                                     Dropdown::getDropdownName($searchoption['table'], $value)
                                 ];
-                            }
-
-                            //manage bool dropdown values
-                            if ($searchoption['datatype'] === 'bool') {
+                            } elseif ($searchoption['datatype'] === 'bool') {
+                                //manage bool values
                                 $changes = [$id_search_option, "", Dropdown::getYesNo($value)];
+                            } elseif ($searchoption['datatype'] === 'specific') {
+                                //manage specific values
+                                $changes = [
+                                    $id_search_option,
+                                    "",
+                                    PluginFieldsAbstractContainerInstance::getSpecificValueToDisplay(
+                                        $key,
+                                        $value,
+                                        [
+                                            'searchopt' => $searchoption,
+                                            'separator' => ', ',
+                                        ]
+                                    )
+                                ];
                             }
                         }
                     }
@@ -1190,14 +1210,32 @@ HTML;
                     if ($searchoption['linkfield'] == $key) {
                         $changes[0] = $id_search_option;
 
-                        //manage dropdown values
                         if ($searchoption['datatype'] === 'dropdown') {
+                            //manage dropdown values
                             $changes[1] = Dropdown::getDropdownName($searchoption['table'], $changes[1]);
                             $changes[2] = Dropdown::getDropdownName($searchoption['table'], $changes[2]);
-                        }
-                        if ($searchoption['datatype'] === 'bool') {
+                        } elseif ($searchoption['datatype'] === 'bool') {
+                            //manage bool values
                             $changes[1] = Dropdown::getYesNo($changes[1]);
                             $changes[2] = Dropdown::getYesNo($changes[2]);
+                        } elseif ($searchoption['datatype'] === 'specific') {
+                            //manage specific values
+                            $changes[1] = PluginFieldsAbstractContainerInstance::getSpecificValueToDisplay(
+                                $key,
+                                $changes[1],
+                                [
+                                    'searchopt' => $searchoption,
+                                    'separator' => ', ',
+                                ]
+                            );
+                            $changes[2] = PluginFieldsAbstractContainerInstance::getSpecificValueToDisplay(
+                                $key,
+                                $changes[2],
+                                [
+                                    'searchopt' => $searchoption,
+                                    'separator' => ', ',
+                                ]
+                            );
                         }
                     }
                 }
@@ -1236,7 +1274,7 @@ HTML;
 
         // Apply status overrides
         $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($itemtype);
-        $status_overrides = $data[$status_field_name] !== null
+        $status_overrides = array_key_exists($status_field_name, $data) && $data[$status_field_name] !== null
             ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data[$status_field_name])
             : [];
         foreach ($status_overrides as $status_override) {
@@ -1603,6 +1641,7 @@ HTML;
                 'glpi_plugin_fields_fields.type',
                 'glpi_plugin_fields_fields.is_readonly',
                 'glpi_plugin_fields_fields.allowed_values',
+                'glpi_plugin_fields_fields.multiple',
                 'glpi_plugin_fields_containers.id AS container_id',
                 'glpi_plugin_fields_containers.name AS container_name',
                 'glpi_plugin_fields_containers.label AS container_label',
@@ -1673,7 +1712,10 @@ HTML;
             $opt[$i]['name']          = $data['container_label'] . " - " . $data['field_label'];
             $opt[$i]['linkfield']     = $data['field_name'];
             $opt[$i]['joinparams']['jointype'] = "itemtype_item";
-            $opt[$i]['pfields_type']  = $data['type'];
+
+            $opt[$i]['pfields_type']      = $data['type'];
+            $opt[$i]['pfields_fields_id'] = $data['field_id'];
+
             if ($data['is_readonly']) {
                 $opt[$i]['massiveaction'] = false;
             }
@@ -1698,31 +1740,42 @@ HTML;
 
             $dropdown_matches     = [];
             if ($data['type'] === "dropdown") {
-                $opt[$i]['table']      = 'glpi_plugin_fields_' . $data['field_name'] . 'dropdowns';
-                $opt[$i]['field']      = 'completename';
-                $opt[$i]['linkfield']  = "plugin_fields_" . $data['field_name'] . "dropdowns_id";
-                $opt[$i]['datatype']   = "dropdown";
+                $field_name = "plugin_fields_" . $data['field_name'] . "dropdowns_id";
 
-                $opt[$i]['forcegroupby'] = true;
+                if ($data['multiple']) {
+                    $opt[$i]['table']      = $tablename;
+                    $opt[$i]['field']      = $field_name;
+                    $opt[$i]['datatype']   = 'specific';
+                } else {
+                    $opt[$i]['table']      = 'glpi_plugin_fields_' . $data['field_name'] . 'dropdowns';
+                    $opt[$i]['field']      = 'completename';
+                    $opt[$i]['linkfield']  = $field_name;
+                    $opt[$i]['datatype']   = "dropdown";
 
-                $opt[$i]['joinparams']['jointype'] = "";
-                $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-                $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                    $opt[$i]['forcegroupby'] = true;
+
+                    $opt[$i]['joinparams']['jointype'] = "";
+                    $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+                    $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                }
             } elseif (
                 preg_match('/^dropdown-(?<class>.+)$/i', $data['type'], $dropdown_matches)
                 && class_exists($dropdown_matches['class'])
             ) {
-                $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
-                $opt[$i]['field']      = 'name';
-                $opt[$i]['linkfield']  = $data['field_name'];
-                $opt[$i]['right']      = 'all';
-                $opt[$i]['datatype']   = "dropdown";
+                if ($data['multiple']) {
+                    $opt[$i]['datatype']   = 'specific';
+                } else {
+                    $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
+                    $opt[$i]['field']      = 'name';
+                    $opt[$i]['right']      = 'all';
+                    $opt[$i]['datatype']   = "dropdown";
 
-                $opt[$i]['forcegroupby'] = true;
+                    $opt[$i]['forcegroupby'] = true;
 
-                $opt[$i]['joinparams']['jointype'] = "";
-                $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
-                $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                    $opt[$i]['joinparams']['jointype'] = "";
+                    $opt[$i]['joinparams']['beforejoin']['table'] = $tablename;
+                    $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = "itemtype_item";
+                }
             } elseif ($data['type'] === "glpi_item") {
                 $itemtype_field = sprintf('itemtype_%s', $data['field_name']);
                 $items_id_field = sprintf('items_id_%s', $data['field_name']);
