@@ -1740,7 +1740,7 @@ HTML;
 
             $dropdown_matches     = [];
             if ($data['multiple']) {
-                $opt[$i]['datatype']         = 'specific';
+                $opt[$i]['datatype']   = 'specific';
             } elseif ($data['type'] === "dropdown") {
                 $opt[$i]['table']      = 'glpi_plugin_fields_' . $data['field_name'] . 'dropdowns';
                 $opt[$i]['field']      = 'completename';

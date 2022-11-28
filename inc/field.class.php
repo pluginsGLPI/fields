@@ -315,7 +315,7 @@ class PluginFieldsField extends CommonDBChild
         if (
             array_key_exists('default_value', $input)
             && preg_match('/^dropdown-.+/', $this->fields['type']) === 1
-            && ($input['multiple'] ?? $this->fields['multiple'])
+            && $this->fields['multiple']
         ) {
             $input['default_value'] = json_encode($input['default_value'] ?: []);
         }
@@ -549,12 +549,28 @@ class PluginFieldsField extends CommonDBChild
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
                     echo "<td>" ;
-                    if (preg_match('/^dropdown-.+/', $this->fields['type'])) {
-                        $table = getTableForItemType(preg_replace('/^dropdown-/', '', $this->fields['type']));
-                        if ($this->fields['multiple'] == 1 && $this->fields["default_value"]) {
-                            echo implode(", ", Dropdown::getDropdownArrayNames($table, json_decode($this->fields["default_value"])));
-                        } else {
-                            echo Dropdown::getDropdownName($table, $this->fields["default_value"]);
+                    $dropdown_matches = [];
+                    if (preg_match('/^dropdown-(?<class>.+)$/', $this->fields['type'], $dropdown_matches) === 1) {
+                        $itemtype = $dropdown_matches['class'];
+                        // Itemtype may not exists (for instance for a deactivated plugin)
+                        if (is_a($itemtype, CommonDBTM::class, true) && !empty($this->fields['default_value'])) {
+                            $item = new $itemtype();
+                            if ($this->fields['multiple']) {
+                                $values = json_decode($this->fields['default_value']);
+
+                                $names = [];
+                                foreach ($values as $value) {
+                                    if ($item->getFromDB($value)) {
+                                        $names[] = $item->getName();
+                                    }
+                                }
+
+                                echo implode(', ', $names);
+                            } else {
+                                if ($item->getFromDB($this->fields['default_value'])) {
+                                    echo $item->getName();
+                                }
+                            }
                         }
                     } elseif ($this->fields['type'] === 'dropdown') {
                         $table = getTableForItemType(PluginFieldsDropdown::getClassname($this->fields['name']));

@@ -37,6 +37,7 @@ if (empty($_GET["id"])) {
 Session::checkRight('entity', READ);
 
 $field = new PluginFieldsField();
+
 if (isset($_POST["add"])) {
     $field->check(-1, CREATE, $_POST);
     $field->add($_POST);
