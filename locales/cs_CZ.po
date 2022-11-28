@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-13 09:03+0000\n"
+"POT-Creation-Date: 2022-11-28 14:33+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Merlin Merlin <mmerlin10@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:381
+#: inc/field.class.php:514
 msgid "Add a new field"
 msgstr "Přidat novou kolonku"
 
@@ -58,7 +58,7 @@ msgstr "Přidat tabulku"
 msgid "Additional fields"
 msgstr "Další kolonky"
 
-#: inc/field.class.php:548
+#: ajax/field_specific_fields.php:53
 msgid "Allowed values"
 msgstr ""
 
@@ -83,14 +83,6 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: inc/field.class.php:563
-msgid "Configure"
-msgstr "Nastavit"
-
-#: inc/field.class.php:563
-msgid "Configure fields values"
-msgstr "Nastavit hodnoty kolonek"
-
 #: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
@@ -108,15 +100,23 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1186
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1187
 msgid "Date & time"
 msgstr "Datum a čas"
 
-#: inc/field.class.php:1076
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr ""
+
+#: ajax/field_specific_fields.php:117
+msgid "Default value will be configurable once field will be created."
+msgstr ""
+
+#: inc/field.class.php:1184
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
@@ -128,17 +128,17 @@ msgstr ""
 msgid "Export to YAML"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:137
+#: templates/forms/status_override.html.twig inc/field.class.php:232
 msgid "Field"
 msgstr "Kolonka"
 
-#: inc/field.class.php:149 inc/field.class.php:174
+#: inc/field.class.php:248 inc/field.class.php:273
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:323
+#: inc/field.class.php:456
 msgid "Fields"
 msgstr "Kolonky"
 
@@ -150,11 +150,11 @@ msgstr "Opravit názvy kontejnerů"
 msgid "Fix fields names"
 msgstr "Opravit názvy kolonek"
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1188
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1179
 msgid "Header"
 msgstr "Hlavička"
 
@@ -174,15 +174,19 @@ msgstr "Štítek"
 msgid "Language"
 msgstr "Jazyk"
 
-#: hook.php:65
+#: ajax/field_specific_fields.php:86
+msgid "Multiple dropdown"
+msgstr ""
+
+#: hook.php:64 hook.php:68
 msgid "MySQL tables installation"
 msgstr "Instalace MySQL tabulek"
 
-#: hook.php:125
+#: hook.php:130
 msgid "MySQL tables uninstallation"
 msgstr "Odebrání MySQL tabulek"
 
-#: inc/field.class.php:385
+#: inc/field.class.php:518
 msgid "No field for this block"
 msgstr "Žádná kolonka pro tento blok"
 
@@ -190,7 +194,7 @@ msgstr "Žádná kolonka pro tento blok"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1182
 msgid "Number"
 msgstr "Číslo"
 
@@ -198,8 +202,8 @@ msgstr "Číslo"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:398
-#: inc/field.class.php:609
+#: templates/forms/status_override.html.twig inc/field.class.php:531
+#: inc/field.class.php:711
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
@@ -207,20 +211,24 @@ msgstr "Pouze pro čtení"
 msgid "Regenerate container files"
 msgstr "Znovu vytvořit kontejnerové soubory"
 
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1338
+#: inc/container.class.php:1378
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
-#: inc/container.class.php:1328
+#: inc/container.class.php:1368
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1333
+#: inc/container.class.php:1373
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
@@ -232,15 +240,15 @@ msgstr ""
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1181
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1180
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
-#: hook.php:113
+#: hook.php:118
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Zásuvný modul nemůže být odinstalován protože je vypnutý."
 
@@ -248,7 +256,13 @@ msgstr "Zásuvný modul nemůže být odinstalován protože je vypnutý."
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1075
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr ""
+
+#: inc/field.class.php:1183
 msgid "URL"
 msgstr "URL adresa"
 
@@ -264,7 +278,7 @@ msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1185
 msgid "Yes/No"
 msgstr "Ano/Ne"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-13 09:03+0000\n"
+"POT-Creation-Date: 2022-11-28 14:35+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Automatically generated, 2021-2022\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_GB/)\n"
@@ -35,7 +35,7 @@ msgstr "-> \"%s.%s\" has been deleted."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" should be deleted."
 
-#: inc/field.class.php:381
+#: inc/field.class.php:514
 msgid "Add a new field"
 msgstr "Add a new field"
 
@@ -56,7 +56,7 @@ msgstr "Add tab"
 msgid "Additional fields"
 msgstr "Additional fields"
 
-#: inc/field.class.php:548
+#: ajax/field_specific_fields.php:53
 msgid "Allowed values"
 msgstr "Allowed values"
 
@@ -79,14 +79,6 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Condition to hide block"
 msgstr[1] "Conditions to hide block"
 
-#: inc/field.class.php:563
-msgid "Configure"
-msgstr "Configure"
-
-#: inc/field.class.php:563
-msgid "Configure fields values"
-msgstr "Configure fields values"
-
 #: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
@@ -104,15 +96,23 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1186
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1187
 msgid "Date & time"
 msgstr "Date & time"
 
-#: inc/field.class.php:1076
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr ""
+
+#: ajax/field_specific_fields.php:117
+msgid "Default value will be configurable once field will be created."
+msgstr ""
+
+#: inc/field.class.php:1184
 msgid "Dropdown"
 msgstr "Dropdown"
 
@@ -124,17 +124,17 @@ msgstr "Everything is in order - no action needed."
 msgid "Export to YAML"
 msgstr "Export to YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:137
+#: templates/forms/status_override.html.twig inc/field.class.php:232
 msgid "Field"
 msgstr "Field"
 
-#: inc/field.class.php:149 inc/field.class.php:174
+#: inc/field.class.php:248 inc/field.class.php:273
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Field name is too long for database (digits in name are replaced by characters, try to remove them)"
 
-#: inc/field.class.php:323
+#: inc/field.class.php:456
 msgid "Fields"
 msgstr "Fields"
 
@@ -146,11 +146,11 @@ msgstr "Fix container names"
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1188
 msgid "GLPI item"
 msgstr "GLPI item"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1179
 msgid "Header"
 msgstr "Header"
 
@@ -170,15 +170,19 @@ msgstr "Label"
 msgid "Language"
 msgstr "Language"
 
-#: hook.php:65
+#: ajax/field_specific_fields.php:86
+msgid "Multiple dropdown"
+msgstr ""
+
+#: hook.php:64 hook.php:68
 msgid "MySQL tables installation"
 msgstr "MySQL tables installation"
 
-#: hook.php:125
+#: hook.php:130
 msgid "MySQL tables uninstallation"
 msgstr "MySQL tables uninstallation"
 
-#: inc/field.class.php:385
+#: inc/field.class.php:518
 msgid "No field for this block"
 msgstr "No field for this block"
 
@@ -186,7 +190,7 @@ msgstr "No field for this block"
 msgid "No item found"
 msgstr "No item found"
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1182
 msgid "Number"
 msgstr "Number"
 
@@ -194,8 +198,8 @@ msgstr "Number"
 msgid "Override by status"
 msgstr "Override by status"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:398
-#: inc/field.class.php:609
+#: templates/forms/status_override.html.twig inc/field.class.php:531
+#: inc/field.class.php:711
 msgid "Read only"
 msgstr "Read only"
 
@@ -203,20 +207,24 @@ msgstr "Read only"
 msgid "Regenerate container files"
 msgstr "Regenerate container files"
 
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1338
+#: inc/container.class.php:1378
 msgid "Some URL fields contains invalid links"
 msgstr "Some URL fields contains invalid links"
 
-#: inc/container.class.php:1328
+#: inc/container.class.php:1368
 msgid "Some mandatory fields are empty"
 msgstr "Some mandatory fields are empty"
 
-#: inc/container.class.php:1333
+#: inc/container.class.php:1373
 msgid "Some numeric fields contains non numeric values"
 msgstr "Some numeric fields contains non numeric values"
 
@@ -228,15 +236,15 @@ msgstr "Status overrides"
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1181
 msgid "Text (multiples lines)"
 msgstr "Text (multiples lines)"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1180
 msgid "Text (single line)"
 msgstr "Text (single line)"
 
-#: hook.php:113
+#: hook.php:118
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "The plugin can't be uninstalled when the plugin is disabled"
 
@@ -244,7 +252,13 @@ msgstr "The plugin can't be uninstalled when the plugin is disabled"
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1075
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr ""
+
+#: inc/field.class.php:1183
 msgid "URL"
 msgstr "URL"
 
@@ -260,7 +274,7 @@ msgstr "Updating generated dropdown files"
 msgid "Use this option to actually fix database"
 msgstr "Use this option to actually fix database"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1185
 msgid "Yes/No"
 msgstr "Yes/No"
 

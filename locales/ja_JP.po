@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-13 09:03+0000\n"
+"POT-Creation-Date: 2022-11-28 14:33+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: sai sai, 2019\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -36,7 +36,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:381
+#: inc/field.class.php:514
 msgid "Add a new field"
 msgstr "新しいフィールドを追加する"
 
@@ -57,7 +57,7 @@ msgstr "タブを追加する"
 msgid "Additional fields"
 msgstr "追加のフィールド"
 
-#: inc/field.class.php:548
+#: ajax/field_specific_fields.php:53
 msgid "Allowed values"
 msgstr ""
 
@@ -79,14 +79,6 @@ msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/field.class.php:563
-msgid "Configure"
-msgstr "設定"
-
-#: inc/field.class.php:563
-msgid "Configure fields values"
-msgstr "フィールド値を設定"
-
 #: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
@@ -104,15 +96,23 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1186
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1187
 msgid "Date & time"
 msgstr "日時"
 
-#: inc/field.class.php:1076
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr ""
+
+#: ajax/field_specific_fields.php:117
+msgid "Default value will be configurable once field will be created."
+msgstr ""
+
+#: inc/field.class.php:1184
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -124,17 +124,17 @@ msgstr ""
 msgid "Export to YAML"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:137
+#: templates/forms/status_override.html.twig inc/field.class.php:232
 msgid "Field"
 msgstr "フィールド"
 
-#: inc/field.class.php:149 inc/field.class.php:174
+#: inc/field.class.php:248 inc/field.class.php:273
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:323
+#: inc/field.class.php:456
 msgid "Fields"
 msgstr "フィールド"
 
@@ -146,11 +146,11 @@ msgstr "コンテナ名を変更する"
 msgid "Fix fields names"
 msgstr "フィールド名を変更する"
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1188
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1179
 msgid "Header"
 msgstr "ヘッダ"
 
@@ -170,15 +170,19 @@ msgstr "ラベル"
 msgid "Language"
 msgstr "言語"
 
-#: hook.php:65
+#: ajax/field_specific_fields.php:86
+msgid "Multiple dropdown"
+msgstr ""
+
+#: hook.php:64 hook.php:68
 msgid "MySQL tables installation"
 msgstr "MySQLテーブルのインストール"
 
-#: hook.php:125
+#: hook.php:130
 msgid "MySQL tables uninstallation"
 msgstr "MySQLテーブルのアンインストール"
 
-#: inc/field.class.php:385
+#: inc/field.class.php:518
 msgid "No field for this block"
 msgstr "ブロック内にフィールドはありません"
 
@@ -186,7 +190,7 @@ msgstr "ブロック内にフィールドはありません"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1182
 msgid "Number"
 msgstr "数値"
 
@@ -194,8 +198,8 @@ msgstr "数値"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:398
-#: inc/field.class.php:609
+#: templates/forms/status_override.html.twig inc/field.class.php:531
+#: inc/field.class.php:711
 msgid "Read only"
 msgstr "読取専用"
 
@@ -203,20 +207,24 @@ msgstr "読取専用"
 msgid "Regenerate container files"
 msgstr "コンテナファイルを再生成する"
 
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1338
+#: inc/container.class.php:1378
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含むURLフィールドがあります。"
 
-#: inc/container.class.php:1328
+#: inc/container.class.php:1368
 msgid "Some mandatory fields are empty"
 msgstr "必須項目が未入力です。"
 
-#: inc/container.class.php:1333
+#: inc/container.class.php:1373
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値を含む数値フィールドがあります。"
 
@@ -228,15 +236,15 @@ msgstr ""
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1181
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1180
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
-#: hook.php:113
+#: hook.php:118
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "プラグインが無効な場合、プラグインをアンインストールできません。"
 
@@ -244,7 +252,13 @@ msgstr "プラグインが無効な場合、プラグインをアンインスト
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1075
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr ""
+
+#: inc/field.class.php:1183
 msgid "URL"
 msgstr "URL"
 
@@ -260,7 +274,7 @@ msgstr "生成済ドロップダウンフィールドの選択肢を更新"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1185
 msgid "Yes/No"
 msgstr "はい/いいえ"
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-13 09:03+0000\n"
+"POT-Creation-Date: 2022-11-28 14:33+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Alexander Sokolov <a.sokolov@outlook.com>, 2022\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -40,7 +40,7 @@ msgstr "->\"%s.%s\" было удалено."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" должно быть удалено."
 
-#: inc/field.class.php:381
+#: inc/field.class.php:514
 msgid "Add a new field"
 msgstr "Добавить новое поле"
 
@@ -61,7 +61,7 @@ msgstr "Добавить вкладку"
 msgid "Additional fields"
 msgstr "Дополнительные поля"
 
-#: inc/field.class.php:548
+#: ajax/field_specific_fields.php:53
 msgid "Allowed values"
 msgstr "Допустимые значения"
 
@@ -86,14 +86,6 @@ msgstr[1] "Условия для скрытия блока"
 msgstr[2] "Условия для скрытия блока"
 msgstr[3] "Условия для скрытия блока"
 
-#: inc/field.class.php:563
-msgid "Configure"
-msgstr "Настройка"
-
-#: inc/field.class.php:563
-msgid "Configure fields values"
-msgstr "Настрить поля значений"
-
 #: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
@@ -111,15 +103,23 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "База данных может содержать потерянные данные из %s неправильно удаленных полей."
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1186
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1187
 msgid "Date & time"
 msgstr "Дата и время"
 
-#: inc/field.class.php:1076
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr ""
+
+#: ajax/field_specific_fields.php:117
+msgid "Default value will be configurable once field will be created."
+msgstr ""
+
+#: inc/field.class.php:1184
 msgid "Dropdown"
 msgstr "Выпадающий список"
 
@@ -131,17 +131,17 @@ msgstr "Все в порядке - никаких действий не треб
 msgid "Export to YAML"
 msgstr "Экспорт в YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:137
+#: templates/forms/status_override.html.twig inc/field.class.php:232
 msgid "Field"
 msgstr "Поле"
 
-#: inc/field.class.php:149 inc/field.class.php:174
+#: inc/field.class.php:248 inc/field.class.php:273
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Название поля слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
-#: inc/field.class.php:323
+#: inc/field.class.php:456
 msgid "Fields"
 msgstr "Поля"
 
@@ -153,11 +153,11 @@ msgstr "Исправить названия контейнеров"
 msgid "Fix fields names"
 msgstr "Исправить названия полей"
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1188
 msgid "GLPI item"
 msgstr "GLPI объект"
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1179
 msgid "Header"
 msgstr "Заголовок"
 
@@ -177,15 +177,19 @@ msgstr "Метка"
 msgid "Language"
 msgstr "Язык"
 
-#: hook.php:65
+#: ajax/field_specific_fields.php:86
+msgid "Multiple dropdown"
+msgstr ""
+
+#: hook.php:64 hook.php:68
 msgid "MySQL tables installation"
 msgstr "Установка таблиц MySQL "
 
-#: hook.php:125
+#: hook.php:130
 msgid "MySQL tables uninstallation"
 msgstr "Удаление таблиц MySQL"
 
-#: inc/field.class.php:385
+#: inc/field.class.php:518
 msgid "No field for this block"
 msgstr "Нет поля для этого блока"
 
@@ -193,7 +197,7 @@ msgstr "Нет поля для этого блока"
 msgid "No item found"
 msgstr "Объект не найден"
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1182
 msgid "Number"
 msgstr "Номер"
 
@@ -201,8 +205,8 @@ msgstr "Номер"
 msgid "Override by status"
 msgstr "Переопределение по статусу"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:398
-#: inc/field.class.php:609
+#: templates/forms/status_override.html.twig inc/field.class.php:531
+#: inc/field.class.php:711
 msgid "Read only"
 msgstr "Только чтение"
 
@@ -210,20 +214,24 @@ msgstr "Только чтение"
 msgid "Regenerate container files"
 msgstr "Восстановить файлы контейнера"
 
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Запустите \"%s\" для устранения несоответствий базы данных."
 
-#: inc/container.class.php:1338
+#: inc/container.class.php:1378
 msgid "Some URL fields contains invalid links"
 msgstr "Некоторый URL полей содержат недействительные ссылки"
 
-#: inc/container.class.php:1328
+#: inc/container.class.php:1368
 msgid "Some mandatory fields are empty"
 msgstr "Некоторые обязательные поля пусты"
 
-#: inc/container.class.php:1333
+#: inc/container.class.php:1373
 msgid "Some numeric fields contains non numeric values"
 msgstr "Некоторые числовые поля содержат не только цифры"
 
@@ -235,15 +243,15 @@ msgstr "Переопределение статуса"
 msgid "Tab"
 msgstr "Вкладка"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1181
 msgid "Text (multiples lines)"
 msgstr "Текст (многострочный)"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1180
 msgid "Text (single line)"
 msgstr "Тест (одна строка)"
 
-#: hook.php:113
+#: hook.php:118
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Плагин не может быть удален пока плагин выключен"
 
@@ -251,7 +259,13 @@ msgstr "Плагин не может быть удален пока плагин
 msgid "This command will check database to detect following inconsistencies:"
 msgstr "Эта команда проверит базу данных на наличие следующих несоответствий:"
 
-#: inc/field.class.php:1075
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr ""
+
+#: inc/field.class.php:1183
 msgid "URL"
 msgstr "URL"
 
@@ -267,7 +281,7 @@ msgstr "Обновление автоматически раскрывающег
 msgid "Use this option to actually fix database"
 msgstr "Используйте это условие чтобы исправить базу данных"
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1185
 msgid "Yes/No"
 msgstr "Да/Нет"
 

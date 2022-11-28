@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# 조성현 <jaymz9634@gmail.com>, 2020-2021
+# SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-13 09:03+0000\n"
+"POT-Creation-Date: 2022-11-28 14:33+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: 조성현 <jaymz9634@gmail.com>, 2020-2021\n"
+"Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:381
+#: inc/field.class.php:514
 msgid "Add a new field"
 msgstr "새 항목 추가"
 
@@ -56,7 +56,7 @@ msgstr "탭 추가"
 msgid "Additional fields"
 msgstr "추가 항목"
 
-#: inc/field.class.php:548
+#: ajax/field_specific_fields.php:53
 msgid "Allowed values"
 msgstr ""
 
@@ -78,14 +78,6 @@ msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/field.class.php:563
-msgid "Configure"
-msgstr "구성"
-
-#: inc/field.class.php:563
-msgid "Configure fields values"
-msgstr "항목 값 구성"
-
 #: inc/container.class.php:481
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
@@ -103,15 +95,23 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1078
+#: inc/field.class.php:1186
 msgid "Date"
 msgstr "날짜"
 
-#: inc/field.class.php:1079
+#: inc/field.class.php:1187
 msgid "Date & time"
 msgstr "날짜 & 시간"
 
-#: inc/field.class.php:1076
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr ""
+
+#: ajax/field_specific_fields.php:117
+msgid "Default value will be configurable once field will be created."
+msgstr ""
+
+#: inc/field.class.php:1184
 msgid "Dropdown"
 msgstr "드롭다운"
 
@@ -123,17 +123,17 @@ msgstr ""
 msgid "Export to YAML"
 msgstr "YAML로 내보내기"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:137
+#: templates/forms/status_override.html.twig inc/field.class.php:232
 msgid "Field"
 msgstr "항목"
 
-#: inc/field.class.php:149 inc/field.class.php:174
+#: inc/field.class.php:248 inc/field.class.php:273
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "항목 이름이 데이터베이스 용으로 너무 깁니다 (이름의 숫자는 문자로 대체되니, 제거해 보세요)"
 
-#: inc/field.class.php:323
+#: inc/field.class.php:456
 msgid "Fields"
 msgstr "항목"
 
@@ -145,11 +145,11 @@ msgstr "컨테이너 이름 수정"
 msgid "Fix fields names"
 msgstr "항목 이름 수정"
 
-#: inc/field.class.php:1080
+#: inc/field.class.php:1188
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1071
+#: inc/field.class.php:1179
 msgid "Header"
 msgstr "헤더"
 
@@ -169,15 +169,19 @@ msgstr "라벨"
 msgid "Language"
 msgstr "언어"
 
-#: hook.php:65
+#: ajax/field_specific_fields.php:86
+msgid "Multiple dropdown"
+msgstr ""
+
+#: hook.php:64 hook.php:68
 msgid "MySQL tables installation"
 msgstr "MySQL 테이블 삽입"
 
-#: hook.php:125
+#: hook.php:130
 msgid "MySQL tables uninstallation"
 msgstr "MySQL 테이블 제거"
 
-#: inc/field.class.php:385
+#: inc/field.class.php:518
 msgid "No field for this block"
 msgstr "이 블럭에 대한 항목 없음"
 
@@ -185,7 +189,7 @@ msgstr "이 블럭에 대한 항목 없음"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1074
+#: inc/field.class.php:1182
 msgid "Number"
 msgstr "숫자"
 
@@ -193,8 +197,8 @@ msgstr "숫자"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:398
-#: inc/field.class.php:609
+#: templates/forms/status_override.html.twig inc/field.class.php:531
+#: inc/field.class.php:711
 msgid "Read only"
 msgstr "읽기 전용"
 
@@ -202,20 +206,24 @@ msgstr "읽기 전용"
 msgid "Regenerate container files"
 msgstr "컨테이너 파일 재생성"
 
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1338
+#: inc/container.class.php:1378
 msgid "Some URL fields contains invalid links"
 msgstr "일부 URL 항목에 잘못된 링크가 포함되었습니다"
 
-#: inc/container.class.php:1328
+#: inc/container.class.php:1368
 msgid "Some mandatory fields are empty"
 msgstr "일부 필수 항목이 비었습니다"
 
-#: inc/container.class.php:1333
+#: inc/container.class.php:1373
 msgid "Some numeric fields contains non numeric values"
 msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
 
@@ -227,15 +235,15 @@ msgstr ""
 msgid "Tab"
 msgstr "탭"
 
-#: inc/field.class.php:1073
+#: inc/field.class.php:1181
 msgid "Text (multiples lines)"
 msgstr "문구 (여러 줄)"
 
-#: inc/field.class.php:1072
+#: inc/field.class.php:1180
 msgid "Text (single line)"
 msgstr "문구 (한 줄)"
 
-#: hook.php:113
+#: hook.php:118
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다"
 
@@ -243,7 +251,13 @@ msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다
 msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
-#: inc/field.class.php:1075
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr ""
+
+#: inc/field.class.php:1183
 msgid "URL"
 msgstr "URL"
 
@@ -259,7 +273,7 @@ msgstr "생성된 드롭다운 파일 갱신"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1077
+#: inc/field.class.php:1185
 msgid "Yes/No"
 msgstr "예/아니오"
 
