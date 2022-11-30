@@ -222,6 +222,7 @@ class PluginFieldsToolbox
             PDU::class,
             PassiveDCEquipment::class,
             Cable::class,
+            Glpi\Socket::class,
         ];
 
         $assistance_itemtypes = [
