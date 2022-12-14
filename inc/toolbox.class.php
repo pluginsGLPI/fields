@@ -252,6 +252,7 @@ class PluginFieldsToolbox
         ];
 
         $tools_itemtypes = [
+            KnowbaseItem::class,
             Project::class,
             ProjectTask::class,
             Reminder::class,
