@@ -65,7 +65,7 @@
     {% elseif type == 'url' %}
             {% set ext_link %}
             {% if value|length %}
-                <a target="_blank" href="{{ value }}">
+                <a target="_blank" href="{{ value|raw }}">
                     <i class="ti ti-external-link"></i>
                     {{ __('show', 'fields') }}
                 </a>
