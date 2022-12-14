@@ -49,15 +49,6 @@ function plugin_fields_install()
     $plugin_fields->getFromDBbyDir('fields');
     $version = $plugin_fields->fields['version'];
 
-    $classesToInstall = [
-        'PluginFieldsField',
-        'PluginFieldsDropdown',
-        'PluginFieldsLabelTranslation',
-        'PluginFieldsContainer',
-        'PluginFieldsProfile',
-        'PluginFieldsStatusOverride',
-        'PluginFieldsContainerDisplayCondition',
-    ];
 
     $migration = new Migration($version);
     if (isCommandLine()) {
@@ -71,30 +62,30 @@ function plugin_fields_install()
         echo "<td align='center'>";
     }
 
-    //load all classes
-    $dir  = PLUGINFIELDS_DIR . "/inc/";
-    include_once("{$dir}toolbox.class.php");
+    $classesToInstall = [
+        PluginFieldsContainer::class,
+        PluginFieldsContainerDisplayCondition::class,
+        PluginFieldsDropdown::class,
+        PluginFieldsField::class,
+        PluginFieldsLabelTranslation::class,
+        PluginFieldsProfile::class,
+        PluginFieldsStatusOverride::class,
+    ];
+
+    // First, install base data
     foreach ($classesToInstall as $class) {
-        if ($plug = isPluginItemType($class)) {
-            $item = strtolower($plug['class']);
-            if (file_exists("$dir$item.class.php")) {
-                include_once("$dir$item.class.php");
-            }
+        if (method_exists($class, 'installBaseData')) {
+            $class::installBaseData($migration, $version);
         }
     }
+    $migration->executeMigration();
 
-    //install
+    // Then process specific user classes/tables
     foreach ($classesToInstall as $class) {
-        if ($plug = isPluginItemType($class)) {
-            $item = strtolower($plug['class']);
-            if (file_exists("$dir$item.class.php")) {
-                if (!call_user_func([$class,'install'], $migration, $version)) {
-                    return false;
-                }
-            }
+        if (method_exists($class, 'installUserData')) {
+            $class::installUserData($migration, $version);
         }
     }
-
     $migration->executeMigration();
 
     if (!isCommandLine()) {

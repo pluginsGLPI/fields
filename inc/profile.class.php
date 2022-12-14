@@ -37,7 +37,15 @@ class PluginFieldsProfile extends CommonDBRelation
     public static $itemtype_2 = Profile::class;
     public static $items_id_2 = 'profiles_id';
 
-    public static function install(Migration $migration)
+    /**
+     * Install or update plugin base data.
+     *
+     * @param Migration $migration Migration instance
+     * @param string    $version   Plugin current version
+     *
+     * @return boolean
+     */
+    public static function installBaseData(Migration $migration, $version)
     {
         global $DB;
 
