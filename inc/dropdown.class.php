@@ -34,28 +34,22 @@ class PluginFieldsDropdown
     public $can_be_translated = true;
 
     /**
-     * Install or update dropdowns
+     * Install or update user data.
      *
      * @param Migration $migration Migration instance
      * @param string    $version   Plugin current version
      *
-     * @return void
+     * @return boolean
      */
-    public static function install(Migration $migration, $version)
+    public static function installUserData(Migration $migration, $version)
     {
-        $toolbox = new PluginFieldsToolbox();
-        $toolbox->fixFieldsNames($migration, ['type' => 'dropdown']);
-
-        $migration->displayMessage(__("Updating generated dropdown files", "fields"));
-
-        $obj = new PluginFieldsField();
-        $fields = $obj->find(['type' => 'dropdown']);
-
         // -> 0.90-1.3: generated class moved
         // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
         // NEW path: PLUGINFIELDS_CLASS_PATH . "/$class_filename"
         // OLD path: GLPI_ROOT."/plugins/fields/front/$class_filename"
         // NEW path: PLUGINFIELDS_FRONT_PATH . "/$class_filename"
+        $obj = new PluginFieldsField();
+        $fields = $obj->find(['type' => 'dropdown']);
         foreach ($fields as $field) {
             //First, drop old fields from plugin directories
             $class_filename = $field['name'] . "dropdown.class.php";
@@ -74,7 +68,16 @@ class PluginFieldsDropdown
             }
         }
 
+        $toolbox = new PluginFieldsToolbox();
+        $toolbox->fixFieldsNames($migration, ['type' => 'dropdown']);
+
+        // Ensure data is update before regenerating files.
+        $migration->executeMigration();
+
         // Regenerate files and install missing tables
+        $migration->displayMessage(__("Updating generated dropdown files", "fields"));
+        $obj = new PluginFieldsField();
+        $fields = $obj->find(['type' => 'dropdown']);
         foreach ($fields as $field) {
             self::create($field);
         }

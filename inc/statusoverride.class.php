@@ -37,7 +37,15 @@ class PluginFieldsStatusOverride extends CommonDBChild
     public static $itemtype = PluginFieldsField::class;
     public static $items_id = 'plugin_fields_fields_id';
 
-    public static function install(Migration $migration, $version)
+    /**
+     * Install or update plugin base data.
+     *
+     * @param Migration $migration Migration instance
+     * @param string    $version   Plugin current version
+     *
+     * @return boolean
+     */
+    public static function installBaseData(Migration $migration, $version)
     {
         global $DB;
 

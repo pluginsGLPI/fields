@@ -54,14 +54,14 @@ class PluginFieldsContainer extends CommonDBTM
     }
 
     /**
-     * Install or update containers
+     * Install or update plugin base data.
      *
      * @param Migration $migration Migration instance
      * @param string    $version   Plugin current version
      *
      * @return boolean
      */
-    public static function install(Migration $migration, $version)
+    public static function installBaseData(Migration $migration, $version)
     {
         global $DB;
 
@@ -112,6 +112,52 @@ class PluginFieldsContainer extends CommonDBTM
         if (!$DB->fieldExists($table, "subtype")) {
             $migration->addField($table, 'subtype', 'VARCHAR(255) DEFAULT NULL', ['after' => 'type']);
             $migration->migrationOneTable($table);
+        }
+
+        return true;
+    }
+
+    /**
+     * Install or update user data.
+     *
+     * @param Migration $migration Migration instance
+     * @param string    $version   Plugin current version
+     *
+     * @return boolean
+     */
+    public static function installUserData(Migration $migration, $version)
+    {
+        global $DB;
+
+        // -> 0.90-1.3: generated class moved
+        // Drop them, they will be regenerated
+        $obj        = new self();
+        $containers = $obj->find();
+        foreach ($containers as $container) {
+            $itemtypes = !empty($container['itemtypes'])
+                ? json_decode($container['itemtypes'], true)
+                : [];
+
+            foreach ($itemtypes as $itemtype) {
+                $sysname = self::getSystemName($itemtype, $container['name']);
+                $class_filename = $sysname . ".class.php";
+                if (file_exists(PLUGINFIELDS_DIR . "/inc/$class_filename")) {
+                    unlink(PLUGINFIELDS_DIR . "/inc/$class_filename");
+                }
+
+                $injclass_filename = $sysname . "injection.class.php";
+                if (file_exists(PLUGINFIELDS_DIR . "/inc/$injclass_filename")) {
+                    unlink(PLUGINFIELDS_DIR . "/inc/$injclass_filename");
+                }
+            }
+        }
+
+        // Regenerate container classes to ensure they can be used
+        $migration->displayMessage(__("Regenerate containers files", "fields"));
+        $obj        = new self();
+        $containers = $obj->find();
+        foreach ($containers as $container) {
+            self::generateTemplate($container);
         }
 
         // Fix containers names that were generated prior to Fields 1.9.2.
@@ -216,34 +262,13 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
+        // Ensure data is update before regenerating files.
+        $migration->executeMigration();
+
+        // Regenerate files and install missing tables
         $migration->displayMessage(__("Updating generated containers files", "fields"));
         $obj        = new self();
         $containers = $obj->find();
-
-        // -> 0.90-1.3: generated class moved
-        // OLD path: GLPI_ROOT."/plugins/fields/inc/$class_filename"
-        // NEW path: PLUGINFIELDS_CLASS_PATH . "/$class_filename"
-        foreach ($containers as $container) {
-            //First, drop old fields from plugin directories
-            $itemtypes = !empty($container['itemtypes'])
-                ? json_decode($container['itemtypes'], true)
-                : [];
-
-            foreach ($itemtypes as $itemtype) {
-                $sysname = self::getSystemName($itemtype, $container['name']);
-                $class_filename = $sysname . ".class.php";
-                if (file_exists(PLUGINFIELDS_DIR . "/inc/$class_filename")) {
-                    unlink(PLUGINFIELDS_DIR . "/inc/$class_filename");
-                }
-
-                $injclass_filename = $sysname . "injection.class.php";
-                if (file_exists(PLUGINFIELDS_DIR . "/inc/$injclass_filename")) {
-                    unlink(PLUGINFIELDS_DIR . "/inc/$injclass_filename");
-                }
-            }
-        }
-
-        // Regenerate files and install missing tables
         foreach ($containers as $container) {
             self::create($container);
         }

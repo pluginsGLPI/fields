@@ -46,7 +46,15 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     const SHOW_CONDITION_UNDER      = 6;
     const SHOW_CONDITION_NOT_UNDER  = 7;
 
-    public static function install(Migration $migration, $version)
+    /**
+     * Install or update plugin base data.
+     *
+     * @param Migration $migration Migration instance
+     * @param string    $version   Plugin current version
+     *
+     * @return boolean
+     */
+    public static function installBaseData(Migration $migration, $version)
     {
         global $DB;
         $default_charset = DBConnection::getDefaultCharset();
