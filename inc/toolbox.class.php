@@ -100,20 +100,22 @@ class PluginFieldsToolbox
     {
         global $DB;
 
-        $bad_named_fields = $DB->request(
+        $bad_named_fields = [];
+        $fields = $DB->request(
             [
                 'FROM' => PluginFieldsField::getTable(),
-                'WHERE' => [
-                    'name' => [
-                        'REGEXP',
-                        $DB->escape('[0-9]+')
-                    ],
-                    $condition,
-                ],
+                'WHERE' => $condition,
             ]
         );
+        foreach ($fields as $field) {
+            $field_copy = $field;
+            unset($field_copy['name']);
+            if ($field['name'] !== (new PluginFieldsField())->prepareName($field_copy)) {
+                $bad_named_fields[] = $field;
+            }
+        }
 
-        if ($bad_named_fields->count() === 0) {
+        if (count($bad_named_fields) === 0) {
             return;
         }
 
