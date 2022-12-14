@@ -259,6 +259,7 @@ class PluginFieldsToolbox
             ProjectTask::class,
             Reminder::class,
             RSSFeed::class,
+            KnowbaseItem::class,
         ];
 
         $administration_itemtypes = [
