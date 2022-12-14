@@ -93,7 +93,6 @@ if ($type === 'glpi_item') {
     echo '</td>';
 
     echo '<td>';
-    $dropdown_matches = [];
     if ($is_dropdown) {
         $multiple = (bool)($_POST['multiple'] ?? $field->fields['multiple']);
 
