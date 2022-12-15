@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-28 14:33+0000\n"
+"POT-Creation-Date: 2022-12-15 14:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: SeongHyeon Cho <jaymz9634@gmail.com>, 2020-2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:910
+#: inc/container.class.php:935
 msgid "Add tab"
 msgstr "탭 추가"
 
@@ -60,7 +60,7 @@ msgstr "추가 항목"
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:658
+#: inc/container.class.php:683
 msgid "Block"
 msgstr "블록"
 
@@ -68,17 +68,17 @@ msgstr "블록"
 msgid "Check database to detect inconsistencies."
 msgstr ""
 
-#: inc/toolbox.class.php:312
+#: inc/toolbox.class.php:316
 msgid "Component items"
 msgstr ""
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:145
+#: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/container.class.php:481
+#: inc/container.class.php:506
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -107,7 +107,7 @@ msgstr "날짜 & 시간"
 msgid "Default value"
 msgstr ""
 
-#: ajax/field_specific_fields.php:117
+#: ajax/field_specific_fields.php:116
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
@@ -119,7 +119,7 @@ msgstr "드롭다운"
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:668
+#: inc/container.class.php:53 inc/container.class.php:693
 msgid "Export to YAML"
 msgstr "YAML로 내보내기"
 
@@ -137,11 +137,11 @@ msgstr "항목 이름이 데이터베이스 용으로 너무 깁니다 (이름�
 msgid "Fields"
 msgstr "항목"
 
-#: inc/container.class.php:131
+#: inc/container.class.php:177
 msgid "Fix container names"
 msgstr "컨테이너 이름 수정"
 
-#: inc/toolbox.class.php:120
+#: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "항목 이름 수정"
 
@@ -153,11 +153,11 @@ msgstr ""
 msgid "Header"
 msgstr "헤더"
 
-#: inc/container.class.php:911
+#: inc/container.class.php:936
 msgid "Insertion in the form (before save button)"
 msgstr "(저장 버튼 전에) 양식에 삽입"
 
-#: inc/container.class.php:912
+#: inc/container.class.php:937
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "(저장 버튼 전에) 특정 탭의 양식에 삽입"
 
@@ -173,11 +173,11 @@ msgstr "언어"
 msgid "Multiple dropdown"
 msgstr ""
 
-#: hook.php:64 hook.php:68
+#: hook.php:55 hook.php:59
 msgid "MySQL tables installation"
 msgstr "MySQL 테이블 삽입"
 
-#: hook.php:130
+#: hook.php:121
 msgid "MySQL tables uninstallation"
 msgstr "MySQL 테이블 제거"
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Number"
 msgstr "숫자"
 
-#: inc/statusoverride.class.php:80
+#: inc/statusoverride.class.php:88
 msgid "Override by status"
 msgstr ""
 
@@ -206,6 +206,10 @@ msgstr "읽기 전용"
 msgid "Regenerate container files"
 msgstr "컨테이너 파일 재생성"
 
+#: inc/container.class.php:156
+msgid "Regenerate containers files"
+msgstr ""
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr ""
@@ -215,15 +219,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1378
+#: inc/container.class.php:1403
 msgid "Some URL fields contains invalid links"
 msgstr "일부 URL 항목에 잘못된 링크가 포함되었습니다"
 
-#: inc/container.class.php:1368
+#: inc/container.class.php:1393
 msgid "Some mandatory fields are empty"
 msgstr "일부 필수 항목이 비었습니다"
 
-#: inc/container.class.php:1373
+#: inc/container.class.php:1398
 msgid "Some numeric fields contains non numeric values"
 msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
 
@@ -231,7 +235,7 @@ msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:762
+#: inc/container.class.php:787
 msgid "Tab"
 msgstr "탭"
 
@@ -243,7 +247,7 @@ msgstr "문구 (여러 줄)"
 msgid "Text (single line)"
 msgstr "문구 (한 줄)"
 
-#: hook.php:118
+#: hook.php:109
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "플러그인 비활성화 시 플러그인을 삭제할 수 없습니다"
 
@@ -261,11 +265,11 @@ msgstr ""
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:219
+#: inc/container.class.php:269
 msgid "Updating generated containers files"
 msgstr "생성된 컨테이너 파일 갱신"
 
-#: inc/dropdown.class.php:49
+#: inc/dropdown.class.php:78
 msgid "Updating generated dropdown files"
 msgstr "생성된 드롭다운 파일 갱신"
 
@@ -277,38 +281,38 @@ msgstr ""
 msgid "Yes/No"
 msgstr "예/아니오"
 
-#: inc/container.class.php:430
+#: inc/container.class.php:455
 msgid "You cannot add block without associated element type"
 msgstr "관련된 요소 형식이 없으면 추가할 수 없습니다"
 
-#: inc/container.class.php:465
+#: inc/container.class.php:490
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "동일한 객체 탭에 '특정 탭의 양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/container.class.php:450
+#: inc/container.class.php:475
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "동일한 객체에 '양식에 삽입' 유형이 있는 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/container.class.php:495
+#: inc/container.class.php:520
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "동일한 객체에 동일한 이름을 가진 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/containerdisplaycondition.class.php:487
-#: inc/containerdisplaycondition.class.php:502
+#: inc/containerdisplaycondition.class.php:495
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:95
-#: inc/containerdisplaycondition.class.php:129
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:137
 msgid "not under"
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:101
-#: inc/containerdisplaycondition.class.php:123
+#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:131
 msgid "regular expression matches"
 msgstr ""
 
@@ -316,7 +320,7 @@ msgstr ""
 msgid "show"
 msgstr "표시"
 
-#: inc/containerdisplaycondition.class.php:94
-#: inc/containerdisplaycondition.class.php:126
+#: inc/containerdisplaycondition.class.php:102
+#: inc/containerdisplaycondition.class.php:134
 msgid "under"
 msgstr ""

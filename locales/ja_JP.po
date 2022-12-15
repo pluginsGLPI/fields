@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-28 14:33+0000\n"
+"POT-Creation-Date: 2022-12-15 14:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: sai sai, 2019\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:910
+#: inc/container.class.php:935
 msgid "Add tab"
 msgstr "タブを追加する"
 
@@ -61,7 +61,7 @@ msgstr "追加のフィールド"
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:658
+#: inc/container.class.php:683
 msgid "Block"
 msgstr "ブロック"
 
@@ -69,17 +69,17 @@ msgstr "ブロック"
 msgid "Check database to detect inconsistencies."
 msgstr ""
 
-#: inc/toolbox.class.php:312
+#: inc/toolbox.class.php:316
 msgid "Component items"
 msgstr ""
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:145
+#: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/container.class.php:481
+#: inc/container.class.php:506
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -108,7 +108,7 @@ msgstr "日時"
 msgid "Default value"
 msgstr ""
 
-#: ajax/field_specific_fields.php:117
+#: ajax/field_specific_fields.php:116
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr "ドロップダウン"
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:668
+#: inc/container.class.php:53 inc/container.class.php:693
 msgid "Export to YAML"
 msgstr ""
 
@@ -138,11 +138,11 @@ msgstr ""
 msgid "Fields"
 msgstr "フィールド"
 
-#: inc/container.class.php:131
+#: inc/container.class.php:177
 msgid "Fix container names"
 msgstr "コンテナ名を変更する"
 
-#: inc/toolbox.class.php:120
+#: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "フィールド名を変更する"
 
@@ -154,11 +154,11 @@ msgstr ""
 msgid "Header"
 msgstr "ヘッダ"
 
-#: inc/container.class.php:911
+#: inc/container.class.php:936
 msgid "Insertion in the form (before save button)"
 msgstr "フォームに追加する（フォーム保存前時点）"
 
-#: inc/container.class.php:912
+#: inc/container.class.php:937
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "フォームのタブに追加する（フォーム保存前時点）"
 
@@ -174,11 +174,11 @@ msgstr "言語"
 msgid "Multiple dropdown"
 msgstr ""
 
-#: hook.php:64 hook.php:68
+#: hook.php:55 hook.php:59
 msgid "MySQL tables installation"
 msgstr "MySQLテーブルのインストール"
 
-#: hook.php:130
+#: hook.php:121
 msgid "MySQL tables uninstallation"
 msgstr "MySQLテーブルのアンインストール"
 
@@ -194,7 +194,7 @@ msgstr ""
 msgid "Number"
 msgstr "数値"
 
-#: inc/statusoverride.class.php:80
+#: inc/statusoverride.class.php:88
 msgid "Override by status"
 msgstr ""
 
@@ -207,6 +207,10 @@ msgstr "読取専用"
 msgid "Regenerate container files"
 msgstr "コンテナファイルを再生成する"
 
+#: inc/container.class.php:156
+msgid "Regenerate containers files"
+msgstr ""
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr ""
@@ -216,15 +220,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1378
+#: inc/container.class.php:1403
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含むURLフィールドがあります。"
 
-#: inc/container.class.php:1368
+#: inc/container.class.php:1393
 msgid "Some mandatory fields are empty"
 msgstr "必須項目が未入力です。"
 
-#: inc/container.class.php:1373
+#: inc/container.class.php:1398
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値を含む数値フィールドがあります。"
 
@@ -232,7 +236,7 @@ msgstr "非数値を含む数値フィールドがあります。"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:762
+#: inc/container.class.php:787
 msgid "Tab"
 msgstr "タブ"
 
@@ -244,7 +248,7 @@ msgstr "テキスト（複数行）"
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
-#: hook.php:118
+#: hook.php:109
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "プラグインが無効な場合、プラグインをアンインストールできません。"
 
@@ -262,11 +266,11 @@ msgstr ""
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:219
+#: inc/container.class.php:269
 msgid "Updating generated containers files"
 msgstr "生成済みコンテナファイルを更新"
 
-#: inc/dropdown.class.php:49
+#: inc/dropdown.class.php:78
 msgid "Updating generated dropdown files"
 msgstr "生成済ドロップダウンフィールドの選択肢を更新"
 
@@ -278,38 +282,38 @@ msgstr ""
 msgid "Yes/No"
 msgstr "はい/いいえ"
 
-#: inc/container.class.php:430
+#: inc/container.class.php:455
 msgid "You cannot add block without associated element type"
 msgstr "「関連アイテムタイプ」が空のブロックを追加することはできません。"
 
-#: inc/container.class.php:465
+#: inc/container.class.php:490
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "同種のオブジェクトのタブに、「ラベル」が同じブロックを複数追加することはできません。"
 
-#: inc/container.class.php:450
+#: inc/container.class.php:475
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "同種のオブジェクトに、複数のブロックを追加することはできません。"
 
-#: inc/container.class.php:495
+#: inc/container.class.php:520
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "同種のオブジェクトに、「ラベル」が同じブロックを追加することはできません。"
 
-#: inc/containerdisplaycondition.class.php:487
-#: inc/containerdisplaycondition.class.php:502
+#: inc/containerdisplaycondition.class.php:495
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:95
-#: inc/containerdisplaycondition.class.php:129
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:137
 msgid "not under"
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:101
-#: inc/containerdisplaycondition.class.php:123
+#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:131
 msgid "regular expression matches"
 msgstr ""
 
@@ -317,7 +321,7 @@ msgstr ""
 msgid "show"
 msgstr "参照"
 
-#: inc/containerdisplaycondition.class.php:94
-#: inc/containerdisplaycondition.class.php:126
+#: inc/containerdisplaycondition.class.php:102
+#: inc/containerdisplaycondition.class.php:134
 msgid "under"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-28 14:33+0000\n"
+"POT-Creation-Date: 2022-12-15 14:47+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2020\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/uk_UA/)\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:910
+#: inc/container.class.php:935
 msgid "Add tab"
 msgstr "Додати закладку"
 
@@ -60,7 +60,7 @@ msgstr "Додаткові поля"
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:658
+#: inc/container.class.php:683
 msgid "Block"
 msgstr "Блок"
 
@@ -68,12 +68,12 @@ msgstr "Блок"
 msgid "Check database to detect inconsistencies."
 msgstr ""
 
-#: inc/toolbox.class.php:312
+#: inc/toolbox.class.php:316
 msgid "Component items"
 msgstr ""
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:145
+#: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
@@ -81,7 +81,7 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: inc/container.class.php:481
+#: inc/container.class.php:506
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -110,7 +110,7 @@ msgstr "Дата і час"
 msgid "Default value"
 msgstr ""
 
-#: ajax/field_specific_fields.php:117
+#: ajax/field_specific_fields.php:116
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr "Випадаючий список"
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:668
+#: inc/container.class.php:53 inc/container.class.php:693
 msgid "Export to YAML"
 msgstr ""
 
@@ -140,11 +140,11 @@ msgstr ""
 msgid "Fields"
 msgstr "Поля"
 
-#: inc/container.class.php:131
+#: inc/container.class.php:177
 msgid "Fix container names"
 msgstr "Виправити назви контейнерів"
 
-#: inc/toolbox.class.php:120
+#: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Виправити назви полів"
 
@@ -156,11 +156,11 @@ msgstr ""
 msgid "Header"
 msgstr "Заголовок"
 
-#: inc/container.class.php:911
+#: inc/container.class.php:936
 msgid "Insertion in the form (before save button)"
 msgstr "Вставка в форму (до кнопки Зберегти)"
 
-#: inc/container.class.php:912
+#: inc/container.class.php:937
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Вставка в форму закладки (до кнопки Зберегти)"
 
@@ -176,11 +176,11 @@ msgstr "Мова"
 msgid "Multiple dropdown"
 msgstr ""
 
-#: hook.php:64 hook.php:68
+#: hook.php:55 hook.php:59
 msgid "MySQL tables installation"
 msgstr "Встановлення таблиць MySQL"
 
-#: hook.php:130
+#: hook.php:121
 msgid "MySQL tables uninstallation"
 msgstr "Видалення таблиць MySQL"
 
@@ -196,7 +196,7 @@ msgstr ""
 msgid "Number"
 msgstr "Число"
 
-#: inc/statusoverride.class.php:80
+#: inc/statusoverride.class.php:88
 msgid "Override by status"
 msgstr ""
 
@@ -209,6 +209,10 @@ msgstr "Тільки читання"
 msgid "Regenerate container files"
 msgstr "Перегенерувати файли контейнеру"
 
+#: inc/container.class.php:156
+msgid "Regenerate containers files"
+msgstr ""
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr ""
@@ -218,15 +222,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1378
+#: inc/container.class.php:1403
 msgid "Some URL fields contains invalid links"
 msgstr "Деякі поля URL містять невірні посилання"
 
-#: inc/container.class.php:1368
+#: inc/container.class.php:1393
 msgid "Some mandatory fields are empty"
 msgstr "Деякі обов'язкові поля порожні"
 
-#: inc/container.class.php:1373
+#: inc/container.class.php:1398
 msgid "Some numeric fields contains non numeric values"
 msgstr "Деякі числові поля містять не цифрові значення"
 
@@ -234,7 +238,7 @@ msgstr "Деякі числові поля містять не цифрові з
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:762
+#: inc/container.class.php:787
 msgid "Tab"
 msgstr "Закладка"
 
@@ -246,7 +250,7 @@ msgstr "Текст (декілька ліній)"
 msgid "Text (single line)"
 msgstr "Текст (в одну лінію)"
 
-#: hook.php:118
+#: hook.php:109
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Плугін не можна видалити коли він вимкнений"
 
@@ -264,11 +268,11 @@ msgstr ""
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:219
+#: inc/container.class.php:269
 msgid "Updating generated containers files"
 msgstr "Оновлення згенерованих файлів контейнерів"
 
-#: inc/dropdown.class.php:49
+#: inc/dropdown.class.php:78
 msgid "Updating generated dropdown files"
 msgstr "Оновлюю згенеровані файли випадаючих списків"
 
@@ -280,38 +284,38 @@ msgstr ""
 msgid "Yes/No"
 msgstr "Так/Ні"
 
-#: inc/container.class.php:430
+#: inc/container.class.php:455
 msgid "You cannot add block without associated element type"
 msgstr "Не можна додати блок без визначеного типу елементу"
 
-#: inc/container.class.php:465
+#: inc/container.class.php:490
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Не можна до однієї закладки додати декілька блоків з типом 'Вставка в форму закладки'"
 
-#: inc/container.class.php:450
+#: inc/container.class.php:475
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Не можна до одного об'єкту додати декілька блоків з типом 'Вставка в форму'"
 
-#: inc/container.class.php:495
+#: inc/container.class.php:520
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Не можна до одного об'єкту додати декілька блоків з однаковою назвою"
 
-#: inc/containerdisplaycondition.class.php:487
-#: inc/containerdisplaycondition.class.php:502
+#: inc/containerdisplaycondition.class.php:495
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:95
-#: inc/containerdisplaycondition.class.php:129
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:137
 msgid "not under"
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:101
-#: inc/containerdisplaycondition.class.php:123
+#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:131
 msgid "regular expression matches"
 msgstr ""
 
@@ -319,7 +323,7 @@ msgstr ""
 msgid "show"
 msgstr "показати"
 
-#: inc/containerdisplaycondition.class.php:94
-#: inc/containerdisplaycondition.class.php:126
+#: inc/containerdisplaycondition.class.php:102
+#: inc/containerdisplaycondition.class.php:134
 msgid "under"
 msgstr ""
