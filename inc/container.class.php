@@ -999,23 +999,38 @@ HTML;
         return $itemtypes;
     }
 
-    public static function getUsedItemtypes($type = 'all', $must_be_active = false)
+    public static function getUsedItemtypes()
     {
         global $DB;
-        $itemtypes = [];
-        $where = $type == 'all' ? '1=1' : ('type = "' . $type . '"');
-        if ($must_be_active) {
-            $where .= ' AND is_active = 1';
+
+        $used_itemtypes = [];
+
+        $iterator = $DB->request([
+            'FROM'   => 'glpi_plugin_fields_containers',
+            'WHERE'  => [
+                'is_active' => 1,
+            ]
+        ]);
+
+        foreach ($iterator as $container_data) {
+            $itemtypes = json_decode($container_data['itemtypes']);
+            foreach ($itemtypes as $itemtype) {
+                if (
+                    is_a($itemtype, CommonITILObject::class, true)
+                    && $container_data['type'] === 'domtab'
+                    && $container_data['subtype'] === $itemtype . '$2'
+                ) {
+                    // Hack for ITILSolution that is neither an item that has main form and own tabs, neither related to
+                    // a dedicated tab of an item.
+                    // Map to old tab ID.
+                    $used_itemtypes[] = ITILSolution::class;
+                } else {
+                    $used_itemtypes[] = $itemtype;
+                }
+            }
         }
 
-        $query = 'SELECT DISTINCT `itemtypes` FROM `glpi_plugin_fields_containers` WHERE ' . $where;
-        $result = $DB->query($query);
-        while (list($data) = $DB->fetchArray($result)) {
-            $jsonitemtype = json_decode($data);
-            $itemtypes    = array_merge($itemtypes, $jsonitemtype);
-        }
-
-        return $itemtypes;
+        return array_values(array_unique($used_itemtypes));
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
@@ -1441,6 +1456,7 @@ HTML;
             $dataitemtypes = json_decode($data['itemtypes']);
             if (in_array($itemtype, $dataitemtypes) != false) {
                 $id = $data['id'];
+                break;
             }
         }
 
@@ -1472,11 +1488,26 @@ HTML;
     public static function postItemAdd(CommonDBTM $item)
     {
         if (property_exists($item, 'plugin_fields_data')) {
+            $itemtype = $item->getType();
+            if ($itemtype === ITILSolution::class) {
+                // Hack for ITILSolution that is neither an item that has main form and own tabs, neither related to
+                // a dedicated tab of an item.
+                // Map to old tab ID.
+                if (!isset($item->fields['itemtype']) || !is_a($item->fields['itemtype'], CommonITILObject::class, true)) {
+                    trigger_error(
+                        'Unable to get parent itemtype of ITILSolution.',
+                        E_USER_WARNING
+                    );
+                    return false;
+                }
+                $itemtype = $item->fields['itemtype'];
+            }
+
             $data = $item->plugin_fields_data;
             $data['items_id'] = $item->getID();
             //update data
             $container = new self();
-            if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
+            if ($container->updateFieldsValues($data, $itemtype, isset($_REQUEST['massiveaction']))) {
                 return true;
             }
             return $item->input = [];
@@ -1495,12 +1526,27 @@ HTML;
     {
         self::preItem($item);
         if (property_exists($item, 'plugin_fields_data')) {
+            $itemtype = $item->getType();
+            if ($itemtype === ITILSolution::class) {
+                // Hack for ITILSolution that is neither an item that has main form and own tabs, neither related to
+                // a dedicated tab of an item.
+                // Map to old tab ID.
+                if (!isset($item->fields['itemtype']) || !is_a($item->fields['itemtype'], CommonITILObject::class, true)) {
+                    trigger_error(
+                        'Unable to get parent itemtype of ITILSolution.',
+                        E_USER_WARNING
+                    );
+                    return false;
+                }
+                $itemtype = $item->fields['itemtype'];
+            }
+
             $data = $item->plugin_fields_data;
             //update data
             $container = new self();
             if (
                 count($data) == 0
-                || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
+                || $container->updateFieldsValues($data, $itemtype, isset($_REQUEST['massiveaction']))
             ) {
                 return true;
             }
@@ -1531,9 +1577,27 @@ HTML;
             if ($type == 'domtab') {
                 $subtype = $_REQUEST['_plugin_fields_subtype'];
             }
-            if (false === ($c_id = self::findContainer(get_Class($item), $type, $subtype))) {
+
+            $itemtype = is_a($item, CommonDBTM::class) ? $item->getType(): null;
+            if ($itemtype === ITILSolution::class) {
+                // Hack for ITILSolution that is neither an item that has main form and own tabs, neither related to
+                // a dedicated tab of an item.
+                // Map to old tab ID.
+                if (!isset($item->input['itemtype']) || !is_a($item->input['itemtype'], CommonITILObject::class, true)) {
+                    trigger_error(
+                        'Unable to get parent itemtype of ITILSolution.',
+                        E_USER_WARNING
+                    );
+                    return false;
+                }
+                $itemtype = $item->input['itemtype'];
+                $type     = 'domtab';
+                $subtype  = $itemtype . '$2';
+            }
+
+            if (false === ($c_id = self::findContainer($itemtype, $type, $subtype))) {
                 // tries for 'tab'
-                if (false === ($c_id = self::findContainer(get_Class($item)))) {
+                if (false === ($c_id = self::findContainer($itemtype))) {
                     return false;
                 }
             }
@@ -1558,7 +1622,7 @@ HTML;
         }
 
         if (false !== ($data = self::populateData($c_id, $item))) {
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            if (self::validateValues($data, $itemtype, isset($_REQUEST['massiveaction'])) === false) {
                 return $item->input = [];
             }
             return $item->plugin_fields_data = $data;
@@ -1846,6 +1910,9 @@ HTML;
         switch ($item::getType()) {
             case Ticket::getType():
             case Problem::getType():
+                // Hack for ITILSolution that is neither an item that has main form and own tabs, neither related to
+                // a dedicated tab of an item.
+                // Map to old tab ID.
                 $tabs = [
                     $item::getType() . '$2' => __('Solution')
                 ];

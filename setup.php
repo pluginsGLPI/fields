@@ -176,6 +176,10 @@ function plugin_init_fields()
             }
         }
 
+        $PLUGIN_HOOKS['post_show_item']['fields'] = [
+            "PluginFieldsField",
+            "postShowItem"
+        ];
         // Display fields in any existing tab
         $PLUGIN_HOOKS['post_item_form']['fields'] = [
             'PluginFieldsField',

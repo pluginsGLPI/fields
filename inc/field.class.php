@@ -798,12 +798,9 @@ class PluginFieldsField extends CommonDBChild
         $functions = array_column(debug_backtrace(), 'function');
 
         $subtype = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : "";
-        $type = substr($subtype, -strlen('$main')) === '$main'
-            || in_array('showForm', $functions)
-            || in_array('showPrimaryForm', $functions)
-            || in_array('showFormHelpdesk', $functions)
-                ? 'dom'
-                : 'domtab';
+        $type = substr($subtype, -strlen('$main')) === '$main' || in_array('showForm', $functions)
+            ? 'dom'
+            : 'domtab';
         if ($subtype == -1) {
             $type = 'dom';
         }
@@ -811,10 +808,29 @@ class PluginFieldsField extends CommonDBChild
         if ($type != 'domtab') {
             $subtype = "";
         }
+
+        $itemtype = is_a($item, CommonDBTM::class) ? $item->getType(): null;
+        if ($itemtype === ITILSolution::class) {
+            // Hack for ITILSolution that is neither an item that has main form and own tabs, neither related to
+            // a dedicated tab of an item.
+            // Map to old tab ID.
+            if (!isset($params['options']['item']) || !is_a($params['options']['item'], CommonITILObject::class)) {
+                trigger_error(
+                    'Unable to get parent itemtype of ITILSolution.',
+                    E_USER_WARNING
+                );
+                return false;
+            }
+            $item     = $params['options']['item'];
+            $itemtype = $item->getType();
+            $type     = 'domtab';
+            $subtype  = $itemtype . '$2';
+        }
+
         //find container (if not exist, do nothing)
         if (isset($_REQUEST['c_id'])) {
             $c_id = $_REQUEST['c_id'];
-        } else if (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
+        } else if (!$c_id = PluginFieldsContainer::findContainer($itemtype, $type, $subtype)) {
             return false;
         }
 
@@ -831,27 +847,6 @@ class PluginFieldsField extends CommonDBChild
             if (!in_array($current_entity, $entities)) {
                 return false;
             }
-        }
-
-        //parse REQUEST_URI
-        if (!isset($_SERVER['REQUEST_URI'])) {
-            return false;
-        }
-        $current_url = $_SERVER['REQUEST_URI'];
-        if (
-            strpos($current_url, ".form.php") === false
-            && strpos($current_url, ".injector.php") === false
-            && strpos($current_url, ".public.php") === false
-        ) {
-            return false;
-        }
-
-        //Retrieve dom container
-        $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
-
-        //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-        if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
-            return false;
         }
 
         $html_id = 'plugin_fields_container_' . mt_rand();
@@ -941,6 +936,56 @@ class PluginFieldsField extends CommonDBChild
             );
 JAVASCRIPT
         );
+    }
+
+    /**
+     * Callback for `post_show_item` hook.
+     *
+     * @param array $params [item, options]
+     * @return void
+     */
+    public static function postShowItem(array $params): void
+    {
+        $item = $params['item'] ?? null;
+
+        if (!($item instanceof ITILSolution)) {
+            // This hook is only require for ITILSolution that is not shown in its form context by default.
+            return;
+        }
+
+        $item     = $item->getItem(); // Additional fields are related to Ticket
+        $itemtype = $item->getType();
+        $type     = 'domtab';
+        $subtype  = $itemtype . '$2';
+
+        $container_id = PluginFieldsContainer::findContainer($itemtype, $type, $subtype);
+        if ($container_id === false) {
+            return;
+        }
+
+        $container = new PluginFieldsContainer();
+        $container->getFromDB($container_id);
+        $entities = $container->fields['is_recursive']
+            ? $entities = getSonsOf(getTableForItemType(Entity::class), $container->fields['entities_id'])
+            : [$container->fields['entities_id']];
+
+        if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
+            return;
+        }
+
+        $html_id = 'plugin_fields_container_' . mt_rand();
+        echo "<div id='{$html_id}'>";
+        $display_condition = new PluginFieldsContainerDisplayCondition();
+        if ($display_condition->computeDisplayContainer($item, $container_id)) {
+            // FIXME Enhance display
+            self::showDomContainer(
+                $container_id,
+                $item,
+                $type,
+                $subtype
+            );
+        }
+        echo "</div>";
     }
 
     public static function prepareHtmlFields(
