@@ -102,10 +102,22 @@ class PluginFieldsContainer extends CommonDBTM
         //add display preferences for this class
         $d_pref = new DisplayPreference();
         $found  = $d_pref->find(['itemtype' => __CLASS__]);
-        if (count($found) == 0) {
+        if (count($found) === 0) {
             for ($i = 2; $i <= 5; $i++) {
-                $DB->query("REPLACE INTO glpi_displaypreferences VALUES
-               (NULL, '" . __CLASS__ . "', $i, " . ($i - 1) . ", 0)");
+                $DB->updateOrInsert(
+                    DisplayPreference::getTable(),
+                    [
+                        'itemtype' => __CLASS__,
+                        'num'      => $i,
+                        'rank'     => $i - 1,
+                        'users_id' => 0
+                    ],
+                    [
+                        'itemtype' => __CLASS__,
+                        'num'      => $i,
+                        'users_id' => 0
+                    ]
+                );
             }
         }
 
