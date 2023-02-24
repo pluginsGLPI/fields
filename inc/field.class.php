@@ -1130,7 +1130,7 @@ JAVASCRIPT
         );
 
         //find field
-        $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly, fields.default_value
+        $query = "SELECT fields.plugin_fields_containers_id, fields.is_readonly, fields.multiple, fields.default_value
                 FROM glpi_plugin_fields_fields fields
                 LEFT JOIN glpi_plugin_fields_containers containers
                   ON containers.id = fields.plugin_fields_containers_id
@@ -1153,7 +1153,8 @@ JAVASCRIPT
             'plugin_fields_containers_id' => $data['plugin_fields_containers_id'],
             'name'                        => $cleaned_linkfield,
             'is_readonly'                 => $data['is_readonly'],
-            'default_value'               => $data['default_value']
+            'default_value'               => $data['default_value'],
+            'multiple'                    => $data['multiple']
         ]
         ];
 
