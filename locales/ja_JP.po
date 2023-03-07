@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 14:47+0000\n"
+"POT-Creation-Date: 2023-03-07 18:11+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: sai sai, 2019\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:935
+#: inc/container.class.php:947
 msgid "Add tab"
 msgstr "タブを追加する"
 
@@ -61,7 +61,7 @@ msgstr "追加のフィールド"
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:683
+#: inc/container.class.php:695
 msgid "Block"
 msgstr "ブロック"
 
@@ -79,7 +79,7 @@ msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/container.class.php:506
+#: inc/container.class.php:518
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1186
+#: inc/field.class.php:1195
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1187
+#: inc/field.class.php:1196
 msgid "Date & time"
 msgstr "日時"
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1184
+#: inc/field.class.php:1193
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -120,7 +120,7 @@ msgstr "ドロップダウン"
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:693
+#: inc/container.class.php:53 inc/container.class.php:705
 msgid "Export to YAML"
 msgstr ""
 
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Fields"
 msgstr "フィールド"
 
-#: inc/container.class.php:177
+#: inc/container.class.php:189
 msgid "Fix container names"
 msgstr "コンテナ名を変更する"
 
@@ -146,19 +146,19 @@ msgstr "コンテナ名を変更する"
 msgid "Fix fields names"
 msgstr "フィールド名を変更する"
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1197
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1179
+#: inc/field.class.php:1188
 msgid "Header"
 msgstr "ヘッダ"
 
-#: inc/container.class.php:936
+#: inc/container.class.php:948
 msgid "Insertion in the form (before save button)"
 msgstr "フォームに追加する（フォーム保存前時点）"
 
-#: inc/container.class.php:937
+#: inc/container.class.php:949
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "フォームのタブに追加する（フォーム保存前時点）"
 
@@ -190,7 +190,7 @@ msgstr "ブロック内にフィールドはありません"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1182
+#: inc/field.class.php:1191
 msgid "Number"
 msgstr "数値"
 
@@ -207,7 +207,7 @@ msgstr "読取専用"
 msgid "Regenerate container files"
 msgstr "コンテナファイルを再生成する"
 
-#: inc/container.class.php:156
+#: inc/container.class.php:168
 msgid "Regenerate containers files"
 msgstr ""
 
@@ -220,15 +220,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1403
+#: inc/container.class.php:1415
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含むURLフィールドがあります。"
 
-#: inc/container.class.php:1393
+#: inc/container.class.php:1405
 msgid "Some mandatory fields are empty"
 msgstr "必須項目が未入力です。"
 
-#: inc/container.class.php:1398
+#: inc/container.class.php:1410
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値を含む数値フィールドがあります。"
 
@@ -236,15 +236,15 @@ msgstr "非数値を含む数値フィールドがあります。"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:787
+#: inc/container.class.php:799
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1181
+#: inc/field.class.php:1190
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1180
+#: inc/field.class.php:1189
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
@@ -262,11 +262,11 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1183
+#: inc/field.class.php:1192
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:269
+#: inc/container.class.php:281
 msgid "Updating generated containers files"
 msgstr "生成済みコンテナファイルを更新"
 
@@ -278,27 +278,27 @@ msgstr "生成済ドロップダウンフィールドの選択肢を更新"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1185
+#: inc/field.class.php:1194
 msgid "Yes/No"
 msgstr "はい/いいえ"
 
-#: inc/container.class.php:455
+#: inc/container.class.php:467
 msgid "You cannot add block without associated element type"
 msgstr "「関連アイテムタイプ」が空のブロックを追加することはできません。"
 
-#: inc/container.class.php:490
+#: inc/container.class.php:502
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "同種のオブジェクトのタブに、「ラベル」が同じブロックを複数追加することはできません。"
 
-#: inc/container.class.php:475
+#: inc/container.class.php:487
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "同種のオブジェクトに、複数のブロックを追加することはできません。"
 
-#: inc/container.class.php:520
+#: inc/container.class.php:532
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "同種のオブジェクトに、「ラベル」が同じブロックを追加することはできません。"
 

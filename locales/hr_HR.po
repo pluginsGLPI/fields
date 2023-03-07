@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Milo Ivir <mail@milotype.de>, 2020
-# Milo Ivir <mail@milotype.de>, 2020,2022
+# Milo Ivir <mail@milotype.de>, 2020,2022-2023
 # Milo Ivir <mail@milotype.de>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 14:47+0000\n"
+"POT-Creation-Date: 2023-03-07 18:11+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +49,7 @@ msgstr "Dodaj uvjet za skrivanje bloka"
 msgid "Add new status override"
 msgstr "Dodaj novu zamjenu stanja"
 
-#: inc/container.class.php:935
+#: inc/container.class.php:947
 msgid "Add tab"
 msgstr "Dodaj karticu"
 
@@ -62,7 +62,7 @@ msgstr "Dodatna polja"
 msgid "Allowed values"
 msgstr "Dozvoljene vrijednosti"
 
-#: inc/container.class.php:683
+#: inc/container.class.php:695
 msgid "Block"
 msgstr "Blok"
 
@@ -82,7 +82,7 @@ msgstr[0] "Uvjet za skrivanje bloka"
 msgstr[1] "Uvjeti za skrivanje bloka"
 msgstr[2] "Uvjeti za skrivanje bloka"
 
-#: inc/container.class.php:506
+#: inc/container.class.php:518
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -99,11 +99,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "Baza podataka je sadržala nepovezane podatke iz %s nepropisno izbrisanih polja."
 
-#: inc/field.class.php:1186
+#: inc/field.class.php:1195
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1187
+#: inc/field.class.php:1196
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
@@ -115,7 +115,7 @@ msgstr "Standardna vrijednost"
 msgid "Default value will be configurable once field will be created."
 msgstr "Zadana vrijednost moći će se konfigurirati nakon što se polje stvori."
 
-#: inc/field.class.php:1184
+#: inc/field.class.php:1193
 msgid "Dropdown"
 msgstr "Padajući popis"
 
@@ -123,7 +123,7 @@ msgstr "Padajući popis"
 msgid "Everything is in order - no action needed."
 msgstr "Sve je u redu – nije potrebna nijedna radnja."
 
-#: inc/container.class.php:53 inc/container.class.php:693
+#: inc/container.class.php:53 inc/container.class.php:705
 msgid "Export to YAML"
 msgstr "Izvezi u YAML"
 
@@ -141,7 +141,7 @@ msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se 
 msgid "Fields"
 msgstr "Polja"
 
-#: inc/container.class.php:177
+#: inc/container.class.php:189
 msgid "Fix container names"
 msgstr "Ispravi imena spremnika"
 
@@ -149,19 +149,19 @@ msgstr "Ispravi imena spremnika"
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1197
 msgid "GLPI item"
 msgstr "GLPI predmet"
 
-#: inc/field.class.php:1179
+#: inc/field.class.php:1188
 msgid "Header"
 msgstr "Zaglavlje"
 
-#: inc/container.class.php:936
+#: inc/container.class.php:948
 msgid "Insertion in the form (before save button)"
 msgstr "Umetanje u obrazac (prije gumba za spremanje)"
 
-#: inc/container.class.php:937
+#: inc/container.class.php:949
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
 
@@ -193,7 +193,7 @@ msgstr "Nema polja za ovaj blok"
 msgid "No item found"
 msgstr "Nijedan predmet nije pronađen"
 
-#: inc/field.class.php:1182
+#: inc/field.class.php:1191
 msgid "Number"
 msgstr "Broj"
 
@@ -210,9 +210,9 @@ msgstr "Samo-za-čitanje"
 msgid "Regenerate container files"
 msgstr "Ponovo generiraj datoteke spremnika"
 
-#: inc/container.class.php:156
+#: inc/container.class.php:168
 msgid "Regenerate containers files"
-msgstr ""
+msgstr "Ponovo generiraj datoteke kontejnera"
 
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
@@ -223,15 +223,15 @@ msgstr "Ponovo generira datoteke kontejnera."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Za ispravljanje nedosljednosti u bazi podataka pokreni „%s”."
 
-#: inc/container.class.php:1403
+#: inc/container.class.php:1415
 msgid "Some URL fields contains invalid links"
 msgstr "Neka URL polja sadrže neispravne poveznice"
 
-#: inc/container.class.php:1393
+#: inc/container.class.php:1405
 msgid "Some mandatory fields are empty"
 msgstr "Neka obavezna polja su prazna"
 
-#: inc/container.class.php:1398
+#: inc/container.class.php:1410
 msgid "Some numeric fields contains non numeric values"
 msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 
@@ -239,15 +239,15 @@ msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 msgid "Status overrides"
 msgstr "Zamjene stanja"
 
-#: inc/container.class.php:787
+#: inc/container.class.php:799
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/field.class.php:1181
+#: inc/field.class.php:1190
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:1180
+#: inc/field.class.php:1189
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
@@ -265,11 +265,11 @@ msgid ""
 "them."
 msgstr "Ova naredba će očistiti sve datoteke koje je dodatak generirao i ponovno će ih generirati."
 
-#: inc/field.class.php:1183
+#: inc/field.class.php:1192
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:269
+#: inc/container.class.php:281
 msgid "Updating generated containers files"
 msgstr "Aktualiziranje generiranih datoteka spremnika"
 
@@ -281,27 +281,27 @@ msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 msgid "Use this option to actually fix database"
 msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
 
-#: inc/field.class.php:1185
+#: inc/field.class.php:1194
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: inc/container.class.php:455
+#: inc/container.class.php:467
 msgid "You cannot add block without associated element type"
 msgstr "Nije moguće dodati blok bez povezane vrste elementa"
 
-#: inc/container.class.php:490
+#: inc/container.class.php:502
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
 
-#: inc/container.class.php:475
+#: inc/container.class.php:487
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
 
-#: inc/container.class.php:520
+#: inc/container.class.php:532
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
 

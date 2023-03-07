@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 14:47+0000\n"
+"POT-Creation-Date: 2023-03-07 18:11+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Cédric Anne, 2018,2022\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -51,7 +51,7 @@ msgstr "Ajouter une condition pour masquer le bloc"
 msgid "Add new status override"
 msgstr "Ajouter une nouvelle surcharge par statut"
 
-#: inc/container.class.php:935
+#: inc/container.class.php:947
 msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
@@ -64,7 +64,7 @@ msgstr "Champs supplémentaires"
 msgid "Allowed values"
 msgstr "Valeurs autorisées"
 
-#: inc/container.class.php:683
+#: inc/container.class.php:695
 msgid "Block"
 msgstr "Bloc"
 
@@ -84,7 +84,7 @@ msgstr[0] "Condition pour masquer le bloc"
 msgstr[1] "Conditions pour masquer le bloc"
 msgstr[2] "Conditions pour masquer le bloc"
 
-#: inc/container.class.php:506
+#: inc/container.class.php:518
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -101,11 +101,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de données contenait des données orphelines des champs %s incorrectement supprimés."
 
-#: inc/field.class.php:1186
+#: inc/field.class.php:1195
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1187
+#: inc/field.class.php:1196
 msgid "Date & time"
 msgstr "Date & heure"
 
@@ -117,7 +117,7 @@ msgstr "Valeur par défaut"
 msgid "Default value will be configurable once field will be created."
 msgstr "La valeur par défaut sera configurable dès que le champ créé."
 
-#: inc/field.class.php:1184
+#: inc/field.class.php:1193
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
@@ -125,7 +125,7 @@ msgstr "Liste déroulante (Intitulés)"
 msgid "Everything is in order - no action needed."
 msgstr "Tout est en ordre - aucune action n'est requise."
 
-#: inc/container.class.php:53 inc/container.class.php:693
+#: inc/container.class.php:53 inc/container.class.php:705
 msgid "Export to YAML"
 msgstr "Exporter vers YAML"
 
@@ -143,7 +143,7 @@ msgstr "Le nom du champ est trop long pour la base de données (les nombres dans
 msgid "Fields"
 msgstr "Champs"
 
-#: inc/container.class.php:177
+#: inc/container.class.php:189
 msgid "Fix container names"
 msgstr "Correction du nom des conteneurs"
 
@@ -151,19 +151,19 @@ msgstr "Correction du nom des conteneurs"
 msgid "Fix fields names"
 msgstr "Correction du nom des champs"
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1197
 msgid "GLPI item"
 msgstr "Objet GLPI"
 
-#: inc/field.class.php:1179
+#: inc/field.class.php:1188
 msgid "Header"
 msgstr "Entête"
 
-#: inc/container.class.php:936
+#: inc/container.class.php:948
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:937
+#: inc/container.class.php:949
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
 
@@ -195,7 +195,7 @@ msgstr "Aucun champ pour ce bloc"
 msgid "No item found"
 msgstr "Aucun objet trouvé"
 
-#: inc/field.class.php:1182
+#: inc/field.class.php:1191
 msgid "Number"
 msgstr "Nombre"
 
@@ -212,7 +212,7 @@ msgstr "Lecture seule"
 msgid "Regenerate container files"
 msgstr "Régénérer les fichiers des blocs"
 
-#: inc/container.class.php:156
+#: inc/container.class.php:168
 msgid "Regenerate containers files"
 msgstr "Régénération les fichiers des conteneurs"
 
@@ -225,15 +225,15 @@ msgstr "Re-génère les fichiers des conteneurs."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Exécutez \"%s\" pour corriger les incohérences de la base de données."
 
-#: inc/container.class.php:1403
+#: inc/container.class.php:1415
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
-#: inc/container.class.php:1393
+#: inc/container.class.php:1405
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:1398
+#: inc/container.class.php:1410
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
@@ -241,15 +241,15 @@ msgstr "Des champs numériques contiennent des données non numériques"
 msgid "Status overrides"
 msgstr "Surcharges par statut"
 
-#: inc/container.class.php:787
+#: inc/container.class.php:799
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/field.class.php:1181
+#: inc/field.class.php:1190
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:1180
+#: inc/field.class.php:1189
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
@@ -267,11 +267,11 @@ msgid ""
 "them."
 msgstr "Cette commande supprime tous les fichiers générés par le plugin et les re-génère."
 
-#: inc/field.class.php:1183
+#: inc/field.class.php:1192
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:269
+#: inc/container.class.php:281
 msgid "Updating generated containers files"
 msgstr "Mettre à jour les fichier de conteneurs générés"
 
@@ -283,27 +283,27 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 msgid "Use this option to actually fix database"
 msgstr "Utilisez cette option pour corriger les incohérences en base de données"
 
-#: inc/field.class.php:1185
+#: inc/field.class.php:1194
 msgid "Yes/No"
 msgstr "Oui/Non"
 
-#: inc/container.class.php:455
+#: inc/container.class.php:467
 msgid "You cannot add block without associated element type"
 msgstr "Vous ne pouvez pas ajouter de bloc sans associer de type d'élément"
 
-#: inc/container.class.php:490
+#: inc/container.class.php:502
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire d'un onglet spécifique' sur le même onglet d'un objet"
 
-#: inc/container.class.php:475
+#: inc/container.class.php:487
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le formulaire' sur le même objet"
 
-#: inc/container.class.php:520
+#: inc/container.class.php:532
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
 

@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015-2022
+# Kaya Zeren <kayazeren@gmail.com>, 2015-2023
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 14:47+0000\n"
+"POT-Creation-Date: 2023-03-07 18:11+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2022\n"
+"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2023\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +47,7 @@ msgstr "Bloğu gizleyecek bir koşul ekle"
 msgid "Add new status override"
 msgstr "Yeni bir durum değişikliği ekle"
 
-#: inc/container.class.php:935
+#: inc/container.class.php:947
 msgid "Add tab"
 msgstr "Sekme ekle"
 
@@ -60,7 +60,7 @@ msgstr "Ek alanlar"
 msgid "Allowed values"
 msgstr "İzin verilen değerler"
 
-#: inc/container.class.php:683
+#: inc/container.class.php:695
 msgid "Block"
 msgstr "Blok"
 
@@ -79,7 +79,7 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Bloğu gizleyecek koşul"
 msgstr[1] "Bloğu gizleyecek koşullar"
 
-#: inc/container.class.php:506
+#: inc/container.class.php:518
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "Veritabanında düzgün olmayan şekilde silinmiş %s alandan artakalmış sahipsiz veriler var."
 
-#: inc/field.class.php:1186
+#: inc/field.class.php:1195
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:1187
+#: inc/field.class.php:1196
 msgid "Date & time"
 msgstr "Tarih ve saat"
 
@@ -112,7 +112,7 @@ msgstr "Varsayılan değer"
 msgid "Default value will be configurable once field will be created."
 msgstr "Alan eklendikten sonra varsayılan değer yapılandırılabilir."
 
-#: inc/field.class.php:1184
+#: inc/field.class.php:1193
 msgid "Dropdown"
 msgstr "Açılan kutu"
 
@@ -120,7 +120,7 @@ msgstr "Açılan kutu"
 msgid "Everything is in order - no action needed."
 msgstr "Herşey düzgün. Herhangi bir işlem yapılması gerekmiyor."
 
-#: inc/container.class.php:53 inc/container.class.php:693
+#: inc/container.class.php:53 inc/container.class.php:705
 msgid "Export to YAML"
 msgstr "YAML olarak dışa aktar"
 
@@ -138,7 +138,7 @@ msgstr "Alan adı veritabanı için çok uzun (ad içindeki rakamlar karakterler
 msgid "Fields"
 msgstr "Alanlar"
 
-#: inc/container.class.php:177
+#: inc/container.class.php:189
 msgid "Fix container names"
 msgstr "Kapsayıcı adlarını düzelt"
 
@@ -146,19 +146,19 @@ msgstr "Kapsayıcı adlarını düzelt"
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1197
 msgid "GLPI item"
 msgstr "GLPI ögesi"
 
-#: inc/field.class.php:1179
+#: inc/field.class.php:1188
 msgid "Header"
 msgstr "Üst bilgi"
 
-#: inc/container.class.php:936
+#: inc/container.class.php:948
 msgid "Insertion in the form (before save button)"
 msgstr "Forma eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:937
+#: inc/container.class.php:949
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
 
@@ -190,7 +190,7 @@ msgstr "Bu blokta henüz bir alan yok"
 msgid "No item found"
 msgstr "Herhangi bir öge bulunamadı"
 
-#: inc/field.class.php:1182
+#: inc/field.class.php:1191
 msgid "Number"
 msgstr "Sayı"
 
@@ -207,9 +207,9 @@ msgstr "Salt okunur"
 msgid "Regenerate container files"
 msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
-#: inc/container.class.php:156
+#: inc/container.class.php:168
 msgid "Regenerate containers files"
-msgstr ""
+msgstr "Kapsayıcıların dosyaları yeniden oluşturulsun"
 
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
@@ -220,15 +220,15 @@ msgstr "Kapsayıcı dosyaları yeniden oluşturur."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Veritabanı tutarsızlıklarını düzeltmek için \"%s\" çalıştırın."
 
-#: inc/container.class.php:1403
+#: inc/container.class.php:1415
 msgid "Some URL fields contains invalid links"
 msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 
-#: inc/container.class.php:1393
+#: inc/container.class.php:1405
 msgid "Some mandatory fields are empty"
 msgstr "Bazı zorunlu alanlar boş"
 
-#: inc/container.class.php:1398
+#: inc/container.class.php:1410
 msgid "Some numeric fields contains non numeric values"
 msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
@@ -236,15 +236,15 @@ msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 msgid "Status overrides"
 msgstr "Durum değişiklikleri"
 
-#: inc/container.class.php:787
+#: inc/container.class.php:799
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/field.class.php:1181
+#: inc/field.class.php:1190
 msgid "Text (multiples lines)"
 msgstr "Metin (birden çok satır)"
 
-#: inc/field.class.php:1180
+#: inc/field.class.php:1189
 msgid "Text (single line)"
 msgstr "Metin (tek satır)"
 
@@ -262,11 +262,11 @@ msgid ""
 "them."
 msgstr "Bu komut uygulama eki tarafından oluşturulmuş tüm dosyaları siler ve yeniden oluşturur."
 
-#: inc/field.class.php:1183
+#: inc/field.class.php:1192
 msgid "URL"
 msgstr "Adres"
 
-#: inc/container.class.php:269
+#: inc/container.class.php:281
 msgid "Updating generated containers files"
 msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 
@@ -278,27 +278,27 @@ msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 msgid "Use this option to actually fix database"
 msgstr "Veritabanını onarmak için bu seçeneği kullanın"
 
-#: inc/field.class.php:1185
+#: inc/field.class.php:1194
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
-#: inc/container.class.php:455
+#: inc/container.class.php:467
 msgid "You cannot add block without associated element type"
 msgstr "İlişkilendirilmiş bir bileşen tipi olmadan bir blok eklenemez"
 
-#: inc/container.class.php:490
+#: inc/container.class.php:502
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:475
+#: inc/container.class.php:487
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:520
+#: inc/container.class.php:532
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 
