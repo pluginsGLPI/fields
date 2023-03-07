@@ -909,6 +909,11 @@ class PluginFieldsField extends CommonDBChild
                         'change',
                         'input, select, textarea',
                         function(evt) {
+                            if (evt.target.name == "itilcategories_id") {
+                                // Do not refresh tab container when form is reloaded
+                                // to prevent issues diues to duplicated calls
+                                return;
+                            }
                             if ($(evt.target).closest('#{$html_id}').length > 0) {
                                 return; // Do nothing if element is inside fields container
                             }
@@ -1067,17 +1072,20 @@ JAVASCRIPT
 
             if (!$field['is_readonly']) {
                 if ($field['type'] == "dropdown") {
-                    if (
-                        isset($_SESSION['plugin']['fields']['values_sent']["plugin_fields_" .
-                                                                     $field['name'] .
-                                                                     "dropdowns_id"])
-                    ) {
-                        $value = $_SESSION['plugin']['fields']['values_sent']["plugin_fields_" .
-                                                                        $field['name'] .
-                                                                        "dropdowns_id"];
+                    $field_name = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
+                    if (isset($_SESSION['plugin']['fields']['values_sent'][$field_name])) {
+                        $value = $_SESSION['plugin']['fields']['values_sent'][$field_name];
+                    } elseif (isset($item->input[$field_name])) {
+                        // find from $item->input due to ajax refresh container
+                        $value = $item->input[$field_name];
                     }
-                } else if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
-                    $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
+                } else {
+                    if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
+                        $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
+                    } elseif (isset($item->input[$field['name']])) {
+                        // find from $item->input due to ajax refresh container
+                        $value = $item->input[$field['name']];
+                    }
                 }
             }
 
