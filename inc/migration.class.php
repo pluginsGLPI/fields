@@ -169,7 +169,7 @@ class PluginFieldsMigration extends Migration
         // For each defined fields in the given container
         $fields = (new PluginFieldsField())->find(['plugin_fields_containers_id' => $container_id]);
         foreach ($fields as $row) {
-            $fields = self::getSQLFields($row['name'], $row['type']);
+            $fields = self::getSQLFields($row['name'], $row['type'], $row);
             array_push($valid_fields, ...array_keys($fields));
         }
 

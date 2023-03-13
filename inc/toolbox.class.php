@@ -180,7 +180,7 @@ class PluginFieldsToolbox
                 );
 
                 foreach ($tables_to_update as $table_to_update) {
-                     $sql_fields = PluginFieldsMigration::getSQLFields($new_field_name, $field['type']);
+                     $sql_fields = PluginFieldsMigration::getSQLFields($new_field_name, $field['type'], $field);
                     if (count($sql_fields) !== 1 || !array_key_exists($new_field_name, $sql_fields)) {
                         // when this method has been made, only fields types that were matching a unique SQL field were existing
                         // other cases can be ignored
