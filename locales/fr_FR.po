@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-07 18:11+0000\n"
+"POT-Creation-Date: 2023-03-16 09:38+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Cédric Anne, 2018,2022\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -39,7 +39,7 @@ msgstr "-> \"%s.%s\" a été supprimé."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" devrait être supprimé."
 
-#: inc/field.class.php:514
+#: inc/field.class.php:517
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
@@ -101,11 +101,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de données contenait des données orphelines des champs %s incorrectement supprimés."
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1198
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1199
 msgid "Date & time"
 msgstr "Date & heure"
 
@@ -117,7 +117,7 @@ msgstr "Valeur par défaut"
 msgid "Default value will be configurable once field will be created."
 msgstr "La valeur par défaut sera configurable dès que le champ créé."
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1196
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
@@ -139,7 +139,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Le nom du champ est trop long pour la base de données (les nombres dans le nom sont automatiquement remplacés par des caractères, essayez de les enlever)"
 
-#: inc/field.class.php:456
+#: inc/field.class.php:459
 msgid "Fields"
 msgstr "Champs"
 
@@ -151,11 +151,11 @@ msgstr "Correction du nom des conteneurs"
 msgid "Fix fields names"
 msgstr "Correction du nom des champs"
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1200
 msgid "GLPI item"
 msgstr "Objet GLPI"
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1191
 msgid "Header"
 msgstr "Entête"
 
@@ -187,7 +187,7 @@ msgstr "Installation des tables MySQL"
 msgid "MySQL tables uninstallation"
 msgstr "Désinstallation des tables MySQL"
 
-#: inc/field.class.php:518
+#: inc/field.class.php:521
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
@@ -195,7 +195,7 @@ msgstr "Aucun champ pour ce bloc"
 msgid "No item found"
 msgstr "Aucun objet trouvé"
 
-#: inc/field.class.php:1191
+#: inc/field.class.php:1194
 msgid "Number"
 msgstr "Nombre"
 
@@ -203,8 +203,8 @@ msgstr "Nombre"
 msgid "Override by status"
 msgstr "Surcharge par statut"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:531
-#: inc/field.class.php:711
+#: templates/forms/status_override.html.twig inc/field.class.php:534
+#: inc/field.class.php:714
 msgid "Read only"
 msgstr "Lecture seule"
 
@@ -245,11 +245,11 @@ msgstr "Surcharges par statut"
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/field.class.php:1190
+#: inc/field.class.php:1193
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:1189
+#: inc/field.class.php:1192
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
@@ -267,7 +267,7 @@ msgid ""
 "them."
 msgstr "Cette commande supprime tous les fichiers générés par le plugin et les re-génère."
 
-#: inc/field.class.php:1192
+#: inc/field.class.php:1195
 msgid "URL"
 msgstr "URL"
 
@@ -283,7 +283,7 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 msgid "Use this option to actually fix database"
 msgstr "Utilisez cette option pour corriger les incohérences en base de données"
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1197
 msgid "Yes/No"
 msgstr "Oui/Non"
 

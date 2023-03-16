@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-07 18:11+0000\n"
+"POT-Creation-Date: 2023-03-16 09:38+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Merlin Merlin <mmerlin10@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:514
+#: inc/field.class.php:517
 msgid "Add a new field"
 msgstr "Přidat novou kolonku"
 
@@ -100,11 +100,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1198
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1199
 msgid "Date & time"
 msgstr "Datum a čas"
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1196
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
@@ -138,7 +138,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:456
+#: inc/field.class.php:459
 msgid "Fields"
 msgstr "Kolonky"
 
@@ -150,11 +150,11 @@ msgstr "Opravit názvy kontejnerů"
 msgid "Fix fields names"
 msgstr "Opravit názvy kolonek"
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1200
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1191
 msgid "Header"
 msgstr "Hlavička"
 
@@ -186,7 +186,7 @@ msgstr "Instalace MySQL tabulek"
 msgid "MySQL tables uninstallation"
 msgstr "Odebrání MySQL tabulek"
 
-#: inc/field.class.php:518
+#: inc/field.class.php:521
 msgid "No field for this block"
 msgstr "Žádná kolonka pro tento blok"
 
@@ -194,7 +194,7 @@ msgstr "Žádná kolonka pro tento blok"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1191
+#: inc/field.class.php:1194
 msgid "Number"
 msgstr "Číslo"
 
@@ -202,8 +202,8 @@ msgstr "Číslo"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:531
-#: inc/field.class.php:711
+#: templates/forms/status_override.html.twig inc/field.class.php:534
+#: inc/field.class.php:714
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
@@ -244,11 +244,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/field.class.php:1190
+#: inc/field.class.php:1193
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:1189
+#: inc/field.class.php:1192
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
@@ -266,7 +266,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1192
+#: inc/field.class.php:1195
 msgid "URL"
 msgstr "URL adresa"
 
@@ -282,7 +282,7 @@ msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1197
 msgid "Yes/No"
 msgstr "Ano/Ne"
 

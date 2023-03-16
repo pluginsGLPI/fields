@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-07 18:11+0000\n"
+"POT-Creation-Date: 2023-03-16 09:38+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Diego Giacani <diego.giacani@gmail.com>, 2020\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/it_IT/)\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:514
+#: inc/field.class.php:517
 msgid "Add a new field"
 msgstr "Aggiungi nuovo campo"
 
@@ -97,11 +97,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1198
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1199
 msgid "Date & time"
 msgstr "Data & ora"
 
@@ -113,7 +113,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1196
 msgid "Dropdown"
 msgstr "A tendina"
 
@@ -135,7 +135,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:456
+#: inc/field.class.php:459
 msgid "Fields"
 msgstr "Campi"
 
@@ -147,11 +147,11 @@ msgstr "Ripara i nomi dei contenitori"
 msgid "Fix fields names"
 msgstr "Ripara i nomi dei campi"
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1200
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1191
 msgid "Header"
 msgstr "Intestazione"
 
@@ -183,7 +183,7 @@ msgstr "Installazione tabelle MySQL"
 msgid "MySQL tables uninstallation"
 msgstr "Disinstallazione tabelle MySQL"
 
-#: inc/field.class.php:518
+#: inc/field.class.php:521
 msgid "No field for this block"
 msgstr "Nessun campo per questo blocco"
 
@@ -191,7 +191,7 @@ msgstr "Nessun campo per questo blocco"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1191
+#: inc/field.class.php:1194
 msgid "Number"
 msgstr "Numero"
 
@@ -199,8 +199,8 @@ msgstr "Numero"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:531
-#: inc/field.class.php:711
+#: templates/forms/status_override.html.twig inc/field.class.php:534
+#: inc/field.class.php:714
 msgid "Read only"
 msgstr "Sola lettura"
 
@@ -241,11 +241,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Scheda"
 
-#: inc/field.class.php:1190
+#: inc/field.class.php:1193
 msgid "Text (multiples lines)"
 msgstr "Testo (righe multiple)"
 
-#: inc/field.class.php:1189
+#: inc/field.class.php:1192
 msgid "Text (single line)"
 msgstr "Testo (riga singola)"
 
@@ -263,7 +263,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1192
+#: inc/field.class.php:1195
 msgid "URL"
 msgstr "URL"
 
@@ -279,7 +279,7 @@ msgstr "Aggiornamento dei file a tendina generati"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1197
 msgid "Yes/No"
 msgstr "Sì/No"
 

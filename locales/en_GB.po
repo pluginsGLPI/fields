@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-07 18:11+0000\n"
+"POT-Creation-Date: 2023-03-16 09:38+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Automatically generated, 2021-2022\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_GB/)\n"
@@ -35,7 +35,7 @@ msgstr "-> \"%s.%s\" has been deleted."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" should be deleted."
 
-#: inc/field.class.php:514
+#: inc/field.class.php:517
 msgid "Add a new field"
 msgstr "Add a new field"
 
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1198
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1199
 msgid "Date & time"
 msgstr "Date & time"
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1196
 msgid "Dropdown"
 msgstr "Dropdown"
 
@@ -134,7 +134,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Field name is too long for database (digits in name are replaced by characters, try to remove them)"
 
-#: inc/field.class.php:456
+#: inc/field.class.php:459
 msgid "Fields"
 msgstr "Fields"
 
@@ -146,11 +146,11 @@ msgstr "Fix container names"
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1200
 msgid "GLPI item"
 msgstr "GLPI item"
 
-#: inc/field.class.php:1188
+#: inc/field.class.php:1191
 msgid "Header"
 msgstr "Header"
 
@@ -182,7 +182,7 @@ msgstr "MySQL tables installation"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL tables uninstallation"
 
-#: inc/field.class.php:518
+#: inc/field.class.php:521
 msgid "No field for this block"
 msgstr "No field for this block"
 
@@ -190,7 +190,7 @@ msgstr "No field for this block"
 msgid "No item found"
 msgstr "No item found"
 
-#: inc/field.class.php:1191
+#: inc/field.class.php:1194
 msgid "Number"
 msgstr "Number"
 
@@ -198,8 +198,8 @@ msgstr "Number"
 msgid "Override by status"
 msgstr "Override by status"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:531
-#: inc/field.class.php:711
+#: templates/forms/status_override.html.twig inc/field.class.php:534
+#: inc/field.class.php:714
 msgid "Read only"
 msgstr "Read only"
 
@@ -240,11 +240,11 @@ msgstr "Status overrides"
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:1190
+#: inc/field.class.php:1193
 msgid "Text (multiples lines)"
 msgstr "Text (multiples lines)"
 
-#: inc/field.class.php:1189
+#: inc/field.class.php:1192
 msgid "Text (single line)"
 msgstr "Text (single line)"
 
@@ -262,7 +262,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1192
+#: inc/field.class.php:1195
 msgid "URL"
 msgstr "URL"
 
@@ -278,7 +278,7 @@ msgstr "Updating generated dropdown files"
 msgid "Use this option to actually fix database"
 msgstr "Use this option to actually fix database"
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1197
 msgid "Yes/No"
 msgstr "Yes/No"
 
