@@ -373,7 +373,7 @@ class PluginFieldsField extends CommonDBChild
      * @param  array $input the field form input
      * @return string  the parsed name
      */
-    public function prepareName($input)
+    public function prepareName($input, bool $prevent_duplicated = true)
     {
         $toolbox = new PluginFieldsToolbox();
 
@@ -402,10 +402,13 @@ class PluginFieldsField extends CommonDBChild
 
         $field      = new self();
         $field_name = $input['name'];
-        $i = 2;
-        while (count($field->find(['name' => $field_name])) > 0) {
-            $field_name = $toolbox->getIncrementedSystemName($input['name'], $i);
-            $i++;
+
+        if ($prevent_duplicated) {
+            $i = 2;
+            while (count($field->find(['name' => $field_name])) > 0) {
+                $field_name = $toolbox->getIncrementedSystemName($input['name'], $i);
+                $i++;
+            }
         }
 
         // if it's too long then use a random postfix

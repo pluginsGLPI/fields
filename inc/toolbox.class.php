@@ -110,7 +110,7 @@ class PluginFieldsToolbox
         foreach ($fields as $field) {
             $field_copy = $field;
             unset($field_copy['name']);
-            if ($field['name'] !== (new PluginFieldsField())->prepareName($field_copy)) {
+            if ($field['name'] !== (new PluginFieldsField())->prepareName($field_copy, false)) {
                 $bad_named_fields[] = $field;
             }
         }
