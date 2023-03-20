@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Toolbox\Sanitizer;
+
 class PluginFieldsToolbox
 {
    /**
@@ -111,7 +113,7 @@ class PluginFieldsToolbox
             $field_copy = $field;
             unset($field_copy['name']);
             if ($field['name'] !== (new PluginFieldsField())->prepareName($field_copy, false)) {
-                $bad_named_fields[] = $field;
+                $bad_named_fields[] = Sanitizer::dbEscapeRecursive($field);
             }
         }
 
