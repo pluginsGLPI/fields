@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Toolbox\Sanitizer;
+
 class PluginFieldsToolbox
 {
    /**
@@ -141,7 +143,7 @@ class PluginFieldsToolbox
             }
             $field['name'] = $new_name;
             $field_obj->update(
-                $field,
+                Sanitizer::dbEscapeRecursive($field),
                 false
             );
 
