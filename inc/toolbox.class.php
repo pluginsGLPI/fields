@@ -113,7 +113,7 @@ class PluginFieldsToolbox
             $field_copy = $field;
             unset($field_copy['name']);
             if ($field['name'] !== (new PluginFieldsField())->prepareName($field_copy, false)) {
-                $bad_named_fields[] = Sanitizer::dbEscapeRecursive($field);
+                $bad_named_fields[] = $field;
             }
         }
 
@@ -143,7 +143,7 @@ class PluginFieldsToolbox
             }
             $field['name'] = $new_name;
             $field_obj->update(
-                $field,
+                Sanitizer::dbEscapeRecursive($field),
                 false
             );
 
