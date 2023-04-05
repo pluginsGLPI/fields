@@ -493,14 +493,12 @@ class PluginFieldsField extends CommonDBTM {
    }
 
    static function showForTabContainer($c_id, $items_id, $itemtype) {
-      global $CFG_GLPI;
-
-      //profile restriction (for reading profile)
-      $profile = new PluginFieldsProfile;
-      $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                               'plugin_fields_containers_id' => $c_id]);
-      $first_found = array_shift($found);
-      $canedit = ($first_found['right'] == CREATE);
+      //profile restriction
+      $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+      if ($right < READ) {
+         return;
+      }
+      $canedit = $right > READ;
 
       //get fields for this container
       $field_obj = new self();
@@ -601,6 +599,11 @@ class PluginFieldsField extends CommonDBTM {
          $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
       }
 
+      $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+      if ($right < READ) {
+         return;
+      }
+
       if ($item->isEntityAssign()) {
          $current_entity = $item->getEntityID();
          if (!in_array($current_entity, $entities)) {
@@ -644,10 +647,19 @@ class PluginFieldsField extends CommonDBTM {
       }
 
       //get object associated with this fields
-      $tmp = $fields;
-      $first_field = array_shift($tmp);
+      $first_field = reset($fields);
       $container_obj = new PluginFieldsContainer;
-      $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
+      if (!$container_obj->getFromDB($first_field['plugin_fields_containers_id'])) {
+         return false;
+      }
+
+      // check if current profile can edit fields
+      $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_obj->getID());
+      if ($right < READ) {
+         return;
+      }
+      $canedit = $right > READ;
+
       $classname = "PluginFields".$itemtype.
                                  preg_replace('/s$/', '', $container_obj->fields['name']);
       $obj = new $classname;
@@ -661,16 +673,6 @@ class PluginFieldsField extends CommonDBTM {
       );
       $found_v = array_shift($found_values);
 
-      // find profiles (to check if current profile can edit fields)
-      $fprofile = new PluginFieldsProfile;
-      $found_p = $fprofile->find(
-         [
-            'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-            'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
-         ]
-      );
-      $first_found_p = array_shift($found_p);
-
       // test status for "CommonITILObject" objects
       if (is_subclass_of($itemtype, "CommonITILObject")) {
          $items_obj = new $itemtype();
@@ -680,12 +682,7 @@ class PluginFieldsField extends CommonDBTM {
             $items_obj->getEmpty();
          }
 
-         if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())
-             || $first_found_p['right'] != CREATE) {
-            $canedit = false;
-         }
-      } else {
-         if ($first_found_p['right'] != CREATE) {
+         if (in_array($items_obj->fields['status'], $items_obj->getClosedStatusArray())) {
             $canedit = false;
          }
       }
