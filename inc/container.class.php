@@ -967,7 +967,6 @@ HTML;
 
         $itemtypes = [];
         $container = new self();
-        $profile   = new PluginFieldsProfile();
         $found     = $container->find($condition, 'label');
         foreach ($found as $item) {
             //entities restriction
@@ -986,12 +985,8 @@ HTML;
                 continue;
             }
             //profiles restriction
-            $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                'plugin_fields_containers_id' => $item['id'],
-                'right' => ['>=', READ]
-            ]);
-            $first_found = array_shift($found);
-            if (!$first_found || $first_found['right'] == null || $first_found['right'] == 0) {
+            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $item['id']);
+            if ($right < READ) {
                 continue;
             }
 
@@ -1457,16 +1452,10 @@ HTML;
         }
 
         //profiles restriction
-        if (isset($_SESSION['glpiactiveprofile']['id'])) {
-            $profile = new PluginFieldsProfile();
-            if (isset($id)) {
-                $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                    'plugin_fields_containers_id' => $id
-                ]);
-                $first_found = array_shift($found);
-                if ($first_found === null || $first_found['right'] == null || $first_found['right'] == 0) {
-                     return false;
-                }
+        if (isset($_SESSION['glpiactiveprofile']['id']) && $id > 0) {
+            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $id);
+            if ($right < READ) {
+                return false;
             }
         }
 
@@ -1551,9 +1540,16 @@ HTML;
             }
         }
 
-        //need to check if container is usable on this object entity
         $loc_c = new PluginFieldsContainer();
         $loc_c->getFromDB($c_id);
+
+        // check rights on $c_id
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+        if (($right > READ) === false) {
+            return;
+        }
+
+        // need to check if container is usable on this object entity
         $entities = [$loc_c->fields['entities_id']];
         if ($loc_c->fields['is_recursive']) {
             $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);

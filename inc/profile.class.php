@@ -196,4 +196,22 @@ class PluginFieldsProfile extends CommonDBRelation
         $fields_profile->deleteByCriteria(['profiles_id' => $profile->fields['id']]);
         return true;
     }
+
+    public static function getRightOnContainer(int $profile_id, int $container_id): int
+    {
+        global $DB;
+
+        $container_profile = $DB->request(
+            [
+                'SELECT'  => ['MAX' => 'right AS right'],
+                'FROM'    => self::getTable(),
+                'WHERE'   => [
+                    'profiles_id' => $profile_id,
+                    'plugin_fields_containers_id' => $container_id,
+                ],
+            ]
+        );
+
+        return (int)$container_profile->current()['right'];
+    }
 }

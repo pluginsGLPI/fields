@@ -722,13 +722,12 @@ class PluginFieldsField extends CommonDBChild
 
     public static function showForTabContainer($c_id, $item)
     {
-        //profile restriction (for reading profile)
-        $profile = new PluginFieldsProfile();
-        $found = $profile->find(['profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-            'plugin_fields_containers_id' => $c_id
-        ]);
-        $first_found = array_shift($found);
-        $canedit = ($first_found['right'] == CREATE);
+        //profile restriction
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+        if ($right < READ) {
+            return;
+        }
+        $canedit = $right > READ;
 
         //get fields for this container
         $field_obj = new self();
@@ -794,8 +793,6 @@ class PluginFieldsField extends CommonDBChild
      */
     public static function showForTab($params)
     {
-        Html::requireJs('tinymce');
-
         $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
@@ -814,12 +811,20 @@ class PluginFieldsField extends CommonDBChild
         if ($type != 'domtab') {
             $subtype = "";
         }
+
         //find container (if not exist, do nothing)
         if (isset($_REQUEST['c_id'])) {
             $c_id = $_REQUEST['c_id'];
         } else if (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
             return false;
         }
+
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+        if ($right < READ) {
+            return;
+        }
+
+        Html::requireJs('tinymce');
 
         //need to check if container is usable on this object entity
         $loc_c = new PluginFieldsContainer();
@@ -964,10 +969,18 @@ JAVASCRIPT
         }
 
         //get object associated with this fields
-        $tmp = $fields;
-        $first_field = array_shift($tmp);
+        $first_field = reset($fields);
         $container_obj = new PluginFieldsContainer();
-        $container_obj->getFromDB($first_field['plugin_fields_containers_id']);
+        if (!$container_obj->getFromDB($first_field['plugin_fields_containers_id'])) {
+            return false;
+        }
+
+        // check if current profile can edit fields
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_obj->getID());
+        if ($right < READ) {
+            return;
+        }
+        $canedit = $right > READ;
 
         // Fill status overrides if needed
         if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
@@ -994,29 +1007,9 @@ JAVASCRIPT
             $found_v = array_shift($found_values);
         }
 
-        // find profiles (to check if current profile can edit fields)
-        $fprofile = new PluginFieldsProfile();
-        $found_p = $fprofile->find(
-            [
-                'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
-            ]
-        );
-        $first_found_p = array_shift($found_p);
-
         // test status for "CommonITILObject" objects
-        if ($item instanceof CommonITILObject) {
-            $status = $item->fields['status'] ?? null;
-            if (
-                ($status !== null && in_array($status, $item->getClosedStatusArray()))
-                || $first_found_p['right'] != CREATE
-            ) {
-                $canedit = false;
-            }
-        } else {
-            if ($first_found_p['right'] != CREATE) {
-                $canedit = false;
-            }
+        if ($item instanceof CommonITILObject && in_array($item->fields['status'] ?? null, $item->getClosedStatusArray())) {
+            $canedit = false;
         }
 
         //show all fields

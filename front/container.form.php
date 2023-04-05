@@ -53,7 +53,10 @@ if (isset($_POST["add"])) {
     $container->update($_POST);
     Html::back();
 } else if (isset($_POST["update_fields_values"])) {
-    $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
+    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_POST['plugin_fields_containers_id']);
+    if ($right > READ) {
+        $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
+    }
     Html::back();
 } else {
     Html::header(
