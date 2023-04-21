@@ -284,7 +284,7 @@ class PluginFieldsToolbox
         sort($component_items_itemtypes, SORT_NATURAL);
 
         $plugins_itemtypes = [];
-        foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
+        foreach (($PLUGIN_HOOKS['plugin_fields'] ?? []) as $itemtype) {
             $itemtype_specs = isPluginItemType($itemtype);
             if ($itemtype_specs) {
                 $plugins_itemtypes[] = $itemtype;
