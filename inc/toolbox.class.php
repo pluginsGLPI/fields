@@ -28,8 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Toolbox\Sanitizer;
-
 class PluginFieldsToolbox
 {
    /**
@@ -141,20 +139,20 @@ class PluginFieldsToolbox
                // limit tables names to 64 chars (MySQL limit)
                 $new_name = substr($new_name, 0, -1);
             }
-            $field['name'] = $new_name;
-            $field_obj->update(
-                Sanitizer::dbEscapeRecursive($field),
-                false
+            $DB->update(
+                PluginFieldsField::getTable(),
+                ['name' => $new_name],
+                ['id'   => $field['id']]
             );
 
             $sql_fields_to_rename = [
-                $old_name => $field['name'],
+                $old_name => $new_name,
             ];
 
             if ('dropdown' === $field['type']) {
                // Rename dropdown table
                 $old_table = getTableForItemType(PluginFieldsDropdown::getClassname($old_name));
-                $new_table = getTableForItemType(PluginFieldsDropdown::getClassname($field['name']));
+                $new_table = getTableForItemType(PluginFieldsDropdown::getClassname($new_name));
 
                 if ($DB->tableExists($old_table)) {
                     $migration->renameTable($old_table, $new_table);
