@@ -44,6 +44,15 @@ class PluginFieldsField extends CommonDBChild
     public static $itemtype = PluginFieldsContainer::class;
     public static $items_id = 'plugin_fields_containers_id';
 
+
+    public function getForbiddenStandardMassiveAction()
+    {
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'clone';
+        return $forbidden;
+    }
+
+
     /**
      * Install or update plugin base data.
      *
