@@ -53,6 +53,13 @@ class PluginFieldsContainer extends CommonDBTM
             __("Export to YAML", "fields") . "</a></div><br>";
     }
 
+    public function getForbiddenStandardMassiveAction()
+    {
+        $forbidden   = parent::getForbiddenStandardMassiveAction();
+        $forbidden[] = 'clone';
+        return $forbidden;
+    }
+
     /**
      * Install or update plugin base data.
      *
