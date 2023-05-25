@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-16 09:38+0000\n"
+"POT-Creation-Date: 2023-05-25 07:51+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
+"Language-Team: Chinese (China) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:517
+#: inc/field.class.php:526
 msgid "Add a new field"
 msgstr "添加新字段"
 
@@ -47,11 +47,11 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:947
+#: inc/container.class.php:954
 msgid "Add tab"
 msgstr "添加标签"
 
-#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:60
+#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
 #: setup.php:197
 msgid "Additional fields"
 msgstr "附加字段"
@@ -60,7 +60,7 @@ msgstr "附加字段"
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:695
+#: inc/container.class.php:702
 msgid "Block"
 msgstr "区域"
 
@@ -78,7 +78,7 @@ msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] ""
 
-#: inc/container.class.php:518
+#: inc/container.class.php:525
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -95,11 +95,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1198
+#: inc/field.class.php:1200
 msgid "Date"
 msgstr "日期"
 
-#: inc/field.class.php:1199
+#: inc/field.class.php:1201
 msgid "Date & time"
 msgstr "时间&日期"
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1198
 msgid "Dropdown"
 msgstr "拖动"
 
@@ -119,25 +119,25 @@ msgstr "拖动"
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:705
+#: inc/container.class.php:53 inc/container.class.php:712
 msgid "Export to YAML"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:232
+#: templates/forms/status_override.html.twig inc/field.class.php:241
 msgid "Field"
 msgstr "字段"
 
-#: inc/field.class.php:248 inc/field.class.php:273
+#: inc/field.class.php:257 inc/field.class.php:282
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:459
+#: inc/field.class.php:468
 msgid "Fields"
 msgstr "字段"
 
-#: inc/container.class.php:189
+#: inc/container.class.php:196
 msgid "Fix container names"
 msgstr ""
 
@@ -145,19 +145,19 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:1200
+#: inc/field.class.php:1202
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1191
+#: inc/field.class.php:1193
 msgid "Header"
 msgstr "头部"
 
-#: inc/container.class.php:948
+#: inc/container.class.php:955
 msgid "Insertion in the form (before save button)"
 msgstr "在窗体中插入(保存按钮前)"
 
-#: inc/container.class.php:949
+#: inc/container.class.php:956
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "以特定选项卡的形式插入(保存按钮之前)"
 
@@ -181,7 +181,7 @@ msgstr "安装MySQL数据表"
 msgid "MySQL tables uninstallation"
 msgstr "卸载MySQL数据表"
 
-#: inc/field.class.php:521
+#: inc/field.class.php:530
 msgid "No field for this block"
 msgstr "此区域无字段"
 
@@ -189,7 +189,7 @@ msgstr "此区域无字段"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1196
 msgid "Number"
 msgstr "整数"
 
@@ -197,8 +197,8 @@ msgstr "整数"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:534
-#: inc/field.class.php:714
+#: templates/forms/status_override.html.twig inc/field.class.php:543
+#: inc/field.class.php:723
 msgid "Read only"
 msgstr "只读"
 
@@ -206,7 +206,7 @@ msgstr "只读"
 msgid "Regenerate container files"
 msgstr "生成容器文件"
 
-#: inc/container.class.php:168
+#: inc/container.class.php:175
 msgid "Regenerate containers files"
 msgstr ""
 
@@ -219,15 +219,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1415
+#: inc/container.class.php:1417
 msgid "Some URL fields contains invalid links"
 msgstr "有些URL字段包含无效链接"
 
-#: inc/container.class.php:1405
+#: inc/container.class.php:1407
 msgid "Some mandatory fields are empty"
 msgstr "一些强制字段是空的。"
 
-#: inc/container.class.php:1410
+#: inc/container.class.php:1412
 msgid "Some numeric fields contains non numeric values"
 msgstr "一些数值字段包含非数值"
 
@@ -235,15 +235,15 @@ msgstr "一些数值字段包含非数值"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:799
+#: inc/container.class.php:806
 msgid "Tab"
 msgstr "标签"
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1195
 msgid "Text (multiples lines)"
 msgstr "文本（多行）"
 
-#: inc/field.class.php:1192
+#: inc/field.class.php:1194
 msgid "Text (single line)"
 msgstr "文本（单行）"
 
@@ -261,11 +261,11 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1197
 msgid "URL"
 msgstr "网址"
 
-#: inc/container.class.php:281
+#: inc/container.class.php:288
 msgid "Updating generated containers files"
 msgstr "刷新生成容器文件"
 
@@ -277,27 +277,27 @@ msgstr "更新生成下拉文件"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1199
 msgid "Yes/No"
 msgstr "是/否"
 
-#: inc/container.class.php:467
+#: inc/container.class.php:474
 msgid "You cannot add block without associated element type"
 msgstr "您不能添加没有关联元素类型的块"
 
-#: inc/container.class.php:502
+#: inc/container.class.php:509
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“表单中插入特殊标签”类型添加几个块"
 
-#: inc/container.class.php:487
+#: inc/container.class.php:494
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的块"
 
-#: inc/container.class.php:532
+#: inc/container.class.php:539
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "不能在同一对象上添加名称相同的多个块"
 
