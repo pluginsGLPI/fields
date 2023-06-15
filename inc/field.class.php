@@ -1084,6 +1084,9 @@ JAVASCRIPT
                         // find from $item->input due to ajax refresh container
                         $value = $item->input[$field_name];
                     }
+                } elseif ($field['type'] === 'glpi_item') {
+                    $value['itemtype'] = $item->input['itemtype_glpiobjectfield'];
+                    $value['items_id'] = $item->input['items_id_glpiobjectfield'];
                 } else {
                     if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
                         $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
