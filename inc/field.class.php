@@ -1085,8 +1085,8 @@ JAVASCRIPT
                         $value = $item->input[$field_name];
                     }
                 } elseif ($field['type'] === 'glpi_item') {
-                    $value['itemtype'] = $item->input['itemtype_glpiobjectfield'];
-                    $value['items_id'] = $item->input['items_id_glpiobjectfield'];
+                    $value['itemtype'] = $item->input["itemtype_" . $field['name']] ?? '';
+                    $value['items_id'] = $item->input["items_id_" . $field['name']] ?? 0;
                 } else {
                     if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
                         $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
