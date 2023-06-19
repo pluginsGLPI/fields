@@ -1085,8 +1085,19 @@ JAVASCRIPT
                         $value = $item->input[$field_name];
                     }
                 } elseif ($field['type'] === 'glpi_item') {
-                    $value['itemtype'] = $item->input["itemtype_" . $field['name']] ?? '';
-                    $value['items_id'] = $item->input["items_id_" . $field['name']] ?? 0;
+
+                    if (isset($_SESSION['plugin']['fields']['values_sent']["itemtype_" . $field['name']])) {
+                        $value['itemtype'] = $_SESSION['plugin']['fields']['values_sent']["itemtype_" . $field['name']];
+                    } elseif (isset($item->input["itemtype_" . $field['name']])) {
+                        $value['itemtype'] = $item->input["itemtype_" . $field['name']] ?? '';
+                    }
+
+                    if (isset($_SESSION['plugin']['fields']['values_sent']["items_id_" . $field['name']])) {
+                        $value['items_id'] = $_SESSION['plugin']['fields']['values_sent']["items_id_" . $field['name']];
+                    } elseif (isset($item->input["items_id_" . $field['name']])) {
+                        $value['items_id'] = $item->input["items_id_" . $field['name']] ?? '';
+                    }
+
                 } else {
                     if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
                         $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
