@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Api\HL\Doc\Schema;
+
 /**
  * Plugin install process
  *
@@ -331,4 +333,89 @@ function plugin_datainjection_populate_fields()
             $INJECTABLE_TYPES[$classname] = 'fields';
         }
     }
+}
+
+function plugin_fields_redefine_api_schemas(array $data): array
+{
+    global $DB;
+
+    $fn_fieldTypeToAPIType = static function (string $type): array {
+        $type = explode('-', $type)[0];
+        return match ($type) {
+            'number' => [Schema::TYPE_NUMBER, Schema::FORMAT_NUMBER_FLOAT],
+            'yesno' => [Schema::TYPE_BOOLEAN, Schema::FORMAT_BOOLEAN_BOOLEAN],
+            'date' => [Schema::TYPE_STRING, Schema::FORMAT_STRING_DATE],
+            'datetime' => [Schema::TYPE_STRING, Schema::FORMAT_STRING_DATE_TIME],
+            default => [Schema::TYPE_STRING, Schema::FORMAT_STRING_STRING],
+        };
+    };
+
+    foreach ($data['schemas'] as &$schema) {
+        if (!isset($schema['x-itemtype'])) {
+            continue;
+        }
+        //Note PluginFieldsContainer::findContainer already checks permissions
+        $container_id = PluginFieldsContainer::findContainer($schema['x-itemtype'], 'dom');
+        if ($container_id !== null) {
+            $it = $DB->request([
+                'SELECT' => [
+                    'glpi_plugin_fields_fields.*',
+                    'glpi_plugin_fields_containers.name AS container_name',
+                ],
+                'FROM'   => 'glpi_plugin_fields_fields',
+                'LEFT JOIN' => [
+                    'glpi_plugin_fields_containers' => [
+                        'ON' => [
+                            'glpi_plugin_fields_fields' => 'plugin_fields_containers_id',
+                            'glpi_plugin_fields_containers' => 'id'
+                        ]
+                    ]
+                ],
+                'WHERE'  => [
+                    'plugin_fields_containers_id' => $container_id,
+                    'glpi_plugin_fields_fields.is_active' => 1
+                ]
+            ]);
+            if (count($it)) {
+                $custom_fields = [];
+                foreach ($it as $field) {
+                    $type_format = $fn_fieldTypeToAPIType($field['type']);
+                    $table = strtolower("glpi_plugin_fields_{$schema['x-itemtype']}{$field['container_name']}s");
+                    $custom_fields[$field['name']] = [
+                        'type' => Schema::TYPE_OBJECT,
+                        'x-join' => [
+                            // This is the table with the desired values
+                            'table' => $table,
+                            'fkey' => 'id',
+                            'field' => 'items_id',
+                            'condition' => [
+                                'itemtype' => $schema['x-itemtype'],
+                            ]
+                        ],
+                        'properties' => [
+                            'id' => [
+                                'type' => Schema::TYPE_INTEGER,
+                                'format' => Schema::FORMAT_INTEGER_INT64,
+                                'x-readonly' => true,
+                            ],
+                            'value' => [
+                                'x-field' => $field['name'],
+                                'type' => $type_format[0],
+                                'format' => $type_format[1],
+                                // No support to change these fields for now.
+                                'x-readonly' => true,
+                            ]
+                        ]
+                    ];
+                }
+                if (count($custom_fields)) {
+                    $schema['properties']['custom_fields'] = [
+                        'type' => 'object',
+                        'properties' => $custom_fields
+                    ];
+                }
+            }
+        }
+    }
+    return $data;
 }
