@@ -256,15 +256,23 @@ function plugin_fields_rule_matched($params = [])
 
             if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
                 foreach ($params['output'] as $field => $value) {
-                   // check if current field is in a tab container
-                    $query = "SELECT c.id
-                         FROM glpi_plugin_fields_fields f
-                         LEFT JOIN glpi_plugin_fields_containers c
-                            ON c.id = f.plugin_fields_containers_id
-                         WHERE f.name = '$field'";
-                    $res = $DB->query($query);
-                    if ($DB->numrows($res) > 0) {
-                        $data = $DB->fetchAssoc($res);
+                    // check if current field is in a tab container
+                    $iterator = $DB->request([
+                        'SELECT' => 'c.id',
+                        'FROM'   => 'glpi_plugin_fields_fields AS f',
+                        'LEFT JOIN' => [
+                            'glpi_plugin_fields_containers AS c' => [
+                                'ON' => [
+                                    'c.id' => 'f.plugin_fields_containers_id'
+                                ]
+                            ]
+                        ],
+                        'WHERE' => [
+                            'f.name' => $field
+                        ]
+                    ]);
+                    if (count($iterator) > 0) {
+                        $data = $iterator->next();
 
                         //retrieve computer
                         $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
