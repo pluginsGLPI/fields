@@ -68,6 +68,9 @@ class PluginFieldsMigration extends Migration
             case $field_type === 'url':
                 $fields[$field_name] = 'TEXT DEFAULT NULL';
                 break;
+            case $field_type === 'richtext':
+                $fields[$field_name] = 'LONGTEXT DEFAULT NULL';
+                break;
             case $field_type === 'yesno':
                 $fields[$field_name] = 'INT NOT NULL DEFAULT 0';
                 break;

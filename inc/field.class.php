@@ -1232,6 +1232,7 @@ JAVASCRIPT
             'header'       => __("Header", "fields"),
             'text'         => __("Text (single line)", "fields"),
             'textarea'     => __("Text (multiples lines)", "fields"),
+            'richtext'     => __("Rich Text", "fields"),
             'number'       => __("Number", "fields"),
             'url'          => __("URL", "fields"),
             'dropdown'     => __("Dropdown", "fields"),

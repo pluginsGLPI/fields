@@ -75,8 +75,19 @@
                 'type': 'url',
                 'add_field_html': ext_link
             })) }}
+
     {% elseif type == 'textarea' %}
         {{ macros.textareaField(name, value, label, field_options) }}
+
+    {% elseif type == 'richtext' %}
+        {{ macros.textareaField(name, value, label, field_options|merge({
+            'enable_richtext': true,
+            'field_class': 'col-12',
+            'label_class': '',
+            'input_class': '',
+            'align_label_right': false,
+            'mb': 'm-2'
+        })) }}
 
     {% elseif type == 'yesno' %}
         {{ macros.dropdownYesNo(name, value, label, field_options) }}
