@@ -1116,7 +1116,7 @@ JAVASCRIPT
 
             //get default value
             if ($value === null) {
-                if ($field['type'] === 'dropdown' && $field['default_value'] === '') {
+                if (in_array($field['type'], ['dropdown', 'yesno']) && $field['default_value'] === '') {
                     $value = 0;
                 } else if ($field['default_value'] !== "") {
                     $value = $field['default_value'];
