@@ -119,12 +119,16 @@
             {% set itemtype_prefix = 'itemtype_' %}
             {% set items_id_prefix = 'items_id_' %}
 
-            <div class='form-field row col-12 col-sm-6  mb-2'>
-                {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype, field['allowed_values'], label, field_options|merge({
-                    'rand': rand,
-                    'display_emptychoice': true,
-                })) }}
+            {% if container.fields['type'] == 'tab' %}
+                {# start new row for glpi object  #}
+                <div class="w-100"></div>
+            {% endif %}
 
+            {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype, field['allowed_values'], label, field_options|merge({
+                'rand': rand,
+                'display_emptychoice': true,
+            })) }}
+            <div class='form-field row col-12 {{ container.fields['type'] == 'tab' ? 'col-sm-6' : '' }} mb-2'>
                 {% do call('Ajax::updateItemOnSelectEvent',
                     [
                         'dropdown_' ~ itemtype_prefix ~ name ~ rand,
@@ -138,22 +142,30 @@
                             'display_emptychoice' : false,
                             'action'              : 'get_items_from_itemtype',
                             'dom_rand'            : rand,
+                            'width'               : '100%',
                         }
                 ]) %}
 
-                <span id='results_items_id{{rand}}' class='form-field row col-12 col-sm-6  mb-2'>
-                    {% if value.itemtype != '' %}
-                        {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, label, field_options|merge({
-                            'entity': value.itemtype == 'User' ? -1 : item.getEntityID(),
-                            'rand': rand,
-                            'right': 'all',
-                            'display_emptychoice' : false,
-                            'no_label': true
-                        })) }}
-                    {% endif %}
-                </span>
-            {% endif %}
-        </div>
+                {# fake label for DOM disposition #}
+                <label class="col-form-label col-xxl-4 text-xxl-end" for="dropdown_items_id_testfield{{rand}}">
+                </label>
+
+                <div class="col-xxl-8 field-container">
+                    <span id='results_items_id{{rand}}' class='col-lg-14'>
+                        {% if value.itemtype != '' %}
+                            {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, ' ', field_options|merge({
+                                'entity': value.itemtype == 'User' ? -1 : item.getEntityID(),
+                                'rand': rand,
+                                'right': 'all',
+                                'displaywith': ['otherserial', 'serial'],
+                                'display_emptychoice' : false,
+                                'no_label': true
+                            })) }}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
 {% endfor %}
 
