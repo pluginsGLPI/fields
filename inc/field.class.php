@@ -1173,20 +1173,19 @@ JAVASCRIPT
             'FROM' => self::getTable() . ' AS fields',
             'LEFT JOIN' => [
                 'glpi_plugin_fields_containers AS containers' => [
-                    'ON' => [
+                    'FKEY' => [
                         'containers' => 'id',
-                        'fields' => 'plugin_fields_containers_id', [
+                        'fields' => 'plugin_fields_containers_id',
+                        [
                             'AND' => [
-                                'containers' => [
-                                    'itemtypes' => ['LIKE' => "%$itemtype%"]
-                                ]
+                                'containers.itemtypes' => ['LIKE' => "%$itemtype%"]
                             ]
                         ]
                     ]
-                ],
-                'WHERE' => [
-                    'fields.name' => $cleaned_linkfield
                 ]
+            ],
+            'WHERE' => [
+                'fields.name' => $cleaned_linkfield
             ],
         ]);
 
