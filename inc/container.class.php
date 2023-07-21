@@ -1075,7 +1075,7 @@ HTML;
         ]);
 
         foreach ($iterator as $data) {
-            $jsonitemtype = json_decode($data);
+            $jsonitemtype = json_decode($data['itemtypes']);
             $itemtypes    = array_merge($itemtypes, $jsonitemtype);
         }
 
