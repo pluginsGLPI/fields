@@ -1059,7 +1059,7 @@ HTML;
         $itemtypes = [];
         $where = [];
 
-        if ($type == 'all') {
+        if ($type !== 'all') {
             $where['type'] = $type;
         }
 
