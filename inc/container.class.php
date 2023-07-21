@@ -102,8 +102,20 @@ class PluginFieldsContainer extends CommonDBTM
             $migration->changeField($table, 'itemtype', 'itemtypes', 'longtext');
             $migration->migrationOneTable($table);
 
-            $query = "UPDATE `$table` SET `itemtypes` = CONCAT('[\"', `itemtypes`, '\"]')";
-            $DB->query($query) or die($DB->error());
+            $DB->updateOrDie(
+                $table,
+                [
+                    'itemtypes' => new QueryExpression(
+                        sprintf(
+                            'CONCAT(%s, %s, %s)',
+                            $DB->quoteValue('[\"'),
+                            $DB->quoteName('itemtype'),
+                            $DB->quoteValue('\"]')
+                        )
+                    ),
+                ],
+                [1]
+            );
         }
 
         //add display preferences for this class
@@ -252,15 +264,36 @@ class PluginFieldsContainer extends CommonDBTM
                     $compfields = $fields->find(['plugin_fields_containers_id' => $comptab, 'name' => $newname]);
                     if ($compfields) {
                         $newname = $newname . '_os';
-                        $DB->query("UPDATE glpi_plugin_fields_fields SET name='$newname' WHERE name='{$field['name']}' AND plugin_fields_containers_id='$ostab'");
+                        $DB->update(
+                            'glpi_plugin_fields_fields',
+                            [
+                                'name' => $newname
+                            ],
+                            [
+                                'name' => $field['name'],
+                                'plugin_fields_containers_id' => $ostab
+                            ]
+                        );
                     }
                     $compdata::addField($newname, $field['type']);
                     $fieldnames[$field['name']] = $newname;
                 }
 
-                $sql = "UPDATE glpi_plugin_fields_fields SET plugin_fields_containers_id='$comptab' WHERE plugin_fields_containers_id='$ostab'";
-                $DB->query($sql);
-                $DB->query("DELETE FROM glpi_plugin_fields_containers WHERE id='$ostab'");
+                $DB->update(
+                    'glpi_plugin_fields_fields',
+                    [
+                        'plugin_fields_containers_id' => $comptab
+                    ],
+                    [
+                        'plugin_fields_containers_id' => $ostab
+                    ]
+                );
+                $DB->delete(
+                    'glpi_plugin_fields_containers',
+                    [
+                        'id' => $ostab
+                    ]
+                );
 
                 //migrate existing data
                 $existings = $osdata->find();
@@ -275,9 +308,16 @@ class PluginFieldsContainer extends CommonDBTM
                 //drop old table
                 $DB->query("DROP TABLE " . $osdata::getTable());
             } else {
-                $sql = "UPDATE glpi_plugin_fields_containers SET type='dom', subtype=NULL WHERE id='$ostab'";
-                $comptab = $ostab;
-                $DB->query($sql);
+                $DB->update(
+                    'glpi_plugin_fields_containers',
+                    [
+                        'type' => 'dom',
+                        'subtype' => null
+                    ],
+                    [
+                        'id' => $ostab
+                    ]
+                );
             }
         }
 
@@ -1017,15 +1057,25 @@ HTML;
     {
         global $DB;
         $itemtypes = [];
-        $where = $type == 'all' ? '1=1' : ('type = "' . $type . '"');
-        if ($must_be_active) {
-            $where .= ' AND is_active = 1';
+        $where = [];
+
+        if ($type !== 'all') {
+            $where['type'] = $type;
         }
 
-        $query = 'SELECT DISTINCT `itemtypes` FROM `glpi_plugin_fields_containers` WHERE ' . $where;
-        $result = $DB->query($query);
-        while (list($data) = $DB->fetchArray($result)) {
-            $jsonitemtype = json_decode($data);
+        if ($must_be_active) {
+            $where['is_active'] = 1;
+        }
+
+        $iterator = $DB->request([
+            'SELECT' => 'itemtypes',
+            'DISTINCT' => true,
+            'FROM' => self::getTable(),
+            'WHERE' => $where,
+        ]);
+
+        foreach ($iterator as $data) {
+            $jsonitemtype = json_decode($data['itemtypes']);
             $itemtypes    = array_merge($itemtypes, $jsonitemtype);
         }
 
@@ -1354,19 +1404,20 @@ HTML;
             } else if ($field['mandatory'] == 1 && isset($data['items_id'])) {
                 $tablename = getTableForItemType(self::getClassname($itemtype, $container->fields['name']));
 
-                $query = "SELECT * FROM `$tablename` WHERE
-                    `itemtype`='$itemtype'
-                    AND `items_id`='{$data['items_id']}'
-                    AND `plugin_fields_containers_id`='{$data['plugin_fields_containers_id']}'";
+                $iterator = $DB->request([
+                    'FROM' => $tablename,
+                    'WHERE' => [
+                        'itemtype' => $itemtype,
+                        'items_id' => $data['items_id'],
+                        'plugin_fields_containers_id' => $data['plugin_fields_containers_id'],
+                    ],
+                ]);
 
-                $db_result = [];
-                if ($result = $DB->query($query)) {
-                    $db_result = $DB->fetchAssoc($result);
-                    if (isset($db_result['plugin_fields_' . $name . 'dropdowns_id'])) {
-                        $value = $db_result['plugin_fields_' . $name . 'dropdowns_id'];
-                    } else if (isset($db_result[$name])) {
-                        $value = $db_result[$name];
-                    }
+                $db_result = $iterator->next();
+                if (isset($db_result['plugin_fields_' . $name . 'dropdowns_id'])) {
+                    $value = $db_result['plugin_fields_' . $name . 'dropdowns_id'];
+                } else if (isset($db_result[$name])) {
+                    $value = $db_result[$name];
                 }
             } else {
                 if ($massiveaction) {
