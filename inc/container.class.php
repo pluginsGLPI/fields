@@ -104,7 +104,16 @@ class PluginFieldsContainer extends CommonDBTM
 
             $DB->updateOrDie(
                 $table,
-                ['itemtypes' => new \QueryExpression('CONCAT("[\"", `itemtype`, "\"]")')],
+                [
+                    'itemtypes' => new QueryExpression(
+                        sprintf(
+                            'CONCAT(%s, %s, %s)',
+                            $DB->quoteValue('[\"'),
+                            $DB->quoteName('itemtype'),
+                            $DB->quoteValue('\"]')
+                        )
+                    ),
+                ],
                 [1]
             );
         }
