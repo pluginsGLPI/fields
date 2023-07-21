@@ -258,17 +258,18 @@ function plugin_fields_rule_matched($params = [])
                 foreach ($params['output'] as $field => $value) {
                     // check if current field is in a tab container
                     $iterator = $DB->request([
-                        'SELECT' => 'c.id',
-                        'FROM'   => 'glpi_plugin_fields_fields AS f',
+                        'SELECT' => 'glpi_plugin_fields_containers.id',
+                        'FROM'   => 'glpi_plugin_fields_containers',
                         'LEFT JOIN' => [
-                            'glpi_plugin_fields_containers AS c' => [
-                                'ON' => [
-                                    'c.id' => 'f.plugin_fields_containers_id'
+                            'glpi_plugin_fields_fields' => [
+                                'FKEY' => [
+                                    'glpi_plugin_fields_containers' => 'id',
+                                    'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id'
                                 ]
                             ]
                         ],
                         'WHERE' => [
-                            'f.name' => $field
+                            'glpi_plugin_fields_fields.name' => $field,
                         ]
                     ]);
                     if (count($iterator) > 0) {
