@@ -120,15 +120,15 @@
             {% set items_id_prefix = 'items_id_' %}
 
             {% if container.fields['type'] == 'tab' %}
-                {{ macros.nullField() }} {# start new row for glpi object  #}
-                {% set class_dom = 'col-sm-6' %}
+                {# start new row for glpi object  #}
+                <div class="w-100"></div>
             {% endif %}
 
             {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype, field['allowed_values'], label, field_options|merge({
                 'rand': rand,
                 'display_emptychoice': true,
             })) }}
-            <div class='form-field row col-12 {{ class_dom }} mb-2'>
+            <div class='form-field row col-12 {{ container.fields['type'] == 'tab' ? 'col-sm-6' : '' }} mb-2'>
                 {% do call('Ajax::updateItemOnSelectEvent',
                     [
                         'dropdown_' ~ itemtype_prefix ~ name ~ rand,
