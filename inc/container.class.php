@@ -1231,6 +1231,8 @@ HTML;
 
         //add/update values condition
        if (!isset($data['id'])) {
+          // -- add new item --
+
            foreach ($data as $key => $value) {
                 //log only not empty values
                 if (!empty($value)) {
@@ -1274,11 +1276,16 @@ HTML;
                 }
             }
         } else {
+          // -- update existing item --
+
+          // construct $updates
            if ($field_obj->updates) {
                foreach ($field_obj->updates as $key) {
                   $updates[$key] = [0, $field_obj->oldvalues[$key], $field_obj->input[$key]];
                }
            }
+
+           //for all change find searchoption
            foreach ($updates as $key => $changes) {
                 foreach ($searchoptions as $id_search_option => $searchoption) {
                     if ($searchoption['linkfield'] == $key) {
