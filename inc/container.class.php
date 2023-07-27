@@ -1171,7 +1171,8 @@ HTML;
                 $data['plugin_fields_containers_id'],
                 $items_id,
                 $itemtype,
-                $data
+                $data,
+                $obj
             );
         } else {
             $first_found = array_pop($found);
@@ -1184,7 +1185,7 @@ HTML;
                 $items_id,
                 $itemtype,
                 $data,
-                $first_found
+                $obj
             );
         }
 
@@ -1205,7 +1206,7 @@ HTML;
         $items_id,
         $itemtype,
         $data,
-        $old_values = []
+        $field_obj
     ) {
         // Don't log few itemtypes
         $obj = new $itemtype();
@@ -1229,10 +1230,8 @@ HTML;
         $data = array_diff_key($data, $blacklist_k);
 
         //add/update values condition
-        if (empty($old_values)) {
-            // -- add new item --
-
-            foreach ($data as $key => $value) {
+       if (!isset($data['id'])) {
+           foreach ($data as $key => $value) {
                 //log only not empty values
                 if (!empty($value)) {
                     //prepare log
@@ -1275,26 +1274,12 @@ HTML;
                 }
             }
         } else {
-            // -- update existing item --
-
-            //find changes
-            $updates = [];
-            foreach ($old_values as $key => $old_value) {
-                if (
-                    !isset($data[$key])
-                    || empty($old_value) && empty($data[$key])
-                    || $old_value !== '' && $data[$key] == 'NULL'
-                ) {
-                    continue;
-                }
-
-                if ($data[$key] !== $old_value) {
-                    $updates[$key] = [0, $old_value ?? '', $data[$key]];
-                }
-            }
-
-            //for all change find searchoption
-            foreach ($updates as $key => $changes) {
+           if ($field_obj->updates) {
+               foreach ($field_obj->updates as $key) {
+                  $updates[$key] = [0, $field_obj->oldvalues[$key], $field_obj->input[$key]];
+               }
+           }
+           foreach ($updates as $key => $changes) {
                 foreach ($searchoptions as $id_search_option => $searchoption) {
                     if ($searchoption['linkfield'] == $key) {
                         $changes[0] = $id_search_option;
