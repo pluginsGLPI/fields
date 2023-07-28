@@ -1231,7 +1231,7 @@ HTML;
 
         //add/update values condition
         if (!isset($data['id'])) {
-           // -- add new item --
+            // -- add new item --
 
             foreach ($data as $key => $value) {
                 //log only not empty values
