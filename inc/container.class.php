@@ -1171,7 +1171,8 @@ HTML;
                 $data['plugin_fields_containers_id'],
                 $items_id,
                 $itemtype,
-                $data
+                $data,
+                $obj
             );
         } else {
             $first_found = array_pop($found);
@@ -1184,7 +1185,7 @@ HTML;
                 $items_id,
                 $itemtype,
                 $data,
-                $first_found
+                $obj
             );
         }
 
@@ -1205,7 +1206,7 @@ HTML;
         $items_id,
         $itemtype,
         $data,
-        $old_values = []
+        $field_obj
     ) {
         // Don't log few itemtypes
         $obj = new $itemtype();
@@ -1229,7 +1230,7 @@ HTML;
         $data = array_diff_key($data, $blacklist_k);
 
         //add/update values condition
-        if (empty($old_values)) {
+        if (!isset($data['id'])) {
             // -- add new item --
 
             foreach ($data as $key => $value) {
@@ -1241,7 +1242,7 @@ HTML;
                     //find searchoption
                     foreach ($searchoptions as $id_search_option => $searchoption) {
                         if ($searchoption['linkfield'] == $key) {
-                             $changes[0] = $id_search_option;
+                            $changes[0] = $id_search_option;
 
                             if ($searchoption['datatype'] === 'dropdown') {
                                 //manage dropdown values
@@ -1277,19 +1278,10 @@ HTML;
         } else {
             // -- update existing item --
 
-            //find changes
-            $updates = [];
-            foreach ($old_values as $key => $old_value) {
-                if (
-                    !isset($data[$key])
-                    || empty($old_value) && empty($data[$key])
-                    || $old_value !== '' && $data[$key] == 'NULL'
-                ) {
-                    continue;
-                }
-
-                if ($data[$key] !== $old_value) {
-                    $updates[$key] = [0, $old_value ?? '', $data[$key]];
+            // construct $updates
+            if ($field_obj->updates) {
+                foreach ($field_obj->updates as $key) {
+                    $updates[$key] = [0, $field_obj->oldvalues[$key], $field_obj->input[$key]];
                 }
             }
 
