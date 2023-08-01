@@ -1189,11 +1189,11 @@ JAVASCRIPT
             ],
         ]);
 
-        if (count($iterator) == 0) {
+        if (count($iterator) !== 1) {
             return false;
         }
 
-        $data = $iterator->next();
+        $data = $iterator->current();
 
         //display a hidden post field to store container id
         echo Html::hidden('c_id', ['value' => $data['plugin_fields_containers_id']]);
