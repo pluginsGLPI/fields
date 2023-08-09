@@ -273,7 +273,7 @@ function plugin_fields_rule_matched($params = [])
                         ]
                     ]);
                     if (count($iterator) > 0) {
-                        $data = $iterator->next();
+                        $data = $iterator->current();
 
                         //retrieve computer
                         $agents_id = $params['input']['plugin_fusioninventory_agents_id'];

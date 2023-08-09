@@ -1405,7 +1405,7 @@ HTML;
                     ],
                 ]);
 
-                $db_result = $iterator->next();
+                $db_result = $iterator->current();
                 if (isset($db_result['plugin_fields_' . $name . 'dropdowns_id'])) {
                     $value = $db_result['plugin_fields_' . $name . 'dropdowns_id'];
                 } else if (isset($db_result[$name])) {
