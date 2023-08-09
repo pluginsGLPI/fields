@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 07:51+0000\n"
+"POT-Creation-Date: 2023-08-09 13:54+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Merlin Merlin <mmerlin10@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:526
+#: inc/field.class.php:535
 msgid "Add a new field"
 msgstr "Přidat novou kolonku"
 
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:954
+#: inc/container.class.php:994
 msgid "Add tab"
 msgstr "Přidat tabulku"
 
@@ -62,7 +62,7 @@ msgstr "Další kolonky"
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:702
+#: inc/container.class.php:742
 msgid "Block"
 msgstr "Blok"
 
@@ -83,7 +83,7 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: inc/container.class.php:525
+#: inc/container.class.php:565
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -100,11 +100,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1200
+#: inc/field.class.php:1240
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1201
+#: inc/field.class.php:1241
 msgid "Date & time"
 msgstr "Datum a čas"
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1198
+#: inc/field.class.php:1238
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
@@ -124,7 +124,7 @@ msgstr "Rozbalovací"
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:712
+#: inc/container.class.php:53 inc/container.class.php:752
 msgid "Export to YAML"
 msgstr ""
 
@@ -138,11 +138,11 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:468
+#: inc/field.class.php:477
 msgid "Fields"
 msgstr "Kolonky"
 
-#: inc/container.class.php:196
+#: inc/container.class.php:208
 msgid "Fix container names"
 msgstr "Opravit názvy kontejnerů"
 
@@ -150,19 +150,19 @@ msgstr "Opravit názvy kontejnerů"
 msgid "Fix fields names"
 msgstr "Opravit názvy kolonek"
 
-#: inc/field.class.php:1202
+#: inc/field.class.php:1242
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1232
 msgid "Header"
 msgstr "Hlavička"
 
-#: inc/container.class.php:955
+#: inc/container.class.php:995
 msgid "Insertion in the form (before save button)"
 msgstr "Vložení do formuláře (před tlačítkem uložit)"
 
-#: inc/container.class.php:956
+#: inc/container.class.php:996
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
 
@@ -186,7 +186,7 @@ msgstr "Instalace MySQL tabulek"
 msgid "MySQL tables uninstallation"
 msgstr "Odebrání MySQL tabulek"
 
-#: inc/field.class.php:530
+#: inc/field.class.php:539
 msgid "No field for this block"
 msgstr "Žádná kolonka pro tento blok"
 
@@ -194,7 +194,7 @@ msgstr "Žádná kolonka pro tento blok"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1236
 msgid "Number"
 msgstr "Číslo"
 
@@ -202,8 +202,8 @@ msgstr "Číslo"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:543
-#: inc/field.class.php:723
+#: templates/forms/status_override.html.twig inc/field.class.php:552
+#: inc/field.class.php:732
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
@@ -211,7 +211,7 @@ msgstr "Pouze pro čtení"
 msgid "Regenerate container files"
 msgstr "Znovu vytvořit kontejnerové soubory"
 
-#: inc/container.class.php:175
+#: inc/container.class.php:187
 msgid "Regenerate containers files"
 msgstr ""
 
@@ -219,20 +219,24 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
+#: inc/field.class.php:1235
+msgid "Rich Text"
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1417
+#: inc/container.class.php:1496
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
-#: inc/container.class.php:1407
+#: inc/container.class.php:1486
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1412
+#: inc/container.class.php:1491
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
@@ -240,15 +244,15 @@ msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:806
+#: inc/container.class.php:846
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1234
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1233
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
@@ -266,11 +270,11 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1237
 msgid "URL"
 msgstr "URL adresa"
 
-#: inc/container.class.php:288
+#: inc/container.class.php:328
 msgid "Updating generated containers files"
 msgstr "Aktualizují se vytvořené soubory kontejnerů"
 
@@ -282,27 +286,27 @@ msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1199
+#: inc/field.class.php:1239
 msgid "Yes/No"
 msgstr "Ano/Ne"
 
-#: inc/container.class.php:474
+#: inc/container.class.php:514
 msgid "You cannot add block without associated element type"
 msgstr "Není možné přidat blok bez typu přiřazeného prvku"
 
-#: inc/container.class.php:509
+#: inc/container.class.php:549
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Není možné přidat několik bloků typu „Vložení ve formuláři konkrétní karty“ na té stejné kartě objektu"
 
-#: inc/container.class.php:494
+#: inc/container.class.php:534
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
 
-#: inc/container.class.php:539
+#: inc/container.class.php:579
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 07:51+0000\n"
+"POT-Creation-Date: 2023-08-09 13:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:526
+#: inc/field.class.php:535
 msgid "Add a new field"
 msgstr ""
 
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Add new status override"
 msgstr ""
 
-#: inc/container.class.php:954
+#: inc/container.class.php:994
 msgid "Add tab"
 msgstr ""
 
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Allowed values"
 msgstr ""
 
-#: inc/container.class.php:702
+#: inc/container.class.php:742
 msgid "Block"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgid_plural "Conditions to hide block"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/container.class.php:525
+#: inc/container.class.php:565
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1200
+#: inc/field.class.php:1240
 msgid "Date"
 msgstr ""
 
-#: inc/field.class.php:1201
+#: inc/field.class.php:1241
 msgid "Date & time"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1198
+#: inc/field.class.php:1238
 msgid "Dropdown"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Everything is in order - no action needed."
 msgstr ""
 
-#: inc/container.class.php:53 inc/container.class.php:712
+#: inc/container.class.php:53 inc/container.class.php:752
 msgid "Export to YAML"
 msgstr ""
 
@@ -134,11 +134,11 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:468
+#: inc/field.class.php:477
 msgid "Fields"
 msgstr ""
 
-#: inc/container.class.php:196
+#: inc/container.class.php:208
 msgid "Fix container names"
 msgstr ""
 
@@ -146,19 +146,19 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:1202
+#: inc/field.class.php:1242
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1193
+#: inc/field.class.php:1232
 msgid "Header"
 msgstr ""
 
-#: inc/container.class.php:955
+#: inc/container.class.php:995
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:956
+#: inc/container.class.php:996
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "MySQL tables uninstallation"
 msgstr ""
 
-#: inc/field.class.php:530
+#: inc/field.class.php:539
 msgid "No field for this block"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr ""
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1196
+#: inc/field.class.php:1236
 msgid "Number"
 msgstr ""
 
@@ -198,8 +198,8 @@ msgstr ""
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:543
-#: inc/field.class.php:723
+#: templates/forms/status_override.html.twig inc/field.class.php:552
+#: inc/field.class.php:732
 msgid "Read only"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Regenerate container files"
 msgstr ""
 
-#: inc/container.class.php:175
+#: inc/container.class.php:187
 msgid "Regenerate containers files"
 msgstr ""
 
@@ -215,20 +215,24 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
+#: inc/field.class.php:1235
+msgid "Rich Text"
+msgstr ""
+
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1417
+#: inc/container.class.php:1496
 msgid "Some URL fields contains invalid links"
 msgstr ""
 
-#: inc/container.class.php:1407
+#: inc/container.class.php:1486
 msgid "Some mandatory fields are empty"
 msgstr ""
 
-#: inc/container.class.php:1412
+#: inc/container.class.php:1491
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
@@ -236,15 +240,15 @@ msgstr ""
 msgid "Status overrides"
 msgstr ""
 
-#: inc/container.class.php:806
+#: inc/container.class.php:846
 msgid "Tab"
 msgstr ""
 
-#: inc/field.class.php:1195
+#: inc/field.class.php:1234
 msgid "Text (multiples lines)"
 msgstr ""
 
-#: inc/field.class.php:1194
+#: inc/field.class.php:1233
 msgid "Text (single line)"
 msgstr ""
 
@@ -262,11 +266,11 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1197
+#: inc/field.class.php:1237
 msgid "URL"
 msgstr ""
 
-#: inc/container.class.php:288
+#: inc/container.class.php:328
 msgid "Updating generated containers files"
 msgstr ""
 
@@ -278,27 +282,27 @@ msgstr ""
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1199
+#: inc/field.class.php:1239
 msgid "Yes/No"
 msgstr ""
 
-#: inc/container.class.php:474
+#: inc/container.class.php:514
 msgid "You cannot add block without associated element type"
 msgstr ""
 
-#: inc/container.class.php:509
+#: inc/container.class.php:549
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific "
 "tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:494
+#: inc/container.class.php:534
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr ""
 
-#: inc/container.class.php:539
+#: inc/container.class.php:579
 msgid "You cannot add several blocs with identical name on same object"
 msgstr ""
 
