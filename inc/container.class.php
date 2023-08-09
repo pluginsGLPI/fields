@@ -1271,7 +1271,7 @@ HTML;
 
             foreach ($data as $key => $value) {
                 //log only not empty values
-                if (!empty($value) && !str_starts_with($key, '_')) {
+                if (!empty($value)) {
                     //prepare log
                     $changes = [0, "N/A", $value];
 
