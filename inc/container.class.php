@@ -1141,22 +1141,28 @@ HTML;
      */
     public function updateFieldsValues($data, $itemtype, $massiveaction = false)
     {
+        global $DB;
+
         if (self::validateValues($data, $itemtype, $massiveaction) === false) {
             return false;
         }
 
-        // Normalize values
-        // Get multiple fields
-        $fields = getAllDataFromTable(PluginFieldsField::getTable(), [
-            'is_active'                   => 1,
-            'multiple'                    => 1,
-            'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
+        // Convert "multiple" values into a JSON string
+        $multiple_fields_iterator = $DB->request([
+            'FROM'  => PluginFieldsField::getTable(),
+            'WHERE' => [
+                'is_active'                   => 1,
+                'multiple'                    => 1,
+                'plugin_fields_containers_id' => $data['plugin_fields_containers_id'],
+            ]
         ]);
-        $fields = array_column($fields, "name");
-        foreach ($data as $key => $value) {
-            if (in_array($key, $fields)) {
-                // Convert "multiple" values into a JSON string
-                $data[$key] = json_encode($value);
+        foreach ($multiple_fields_iterator as $field_data) {
+            $field_name = $field_data['name'];
+            if ($field_data['type'] === 'dropdown') {
+                $field_name = 'plugin_fields_' . $field_data['name'] . 'dropdowns_id';
+            }
+            if (array_key_exists($field_name, $data)) {
+                $data[$field_name] = json_encode($data[$field_name]);
             }
         }
 
@@ -1166,71 +1172,57 @@ HTML;
         $items_id  = $data['items_id'];
         $classname = self::getClassname($itemtype, $container_obj->fields['name']);
 
-        //check if data already inserted
-        $obj   = new $classname();
-        $found = $obj->find(['items_id' => $items_id]);
-        if (empty($found)) {
+        $obj = new $classname();
+        if ($obj->getFromDBByCrit(['items_id' => $items_id]) === false) {
             // add fields data
             $obj->add($data);
-
-            // Get richtext fields
-            $fields = getAllDataFromTable(PluginFieldsField::getTable(), [
-                'is_active'                   => 1,
-                'type'                        => "richtext",
-                'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
-            ]);
-            $fields = array_column($fields, "name");
-            // Add files and images
-            foreach ($fields as $value) {
-                $obj->input = $obj->addFiles($obj->input, [
-                    'force_update' => true,
-                    'name'         => $value,
-                    'content_field' => $value
-                ]);
-            }
-            $data = $obj->input;
-
-            //construct history on itemtype object (Historical tab)
-            self::constructHistory(
-                $data['plugin_fields_containers_id'],
-                $items_id,
-                $itemtype,
-                $data,
-                $obj
-            );
         } else {
-            $first_found = array_pop($found);
-            $data['id'] = $first_found['id'];
+            // update fields data
+            $data['id'] = $obj->fields['id'];
             $obj->update($data);
-
-            // Get richtext fields
-            $fields = getAllDataFromTable(PluginFieldsField::getTable(), [
-                'is_active'                   => 1,
-                'type'                        => "richtext",
-                'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
-            ]);
-            $fields = array_column($fields, "name");
-            // Add files and images
-            foreach ($fields as $value) {
-                $obj->input = $obj->addFiles($obj->input, [
-                    'force_update' => true,
-                    'name'         => $value,
-                    'content_field' => $value
-                ]);
-            }
-            $data = $obj->input;
-
-            //construct history on itemtype object (Historical tab)
-            self::constructHistory(
-                $data['plugin_fields_containers_id'],
-                $items_id,
-                $itemtype,
-                $data,
-                $obj
-            );
         }
 
+        // Add files and images for richtext fields
+        $this->addRichTextFiles($obj);
+
+        //construct history on itemtype object (Historical tab)
+        self::constructHistory(
+            $obj->input['plugin_fields_containers_id'],
+            $items_id,
+            $itemtype,
+            $obj->input,
+            $obj
+        );
+
         return true;
+    }
+
+    private function addRichTextFiles(CommonDBTM $object): void
+    {
+        $richtext_fields = getAllDataFromTable(
+            PluginFieldsField::getTable(),
+            [
+                'is_active'                   => 1,
+                'type'                        => "richtext",
+                'plugin_fields_containers_id' => $object->input['plugin_fields_containers_id']
+            ]
+        );
+        $richtext_fields_names = array_column($richtext_fields, "name");
+        foreach ($richtext_fields_names as $field_name) {
+            $object->input = $object->addFiles(
+                $object->input,
+                [
+                    'force_update'  => true,
+                    'name'          => $field_name,
+                    'content_field' => $field_name
+                ]
+            );
+
+            // remove uploaded file input to ensure they will not be added to history
+            unset($object->input[sprintf('_%s', $field_name)]);
+            unset($object->input[sprintf('_prefix_%s', $field_name)]);
+            unset($object->input[sprintf('_tag_%s', $field_name)]);
+        }
     }
 
     /**
@@ -1269,12 +1261,6 @@ HTML;
 
         //remove non-data keys
         $data = array_diff_key($data, $blacklist_k);
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                // Convert array values into a JSON string
-                $data[$key] = json_encode($value);
-            }
-        }
 
         //add/update values condition
         if (!isset($data['id'])) {
@@ -1739,6 +1725,16 @@ HTML;
                     $item->input[$input] = str_replace(",", ".", $item->input[$input]);
                 }
                 $data[$input] = $item->input[$input];
+
+                if ($field['type'] === 'richtext') {
+                    $filename_input = sprintf('_%s', $input);
+                    $prefix_input   = sprintf('_prefix_%s', $input);
+                    $tag_input      = sprintf('_tag_%s', $input);
+
+                    $data[$filename_input] = $item->input[$filename_input] ?? [];
+                    $data[$prefix_input]   = $item->input[$prefix_input] ?? [];
+                    $data[$tag_input]      = $item->input[$tag_input] ?? [];
+                }
             }
         }
 
