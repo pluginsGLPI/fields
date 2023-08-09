@@ -1199,16 +1199,19 @@ HTML;
 
     private function addRichTextFiles(CommonDBTM $object): void
     {
-        $richtext_fields = getAllDataFromTable(
-            PluginFieldsField::getTable(),
-            [
+        global $DB;
+
+        $richtext_fields_iterator = $DB->request([
+            'FROM'  => PluginFieldsField::getTable(),
+            'WHERE' => [
                 'is_active'                   => 1,
                 'type'                        => "richtext",
                 'plugin_fields_containers_id' => $object->input['plugin_fields_containers_id']
             ]
-        );
-        $richtext_fields_names = array_column($richtext_fields, "name");
-        foreach ($richtext_fields_names as $field_name) {
+        ]);
+        foreach ($richtext_fields_iterator as $field_data) {
+            $field_name = $field_data['name'];
+
             $object->input = $object->addFiles(
                 $object->input,
                 [
