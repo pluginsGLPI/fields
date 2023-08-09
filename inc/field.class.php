@@ -367,7 +367,7 @@ class PluginFieldsField extends CommonDBChild
         $old_container = $this->fields['plugin_fields_containers_id'];
         $old_ranking   = $this->fields['ranking'];
 
-        $D->update(
+        $DB->update(
             $table,
             [
                 'ranking' => new QueryExpression($DB->quoteName('ranking') . ' - 1')
