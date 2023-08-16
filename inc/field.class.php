@@ -122,9 +122,6 @@ class PluginFieldsField extends CommonDBChild
         // change default_value from varchar to longtext
         $migration->changeField($table, 'default_value', 'default_value', 'longtext');
 
-        $toolbox = new PluginFieldsToolbox();
-        $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
-
         //move old types to new format
         $migration->addPostQuery(
             $DB->buildUpdate(
