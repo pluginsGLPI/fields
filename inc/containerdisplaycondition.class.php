@@ -386,7 +386,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         }
 
         if ($itemtype_object->maybeLocated()) {
-            $allowed_so[80] = Location::getTypeName(0);
+            $allowed_so[83] = $array[83]['name'];
         }
 
         return $allowed_so;
