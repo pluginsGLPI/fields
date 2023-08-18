@@ -351,6 +351,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         unset($array['common']);
 
         $allowed_table = [getTableForItemType($itemtype_class), getTableForItemType(User::getType()), getTableForItemType(Group::getType())];
+        if ($itemtype_object->maybeLocated()) {
+            array_push($allowed_table, getTableForItemType(Location::getType()));
+        }
 
         //use relation.constant.php to allow some tables (exclude Location which is managed later)
         foreach (getDbRelations() as $relation) {
@@ -371,7 +374,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
         //allow specific datatype
         $allowed_datatype = ["email", "weblink", "specific", "itemlink", "string", "text","number", "dropdown", "decimal", "integer", "bool"];
-
         foreach ($array as $subKey => $subArray) {
             if (
                 isset($subArray["table"]) && in_array($subArray["table"], $allowed_table)
@@ -383,10 +385,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             ) {
                 $allowed_so[$subKey] = $subArray["name"];
             }
-        }
-
-        if ($itemtype_object->maybeLocated()) {
-            $allowed_so[83] = $array[83]['name'];
         }
 
         return $allowed_so;
