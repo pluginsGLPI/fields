@@ -68,9 +68,6 @@ class PluginFieldsDropdown
             }
         }
 
-        $toolbox = new PluginFieldsToolbox();
-        $toolbox->fixFieldsNames($migration, ['type' => 'dropdown']);
-
         // Ensure data is update before regenerating files.
         $migration->executeMigration();
 
