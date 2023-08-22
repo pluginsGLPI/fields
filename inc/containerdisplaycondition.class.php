@@ -350,9 +350,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         //remove "Common"
         unset($array['common']);
 
-        $allowed_table = [getTableForItemType($itemtype_class), getTableForItemType(User::getType()), getTableForItemType(Group::getType())];
+        $allowed_table = [getTableForItemType($itemtype_class), User::getTable(), Group::getTable()];
         if ($itemtype_object->maybeLocated()) {
-            array_push($allowed_table, getTableForItemType(Location::getType()));
+            array_push($allowed_table, Location::getTable());
         }
 
         //use relation.constant.php to allow some tables (exclude Location which is managed later)
