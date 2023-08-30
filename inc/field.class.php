@@ -349,7 +349,8 @@ class PluginFieldsField extends CommonDBChild
             foreach ($so as $so_id => $so_value) {
                 if ($this->fields['type'] == 'glpi_item') {
                     if ($so_value['field'] == "items_id_" . $this->fields['name']
-                    || $so_value['field'] == "itemtype_" . $this->fields['name']) {
+                        || $so_value['field'] == "itemtype_" . $this->fields['name']) 
+                    {
                         $this->cleanDisplayPreferences($itemtype, $so_id);
                     }
                 } elseif ($this->fields['type'] == 'dropdown' ){
