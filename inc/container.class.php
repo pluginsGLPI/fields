@@ -1032,10 +1032,17 @@ HTML;
                 continue;
             }
             //profiles restriction
-            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $item['id']);
-            if ($right < READ) {
-                continue;
+
+            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $item['id'] > 0) {
+                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $item['id']);
+                if ($right < READ) {
+                    return false;
+                }
+            } else {
+                return false;
             }
+
+
 
             $jsonitemtypes = json_decode($item['itemtypes']);
             //show more info or not
@@ -1538,7 +1545,7 @@ HTML;
         }
 
         //profiles restriction
-        if (isset($_SESSION['glpiactiveprofile']['id']) && $id > 0) {
+        if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $id > 0) {
             $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $id);
             if ($right < READ) {
                 return false;
@@ -1630,10 +1637,16 @@ HTML;
         $loc_c->getFromDB($c_id);
 
         // check rights on $c_id
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-        if (($right > READ) === false) {
+
+        if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
+            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+            if (($right > READ) === false) {
+                return;
+            }
+        } else {
             return;
         }
+
 
         // need to check if container is usable on this object entity
         $entities = [$loc_c->fields['entities_id']];
