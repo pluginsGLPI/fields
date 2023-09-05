@@ -934,7 +934,16 @@ class PluginFieldsField extends CommonDBChild
             function refreshContainer() {
                 const data = $('#{$html_id}').closest('form').serializeArray().reduce(
                     function(obj, item) {
-                        obj[item.name] = item.value;
+                        var multiple_matches = item.name.match(/^(.+)\[\]$/);
+                        if (multiple_matches) {
+                            var name = multiple_matches[1];
+                            if (!(name in obj)) {
+                                obj[name] = [];
+                            }
+                            obj[name].push(item.value);
+                        } else {
+                            obj[item.name] = item.value;
+                        }
                         return obj;
                     },
                     {}
@@ -1166,7 +1175,14 @@ JAVASCRIPT
             }
 
             if ($field['multiple']) {
-                $value = json_decode($value);
+                if (!is_array($value)) {
+                    // Value may be set:
+                    // - either from a default value in DB (it will be a JSON string),
+                    // - either from a previous input (it will be an array).
+                    //
+                    // -> Decode it only if it is not already an array.
+                    $value = json_decode($value);
+                }
             }
 
             $field['value'] = $value;
