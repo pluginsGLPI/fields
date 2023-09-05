@@ -328,17 +328,51 @@ class PluginFieldsField extends CommonDBChild
         return $input;
     }
 
+
+    private function cleanDisplayPreferences($itemtype, $so_id)
+    {
+        $displayPref = new DisplayPreference();
+        $displayPref->deleteByCriteria([
+            "itemtype" => $itemtype,
+            "num" => $so_id
+        ]);
+    }
+
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function pre_deleteItem()
     {
+        //retrieve search option ID to clean DiplayPreferences
+        $container_obj = new PluginFieldsContainer();
+        $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
+
+        foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
+            $so = PluginFieldsContainer::getAddSearchOptions($itemtype, $this->fields['plugin_fields_containers_id']);
+            foreach ($so as $so_id => $so_value) {
+                if ($this->fields['type'] == 'glpi_item') {
+                    if (
+                        $so_value['field'] == "items_id_" . $this->fields['name']
+                        || $so_value['field'] == "itemtype_" . $this->fields['name']
+                    ) {
+                        $this->cleanDisplayPreferences($itemtype, $so_id);
+                    }
+                } elseif ($this->fields['type'] == 'dropdown') {
+                    if ($so_value['linkfield'] == "plugin_fields_" . $this->fields['name'] . "dropdowns_id") {
+                        $this->cleanDisplayPreferences($itemtype, $so_id);
+                    }
+                } else {
+                    if ($so_value['field'] == $this->fields['name']) {
+                        $this->cleanDisplayPreferences($itemtype, $so_id);
+                    }
+                }
+            }
+        }
+
         //remove field in container table
         if (
             $this->fields['type'] !== "header"
             && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])
         ) {
-            $container_obj = new PluginFieldsContainer();
-            $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
             foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
                 $classname::removeField($this->fields['name'], $this->fields['type']);
