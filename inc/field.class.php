@@ -329,7 +329,8 @@ class PluginFieldsField extends CommonDBChild
     }
 
 
-    public function cleanDisplayPreferences($itemtype, $so_id) {
+    public function cleanDisplayPreferences($itemtype, $so_id)
+    {
         $displayPref = new DisplayPreference();
         $displayPref->deleteByCriteria([
             "itemtype" => $itemtype,
@@ -348,12 +349,13 @@ class PluginFieldsField extends CommonDBChild
             $so = PluginFieldsContainer::getAddSearchOptions($itemtype, $this->fields['plugin_fields_containers_id']);
             foreach ($so as $so_id => $so_value) {
                 if ($this->fields['type'] == 'glpi_item') {
-                    if ($so_value['field'] == "items_id_" . $this->fields['name']
-                        || $so_value['field'] == "itemtype_" . $this->fields['name']) 
-                    {
+                    if (
+                        $so_value['field'] == "items_id_" . $this->fields['name']
+                        || $so_value['field'] == "itemtype_" . $this->fields['name']
+                    ) {
                         $this->cleanDisplayPreferences($itemtype, $so_id);
                     }
-                } elseif ($this->fields['type'] == 'dropdown' ){
+                } elseif ($this->fields['type'] == 'dropdown') {
                     if ($so_value['linkfield'] == "plugin_fields_" . $this->fields['name'] . "dropdowns_id") {
                         $this->cleanDisplayPreferences($itemtype, $so_id);
                     }
@@ -371,7 +373,6 @@ class PluginFieldsField extends CommonDBChild
             && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])
         ) {
-
             foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
                 $classname::removeField($this->fields['name'], $this->fields['type']);
