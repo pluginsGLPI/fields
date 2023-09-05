@@ -329,7 +329,7 @@ class PluginFieldsField extends CommonDBChild
     }
 
 
-    public function cleanDisplayPreferences($itemtype, $so_id)
+    private function cleanDisplayPreferences($itemtype, $so_id)
     {
         $displayPref = new DisplayPreference();
         $displayPref->deleteByCriteria([
