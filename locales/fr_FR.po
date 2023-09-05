@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 13:54+0000\n"
+"POT-Creation-Date: 2023-09-05 12:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Cédric Anne, 2018,2022-2023\n"
 "Language-Team: French (France) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -40,7 +40,7 @@ msgstr "-> \"%s.%s\" a été supprimé."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" devrait être supprimé."
 
-#: inc/field.class.php:535
+#: inc/field.class.php:573
 msgid "Add a new field"
 msgstr "Ajouter un nouveau champ"
 
@@ -102,11 +102,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de données contenait des données orphelines des champs %s incorrectement supprimés."
 
-#: inc/field.class.php:1240
+#: inc/field.class.php:1294
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1241
+#: inc/field.class.php:1295
 msgid "Date & time"
 msgstr "Date & heure"
 
@@ -118,7 +118,7 @@ msgstr "Valeur par défaut"
 msgid "Default value will be configurable once field will be created."
 msgstr "La valeur par défaut sera configurable dès que le champ créé."
 
-#: inc/field.class.php:1238
+#: inc/field.class.php:1292
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
@@ -140,7 +140,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Le nom du champ est trop long pour la base de données (les nombres dans le nom sont automatiquement remplacés par des caractères, essayez de les enlever)"
 
-#: inc/field.class.php:477
+#: inc/field.class.php:515
 msgid "Fields"
 msgstr "Champs"
 
@@ -152,11 +152,11 @@ msgstr "Correction du nom des conteneurs"
 msgid "Fix fields names"
 msgstr "Correction du nom des champs"
 
-#: inc/field.class.php:1242
+#: inc/field.class.php:1296
 msgid "GLPI item"
 msgstr "Objet GLPI"
 
-#: inc/field.class.php:1232
+#: inc/field.class.php:1286
 msgid "Header"
 msgstr "Entête"
 
@@ -188,7 +188,7 @@ msgstr "Installation des tables MySQL"
 msgid "MySQL tables uninstallation"
 msgstr "Désinstallation des tables MySQL"
 
-#: inc/field.class.php:539
+#: inc/field.class.php:577
 msgid "No field for this block"
 msgstr "Aucun champ pour ce bloc"
 
@@ -196,7 +196,7 @@ msgstr "Aucun champ pour ce bloc"
 msgid "No item found"
 msgstr "Aucun objet trouvé"
 
-#: inc/field.class.php:1236
+#: inc/field.class.php:1290
 msgid "Number"
 msgstr "Nombre"
 
@@ -204,8 +204,8 @@ msgstr "Nombre"
 msgid "Override by status"
 msgstr "Surcharge par statut"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:552
-#: inc/field.class.php:732
+#: templates/forms/status_override.html.twig inc/field.class.php:590
+#: inc/field.class.php:770
 msgid "Read only"
 msgstr "Lecture seule"
 
@@ -221,7 +221,7 @@ msgstr "Régénération les fichiers des conteneurs"
 msgid "Regenerates containers files."
 msgstr "Re-génère les fichiers des conteneurs."
 
-#: inc/field.class.php:1235
+#: inc/field.class.php:1289
 msgid "Rich Text"
 msgstr "Texte riche"
 
@@ -230,15 +230,15 @@ msgstr "Texte riche"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Exécutez \"%s\" pour corriger les incohérences de la base de données."
 
-#: inc/container.class.php:1496
+#: inc/container.class.php:1503
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
-#: inc/container.class.php:1486
+#: inc/container.class.php:1493
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:1491
+#: inc/container.class.php:1498
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
@@ -250,11 +250,11 @@ msgstr "Surcharges par statut"
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/field.class.php:1234
+#: inc/field.class.php:1288
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:1233
+#: inc/field.class.php:1287
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
@@ -272,7 +272,7 @@ msgid ""
 "them."
 msgstr "Cette commande supprime tous les fichiers générés par le plugin et les re-génère."
 
-#: inc/field.class.php:1237
+#: inc/field.class.php:1291
 msgid "URL"
 msgstr "URL"
 
@@ -288,7 +288,7 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 msgid "Use this option to actually fix database"
 msgstr "Utilisez cette option pour corriger les incohérences en base de données"
 
-#: inc/field.class.php:1239
+#: inc/field.class.php:1293
 msgid "Yes/No"
 msgstr "Oui/Non"
 
@@ -312,8 +312,8 @@ msgstr "Vous ne pouvez pas créer plusieurs blocs de type 'Insertion dans le for
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Vous ne pouvez pas ajouter plusieurs blocs avec un même nom sur le même objet"
 
-#: inc/containerdisplaycondition.class.php:495
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:508
 msgid "You must specify an item type, search option and condition."
 msgstr "Vous devez spécifier un type, un champ et une condition."
 

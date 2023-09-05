@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 13:54+0000\n"
+"POT-Creation-Date: 2023-09-05 12:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Merlin Merlin <mmerlin10@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:535
+#: inc/field.class.php:573
 msgid "Add a new field"
 msgstr "Přidat novou kolonku"
 
@@ -100,11 +100,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1240
+#: inc/field.class.php:1294
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1241
+#: inc/field.class.php:1295
 msgid "Date & time"
 msgstr "Datum a čas"
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1238
+#: inc/field.class.php:1292
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
@@ -138,7 +138,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:477
+#: inc/field.class.php:515
 msgid "Fields"
 msgstr "Kolonky"
 
@@ -150,11 +150,11 @@ msgstr "Opravit názvy kontejnerů"
 msgid "Fix fields names"
 msgstr "Opravit názvy kolonek"
 
-#: inc/field.class.php:1242
+#: inc/field.class.php:1296
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1232
+#: inc/field.class.php:1286
 msgid "Header"
 msgstr "Hlavička"
 
@@ -186,7 +186,7 @@ msgstr "Instalace MySQL tabulek"
 msgid "MySQL tables uninstallation"
 msgstr "Odebrání MySQL tabulek"
 
-#: inc/field.class.php:539
+#: inc/field.class.php:577
 msgid "No field for this block"
 msgstr "Žádná kolonka pro tento blok"
 
@@ -194,7 +194,7 @@ msgstr "Žádná kolonka pro tento blok"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1236
+#: inc/field.class.php:1290
 msgid "Number"
 msgstr "Číslo"
 
@@ -202,8 +202,8 @@ msgstr "Číslo"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:552
-#: inc/field.class.php:732
+#: templates/forms/status_override.html.twig inc/field.class.php:590
+#: inc/field.class.php:770
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
@@ -219,7 +219,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1235
+#: inc/field.class.php:1289
 msgid "Rich Text"
 msgstr ""
 
@@ -228,15 +228,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1496
+#: inc/container.class.php:1503
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
-#: inc/container.class.php:1486
+#: inc/container.class.php:1493
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1491
+#: inc/container.class.php:1498
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
@@ -248,11 +248,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/field.class.php:1234
+#: inc/field.class.php:1288
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:1233
+#: inc/field.class.php:1287
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
@@ -270,7 +270,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1237
+#: inc/field.class.php:1291
 msgid "URL"
 msgstr "URL adresa"
 
@@ -286,7 +286,7 @@ msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1239
+#: inc/field.class.php:1293
 msgid "Yes/No"
 msgstr "Ano/Ne"
 
@@ -310,8 +310,8 @@ msgstr "Není možné přidat několik bloků s typem „Vložení do formulář
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
 
-#: inc/containerdisplaycondition.class.php:495
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:508
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 13:54+0000\n"
+"POT-Creation-Date: 2023-09-05 12:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: 조성현 (jaymz9634) <jaymz9634@gmail.com>, 2020-2021\n"
 "Language-Team: Korean (Korea) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ko_KR/)\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:535
+#: inc/field.class.php:573
 msgid "Add a new field"
 msgstr "새 항목 추가"
 
@@ -95,11 +95,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1240
+#: inc/field.class.php:1294
 msgid "Date"
 msgstr "날짜"
 
-#: inc/field.class.php:1241
+#: inc/field.class.php:1295
 msgid "Date & time"
 msgstr "날짜 & 시간"
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1238
+#: inc/field.class.php:1292
 msgid "Dropdown"
 msgstr "드롭다운"
 
@@ -133,7 +133,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "항목 이름이 데이터베이스 용으로 너무 깁니다 (이름의 숫자는 문자로 대체되니, 제거해 보세요)"
 
-#: inc/field.class.php:477
+#: inc/field.class.php:515
 msgid "Fields"
 msgstr "항목"
 
@@ -145,11 +145,11 @@ msgstr "컨테이너 이름 수정"
 msgid "Fix fields names"
 msgstr "항목 이름 수정"
 
-#: inc/field.class.php:1242
+#: inc/field.class.php:1296
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1232
+#: inc/field.class.php:1286
 msgid "Header"
 msgstr "헤더"
 
@@ -181,7 +181,7 @@ msgstr "MySQL 테이블 삽입"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL 테이블 제거"
 
-#: inc/field.class.php:539
+#: inc/field.class.php:577
 msgid "No field for this block"
 msgstr "이 블럭에 대한 항목 없음"
 
@@ -189,7 +189,7 @@ msgstr "이 블럭에 대한 항목 없음"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1236
+#: inc/field.class.php:1290
 msgid "Number"
 msgstr "숫자"
 
@@ -197,8 +197,8 @@ msgstr "숫자"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:552
-#: inc/field.class.php:732
+#: templates/forms/status_override.html.twig inc/field.class.php:590
+#: inc/field.class.php:770
 msgid "Read only"
 msgstr "읽기 전용"
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1235
+#: inc/field.class.php:1289
 msgid "Rich Text"
 msgstr ""
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1496
+#: inc/container.class.php:1503
 msgid "Some URL fields contains invalid links"
 msgstr "일부 URL 항목에 잘못된 링크가 포함되었습니다"
 
-#: inc/container.class.php:1486
+#: inc/container.class.php:1493
 msgid "Some mandatory fields are empty"
 msgstr "일부 필수 항목이 비었습니다"
 
-#: inc/container.class.php:1491
+#: inc/container.class.php:1498
 msgid "Some numeric fields contains non numeric values"
 msgstr "일부 숫자 항목에 비 숫자 값이 포함되었습니다"
 
@@ -243,11 +243,11 @@ msgstr ""
 msgid "Tab"
 msgstr "탭"
 
-#: inc/field.class.php:1234
+#: inc/field.class.php:1288
 msgid "Text (multiples lines)"
 msgstr "문구 (여러 줄)"
 
-#: inc/field.class.php:1233
+#: inc/field.class.php:1287
 msgid "Text (single line)"
 msgstr "문구 (한 줄)"
 
@@ -265,7 +265,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1237
+#: inc/field.class.php:1291
 msgid "URL"
 msgstr "URL"
 
@@ -281,7 +281,7 @@ msgstr "생성된 드롭다운 파일 갱신"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1239
+#: inc/field.class.php:1293
 msgid "Yes/No"
 msgstr "예/아니오"
 
@@ -305,8 +305,8 @@ msgstr "동일한 객체에 '양식에 삽입' 유형이 있는 몇개의 블록
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "동일한 객체에 동일한 이름을 가진 몇개의 블록을 추가할 수 없습니다."
 
-#: inc/containerdisplaycondition.class.php:495
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:508
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 

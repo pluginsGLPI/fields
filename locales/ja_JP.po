@@ -5,12 +5,13 @@
 # Translators:
 # sai sai, 2019
 # INOUE Daisuke, 2023
+# INOUE Daisuke, 2023
 # sai sai, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 13:54+0000\n"
+"POT-Creation-Date: 2023-09-05 12:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: INOUE Daisuke, 2023\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -37,7 +38,7 @@ msgstr "-> \"%s.%s\" を削除しました。"
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" は削除すべきです。"
 
-#: inc/field.class.php:535
+#: inc/field.class.php:573
 msgid "Add a new field"
 msgstr "新しいフィールドを追加"
 
@@ -97,11 +98,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "%s で不適切に削除したフィールドの孤立したデータがデータベースに残っていました。"
 
-#: inc/field.class.php:1240
+#: inc/field.class.php:1294
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1241
+#: inc/field.class.php:1295
 msgid "Date & time"
 msgstr "日時"
 
@@ -113,7 +114,7 @@ msgstr "既定値"
 msgid "Default value will be configurable once field will be created."
 msgstr "フィールドを作成した後でも、既定値は設定可能です。"
 
-#: inc/field.class.php:1238
+#: inc/field.class.php:1292
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -135,7 +136,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "データベースに保存するフィールド名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
 
-#: inc/field.class.php:477
+#: inc/field.class.php:515
 msgid "Fields"
 msgstr "フィールド"
 
@@ -147,11 +148,11 @@ msgstr "コンテナ名を修正する"
 msgid "Fix fields names"
 msgstr "フィールド名を修正する"
 
-#: inc/field.class.php:1242
+#: inc/field.class.php:1296
 msgid "GLPI item"
 msgstr "GLPI アイテム"
 
-#: inc/field.class.php:1232
+#: inc/field.class.php:1286
 msgid "Header"
 msgstr "ヘッダー"
 
@@ -183,7 +184,7 @@ msgstr "MySQL テーブルのインストール"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL テーブルのアンインストール"
 
-#: inc/field.class.php:539
+#: inc/field.class.php:577
 msgid "No field for this block"
 msgstr "このブロック用のフィールドがありません"
 
@@ -191,7 +192,7 @@ msgstr "このブロック用のフィールドがありません"
 msgid "No item found"
 msgstr "アイテムがありません"
 
-#: inc/field.class.php:1236
+#: inc/field.class.php:1290
 msgid "Number"
 msgstr "数値"
 
@@ -199,8 +200,8 @@ msgstr "数値"
 msgid "Override by status"
 msgstr "状態による上書き"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:552
-#: inc/field.class.php:732
+#: templates/forms/status_override.html.twig inc/field.class.php:590
+#: inc/field.class.php:770
 msgid "Read only"
 msgstr "読取専用"
 
@@ -216,24 +217,24 @@ msgstr "コンテナファイルを再生成"
 msgid "Regenerates containers files."
 msgstr "コンテナファイルを再生成します。"
 
-#: inc/field.class.php:1235
+#: inc/field.class.php:1289
 msgid "Rich Text"
-msgstr ""
+msgstr "リッチテキスト"
 
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "「%s」を実行してデータベースの不整合を修復してください。"
 
-#: inc/container.class.php:1496
+#: inc/container.class.php:1503
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含む URL フィールドがあります"
 
-#: inc/container.class.php:1486
+#: inc/container.class.php:1493
 msgid "Some mandatory fields are empty"
 msgstr "未入力の必須項目があります"
 
-#: inc/container.class.php:1491
+#: inc/container.class.php:1498
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値が入っている数値フィールドがあります"
 
@@ -245,11 +246,11 @@ msgstr "状態による上書き"
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1234
+#: inc/field.class.php:1288
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1233
+#: inc/field.class.php:1287
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
@@ -267,7 +268,7 @@ msgid ""
 "them."
 msgstr "このコマンドでプラグインが生成したすべてのファイルを初期化し、再生成します。"
 
-#: inc/field.class.php:1237
+#: inc/field.class.php:1291
 msgid "URL"
 msgstr "URL"
 
@@ -283,7 +284,7 @@ msgstr "生成済みドロップダウン ファイルを更新しています"
 msgid "Use this option to actually fix database"
 msgstr "この設定で、実際にデータベースを修復します"
 
-#: inc/field.class.php:1239
+#: inc/field.class.php:1293
 msgid "Yes/No"
 msgstr "はい・いいえ"
 
@@ -307,8 +308,8 @@ msgstr "「フォームに挿入」型のブロックを、同じオブジェク
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "1 つのオブジェクトに、同じ名前のブロックを複数配置することはできません"
 
-#: inc/containerdisplaycondition.class.php:495
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:508
 msgid "You must specify an item type, search option and condition."
 msgstr "検索設定と状態では、アイテムの型を特定する必要があります。"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 13:54+0000\n"
+"POT-Creation-Date: 2023-09-05 12:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:535
+#: inc/field.class.php:573
 msgid "Add a new field"
 msgstr "添加新字段"
 
@@ -95,11 +95,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1240
+#: inc/field.class.php:1294
 msgid "Date"
 msgstr "日期"
 
-#: inc/field.class.php:1241
+#: inc/field.class.php:1295
 msgid "Date & time"
 msgstr "时间&日期"
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1238
+#: inc/field.class.php:1292
 msgid "Dropdown"
 msgstr "拖动"
 
@@ -133,7 +133,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:477
+#: inc/field.class.php:515
 msgid "Fields"
 msgstr "字段"
 
@@ -145,11 +145,11 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:1242
+#: inc/field.class.php:1296
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1232
+#: inc/field.class.php:1286
 msgid "Header"
 msgstr "头部"
 
@@ -181,7 +181,7 @@ msgstr "安装MySQL数据表"
 msgid "MySQL tables uninstallation"
 msgstr "卸载MySQL数据表"
 
-#: inc/field.class.php:539
+#: inc/field.class.php:577
 msgid "No field for this block"
 msgstr "此区域无字段"
 
@@ -189,7 +189,7 @@ msgstr "此区域无字段"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1236
+#: inc/field.class.php:1290
 msgid "Number"
 msgstr "整数"
 
@@ -197,8 +197,8 @@ msgstr "整数"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:552
-#: inc/field.class.php:732
+#: templates/forms/status_override.html.twig inc/field.class.php:590
+#: inc/field.class.php:770
 msgid "Read only"
 msgstr "只读"
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1235
+#: inc/field.class.php:1289
 msgid "Rich Text"
 msgstr ""
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1496
+#: inc/container.class.php:1503
 msgid "Some URL fields contains invalid links"
 msgstr "有些URL字段包含无效链接"
 
-#: inc/container.class.php:1486
+#: inc/container.class.php:1493
 msgid "Some mandatory fields are empty"
 msgstr "一些强制字段是空的。"
 
-#: inc/container.class.php:1491
+#: inc/container.class.php:1498
 msgid "Some numeric fields contains non numeric values"
 msgstr "一些数值字段包含非数值"
 
@@ -243,11 +243,11 @@ msgstr ""
 msgid "Tab"
 msgstr "标签"
 
-#: inc/field.class.php:1234
+#: inc/field.class.php:1288
 msgid "Text (multiples lines)"
 msgstr "文本（多行）"
 
-#: inc/field.class.php:1233
+#: inc/field.class.php:1287
 msgid "Text (single line)"
 msgstr "文本（单行）"
 
@@ -265,7 +265,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1237
+#: inc/field.class.php:1291
 msgid "URL"
 msgstr "网址"
 
@@ -281,7 +281,7 @@ msgstr "更新生成下拉文件"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1239
+#: inc/field.class.php:1293
 msgid "Yes/No"
 msgstr "是/否"
 
@@ -305,8 +305,8 @@ msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的�
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "不能在同一对象上添加名称相同的多个块"
 
-#: inc/containerdisplaycondition.class.php:495
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:508
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 

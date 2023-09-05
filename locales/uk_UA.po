@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 13:54+0000\n"
+"POT-Creation-Date: 2023-09-05 12:55+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Andriy Smilyanets <smile.andriy@gmail.com>, 2020\n"
 "Language-Team: Ukrainian (Ukraine) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/uk_UA/)\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:535
+#: inc/field.class.php:573
 msgid "Add a new field"
 msgstr "Додати нове поле"
 
@@ -98,11 +98,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1240
+#: inc/field.class.php:1294
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:1241
+#: inc/field.class.php:1295
 msgid "Date & time"
 msgstr "Дата і час"
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1238
+#: inc/field.class.php:1292
 msgid "Dropdown"
 msgstr "Випадаючий список"
 
@@ -136,7 +136,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:477
+#: inc/field.class.php:515
 msgid "Fields"
 msgstr "Поля"
 
@@ -148,11 +148,11 @@ msgstr "Виправити назви контейнерів"
 msgid "Fix fields names"
 msgstr "Виправити назви полів"
 
-#: inc/field.class.php:1242
+#: inc/field.class.php:1296
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1232
+#: inc/field.class.php:1286
 msgid "Header"
 msgstr "Заголовок"
 
@@ -184,7 +184,7 @@ msgstr "Встановлення таблиць MySQL"
 msgid "MySQL tables uninstallation"
 msgstr "Видалення таблиць MySQL"
 
-#: inc/field.class.php:539
+#: inc/field.class.php:577
 msgid "No field for this block"
 msgstr "Для цього блоку ще немає полів"
 
@@ -192,7 +192,7 @@ msgstr "Для цього блоку ще немає полів"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1236
+#: inc/field.class.php:1290
 msgid "Number"
 msgstr "Число"
 
@@ -200,8 +200,8 @@ msgstr "Число"
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:552
-#: inc/field.class.php:732
+#: templates/forms/status_override.html.twig inc/field.class.php:590
+#: inc/field.class.php:770
 msgid "Read only"
 msgstr "Тільки читання"
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1235
+#: inc/field.class.php:1289
 msgid "Rich Text"
 msgstr ""
 
@@ -226,15 +226,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1496
+#: inc/container.class.php:1503
 msgid "Some URL fields contains invalid links"
 msgstr "Деякі поля URL містять невірні посилання"
 
-#: inc/container.class.php:1486
+#: inc/container.class.php:1493
 msgid "Some mandatory fields are empty"
 msgstr "Деякі обов'язкові поля порожні"
 
-#: inc/container.class.php:1491
+#: inc/container.class.php:1498
 msgid "Some numeric fields contains non numeric values"
 msgstr "Деякі числові поля містять не цифрові значення"
 
@@ -246,11 +246,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Закладка"
 
-#: inc/field.class.php:1234
+#: inc/field.class.php:1288
 msgid "Text (multiples lines)"
 msgstr "Текст (декілька ліній)"
 
-#: inc/field.class.php:1233
+#: inc/field.class.php:1287
 msgid "Text (single line)"
 msgstr "Текст (в одну лінію)"
 
@@ -268,7 +268,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1237
+#: inc/field.class.php:1291
 msgid "URL"
 msgstr "URL"
 
@@ -284,7 +284,7 @@ msgstr "Оновлюю згенеровані файли випадаючих с
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1239
+#: inc/field.class.php:1293
 msgid "Yes/No"
 msgstr "Так/Ні"
 
@@ -308,8 +308,8 @@ msgstr "Не можна до одного об'єкту додати декіл�
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Не можна до одного об'єкту додати декілька блоків з однаковою назвою"
 
-#: inc/containerdisplaycondition.class.php:495
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:508
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
