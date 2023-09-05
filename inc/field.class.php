@@ -419,7 +419,11 @@ class PluginFieldsField extends CommonDBChild
 
         if ($prevent_duplicated) {
             $i = 2;
-            while (count($field->find(['name' => $field_name])) > 0) {
+
+            // If method is call during an update, exclude current field from duplication checks.
+            $extra_condition = ($input['id'] ?? 0) > 0 ? ['NOT' => ['id' => $input['id']]] : [];
+
+            while (count($field->find(['name' => $field_name] + $extra_condition)) > 0) {
                 $field_name = $toolbox->getIncrementedSystemName($input['name'], $i);
                 $i++;
             }
