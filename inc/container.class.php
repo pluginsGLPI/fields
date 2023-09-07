@@ -1565,8 +1565,8 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
-        if (property_exists($item, 'plugin_fields_data')) {
-            $data = $item->plugin_fields_data;
+        if (array_key_exists('_plugin_fields_data', $item->input)) {
+            $data = $item->input['_plugin_fields_data'];
             $data['items_id'] = $item->getID();
             //update data
             $container = new self();
@@ -1588,8 +1588,8 @@ HTML;
     public static function preItemUpdate(CommonDBTM $item)
     {
         self::preItem($item);
-        if (property_exists($item, 'plugin_fields_data')) {
-            $data = $item->plugin_fields_data;
+        if (array_key_exists('_plugin_fields_data', $item->input)) {
+            $data = $item->input['_plugin_fields_data'];
             //update data
             $container = new self();
             if (
@@ -1666,9 +1666,11 @@ HTML;
 
         if (false !== ($data = self::populateData($c_id, $item))) {
             if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                return $item->input = [];
+                $item->input = [];
+                return [];
             }
-            return $item->plugin_fields_data = $data;
+            $item->input['_plugin_fields_data'] = $data;
+            return $data;
         }
 
         return;
