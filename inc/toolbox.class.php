@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Fields. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2013-2022 by Fields plugin team.
+ * @copyright Copyright (C) 2013-2023 by Fields plugin team.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
@@ -100,20 +100,22 @@ class PluginFieldsToolbox
     {
         global $DB;
 
-        $bad_named_fields = $DB->request(
+        $bad_named_fields = [];
+        $fields = $DB->request(
             [
                 'FROM' => PluginFieldsField::getTable(),
-                'WHERE' => [
-                    'name' => [
-                        'REGEXP',
-                        $DB->escape('[0-9]+')
-                    ],
-                    $condition,
-                ],
+                'WHERE' => $condition,
             ]
         );
+        foreach ($fields as $field) {
+            $field_copy = $field;
+            unset($field_copy['name']);
+            if ($field['name'] !== (new PluginFieldsField())->prepareName($field_copy, false)) {
+                $bad_named_fields[] = $field;
+            }
+        }
 
-        if ($bad_named_fields->count() === 0) {
+        if (count($bad_named_fields) === 0) {
             return;
         }
 
@@ -137,20 +139,20 @@ class PluginFieldsToolbox
                // limit tables names to 64 chars (MySQL limit)
                 $new_name = substr($new_name, 0, -1);
             }
-            $field['name'] = $new_name;
-            $field_obj->update(
-                $field,
-                false
+            $DB->update(
+                PluginFieldsField::getTable(),
+                ['name' => $new_name],
+                ['id'   => $field['id']]
             );
 
             $sql_fields_to_rename = [
-                $old_name => $field['name'],
+                $old_name => $new_name,
             ];
 
             if ('dropdown' === $field['type']) {
                // Rename dropdown table
                 $old_table = getTableForItemType(PluginFieldsDropdown::getClassname($old_name));
-                $new_table = getTableForItemType(PluginFieldsDropdown::getClassname($field['name']));
+                $new_table = getTableForItemType(PluginFieldsDropdown::getClassname($new_name));
 
                 if ($DB->tableExists($old_table)) {
                     $migration->renameTable($old_table, $new_table);
@@ -178,7 +180,7 @@ class PluginFieldsToolbox
                 );
 
                 foreach ($tables_to_update as $table_to_update) {
-                     $sql_fields = PluginFieldsMigration::getSQLFields($new_field_name, $field['type']);
+                     $sql_fields = PluginFieldsMigration::getSQLFields($new_field_name, $field['type'], $field);
                     if (count($sql_fields) !== 1 || !array_key_exists($new_field_name, $sql_fields)) {
                         // when this method has been made, only fields types that were matching a unique SQL field were existing
                         // other cases can be ignored
@@ -222,6 +224,7 @@ class PluginFieldsToolbox
             PDU::class,
             PassiveDCEquipment::class,
             Cable::class,
+            Glpi\Socket::class,
         ];
 
         $assistance_itemtypes = [
@@ -257,6 +260,7 @@ class PluginFieldsToolbox
             ProjectTask::class,
             Reminder::class,
             RSSFeed::class,
+            KnowbaseItem::class,
         ];
 
         $administration_itemtypes = [
@@ -279,7 +283,7 @@ class PluginFieldsToolbox
         sort($component_items_itemtypes, SORT_NATURAL);
 
         $plugins_itemtypes = [];
-        foreach ($PLUGIN_HOOKS['plugin_fields'] as $itemtype) {
+        foreach (($PLUGIN_HOOKS['plugin_fields'] ?? []) as $itemtype) {
             $itemtype_specs = isPluginItemType($itemtype);
             if ($itemtype_specs) {
                 $plugins_itemtypes[] = $itemtype;

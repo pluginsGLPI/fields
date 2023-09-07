@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Fields. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2013-2022 by Fields plugin team.
+ * @copyright Copyright (C) 2013-2023 by Fields plugin team.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
@@ -49,15 +49,6 @@ function plugin_fields_install()
     $plugin_fields->getFromDBbyDir('fields');
     $version = $plugin_fields->fields['version'];
 
-    $classesToInstall = [
-        'PluginFieldsField',
-        'PluginFieldsDropdown',
-        'PluginFieldsLabelTranslation',
-        'PluginFieldsContainer',
-        'PluginFieldsProfile',
-        'PluginFieldsStatusOverride',
-        'PluginFieldsContainerDisplayCondition',
-    ];
 
     $migration = new Migration($version);
     if (isCommandLine()) {
@@ -71,30 +62,30 @@ function plugin_fields_install()
         echo "<td align='center'>";
     }
 
-    //load all classes
-    $dir  = PLUGINFIELDS_DIR . "/inc/";
-    include_once("{$dir}toolbox.class.php");
+    $classesToInstall = [
+        PluginFieldsContainer::class,
+        PluginFieldsContainerDisplayCondition::class,
+        PluginFieldsDropdown::class,
+        PluginFieldsField::class,
+        PluginFieldsLabelTranslation::class,
+        PluginFieldsProfile::class,
+        PluginFieldsStatusOverride::class,
+    ];
+
+    // First, install base data
     foreach ($classesToInstall as $class) {
-        if ($plug = isPluginItemType($class)) {
-            $item = strtolower($plug['class']);
-            if (file_exists("$dir$item.class.php")) {
-                include_once("$dir$item.class.php");
-            }
+        if (method_exists($class, 'installBaseData')) {
+            $class::installBaseData($migration, $version);
         }
     }
+    $migration->executeMigration();
 
-    //install
+    // Then process specific user classes/tables
     foreach ($classesToInstall as $class) {
-        if ($plug = isPluginItemType($class)) {
-            $item = strtolower($plug['class']);
-            if (file_exists("$dir$item.class.php")) {
-                if (!call_user_func([$class,'install'], $migration, $version)) {
-                    return false;
-                }
-            }
+        if (method_exists($class, 'installUserData')) {
+            $class::installUserData($migration, $version);
         }
     }
-
     $migration->executeMigration();
 
     if (!isCommandLine()) {
@@ -265,15 +256,24 @@ function plugin_fields_rule_matched($params = [])
 
             if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
                 foreach ($params['output'] as $field => $value) {
-                   // check if current field is in a tab container
-                    $query = "SELECT c.id
-                         FROM glpi_plugin_fields_fields f
-                         LEFT JOIN glpi_plugin_fields_containers c
-                            ON c.id = f.plugin_fields_containers_id
-                         WHERE f.name = '$field'";
-                    $res = $DB->query($query);
-                    if ($DB->numrows($res) > 0) {
-                        $data = $DB->fetchAssoc($res);
+                    // check if current field is in a tab container
+                    $iterator = $DB->request([
+                        'SELECT' => 'glpi_plugin_fields_containers.id',
+                        'FROM'   => 'glpi_plugin_fields_containers',
+                        'LEFT JOIN' => [
+                            'glpi_plugin_fields_fields' => [
+                                'FKEY' => [
+                                    'glpi_plugin_fields_containers' => 'id',
+                                    'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id'
+                                ]
+                            ]
+                        ],
+                        'WHERE' => [
+                            'glpi_plugin_fields_fields.name' => $field,
+                        ]
+                    ]);
+                    if (count($iterator) > 0) {
+                        $data = $iterator->current();
 
                         //retrieve computer
                         $agents_id = $params['input']['plugin_fusioninventory_agents_id'];

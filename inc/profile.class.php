@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Fields. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2013-2022 by Fields plugin team.
+ * @copyright Copyright (C) 2013-2023 by Fields plugin team.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
@@ -37,7 +37,15 @@ class PluginFieldsProfile extends CommonDBRelation
     public static $itemtype_2 = Profile::class;
     public static $items_id_2 = 'profiles_id';
 
-    public static function install(Migration $migration)
+    /**
+     * Install or update plugin base data.
+     *
+     * @param Migration $migration Migration instance
+     * @param string    $version   Plugin current version
+     *
+     * @return boolean
+     */
+    public static function installBaseData(Migration $migration, $version)
     {
         global $DB;
 
@@ -187,5 +195,23 @@ class PluginFieldsProfile extends CommonDBRelation
         $fields_profile = new self();
         $fields_profile->deleteByCriteria(['profiles_id' => $profile->fields['id']]);
         return true;
+    }
+
+    public static function getRightOnContainer(int $profile_id, int $container_id): int
+    {
+        global $DB;
+
+        $container_profile = $DB->request(
+            [
+                'SELECT'  => ['MAX' => 'right AS right'],
+                'FROM'    => self::getTable(),
+                'WHERE'   => [
+                    'profiles_id' => $profile_id,
+                    'plugin_fields_containers_id' => $container_id,
+                ],
+            ]
+        );
+
+        return (int)$container_profile->current()['right'];
     }
 }
