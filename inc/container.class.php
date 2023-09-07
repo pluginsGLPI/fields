@@ -1532,7 +1532,7 @@ HTML;
 
         $container = new PluginFieldsContainer();
         $itemtypes = $container->find($condition);
-        $id = 0;
+        $id = false; // default value when no container matches criterion
         if (count($itemtypes) < 1) {
             return false;
         }
