@@ -170,7 +170,7 @@ function plugin_fields_getAddSearchOptions($itemtype)
         && count($_SESSION['glpiactiveentities']) > 0
     ) {
         $itemtypes = PluginFieldsContainer::getEntries('all');
-        if ($itemtypes !== false && in_array($itemtype, $itemtypes)) {
+        if (in_array($itemtype, $itemtypes)) {
             return PluginFieldsContainer::getAddSearchOptions($itemtype);
         }
     }
