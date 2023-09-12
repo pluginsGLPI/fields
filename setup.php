@@ -121,10 +121,13 @@ function plugin_init_fields()
             $PLUGIN_HOOKS["menu_toadd"]['fields'] = ['config' => 'PluginFieldsMenu'];
 
             // add tabs to itemtypes
-            Plugin::registerClass(
-                'PluginFieldsContainer',
-                ['addtabon' => array_unique(PluginFieldsContainer::getEntries())]
-            );
+            $itemtypes = array_unique(PluginFieldsContainer::getEntries());
+            if (count($itemtypes) > 0) {
+                Plugin::registerClass(
+                    'PluginFieldsContainer',
+                    ['addtabon' => $itemtypes]
+                );
+            }
 
             //include js and css
             $debug = (isset($_SESSION['glpi_use_mode'])

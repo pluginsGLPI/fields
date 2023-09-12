@@ -997,7 +997,7 @@ HTML;
         ];
     }
 
-    public static function getEntries($type = 'tab', $full = false)
+    public static function getEntries($type = 'tab', $full = false): array
     {
         global $DB;
 
@@ -1009,7 +1009,7 @@ HTML;
         }
 
         if (!$DB->tableExists(self::getTable())) {
-            return false;
+            return [];
         }
 
         $itemtypes = [];
@@ -1031,18 +1031,16 @@ HTML;
             if (Session::isCron() || !isset($_SESSION['glpiactiveprofile']['id'])) {
                 continue;
             }
-            //profiles restriction
 
+            //profiles restriction
             if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $item['id'] > 0) {
                 $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $item['id']);
                 if ($right < READ) {
-                    return false;
+                    continue;
                 }
             } else {
-                return false;
+                continue;
             }
-
-
 
             $jsonitemtypes = json_decode($item['itemtypes']);
             //show more info or not
