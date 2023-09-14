@@ -1320,6 +1320,7 @@ HTML;
             // -- update existing item --
 
             // construct $updates
+            $updates = [];
             if ($field_obj->updates) {
                 foreach ($field_obj->updates as $key) {
                     $updates[$key] = [0, $field_obj->oldvalues[$key], $field_obj->input[$key]];
