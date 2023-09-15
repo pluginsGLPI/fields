@@ -818,7 +818,7 @@ class PluginFieldsField extends CommonDBChild
      *
      * @return void
      */
-    public static function showDomContainer($id, $item, $type = "dom", $subtype = "")
+    public static function showDomContainer($id, $item, $type = "dom", $subtype = "", $field_options = [])
     {
 
         if ($id !== false) {
@@ -837,7 +837,7 @@ class PluginFieldsField extends CommonDBChild
 
         echo Html::hidden('_plugin_fields_type', ['value' => $type]);
         echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
-        echo self::prepareHtmlFields($fields, $item);
+        echo self::prepareHtmlFields($fields, $item, true, true, false, $field_options);
     }
 
     /**
@@ -922,7 +922,7 @@ class PluginFieldsField extends CommonDBChild
         if (strpos($current_url, "helpdesk.public.php") !== false) {
             echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
             echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
-            $item->field_options = [
+            $field_options = [
                 'label_class' => 'col-lg-3',
                 'input_class' => 'col-lg-9'
             ];
@@ -935,7 +935,8 @@ class PluginFieldsField extends CommonDBChild
                 $c_id,
                 $item,
                 $type,
-                $subtype
+                $subtype,
+                $field_options ?? []
             );
         }
         if (strpos($current_url, "helpdesk.public.php") !== false) {
@@ -1038,7 +1039,8 @@ JAVASCRIPT
         $item,
         $canedit = true,
         $show_table = true,
-        $massiveaction = false
+        $massiveaction = false,
+        $field_options = []
     ) {
 
         if (empty($fields)) {
@@ -1210,6 +1212,7 @@ JAVASCRIPT
             'canedit'        => $canedit,
             'massiveaction'  => $massiveaction,
             'container'      => $container_obj,
+            'field_options'  => $field_options,
         ]);
 
         unset($_SESSION['plugin']['fields']['values_sent']);
