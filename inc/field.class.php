@@ -919,7 +919,16 @@ class PluginFieldsField extends CommonDBChild
         }
 
         $html_id = 'plugin_fields_container_' . mt_rand();
-        echo "<div id='{$html_id}'>";
+        if (strpos($current_url, "helpdesk.public.php") !== false) {
+            echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
+            echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
+            $item->field_options = [
+                'label_class' => 'col-lg-3',
+                'input_class' => 'col-lg-9'
+            ];
+        } else {
+            echo "<div id='{$html_id}'>";
+        }
         $display_condition = new PluginFieldsContainerDisplayCondition();
         if ($display_condition->computeDisplayContainer($item, $c_id)) {
             self::showDomContainer(
@@ -928,6 +937,9 @@ class PluginFieldsField extends CommonDBChild
                 $type,
                 $subtype
             );
+        }
+        if (strpos($current_url, "helpdesk.public.php") !== false) {
+            echo "</div>";
         }
         echo "</div>";
 

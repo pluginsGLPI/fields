@@ -52,6 +52,12 @@
         'required':   field['mandatory'],
         'full_width': already_wrapped
     } %}
+    {% if item.field_options['label_class'] %}
+        {% set field_options = field_options|merge({'label_class': item.field_options['label_class']}) %}
+    {% endif %}
+    {% if item.field_options['input_class'] %}
+        {% set field_options = field_options|merge({'input_class': item.field_options['input_class']}) %}
+    {% endif %}
 
     {% if type == 'header' %}
         {{ macros.largeTitle(label) }}
