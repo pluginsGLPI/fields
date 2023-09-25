@@ -1168,6 +1168,8 @@ HTML;
             }
             if (array_key_exists($field_name, $data)) {
                 $data[$field_name] = json_encode($data[$field_name]);
+            } elseif (array_key_exists('_' . $field_name . '_defined', $data)) {
+                $data[$field_name] = json_encode([]);
             }
         }
 
