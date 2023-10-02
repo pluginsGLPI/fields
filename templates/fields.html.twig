@@ -47,11 +47,11 @@
     {% set readonly = field['is_readonly'] %}
     {% set rand = random() %}
 
-    {% set field_options = {
+    {% set field_options = field_options|merge({
         'readonly':   readonly or not canedit,
         'required':   field['mandatory'],
         'full_width': already_wrapped
-    } %}
+    }) %}
 
     {% if type == 'header' %}
         {{ macros.largeTitle(label) }}
