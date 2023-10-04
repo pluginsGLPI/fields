@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 12:55+0000\n"
+"POT-Creation-Date: 2023-10-04 14:23+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: INOUE Daisuke, 2023\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -55,7 +55,7 @@ msgid "Add tab"
 msgstr "タブを追加"
 
 #: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:197
+#: setup.php:200
 msgid "Additional fields"
 msgstr "追加のフィールド"
 
@@ -98,11 +98,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "%s で不適切に削除したフィールドの孤立したデータがデータベースに残っていました。"
 
-#: inc/field.class.php:1294
+#: inc/field.class.php:1309
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1295
+#: inc/field.class.php:1310
 msgid "Date & time"
 msgstr "日時"
 
@@ -114,7 +114,7 @@ msgstr "既定値"
 msgid "Default value will be configurable once field will be created."
 msgstr "フィールドを作成した後でも、既定値は設定可能です。"
 
-#: inc/field.class.php:1292
+#: inc/field.class.php:1307
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -148,11 +148,11 @@ msgstr "コンテナ名を修正する"
 msgid "Fix fields names"
 msgstr "フィールド名を修正する"
 
-#: inc/field.class.php:1296
+#: inc/field.class.php:1311
 msgid "GLPI item"
 msgstr "GLPI アイテム"
 
-#: inc/field.class.php:1286
+#: inc/field.class.php:1301
 msgid "Header"
 msgstr "ヘッダー"
 
@@ -192,7 +192,7 @@ msgstr "このブロック用のフィールドがありません"
 msgid "No item found"
 msgstr "アイテムがありません"
 
-#: inc/field.class.php:1290
+#: inc/field.class.php:1305
 msgid "Number"
 msgstr "数値"
 
@@ -217,7 +217,7 @@ msgstr "コンテナファイルを再生成"
 msgid "Regenerates containers files."
 msgstr "コンテナファイルを再生成します。"
 
-#: inc/field.class.php:1289
+#: inc/field.class.php:1304
 msgid "Rich Text"
 msgstr "リッチテキスト"
 
@@ -226,15 +226,15 @@ msgstr "リッチテキスト"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "「%s」を実行してデータベースの不整合を修復してください。"
 
-#: inc/container.class.php:1503
+#: inc/container.class.php:1504
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含む URL フィールドがあります"
 
-#: inc/container.class.php:1493
+#: inc/container.class.php:1494
 msgid "Some mandatory fields are empty"
 msgstr "未入力の必須項目があります"
 
-#: inc/container.class.php:1498
+#: inc/container.class.php:1499
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値が入っている数値フィールドがあります"
 
@@ -246,11 +246,11 @@ msgstr "状態による上書き"
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1288
+#: inc/field.class.php:1303
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1287
+#: inc/field.class.php:1302
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
@@ -268,7 +268,7 @@ msgid ""
 "them."
 msgstr "このコマンドでプラグインが生成したすべてのファイルを初期化し、再生成します。"
 
-#: inc/field.class.php:1291
+#: inc/field.class.php:1306
 msgid "URL"
 msgstr "URL"
 
@@ -284,7 +284,7 @@ msgstr "生成済みドロップダウン ファイルを更新しています"
 msgid "Use this option to actually fix database"
 msgstr "この設定で、実際にデータベースを修復します"
 
-#: inc/field.class.php:1293
+#: inc/field.class.php:1308
 msgid "Yes/No"
 msgstr "はい・いいえ"
 

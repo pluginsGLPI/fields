@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 12:55+0000\n"
+"POT-Creation-Date: 2023-10-04 14:23+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
@@ -52,7 +52,7 @@ msgid "Add tab"
 msgstr "添加标签"
 
 #: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:197
+#: setup.php:200
 msgid "Additional fields"
 msgstr "附加字段"
 
@@ -95,11 +95,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1294
+#: inc/field.class.php:1309
 msgid "Date"
 msgstr "日期"
 
-#: inc/field.class.php:1295
+#: inc/field.class.php:1310
 msgid "Date & time"
 msgstr "时间&日期"
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1292
+#: inc/field.class.php:1307
 msgid "Dropdown"
 msgstr "拖动"
 
@@ -145,11 +145,11 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:1296
+#: inc/field.class.php:1311
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1286
+#: inc/field.class.php:1301
 msgid "Header"
 msgstr "头部"
 
@@ -189,7 +189,7 @@ msgstr "此区域无字段"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1290
+#: inc/field.class.php:1305
 msgid "Number"
 msgstr "整数"
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1289
+#: inc/field.class.php:1304
 msgid "Rich Text"
 msgstr ""
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1503
+#: inc/container.class.php:1504
 msgid "Some URL fields contains invalid links"
 msgstr "有些URL字段包含无效链接"
 
-#: inc/container.class.php:1493
+#: inc/container.class.php:1494
 msgid "Some mandatory fields are empty"
 msgstr "一些强制字段是空的。"
 
-#: inc/container.class.php:1498
+#: inc/container.class.php:1499
 msgid "Some numeric fields contains non numeric values"
 msgstr "一些数值字段包含非数值"
 
@@ -243,11 +243,11 @@ msgstr ""
 msgid "Tab"
 msgstr "标签"
 
-#: inc/field.class.php:1288
+#: inc/field.class.php:1303
 msgid "Text (multiples lines)"
 msgstr "文本（多行）"
 
-#: inc/field.class.php:1287
+#: inc/field.class.php:1302
 msgid "Text (single line)"
 msgstr "文本（单行）"
 
@@ -265,7 +265,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1291
+#: inc/field.class.php:1306
 msgid "URL"
 msgstr "网址"
 
@@ -281,7 +281,7 @@ msgstr "更新生成下拉文件"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1293
+#: inc/field.class.php:1308
 msgid "Yes/No"
 msgstr "是/否"
 

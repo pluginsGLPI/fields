@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 12:55+0000\n"
+"POT-Creation-Date: 2023-10-04 14:23+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Cédric Anne, 2018,2022-2023\n"
 "Language-Team: French (France) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -57,7 +57,7 @@ msgid "Add tab"
 msgstr "Ajout d'un onglet"
 
 #: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:197
+#: setup.php:200
 msgid "Additional fields"
 msgstr "Champs supplémentaires"
 
@@ -102,11 +102,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de données contenait des données orphelines des champs %s incorrectement supprimés."
 
-#: inc/field.class.php:1294
+#: inc/field.class.php:1309
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1295
+#: inc/field.class.php:1310
 msgid "Date & time"
 msgstr "Date & heure"
 
@@ -118,7 +118,7 @@ msgstr "Valeur par défaut"
 msgid "Default value will be configurable once field will be created."
 msgstr "La valeur par défaut sera configurable dès que le champ créé."
 
-#: inc/field.class.php:1292
+#: inc/field.class.php:1307
 msgid "Dropdown"
 msgstr "Liste déroulante (Intitulés)"
 
@@ -152,11 +152,11 @@ msgstr "Correction du nom des conteneurs"
 msgid "Fix fields names"
 msgstr "Correction du nom des champs"
 
-#: inc/field.class.php:1296
+#: inc/field.class.php:1311
 msgid "GLPI item"
 msgstr "Objet GLPI"
 
-#: inc/field.class.php:1286
+#: inc/field.class.php:1301
 msgid "Header"
 msgstr "Entête"
 
@@ -196,7 +196,7 @@ msgstr "Aucun champ pour ce bloc"
 msgid "No item found"
 msgstr "Aucun objet trouvé"
 
-#: inc/field.class.php:1290
+#: inc/field.class.php:1305
 msgid "Number"
 msgstr "Nombre"
 
@@ -221,7 +221,7 @@ msgstr "Régénération les fichiers des conteneurs"
 msgid "Regenerates containers files."
 msgstr "Re-génère les fichiers des conteneurs."
 
-#: inc/field.class.php:1289
+#: inc/field.class.php:1304
 msgid "Rich Text"
 msgstr "Texte riche"
 
@@ -230,15 +230,15 @@ msgstr "Texte riche"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Exécutez \"%s\" pour corriger les incohérences de la base de données."
 
-#: inc/container.class.php:1503
+#: inc/container.class.php:1504
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
-#: inc/container.class.php:1493
+#: inc/container.class.php:1494
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:1498
+#: inc/container.class.php:1499
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
@@ -250,11 +250,11 @@ msgstr "Surcharges par statut"
 msgid "Tab"
 msgstr "Onglet"
 
-#: inc/field.class.php:1288
+#: inc/field.class.php:1303
 msgid "Text (multiples lines)"
 msgstr "Texte (lignes multiples)"
 
-#: inc/field.class.php:1287
+#: inc/field.class.php:1302
 msgid "Text (single line)"
 msgstr "Texte (ligne simple)"
 
@@ -272,7 +272,7 @@ msgid ""
 "them."
 msgstr "Cette commande supprime tous les fichiers générés par le plugin et les re-génère."
 
-#: inc/field.class.php:1291
+#: inc/field.class.php:1306
 msgid "URL"
 msgstr "URL"
 
@@ -288,7 +288,7 @@ msgstr "Mise à jour des fichiers générés des listes déroulantes "
 msgid "Use this option to actually fix database"
 msgstr "Utilisez cette option pour corriger les incohérences en base de données"
 
-#: inc/field.class.php:1293
+#: inc/field.class.php:1308
 msgid "Yes/No"
 msgstr "Oui/Non"
 

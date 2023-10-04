@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 12:55+0000\n"
+"POT-Creation-Date: 2023-10-04 14:23+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Carlos Moreno Rodríguez <carlosm.rodriguez@prodigy.net.mx>, 2022\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_MX/)\n"
@@ -52,7 +52,7 @@ msgid "Add tab"
 msgstr "Agregar pestaña"
 
 #: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:197
+#: setup.php:200
 msgid "Additional fields"
 msgstr "Campos adicionales"
 
@@ -97,11 +97,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de datos contenía datos huérfanos de %s campo(s) eliminados incorrectamente."
 
-#: inc/field.class.php:1294
+#: inc/field.class.php:1309
 msgid "Date"
 msgstr "Fecha"
 
-#: inc/field.class.php:1295
+#: inc/field.class.php:1310
 msgid "Date & time"
 msgstr "Fecha y Hora"
 
@@ -113,7 +113,7 @@ msgstr "Valor predeterminado"
 msgid "Default value will be configurable once field will be created."
 msgstr "El valor predeterminado será configurable una vez que se cree el campo."
 
-#: inc/field.class.php:1292
+#: inc/field.class.php:1307
 msgid "Dropdown"
 msgstr "Menú desplegable"
 
@@ -147,11 +147,11 @@ msgstr "Corregir los nombres de los contenedores"
 msgid "Fix fields names"
 msgstr "Corregir los nombres de los campos"
 
-#: inc/field.class.php:1296
+#: inc/field.class.php:1311
 msgid "GLPI item"
 msgstr "Elemento de GLPI"
 
-#: inc/field.class.php:1286
+#: inc/field.class.php:1301
 msgid "Header"
 msgstr "Encabezado"
 
@@ -191,7 +191,7 @@ msgstr "Ningún campo para este bloque"
 msgid "No item found"
 msgstr "Ningún elemento encontrado"
 
-#: inc/field.class.php:1290
+#: inc/field.class.php:1305
 msgid "Number"
 msgstr "Número"
 
@@ -216,7 +216,7 @@ msgstr "Regenerar archivos de contenedores"
 msgid "Regenerates containers files."
 msgstr "Regenerar archivos de contenedores."
 
-#: inc/field.class.php:1289
+#: inc/field.class.php:1304
 msgid "Rich Text"
 msgstr ""
 
@@ -225,15 +225,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Ejecute \"%s\" para corregir las inconsistencias de la base de datos."
 
-#: inc/container.class.php:1503
+#: inc/container.class.php:1504
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen vínculos no válidos"
 
-#: inc/container.class.php:1493
+#: inc/container.class.php:1494
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1498
+#: inc/container.class.php:1499
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
@@ -245,11 +245,11 @@ msgstr "Anular estados"
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/field.class.php:1288
+#: inc/field.class.php:1303
 msgid "Text (multiples lines)"
 msgstr "Texto (varias líneas)"
 
-#: inc/field.class.php:1287
+#: inc/field.class.php:1302
 msgid "Text (single line)"
 msgstr "Texto (línea simple)"
 
@@ -267,7 +267,7 @@ msgid ""
 "them."
 msgstr "Este comando limpiará todos los archivos generados por el complemento y los regenerará."
 
-#: inc/field.class.php:1291
+#: inc/field.class.php:1306
 msgid "URL"
 msgstr "URL"
 
@@ -283,7 +283,7 @@ msgstr "Actualizar campos de menús desplegables generados"
 msgid "Use this option to actually fix database"
 msgstr "Usa esta opción para arreglar la base de datos"
 
-#: inc/field.class.php:1293
+#: inc/field.class.php:1308
 msgid "Yes/No"
 msgstr "Si / No"
 

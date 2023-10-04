@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 12:55+0000\n"
+"POT-Creation-Date: 2023-10-04 14:23+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Automatically generated, 2021-2022\n"
 "Language-Team: English (United Kingdom) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_GB/)\n"
@@ -52,7 +52,7 @@ msgid "Add tab"
 msgstr "Add tab"
 
 #: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:197
+#: setup.php:200
 msgid "Additional fields"
 msgstr "Additional fields"
 
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1294
+#: inc/field.class.php:1309
 msgid "Date"
 msgstr "Date"
 
-#: inc/field.class.php:1295
+#: inc/field.class.php:1310
 msgid "Date & time"
 msgstr "Date & time"
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1292
+#: inc/field.class.php:1307
 msgid "Dropdown"
 msgstr "Dropdown"
 
@@ -146,11 +146,11 @@ msgstr "Fix container names"
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/field.class.php:1296
+#: inc/field.class.php:1311
 msgid "GLPI item"
 msgstr "GLPI item"
 
-#: inc/field.class.php:1286
+#: inc/field.class.php:1301
 msgid "Header"
 msgstr "Header"
 
@@ -190,7 +190,7 @@ msgstr "No field for this block"
 msgid "No item found"
 msgstr "No item found"
 
-#: inc/field.class.php:1290
+#: inc/field.class.php:1305
 msgid "Number"
 msgstr "Number"
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1289
+#: inc/field.class.php:1304
 msgid "Rich Text"
 msgstr ""
 
@@ -224,15 +224,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1503
+#: inc/container.class.php:1504
 msgid "Some URL fields contains invalid links"
 msgstr "Some URL fields contains invalid links"
 
-#: inc/container.class.php:1493
+#: inc/container.class.php:1494
 msgid "Some mandatory fields are empty"
 msgstr "Some mandatory fields are empty"
 
-#: inc/container.class.php:1498
+#: inc/container.class.php:1499
 msgid "Some numeric fields contains non numeric values"
 msgstr "Some numeric fields contains non numeric values"
 
@@ -244,11 +244,11 @@ msgstr "Status overrides"
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:1288
+#: inc/field.class.php:1303
 msgid "Text (multiples lines)"
 msgstr "Text (multiples lines)"
 
-#: inc/field.class.php:1287
+#: inc/field.class.php:1302
 msgid "Text (single line)"
 msgstr "Text (single line)"
 
@@ -266,7 +266,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1291
+#: inc/field.class.php:1306
 msgid "URL"
 msgstr "URL"
 
@@ -282,7 +282,7 @@ msgstr "Updating generated dropdown files"
 msgid "Use this option to actually fix database"
 msgstr "Use this option to actually fix database"
 
-#: inc/field.class.php:1293
+#: inc/field.class.php:1308
 msgid "Yes/No"
 msgstr "Yes/No"
 

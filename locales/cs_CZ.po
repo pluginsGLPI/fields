@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 12:55+0000\n"
+"POT-Creation-Date: 2023-10-04 14:23+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Merlin Merlin <mmerlin10@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -54,7 +54,7 @@ msgid "Add tab"
 msgstr "Přidat tabulku"
 
 #: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:197
+#: setup.php:200
 msgid "Additional fields"
 msgstr "Další kolonky"
 
@@ -100,11 +100,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1294
+#: inc/field.class.php:1309
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1295
+#: inc/field.class.php:1310
 msgid "Date & time"
 msgstr "Datum a čas"
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1292
+#: inc/field.class.php:1307
 msgid "Dropdown"
 msgstr "Rozbalovací"
 
@@ -150,11 +150,11 @@ msgstr "Opravit názvy kontejnerů"
 msgid "Fix fields names"
 msgstr "Opravit názvy kolonek"
 
-#: inc/field.class.php:1296
+#: inc/field.class.php:1311
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1286
+#: inc/field.class.php:1301
 msgid "Header"
 msgstr "Hlavička"
 
@@ -194,7 +194,7 @@ msgstr "Žádná kolonka pro tento blok"
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1290
+#: inc/field.class.php:1305
 msgid "Number"
 msgstr "Číslo"
 
@@ -219,7 +219,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1289
+#: inc/field.class.php:1304
 msgid "Rich Text"
 msgstr ""
 
@@ -228,15 +228,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr ""
 
-#: inc/container.class.php:1503
+#: inc/container.class.php:1504
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 
-#: inc/container.class.php:1493
+#: inc/container.class.php:1494
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1498
+#: inc/container.class.php:1499
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
@@ -248,11 +248,11 @@ msgstr ""
 msgid "Tab"
 msgstr "Tabulka"
 
-#: inc/field.class.php:1288
+#: inc/field.class.php:1303
 msgid "Text (multiples lines)"
 msgstr "Text (víceřádkový)"
 
-#: inc/field.class.php:1287
+#: inc/field.class.php:1302
 msgid "Text (single line)"
 msgstr "Text (jednořádkový)"
 
@@ -270,7 +270,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1291
+#: inc/field.class.php:1306
 msgid "URL"
 msgstr "URL adresa"
 
@@ -286,7 +286,7 @@ msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1293
+#: inc/field.class.php:1308
 msgid "Yes/No"
 msgstr "Ano/Ne"
 
