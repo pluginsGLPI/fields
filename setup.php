@@ -99,7 +99,7 @@ function plugin_init_fields()
         ) {
             foreach ($_POST as $key => $value) {
                 if (!is_array($value)) {
-                    $_SESSION['plugin']['fields']['values_sent'][$key] = stripcslashes($value);
+                    $_SESSION['plugin']['fields']['values_sent'][$key] = $value;
                 }
             }
         }
