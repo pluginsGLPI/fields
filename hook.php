@@ -299,7 +299,7 @@ function plugin_fields_rule_matched($params = [])
 
 function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 {
-    $searchopt = &Search::getOptions($itemtype);
+    $searchopt = Search::getOptions($itemtype);
     $table = $searchopt[$ID]["table"];
 
     //fix glpi default Search::giveItem who for empty date display "--"
@@ -350,10 +350,14 @@ function plugin_fields_redefine_api_schemas(array $data): array
         };
     };
 
+    $new_schemas = [];
+
     foreach ($data['schemas'] as &$schema) {
         if (!isset($schema['x-itemtype'])) {
             continue;
         }
+        $itemtype = $schema['x-itemtype'];
+        $schema_name = $itemtype . '_CustomFields';
         //Note PluginFieldsContainer::findContainer already checks permissions
         $container_id = PluginFieldsContainer::findContainer($schema['x-itemtype'], 'dom');
         if ($container_id !== null) {
@@ -377,45 +381,78 @@ function plugin_fields_redefine_api_schemas(array $data): array
                 ]
             ]);
             if (count($it)) {
-                $custom_fields = [];
                 foreach ($it as $field) {
+                    if (!isset($new_schemas[$schema_name])) {
+                        $new_schemas[$schema_name] = [
+                            'type' => Schema::TYPE_OBJECT,
+                            'properties' => []
+                        ];
+                    }
                     $type_format = $fn_fieldTypeToAPIType($field['type']);
                     $table = strtolower("glpi_plugin_fields_{$schema['x-itemtype']}{$field['container_name']}s");
-                    $custom_fields[$field['name']] = [
-                        'type' => Schema::TYPE_OBJECT,
-                        'x-join' => [
-                            // This is the table with the desired values
-                            'table' => $table,
-                            'fkey' => 'id',
-                            'field' => 'items_id',
-                            'condition' => [
-                                'itemtype' => $schema['x-itemtype'],
-                            ]
-                        ],
-                        'properties' => [
-                            'id' => [
-                                'type' => Schema::TYPE_INTEGER,
-                                'format' => Schema::FORMAT_INTEGER_INT64,
-                                'x-readonly' => true,
+                    $sql_field = $field['name'];
+                    if (str_starts_with($field['type'], 'dropdown')) {
+                        if (str_starts_with($field['type'], 'dropdown-')) {
+                            $dropdown_type = explode('-', $field['type'], 2)[1];
+                        } else {
+                            $dropdown_type = 'PluginFields' . ucfirst($field['name']) . 'Dropdown';
+                        }
+                        $is_tree = is_subclass_of($dropdown_type, CommonTreeDropdown::class);
+                        $new_schemas[$schema_name]['properties'][$field['name']] = [
+                            'type' => Schema::TYPE_OBJECT,
+                            'x-join' => [
+                                'table' => $dropdown_type::getTable(), // This is the table with the desired values
+                                'field' => 'id',
+                                'fkey' => $dropdown_type::getForeignKeyField(),
+                                'ref_join' => [
+                                    'table' => $table,
+                                    'fkey' => 'id',
+                                    'field' => 'items_id',
+                                    'condition' => [
+                                        'itemtype' => $schema['x-itemtype'],
+                                    ]
+                                ],
                             ],
-                            'value' => [
-                                'x-field' => $field['name'],
-                                'type' => $type_format[0],
-                                'format' => $type_format[1],
-                                // No support to change these fields for now.
-                                'x-readonly' => true,
+                            'properties' => [
+                                'id' => [
+                                    'type' => Schema::TYPE_INTEGER,
+                                    'format' => Schema::FORMAT_INTEGER_INT64,
+                                    'x-readonly' => true,
+                                ],
+                                'value' => [
+                                    'type' => Schema::TYPE_STRING,
+                                    'x-field' => $is_tree ? 'completename' : 'name',
+                                ]
                             ]
-                        ]
-                    ];
+                        ];
+                    } else {
+                        $new_schemas[$schema_name]['properties'][$field['name']] = [
+                            'type' => $type_format[0],
+                            'format' => $type_format[1],
+                            'x-join' => [
+                                // This is the table with the desired values
+                                'table' => $table,
+                                'fkey' => 'id',
+                                'field' => 'items_id',
+                                'condition' => [
+                                    'itemtype' => $schema['x-itemtype'],
+                                ]
+                            ],
+                            'x-field' => $sql_field,
+                            'x-readonly' => true
+                        ];
+                    }
                 }
-                if (count($custom_fields)) {
+                if (isset($new_schemas[$schema_name]) && count($new_schemas[$schema_name]['properties']) > 0) {
                     $schema['properties']['custom_fields'] = [
-                        'type' => 'object',
-                        'properties' => $custom_fields
+                        'type' => Schema::TYPE_OBJECT,
+                        'x-full-schema' => $schema_name,
+                        'properties' => $new_schemas[$schema_name]['properties'],
                     ];
                 }
             }
         }
     }
+    $data['schemas'] = array_merge($data['schemas'], $new_schemas);
     return $data;
 }
