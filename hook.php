@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Api\HL\Doc\Schema;
+
 /**
  * Plugin install process
  *
@@ -297,7 +299,7 @@ function plugin_fields_rule_matched($params = [])
 
 function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 {
-    $searchopt = &Search::getOptions($itemtype);
+    $searchopt = Search::getOptions($itemtype);
     $table = $searchopt[$ID]["table"];
 
     //fix glpi default Search::giveItem who for empty date display "--"
@@ -331,4 +333,127 @@ function plugin_datainjection_populate_fields()
             $INJECTABLE_TYPES[$classname] = 'fields';
         }
     }
+}
+
+function plugin_fields_redefine_api_schemas(array $data): array
+{
+    global $DB;
+
+    $fn_fieldTypeToAPIType = static function (string $type): array {
+        $type = explode('-', $type)[0];
+        return match ($type) {
+            'number' => [Schema::TYPE_NUMBER, Schema::FORMAT_NUMBER_FLOAT],
+            'yesno' => [Schema::TYPE_BOOLEAN, Schema::FORMAT_BOOLEAN_BOOLEAN],
+            'date' => [Schema::TYPE_STRING, Schema::FORMAT_STRING_DATE],
+            'datetime' => [Schema::TYPE_STRING, Schema::FORMAT_STRING_DATE_TIME],
+            default => [Schema::TYPE_STRING, Schema::FORMAT_STRING_STRING],
+        };
+    };
+
+    $new_schemas = [];
+
+    foreach ($data['schemas'] as &$schema) {
+        if (!isset($schema['x-itemtype'])) {
+            continue;
+        }
+        $itemtype = $schema['x-itemtype'];
+        $schema_name = $itemtype . '_CustomFields';
+        //Note PluginFieldsContainer::findContainer already checks permissions
+        $container_id = PluginFieldsContainer::findContainer($schema['x-itemtype'], 'dom');
+        if ($container_id !== null) {
+            $it = $DB->request([
+                'SELECT' => [
+                    'glpi_plugin_fields_fields.*',
+                    'glpi_plugin_fields_containers.name AS container_name',
+                ],
+                'FROM'   => 'glpi_plugin_fields_fields',
+                'LEFT JOIN' => [
+                    'glpi_plugin_fields_containers' => [
+                        'ON' => [
+                            'glpi_plugin_fields_fields' => 'plugin_fields_containers_id',
+                            'glpi_plugin_fields_containers' => 'id'
+                        ]
+                    ]
+                ],
+                'WHERE'  => [
+                    'plugin_fields_containers_id' => $container_id,
+                    'glpi_plugin_fields_fields.is_active' => 1
+                ]
+            ]);
+            if (count($it)) {
+                foreach ($it as $field) {
+                    if (!isset($new_schemas[$schema_name])) {
+                        $new_schemas[$schema_name] = [
+                            'type' => Schema::TYPE_OBJECT,
+                            'properties' => []
+                        ];
+                    }
+                    $type_format = $fn_fieldTypeToAPIType($field['type']);
+                    $table = strtolower("glpi_plugin_fields_{$schema['x-itemtype']}{$field['container_name']}s");
+                    $sql_field = $field['name'];
+                    if (str_starts_with($field['type'], 'dropdown')) {
+                        if (str_starts_with($field['type'], 'dropdown-')) {
+                            $dropdown_type = explode('-', $field['type'], 2)[1];
+                        } else {
+                            $dropdown_type = 'PluginFields' . ucfirst($field['name']) . 'Dropdown';
+                        }
+                        $is_tree = is_subclass_of($dropdown_type, CommonTreeDropdown::class);
+                        $dropdown_fk = $field['type'] === 'dropdown' ? $dropdown_type::getForeignKeyField() : $field['name'];
+                        $new_schemas[$schema_name]['properties'][$field['name']] = [
+                            'type' => Schema::TYPE_OBJECT,
+                            'x-join' => [
+                                'table' => $dropdown_type::getTable(), // This is the table with the desired values
+                                'field' => 'id',
+                                'fkey' => $dropdown_fk,
+                                'ref_join' => [
+                                    'table' => $table,
+                                    'fkey' => 'id',
+                                    'field' => 'items_id',
+                                    'condition' => [
+                                        'itemtype' => $schema['x-itemtype'],
+                                    ]
+                                ],
+                            ],
+                            'properties' => [
+                                'id' => [
+                                    'type' => Schema::TYPE_INTEGER,
+                                    'format' => Schema::FORMAT_INTEGER_INT64,
+                                    'x-readonly' => true,
+                                ],
+                                'value' => [
+                                    'type' => Schema::TYPE_STRING,
+                                    'x-field' => $is_tree ? 'completename' : 'name',
+                                ]
+                            ]
+                        ];
+                    } else {
+                        $new_schemas[$schema_name]['properties'][$field['name']] = [
+                            'type' => $type_format[0],
+                            'format' => $type_format[1],
+                            'x-join' => [
+                                // This is the table with the desired values
+                                'table' => $table,
+                                'fkey' => 'id',
+                                'field' => 'items_id',
+                                'condition' => [
+                                    'itemtype' => $schema['x-itemtype'],
+                                ]
+                            ],
+                            'x-field' => $sql_field,
+                            'x-readonly' => true
+                        ];
+                    }
+                }
+                if (isset($new_schemas[$schema_name]) && count($new_schemas[$schema_name]['properties']) > 0) {
+                    $schema['properties']['custom_fields'] = [
+                        'type' => Schema::TYPE_OBJECT,
+                        'x-full-schema' => $schema_name,
+                        'properties' => $new_schemas[$schema_name]['properties'],
+                    ];
+                }
+            }
+        }
+    }
+    $data['schemas'] = array_merge($data['schemas'], $new_schemas);
+    return $data;
 }

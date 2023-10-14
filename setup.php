@@ -33,7 +33,7 @@ define('PLUGIN_FIELDS_VERSION', '1.21.6');
 // Minimal GLPI version, inclusive
 define("PLUGIN_FIELDS_MIN_GLPI", "10.0.0");
 // Maximum GLPI version, exclusive
-define("PLUGIN_FIELDS_MAX_GLPI", "10.0.99");
+define("PLUGIN_FIELDS_MAX_GLPI", "10.1.99");
 
 if (!defined("PLUGINFIELDS_DIR")) {
     define("PLUGINFIELDS_DIR", Plugin::getPhpDir("fields"));
@@ -63,6 +63,7 @@ if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
     mkdir(PLUGINFIELDS_FRONT_PATH);
 }
 
+use Glpi\Plugin\Hooks;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -85,105 +86,109 @@ function plugin_init_fields()
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
-    if (Session::getLoginUserID() && Plugin::isPluginActive('fields')) {
-        // Init hook about itemtype(s) for plugin fields
-        if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
-            $PLUGIN_HOOKS['plugin_fields'] = [];
-        }
+    if (Plugin::isPluginActive('fields')) {
+        // This API integration cannot be done inside a login check since the plugin is initialized before the Router handles authentication
+        $PLUGIN_HOOKS[Hooks::REDEFINE_API_SCHEMAS]['fields'] = 'plugin_fields_redefine_api_schemas';
+        if (Session::getLoginUserID()) {
+            // Init hook about itemtype(s) for plugin fields
+            if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
+                $PLUGIN_HOOKS['plugin_fields'] = [];
+            }
 
-        // When a Category is changed during ticket creation
-        if (
-            isset($_POST) && !empty($_POST)
-            && isset($_POST['_plugin_fields_type'])
-            && $_SERVER['REQUEST_URI'] ?? '' == Ticket::getFormURL()
-        ) {
-            foreach ($_POST as $key => $value) {
-                if (!is_array($value)) {
-                    $_SESSION['plugin']['fields']['values_sent'][$key] = $value;
+            // When a Category is changed during ticket creation
+            if (
+                isset($_POST) && !empty($_POST)
+                && isset($_POST['_plugin_fields_type'])
+                && $_SERVER['REQUEST_URI'] ?? '' == Ticket::getFormURL()
+            ) {
+                foreach ($_POST as $key => $value) {
+                    if (!is_array($value)) {
+                        $_SESSION['plugin']['fields']['values_sent'][$key] = $value;
+                    }
                 }
             }
-        }
 
-        if (Plugin::isPluginActive('fusioninventory')) {
-            $PLUGIN_HOOKS['fusioninventory_inventory']['fields']
-            = ['PluginFieldsInventory', 'updateInventory'];
-        }
-
-        // complete rule engine
-        $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];
-        $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
-
-        if (isset($_SESSION['glpiactiveentities'])) {
-            // add link in plugin page
-            $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
-
-            // add entry to configuration menu
-            $PLUGIN_HOOKS["menu_toadd"]['fields'] = ['config' => 'PluginFieldsMenu'];
-
-            // add tabs to itemtypes
-            $itemtypes = array_unique(PluginFieldsContainer::getEntries());
-            if (count($itemtypes) > 0) {
-                Plugin::registerClass(
-                    'PluginFieldsContainer',
-                    ['addtabon' => $itemtypes]
-                );
+            if (Plugin::isPluginActive('fusioninventory')) {
+                $PLUGIN_HOOKS['fusioninventory_inventory']['fields']
+                    = ['PluginFieldsInventory', 'updateInventory'];
             }
 
-            //include js and css
-            $debug = (isset($_SESSION['glpi_use_mode'])
-                   && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
-            if (!$debug && file_exists(__DIR__ . '/css/fields.min.css')) {
-                $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
-            } else {
-                $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.css';
+            // complete rule engine
+            $PLUGIN_HOOKS['use_rules']['fields'] = ['PluginFusioninventoryTaskpostactionRule'];
+            $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
+
+            if (isset($_SESSION['glpiactiveentities'])) {
+                // add link in plugin page
+                $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
+
+                // add entry to configuration menu
+                $PLUGIN_HOOKS["menu_toadd"]['fields'] = ['config' => 'PluginFieldsMenu'];
+
+                // add tabs to itemtypes
+                $itemtypes = array_unique(PluginFieldsContainer::getEntries());
+                if (count($itemtypes) > 0) {
+                    Plugin::registerClass(
+                        'PluginFieldsContainer',
+                        ['addtabon' => $itemtypes]
+                    );
+                }
+
+                //include js and css
+                $debug = (isset($_SESSION['glpi_use_mode'])
+                && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
+                if (!$debug && file_exists(__DIR__ . '/css/fields.min.css')) {
+                    $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
+                } else {
+                    $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.css';
+                }
+
+                // Add/delete profiles to automaticaly to container
+                $PLUGIN_HOOKS['item_add']['fields']['Profile'] = ["PluginFieldsProfile", "addNewProfile"];
+                $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ["PluginFieldsProfile", "deleteProfile"];
+
+                //load drag and drop javascript library on Package Interface
+                $PLUGIN_HOOKS['add_javascript']['fields'][] = "lib/redips-drag-min.js";
+                if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
+                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
+                } else {
+                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
+                }
             }
 
-            // Add/delete profiles to automaticaly to container
-            $PLUGIN_HOOKS['item_add']['fields']['Profile'] = ["PluginFieldsProfile", "addNewProfile"];
-            $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ["PluginFieldsProfile", "deleteProfile"];
-
-            //load drag and drop javascript library on Package Interface
-            $PLUGIN_HOOKS['add_javascript']['fields'][] = "lib/redips-drag-min.js";
-            if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
-                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
-            } else {
-                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
+            // Add Fields to Datainjection
+            if (Plugin::isPluginActive('datainjection')) {
+                $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
             }
-        }
 
-        // Add Fields to Datainjection
-        if (Plugin::isPluginActive('datainjection')) {
-            $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
-        }
-
-        //Retrieve dom container
-        $itemtypes = PluginFieldsContainer::getUsedItemtypes();
-        if ($itemtypes !== false) {
-            foreach ($itemtypes as $itemtype) {
-                $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = [
-                    "PluginFieldsContainer",
-                    "preItemUpdate"
-                ];
-                $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype]    = [
-                    "PluginFieldsContainer",
-                    "preItem"
-                ];
-                $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = [
-                    "PluginFieldsContainer",
-                    "postItemAdd"
-                ];
-                $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = [
-                    "PluginFieldsContainer",
-                    "preItemPurge"
-                ];
+            //Retrieve dom container
+            $itemtypes = PluginFieldsContainer::getUsedItemtypes();
+            if ($itemtypes !== false) {
+                foreach ($itemtypes as $itemtype) {
+                    $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = [
+                        "PluginFieldsContainer",
+                        "preItemUpdate"
+                    ];
+                    $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype] = [
+                        "PluginFieldsContainer",
+                        "preItem"
+                    ];
+                    $PLUGIN_HOOKS['item_add']['fields'][$itemtype] = [
+                        "PluginFieldsContainer",
+                        "postItemAdd"
+                    ];
+                    $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = [
+                        "PluginFieldsContainer",
+                        "preItemPurge"
+                    ];
+                }
             }
-        }
 
-        // Display fields in any existing tab
-        $PLUGIN_HOOKS['post_item_form']['fields'] = [
-            'PluginFieldsField',
-            'showForTab'
-        ];
+            // Display fields in any existing tab
+            $PLUGIN_HOOKS['post_item_form']['fields'] = [
+                'PluginFieldsField',
+                'showForTab'
+            ];
+        }
     }
 }
 
