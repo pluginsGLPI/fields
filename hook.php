@@ -398,12 +398,13 @@ function plugin_fields_redefine_api_schemas(array $data): array
                             $dropdown_type = 'PluginFields' . ucfirst($field['name']) . 'Dropdown';
                         }
                         $is_tree = is_subclass_of($dropdown_type, CommonTreeDropdown::class);
+                        $dropdown_fk = $field['type'] === 'dropdown' ? $dropdown_type::getForeignKeyField() : $field['name'];
                         $new_schemas[$schema_name]['properties'][$field['name']] = [
                             'type' => Schema::TYPE_OBJECT,
                             'x-join' => [
                                 'table' => $dropdown_type::getTable(), // This is the table with the desired values
                                 'field' => 'id',
-                                'fkey' => $dropdown_type::getForeignKeyField(),
+                                'fkey' => $dropdown_fk,
                                 'ref_join' => [
                                     'table' => $table,
                                     'fkey' => 'id',
