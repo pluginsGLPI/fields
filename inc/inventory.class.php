@@ -39,7 +39,8 @@ class PluginFieldsInventory extends CommonDBTM
             $availaibleItemType = ["Computer","Printer","NetworkEquipment"];
             foreach (array_keys($params['inventory_data']) as $itemtype) {
                 if (in_array($itemtype, $availaibleItemType)) {
-                    //retrive items id switch itemtype
+                    $items_id = 0;
+                    //retrieve items id switch itemtype
                     switch ($itemtype) {
                         case Computer::getType():
                              $items_id = $params['computers_id'];
@@ -110,6 +111,7 @@ class PluginFieldsInventory extends CommonDBTM
         }
 
         //Check if the file exists with the .xml extension (new format)
+        /** @phpstan-ignore-next-line  */
         $file = PLUGIN_FUSIONINVENTORY_XML_DIR . strtolower($itemtype) . "/" . $folder . "/" . $items_id;
         if (file_exists($file . '.xml')) {
             $file .= '.xml';

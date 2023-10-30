@@ -198,6 +198,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     {
         global $DB;
 
+        $results = [];
+
         $iterator = $DB->request([
             'SELECT' => ['itemtypes'],
             'FROM'   => PluginFieldsContainer::getTable(),
@@ -212,9 +214,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             foreach ($itemtypes as $itemtype) {
                 $results[$itemtype] = $itemtype::getTypeName();
             }
-            return $results;
         }
-        return [];
+
+        return $results;
     }
 
 

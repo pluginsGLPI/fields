@@ -272,7 +272,7 @@ class PluginFieldsField extends CommonDBChild
 
             //reject adding for same dropdown on same bloc
             if (!empty($found)) {
-                Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields', false, ERROR));
+                Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields'), false, ERROR);
                 return false;
             }
 
@@ -676,8 +676,8 @@ class PluginFieldsField extends CommonDBChild
     {
         $rand = mt_rand();
 
+        $container = new PluginFieldsContainer();
         if (isset($options['parent_id']) && !empty($options['parent_id'])) {
-            $container = new PluginFieldsContainer();
             $container->getFromDB($options['parent_id']);
         } else if (
             isset($options['parent'])
@@ -697,7 +697,7 @@ class PluginFieldsField extends CommonDBChild
         }
 
         $this->initForm($ID, $options);
-        $this->showFormHeader($ID, $options);
+        $this->showFormHeader($options);
 
         echo "<tr>";
         echo "<td>" . __("Label") . " : </td>";
