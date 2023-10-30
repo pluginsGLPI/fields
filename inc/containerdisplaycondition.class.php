@@ -551,6 +551,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 : self::removeBlackListedOption(Search::getOptions($this->fields['itemtype']), $this->fields['itemtype']),
         ];
         TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition.html.twig', $twig_params);
+
+        return true;
     }
 
     public function getCloneRelations(): array

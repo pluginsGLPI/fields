@@ -126,6 +126,7 @@ class PluginFieldsProfile extends CommonDBRelation
         echo "</tr>";
         echo "</table></div>";
         Html::closeForm();
+        return true;
     }
 
     public static function updateProfile($input)

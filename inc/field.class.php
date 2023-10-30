@@ -774,6 +774,8 @@ class PluginFieldsField extends CommonDBChild
         echo "</tr>";
 
         $this->showFormButtons($options);
+
+        return true;
     }
 
     public static function showForTabContainer($c_id, $item)

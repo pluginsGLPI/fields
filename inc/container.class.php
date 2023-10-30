@@ -474,6 +474,8 @@ class PluginFieldsContainer extends CommonDBTM
                 }
                 return $obj;
         }
+
+        return '';
     }
 
 
@@ -487,7 +489,7 @@ class PluginFieldsContainer extends CommonDBTM
                 return Dropdown::showFromArray($name, self::getTypes(), $options);
             case $this->getTable() . '.itemtypes':
                 $options['display'] = false;
-                return Dropdown::showFromArray($name, self::getItemtypes(), $options);
+                return Dropdown::showFromArray($name, self::getItemtypes(false), $options);
         }
 
         return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
@@ -1114,6 +1116,8 @@ HTML;
             }
             return $tabs_entries;
         }
+
+        return '';
     }
 
 
@@ -1133,6 +1137,8 @@ HTML;
                 return PluginFieldsField::showForTabContainer($data['id'], $item);
             }
         }
+
+        return true;
     }
 
     /**
@@ -1576,6 +1582,8 @@ HTML;
             }
             return $item->input = [];
         }
+
+        return true;
     }
 
     /**
@@ -1601,6 +1609,8 @@ HTML;
             }
             return $item->input = [];
         }
+
+        return true;
     }
 
 

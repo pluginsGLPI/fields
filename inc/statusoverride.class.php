@@ -412,5 +412,6 @@ class PluginFieldsStatusOverride extends CommonDBChild
             'container_fields'    => self::getFieldsChoiceForContainer($container_id),
         ];
         TemplateRenderer::getInstance()->display('@fields/forms/status_override.html.twig', $twig_params);
+        return true;
     }
 }
