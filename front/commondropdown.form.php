@@ -30,7 +30,7 @@
 
 include "../../../inc/includes.php";
 if (preg_match('/[a-z]/i', $_REQUEST['ddtype']) !== 1) {
-    throw new \RuntimeException(sprintf('Invalid itemtype "%"', $_REQUEST['ddtype']));
+    throw new \RuntimeException(sprintf('Invalid itemtype "%1$s"', $_REQUEST['ddtype']));
 }
 $path = PLUGINFIELDS_FRONT_PATH . '/' . $_REQUEST['ddtype'] . '.form.php';
 require_once $path;

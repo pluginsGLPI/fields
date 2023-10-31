@@ -44,6 +44,9 @@ $container_id = (int)$_POST['container_id'];
 $old_order    = (int)$_POST['old_order'];
 $new_order    = (int)$_POST['new_order'];
 
+/** @var DBmysql $DB */
+global $DB;
+
 // Retrieve id of field to update
 $field_iterator = $DB->request(
     [

@@ -252,6 +252,7 @@ function plugin_fields_rule_matched($params = [])
 
     switch ($params['sub_type']) {
         case "PluginFusioninventoryTaskpostactionRule":
+            /** @phpstan-ignore-next-line */
             $agent = new PluginFusioninventoryAgent();
 
             if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
