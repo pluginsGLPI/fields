@@ -11,23 +11,37 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: "Lint"
+  ci:
+    name: "GLPI ${{ matrix.glpi-version }} / php:${{ matrix.php-version }} / ${{ matrix.db-image }}"
     runs-on: "ubuntu-latest"
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {php-version: "7.4"}
+          - {glpi-version: "10.0.x", php-version: "7.4", db-image: "mysql:5.7"}
+          - {glpi-version: "10.0.x", php-version: "8.0", db-image: "mysql:8.0"}
+          - {glpi-version: "10.0.x", php-version: "8.1", db-image: "mariadb:10.2"}
+          - {glpi-version: "10.0.x", php-version: "8.2", db-image: "mariadb:11.0"}
+    container:
+      image: "ghcr.io/glpi-project/githubactions-glpi:php-${{ matrix.php-version }}-glpi-${{ matrix.glpi-version }}"
+      options: >-
+        --volume ${{ github.workspace }}:/var/glpi/plugins:rw
+    services:
+      db:
+        image: "ghcr.io/glpi-project/githubactions-${{ matrix.db-image }}"
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          MYSQL_DATABASE: "glpi"
+        options: >-
+          --shm-size=1g
+    defaults:
+      run:
+        working-directory: "/var/glpi/plugins/fields"
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v4"
-      - name: "Setup PHP"
-        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: "none"
-          tools: "composer, cs2pr"
+            path: "fields"
       - name: "Get Composer cache directory"
         id: "composer-cache"
         run: |
@@ -42,10 +56,16 @@ jobs:
           composer install --ansi --no-interaction --no-progress --prefer-dist
       - name: "PHP Parallel Lint"
         run: |
-          vendor/bin/parallel-lint --colors --checkstyle --exclude ./vendor/ . | cs2pr
+          vendor/bin/parallel-lint --colors --checkstyle --exclude ./vendor/ . | vendor/bin/cs2pr
       - name: "PHP_CodeSniffer"
         run: |
-          vendor/bin/phpcs -q --report=checkstyle | cs2pr
+          vendor/bin/phpcs -q --report=checkstyle | vendor/bin/cs2pr
       - name: "Check for missing/outdated headers"
         run: |
           vendor/bin/licence-headers-check --ansi --no-interaction
+      - name: "Install plugin"
+        working-directory: "/var/glpi"
+        run: |
+          bin/console database:install --ansi --no-interaction --db-name=glpi --db-host=db --db-user=root --strict-configuration
+          bin/console plugin:install --ansi --no-interaction --username=glpi fields
+          bin/console plugin:activate --ansi --no-interaction fields
