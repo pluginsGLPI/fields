@@ -11,41 +11,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: "Lint"
-    runs-on: "ubuntu-latest"
+  ci:
+    name: "GLPI ${{ matrix.glpi-version }} - php:${{ matrix.php-version }} - ${{ matrix.db-image }}"
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {php-version: "7.4"}
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-      - name: "Setup PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: "none"
-          tools: "composer, cs2pr"
-      - name: "Get Composer cache directory"
-        id: "composer-cache"
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: "Restore dependencies cache"
-        uses: "actions/cache@v3"
-        with:
-          path: "${{ steps.composer-cache.outputs.dir }}"
-          key: "${{ github.job }}-${{ matrix.php-version }}-dependencies-${{ hashFiles('**/composer.lock') }}"
-      - name: "Install Composer dependencies"
-        run: |
-          composer install --ansi --no-interaction --no-progress --prefer-dist
-      - name: "PHP Parallel Lint"
-        run: |
-          vendor/bin/parallel-lint --colors --checkstyle --exclude ./vendor/ . | cs2pr
-      - name: "PHP_CodeSniffer"
-        run: |
-          vendor/bin/phpcs -q --report=checkstyle | cs2pr
-      - name: "Check for missing/outdated headers"
-        run: |
-          vendor/bin/licence-headers-check --ansi --no-interaction
+          - {glpi-version: "10.0.x", php-version: "7.4", db-image: "mysql:5.7"}
+          - {glpi-version: "10.0.x", php-version: "8.0", db-image: "mysql:8.0"}
+          - {glpi-version: "10.0.x", php-version: "8.1", db-image: "mariadb:10.2"}
+          - {glpi-version: "10.0.x", php-version: "8.2", db-image: "mariadb:11.0"}
+          - {glpi-version: "10.0.x", php-version: "8.3-rc", db-image: "mysql:8.0"}
+    uses: glpi-project/plugin-ci-workflows/.github/workflows/continuous-integration.yml@v1
+    with:
+      plugin-key: "fields"
+      glpi-version: "${{ matrix.glpi-version }}"
+      php-version: "${{ matrix.php-version }}"
+      db-image: "${{ matrix.db-image }}"
