@@ -56,6 +56,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
         $default_charset = DBConnection::getDefaultCharset();
         $default_collation = DBConnection::getDefaultCollation();
@@ -142,6 +143,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
         $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
         return true;
@@ -175,6 +177,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     public static function getDisplayConditionForContainer(int $container_id): array
     {
+        /** @var DBmysql $DB */
         global $DB;
         $iterator = $DB->request([
             'SELECT' => [
@@ -196,6 +199,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     private static function getItemtypesForContainer(int $container_id): array
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $results = [];

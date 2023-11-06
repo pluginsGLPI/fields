@@ -63,6 +63,7 @@ class PluginFieldsField extends CommonDBChild
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -170,6 +171,7 @@ class PluginFieldsField extends CommonDBChild
      */
     private static function migrateToStableSO(Migration $migration): void
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         // Flatten itemtype list
@@ -229,6 +231,7 @@ class PluginFieldsField extends CommonDBChild
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
@@ -395,6 +398,7 @@ class PluginFieldsField extends CommonDBChild
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function post_purgeItem()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $table         = getTableForItemType(__CLASS__);
@@ -482,6 +486,7 @@ class PluginFieldsField extends CommonDBChild
      */
     public function getNextRanking()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -538,6 +543,10 @@ class PluginFieldsField extends CommonDBChild
 
     public function showSummary($container)
     {
+        /**
+         * @var DBmysql $DB
+         * @var array   $CFG_GLPI
+         */
         global $DB, $CFG_GLPI;
 
         $cID = $container->fields['id'];
@@ -1224,6 +1233,7 @@ JAVASCRIPT
 
     public static function showSingle($itemtype, $searchOption, $massiveaction = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         //clean dropdown [pre/su]fix if exists

@@ -47,6 +47,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -76,6 +77,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
@@ -129,12 +131,14 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public static function getStatusItemtypes(): array
     {
+        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
         return array_merge(['Ticket', 'Change', 'Problem', 'Project', 'ProjectTask'], $CFG_GLPI['state_types']);
     }
 
     public static function countOverridesForContainer(int $container_id)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $fields_table = PluginFieldsField::getTable();
@@ -166,6 +170,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public static function getOverridesForContainer(int $container_id): array
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $fields_table = PluginFieldsField::getTable();
@@ -237,6 +242,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     private static function getItemtypesForContainer(int $container_id): array
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -281,6 +287,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     private static function addStatusNames(array &$overrides): void
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $statuses = [
@@ -319,6 +326,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     private static function getFieldsChoiceForContainer(int $container_id): array
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -346,6 +354,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public static function getStatusDropdownForItemtype(string $itemtype, array $values = []): string
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $statuses = [];

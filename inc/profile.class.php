@@ -47,6 +47,7 @@ class PluginFieldsProfile extends CommonDBRelation
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -75,6 +76,7 @@ class PluginFieldsProfile extends CommonDBRelation
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
@@ -200,6 +202,7 @@ class PluginFieldsProfile extends CommonDBRelation
 
     public static function getRightOnContainer(int $profile_id, int $container_id): int
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $container_profile = $DB->request(

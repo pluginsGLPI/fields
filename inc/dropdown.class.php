@@ -87,6 +87,7 @@ class PluginFieldsDropdown
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         //remove dropdown tables and files

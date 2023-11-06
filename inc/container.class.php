@@ -70,6 +70,7 @@ class PluginFieldsContainer extends CommonDBTM
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -158,6 +159,7 @@ class PluginFieldsContainer extends CommonDBTM
      */
     public static function installUserData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         // -> 0.90-1.3: generated class moved
@@ -337,6 +339,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         //uninstall container table and class
@@ -663,6 +666,7 @@ class PluginFieldsContainer extends CommonDBTM
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function pre_deleteItem()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $_SESSION['delete_container'] = true;
@@ -1001,6 +1005,7 @@ HTML;
 
     public static function getEntries($type = 'tab', $full = false): array
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $condition = [
@@ -1062,6 +1067,7 @@ HTML;
 
     public static function getUsedItemtypes($type = 'all', $must_be_active = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
         $itemtypes = [];
         $where = [];
@@ -1152,6 +1158,7 @@ HTML;
      */
     public function updateFieldsValues($data, $itemtype, $massiveaction = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         if (self::validateValues($data, $itemtype, $massiveaction) === false) {
@@ -1212,6 +1219,7 @@ HTML;
 
     private function addRichTextFiles(CommonDBTM $object): void
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $richtext_fields_iterator = $DB->request([
@@ -1389,6 +1397,7 @@ HTML;
      */
     public static function validateValues($data, $itemtype, $massiveaction)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $valid         = true;
@@ -1776,6 +1785,7 @@ HTML;
 
     public static function getAddSearchOptions($itemtype, $containers_id = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $opt = [];

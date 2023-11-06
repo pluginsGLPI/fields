@@ -246,6 +246,7 @@ function plugin_fields_getRuleActions($params = [])
 
 function plugin_fields_rule_matched($params = [])
 {
+    /** @var DBmysql $DB */
     global $DB;
 
     $container = new PluginFieldsContainer();
@@ -320,6 +321,7 @@ function plugin_fields_giveItem($itemtype, $ID, $data, $num)
  */
 function plugin_datainjection_populate_fields()
 {
+    /** @var array $INJECTABLE_TYPES */
     global $INJECTABLE_TYPES;
 
     $container = new PluginFieldsContainer();
