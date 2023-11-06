@@ -4,12 +4,12 @@ parameters:
     level: 1
     bootstrapFiles:
         - ../../inc/based_config.php
-        - setup.php
     paths:
         - inc
         - front
         - ajax
         - hook.php
+        - setup.php
     scanDirectories:
         - ../../inc
         - ../../src
