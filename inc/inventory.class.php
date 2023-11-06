@@ -39,7 +39,8 @@ class PluginFieldsInventory extends CommonDBTM
             $availaibleItemType = ["Computer","Printer","NetworkEquipment"];
             foreach (array_keys($params['inventory_data']) as $itemtype) {
                 if (in_array($itemtype, $availaibleItemType)) {
-                    //retrive items id switch itemtype
+                    $items_id = 0;
+                    //retrieve items id switch itemtype
                     switch ($itemtype) {
                         case Computer::getType():
                              $items_id = $params['computers_id'];
@@ -57,6 +58,7 @@ class PluginFieldsInventory extends CommonDBTM
                     if ($itemtype == Computer::getType()) {
                         //load inventory from DB because
                         //FI not update XML file if computer is not update
+                        /** @phpstan-ignore-next-line  */
                         $db_info = new PluginFusioninventoryInventoryComputerComputer();
                         if ($db_info->getFromDBByCrit(['computers_id' => $items_id])) {
                             $arrayinventory = unserialize(gzuncompress($db_info->fields['serialized_inventory']));
@@ -68,6 +70,7 @@ class PluginFieldsInventory extends CommonDBTM
                         //Load XML file because FI always update XML file and don't store inventory into DB
                         $file = self::loadXMLFile($itemtype, $items_id);
                         if ($file !== false) {
+                              /** @phpstan-ignore-next-line  */
                               $arrayinventory = PluginFusioninventoryFormatconvert::XMLtoArray($file);
                             if (isset($arrayinventory['CUSTOM'])) {
                                 self::updateFields($arrayinventory['CUSTOM']['CONTAINER'], $itemtype, $items_id);
@@ -108,6 +111,7 @@ class PluginFieldsInventory extends CommonDBTM
         }
 
         //Check if the file exists with the .xml extension (new format)
+        /** @phpstan-ignore-next-line  */
         $file = PLUGIN_FUSIONINVENTORY_XML_DIR . strtolower($itemtype) . "/" . $folder . "/" . $items_id;
         if (file_exists($file . '.xml')) {
             $file .= '.xml';

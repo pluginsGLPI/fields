@@ -70,6 +70,7 @@ class PluginFieldsContainer extends CommonDBTM
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -158,6 +159,7 @@ class PluginFieldsContainer extends CommonDBTM
      */
     public static function installUserData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         // -> 0.90-1.3: generated class moved
@@ -337,6 +339,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         //uninstall container table and class
@@ -474,6 +477,8 @@ class PluginFieldsContainer extends CommonDBTM
                 }
                 return $obj;
         }
+
+        return '';
     }
 
 
@@ -487,7 +492,7 @@ class PluginFieldsContainer extends CommonDBTM
                 return Dropdown::showFromArray($name, self::getTypes(), $options);
             case $this->getTable() . '.itemtypes':
                 $options['display'] = false;
-                return Dropdown::showFromArray($name, self::getItemtypes(), $options);
+                return Dropdown::showFromArray($name, self::getItemtypes(false), $options);
         }
 
         return parent::getValueToSelect($field_id_or_search_options, $name, $values, $options);
@@ -661,6 +666,7 @@ class PluginFieldsContainer extends CommonDBTM
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function pre_deleteItem()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $_SESSION['delete_container'] = true;
@@ -999,6 +1005,7 @@ HTML;
 
     public static function getEntries($type = 'tab', $full = false): array
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $condition = [
@@ -1060,6 +1067,7 @@ HTML;
 
     public static function getUsedItemtypes($type = 'all', $must_be_active = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
         $itemtypes = [];
         $where = [];
@@ -1114,6 +1122,8 @@ HTML;
             }
             return $tabs_entries;
         }
+
+        return '';
     }
 
 
@@ -1133,6 +1143,8 @@ HTML;
                 return PluginFieldsField::showForTabContainer($data['id'], $item);
             }
         }
+
+        return true;
     }
 
     /**
@@ -1146,6 +1158,7 @@ HTML;
      */
     public function updateFieldsValues($data, $itemtype, $massiveaction = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         if (self::validateValues($data, $itemtype, $massiveaction) === false) {
@@ -1206,6 +1219,7 @@ HTML;
 
     private function addRichTextFiles(CommonDBTM $object): void
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $richtext_fields_iterator = $DB->request([
@@ -1383,6 +1397,7 @@ HTML;
      */
     public static function validateValues($data, $itemtype, $massiveaction)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $valid         = true;
@@ -1576,6 +1591,8 @@ HTML;
             }
             return $item->input = [];
         }
+
+        return true;
     }
 
     /**
@@ -1601,6 +1618,8 @@ HTML;
             }
             return $item->input = [];
         }
+
+        return true;
     }
 
 
@@ -1766,6 +1785,7 @@ HTML;
 
     public static function getAddSearchOptions($itemtype, $containers_id = false)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $opt = [];

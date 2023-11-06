@@ -45,6 +45,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
      */
     public static function installBaseData(Migration $migration, $version)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -90,6 +91,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
     public static function uninstall()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
@@ -129,6 +131,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         self::showTranslations($item);
+        return true;
     }
 
     /**
@@ -296,6 +299,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
     */
     public static function getAlreadyTranslatedForItem($itemtype, $items_id)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request(

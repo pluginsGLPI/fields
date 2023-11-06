@@ -98,6 +98,7 @@ class PluginFieldsToolbox
     */
     public function fixFieldsNames(Migration $migration, $condition)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $bad_named_fields = [];
@@ -207,6 +208,10 @@ class PluginFieldsToolbox
     */
     public static function getGlpiItemtypes(): array
     {
+        /**
+         * @var array $CFG_GLPI
+         * @var array $PLUGIN_HOOKS
+         */
         global $CFG_GLPI, $PLUGIN_HOOKS;
 
         $assets_itemtypes = [
@@ -321,6 +326,7 @@ class PluginFieldsToolbox
         $plugin = new Plugin();
         if ($plugin->isActivated('genericobject') && method_exists('PluginGenericobjectType', 'getTypes')) {
             $go_itemtypes = [];
+            /** @phpstan-ignore-next-line  */
             foreach (array_keys(PluginGenericobjectType::getTypes()) as $go_itemtype) {
                 if (!class_exists($go_itemtype)) {
                     continue;
