@@ -1753,6 +1753,18 @@ HTML;
                     $data[$prefix_input]   = $item->input[$prefix_input] ?? [];
                     $data[$tag_input]      = $item->input[$tag_input] ?? [];
                 }
+            } else {
+                //managed multi dropdown field
+                if ($field['type'] == 'dropdown' && $field['multiple']) {
+                    $multiple_key = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
+                    //values are defined by user
+                    if (isset($item->input[$multiple_key])) {
+                        $data[$multiple_key] = $item->input[$multiple_key];
+                    } else { //multi dropdown is empty or has been emptied
+                        $data[$multiple_key] = [];
+                    }
+                    $has_fields = true;
+                }
             }
         }
 
