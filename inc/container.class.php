@@ -1765,6 +1765,19 @@ HTML;
                     }
                     $has_fields = true;
                 }
+
+                //managed multi GLPI item dropdown field
+                if (
+                    preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1
+                    && $field['multiple']) {
+                        //values are defined by user
+                        if (isset($item->input[$field['name']])) {
+                            $data[$field['name']] = $item->input[$field['name']];
+                        } else { //multi dropdown is empty or has been emptied
+                            $data[$field['name']] = [];
+                        }
+                        $has_fields = true;
+                }
             }
         }
 
