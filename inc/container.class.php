@@ -1781,9 +1781,6 @@ HTML;
                         $has_fields = true;
                     }
                 }
-
-
-
             }
         }
 
