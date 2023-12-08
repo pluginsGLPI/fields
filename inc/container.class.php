@@ -1754,22 +1754,24 @@ HTML;
                     $data[$tag_input]      = $item->input[$tag_input] ?? [];
                 }
             } else {
-                //managed multi dropdown field
-                if ($field['type'] == 'dropdown' && $field['multiple']) {
-                    $multiple_key = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
-                    //values are defined by user
-                    if (isset($item->input[$multiple_key])) {
-                        $data[$multiple_key] = $item->input[$multiple_key];
-                    } else { //multi dropdown is empty or has been emptied
-                        $data[$multiple_key] = [];
+                //the absence of the field in the input may be due to the fact that the input allows multiple selection
+                // ex my_dom[]
+                //in these conditions, the input is never sent by the browser
+                if ($field['multiple']) {
+                    //handle multi dropodwn field
+                    if ($field['type'] == 'dropdown') {
+                        $multiple_key = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
+                        //values are defined by user
+                        if (isset($item->input[$multiple_key])) {
+                            $data[$multiple_key] = $item->input[$multiple_key];
+                        } else { //multi dropdown is empty or has been emptied
+                            $data[$multiple_key] = [];
+                        }
+                        $has_fields = true;
                     }
-                    $has_fields = true;
-                }
 
-                //managed multi GLPI item dropdown field
-                if (
-                    preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1
-                    && $field['multiple']) {
+                    //managed multi GLPI item dropdown field
+                    if (preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1) {
                         //values are defined by user
                         if (isset($item->input[$field['name']])) {
                             $data[$field['name']] = $item->input[$field['name']];
@@ -1777,7 +1779,11 @@ HTML;
                             $data[$field['name']] = [];
                         }
                         $has_fields = true;
+                    }
                 }
+
+
+
             }
         }
 
