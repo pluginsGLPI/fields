@@ -323,6 +323,26 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
+        //Ticket Solution tab no longer exist move to ITILSolution dom
+        //Problem Solution tab no longer exist move to ITILSolution dom
+        //Change Analysis / Solution / Plans no longer exist disable it
+        $DB->update(
+            'glpi_plugin_fields_containers',
+            [
+                'is_active' => 0,
+            ],
+            [
+                'type' => 'domtab',
+                [
+                    'OR' => [
+                        ['subtype' => ['LIKE', 'Ticket$2']],
+                        ['subtype' => ['LIKE', 'Problem$2']],
+                        ['subtype' => ['LIKE', 'Change$%']],
+                    ],
+                ],
+            ]
+        );
+
         // Ensure data is update before regenerating files.
         $migration->executeMigration();
 
@@ -1984,19 +2004,6 @@ HTML;
     {
         $tabs = [];
         switch ($item::getType()) {
-            case Ticket::getType():
-            case Problem::getType():
-                $tabs = [
-                    $item::getType() . '$2' => __('Solution')
-                ];
-                break;
-            case Change::getType():
-                $tabs = [
-                    'Change$1' => __('Analysis'),
-                    'Change$2' => __('Solution'),
-                    'Change$3' => __('Plans')
-                ];
-                break;
             case Entity::getType():
                 $tabs = [
                     'Entity$2' => __('Address'),
