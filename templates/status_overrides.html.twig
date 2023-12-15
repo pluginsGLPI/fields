@@ -31,6 +31,18 @@
 
 <div id="container{{ rand }}" class="asset {{ bg }}">
 
+   <div class='alert alert-primary d-flex align-items-center' role='alert'>
+      <i class='fas fa-info-circle fa-xl'></i>
+      <span class='ms-2'>
+         {{ __("Here you can redefine the following options :") }}
+         <ul>
+            <li><i> {{__("Mandatory") }} </i></li>
+            <li><i>{{ __("Read-only") }} </i></li>
+         </ul>
+         {{ __("for each field, depending on the states of the element attached to the container.") }}
+      </span>
+   </div>
+
    {% if has_fields %}
       <div class="d-flex align-items-start mb-3">
          <button class="btn btn-primary me-2"
