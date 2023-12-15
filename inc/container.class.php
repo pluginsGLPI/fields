@@ -898,11 +898,17 @@ HTML;
     public static function showFormItemtype($params = [])
     {
         $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
+        $values = self::getItemtypes($is_domtab);
+
+        //remove ITISolution from values if type is tab
+        if (!isset($params['type']) || (isset($params['type']) && $params['type'] == 'tab')) {
+            unset($values[__('Assistance')]['ITILSolution']);
+        }
 
         $rand = $params['rand'];
         Dropdown::showFromArray(
             "itemtypes",
-            self::getItemtypes($is_domtab),
+            $values,
             [
                 'rand'                => $rand,
                 'multiple'            => !$is_domtab,
