@@ -1417,6 +1417,17 @@ HTML;
         $status_overrides = array_key_exists($status_field_name, $data) && $data[$status_field_name] !== null
             ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $data[$status_field_name])
             : [];
+
+        // If no overrides are loaded, it may be because by the container if it's type is 'tab'
+        // this implies that it does not contain the fields of the parent object in $data
+        // try to load overrides with related item fields instead of $data
+        $relatedItem = new $data['itemtype']();
+        if (empty($status_overrides) && $relatedItem->getFromDB($data['items_id'])) {
+            $status_overrides = array_key_exists($status_field_name, $relatedItem->fields) && $relatedItem->fields[$status_field_name] !== null
+            ? PluginFieldsStatusOverride::getOverridesForItemtypeAndStatus($container->getID(), $itemtype, $relatedItem->fields[$status_field_name])
+            : [];
+        }
+
         foreach ($status_overrides as $status_override) {
             if (isset($fields[$status_override['plugin_fields_fields_id']])) {
                 $fields[$status_override['plugin_fields_fields_id']]['is_readonly'] = $status_override['is_readonly'];
