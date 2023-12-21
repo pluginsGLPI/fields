@@ -609,7 +609,7 @@ class PluginFieldsField extends CommonDBChild
                     echo "<tr class='tab_bg_2' style='cursor:pointer'>";
 
                     echo "<td>";
-                    $label = !empty($this->fields['label']) ? $this->fields['label'] : __('No label defined', 'fields');
+                    $label = !empty($this->fields['label']) ? $this->fields['label'] : NOT_AVAILABLE;
                     echo "<a href='" . Plugin::getWebDir('fields') . "/front/field.form.php?id={$this->getID()}'>{$label}</a>";
                     echo "</td>";
                     echo "<td>" . $fields_type[$this->fields['type']] . "</td>";
