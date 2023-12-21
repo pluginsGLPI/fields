@@ -275,6 +275,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 is_a($twig_params['dropdown_itemtype'], CommonTreeDropdown::class, true)
             );
 
+            $twig_params['dropdown_option'] = [];
             if ($twig_params['dropdown_itemtype'] == User::class) {
                 $twig_params['dropdown_option'] = ['right' => 'all'];
             }
