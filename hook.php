@@ -335,3 +335,24 @@ function plugin_datainjection_populate_fields()
         }
     }
 }
+
+function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
+{
+    $searchopt = &Search::getOptions($itemtype);
+    $table     = $searchopt[$ID]["table"];
+    $field     = $searchopt[$ID]["field"];
+
+    $field_field = new PluginFieldsField();
+    // if 'multiple' field with name is found
+    // update WHERE clause with LIKE statement
+    if (
+        $field_field->getFromDBByCrit(
+            [
+                'name' => $field,
+                'multiple' => true
+            ]
+        )
+    ) {
+        return $link . " `$table" . "_" . "$field`" . "." . "`$field` LIKE '%$val%'";
+    }
+}

@@ -1929,6 +1929,7 @@ HTML;
             ) {
                 if ($data['multiple']) {
                     $opt[$i]['datatype']   = 'specific';
+                    $opt[$i]['searchtype']   = ['equals', 'notequals'];
                 } else {
                     $opt[$i]['table']      = CommonDBTM::getTable($dropdown_matches['class']);
                     $opt[$i]['field']      = 'name';
