@@ -335,3 +335,45 @@ function plugin_datainjection_populate_fields()
         }
     }
 }
+
+function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
+{
+    /** @var \DBmysql $DB */
+    global $DB;
+
+    $searchopt = &Search::getOptions($itemtype);
+    $table     = $searchopt[$ID]["table"];
+    $field     = $searchopt[$ID]["field"];
+
+    $field_field = new PluginFieldsField();
+
+    // if 'multiple' field with name is found -> 'Dropdown-XXXX' case
+    // update WHERE clause with LIKE statement
+    if (
+        $field_field->getFromDBByCrit(
+            [
+                'name' => $field,
+                'multiple' => true
+            ]
+        )
+    ) {
+        return $link . $DB->quoteName("$table" . "_" . "$field") . "." .  $DB->quoteName($field) . "LIKE " . $DB->quoteValue("%\"$val\"%") ;
+    } else {
+        // if 'multiple' field with cleaned name is found -> 'dropdown' case
+        // update WHERE clause with LIKE statement
+        $cleanfield = str_replace("plugin_fields_", "", $field);
+        $cleanfield = str_replace("dropdowns_id", "", $cleanfield);
+        if (
+            $field_field->getFromDBByCrit(
+                [
+                    'name' => $cleanfield,
+                    'multiple' => true
+                ]
+            )
+        ) {
+            return $link . $DB->quoteName("$table" . "_" . "$cleanfield") . "." .  $DB->quoteName($field) . "LIKE " . $DB->quoteValue("%\"$val\"%") ;
+        } else {
+            return false;
+        }
+    }
+}

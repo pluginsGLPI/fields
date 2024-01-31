@@ -30,6 +30,43 @@
 
 abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 {
+    public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
+    {
+
+        if (!is_array($values)) {
+            $values = [$field => $values];
+        }
+
+        $field_id = $options['searchopt']['pfields_fields_id'] ?? null;
+
+        $field_specs = new PluginFieldsField();
+        if ($field_id !== null && $field_specs->getFromDB($field_id)) {
+            $dropdown_matches = [];
+            if (
+                preg_match('/^dropdown-(?<class>.+)$/i', $field_specs->fields['type'], $dropdown_matches) === 1
+                && $field_specs->fields['multiple']
+            ) {
+                $itemtype = $dropdown_matches['class'];
+                if (!is_a($itemtype, CommonDBTM::class, true)) {
+                    return ''; // Itemtype not exists (maybe a deactivated plugin)
+                }
+                $display_with = [];
+                if ($itemtype == User::class) {
+                    $display_with = ['realname', 'firstname'];
+                }
+                return Dropdown::show($itemtype, ['displaywith' => $display_with, 'name' => $name, 'display' => false]);
+            } else if (
+                $field_specs->fields['type'] === 'dropdown'
+                && $field_specs->fields['multiple']
+            ) {
+                $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
+                return Dropdown::show($itemtype, ['name' => $name, 'display' => false]);
+            }
+        }
+        return parent::getSpecificValueToSelect($field, $name, $values, $options);
+    }
+
+
     public static function getSpecificValueToDisplay($field, $values, array $options = [])
     {
         if (!is_array($values)) {
