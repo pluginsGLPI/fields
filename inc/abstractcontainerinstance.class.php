@@ -50,7 +50,11 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
                 if (!is_a($itemtype, CommonDBTM::class, true)) {
                     return ''; // Itemtype not exists (maybe a deactivated plugin)
                 }
-                return Dropdown::show($itemtype, ['name' => $name, 'display' => false]);
+                $display_with = [];
+                if ($itemtype == User::class) {
+                    $display_with = ['lastname', 'firstname'];
+                }
+                return Dropdown::show($itemtype, ['displaywith' => $display_with, 'name' => $name, 'display' => false]);
             }
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
