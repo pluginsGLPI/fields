@@ -338,6 +338,8 @@ function plugin_datainjection_populate_fields()
 
 function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 {
+    global $DB;
+
     $searchopt = &Search::getOptions($itemtype);
     $table     = $searchopt[$ID]["table"];
     $field     = $searchopt[$ID]["field"];
@@ -353,6 +355,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             ]
         )
     ) {
-        return $link . " `$table" . "_" . "$field`" . "." . "`$field` LIKE '%\"$val\"%'";
+        ;
+        return $link . $DB->quoteName("$table" . "_" . "$field") . "." .  $DB->quoteName($field) . "LIKE " . $DB->quoteValue("%\"$val\"%") ;
     }
 }
