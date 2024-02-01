@@ -353,6 +353,6 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             ]
         )
     ) {
-        return $link . " `$table" . "_" . "$field`" . "." . "`$field` LIKE '%$val%'";
+        return $link . " `$table" . "_" . "$field`" . "." . "`$field` LIKE '%\"$val\"%'";
     }
 }
