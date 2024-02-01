@@ -338,6 +338,7 @@ function plugin_datainjection_populate_fields()
 
 function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 {
+    /** @var \DBmysql $DB */
     global $DB;
 
     $searchopt = &Search::getOptions($itemtype);
