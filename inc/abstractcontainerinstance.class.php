@@ -55,6 +55,12 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
                     $display_with = ['lastname', 'firstname'];
                 }
                 return Dropdown::show($itemtype, ['displaywith' => $display_with, 'name' => $name, 'display' => false]);
+            } else if (
+                $field_specs->fields['type'] === 'dropdown'
+                && $field_specs->fields['multiple']
+            ) {
+                $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
+                return Dropdown::show($itemtype, ['name' => $name, 'display' => false]);
             }
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
