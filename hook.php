@@ -359,7 +359,6 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     ) {
         return $link . $DB->quoteName("$table" . "_" . "$field") . "." .  $DB->quoteName($field) . "LIKE " . $DB->quoteValue("%\"$val\"%") ;
     } else {
-
         // if 'multiple' field with cleaned name is found -> 'dropdown' case
         // update WHERE clause with LIKE statement
         $cleanfield = str_replace("plugin_fields_", "", $field);
