@@ -52,7 +52,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
                 }
                 $display_with = [];
                 if ($itemtype == User::class) {
-                    $display_with = ['lastname', 'firstname'];
+                    $display_with = ['realname', 'firstname'];
                 }
                 return Dropdown::show($itemtype, ['displaywith' => $display_with, 'name' => $name, 'display' => false]);
             } else if (
