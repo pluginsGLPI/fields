@@ -17,5 +17,4 @@ updates:
     versioning-strategy: "increase"
     groups:
       dev-dependencies:
-        patterns:
-          - "*"
+        dependency-type: "development"
