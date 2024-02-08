@@ -6,7 +6,7 @@ updates:
     schedule:
       interval: "monthly"
 
-  # Strategy for composer dependencies on develop branch.
+  # Strategy for composer dependencies
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
@@ -14,5 +14,8 @@ updates:
     allow:
       - dependency-type: "direct"
     open-pull-requests-limit: 100
-    target-branch: "develop"
-    versioning-strategy: "lockfile-only"
+    versioning-strategy: "increase"
+    groups:
+      dev-dependencies:
+        patterns:
+          - "*"
