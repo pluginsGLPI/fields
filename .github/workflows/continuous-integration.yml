@@ -11,18 +11,22 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
 jobs:
+  generate-ci-matrix:
+    name: "Generate CI matrix"
+    uses: "glpi-project/plugin-ci-workflows/.github/workflows/generate-ci-matrix.yml@v1"
+    with:
+      glpi-version: "10.0.x"
   ci:
     name: "GLPI ${{ matrix.glpi-version }} - php:${{ matrix.php-version }} - ${{ matrix.db-image }}"
+    needs: "generate-ci-matrix"
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - {glpi-version: "10.0.x", php-version: "7.4", db-image: "mysql:5.7"}
-          - {glpi-version: "10.0.x", php-version: "8.0", db-image: "mysql:8.0"}
-          - {glpi-version: "10.0.x", php-version: "8.1", db-image: "mariadb:10.2"}
-          - {glpi-version: "10.0.x", php-version: "8.2", db-image: "mariadb:11.0"}
-          - {glpi-version: "10.0.x", php-version: "8.3-rc", db-image: "mysql:8.0"}
+      matrix: ${{ fromJson(needs.generate-ci-matrix.outputs.matrix) }}
     uses: "glpi-project/plugin-ci-workflows/.github/workflows/continuous-integration.yml@v1"
     with:
       plugin-key: "fields"
