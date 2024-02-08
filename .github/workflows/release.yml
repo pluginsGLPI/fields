@@ -1,4 +1,4 @@
-name: "Plugin release"
+name: "Publish release"
 
 on:
   push:
@@ -6,35 +6,6 @@ on:
        - '*'
 
 jobs:
-  create-release:
-    name: "Create release"
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: "Extract tag name"
-        run: |
-          echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-      - name: "Build package"
-        id: "build-package"
-        uses: "glpi-project/tools/github-actions/build-package@0.7.2"
-        with:
-          plugin-version: ${{ env.tag_name }}
-      - name: "Create release"
-        id: "create-release"
-        uses: "actions/create-release@v1"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.tag_name }}
-          release_name: ${{ env.tag_name }}
-          draft: true
-      - name: "Attach package to release"
-        uses: "actions/upload-release-asset@v1"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ${{ steps.build-package.outputs.package-path }}
-          asset_name: ${{ steps.build-package.outputs.package-basename }}
-          asset_content_type: " application/x-bzip2"
+  publish-release:
+    name: "Publish release"
+    uses: "glpi-project/plugin-release-workflows/.github/workflows/publish-release.yml@v1"
