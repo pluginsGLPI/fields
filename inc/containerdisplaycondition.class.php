@@ -274,6 +274,11 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 true,
                 is_a($twig_params['dropdown_itemtype'], CommonTreeDropdown::class, true)
             );
+
+            $twig_params['dropdown_option'] = [];
+            if ($twig_params['dropdown_itemtype'] == User::class) {
+                $twig_params['dropdown_option'] = ['right' => 'all'];
+            }
         } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
             $twig_params['list_conditions']   = self::getComparisonOperators(true);
             $twig_params['is_specific'] = true;
