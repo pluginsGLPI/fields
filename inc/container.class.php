@@ -1800,6 +1800,34 @@ HTML;
                     $data[$prefix_input]   = $item->input[$prefix_input] ?? [];
                     $data[$tag_input]      = $item->input[$tag_input] ?? [];
                 }
+            } else {
+                //the absence of the field in the input may be due to the fact that the input allows multiple selection
+                // ex my_dom[]
+                //in these conditions, the input is never sent by the browser
+                if ($field['multiple']) {
+                    //handle multi dropodwn field
+                    if ($field['type'] == 'dropdown') {
+                        $multiple_key = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
+                        //values are defined by user
+                        if (isset($item->input[$multiple_key])) {
+                            $data[$multiple_key] = $item->input[$multiple_key];
+                        } else { //multi dropdown is empty or has been emptied
+                            $data[$multiple_key] = [];
+                        }
+                        $has_fields = true;
+                    }
+
+                    //managed multi GLPI item dropdown field
+                    if (preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1) {
+                        //values are defined by user
+                        if (isset($item->input[$field['name']])) {
+                            $data[$field['name']] = $item->input[$field['name']];
+                        } else { //multi dropdown is empty or has been emptied
+                            $data[$field['name']] = [];
+                        }
+                        $has_fields = true;
+                    }
+                }
             }
         }
 
