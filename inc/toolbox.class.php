@@ -236,6 +236,7 @@ class PluginFieldsToolbox
             Ticket::class,
             Problem::class,
             Change::class,
+            ITILSolution::class,
             TicketRecurrent::class,
             RecurrentChange::class,
             PlanningExternalEvent::class,

@@ -323,6 +323,27 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
+
+        //Ticket Solution tab no longer exist disable it
+        //Problem Solution tab no longer exist disable it
+        //Change Analysis / Solution / Plans no longer exist disable it
+        $DB->update(
+            'glpi_plugin_fields_containers',
+            [
+                'is_active' => 0,
+            ],
+            [
+                'type' => 'domtab',
+                [
+                    'OR' => [
+                        ['subtype' => ['LIKE', 'Ticket$2']],
+                        ['subtype' => ['LIKE', 'Problem$2']],
+                        ['subtype' => ['LIKE', 'Change$%']],
+                    ],
+                ],
+            ]
+        );
+
         // Ensure data is update before regenerating files.
         $migration->executeMigration();
 
@@ -878,11 +899,17 @@ HTML;
     public static function showFormItemtype($params = [])
     {
         $is_domtab = isset($params['type']) && $params['type'] == 'domtab';
+        $values = self::getItemtypes($is_domtab);
+
+        //remove ITISolution from values if type is tab
+        if (!isset($params['type']) || (isset($params['type']) && $params['type'] == 'tab')) {
+            unset($values[__('Assistance')]['ITILSolution']);
+        }
 
         $rand = $params['rand'];
         Dropdown::showFromArray(
             "itemtypes",
-            self::getItemtypes($is_domtab),
+            $values,
             [
                 'rand'                => $rand,
                 'multiple'            => !$is_domtab,
@@ -1986,19 +2013,6 @@ HTML;
     {
         $tabs = [];
         switch ($item::getType()) {
-            case Ticket::getType():
-            case Problem::getType():
-                $tabs = [
-                    $item::getType() . '$2' => __('Solution')
-                ];
-                break;
-            case Change::getType():
-                $tabs = [
-                    'Change$1' => __('Analysis'),
-                    'Change$2' => __('Solution'),
-                    'Change$3' => __('Plans')
-                ];
-                break;
             case Entity::getType():
                 $tabs = [
                     'Entity$2' => __('Address'),

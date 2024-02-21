@@ -864,12 +864,12 @@ class PluginFieldsField extends CommonDBChild
         $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
-
         $subtype = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : "";
         $type = substr($subtype, -strlen('$main')) === '$main'
             || in_array('showForm', $functions)
             || in_array('showPrimaryForm', $functions)
             || in_array('showFormHelpdesk', $functions)
+            || $item::getType() == ITILSolution::class
                 ? 'dom'
                 : 'domtab';
         if ($subtype == -1) {
@@ -918,6 +918,7 @@ class PluginFieldsField extends CommonDBChild
             strpos($current_url, ".form.php") === false
             && strpos($current_url, ".injector.php") === false
             && strpos($current_url, ".public.php") === false
+            && strpos($current_url, "ajax/timeline.php") === false // ITILSolution load from timeline
         ) {
             return false;
         }
@@ -1045,6 +1046,7 @@ class PluginFieldsField extends CommonDBChild
 JAVASCRIPT
         );
     }
+
 
     public static function prepareHtmlFields(
         $fields,
