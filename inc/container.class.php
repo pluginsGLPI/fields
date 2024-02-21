@@ -324,8 +324,8 @@ class PluginFieldsContainer extends CommonDBTM
         }
 
 
-        //Ticket Solution tab no longer exist exist disable it
-        //Problem Solution tab no longer exist exist disable it
+        //Ticket Solution tab no longer exist disable it
+        //Problem Solution tab no longer exist disable it
         //Change Analysis / Solution / Plans no longer exist disable it
         $DB->update(
             'glpi_plugin_fields_containers',
