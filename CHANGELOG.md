@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+
+## [1.21.7] - 2024-02-21
+
+### Added
+
+- Display generic label for field if not available
+
+### Fixed
+
+- Fix search on dropdown ```multiple```
+- Load all users from User dropdown
+- Handle / save empty choice for dropdown
+- Load overrides from related item if container is ```tab``` type
+- Deactivate ```domtab``` that no longer works and handle ```ITILSolution``` (see https://github.com/pluginsGLPI/fields/pull/741)
+
+
 ## [1.6.1] - 2017-03-09
 
 - Drop namespaces added in 1.6.0; GLPI is not ready
