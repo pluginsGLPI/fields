@@ -1439,13 +1439,12 @@ HTML;
             'plugin_fields_containers_id' => $data['plugin_fields_containers_id']
         ]);
 
-
         $status_value = null;
-        $relatedItem = new $data['itemtype']();
         $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($itemtype);
         if ($container->fields['type'] === 'dom') {
             $status_value = $data[$status_field_name] ?? null;
         } else {
+            $relatedItem = new $itemtype();
             $status_value = $relatedItem->fields[$status_field_name] ?? null;
         }
         // Apply status overrides
