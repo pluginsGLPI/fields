@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix crash about undefined array key
 
 ## [1.21.7] - 2024-02-22
 
