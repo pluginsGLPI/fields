@@ -367,14 +367,17 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         }
 
         //use relation.constant.php to allow some tables (exclude Location which is managed using `CommonDBTM::maybeLocated()`)
+        $relations = getDbRelations();
         foreach (getDbRelations() as $relation) {
             foreach ($relation as $main_table => $foreignKey) {
                 if (
                     $main_table == getTableForItemType($itemtype_class)
-                    && !is_array($foreignKey)
-                    && getTableNameForForeignKeyField($foreignKey) != getTableForItemType(Location::getType())
                 ) {
-                    $allowed_table[] = getTableNameForForeignKeyField($foreignKey);
+                    foreach ($foreignKey as $foreign_class) {
+                        if (!is_array($foreign_class) &&  getTableNameForForeignKeyField($foreign_class) != getTableForItemType(Location::getType())) {
+                            $allowed_table[] = getTableForItemType(getItemtypeForForeignKeyField($foreign_class));
+                        }
+                    }
                 }
             }
         }
