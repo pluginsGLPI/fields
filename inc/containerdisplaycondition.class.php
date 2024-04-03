@@ -373,7 +373,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                     $main_table == getTableForItemType($itemtype_class)
                 ) {
                     foreach ($foreignKey as $foreign_class) {
-                        if (!is_array($foreign_class) &&  getTableNameForForeignKeyField($foreign_class) != getTableForItemType(Location::getType())) {
+                        if (!is_array($foreign_class) && getTableNameForForeignKeyField($foreign_class) != getTableForItemType(Location::getType())) {
                             $allowed_table[] = getTableForItemType(getItemtypeForForeignKeyField($foreign_class));
                         }
                     }
