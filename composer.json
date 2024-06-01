@@ -6,8 +6,8 @@
     "require-dev": {
         "glpi-project/tools": "^0.7.2",
         "php-parallel-lint/php-parallel-lint": "^1.4",
-        "phpstan/phpstan": "^1.10",
-        "squizlabs/php_codesniffer": "^3.9"
+        "phpstan/phpstan": "^1.11",
+        "squizlabs/php_codesniffer": "^3.10"
     },
     "config": {
         "optimize-autoloader": true,
