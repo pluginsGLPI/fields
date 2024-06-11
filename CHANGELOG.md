@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.21.9] - 2024-06-11
+
+### Fixed
+
+- Fix dropdown recursion (#775)
+- Fix list of allowed Search Option (#778)
+- Fix(core): load plugin from CLI context
+- Fix: multiple dropdown fields emptied when solution added (#795)
 
 
 ## [1.21.8] - 2024-02-22
