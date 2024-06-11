@@ -557,8 +557,8 @@ class PluginFieldsContainer extends CommonDBTM
                 foreach (array_column($found, 'itemtypes') as $founditemtypes) {
                     foreach (json_decode($founditemtypes) as $founditemtype) {
                         if (in_array($founditemtype, $input['itemtypes'])) {
-                             Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
-                             return false;
+                            Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", "fields"), false, ERROR);
+                            return false;
                         }
                     }
                 }
@@ -572,8 +572,8 @@ class PluginFieldsContainer extends CommonDBTM
                 foreach (array_column($found, 'itemtypes') as $founditemtypes) {
                     foreach (json_decode($founditemtypes) as $founditemtype) {
                         if (in_array($founditemtype, $input['itemtypes'])) {
-                             Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", "fields"), false, ERROR);
-                             return false;
+                            Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", "fields"), false, ERROR);
+                            return false;
                         }
                     }
                 }
@@ -725,7 +725,7 @@ class PluginFieldsContainer extends CommonDBTM
 
             //delete table
             if (class_exists($classname)) {
-                 $classname::uninstall();
+                $classname::uninstall();
             } else {
                 //class does not exists; try to remove any existing table
                 $tablename = getTableForItemType($classname);
@@ -964,7 +964,7 @@ HTML;
                     foreach ($tabs as &$value) {
                         $results = [];
                         if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
-                             $value = str_replace($results[0][0], "", $value);
+                            $value = str_replace($results[0][0], "", $value);
                         }
                     }
 
@@ -1485,9 +1485,9 @@ HTML;
                 }
             } elseif (isset($data[$name])) {
                 $value = $data[$name];
-            } else if (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
+            } elseif (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
                 $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } else if ($field['mandatory'] == 1 && isset($data['items_id'])) {
+            } elseif ($field['mandatory'] == 1 && isset($data['items_id'])) {
                 $tablename = getTableForItemType(self::getClassname($itemtype, $container->fields['name']));
 
                 $iterator = $DB->request([
@@ -1502,7 +1502,7 @@ HTML;
                 $db_result = $iterator->current();
                 if (isset($db_result['plugin_fields_' . $name . 'dropdowns_id'])) {
                     $value = $db_result['plugin_fields_' . $name . 'dropdowns_id'];
-                } else if (isset($db_result[$name])) {
+                } elseif (isset($db_result[$name])) {
                     $value = $db_result[$name];
                 }
             } else {
@@ -1528,11 +1528,11 @@ HTML;
             ) {
                 $empty_errors[] = $field['label'];
                 $valid = false;
-            } else if ($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
+            } elseif ($field['type'] == 'number' && !empty($value) && !is_numeric($value)) {
                 // Check number fields
                 $number_errors[] = $field['label'];
                 $valid = false;
-            } else if ($field['type'] == 'url' && !empty($value)) {
+            } elseif ($field['type'] == 'url' && !empty($value)) {
                 if (filter_var($value, FILTER_VALIDATE_URL) === false) {
                     $url_errors[] = $field['label'];
                     $valid = false;
@@ -1741,7 +1741,7 @@ HTML;
      */
     private static function populateData($c_id, CommonDBTM $item)
     {
-       //find fields associated to found container
+        //find fields associated to found container
         $field_obj = new PluginFieldsField();
         $fields = $field_obj->find(
             [
@@ -1751,10 +1751,10 @@ HTML;
             "ranking"
         );
 
-       //prepare data to update
+        //prepare data to update
         $data = ['plugin_fields_containers_id' => $c_id];
         if (!$item->isNewItem()) {
-           //no ID yet while creating
+            //no ID yet while creating
             $data['items_id'] = $item->getID();
         }
 
@@ -1785,15 +1785,15 @@ HTML;
             }
 
             if (isset($item->input[$field['name']])) {
-               //standard field
+                //standard field
                 $input = $field['name'];
             } else {
-               //dropdown field
+                //dropdown field
                 $input = "plugin_fields_" . $field['name'] . "dropdowns_id";
             }
             if (isset($item->input[$input])) {
                 $has_fields = true;
-               // Before is_number check, help user to have a number correct, during a massive action of a number field
+                // Before is_number check, help user to have a number correct, during a massive action of a number field
                 if ($field['type'] == 'number') {
                     $item->input[$input] = str_replace(",", ".", $item->input[$input]);
                 }
@@ -1813,16 +1813,21 @@ HTML;
                 // ex my_dom[]
                 //in these conditions, the input is never sent by the browser
                 if ($field['multiple']) {
-                    //handle multi dropodwn field
+                    //handle multi dropdown field
                     if ($field['type'] == 'dropdown') {
                         $multiple_key = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
+                        $multiple_key_defined = '_' . $multiple_key . '_defined';
                         //values are defined by user
                         if (isset($item->input[$multiple_key])) {
                             $data[$multiple_key] = $item->input[$multiple_key];
-                        } else { //multi dropdown is empty or has been emptied
+                            $has_fields = true;
+                        } elseif (
+                            isset($item->input[$multiple_key_defined])
+                            && $item->input[$multiple_key_defined]
+                        ) { //multi dropdown is empty or has been emptied
                             $data[$multiple_key] = [];
+                            $has_fields = true;
                         }
-                        $has_fields = true;
                     }
 
                     //managed multi GLPI item dropdown field
