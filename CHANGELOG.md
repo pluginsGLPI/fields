@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Prevent error (with Datainjection plugin) when classname is null (#798)
+- Prevent compatibility issues when importing with the Datainjection plugin (#798)
 
 ## [1.21.9] - 2024-06-11
 
