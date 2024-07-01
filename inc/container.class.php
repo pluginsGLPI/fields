@@ -1649,7 +1649,7 @@ HTML;
                 count($data) == 0
                 || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
             ) {
-                $item->input['date_mod'] = date("Y-m-d H:i:s");
+                $item->input['date_mod'] = $_SESSION["glpi_currenttime"];
                 return true;
             }
             return $item->input = [];
