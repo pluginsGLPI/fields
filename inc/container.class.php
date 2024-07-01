@@ -1649,10 +1649,18 @@ HTML;
                 count($data) == 0
                 || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
             ) {
+                $item->input['date_mod'] = date("Y-m-d H:i:s");
                 return true;
             }
             return $item->input = [];
         }
+
+        return true;
+    }
+
+    public static function postItemUpdate(CommonDBTM $item)
+    {
+        echo 'test';
 
         return true;
     }
