@@ -1319,7 +1319,7 @@ HTML;
 
             foreach ($data as $key => $value) {
                 //log only not empty values
-                if (!empty($value)) {
+                if (!empty($value) && strpos($key, '_uploader_') === false) {
                     //prepare log
                     $changes = [0, "N/A", $value];
 
