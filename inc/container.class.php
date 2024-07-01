@@ -1658,13 +1658,6 @@ HTML;
         return true;
     }
 
-    public static function postItemUpdate(CommonDBTM $item)
-    {
-        echo 'test';
-
-        return true;
-    }
-
 
     /**
      * Pre item hook for add and update
