@@ -1319,6 +1319,7 @@ HTML;
 
             foreach ($data as $key => $value) {
                 //log only not empty values
+                //do not log if value is empty or if dom name is part of file upload
                 if (!empty($value) && strpos($key, '_uploader_') === false) {
                     //prepare log
                     $changes = [0, "N/A", $value];
