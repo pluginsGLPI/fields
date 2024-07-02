@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [unrelease] -
+
+### Fixed
+
+- Update main item ```date_mod``` after updating additional fields
+
 ## [1.21.10] - 2024-06-11
 
 ### Fixed
