@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Update item date_mod after updating additional fields
+- Update main item ```date_mod``` after updating additional fields
 
 ## [1.21.10] - 2024-06-11
 
