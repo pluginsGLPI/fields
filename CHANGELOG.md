@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Update main item ```date_mod``` after updating additional fields
+- Fix ```datainjection``` error when trying to map fields
 
 ## [1.21.10] - 2024-06-11
 
