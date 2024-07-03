@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix strpslashes log error (#802)
+- Update main item ```date_mod``` after updating additional fields
+
+## [1.21.10] - 2024-06-11
 
 ### Fixed
 
