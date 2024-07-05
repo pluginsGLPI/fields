@@ -144,11 +144,16 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ["PluginFieldsProfile", "deleteProfile"];
 
             //load drag and drop javascript library on Package Interface
-            $PLUGIN_HOOKS['add_javascript']['fields'][] = "lib/redips-drag-min.js";
-            if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
-                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
-            } else {
-                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
+
+            if (
+                plugin_fields_script_endswith("container.form.php")
+            ) {
+                $PLUGIN_HOOKS['add_javascript']['fields'][] = "lib/redips-drag-min.js";
+                if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
+                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
+                } else {
+                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
+                }
             }
         }
 
@@ -187,6 +192,23 @@ function plugin_init_fields()
         ];
     }
 }
+
+
+/**
+ * Check if the script name finish by
+ *
+ * @param string $scriptname
+ * @return boolean
+ */
+function plugin_fields_script_endswith($scriptname)
+{
+    //append plugin directory to avoid dumb errors...
+    $scriptname = 'fields/front/' . $scriptname;
+    $script_name = $_SERVER['SCRIPT_NAME'];
+
+    return substr($script_name, -strlen($scriptname)) === $scriptname;
+}
+
 
 
 /**
