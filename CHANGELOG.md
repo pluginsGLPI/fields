@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unrelease] -
 
+## [1.21.11] - 2024-07-10
+
 ### Fixed
 
-- Fix strpslashes log error (#802)
+- Fix ```strpslashes``` log error
 - Update main item ```date_mod``` after updating additional fields
-- Fix ```datainjection``` error when trying to map fields
+- Fix ```datainjection``` mapping error with additional fields
 
 ## [1.21.10] - 2024-06-11
 
