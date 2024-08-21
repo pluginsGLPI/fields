@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Fix generic object bloc fields mandatory
+- Fix handling of empty mandatory fields in generic objects.
 
 ## [1.21.11] - 2024-07-10
 
