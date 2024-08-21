@@ -1488,24 +1488,6 @@ HTML;
                 $value = $data[$name];
             } elseif (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
                 $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } elseif ($field['mandatory'] == 1 && isset($data['items_id'])) {
-                $tablename = getTableForItemType(self::getClassname($itemtype, $container->fields['name']));
-
-                $iterator = $DB->request([
-                    'FROM' => $tablename,
-                    'WHERE' => [
-                        'itemtype' => $itemtype,
-                        'items_id' => $data['items_id'],
-                        'plugin_fields_containers_id' => $data['plugin_fields_containers_id'],
-                    ],
-                ]);
-
-                $db_result = $iterator->current();
-                if (isset($db_result['plugin_fields_' . $name . 'dropdowns_id'])) {
-                    $value = $db_result['plugin_fields_' . $name . 'dropdowns_id'];
-                } elseif (isset($db_result[$name])) {
-                    $value = $db_result[$name];
-                }
             } else {
                 if ($massiveaction) {
                     continue;
@@ -1837,10 +1819,10 @@ HTML;
                         //values are defined by user
                         if (isset($item->input[$field['name']])) {
                             $data[$field['name']] = $item->input[$field['name']];
+                            $has_fields = true;
                         } else { //multi dropdown is empty or has been emptied
                             $data[$field['name']] = [];
                         }
-                        $has_fields = true;
                     }
                 }
             }
