@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unrelease] -
 
+### Fixed
+
+- Fix generic object bloc fields mandatory
+
 ## [1.21.11] - 2024-07-10
 
 ### Fixed
