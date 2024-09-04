@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix handling of empty mandatory fields in generic objects.
+- Fix massive update for dropdown (shared by several containers)
 
 ## [1.21.11] - 2024-07-10
 
