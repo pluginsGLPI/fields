@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-04 14:23+0000\n"
+"POT-Creation-Date: 2024-09-06 12:45+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: INOUE Daisuke, 2023\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -38,7 +38,7 @@ msgstr "-> \"%s.%s\" を削除しました。"
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" は削除すべきです。"
 
-#: inc/field.class.php:573
+#: inc/field.class.php:582
 msgid "Add a new field"
 msgstr "新しいフィールドを追加"
 
@@ -50,20 +50,20 @@ msgstr "ブロックを非表示にする条件を追加"
 msgid "Add new status override"
 msgstr "状態による上書きを追加"
 
-#: inc/container.class.php:994
+#: inc/container.class.php:1027
 msgid "Add tab"
 msgstr "タブを追加"
 
-#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:200
+#: inc/menu.class.php:37 setup.php:223 front/container.form.php:63
+#: front/container.php:34
 msgid "Additional fields"
-msgstr "追加のフィールド"
+msgstr "追加フィールド"
 
 #: ajax/field_specific_fields.php:53
 msgid "Allowed values"
 msgstr "利用できる値"
 
-#: inc/container.class.php:742
+#: inc/container.class.php:769
 msgid "Block"
 msgstr "ブロック"
 
@@ -71,17 +71,17 @@ msgstr "ブロック"
 msgid "Check database to detect inconsistencies."
 msgstr "不整合を検出するためにデータベースをチェックしてください。"
 
-#: inc/toolbox.class.php:316
+#: inc/toolbox.class.php:322
 msgid "Component items"
 msgstr "コンポーネント項目"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:153
+#: inc/containerdisplaycondition.class.php:155
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "ブロックを非表示にする条件"
 
-#: inc/container.class.php:565
+#: inc/container.class.php:591
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -98,11 +98,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "%s で不適切に削除したフィールドの孤立したデータがデータベースに残っていました。"
 
-#: inc/field.class.php:1309
+#: inc/field.class.php:1320
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1310
+#: inc/field.class.php:1321
 msgid "Date & time"
 msgstr "日時"
 
@@ -114,7 +114,7 @@ msgstr "既定値"
 msgid "Default value will be configurable once field will be created."
 msgstr "フィールドを作成した後でも、既定値は設定可能です。"
 
-#: inc/field.class.php:1307
+#: inc/field.class.php:1318
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -122,53 +122,53 @@ msgstr "ドロップダウン"
 msgid "Everything is in order - no action needed."
 msgstr "すべては順調です - 操作は不要です。"
 
-#: inc/container.class.php:53 inc/container.class.php:752
+#: inc/container.class.php:53 inc/container.class.php:779
 msgid "Export to YAML"
 msgstr "YAML 形式でエクスポート"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:241
+#: templates/forms/status_override.html.twig inc/field.class.php:244
 msgid "Field"
 msgstr "フィールド"
 
-#: inc/field.class.php:257 inc/field.class.php:282
+#: inc/field.class.php:260 inc/field.class.php:285
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "データベースに保存するフィールド名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
 
-#: inc/field.class.php:515
+#: inc/field.class.php:520
 msgid "Fields"
 msgstr "フィールド"
 
-#: inc/container.class.php:208
+#: inc/container.class.php:210
 msgid "Fix container names"
 msgstr "コンテナ名を修正する"
 
-#: inc/toolbox.class.php:122
+#: inc/toolbox.class.php:123
 msgid "Fix fields names"
 msgstr "フィールド名を修正する"
 
-#: inc/field.class.php:1311
+#: inc/field.class.php:1322
 msgid "GLPI item"
 msgstr "GLPI アイテム"
 
-#: inc/field.class.php:1301
+#: inc/field.class.php:1312
 msgid "Header"
 msgstr "ヘッダー"
 
-#: inc/container.class.php:995
+#: inc/container.class.php:1028
 msgid "Insertion in the form (before save button)"
 msgstr "フォームに挿入（保存ボタンの前）"
 
-#: inc/container.class.php:996
+#: inc/container.class.php:1029
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "フォームの特定のタブに挿入（保存ボタンの前）"
 
-#: inc/labeltranslation.class.php:192
+#: inc/labeltranslation.class.php:195
 msgid "Label"
 msgstr "ラベル"
 
-#: inc/labeltranslation.class.php:191
+#: inc/labeltranslation.class.php:194
 msgid "Language"
 msgstr "言語"
 
@@ -184,7 +184,7 @@ msgstr "MySQL テーブルのインストール"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL テーブルのアンインストール"
 
-#: inc/field.class.php:577
+#: inc/field.class.php:586
 msgid "No field for this block"
 msgstr "このブロック用のフィールドがありません"
 
@@ -192,16 +192,16 @@ msgstr "このブロック用のフィールドがありません"
 msgid "No item found"
 msgstr "アイテムがありません"
 
-#: inc/field.class.php:1305
+#: inc/field.class.php:1316
 msgid "Number"
 msgstr "数値"
 
-#: inc/statusoverride.class.php:88
+#: inc/statusoverride.class.php:90
 msgid "Override by status"
 msgstr "状態による上書き"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:590
-#: inc/field.class.php:770
+#: templates/forms/status_override.html.twig inc/field.class.php:599
+#: inc/field.class.php:780
 msgid "Read only"
 msgstr "読取専用"
 
@@ -209,7 +209,7 @@ msgstr "読取専用"
 msgid "Regenerate container files"
 msgstr "コンテナファイルを再生成"
 
-#: inc/container.class.php:187
+#: inc/container.class.php:189
 msgid "Regenerate containers files"
 msgstr "コンテナファイルを再生成"
 
@@ -217,7 +217,7 @@ msgstr "コンテナファイルを再生成"
 msgid "Regenerates containers files."
 msgstr "コンテナファイルを再生成します。"
 
-#: inc/field.class.php:1304
+#: inc/field.class.php:1315
 msgid "Rich Text"
 msgstr "リッチテキスト"
 
@@ -226,15 +226,15 @@ msgstr "リッチテキスト"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "「%s」を実行してデータベースの不整合を修復してください。"
 
-#: inc/container.class.php:1504
+#: inc/container.class.php:1537
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含む URL フィールドがあります"
 
-#: inc/container.class.php:1494
+#: inc/container.class.php:1527
 msgid "Some mandatory fields are empty"
 msgstr "未入力の必須項目があります"
 
-#: inc/container.class.php:1499
+#: inc/container.class.php:1532
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値が入っている数値フィールドがあります"
 
@@ -242,15 +242,15 @@ msgstr "非数値が入っている数値フィールドがあります"
 msgid "Status overrides"
 msgstr "状態による上書き"
 
-#: inc/container.class.php:846
+#: inc/container.class.php:873
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1303
+#: inc/field.class.php:1314
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1302
+#: inc/field.class.php:1313
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
@@ -268,11 +268,11 @@ msgid ""
 "them."
 msgstr "このコマンドでプラグインが生成したすべてのファイルを初期化し、再生成します。"
 
-#: inc/field.class.php:1306
+#: inc/field.class.php:1317
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:328
+#: inc/container.class.php:351
 msgid "Updating generated containers files"
 msgstr "生成済みコンテナ ファイルを更新しています"
 
@@ -284,42 +284,46 @@ msgstr "生成済みドロップダウン ファイルを更新しています"
 msgid "Use this option to actually fix database"
 msgstr "この設定で、実際にデータベースを修復します"
 
-#: inc/field.class.php:1308
+#: inc/field.class.php:1319
 msgid "Yes/No"
 msgstr "はい・いいえ"
 
-#: inc/container.class.php:514
+#: inc/container.class.php:540
 msgid "You cannot add block without associated element type"
 msgstr "関連アイテムの型が空のブロックは追加できません"
 
-#: inc/container.class.php:549
+#: inc/field.class.php:278
+msgid "You cannot add same field 'dropdown' on same bloc"
+msgstr ""
+
+#: inc/container.class.php:575
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "「フォームの特定のタブに挿入」型のブロックを、1 つのオブジェクトのタブ上に複数配置することはできません"
 
-#: inc/container.class.php:534
+#: inc/container.class.php:560
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "「フォームに挿入」型のブロックを、同じオブジェクトに複数配置することはできません"
 
-#: inc/container.class.php:579
+#: inc/container.class.php:605
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "1 つのオブジェクトに、同じ名前のブロックを複数配置することはできません"
 
-#: inc/containerdisplaycondition.class.php:493
-#: inc/containerdisplaycondition.class.php:508
+#: inc/containerdisplaycondition.class.php:506
+#: inc/containerdisplaycondition.class.php:521
 msgid "You must specify an item type, search option and condition."
 msgstr "検索設定と状態では、アイテムの型を特定する必要があります。"
 
-#: inc/containerdisplaycondition.class.php:103
-#: inc/containerdisplaycondition.class.php:137
+#: inc/containerdisplaycondition.class.php:104
+#: inc/containerdisplaycondition.class.php:138
 msgid "not under"
 msgstr "以上"
 
-#: inc/containerdisplaycondition.class.php:109
-#: inc/containerdisplaycondition.class.php:131
+#: inc/containerdisplaycondition.class.php:110
+#: inc/containerdisplaycondition.class.php:132
 msgid "regular expression matches"
 msgstr "正規表現での照合"
 
@@ -327,7 +331,7 @@ msgstr "正規表現での照合"
 msgid "show"
 msgstr "表示"
 
-#: inc/containerdisplaycondition.class.php:102
-#: inc/containerdisplaycondition.class.php:134
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:135
 msgid "under"
 msgstr "未満"

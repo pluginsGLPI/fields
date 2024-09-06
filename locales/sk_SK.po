@@ -3,294 +3,294 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Soporte Infraestructura Standby, 2023
-# Soporte Infraestructura Standby, 2023-2024
+# feonsu <feonsu@gmail.com>, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-06 12:45+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Soporte Infraestructura Standby, 2023-2024\n"
-"Language-Team: Spanish (Ecuador) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_EC/)\n"
+"Last-Translator: feonsu <feonsu@gmail.com>, 2023\n"
+"Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_EC\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Language: sk_SK\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
 #: inc/checkdatabasecommand.class.php:47
 #, php-format
 msgid ""
 "- some deleted fields may still be present in database (bug introduced in "
 "version %s and fixed in version %s)"
-msgstr "- algunos campos eliminados pueden seguir presentes en la base de datos (error introducido en la versión %s y corregido en la version %s)"
+msgstr "- niektoré vymazané polia sa môžu stále nachádzať v databáze (chyba zavedená vo verzii %s a opravená vo verzii %s)"
 
 #: inc/checkdatabasecommand.class.php:86
 #, php-format
 msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> \"%s.%s\" se ha eliminado."
+msgstr "-> \"%s.%s\" bola vymazaná."
 
 #: inc/checkdatabasecommand.class.php:87
 #, php-format
 msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> \"%s.%s\" debe eliminarse."
+msgstr "-> \"%s.%s\" by mala byť vymazaná."
 
 #: inc/field.class.php:582
 msgid "Add a new field"
-msgstr "Añadir un nuevo campo"
+msgstr "Pridať nové pole"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr "Añadir condición para ocultar bloque"
+msgstr "Pridať podmienku na skrytie bloku"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr "Añadir validación por estado"
+msgstr "Pridať nové prepísanie stavu"
 
 #: inc/container.class.php:1027
 msgid "Add tab"
-msgstr "Añadir pestaña"
+msgstr "Pridať kartu"
 
 #: inc/menu.class.php:37 setup.php:223 front/container.form.php:63
 #: front/container.php:34
 msgid "Additional fields"
-msgstr "Campos adicionales"
+msgstr "Dodatočné polia"
 
 #: ajax/field_specific_fields.php:53
 msgid "Allowed values"
-msgstr "Valores permitidos"
+msgstr "Povolené hodnoty"
 
 #: inc/container.class.php:769
 msgid "Block"
-msgstr "Bloque"
+msgstr "Blok"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
-msgstr "Compruebe la base de datos para detectar incoherencias."
+msgstr "Kontrola databázy na zistenie nekonzistencií."
 
 #: inc/toolbox.class.php:322
 msgid "Component items"
-msgstr "Componentes"
+msgstr "Položky komponentov"
 
 #: templates/container_display_conditions.html.twig
 #: inc/containerdisplaycondition.class.php:155
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] "Condición para ocultar el bloque"
-msgstr[1] "Condiciones para ocultar el bloque"
-msgstr[2] "Condiciones para ocultar el bloque"
+msgstr[0] "Podmienka na skrytie bloku"
+msgstr[1] "Podmienky na skrytie bloku"
+msgstr[2] "Podmienky na skrytie bloku"
+msgstr[3] "Podmienky na skrytie bloku"
 
 #: inc/container.class.php:591
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "El nombre del contenedor es demasiado largo para la base de datos (los dígitos del nombre se sustituyen por caracteres, intente eliminarlos)"
+msgstr "Názov kontajneru je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
 
 #: inc/checkdatabasecommand.class.php:80
 #, php-format
 msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "La base de datos contiene datos huérfanos de %s campo(s) eliminado(s) incorrectamente."
+msgstr "Databáza obsahuje osamotené dáta z %s neplatne vymazaných polí."
 
 #: inc/checkdatabasecommand.class.php:79
 #, php-format
 msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "La base de datos contenía datos huérfanos de %s campo(s) eliminado(s) incorrectamente."
+msgstr "Databáza obsahovala osamotené dáta z %s neplatne vymazaných polí."
 
 #: inc/field.class.php:1320
 msgid "Date"
-msgstr "Fecha"
+msgstr "Dátum"
 
 #: inc/field.class.php:1321
 msgid "Date & time"
-msgstr "Fecha y hora"
+msgstr "Dátum a čas"
 
 #: ajax/field_specific_fields.php:89
 msgid "Default value"
-msgstr "Valor predeterminado"
+msgstr "Predvolená hodnota"
 
 #: ajax/field_specific_fields.php:116
 msgid "Default value will be configurable once field will be created."
-msgstr "El valor predeterminado será configurable una vez que se cree el campo."
+msgstr "Predvolená hodnota bude konfigurovateľná po vytvorení poľa."
 
 #: inc/field.class.php:1318
 msgid "Dropdown"
-msgstr "Menú desplegable"
+msgstr "Rozbaľovacia ponuka"
 
 #: inc/checkdatabasecommand.class.php:72
 msgid "Everything is in order - no action needed."
-msgstr "Todo está en orden, no es necesario actuar."
+msgstr "Všetko je v poriadku - nevyžaduje sa žiadna akcia."
 
 #: inc/container.class.php:53 inc/container.class.php:779
 msgid "Export to YAML"
-msgstr "Exportar a YAML"
+msgstr "Export do YAML"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:244
 msgid "Field"
-msgstr "Campo"
+msgstr "Pole"
 
 #: inc/field.class.php:260 inc/field.class.php:285
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "El nombre del campo es demasiado largo para la base de datos (los dígitos del nombre se reemplazan por caracteres, intente eliminarlos)"
+msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
 
 #: inc/field.class.php:520
 msgid "Fields"
-msgstr "Campos"
+msgstr "Polia"
 
 #: inc/container.class.php:210
 msgid "Fix container names"
-msgstr "Corregir los nombres de los contenedores"
+msgstr "Opraviť názvy kontajnerov"
 
 #: inc/toolbox.class.php:123
 msgid "Fix fields names"
-msgstr "Corregir los nombres de los campos"
+msgstr "Opraviť názvy polí"
 
 #: inc/field.class.php:1322
 msgid "GLPI item"
-msgstr "Elemento GLPI"
+msgstr "GLPI položka"
 
 #: inc/field.class.php:1312
 msgid "Header"
-msgstr "Encabezado"
+msgstr "Hlavička"
 
 #: inc/container.class.php:1028
 msgid "Insertion in the form (before save button)"
-msgstr "Inserción en el formulario (antes del botón de guardar)"
+msgstr "Vloženie do formulára (pred tlačidlo uložiť)"
 
 #: inc/container.class.php:1029
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Inserción en el formulario de una pestaña específica (antes del botón de guardar)"
+msgstr "Vloženie do formulára konkrétnej karty (pred tlačidlo uložiť)"
 
 #: inc/labeltranslation.class.php:195
 msgid "Label"
-msgstr "Etiqueta"
+msgstr "Popisok"
 
 #: inc/labeltranslation.class.php:194
 msgid "Language"
-msgstr "Idioma"
+msgstr "Jazyk"
 
 #: ajax/field_specific_fields.php:86
 msgid "Multiple dropdown"
-msgstr "Menú desplegable múltiple"
+msgstr "Viac rozbaľovacích ponúk"
 
 #: hook.php:55 hook.php:59
 msgid "MySQL tables installation"
-msgstr "Instalación de tablas MySQL"
+msgstr "Inštalácia MySQL tabuliek"
 
 #: hook.php:121
 msgid "MySQL tables uninstallation"
-msgstr "Desinstalación de tablas MySQL"
+msgstr "Odinštalovanie MySQL tabuliek"
 
 #: inc/field.class.php:586
 msgid "No field for this block"
-msgstr "No hay campo para este bloque"
+msgstr "Žiadne pole pre tento blok"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr "Ningún elemento encontrado"
+msgstr "Nenašla sa žiadna položka"
 
 #: inc/field.class.php:1316
 msgid "Number"
-msgstr "Número"
+msgstr "Číslo"
 
 #: inc/statusoverride.class.php:90
 msgid "Override by status"
-msgstr "Validación por estado"
+msgstr "Prepísanie podľa stavu"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:599
 #: inc/field.class.php:780
 msgid "Read only"
-msgstr "Sólo lectura"
+msgstr "Iba na čítanie"
 
 #: inc/container.class.php:52
 msgid "Regenerate container files"
-msgstr "Regenerar archivos contenedores"
+msgstr "Znova generovať kontajnerové súbory"
 
 #: inc/container.class.php:189
 msgid "Regenerate containers files"
-msgstr "Regenerar archivos de contenedores"
+msgstr "Znova generovať kontajnerové súbory"
 
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
-msgstr "Regenera los archivos de los contenedores."
+msgstr "Znova generovať kontajnerové súbory."
 
 #: inc/field.class.php:1315
 msgid "Rich Text"
-msgstr "Texto enriquecido"
+msgstr "Textové pole s formátovaním"
 
 #: inc/checkdatabasecommand.class.php:96
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Ejecute \"%s\" para corregir inconsistencias en la base de datos."
+msgstr "Spustite \"%s\" na opravu nekonzistencií databázy."
 
 #: inc/container.class.php:1537
 msgid "Some URL fields contains invalid links"
-msgstr "Algunos campos URL contienen enlaces no válidos"
+msgstr "Niektoré URL polia obsahujú neplatné odkazy"
 
 #: inc/container.class.php:1527
 msgid "Some mandatory fields are empty"
-msgstr "Algunos campos obligatorios están vacíos"
+msgstr "Niektoré povinné polia sú prázdne"
 
 #: inc/container.class.php:1532
 msgid "Some numeric fields contains non numeric values"
-msgstr "Algunos campos numéricos contienen valores no numéricos"
+msgstr "Niektoré číselné polia obsahujú nečíselné hodnoty"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr "Validaciones por estados"
+msgstr "Prepísania stavov"
 
 #: inc/container.class.php:873
 msgid "Tab"
-msgstr "Pestaña"
+msgstr "Karta"
 
 #: inc/field.class.php:1314
 msgid "Text (multiples lines)"
-msgstr "Texto (varias líneas)"
+msgstr "Text (viacero riadkov)"
 
 #: inc/field.class.php:1313
 msgid "Text (single line)"
-msgstr "Texto (una línea)"
+msgstr "Text (jeden riadok)"
 
 #: hook.php:109
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "El complemento no se puede desinstalar cuando está desactivado"
+msgstr "Plugin nemožno odinštalovať ak je plugin vypnutý"
 
 #: inc/checkdatabasecommand.class.php:44
 msgid "This command will check database to detect following inconsistencies:"
-msgstr "Este comando comprobará la base de datos para detectar las siguientes inconsistencias:"
+msgstr "Tento príkaz skontroluje databázu na zistenie nasledujúcich nekonzistencií:"
 
 #: inc/command/regeneratefilescommand.class.php:43
 msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
-msgstr "Este comando limpiará todos los archivos generados por el complemento y los regenerará."
+msgstr "Tento príkaz vyčistí všetky súbory vygenerované týmto pluginom a znova ich vygeneruje."
 
 #: inc/field.class.php:1317
 msgid "URL"
-msgstr "URL"
+msgstr "URL adresa"
 
 #: inc/container.class.php:351
 msgid "Updating generated containers files"
-msgstr "Actualización de los archivos contenedores generados"
+msgstr "Aktualizácia vygenerovaných kontajnerových súborov"
 
 #: inc/dropdown.class.php:78
 msgid "Updating generated dropdown files"
-msgstr "Actualización de los archivos desplegables generados"
+msgstr "Aktualizácia vygenerovaných súborov rozbaľovacích ponúk"
 
 #: inc/checkdatabasecommand.class.php:57
 msgid "Use this option to actually fix database"
-msgstr "Utilice esta opción para corregir realmente la base de datos"
+msgstr "Použite túto voľbu na skutočnú opravu databázy"
 
 #: inc/field.class.php:1319
 msgid "Yes/No"
-msgstr "Si/No"
+msgstr "Áno/Nie"
 
 #: inc/container.class.php:540
 msgid "You cannot add block without associated element type"
-msgstr "No se puede añadir un bloque sin un tipo de elemento asociado"
+msgstr "Nemôžete pridať blok bez typu priradenej položky"
 
 #: inc/field.class.php:278
 msgid "You cannot add same field 'dropdown' on same bloc"
@@ -300,38 +300,38 @@ msgstr ""
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr "No se pueden agregar varios bloques con el tipo 'Inserción en forma de pestaña específica' en la misma pestaña de objeto"
+msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára konkrétnej karty\" na rovnakú kartu objektu"
 
 #: inc/container.class.php:560
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "No se pueden añadir varios bloques de tipo 'Inserción en el formulario' en un mismo objeto"
+msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára\" na rovnaký objekt"
 
 #: inc/container.class.php:605
 msgid "You cannot add several blocs with identical name on same object"
-msgstr "No se pueden agregar varios bloques con el mismo nombre en el mismo objeto"
+msgstr "Nemôžete pridať niekoľko blokov s identickým názvom na rovnaký objekt"
 
 #: inc/containerdisplaycondition.class.php:506
 #: inc/containerdisplaycondition.class.php:521
 msgid "You must specify an item type, search option and condition."
-msgstr "Debe especificar un tipo de elemento, una opción de búsqueda y una condición."
+msgstr "Musíte špecifikovať typ položky, možnosť hľadania a podmienku."
 
 #: inc/containerdisplaycondition.class.php:104
 #: inc/containerdisplaycondition.class.php:138
 msgid "not under"
-msgstr "no bajo"
+msgstr "nie je pod"
 
 #: inc/containerdisplaycondition.class.php:110
 #: inc/containerdisplaycondition.class.php:132
 msgid "regular expression matches"
-msgstr "coincidencias de expresiones regulares"
+msgstr "regulárny výraz zodpovedá"
 
 #: templates/fields.html.twig
 msgid "show"
-msgstr "mostrar"
+msgstr "zobraziť"
 
 #: inc/containerdisplaycondition.class.php:103
 #: inc/containerdisplaycondition.class.php:135
 msgid "under"
-msgstr "debajo"
+msgstr "pod"
