@@ -1,0 +1,14 @@
+name: "Synchronize locales"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync-with-transifex:
+    name: "Sync with transifex"
+    uses: "glpi-project/plugin-translation-workflows/.github/workflows/transifex-sync.yml@v1"
+    secrets:
+      github-token: "${{ secrets.LOCALES_SYNC_TOKEN }}"
+      transifex-token: "${{ secrets.TRANSIFEX_TOKEN }}"

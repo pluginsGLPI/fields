@@ -1,0 +1,13 @@
+name: "Update locales sources"
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  push-on-transifex:
+    name: "Push locales sources"
+    uses: "glpi-project/plugin-translation-workflows/.github/workflows/transifex-push-sources.yml@v1"
+    secrets:
+      transifex-token: "${{ secrets.TRANSIFEX_TOKEN }}"
