@@ -1260,16 +1260,12 @@ JAVASCRIPT
                     'FKEY' => [
                         'containers' => 'id',
                         'fields' => 'plugin_fields_containers_id',
-                        [
-                            'AND' => [
-                                'containers.itemtypes' => ['LIKE' => "%$itemtype%"]
-                            ]
-                        ]
                     ]
                 ]
             ],
             'WHERE' => [
-                'fields.name' => $cleaned_linkfield
+                'fields.name' => $cleaned_linkfield,
+                'containers.itemtypes' => ['LIKE', "%$itemtype%"]
             ],
         ]);
 
