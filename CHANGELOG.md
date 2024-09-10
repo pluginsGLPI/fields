@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unrelease]
 
+## Added
+
+- add ```ComputerVirtualMachine```
+
 ## [1.21.12] - 2024-09-06
 
 ### Fixed
