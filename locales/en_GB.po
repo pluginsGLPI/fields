@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 12:50+0000\n"
-"PO-Revision-Date: 2024-09-06 12:50+0000\n"
+"POT-Creation-Date: 2024-09-11 01:01+0000\n"
+"PO-Revision-Date: 2024-09-11 01:01+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -69,7 +69,7 @@ msgstr "Block"
 msgid "Check database to detect inconsistencies."
 msgstr "Check database to detect inconsistencies."
 
-#: inc/toolbox.class.php:322
+#: inc/toolbox.class.php:323
 msgid "Component items"
 msgstr "Component items"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 12:45+0000\n"
+"POT-Creation-Date: 2024-09-11 01:01+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -70,7 +70,7 @@ msgstr "Bloc"
 msgid "Check database to detect inconsistencies."
 msgstr "Verificați baza de date pentru a detecta inconsecvența datelor."
 
-#: inc/toolbox.class.php:322
+#: inc/toolbox.class.php:323
 msgid "Component items"
 msgstr "Elemente componente"
 
