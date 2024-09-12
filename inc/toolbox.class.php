@@ -276,13 +276,13 @@ class PluginFieldsToolbox
         ];
 
         $components_itemtypes = [];
-        foreach ($CFG_GLPI['device_types'] as $device_itemtype) {
+        foreach (CommonDevice::getDeviceTypes() as $device_itemtype) {
             $components_itemtypes[] = $device_itemtype;
         }
         sort($components_itemtypes, SORT_NATURAL);
 
         $component_items_itemtypes = [];
-        foreach ($CFG_GLPI['itemdevices'] as $deviceitem_itemtype) {
+        foreach (Item_Devices::getDeviceTypes() as $deviceitem_itemtype) {
             $component_items_itemtypes[] = $deviceitem_itemtype;
         }
         sort($component_items_itemtypes, SORT_NATURAL);
