@@ -1163,7 +1163,7 @@ HTML;
 
         //retrieve container for current tab
         $container = new self();
-        $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
+        $found_c   = $container->find(['type' => 'tab', 'name' => Sanitizer::sanitize($tabnum), 'is_active' => 1]);
         foreach ($found_c as $data) {
             $dataitemtypes = json_decode($data['itemtypes']);
             if (in_array(get_class($item), $dataitemtypes) != false) {
