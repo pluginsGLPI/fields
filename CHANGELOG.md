@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unrelease]
 
-## Added
+## [1.21.13] - 2024-09-12
 
-- add ```ComputerVirtualMachine```
+### CVE-2024-45600
+
+- Fix SQL injection
+
+### Added
+
+- Add ```ComputerVirtualMachine```
 
 ## [1.21.12] - 2024-09-06
 
