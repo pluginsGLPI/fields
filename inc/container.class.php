@@ -1941,9 +1941,9 @@ HTML;
                     $opt[$i]['datatype'] = "bool";
                     break;
                 case 'textarea':
-                case 'number':
                     $opt[$i]['datatype'] = "text";
                     break;
+                case 'number':
                 case 'date':
                 case 'datetime':
                     $opt[$i]['datatype'] = $data['type'];
