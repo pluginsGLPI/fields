@@ -12,7 +12,7 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
      * @return string
     **/
     static function getTable($classname = null) {
-        return getTableForItemType(get_parent_class());
+        return getTableForItemType(get_parent_class(__CLASS__));
     }
 
     static function getTypeName($nb = 0) {
