@@ -28,29 +28,29 @@
  * -------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+include('../../../inc/includes.php');
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_add_form') {
         $status_override = new PluginFieldsContainerDisplayCondition();
         $status_override->showForm(0, $_GET);
-    } else if ($_GET['action'] === 'get_edit_form') {
+    } elseif ($_GET['action'] === 'get_edit_form') {
         $status_override = new PluginFieldsContainerDisplayCondition();
         $status_override->getFromDB($_GET['id']);
         $status_override->showForm($_GET['id'], $_GET);
     }
-} else if (isset($_POST['action'])) {
+} elseif (isset($_POST['action'])) {
     if ($_POST['action'] === 'get_itemtype_so') {
         if (isset($_POST['itemtype']) && class_exists($_POST['itemtype'])) {
             echo PluginFieldsContainerDisplayCondition::showItemtypeFieldForm($_POST['itemtype']) ;
         } else {
-            echo "";
+            echo '';
         }
-    } else if ($_POST['action'] === 'get_condition_switch_so') {
+    } elseif ($_POST['action'] === 'get_condition_switch_so') {
         if (isset($_POST['search_option_id']) && (isset($_POST['itemtype']) && class_exists($_POST['itemtype']))) {
             echo PluginFieldsContainerDisplayCondition::showSearchOptionCondition($_POST['search_option_id'], $_POST['itemtype']);
         } else {
-            echo "";
+            echo '';
         }
     }
 } else {

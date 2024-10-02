@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+include('../../../inc/includes.php');
 
 if (
     !array_key_exists('container_id', $_POST)
@@ -40,9 +40,9 @@ if (
 }
 
 $table        = PluginFieldsField::getTable();
-$container_id = (int)$_POST['container_id'];
-$old_order    = (int)$_POST['old_order'];
-$new_order    = (int)$_POST['new_order'];
+$container_id = (int) $_POST['container_id'];
+$old_order    = (int) $_POST['old_order'];
+$new_order    = (int) $_POST['new_order'];
 
 /** @var DBmysql $DB */
 global $DB;
@@ -56,7 +56,7 @@ $field_iterator = $DB->request(
             'plugin_fields_containers_id' => $container_id,
             'ranking'                     => $old_order,
         ],
-    ]
+    ],
 );
 
 if (0 === $field_iterator->count()) {
@@ -75,9 +75,9 @@ if ($old_order < $new_order) {
         ],
         [
             'plugin_fields_containers_id' => $container_id,
-            ['ranking' => ['>',  $old_order]],
-            ['ranking' => ['<=', $new_order]],
-        ]
+            ['ranking'                    => ['>',  $old_order]],
+            ['ranking'                    => ['<=', $new_order]],
+        ],
     );
 } else {
     $DB->update(
@@ -87,9 +87,9 @@ if ($old_order < $new_order) {
         ],
         [
             'plugin_fields_containers_id' => $container_id,
-            ['ranking' => ['<',  $old_order]],
-            ['ranking' => ['>=', $new_order]],
-        ]
+            ['ranking'                    => ['<',  $old_order]],
+            ['ranking'                    => ['>=', $new_order]],
+        ],
     );
 }
 
@@ -101,5 +101,5 @@ $DB->update(
     ],
     [
         'id' => $field_id,
-    ]
+    ],
 );

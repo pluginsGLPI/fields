@@ -48,14 +48,14 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         /** @var DBmysql $DB */
         global $DB;
 
-        $default_charset = DBConnection::getDefaultCharset();
+        $default_charset   = DBConnection::getDefaultCharset();
         $default_collation = DBConnection::getDefaultCollation();
-        $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+        $default_key_sign  = DBConnection::getDefaultPrimaryKeySignOption();
 
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__("Installing %s"), $table));
+            $migration->displayMessage(sprintf(__('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                         INT          {$default_key_sign} NOT NULL auto_increment,
@@ -94,14 +94,14 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         /** @var DBmysql $DB */
         global $DB;
 
-        $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
+        $DB->query('DROP TABLE IF EXISTS `' . self::getTable() . '`');
 
         return true;
     }
 
     public static function getTypeName($nb = 0)
     {
-        return _n("Translation", "Translations", $nb);
+        return _n('Translation', 'Translations', $nb);
     }
 
     public static function createForItem(CommonDBTM $item)
@@ -111,8 +111,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             'itemtype' => $item::getType(),
             'items_id' => $item->getID(),
             'language' => $_SESSION['glpilanguage'],
-            'label'    => $item->fields['label']
+            'label'    => $item->fields['label'],
         ]);
+
         return true;
     }
 
@@ -123,14 +124,16 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             [
                 'itemtype' => $item::getType(),
                 'items_id' => $item->getID(),
-            ]
+            ],
         );
+
         return self::createTabEntry(self::getTypeName($nb), $nb);
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         self::showTranslations($item);
+
         return true;
     }
 
@@ -152,7 +155,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 'type'     => __CLASS__,
                 'itemtype' => $item::getType(),
                 'items_id' => $item->fields['id'],
-                'id'       => -1
+                'id'       => -1,
             ];
             echo Html::scriptBlock('
                 addTranslation' . $item->getID() . $rand . ' = function() {
@@ -165,7 +168,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
             echo "<div class='center'>" .
                 "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . "$rand();'>" .
-                __('Add a new translation') . "</a></div><br>";
+                __('Add a new translation') . '</a></div><br>';
         }
 
         $obj   = new self();
@@ -174,7 +177,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 'itemtype' => $item::getType(),
                 'items_id' => $item->getID(),
             ],
-            "language ASC"
+            'language ASC',
         );
 
         if (count($found) > 0) {
@@ -185,29 +188,29 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             }
             echo "<div class='center'>";
             echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2'>";
-            echo "<th colspan='4'>" . __("List of translations") . "</th></tr>";
+            echo "<th colspan='4'>" . __('List of translations') . '</th></tr>';
             if ($canedit) {
                 echo "<th width='10'>";
                 echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
-                echo "</th>";
+                echo '</th>';
             }
-            echo "<th>" . __("Language", "fields") . "</th>";
-            echo "<th>" . __("Label", "fields") . "</th>";
+            echo '<th>' . __('Language', 'fields') . '</th>';
+            echo '<th>' . __('Label', 'fields') . '</th>';
             foreach ($found as $data) {
                 echo "<tr class='tab_bg_1' " . ($canedit ? "style='cursor:pointer'
-                      onClick=\"viewEditTranslation" . $data['id'] . "$rand();\"" : '') . ">";
+                      onClick=\"viewEditTranslation" . $data['id'] . "$rand();\"" : '') . '>';
                 if ($canedit) {
-                     echo "<td class='center'>";
-                     Html::showMassiveActionCheckBox(__CLASS__, $data["id"]);
-                     echo "</td>";
+                    echo "<td class='center'>";
+                    Html::showMassiveActionCheckBox(__CLASS__, $data['id']);
+                    echo '</td>';
                 }
-                echo "<td>";
+                echo '<td>';
                 if ($canedit) {
                     $ajax_params = [
                         'type'     => __CLASS__,
                         'itemtype' => $item::getType(),
                         'items_id' => $item->getID(),
-                        'id'       => $data['id']
+                        'id'       => $data['id'],
                     ];
                     echo Html::scriptBlock('
                         viewEditTranslation' . $data['id'] . $rand . ' = function() {
@@ -219,11 +222,11 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                     ');
                 }
                 echo Dropdown::getLanguageName($data['language']);
-                echo "</td><td>";
+                echo '</td><td>';
                 echo  $data['label'];
-                echo "</td></tr>";
+                echo '</td></tr>';
             }
-            echo "</table>";
+            echo '</table>';
             if ($canedit) {
                 $massiveactionparams['ontop'] = false;
                 Html::showMassiveActions($massiveactionparams);
@@ -231,7 +234,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             }
         } else {
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __("No translation found") . "</th></tr></table>";
+            echo "<th class='b'>" . __('No translation found') . '</th></tr></table>';
         }
 
         return true;
@@ -256,36 +259,37 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         }
         $this->showFormHeader();
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Language') . "&nbsp;:</td>";
-        echo "<td>";
+        echo '<td>' . __('Language') . '&nbsp;:</td>';
+        echo '<td>';
         echo "<input type='hidden' name='itemtype' value='{$itemtype}'>";
         echo "<input type='hidden' name='items_id' value='{$items_id}'>";
         if ($id > 0) {
             echo Dropdown::getLanguageName($this->fields['language']);
         } else {
             Dropdown::showLanguages(
-                "language",
+                'language',
                 ['display_none' => false,
-                    'value'        => $_SESSION['glpilanguage'],
-                    'used'         => self::getAlreadyTranslatedForItem(
+                    'value'     => $_SESSION['glpilanguage'],
+                    'used'      => self::getAlreadyTranslatedForItem(
                         $itemtype,
-                        $items_id
-                    )
-                ]
+                        $items_id,
+                    ),
+                ],
             );
         }
         echo "</td><td colspan='2'>&nbsp;</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='label'>" . __('Label') . "</label></td>";
+        echo "<td><label for='label'>" . __('Label') . '</label></td>';
         echo "<td colspan='3'>";
         echo Html::input('label', [
-            'value' => $this->fields["label"],
-            'id'    => 'label'
+            'value' => $this->fields['label'],
+            'id'    => 'label',
         ]);
-        echo "</td></tr>";
+        echo '</td></tr>';
 
         $this->showFormButtons();
+
         return true;
     }
 
@@ -308,13 +312,14 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 'WHERE' => [
                     'itemtype' => $itemtype,
                     'items_id' => $items_id,
-                ]
-            ]
+                ],
+            ],
         );
         $tab = [];
         foreach ($iterator as $data) {
             $tab[$data['language']] = $data['language'];
         }
+
         return $tab;
     }
 
@@ -329,8 +334,8 @@ class PluginFieldsLabelTranslation extends CommonDBChild
     {
         $obj   = new self();
         $found = $obj->find(['itemtype' => $item['itemtype'],
-            'items_id' => $item['id'],
-            'language' => $_SESSION['glpilanguage']
+            'items_id'                  => $item['id'],
+            'language'                  => $_SESSION['glpilanguage'],
         ]);
 
         if (count($found) > 0) {

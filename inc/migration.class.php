@@ -59,7 +59,7 @@ class PluginFieldsMigration extends Migration
                     $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
                 }
                 if ($options['multiple'] ?? false) {
-                    $fields[$field_name] = "LONGTEXT";
+                    $fields[$field_name] = 'LONGTEXT';
                 } else {
                     $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
                 }
@@ -119,7 +119,7 @@ class PluginFieldsMigration extends Migration
 
             // Read itemtypes and container name
             $itemtypes = importArrayFromDB($row['itemtypes']);
-            $name = $row['name'];
+            $name      = $row['name'];
 
             // One table to handle per itemtype
             foreach ($itemtypes as $itemtype) {
@@ -198,7 +198,7 @@ class PluginFieldsMigration extends Migration
         $fields = $DB->listFields($table);
 
         // Reduce to fields name only
-        $fields = array_column($fields, "Field");
+        $fields = array_column($fields, 'Field');
 
         // Remove basic fields
         $basic_fields = [
@@ -207,11 +207,12 @@ class PluginFieldsMigration extends Migration
             'itemtype',
             'plugin_fields_containers_id',
         ];
+
         return array_filter(
             $fields,
             function (string $field) use ($basic_fields) {
                 return !in_array($field, $basic_fields);
-            }
+            },
         );
     }
 }

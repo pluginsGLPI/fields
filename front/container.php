@@ -28,19 +28,19 @@
  * -------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+include('../../../inc/includes.php');
 
 Html::header(
-    __("Additional fields", "fields"),
+    __('Additional fields', 'fields'),
     $_SERVER['PHP_SELF'],
-    "config",
-    "pluginfieldsmenu",
-    "fieldscontainer"
+    'config',
+    'pluginfieldsmenu',
+    'fieldscontainer',
 );
 
 Session::checkRight('entity', READ);
 
 PluginFieldsContainer::titleList();
-Search::show("PluginFieldsContainer");
+Search::show('PluginFieldsContainer');
 
 Html::footer();
