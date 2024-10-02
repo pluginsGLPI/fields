@@ -28,21 +28,21 @@
  * -------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+include('../../../inc/includes.php');
 
 $status_override = new PluginFieldsContainerDisplayCondition();
-if (isset($_POST["add"])) {
+if (isset($_POST['add'])) {
     $status_override->check(-1, CREATE, $_POST);
     $status_override->add($_POST);
     Html::back();
-} else if (isset($_POST["update"])) {
+} elseif (isset($_POST['update'])) {
     $status_override->check($_POST['id'], UPDATE);
     $status_override->update($_POST);
     Html::back();
-} else if (isset($_POST["delete"])) {
+} elseif (isset($_POST['delete'])) {
     $status_override->check($_POST['id'], PURGE);
     $status_override->delete([
-        'id' => $_POST['id']
+        'id' => $_POST['id'],
     ]);
     Html::back();
 }

@@ -28,14 +28,14 @@
  * -------------------------------------------------------------------------
  */
 
-include("../../../inc/includes.php");
+include('../../../inc/includes.php');
 
 use Glpi\Http\Response;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     $containers_id = $_GET['id'];
     $itemtype      = $_GET['itemtype'];
-    $items_id      = (int)$_GET['items_id'];
+    $items_id      = (int) $_GET['items_id'];
     $type          = $_GET['type'];
     $subtype       = $_GET['subtype'];
     $input         = $_GET['input'];
@@ -52,10 +52,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
             $containers_id,
             $item,
             $type,
-            $subtype
+            $subtype,
         );
     } else {
-        echo "";
+        echo '';
     }
 } else {
     Response::sendError(404, 'Not Found');

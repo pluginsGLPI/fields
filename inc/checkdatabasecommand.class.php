@@ -46,15 +46,15 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
             . sprintf(
                 __('- some deleted fields may still be present in database (bug introduced in version %s and fixed in version %s)', 'fields'),
                 '1.15.0',
-                '1.15.3'
-            )
+                '1.15.3',
+            ),
         );
 
         $this->addOption(
             'fix',
             null,
             InputOption::VALUE_NONE,
-            __('Use this option to actually fix database', 'fields')
+            __('Use this option to actually fix database', 'fields'),
         );
     }
 
@@ -63,7 +63,7 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
         // Read option
         $fix = $input->getOption('fix');
 
-        $dead_fields = PluginFieldsMigration::checkDeadFields($fix);
+        $dead_fields       = PluginFieldsMigration::checkDeadFields($fix);
         $dead_fields_count = count($dead_fields, COUNT_RECURSIVE) - count($dead_fields);
 
         // No invalid fields found
@@ -71,6 +71,7 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
             $output->writeln(
                 '<info>' . __('Everything is in order - no action needed.', 'fields') . '</info>',
             );
+
             return Command::SUCCESS;
         }
 
@@ -94,11 +95,11 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
             // Print command to do the actual deletion
             $next_command = sprintf(
                 __('Run "%s" to fix database inconsistencies.', 'fields'),
-                sprintf("php bin/console %s --fix", $this->getName())
+                sprintf('php bin/console %s --fix', $this->getName()),
             );
             $output->writeln(
                 '<comment>' . $next_command . '</comment>',
-                OutputInterface::VERBOSITY_QUIET
+                OutputInterface::VERBOSITY_QUIET,
             );
         }
 

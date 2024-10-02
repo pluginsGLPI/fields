@@ -36,7 +36,7 @@
 function plugin_fields_install()
 {
     // Regenerating tables/files can consume lot of memory/time
-    $memory_limit       = (int)Toolbox::getMemoryLimit();
+    $memory_limit       = (int) Toolbox::getMemoryLimit();
     $max_execution_time = ini_get('max_execution_time');
     if ($memory_limit > 0 && $memory_limit < (512 * 1024 * 1024)) {
         ini_set('memory_limit', '512M');
@@ -52,11 +52,11 @@ function plugin_fields_install()
 
     $migration = new Migration($version);
     if (isCommandLine()) {
-        echo __("MySQL tables installation", "fields") . "\n";
+        echo __('MySQL tables installation', 'fields') . "\n";
     } else {
-        echo "<center>";
+        echo '<center>';
         echo "<table class='tab_cadre_fixe'>";
-        echo "<tr><th>" . __("MySQL tables installation", "fields") . "<th></tr>";
+        echo '<tr><th>' . __('MySQL tables installation', 'fields') . '<th></tr>';
 
         echo "<tr class='tab_bg_1'>";
         echo "<td align='center'>";
@@ -89,10 +89,11 @@ function plugin_fields_install()
     $migration->executeMigration();
 
     if (!isCommandLine()) {
-        echo "</td>";
-        echo "</tr>";
-        echo "</table></center>";
+        echo '</td>';
+        echo '</tr>';
+        echo '</table></center>';
     }
+
     return true;
 }
 
@@ -103,22 +104,22 @@ function plugin_fields_install()
  */
 function plugin_fields_uninstall()
 {
-
     if (!class_exists('PluginFieldsProfile')) {
         Session::addMessageAfterRedirect(
             __("The plugin can't be uninstalled when the plugin is disabled", 'fields'),
             true,
             WARNING,
-            true
+            true,
         );
+
         return false;
     }
 
     $_SESSION['uninstall_fields'] = true;
 
-    echo "<center>";
+    echo '<center>';
     echo "<table class='tab_cadre_fixe'>";
-    echo "<tr><th>" . __("MySQL tables uninstallation", "fields") . "<th></tr>";
+    echo '<tr><th>' . __('MySQL tables uninstallation', 'fields') . '<th></tr>';
 
     echo "<tr class='tab_bg_1'>";
     echo "<td align='center'>";
@@ -130,33 +131,33 @@ function plugin_fields_uninstall()
         'PluginFieldsField',
         'PluginFieldsProfile',
         'PluginFieldsStatusOverride',
-        'PluginFieldsContainerDisplayCondition'
+        'PluginFieldsContainerDisplayCondition',
     ];
 
     foreach ($classesToUninstall as $class) {
         if ($plug = isPluginItemType($class)) {
-            $dir  = PLUGINFIELDS_DIR . "/inc/";
+            $dir  = PLUGINFIELDS_DIR . '/inc/';
             $item = strtolower($plug['class']);
 
             if (file_exists("$dir$item.class.php")) {
                 include_once("$dir$item.class.php");
-                if (!call_user_func([$class,'uninstall'])) {
+                if (!call_user_func([$class, 'uninstall'])) {
                     return false;
                 }
             }
         }
     }
 
-    echo "</td>";
-    echo "</tr>";
-    echo "</table></center>";
+    echo '</td>';
+    echo '</tr>';
+    echo '</table></center>';
 
     unset($_SESSION['uninstall_fields']);
 
     // clean display preferences
     $pref = new DisplayPreference();
     $pref->deleteByCriteria([
-        'itemtype' => ['LIKE' , 'PluginFields%']
+        'itemtype' => ['LIKE' , 'PluginFields%'],
     ]);
 
     return true;
@@ -186,12 +187,13 @@ function plugin_fields_getDropdown()
     $field_obj = new PluginFieldsField();
     $fields    = $field_obj->find(['type' => 'dropdown']);
     foreach ($fields as $field) {
-        $field['itemtype'] = PluginFieldsField::getType();
-        $label = PluginFieldsLabelTranslation::getLabelFor($field);
-        $dropdowns["PluginFields" . ucfirst($field['name']) . "Dropdown"] = $label;
+        $field['itemtype']                                                = PluginFieldsField::getType();
+        $label                                                            = PluginFieldsLabelTranslation::getLabelFor($field);
+        $dropdowns['PluginFields' . ucfirst($field['name']) . 'Dropdown'] = $label;
     }
 
     asort($dropdowns);
+
     return $dropdowns;
 }
 
@@ -205,6 +207,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
 
     if (in_array($options['itemtype'], $itemtypes)) {
         PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
+
         return true;
     }
 
@@ -227,8 +230,8 @@ function plugin_fields_getRuleActions($params = [])
     $actions = [];
 
     switch ($params['rule_itemtype']) {
-        case "PluginFusioninventoryTaskpostactionRule":
-            $options = PluginFieldsContainer::getAddSearchOptions("Computer");
+        case 'PluginFusioninventoryTaskpostactionRule':
+            $options = PluginFieldsContainer::getAddSearchOptions('Computer');
             foreach ($options as $option) {
                 $actions[$option['linkfield']]['name'] = $option['name'];
                 $actions[$option['linkfield']]['type'] = $option['pfields_type'];
@@ -252,7 +255,7 @@ function plugin_fields_rule_matched($params = [])
     $container = new PluginFieldsContainer();
 
     switch ($params['sub_type']) {
-        case "PluginFusioninventoryTaskpostactionRule":
+        case 'PluginFusioninventoryTaskpostactionRule':
             /** @phpstan-ignore-next-line */
             $agent = new PluginFusioninventoryAgent();
 
@@ -260,19 +263,19 @@ function plugin_fields_rule_matched($params = [])
                 foreach ($params['output'] as $field => $value) {
                     // check if current field is in a tab container
                     $iterator = $DB->request([
-                        'SELECT' => 'glpi_plugin_fields_containers.id',
-                        'FROM'   => 'glpi_plugin_fields_containers',
+                        'SELECT'    => 'glpi_plugin_fields_containers.id',
+                        'FROM'      => 'glpi_plugin_fields_containers',
                         'LEFT JOIN' => [
                             'glpi_plugin_fields_fields' => [
                                 'FKEY' => [
                                     'glpi_plugin_fields_containers' => 'id',
-                                    'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id'
-                                ]
-                            ]
+                                    'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
+                                ],
+                            ],
                         ],
                         'WHERE' => [
                             'glpi_plugin_fields_fields.name' => $field,
-                        ]
+                        ],
                     ]);
                     if (count($iterator) > 0) {
                         $data = $iterator->current();
@@ -286,9 +289,9 @@ function plugin_fields_rule_matched($params = [])
                             [
                                 'plugin_fields_containers_id' => $data['id'],
                                 $field                        => $value,
-                                'items_id'                    => $agent->fields['computers_id']
+                                'items_id'                    => $agent->fields['computers_id'],
                             ],
-                            Computer::getType()
+                            Computer::getType(),
                         );
                     }
                 }
@@ -300,16 +303,16 @@ function plugin_fields_rule_matched($params = [])
 function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 {
     $searchopt = &Search::getOptions($itemtype);
-    $table = $searchopt[$ID]["table"];
+    $table     = $searchopt[$ID]['table'];
 
     //fix glpi default Search::giveItem who for empty date display "--"
     if (
-        strpos($table, "glpi_plugin_fields") !== false
-        && isset($searchopt[$ID]["datatype"])
-        && strpos($searchopt[$ID]["datatype"], "date") !== false
+        strpos($table, 'glpi_plugin_fields') !== false
+        && isset($searchopt[$ID]['datatype'])
+        && strpos($searchopt[$ID]['datatype'], 'date') !== false
         && empty($data['raw']["ITEM_$num"])
     ) {
-        return " ";
+        return ' ';
     }
 
     return false;
@@ -330,7 +333,7 @@ function plugin_datainjection_populate_fields()
         $types = json_decode($values['itemtypes']);
 
         foreach ($types as $type) {
-            $classname = PluginFieldsContainer::getClassname($type, $values['name'], 'Injection');
+            $classname                    = PluginFieldsContainer::getClassname($type, $values['name'], 'Injection');
             $INJECTABLE_TYPES[$classname] = 'fields';
         }
     }
@@ -342,8 +345,8 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     global $DB;
 
     $searchopt = &Search::getOptions($itemtype);
-    $table     = $searchopt[$ID]["table"];
-    $field     = $searchopt[$ID]["field"];
+    $table     = $searchopt[$ID]['table'];
+    $field     = $searchopt[$ID]['field'];
 
     $field_field = new PluginFieldsField();
 
@@ -352,26 +355,26 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     if (
         $field_field->getFromDBByCrit(
             [
-                'name' => $field,
-                'multiple' => true
-            ]
+                'name'     => $field,
+                'multiple' => true,
+            ],
         )
     ) {
-        return $link . $DB->quoteName("$table" . "_" . "$field") . "." .  $DB->quoteName($field) . "LIKE " . $DB->quoteValue("%\"$val\"%") ;
+        return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
     } else {
         // if 'multiple' field with cleaned name is found -> 'dropdown' case
         // update WHERE clause with LIKE statement
-        $cleanfield = str_replace("plugin_fields_", "", $field);
-        $cleanfield = str_replace("dropdowns_id", "", $cleanfield);
+        $cleanfield = str_replace('plugin_fields_', '', $field);
+        $cleanfield = str_replace('dropdowns_id', '', $cleanfield);
         if (
             $field_field->getFromDBByCrit(
                 [
-                    'name' => $cleanfield,
-                    'multiple' => true
-                ]
+                    'name'     => $cleanfield,
+                    'multiple' => true,
+                ],
             )
         ) {
-            return $link . $DB->quoteName("$table" . "_" . "$cleanfield") . "." .  $DB->quoteName($field) . "LIKE " . $DB->quoteValue("%\"$val\"%") ;
+            return $link . $DB->quoteName("$table" . '_' . "$cleanfield") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
         } else {
             return false;
         }

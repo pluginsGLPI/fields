@@ -31,33 +31,33 @@
 define('PLUGIN_FIELDS_VERSION', '1.21.13');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_FIELDS_MIN_GLPI", "10.0.0");
+define('PLUGIN_FIELDS_MIN_GLPI', '10.0.0');
 // Maximum GLPI version, exclusive
-define("PLUGIN_FIELDS_MAX_GLPI", "10.0.99");
+define('PLUGIN_FIELDS_MAX_GLPI', '10.0.99');
 
-if (!defined("PLUGINFIELDS_DIR")) {
-    define("PLUGINFIELDS_DIR", Plugin::getPhpDir("fields"));
+if (!defined('PLUGINFIELDS_DIR')) {
+    define('PLUGINFIELDS_DIR', Plugin::getPhpDir('fields'));
 }
-if (!defined("PLUGINFIELDS_WEB_DIR")) {
-    define("PLUGINFIELDS_WEB_DIR", Plugin::getWebDir("fields"));
+if (!defined('PLUGINFIELDS_WEB_DIR')) {
+    define('PLUGINFIELDS_WEB_DIR', Plugin::getWebDir('fields'));
 }
 
-if (!defined("PLUGINFIELDS_DOC_DIR")) {
-    define("PLUGINFIELDS_DOC_DIR", GLPI_PLUGIN_DOC_DIR . "/fields");
+if (!defined('PLUGINFIELDS_DOC_DIR')) {
+    define('PLUGINFIELDS_DOC_DIR', GLPI_PLUGIN_DOC_DIR . '/fields');
 }
 if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
     mkdir(PLUGINFIELDS_DOC_DIR);
 }
 
-if (!defined("PLUGINFIELDS_CLASS_PATH")) {
-    define("PLUGINFIELDS_CLASS_PATH", PLUGINFIELDS_DOC_DIR . "/inc");
+if (!defined('PLUGINFIELDS_CLASS_PATH')) {
+    define('PLUGINFIELDS_CLASS_PATH', PLUGINFIELDS_DOC_DIR . '/inc');
 }
 if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
     mkdir(PLUGINFIELDS_CLASS_PATH);
 }
 
-if (!defined("PLUGINFIELDS_FRONT_PATH")) {
-    define("PLUGINFIELDS_FRONT_PATH", PLUGINFIELDS_DOC_DIR . "/front");
+if (!defined('PLUGINFIELDS_FRONT_PATH')) {
+    define('PLUGINFIELDS_FRONT_PATH', PLUGINFIELDS_DOC_DIR . '/front');
 }
 if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
     mkdir(PLUGINFIELDS_FRONT_PATH);
@@ -79,10 +79,10 @@ function plugin_init_fields()
     $PLUGIN_HOOKS['csrf_compliant']['fields'] = true;
 
     // manage autoload of plugin custom classes
-    include_once(PLUGINFIELDS_DIR . "/inc/autoload.php");
+    include_once(PLUGINFIELDS_DIR . '/inc/autoload.php');
 
     // manage autoload of vendor classes
-    include_once(PLUGINFIELDS_DIR . "/vendor/autoload.php");
+    include_once(PLUGINFIELDS_DIR . '/vendor/autoload.php');
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
@@ -119,14 +119,14 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
             // add entry to configuration menu
-            $PLUGIN_HOOKS["menu_toadd"]['fields'] = ['config' => 'PluginFieldsMenu'];
+            $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => 'PluginFieldsMenu'];
 
             // add tabs to itemtypes
             $itemtypes = array_unique(PluginFieldsContainer::getEntries());
             if (count($itemtypes) > 0) {
                 Plugin::registerClass(
                     'PluginFieldsContainer',
-                    ['addtabon' => $itemtypes]
+                    ['addtabon' => $itemtypes],
                 );
             }
 
@@ -140,15 +140,15 @@ function plugin_init_fields()
             }
 
             // Add/delete profiles to automaticaly to container
-            $PLUGIN_HOOKS['item_add']['fields']['Profile'] = ["PluginFieldsProfile", "addNewProfile"];
-            $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ["PluginFieldsProfile", "deleteProfile"];
+            $PLUGIN_HOOKS['item_add']['fields']['Profile']       = ['PluginFieldsProfile', 'addNewProfile'];
+            $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ['PluginFieldsProfile', 'deleteProfile'];
 
             //load drag and drop javascript library on Package Interface
 
             if (
-                plugin_fields_script_endswith("container.form.php")
+                plugin_fields_script_endswith('container.form.php')
             ) {
-                $PLUGIN_HOOKS['add_javascript']['fields'][] = "lib/redips-drag-min.js";
+                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'lib/redips-drag-min.js';
                 if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
                     $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
                 } else {
@@ -159,7 +159,7 @@ function plugin_init_fields()
 
         // Add Fields to Datainjection
         if (Plugin::isPluginActive('datainjection')) {
-            $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = "plugin_datainjection_populate_fields";
+            $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = 'plugin_datainjection_populate_fields';
         }
 
         //Retrieve dom container
@@ -167,20 +167,20 @@ function plugin_init_fields()
         if ($itemtypes !== false) {
             foreach ($itemtypes as $itemtype) {
                 $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = [
-                    "PluginFieldsContainer",
-                    "preItemUpdate"
+                    'PluginFieldsContainer',
+                    'preItemUpdate',
                 ];
-                $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype]    = [
-                    "PluginFieldsContainer",
-                    "preItem"
+                $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype] = [
+                    'PluginFieldsContainer',
+                    'preItem',
                 ];
-                $PLUGIN_HOOKS['item_add']['fields'][$itemtype]        = [
-                    "PluginFieldsContainer",
-                    "postItemAdd"
+                $PLUGIN_HOOKS['item_add']['fields'][$itemtype] = [
+                    'PluginFieldsContainer',
+                    'postItemAdd',
                 ];
                 $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = [
-                    "PluginFieldsContainer",
-                    "preItemPurge"
+                    'PluginFieldsContainer',
+                    'preItemPurge',
                 ];
             }
         }
@@ -188,7 +188,7 @@ function plugin_init_fields()
         // Display fields in any existing tab
         $PLUGIN_HOOKS['post_item_form']['fields'] = [
             'PluginFieldsField',
-            'showForTab'
+            'showForTab',
         ];
     }
 }
@@ -203,7 +203,7 @@ function plugin_init_fields()
 function plugin_fields_script_endswith($scriptname)
 {
     //append plugin directory to avoid dumb errors...
-    $scriptname = 'fields/front/' . $scriptname;
+    $scriptname  = 'fields/front/' . $scriptname;
     $script_name = $_SERVER['SCRIPT_NAME'];
 
     return substr($script_name, -strlen($scriptname)) === $scriptname;
@@ -220,18 +220,18 @@ function plugin_fields_script_endswith($scriptname)
 function plugin_version_fields()
 {
     return [
-        'name'           => __("Additional fields", "fields"),
-        'version'        => PLUGIN_FIELDS_VERSION,
-        'author'         => 'Teclib\', Olivier Moron',
-        'homepage'       => 'https://github.com/pluginsGLPI/fields',
-        'license'        => 'GPLv2+',
-        'requirements'   => [
+        'name'         => __('Additional fields', 'fields'),
+        'version'      => PLUGIN_FIELDS_VERSION,
+        'author'       => 'Teclib\', Olivier Moron',
+        'homepage'     => 'https://github.com/pluginsGLPI/fields',
+        'license'      => 'GPLv2+',
+        'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_FIELDS_MIN_GLPI,
                 'max' => PLUGIN_FIELDS_MAX_GLPI,
                 'dev' => true, //Required to allow 9.2-dev
-            ]
-        ]
+            ],
+        ],
     ];
 }
 
@@ -244,7 +244,8 @@ function plugin_version_fields()
 function plugin_fields_check_prerequisites()
 {
     if (!is_readable(__DIR__ . '/vendor/autoload.php') || !is_file(__DIR__ . '/vendor/autoload.php')) {
-        echo "Run composer install --no-dev in the plugin directory<br>";
+        echo 'Run composer install --no-dev in the plugin directory<br>';
+
         return false;
     }
 
@@ -299,10 +300,10 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         && Plugin::isPluginActive('fields')
     ) {
         if ($DB->tableExists(PluginFieldsContainer::getTable())) {
-            $where = [];
-            $where["is_active"] = true;
+            $where              = [];
+            $where['is_active'] = true;
             if ($container_id != null) {
-                $where["id"] = $container_id;
+                $where['id'] = $container_id;
             }
             $container_obj = new PluginFieldsContainer();
             $containers    = $container_obj->find($where);
@@ -315,67 +316,67 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                 foreach ($itemtypes as $itemtype) {
                     $fields_obj = new PluginFieldsField();
                     // to get translation
-                    $container["itemtype"] = PluginFieldsContainer::getType();
-                    $yaml_conf['container'][$container['id'] . "-" . $itemtype] = [
-                        "id"        => (int) $container['id'],
-                        "name"      => PluginFieldsLabelTranslation::getLabelFor($container),
-                        "itemtype"  => $itemtype,
-                        "type"      => $container['type'],
-                        "subtype"   => $container['subtype'],
-                        "fields"    => [],
+                    $container['itemtype']                                      = PluginFieldsContainer::getType();
+                    $yaml_conf['container'][$container['id'] . '-' . $itemtype] = [
+                        'id'       => (int) $container['id'],
+                        'name'     => PluginFieldsLabelTranslation::getLabelFor($container),
+                        'itemtype' => $itemtype,
+                        'type'     => $container['type'],
+                        'subtype'  => $container['subtype'],
+                        'fields'   => [],
                     ];
-                    $fields = $fields_obj->find(["plugin_fields_containers_id"  => $container['id'],
-                        "is_active"                   => true,
-                        "is_readonly"                 => false
+                    $fields = $fields_obj->find(['plugin_fields_containers_id' => $container['id'],
+                        'is_active'                                            => true,
+                        'is_readonly'                                          => false,
                     ]);
                     if (count($fields)) {
                         foreach ($fields as $field) {
-                            $tmp_field = [];
+                            $tmp_field       = [];
                             $tmp_field['id'] = (int) $field['id'];
 
-                           //to get translation
-                            $field["itemtype"] = PluginFieldsField::getType();
-                            $tmp_field['label'] = PluginFieldsLabelTranslation::getLabelFor($field);
-                            $tmp_field['xml_node'] = strtoupper($field['name']);
-                            $tmp_field['type']  = $field['type'];
-                            $tmp_field['ranking'] = $field['ranking'];
-                            $tmp_field['default_value'] = $field['default_value'];
-                            $tmp_field['mandatory'] = $field['mandatory'];
-                            $tmp_field['possible_value'] = "";
+                            //to get translation
+                            $field['itemtype']           = PluginFieldsField::getType();
+                            $tmp_field['label']          = PluginFieldsLabelTranslation::getLabelFor($field);
+                            $tmp_field['xml_node']       = strtoupper($field['name']);
+                            $tmp_field['type']           = $field['type'];
+                            $tmp_field['ranking']        = $field['ranking'];
+                            $tmp_field['default_value']  = $field['default_value'];
+                            $tmp_field['mandatory']      = $field['mandatory'];
+                            $tmp_field['possible_value'] = '';
 
                             switch ($field['type']) {
                                 case 'dropdown':
                                     $obj = new $itemtype();
                                     $obj->getEmpty();
 
-                                    $dropdown_itemtype = PluginFieldsDropdown::getClassname($field['name']);
+                                    $dropdown_itemtype     = PluginFieldsDropdown::getClassname($field['name']);
                                     $tmp_field['xml_node'] = strtoupper(getForeignKeyFieldForItemType($dropdown_itemtype));
 
-                                    $dropdown_obj = new $dropdown_itemtype();
+                                    $dropdown_obj   = new $dropdown_itemtype();
                                     $dropdown_datas = $dropdown_obj->find();
-                                    $datas = [];
+                                    $datas          = [];
                                     foreach ($dropdown_datas as $value) {
-                                            $items = [];
-                                            $items['id'] = (int)$value['id'];
-                                            $items['value'] = $value['name'];
-                                            $datas[] = $items;
+                                        $items          = [];
+                                        $items['id']    = (int) $value['id'];
+                                        $items['value'] = $value['name'];
+                                        $datas[]        = $items;
                                     }
                                     $tmp_field['possible_value'] = $datas;
                                     break;
                                 case 'yesno':
-                                    $datas = [];
-                                    $datas["0"]['id'] = 0;
-                                    $datas["0"]['value'] = __('No');
-                                    $datas["1"]['id'] = 1;
-                                    $datas["1"]['value'] = __('Yes');
+                                    $datas                       = [];
+                                    $datas['0']['id']            = 0;
+                                    $datas['0']['value']         = __('No');
+                                    $datas['1']['id']            = 1;
+                                    $datas['1']['value']         = __('Yes');
                                     $tmp_field['possible_value'] = $datas;
                                     break;
                                 case 'dropdownuser':
-                                    $datas = Dropdown::getDropdownUsers(['is_active' => 1,'is_deleted' => 0], false);
+                                    $datas                       = Dropdown::getDropdownUsers(['is_active' => 1, 'is_deleted' => 0], false);
                                     $tmp_field['possible_value'] = $datas['results'];
                                     break;
                             }
-                            $yaml_conf['container'][$container['id'] . "-" . $itemtype]["fields"][] = $tmp_field;
+                            $yaml_conf['container'][$container['id'] . '-' . $itemtype]['fields'][] = $tmp_field;
                         }
                     }
                 }
@@ -384,9 +385,10 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
     }
 
     if (count($yaml_conf)) {
-        $dump =   Yaml::dump($yaml_conf, 10);
-        $filename = GLPI_TMP_DIR . "/fields_conf.yaml";
+        $dump     = Yaml::dump($yaml_conf, 10);
+        $filename = GLPI_TMP_DIR . '/fields_conf.yaml';
         file_put_contents($filename, $dump);
+
         return true;
     }
 

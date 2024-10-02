@@ -33,9 +33,9 @@ include('../../../inc/includes.php');
 $translation = new PluginFieldsLabelTranslation();
 if (isset($_POST['add'])) {
     $translation->add($_POST);
-} else if (isset($_POST['update'])) {
+} elseif (isset($_POST['update'])) {
     $translation->update($_POST);
-} else if (isset($_POST['purge'])) {
+} elseif (isset($_POST['purge'])) {
     $translation->delete($_POST, true);
 }
 Html::back();

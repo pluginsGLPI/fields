@@ -34,7 +34,7 @@ class PluginFieldsMenu extends CommonGLPI
 
     public static function getMenuName()
     {
-        return __("Additional fields", "fields");
+        return __('Additional fields', 'fields');
     }
 
     public static function getMenuContent()
@@ -43,10 +43,10 @@ class PluginFieldsMenu extends CommonGLPI
             return;
         }
 
-        $front_fields = Plugin::getPhpDir('fields', false) . "/front";
-        $menu = [
+        $front_fields = Plugin::getPhpDir('fields', false) . '/front';
+        $menu         = [
             'title' => self::getMenuName(),
-            'page'  =>  "$front_fields/container.php",
+            'page'  => "$front_fields/container.php",
             'icon'  => PluginFieldsContainer::getIcon(),
         ];
 
@@ -57,14 +57,15 @@ class PluginFieldsMenu extends CommonGLPI
                 'title' => $itemtype::getTypeName(2),
                 'page'  => $itemtype::getSearchURL(false),
                 'links' => [
-                    'search' => $itemtype::getSearchURL(false)
-                ]
+                    'search' => $itemtype::getSearchURL(false),
+                ],
             ];
 
             if ($itemtype::canCreate()) {
                 $menu['options'][$option]['links']['add'] = $itemtype::getFormURL(false);
             }
         }
+
         return $menu;
     }
 }

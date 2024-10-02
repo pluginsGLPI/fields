@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-include "../../../inc/includes.php";
+include '../../../inc/includes.php';
 if (preg_match('/[a-z]/i', $_REQUEST['ddtype']) !== 1) {
     throw new \RuntimeException(sprintf('Invalid itemtype "%1$s"', $_REQUEST['ddtype']));
 }

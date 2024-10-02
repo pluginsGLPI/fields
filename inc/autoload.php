@@ -50,6 +50,7 @@ class PluginFieldsAutoloader
                 $this->paths[] = $path;
             }
         }
+
         return $this;
     }
 
@@ -71,25 +72,26 @@ class PluginFieldsAutoloader
 
         if ($matches !== false) {
             $plugin_name = strtolower($matches[1]);
-            $class_name = strtolower($matches[2]);
+            $class_name  = strtolower($matches[2]);
 
-            if ($plugin_name !== "fields") {
+            if ($plugin_name !== 'fields') {
                 return false;
             }
 
-            $filename = implode(".", [
+            $filename = implode('.', [
                 $class_name,
-                "class",
-                "php"
+                'class',
+                'php',
             ]);
 
             foreach ($this->paths as $path) {
-                 $test = $path . DIRECTORY_SEPARATOR . $filename;
+                $test = $path . DIRECTORY_SEPARATOR . $filename;
                 if (file_exists($test)) {
                     return include_once($test);
                 }
             }
         }
+
         return false;
     }
 

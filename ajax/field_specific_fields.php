@@ -32,7 +32,7 @@
  */
 
 include('../../../inc/includes.php');
-header("Content-Type: text/html; charset=UTF-8");
+header('Content-Type: text/html; charset=UTF-8');
 Html::header_nocache();
 Session::checkLoginUser();
 
@@ -57,7 +57,7 @@ if ($type === 'glpi_item') {
     if ($field->isNewItem()) {
         Dropdown::showFromArray('allowed_values', PluginFieldsToolbox::getGlpiItemtypes(), [
             'display_emptychoice' => true,
-            'multiple'            => true
+            'multiple'            => true,
         ]);
     } else {
         $allowed_itemtypes = !empty($field->fields['allowed_values'])
@@ -71,14 +71,14 @@ if ($type === 'glpi_item') {
                     ? $itemtype::getTypeName(Session::getPluralNumber())
                     : $itemtype;
                 },
-                $allowed_itemtypes
-            )
+                $allowed_itemtypes,
+            ),
         );
     }
     echo '</td>';
 } else {
     $dropdown_matches = [];
-    $is_dropdown = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', $type, $dropdown_matches) === 1;
+    $is_dropdown      = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', $type, $dropdown_matches) === 1;
 
     // Display "default value(s)" field
     echo '<td>';
@@ -94,7 +94,7 @@ if ($type === 'glpi_item') {
 
     echo '<td>';
     if ($is_dropdown) {
-        $multiple = (bool)($_POST['multiple'] ?? $field->fields['multiple']);
+        $multiple = (bool) ($_POST['multiple'] ?? $field->fields['multiple']);
 
         if ($field->isNewItem()) {
             Dropdown::showYesNo(
@@ -103,7 +103,7 @@ if ($type === 'glpi_item') {
                 -1,
                 [
                     'rand' => $rand,
-                ]
+                ],
             );
         } else {
             echo Dropdown::getYesNo($multiple);
@@ -128,27 +128,27 @@ if ($type === 'glpi_item') {
                     'entity_restrict' => -1,
                     'multiple'        => $multiple,
                     'rand'            => $rand,
-                ]
+                ],
             );
         }
         echo '</div>';
         Ajax::updateItemOnSelectEvent(
             "dropdown_multiple$rand",
             "plugin_fields_specific_fields_$rand",
-            "../ajax/field_specific_fields.php",
+            '../ajax/field_specific_fields.php',
             [
                 'id'       => $id,
                 'type'     => $type,
                 'multiple' => '__VALUE__',
                 'rand'     => $rand,
-            ]
+            ],
         );
     } else {
         echo Html::input(
             'default_value',
             [
                 'value' => $field->fields['default_value'],
-            ]
+            ],
         );
     }
     echo '</td>';

@@ -50,14 +50,14 @@ class PluginFieldsProfile extends CommonDBRelation
         /** @var DBmysql $DB */
         global $DB;
 
-        $default_charset = DBConnection::getDefaultCharset();
+        $default_charset   = DBConnection::getDefaultCharset();
         $default_collation = DBConnection::getDefaultCollation();
-        $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+        $default_key_sign  = DBConnection::getDefaultPrimaryKeySignOption();
 
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__("Installing %s"), $table));
+            $migration->displayMessage(sprintf(__('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT {$default_key_sign} NOT NULL auto_increment,
@@ -79,20 +79,19 @@ class PluginFieldsProfile extends CommonDBRelation
         /** @var DBmysql $DB */
         global $DB;
 
-        $DB->query("DROP TABLE IF EXISTS `" . self::getTable() . "`");
+        $DB->query('DROP TABLE IF EXISTS `' . self::getTable() . '`');
 
         return true;
     }
 
-
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        return self::createTabEntry(_n("Profile", "Profiles", 2));
+        return self::createTabEntry(_n('Profile', 'Profiles', 2));
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        $profile = new Profile();
+        $profile        = new Profile();
         $found_profiles = $profile->find();
 
         $fields_profile = new self();
@@ -100,34 +99,35 @@ class PluginFieldsProfile extends CommonDBRelation
         echo "<div class='spaced' id='tabsbody'>";
         echo "<table class='tab_cadre_fixe'>";
 
-        echo "<tr><th colspan='2'>" . _n("Profile", "Profiles", 2) . "</th></tr>";
+        echo "<tr><th colspan='2'>" . _n('Profile', 'Profiles', 2) . '</th></tr>';
         foreach ($found_profiles as $profile_item) {
             //get right for current profile
             $found = $fields_profile->find([
-                'profiles_id' => $profile_item['id'],
-                'plugin_fields_containers_id' => $item->fields['id']
+                'profiles_id'                 => $profile_item['id'],
+                'plugin_fields_containers_id' => $item->fields['id'],
             ]);
             $first_found = array_shift($found);
 
             //display right
-            echo "<tr>";
-            echo "<td>" . $profile_item['name'] . "</td>";
-            echo "<td>";
+            echo '<tr>';
+            echo '<td>' . $profile_item['name'] . '</td>';
+            echo '<td>';
             Profile::dropdownRight(
-                "rights[" . $profile_item['id'] . "]",
-                ['value' => $first_found['right']]
+                'rights[' . $profile_item['id'] . ']',
+                ['value' => $first_found['right']],
             );
-            echo "</td>";
-            echo "<tr>";
+            echo '</td>';
+            echo '<tr>';
         }
-        echo "<ul>";
+        echo '<ul>';
         echo "<tr><td class='tab_bg_2 center' colspan='2'>";
         echo "<input type='hidden' name='plugin_fields_containers_id' value='" . $item->fields['id'] . "' />";
-        echo "<input type='submit' name='update' value=\"" . _sx("button", "Save") . "\" class='submit'>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table></div>";
+        echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
+        echo '</td>';
+        echo '</tr>';
+        echo '</table></div>';
         Html::closeForm();
+
         return true;
     }
 
@@ -137,24 +137,24 @@ class PluginFieldsProfile extends CommonDBRelation
         foreach ($input['rights'] as $profiles_id => $right) {
             $found = $fields_profile->find(
                 [
-                    'profiles_id' => $profiles_id,
-                    'plugin_fields_containers_id' => $input['plugin_fields_containers_id']
-                ]
+                    'profiles_id'                 => $profiles_id,
+                    'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+                ],
             );
             if (count($found) > 0) {
-                 $first_found = array_shift($found);
+                $first_found = array_shift($found);
 
-                 $fields_profile->update([
-                     'id'                          => $first_found['id'],
-                     'profiles_id'                 => $profiles_id,
-                     'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
-                     'right'                       => $right
-                 ]);
+                $fields_profile->update([
+                    'id'                          => $first_found['id'],
+                    'profiles_id'                 => $profiles_id,
+                    'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
+                    'right'                       => $right,
+                ]);
             } else {
                 $fields_profile->add([
                     'profiles_id'                 => $profiles_id,
                     'plugin_fields_containers_id' => $input['plugin_fields_containers_id'],
-                    'right'                       => $right
+                    'right'                       => $right,
                 ]);
             }
         }
@@ -164,7 +164,7 @@ class PluginFieldsProfile extends CommonDBRelation
 
     public static function createForContainer(PluginFieldsContainer $container)
     {
-        $profile = new Profile();
+        $profile        = new Profile();
         $found_profiles = $profile->find();
 
         $fields_profile = new self();
@@ -172,24 +172,26 @@ class PluginFieldsProfile extends CommonDBRelation
             $fields_profile->add([
                 'profiles_id'                 => $profile_item['id'],
                 'plugin_fields_containers_id' => $container->fields['id'],
-                'right'                       => CREATE
+                'right'                       => CREATE,
             ]);
         }
+
         return true;
     }
 
     public static function addNewProfile(Profile $profile)
     {
-        $containers = new PluginFieldsContainer();
+        $containers       = new PluginFieldsContainer();
         $found_containers = $containers->find();
 
         $fields_profile = new self();
         foreach ($found_containers as $container) {
             $fields_profile->add([
                 'profiles_id'                 => $profile->fields['id'],
-                'plugin_fields_containers_id' => $container['id']
+                'plugin_fields_containers_id' => $container['id'],
             ]);
         }
+
         return true;
     }
 
@@ -197,6 +199,7 @@ class PluginFieldsProfile extends CommonDBRelation
     {
         $fields_profile = new self();
         $fields_profile->deleteByCriteria(['profiles_id' => $profile->fields['id']]);
+
         return true;
     }
 
@@ -207,15 +210,15 @@ class PluginFieldsProfile extends CommonDBRelation
 
         $container_profile = $DB->request(
             [
-                'SELECT'  => ['MAX' => 'right AS right'],
-                'FROM'    => self::getTable(),
-                'WHERE'   => [
-                    'profiles_id' => $profile_id,
+                'SELECT' => ['MAX' => 'right AS right'],
+                'FROM'   => self::getTable(),
+                'WHERE'  => [
+                    'profiles_id'                 => $profile_id,
                     'plugin_fields_containers_id' => $container_id,
                 ],
-            ]
+            ],
         );
 
-        return (int)$container_profile->current()['right'];
+        return (int) $container_profile->current()['right'];
     }
 }
