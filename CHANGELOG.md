@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unrelease]
+## [1.21.14] - 2024-10-02
+
+### Fixed
+
+- Fix call to get_parent_class() for PHP 8.3 (#839)
+- Fix datatype for search (#836)
 
 ## [1.21.13] - 2024-09-12
 
