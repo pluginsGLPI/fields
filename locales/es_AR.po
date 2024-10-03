@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-11 01:01+0000\n"
+"POT-Creation-Date: 2024-10-03 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Nicolás Gaviola, 2023\n"
 "Language-Team: Spanish (Argentina) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_AR/)\n"
@@ -25,17 +25,17 @@ msgid ""
 "version %s and fixed in version %s)"
 msgstr "- algunos campos eliminados aún pueden estar presentes en la base de datos (error introducido en la versión %s y corregido en la versión %s)"
 
-#: inc/checkdatabasecommand.class.php:86
+#: inc/checkdatabasecommand.class.php:87
 #, php-format
 msgid "-> \"%s.%s\" has been deleted."
 msgstr "-> \"%s.%s\" ha sido eliminado."
 
-#: inc/checkdatabasecommand.class.php:87
+#: inc/checkdatabasecommand.class.php:88
 #, php-format
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" debe ser eliminado."
 
-#: inc/field.class.php:582
+#: inc/field.class.php:585
 msgid "Add a new field"
 msgstr "Agregar un nuevo campo"
 
@@ -47,12 +47,12 @@ msgstr "Agregar condición para ocultar el bloque"
 msgid "Add new status override"
 msgstr "Agregar nueva anulación de estado"
 
-#: inc/container.class.php:1027
+#: inc/container.class.php:1037
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: inc/menu.class.php:37 setup.php:223 front/container.form.php:63
-#: front/container.php:34
+#: inc/menu.class.php:37 setup.php:223 front/container.php:34
+#: front/container.form.php:63
 msgid "Additional fields"
 msgstr "Campos adicionales"
 
@@ -60,7 +60,7 @@ msgstr "Campos adicionales"
 msgid "Allowed values"
 msgstr "Valores permitidos"
 
-#: inc/container.class.php:769
+#: inc/container.class.php:780
 msgid "Block"
 msgstr "Bloque"
 
@@ -68,30 +68,30 @@ msgstr "Bloque"
 msgid "Check database to detect inconsistencies."
 msgstr "Verificar la base de datos para detectar inconsistencias."
 
-#: inc/toolbox.class.php:323
+#: inc/toolbox.class.php:322
 msgid "Component items"
 msgstr "Componentes"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:155
+#: inc/containerdisplaycondition.class.php:154
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Condición para ocultar el bloque"
 msgstr[1] "Condiciones para ocultar el bloque"
 msgstr[2] "Condición para ocultar el bloque"
 
-#: inc/container.class.php:591
+#: inc/container.class.php:597
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "El nombre del contenedor es demasiado largo para la base de datos (los dígitos del nombre se reemplazan por caracteres, intente eliminarlos)"
 
-#: inc/checkdatabasecommand.class.php:80
+#: inc/checkdatabasecommand.class.php:81
 #, php-format
 msgid "Database contains orphaned data from %s improperly deleted field(s)."
 msgstr "La base de datos contiene datos huérfanos de %s campo(s) eliminados incorrectamente."
 
-#: inc/checkdatabasecommand.class.php:79
+#: inc/checkdatabasecommand.class.php:80
 #, php-format
 msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
@@ -121,29 +121,29 @@ msgstr "Menú desplegable"
 msgid "Everything is in order - no action needed."
 msgstr "Todo está en orden, no se necesita ninguna acción."
 
-#: inc/container.class.php:53 inc/container.class.php:779
+#: inc/container.class.php:53 inc/container.class.php:789
 msgid "Export to YAML"
 msgstr "Exportar a YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:244
+#: templates/forms/status_override.html.twig inc/field.class.php:243
 msgid "Field"
 msgstr "Campo"
 
-#: inc/field.class.php:260 inc/field.class.php:285
+#: inc/field.class.php:258 inc/field.class.php:285
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "El nombre del campo es demasiado largo para la base de datos (los dígitos del nombre se reemplazan por caracteres, intente eliminarlos)"
 
-#: inc/field.class.php:520
+#: inc/field.class.php:522
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/container.class.php:210
+#: inc/container.class.php:211
 msgid "Fix container names"
 msgstr "Corrija los nombres de los contenedores"
 
-#: inc/toolbox.class.php:123
+#: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Corrija los nombres de los campos"
 
@@ -155,19 +155,19 @@ msgstr "Ítem de GLPI"
 msgid "Header"
 msgstr "Encabezado"
 
-#: inc/container.class.php:1028
+#: inc/container.class.php:1038
 msgid "Insertion in the form (before save button)"
 msgstr "Inserto en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:1029
+#: inc/container.class.php:1039
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserto en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/labeltranslation.class.php:195
+#: inc/labeltranslation.class.php:198
 msgid "Label"
 msgstr "Etiqueta"
 
-#: inc/labeltranslation.class.php:194
+#: inc/labeltranslation.class.php:197
 msgid "Language"
 msgstr "Idioma"
 
@@ -179,11 +179,11 @@ msgstr "Menú desplegable múltiple"
 msgid "MySQL tables installation"
 msgstr "Instalación de tablas MySQL"
 
-#: hook.php:121
+#: hook.php:122
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalación de tablas MySQL"
 
-#: inc/field.class.php:586
+#: inc/field.class.php:589
 msgid "No field for this block"
 msgstr "Ningún campo para este bloque"
 
@@ -199,8 +199,8 @@ msgstr "Número"
 msgid "Override by status"
 msgstr "Anular por estado"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:599
-#: inc/field.class.php:780
+#: templates/forms/status_override.html.twig inc/field.class.php:602
+#: inc/field.class.php:782
 msgid "Read only"
 msgstr "Sólo lectura"
 
@@ -208,7 +208,7 @@ msgstr "Sólo lectura"
 msgid "Regenerate container files"
 msgstr "Regenerar archivos contenedores"
 
-#: inc/container.class.php:189
+#: inc/container.class.php:190
 msgid "Regenerate containers files"
 msgstr "Regenerar archivos de contenedores"
 
@@ -220,20 +220,20 @@ msgstr "Regenera archivos contenedores."
 msgid "Rich Text"
 msgstr ""
 
-#: inc/checkdatabasecommand.class.php:96
+#: inc/checkdatabasecommand.class.php:97
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Ejecute \"%s\" para corregir las inconsistencias de la base de datos."
 
-#: inc/container.class.php:1537
+#: inc/container.class.php:1548
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen enlaces no válidos"
 
-#: inc/container.class.php:1527
+#: inc/container.class.php:1538
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1532
+#: inc/container.class.php:1543
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
@@ -241,7 +241,7 @@ msgstr "Algunos campos numéricos contienen valores no numéricos"
 msgid "Status overrides"
 msgstr "Anulaciones de estado"
 
-#: inc/container.class.php:873
+#: inc/container.class.php:883
 msgid "Tab"
 msgstr "Pestaña"
 
@@ -271,7 +271,7 @@ msgstr "Este comando limpiará todos los archivos generados por el complemento y
 msgid "URL"
 msgstr "URL"
 
-#: inc/container.class.php:351
+#: inc/container.class.php:352
 msgid "Updating generated containers files"
 msgstr "Actualización de archivos de contenedores generados"
 
@@ -287,32 +287,28 @@ msgstr "Use esta opción para arreglar la base de datos"
 msgid "Yes/No"
 msgstr "Sí/No"
 
-#: inc/container.class.php:540
-msgid "You cannot add block without associated element type"
-msgstr "No puede agregar un bloque sin el tipo de elemento asociado"
-
-#: inc/field.class.php:278
+#: inc/field.class.php:277
 msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr ""
 
-#: inc/container.class.php:575
+#: inc/container.class.php:580
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'Inserción en forma de una pestaña específica' en la misma pestaña de un objeto"
 
-#: inc/container.class.php:560
+#: inc/container.class.php:564
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No puede agregar varios bloques con el tipo 'Inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:605
+#: inc/container.class.php:612
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No puede agregar varios bloques con el mismo nombre en el mismo objeto"
 
-#: inc/containerdisplaycondition.class.php:506
-#: inc/containerdisplaycondition.class.php:521
+#: inc/containerdisplaycondition.class.php:493
+#: inc/containerdisplaycondition.class.php:509
 msgid "You must specify an item type, search option and condition."
 msgstr "Debe especificar un tipo de ítem, una opción de búsqueda y una condición."
 
