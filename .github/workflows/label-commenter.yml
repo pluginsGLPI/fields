@@ -1,0 +1,20 @@
+name: "Label commenter"
+
+on:
+  issues:
+    types:
+      - "labeled"
+      - "unlabeled"
+
+jobs:
+  comment:
+    permissions:
+      contents: "read"
+      issues: "write"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Label commenter"
+        uses: "peaceiris/actions-label-commenter@v1"
