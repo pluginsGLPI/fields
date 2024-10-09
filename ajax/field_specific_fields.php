@@ -77,12 +77,13 @@ if ($type === 'glpi_item') {
     }
     echo '</td>';
 } else {
-    $dropdown_matches = [];
-    $is_dropdown      = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', $type, $dropdown_matches) === 1;
+    $dropdown_matches  = [];
+    $is_dropdown       = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', $type, $dropdown_matches) === 1;
+    $is_dropdown_multi = ($is_dropdown && ($type != 'dropdown-Document'));
 
     // Display "default value(s)" field
     echo '<td>';
-    if ($is_dropdown) {
+    if ($is_dropdown_multi) {
         echo __('Multiple dropdown', 'fields') . ' :';
         echo '<br />';
     }
@@ -94,21 +95,25 @@ if ($type === 'glpi_item') {
 
     echo '<td>';
     if ($is_dropdown) {
-        $multiple = (bool) ($_POST['multiple'] ?? $field->fields['multiple']);
+        if ($is_dropdown_multi) {
+            $multiple = (bool) ($_POST['multiple'] ?? $field->fields['multiple']);
 
-        if ($field->isNewItem()) {
-            Dropdown::showYesNo(
-                'multiple',
-                $multiple,
-                -1,
-                [
-                    'rand' => $rand,
-                ],
-            );
+            if ($field->isNewItem()) {
+                Dropdown::showYesNo(
+                    'multiple',
+                    $multiple,
+                    -1,
+                    [
+                        'rand' => $rand,
+                    ],
+                );
+            } else {
+                echo Dropdown::getYesNo($multiple);
+            }
+            echo '<br />';
         } else {
-            echo Dropdown::getYesNo($multiple);
+            $multiple = false;
         }
-        echo '<br />';
 
         echo '<div style="line-height:var(--tblr-body-line-height);">';
         if ($field->isNewItem() && $type == 'dropdown') {
