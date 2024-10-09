@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.21.15] - 2024-10-09
+
+### Fixed
+
+- Removes multiple document selection in a single field, as the core does not support it.
+
 ## [1.21.14] - 2024-10-02
 
 ### Fixed
