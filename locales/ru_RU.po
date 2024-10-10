@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-03 00:58+0000\n"
+"POT-Creation-Date: 2024-10-10 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Ilia Kireev, 2024\n"
 "Language-Team: Russian (Russia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -57,8 +57,8 @@ msgstr "Добавить новое переопределение статус�
 msgid "Add tab"
 msgstr "Добавить вкладку"
 
-#: inc/menu.class.php:37 setup.php:223 front/container.php:34
-#: front/container.form.php:63
+#: setup.php:223 front/container.form.php:63 front/container.php:34
+#: inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "Дополнительные поля"
 
@@ -112,11 +112,11 @@ msgstr "Дата"
 msgid "Date & time"
 msgstr "Дата и время"
 
-#: ajax/field_specific_fields.php:89
+#: ajax/field_specific_fields.php:90
 msgid "Default value"
 msgstr "Значение по умолчанию"
 
-#: ajax/field_specific_fields.php:116
+#: ajax/field_specific_fields.php:121
 msgid "Default value will be configurable once field will be created."
 msgstr "Значение по умолчанию будет настраиваться после создания поля."
 
@@ -178,7 +178,7 @@ msgstr "Метка"
 msgid "Language"
 msgstr "Язык"
 
-#: ajax/field_specific_fields.php:86
+#: ajax/field_specific_fields.php:87
 msgid "Multiple dropdown"
 msgstr "Множественный выпадающий список"
 
