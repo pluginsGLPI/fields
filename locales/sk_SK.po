@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# feonsu <feonsu@gmail.com>, 2023
+# feonsu <feonsu@gmail.com>, 2023-2024
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-03 00:58+0000\n"
+"POT-Creation-Date: 2024-10-10 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: feonsu <feonsu@gmail.com>, 2023\n"
+"Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,8 +51,8 @@ msgstr "Pridať nové prepísanie stavu"
 msgid "Add tab"
 msgstr "Pridať kartu"
 
-#: inc/menu.class.php:37 setup.php:223 front/container.php:34
-#: front/container.form.php:63
+#: setup.php:223 front/container.form.php:63 front/container.php:34
+#: inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "Dodatočné polia"
 
@@ -106,11 +106,11 @@ msgstr "Dátum"
 msgid "Date & time"
 msgstr "Dátum a čas"
 
-#: ajax/field_specific_fields.php:89
+#: ajax/field_specific_fields.php:90
 msgid "Default value"
 msgstr "Predvolená hodnota"
 
-#: ajax/field_specific_fields.php:116
+#: ajax/field_specific_fields.php:121
 msgid "Default value will be configurable once field will be created."
 msgstr "Predvolená hodnota bude konfigurovateľná po vytvorení poľa."
 
@@ -172,7 +172,7 @@ msgstr "Popisok"
 msgid "Language"
 msgstr "Jazyk"
 
-#: ajax/field_specific_fields.php:86
+#: ajax/field_specific_fields.php:87
 msgid "Multiple dropdown"
 msgstr "Viac rozbaľovacích ponúk"
 
@@ -290,7 +290,7 @@ msgstr "Áno/Nie"
 
 #: inc/field.class.php:277
 msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr ""
+msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
 
 #: inc/container.class.php:580
 msgid ""
