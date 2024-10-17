@@ -1139,7 +1139,7 @@ HTML;
         if (isset($itemtypes[$item->getType()])) {
             $tabs_entries = [];
             $container    = new self();
-            foreach ($itemtypes[$item->getType()] as $tab_name => $tab_label) {
+            foreach ($itemtypes[$item->getType()] as $tab_name) {
                 // needs to check if entity of item is in hierachy of $tab_name
                 foreach ($container->find(['is_active' => 1, 'name' => $tab_name]) as $data) {
                     $dataitemtypes = json_decode($data['itemtypes']);
@@ -1152,7 +1152,7 @@ HTML;
                         if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
                             $display_condition = new PluginFieldsContainerDisplayCondition();
                             if ($display_condition->computeDisplayContainer($item, $data['id'])) {
-                                $tabs_entries[$tab_name] = $tab_label;
+                                $tabs_entries[$tab_name] = $data['label'];
                             }
                         }
                     }
