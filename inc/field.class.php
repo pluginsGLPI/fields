@@ -512,7 +512,7 @@ class PluginFieldsField extends CommonDBChild
         if (!$withtemplate) {
             switch ($item->getType()) {
                 case __CLASS__:
-                    $ong[1] = "Test";
+                    $ong[1] = $this->getTypeName(1);
 
                     return $ong;
             }
