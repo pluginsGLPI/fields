@@ -1152,7 +1152,7 @@ HTML;
                         if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
                             $display_condition = new PluginFieldsContainerDisplayCondition();
                             if ($display_condition->computeDisplayContainer($item, $data['id'])) {
-                                $tabs_entries[$tab_name] = $tab_label;
+                                $tabs_entries[$tab_name] = $data['label'];
                             }
                         }
                     }
