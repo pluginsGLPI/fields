@@ -1139,7 +1139,7 @@ HTML;
         if (isset($itemtypes[$item->getType()])) {
             $tabs_entries = [];
             $container    = new self();
-            foreach ($itemtypes[$item->getType()] as $tab_name) {
+            foreach ($itemtypes[$item->getType()] as $tab_name => $tab_label) {
                 // needs to check if entity of item is in hierachy of $tab_name
                 foreach ($container->find(['is_active' => 1, 'name' => $tab_name]) as $data) {
                     $dataitemtypes = json_decode($data['itemtypes']);
