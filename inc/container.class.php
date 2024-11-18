@@ -1957,6 +1957,8 @@ HTML;
                     $opt[$i]['datatype'] = 'text';
                     break;
                 case 'number':
+                    $opt[$i]['datatype'] = 'decimal';
+                    break;
                 case 'date':
                 case 'datetime':
                     $opt[$i]['datatype'] = $data['type'];
