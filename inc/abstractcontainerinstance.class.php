@@ -32,6 +32,13 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 {
     public function canViewItem()
     {
+        //check if current user have access to the main item entity
+        $item = new $this->fields['itemtype']();
+        $item->getFromDB($this->fields['item_id']);
+        if (!Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
+            return false;
+        }
+
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
         if ($right < READ) {
             return false;
@@ -41,12 +48,28 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 
     public function canUpdateItem()
     {
+        //check if current user have access to the main item entity
+        $item = new $this->fields['itemtype']();
+        $item->getFromDB($this->fields['item_id']);
+        if (!Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
+            return false;
+        }
+
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
         if ($right > READ) {
             return true;
         }
         return false;
     }
+
+    public function canPurgeItem()
+    {
+        if (isAPI()) {
+            return false;
+        }
+        return true;
+    }
+
 
     public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
