@@ -34,7 +34,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
     {
         //check if current user have access to the main item entity
         $item = new $this->fields['itemtype']();
-        $item->getFromDB($this->fields['item_id']);
+        $item->getFromDB($this->fields['items_id']);
         if (!Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
             return false;
         }
@@ -50,7 +50,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
     {
         //check if current user have access to the main item entity
         $item = new $this->fields['itemtype']();
-        $item->getFromDB($this->fields['item_id']);
+        $item->getFromDB($this->fields['items_id']);
         if (!Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
             return false;
         }
@@ -64,10 +64,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 
     public function canPurgeItem()
     {
-        if (isAPI()) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
 
