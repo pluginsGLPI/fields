@@ -30,6 +30,26 @@
 
 abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 {
+
+    public function canViewItem()
+    {
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
+        if ($right < READ) {
+            return false;
+        }
+        return true;
+    }
+
+    public function canUpdateItem()
+    {
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
+        if ($right > READ) {
+            return true;
+        }
+        return false;
+    }
+
+
     public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
         if (!is_array($values)) {
