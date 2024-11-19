@@ -30,7 +30,6 @@
 
 abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 {
-
     public function canViewItem()
     {
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
@@ -48,7 +47,6 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
         }
         return false;
     }
-
 
     public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
