@@ -28,42 +28,39 @@
  * -------------------------------------------------------------------------
  */
 
-abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
+abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 {
+    public static $itemtype = 'itemtype';
+    public static $items_id = 'items_id';
 
-    public function canViewItem()
-    {
-        //check if current user have access to the main item entity
-        $item = new $this->fields['itemtype']();
-        $item->getFromDB($this->fields['items_id']);
-        if ($item->isEntityAssign() && !Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
-            return false;
-        }
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
-        if ($right < READ) {
-            return false;
-        }
-        return true;
-    }
 
-    public function canUpdateItem()
+    public function addNeededInfoToInput($input)
     {
-        //check if current user have access to the main item entity
-        $item = new $this->fields['itemtype']();
-        $item->getFromDB($this->fields['items_id']);
-        if ($item->isEntityAssign() && !Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
-            return false;
+       // is entity missing and forwarding on ?
+        if ($this->tryEntityForwarding() && !isset($input['entities_id'])) {
+           // Merge both arrays to ensure all the fields are defined for the following checks
+            $completeinput = array_merge($this->fields, $input);
+           // Set the item to allow parent::prepareinputforadd to get the right item ...
+            if (
+                $itemToGetEntity = static::getItemFromArray(
+                    static::$itemtype,
+                    static::$items_id,
+                    $completeinput
+                )
+            ) {
+                if (
+                    ($itemToGetEntity instanceof CommonDBTM)
+                ) {
+                    $input['entities_id']  = $itemToGetEntity->getEntityID();
+                    $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
+                } else {
+                 // No entity link : set default values
+                    $input['entities_id']  = 0;
+                    $input['is_recursive'] = 0;
+                }
+            }
         }
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
-        if ($right > READ) {
-            return true;
-        }
-        return false;
-    }
-
-    public function canPurgeItem()
-    {
-        return false;
+        return $input;
     }
 
     public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
