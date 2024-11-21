@@ -31,11 +31,6 @@
 abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 {
 
-    public static $undisclosedFields = [];
-
-    public static $itemtype        = 'itemtype';
-    public static $items_id        = 'items_id';
-
     /**
      * Checks if the HTTP request targets an object with an ID.
      *
