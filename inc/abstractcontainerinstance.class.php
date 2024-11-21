@@ -87,6 +87,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
         }
         return false;
     }
+
     public function canPurgeItem()
     {
         return false;
