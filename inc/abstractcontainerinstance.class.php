@@ -28,14 +28,13 @@
  * -------------------------------------------------------------------------
  */
 
-abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
+abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
 {
 
     public static $undisclosedFields = [];
 
     public static $itemtype        = 'itemtype';
     public static $items_id        = 'items_id';
-
 
     /**
      * Checks if the HTTP request targets an object with an ID.
@@ -64,6 +63,35 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
         return parent::canView();
     }
 
+    public function canViewItem()
+    {
+        //check if current user have access to the main item entity
+        $item = new $this->fields['itemtype']();
+        $item->getFromDB($this->fields['items_id']);
+        if (!Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
+            return false;
+        }
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
+        if ($right < READ) {
+            return false;
+        }
+        return true;
+    }
+
+    public function canUpdateItem()
+    {
+        //check if current user have access to the main item entity
+        $item = new $this->fields['itemtype']();
+        $item->getFromDB($this->fields['items_id']);
+        if (!Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive())) {
+            return false;
+        }
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $this->fields['plugin_fields_containers_id']);
+        if ($right > READ) {
+            return true;
+        }
+        return false;
+    }
     public function canPurgeItem()
     {
         return false;
