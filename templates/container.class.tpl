@@ -45,68 +45,105 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
          }
       }
 
+      /**
+      * Adds the 'entities_id' field to the database table and migrates existing data.
+      *
+      * This block ensures that the 'entities_id' field is created and populated if it
+      * associated item type requires entity assignment
+      */
       if (getItemForItemtype("%%ITEMTYPE%%")->isEntityAssign() && !$DB->fieldExists($table, 'entities_id')) {
          $migration->addField($table, 'entities_id', 'fkey', ['after' => 'plugin_fields_containers_id']);
          $migration->addKey($table, 'entities_id');
          $migration->executeMigration();
 
-         //migrate data
-         $item = new self();
-         $data = $item->find();
-
+         // migrate data
          $query = $DB->buildUpdate(
                $table,
-               [
-                  'entities_id' => new QueryParam(),
-               ],
-               [
-                  'id'       => new QueryParam()
-               ]
+               ['entities_id' => new QueryParam()],
+               ['id'       => new QueryParam()]
          );
          $stmt = $DB->prepare($query);
 
-         foreach ($data as $fields) {
-            $related_item = new $fields['itemtype'];
-            $related_item->getFromDB($fields['items_id']);
-            $stmt->bind_param(
-                  'ii',
-                  $related_item->fields['entities_id'],
-                  $fields['id']
-            );
-            $stmt->execute();
-         }
+         //load all entries
+         $data = $DB->request(
+            [
+               'SELECT'    => '*',
+               'FROM'      => $table,
+            ]
+         );
 
+         foreach ($data as $fields) {
+            //load related item
+            $related_item = $DB->request(
+               [
+                  'SELECT'    => '*',
+                  'FROM'      => getTableForItemType($fields['itemtype']),
+                  'WHERE'     => [
+                        'id'      => $fields['items_id'],
+                     ]
+               ]
+            )->current();
+
+            //update if needed
+            if ($fields['entities_id'] != $related_item['entities_id']) {
+               $stmt->bind_param(
+                  'ii',
+                  $related_item['entities_id'],
+                  $fields['id']
+               );
+               $stmt->execute();
+            }
+         }
       }
 
+      /**
+      * Adds the 'is_recursive' field to the database table and migrates existing data.
+      *
+      * This block ensures that the 'is_recursive' field is created and populated if it
+      * associated item type requires recursive assignment
+      */
       if (getItemForItemtype("%%ITEMTYPE%%")->maybeRecursive() && !$DB->fieldExists($table, 'is_recursive')) {
          $migration->addField($table, 'is_recursive', 'bool', ['after'  => 'entities_id']);
          $migration->addKey($table, 'is_recursive');
          $migration->executeMigration();
+
          //migrate data
-
-         $item = new self();
-         $data = $item->find();
-
          $query = $DB->buildUpdate(
-               $table,
-               [
-                  'is_recursive' => new QueryParam(),
-               ],
-               [
-                  'id'       => new QueryParam()
-               ]
+            $table,
+            ['is_recursive' => new QueryParam()],
+            ['id'       => new QueryParam()]
          );
          $stmt = $DB->prepare($query);
 
+         //load all entries
+         $data = $DB->request(
+            [
+               'SELECT'    => '*',
+               'FROM'      => $table,
+            ]
+         );
+
          foreach ($data as $fields) {
-            $related_item = new $fields['itemtype'];
-            $related_item->getFromDB($fields['items_id']);
-            $stmt->bind_param(
+            //load related item
+            $related_item = $DB->request(
+               [
+                  'SELECT'    => '*',
+                  'FROM'      => getTableForItemType($fields['itemtype']),
+                  'WHERE'     => [
+                        'id'      => $fields['items_id'],
+                     ]
+               ]
+            )->current();
+
+            //update if needed
+            if ($fields['is_recursive'] != $related_item['is_recursive']) {
+               $stmt->bind_param(
                   'ii',
-                  $related_item->fields['is_recursive'],
+                  $related_item['is_recursive'],
                   $fields['id']
-            );
-            $stmt->execute();
+               );
+               $stmt->execute();
+            }
          }
       }
    }
