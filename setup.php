@@ -285,7 +285,6 @@ function plugin_fields_checkFiles()
     }
 }
 
-
 function plugin_fields_exportBlockAsYaml($container_id = null)
 {
     /** @var DBmysql $DB */
