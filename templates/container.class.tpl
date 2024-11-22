@@ -79,7 +79,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       }
 
       if (getItemForItemtype("%%ITEMTYPE%%")->maybeRecursive() && !$DB->fieldExists($table, 'is_recursive')) {
-         $migration->addField($table, 'is_recursive', 'bool', ['update' => '1', 'after'  => 'entities_id']);
+         $migration->addField($table, 'is_recursive', 'bool', ['after'  => 'entities_id']);
          $migration->addKey($table, 'is_recursive');
          $migration->executeMigration();
          //migrate data
