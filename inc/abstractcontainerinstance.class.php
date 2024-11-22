@@ -57,7 +57,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                 $itemToGetEntity = static::getItemFromArray(
                     static::$itemtype,
                     static::$items_id,
-                    $completeinput
+                    $completeinput,
                 )
             ) {
                 if (
