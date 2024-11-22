@@ -126,7 +126,8 @@ function plugin_init_fields()
             if (count($itemtypes) > 0) {
                 Plugin::registerClass(
                     'PluginFieldsContainer',
-                    ['addtabon' => $itemtypes],
+                    ['addtabon' => $itemtypes,
+                     'forwardentityfrom' => true],
                 );
             }
 
@@ -284,6 +285,7 @@ function plugin_fields_checkFiles()
         }
     }
 }
+
 
 function plugin_fields_exportBlockAsYaml($container_id = null)
 {

@@ -13,6 +13,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
 
       $obj = new self();
       $table = $obj->getTable();
+      $migration = new PluginFieldsMigration(0);
 
       // create Table
       if (!$DB->tableExists($table)) {
@@ -32,10 +33,8 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
          $result = $DB->query("SHOW COLUMNS FROM `$table`");
          if ($result && $DB->numrows($result) > 0) {
             $changed = false;
-            $migration = new PluginFieldsMigration(0);
             while ($data = $DB->fetchAssoc($result)) {
                if (str_starts_with($data['Field'], 'itemtype_') && $data['Null'] !== 'YES') {
-               Toolbox::logDebug($data);
                   $migration->changeField($table, $data['Field'], $data['Field'], "varchar(100) DEFAULT NULL");
                   $changed = true;
                }

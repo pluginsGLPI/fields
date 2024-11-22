@@ -33,14 +33,26 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
 
-
+    /**
+     * This function relies on the static property `static::$plugins_forward_entity`,
+     * which should be populated using the following method (from setup):
+     *
+     * Plugin::registerClass(
+     *     PluginFields<Itemtype><name>,
+     *     ['forwardentityfrom' => <Itemtype>]
+     * );
+     *
+     * However, the order in which plugins are loaded can affect the behavior.
+     * For example, if a container is defined on a `GenericObject` itemtype and
+     * the `fields` plugin initializes before the `genericobject` plugin, the
+     * `itemtype` for the container will not yet exist, leading to potential issues.
+     *
+     * Modification of this function to meet specific requirements.
+     */
     public function addNeededInfoToInput($input)
     {
-       // is entity missing and forwarding on ?
-        if ($this->tryEntityForwarding() && !isset($input['entities_id'])) {
-           // Merge both arrays to ensure all the fields are defined for the following checks
+        if ($this->tryEntityForwarding()) {
             $completeinput = array_merge($this->fields, $input);
-           // Set the item to allow parent::prepareinputforadd to get the right item ...
             if (
                 $itemToGetEntity = static::getItemFromArray(
                     static::$itemtype,
@@ -51,12 +63,13 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                 if (
                     ($itemToGetEntity instanceof CommonDBTM)
                 ) {
-                    $input['entities_id']  = $itemToGetEntity->getEntityID();
-                    $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
-                } else {
-                 // No entity link : set default values
-                    $input['entities_id']  = 0;
-                    $input['is_recursive'] = 0;
+                    if ($itemToGetEntity->isEntityAssign()) {
+                        $input['entities_id']  = $itemToGetEntity->getEntityID();
+                    }
+
+                    if ($itemToGetEntity->maybeRecursive()) {
+                        $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
+                    }
                 }
             }
         }
