@@ -49,7 +49,7 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
      *
      * Modification of this function to meet specific requirements.
      */
-    public function addNeededInfoToInput($input)
+    public function addNeededInfoToInput(array $input): array
     {
         if ($this->tryEntityForwarding()) {
             $completeinput = array_merge($this->fields, $input);
