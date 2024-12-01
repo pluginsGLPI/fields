@@ -4,10 +4,10 @@
         "symfony/yaml": "^5.4"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64",
+        "friendsofphp/php-cs-fixer": "^3.65",
         "glpi-project/tools": "^0.7.4",
         "php-parallel-lint/php-parallel-lint": "^1.4",
-        "phpstan/phpstan": "^1.12"
+        "phpstan/phpstan": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,
