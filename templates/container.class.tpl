@@ -139,6 +139,10 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
                ]
             )->current();
 
+            if ($related_item === null) {
+                continue;
+            }
+
             //update if needed
             if ($fields['is_recursive'] != $related_item['is_recursive']) {
                $stmt->bind_param(
