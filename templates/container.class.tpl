@@ -84,6 +84,10 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
                ]
             )->current();
 
+            if ($related_item === null) {
+                continue;
+            }
+
             //update if needed
             if ($fields['entities_id'] != $related_item['entities_id']) {
                $stmt->bind_param(
