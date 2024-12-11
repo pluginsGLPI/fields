@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [UNRELAESE]
+
+### Fixed
+- Ddo not destroy `dropdown` table / class if used by another container
+
+
 ## [1.21.15] - 2024-10-09
 
 ### Fixed

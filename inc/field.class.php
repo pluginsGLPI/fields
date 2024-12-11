@@ -343,6 +343,11 @@ class PluginFieldsField extends CommonDBChild
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function pre_deleteItem()
     {
+        /**
+         * @var \DBmysql $DB
+         */
+        global $DB;
+
         //retrieve search option ID to clean DiplayPreferences
         $container_obj = new PluginFieldsContainer();
         $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
@@ -389,7 +394,23 @@ class PluginFieldsField extends CommonDBChild
         ]);
 
         if ($this->fields['type'] === 'dropdown') {
-            return PluginFieldsDropdown::destroy($this->fields['name']);
+            //load all container and check if another use this fields
+            $container_obj = new PluginFieldsContainer();
+            $all_container = $container_obj->find();
+
+            $use_by_another = false;
+            foreach ($all_container as $container_fields) {
+                foreach (json_decode($container_fields['itemtypes']) as $itemtype) {
+                    $classname = PluginFieldsContainer::getClassname($itemtype, $container_fields['name']);
+                    if ($DB->fieldExists(getTableForItemType($classname), $this->fields['name'])) {
+                        $use_by_another = true;
+                    }
+                }
+            }
+
+            if (!$use_by_another) {
+                return PluginFieldsDropdown::destroy($this->fields['name']);
+            }
         }
 
         return true;
