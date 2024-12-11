@@ -966,6 +966,9 @@ class PluginFieldsField extends CommonDBChild
             function refreshContainer() {
                 const data = $('#{$html_id}').closest('form').serializeArray().reduce(
                     function(obj, item) {
+                        if (item.name === "content" || item.name === "_predefined_fields") {
+                            return obj;
+                        }
                         var multiple_matches = item.name.match(/^(.+)\[\]$/);
                         if (multiple_matches) {
                             var name = multiple_matches[1];
