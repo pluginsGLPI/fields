@@ -28,8 +28,56 @@
  * -------------------------------------------------------------------------
  */
 
-abstract class PluginFieldsAbstractContainerInstance extends CommonDBTM
+abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 {
+    public static $itemtype = 'itemtype';
+    public static $items_id = 'items_id';
+
+    public static $mustBeAttached     = false;
+
+    /**
+     * This function relies on the static property `static::$plugins_forward_entity`,
+     * which should be populated using the following method (from setup):
+     *
+     * Plugin::registerClass(
+     *     PluginFields<Itemtype><name>,
+     *     ['forwardentityfrom' => <Itemtype>]
+     * );
+     *
+     * However, the order in which plugins are loaded can affect the behavior.
+     * For example, if a container is defined on a `GenericObject` itemtype and
+     * the `fields` plugin initializes before the `genericobject` plugin, the
+     * `itemtype` for the container will not yet exist, leading to potential issues.
+     *
+     * Modification of this function to meet specific requirements.
+     */
+    public function addNeededInfoToInput($input)
+    {
+        if ($this->tryEntityForwarding()) {
+            $completeinput = array_merge($this->fields, $input);
+            if (
+                $itemToGetEntity = static::getItemFromArray(
+                    static::$itemtype,
+                    static::$items_id,
+                    $completeinput,
+                )
+            ) {
+                if (
+                    ($itemToGetEntity instanceof CommonDBTM)
+                ) {
+                    if ($itemToGetEntity->isEntityAssign()) {
+                        $input['entities_id']  = $itemToGetEntity->getEntityID();
+                    }
+
+                    if ($itemToGetEntity->maybeRecursive()) {
+                        $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
+                    }
+                }
+            }
+        }
+        return $input;
+    }
+
     public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
         if (!is_array($values)) {
