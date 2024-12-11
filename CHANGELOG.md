@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.21.16] - yyyy-mm-dd
+
+### Fixed
+
+- Fix issue preventing field modification via API when a field and a new tab are added to the same object
+
 ## [1.21.15] - 2024-10-09
 
 ### Fixed
