@@ -1681,23 +1681,12 @@ HTML;
                 $subtype = $_REQUEST['_plugin_fields_subtype'];
             }
             foreach ($item->input as $key => $value) {
-                $container_find = false;
                 $container_id = self::findContainer(get_class($item), $type, $subtype);
-                if ($container_id === false) {
+                $container_is_find = $loc_c->getFromDB($container_id);
+                if (!$DB->fieldExists(static::getTable(), $key) || !$container_is_find) {
                     $container_id = self::findContainer(get_class($item));
                     if ($container_id === false) {
                         return false;
-                    }
-                    $container_find = true;
-                }
-                $loc_c->getFromDB($container_id);
-                if (!$DB->fieldExists(static::getTable(), $key)) {
-                    if (!$container_find) {
-                        $container_id = self::findContainer(get_class($item));
-                        if ($container_id === false) {
-                            return false;
-                        }
-                        $container_find = true;
                     }
                 }
                 if (!in_array($container_id, $c_id, true)) {
