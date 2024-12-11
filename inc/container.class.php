@@ -1635,19 +1635,17 @@ HTML;
     {
         self::preItem($item);
         if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data = $item->input['_plugin_fields_data'];
-            //update data
-            $container = new self();
-            if (
-                count($data) == 0
-                || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
-            ) {
-                $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
-
-                return true;
+            foreach ($item->input['_plugin_fields_data'] as $container_class) {
+                //update container_class
+                $container = new self();
+                if (
+                    count($container_class) !== 0
+                    && !$container->updateFieldsValues($container_class, $item->getType(), isset($_REQUEST['massiveaction']))
+                ) {
+                    return $item->input = [];
+                }
             }
-
-            return $item->input = [];
+            $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
         }
 
         return true;
@@ -1663,9 +1661,14 @@ HTML;
      */
     public static function preItem(CommonDBTM $item)
     {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $container_ids = [];
+        $field_container = new PluginFieldsContainer();
         //find container (if not exist, do nothing)
         if (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
+            $container_ids = [$_REQUEST['c_id']];
         } else {
             $type = 'dom';
             if (isset($_REQUEST['_plugin_fields_type'])) {
@@ -1675,57 +1678,54 @@ HTML;
             if ($type == 'domtab') {
                 $subtype = $_REQUEST['_plugin_fields_subtype'];
             }
-            if (false === ($c_id = self::findContainer(get_Class($item), $type, $subtype))) {
-                // tries for 'tab'
-                if (false === ($c_id = self::findContainer(get_Class($item)))) {
-                    return false;
+            foreach ($item->input as $key => $value) {
+                if (!$DB->fieldExists(static::getTable(), $key) || false === ($container_id = self::findContainer(get_Class($item), $type, $subtype))) {
+                    // tries for 'tab'
+                    if (false === ($container_id = self::findContainer(get_Class($item)))) {
+                        return false;
+                    }
+                }
+                if (!in_array($container_id, $container_ids, true)) {
+                    $container_ids[] = $container_id;
                 }
             }
         }
 
-        $loc_c = new PluginFieldsContainer();
-        $loc_c->getFromDB($c_id);
-
         // check rights on $c_id
+        foreach ($container_ids as $container_id) {
+            $field_container->getFromDB($container_id);
 
-        if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
-            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-            if (($right > READ) === false) {
+            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $container_id > 0) {
+                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_id);
+                if (($right > READ) === false) {
+                    return;
+                }
+            } else {
                 return;
             }
-        } else {
-            return;
-        }
 
-
-        // need to check if container is usable on this object entity
-        $entities = [$loc_c->fields['entities_id']];
-        if ($loc_c->fields['is_recursive']) {
-            $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
-        }
-
-        //workaround: when a ticket is created from readdonly profile,
-        //it is not initialized; see https://github.com/glpi-project/glpi/issues/1438
-        if (!isset($item->fields) || count($item->fields) == 0) {
-            $item->fields = $item->input;
-        }
-
-        if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
-            return false;
-        }
-
-        if (false !== ($data = self::populateData($c_id, $item))) {
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                $item->input = [];
-
-                return [];
+            // need to check if container is usable on this object entity
+            $entities = [$field_container->fields['entities_id']];
+            if ($field_container->fields['is_recursive']) {
+                $entities = getSonsOf(getTableForItemType('Entity'), $field_container->fields['entities_id']);
             }
-            $item->input['_plugin_fields_data'] = $data;
 
-            return $data;
+            if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
+                return false;
+            }
+
+            $populate_data = self::populateData($container_id, $item);
+            if (false !== $populate_data) {
+                if (self::validateValues($populate_data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+                    $item->input = [];
+
+                    return [];
+                }
+                $item->input['_plugin_fields_data'][] = $populate_data;
+            }
         }
 
-        return;
+        return $item->input['_plugin_fields_data'];
     }
 
     /**

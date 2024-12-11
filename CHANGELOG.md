@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.21.16] - yyyy-mm-dd
+
+### Fixed
+
+- Fixed a problem with fields being updated if there are several containers on the object.
+
 ## [1.21.15] - 2024-10-09
 
 ### Fixed
