@@ -1635,19 +1635,19 @@ HTML;
     {
         self::preItem($item);
         if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data = $item->input['_plugin_fields_data'];
-            //update data
-            $container = new self();
-            if (
-                count($data) == 0
-                || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
-            ) {
-                $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
-
-                return true;
+            foreach ($item->input['_plugin_fields_data'] as $containerClass) {
+                $data = $containerClass;
+                //update data
+                $container = new self();
+                if (
+                    count($data) == 0
+                    || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
+                ) {
+                    $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
+                } else {
+                    return $item->input = [];
+                }
             }
-
-            return $item->input = [];
         }
 
         return true;
@@ -1663,9 +1663,14 @@ HTML;
      */
     public static function preItem(CommonDBTM $item)
     {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $c_id = [];
+        $loc_c = new PluginFieldsContainer();
         //find container (if not exist, do nothing)
         if (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
+            $c_id = [$_REQUEST['c_id']];
         } else {
             $type = 'dom';
             if (isset($_REQUEST['_plugin_fields_type'])) {
@@ -1675,57 +1680,67 @@ HTML;
             if ($type == 'domtab') {
                 $subtype = $_REQUEST['_plugin_fields_subtype'];
             }
-            if (false === ($c_id = self::findContainer(get_Class($item), $type, $subtype))) {
-                // tries for 'tab'
-                if (false === ($c_id = self::findContainer(get_Class($item)))) {
-                    return false;
+            foreach ($item->input as $key => $value) {
+                $container_find = false;
+                $container_id = self::findContainer(get_class($item), $type, $subtype);
+                if ($container_id === false) {
+                    $container_id = self::findContainer(get_class($item));
+                    if ($container_id === false) {
+                        return false;
+                    }
+                    $container_find = true;
+                }
+                $loc_c->getFromDB($container_id);
+                if (!$DB->fieldExists(static::getTable(), $key)) {
+                    if (!$container_find) {
+                        $container_id = self::findContainer(get_class($item));
+                        if ($container_id === false) {
+                            return false;
+                        }
+                        $container_find = true;
+                    }
+                }
+                if (!in_array($container_id, $c_id, true)) {
+                    $c_id[] = $container_id;
                 }
             }
         }
 
-        $loc_c = new PluginFieldsContainer();
-        $loc_c->getFromDB($c_id);
-
         // check rights on $c_id
+        foreach ($c_id as $container_id) {
+            $loc_c->getFromDB($container_id);
 
-        if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
-            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-            if (($right > READ) === false) {
+            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $container_id > 0) {
+                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_id);
+                if (($right > READ) === false) {
+                    return;
+                }
+            } else {
                 return;
             }
-        } else {
-            return;
-        }
 
-
-        // need to check if container is usable on this object entity
-        $entities = [$loc_c->fields['entities_id']];
-        if ($loc_c->fields['is_recursive']) {
-            $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
-        }
-
-        //workaround: when a ticket is created from readdonly profile,
-        //it is not initialized; see https://github.com/glpi-project/glpi/issues/1438
-        if (!isset($item->fields) || count($item->fields) == 0) {
-            $item->fields = $item->input;
-        }
-
-        if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
-            return false;
-        }
-
-        if (false !== ($data = self::populateData($c_id, $item))) {
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                $item->input = [];
-
-                return [];
+            // need to check if container is usable on this object entity
+            $entities = [$loc_c->fields['entities_id']];
+            if ($loc_c->fields['is_recursive']) {
+                $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
             }
-            $item->input['_plugin_fields_data'] = $data;
 
-            return $data;
+            if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
+                return false;
+            }
+
+            $populate_data = self::populateData($container_id, $item);
+            if (false !== $populate_data) {
+                if (self::validateValues($populate_data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+                    $item->input = [];
+
+                    return [];
+                }
+                $item->input['_plugin_fields_data'][] = $populate_data;
+            }
         }
 
-        return;
+        return $item->input['_plugin_fields_data'];
     }
 
     /**
