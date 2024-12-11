@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Fix `container` to prevent calls from `API` returning full container data
+- Fixed a problem with fields being updated if there are several containers on the object.
 
 ## [1.21.15] - 2024-10-09
 
