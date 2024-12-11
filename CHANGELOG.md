@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELAESE]
 
+## [1.21.16] - 2024-11-12
+
 ### Fixed
 
 - Fix `container` to prevent calls from `API` returning full container data
