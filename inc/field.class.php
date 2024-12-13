@@ -394,15 +394,18 @@ class PluginFieldsField extends CommonDBChild
         ]);
 
         if ($this->fields['type'] === 'dropdown') {
-            //load all container and check if another use this fields
+            //load all container (except current one) and check if another use this fields
             $container_obj = new PluginFieldsContainer();
-            $all_container = $container_obj->find();
+            $all_container = $container_obj->find([
+                'id' => ['!=', $this->fields['plugin_fields_containers_id']]
+            ]);
 
             $use_by_another = false;
             foreach ($all_container as $container_fields) {
                 foreach (json_decode($container_fields['itemtypes']) as $itemtype) {
-                    $classname = PluginFieldsContainer::getClassname($itemtype, $container_fields['name']);
-                    if ($DB->fieldExists(getTableForItemType($classname), $this->fields['name'])) {
+                    $dropdown_classname = PluginFieldsDropdown::getClassname($this->fields['name']);
+                    $dropdown_fk = getForeignKeyFieldForItemType($dropdown_classname);
+                    if ($DB->fieldExists(getTableForItemType($classname), $dropdown_fk)) {
                         $use_by_another = true;
                     }
                 }
