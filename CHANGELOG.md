@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [UNRELAESE]
 
 ### Fixed
-- Ddo not destroy `dropdown` table / class if used by another container
+- Do not destroy the dropdown table/class if it is being used by another container.
 
 ## [1.21.16] - 2024-11-12
 
