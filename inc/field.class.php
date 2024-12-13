@@ -402,6 +402,7 @@ class PluginFieldsField extends CommonDBChild
             foreach ($all_container as $container_fields) {
                 foreach (json_decode($container_fields['itemtypes']) as $itemtype) {
                     $dropdown_classname = PluginFieldsDropdown::getClassname($this->fields['name']);
+                    $classname = PluginFieldsContainer::getClassname($itemtype, $container_fields['name']);
                     $dropdown_fk = getForeignKeyFieldForItemType($dropdown_classname);
                     if ($DB->fieldExists(getTableForItemType($classname), $dropdown_fk)) {
                         $use_by_another = true;
