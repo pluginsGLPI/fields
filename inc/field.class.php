@@ -396,9 +396,7 @@ class PluginFieldsField extends CommonDBChild
         if ($this->fields['type'] === 'dropdown') {
             //load all container (except current one) and check if another use this fields
             $container_obj = new PluginFieldsContainer();
-            $all_container = $container_obj->find([
-                'id' => ['!=', $this->fields['plugin_fields_containers_id']]
-            ]);
+            $all_container = $container_obj->find(['id' => ['!=', $this->fields['plugin_fields_containers_id']]]);
 
             $use_by_another = false;
             foreach ($all_container as $container_fields) {
