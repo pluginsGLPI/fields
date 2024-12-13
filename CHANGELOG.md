@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELAESE]
 
+### Fixed
+- Do not destroy the dropdown table/class if it is being used by another container.
+
 ## [1.21.16] - 2024-11-12
 
 ### Fixed
