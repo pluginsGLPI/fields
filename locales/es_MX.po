@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-16 01:07+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Carlos Moreno Rodríguez <carlosm.rodriguez@prodigy.net.mx>, 2022-2023\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_MX/)\n"
@@ -35,7 +35,7 @@ msgstr "-> \"%s.%s\" ha sido eliminado."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" debe eliminarse."
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "Agregar nuevo campo"
 
@@ -97,11 +97,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "La base de datos contenía datos huérfanos de %s campo(s) eliminados incorrectamente."
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "Fecha"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "Fecha y Hora"
 
@@ -113,7 +113,7 @@ msgstr "Valor predeterminado"
 msgid "Default value will be configurable once field will be created."
 msgstr "El valor predeterminado será configurable una vez que se cree el campo."
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "Menú desplegable"
 
@@ -135,7 +135,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "El nombre del campo es demasiado largo para la base de datos (los dígitos en el nombre se reemplazan por caracteres, intenta eliminarlos)"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "Campos"
 
@@ -147,11 +147,11 @@ msgstr "Corregir los nombres de los contenedores"
 msgid "Fix fields names"
 msgstr "Corregir los nombres de los campos"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "Elemento de GLPI"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "Encabezado"
 
@@ -183,7 +183,7 @@ msgstr "Instalación de las tablas MySQL"
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalación de las tablas MySQL"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "Ningún campo para este bloque"
 
@@ -191,7 +191,7 @@ msgstr "Ningún campo para este bloque"
 msgid "No item found"
 msgstr "Ningún elemento encontrado"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "Número"
 
@@ -199,8 +199,8 @@ msgstr "Número"
 msgid "Override by status"
 msgstr "Anular por estado"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "Solo lectura"
 
@@ -216,7 +216,7 @@ msgstr "Regenerar archivos de contenedores"
 msgid "Regenerates containers files."
 msgstr "Regenerar archivos de contenedores."
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr "Texto enriquecido"
 
@@ -245,11 +245,11 @@ msgstr "Anular estados"
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "Texto (varias líneas)"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "Texto (línea simple)"
 
@@ -267,7 +267,7 @@ msgid ""
 "them."
 msgstr "Este comando limpiará todos los archivos generados por el complemento y los regenerará."
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "URL"
 
@@ -283,7 +283,7 @@ msgstr "Actualizar campos de menús desplegables generados"
 msgid "Use this option to actually fix database"
 msgstr "Usa esta opción para arreglar la base de datos"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "Si / No"
 
