@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-16 01:07+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
@@ -35,7 +35,7 @@ msgstr "-> \"%s.%s\" bola vymazaná."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" by mala byť vymazaná."
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "Pridať nové pole"
 
@@ -98,11 +98,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "Databáza obsahovala osamotené dáta z %s neplatne vymazaných polí."
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "Dátum"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "Dátum a čas"
 
@@ -114,7 +114,7 @@ msgstr "Predvolená hodnota"
 msgid "Default value will be configurable once field will be created."
 msgstr "Predvolená hodnota bude konfigurovateľná po vytvorení poľa."
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "Rozbaľovacia ponuka"
 
@@ -136,7 +136,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "Polia"
 
@@ -148,11 +148,11 @@ msgstr "Opraviť názvy kontajnerov"
 msgid "Fix fields names"
 msgstr "Opraviť názvy polí"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "GLPI položka"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "Hlavička"
 
@@ -184,7 +184,7 @@ msgstr "Inštalácia MySQL tabuliek"
 msgid "MySQL tables uninstallation"
 msgstr "Odinštalovanie MySQL tabuliek"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "Žiadne pole pre tento blok"
 
@@ -192,7 +192,7 @@ msgstr "Žiadne pole pre tento blok"
 msgid "No item found"
 msgstr "Nenašla sa žiadna položka"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "Číslo"
 
@@ -200,8 +200,8 @@ msgstr "Číslo"
 msgid "Override by status"
 msgstr "Prepísanie podľa stavu"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "Iba na čítanie"
 
@@ -217,7 +217,7 @@ msgstr "Znova generovať kontajnerové súbory"
 msgid "Regenerates containers files."
 msgstr "Znova generovať kontajnerové súbory."
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr "Textové pole s formátovaním"
 
@@ -246,11 +246,11 @@ msgstr "Prepísania stavov"
 msgid "Tab"
 msgstr "Karta"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "Text (viacero riadkov)"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "Text (jeden riadok)"
 
@@ -268,7 +268,7 @@ msgid ""
 "them."
 msgstr "Tento príkaz vyčistí všetky súbory vygenerované týmto pluginom a znova ich vygeneruje."
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "URL adresa"
 
@@ -284,7 +284,7 @@ msgstr "Aktualizácia vygenerovaných súborov rozbaľovacích ponúk"
 msgid "Use this option to actually fix database"
 msgstr "Použite túto voľbu na skutočnú opravu databázy"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "Áno/Nie"
 

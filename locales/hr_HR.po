@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-16 01:07+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -37,7 +37,7 @@ msgstr "-> „%s.%s” je izbrisano."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> „%s.%s” treba izbrisati."
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "Dodaj novo polje"
 
@@ -99,11 +99,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "Baza podataka je sadržala nepovezane podatke iz %s nepropisno izbrisanih polja."
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
@@ -115,7 +115,7 @@ msgstr "Standardna vrijednost"
 msgid "Default value will be configurable once field will be created."
 msgstr "Zadana vrijednost moći će se konfigurirati nakon što se polje stvori."
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "Padajući popis"
 
@@ -137,7 +137,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "Polja"
 
@@ -149,11 +149,11 @@ msgstr "Ispravi imena spremnika"
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "GLPI predmet"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "Zaglavlje"
 
@@ -185,7 +185,7 @@ msgstr "Instalacija MySQL tablica"
 msgid "MySQL tables uninstallation"
 msgstr "Deinstalacija MySQL tablica"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "Nema polja za ovaj blok"
 
@@ -193,7 +193,7 @@ msgstr "Nema polja za ovaj blok"
 msgid "No item found"
 msgstr "Nijedan predmet nije pronađen"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "Broj"
 
@@ -201,8 +201,8 @@ msgstr "Broj"
 msgid "Override by status"
 msgstr "Zamijeni po stanju"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "Samo-za-čitanje"
 
@@ -218,7 +218,7 @@ msgstr "Ponovo generiraj datoteke kontejnera"
 msgid "Regenerates containers files."
 msgstr "Ponovo generira datoteke kontejnera."
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr "Formatirani tekst"
 
@@ -247,11 +247,11 @@ msgstr "Zamjene stanja"
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
@@ -269,7 +269,7 @@ msgid ""
 "them."
 msgstr "Ova naredba će očistiti sve datoteke koje je dodatak generirao i ponovno će ih generirati."
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "URL"
 
@@ -285,7 +285,7 @@ msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 msgid "Use this option to actually fix database"
 msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "Da/Ne"
 

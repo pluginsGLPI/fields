@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-16 01:07+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -37,7 +37,7 @@ msgstr "-> \"%s.%s\" a fost șters."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" trebuie șters."
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "Adaugă un câmp nou"
 
@@ -99,11 +99,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "Baza de date conținea date orfane din %s câmp(uri) șterse incorect."
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "Dată"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "Dată & oră"
 
@@ -115,7 +115,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "Desfășurător"
 
@@ -137,7 +137,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Numele câmpului este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "Câmpuri"
 
@@ -149,11 +149,11 @@ msgstr "Remediați numele containerelor"
 msgid "Fix fields names"
 msgstr "Remediați numele câmpurilor"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "Element GLPI"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "Antet"
 
@@ -185,7 +185,7 @@ msgstr "Generarea tabelelor MySQL pentru instalare "
 msgid "MySQL tables uninstallation"
 msgstr "Ștergerea tabelelor MySQL instalate"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "Nu există niciun câmp pentru acest bloc"
 
@@ -193,7 +193,7 @@ msgstr "Nu există niciun câmp pentru acest bloc"
 msgid "No item found"
 msgstr "Nu a fost găsit niciun element"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "Număr"
 
@@ -201,8 +201,8 @@ msgstr "Număr"
 msgid "Override by status"
 msgstr "Ignorați în funcție de stare"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "Nu poate fi editat"
 
@@ -218,7 +218,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr ""
 
@@ -247,11 +247,11 @@ msgstr "Status nepreluat"
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "Text (mai multe rânduri)"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "Text (un singur rând)"
 
@@ -269,7 +269,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "URL"
 
@@ -285,7 +285,7 @@ msgstr "Actualizarea fișierelor tip desfășurător generate"
 msgid "Use this option to actually fix database"
 msgstr "Utilizați această opțiune pentru a remedia baza de date"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "Da/Nu"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-23 01:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "-> \"%s.%s\" should be deleted."
 msgstr ""
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr ""
 
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr ""
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr ""
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr ""
 
@@ -134,7 +134,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr ""
 
@@ -146,11 +146,11 @@ msgstr ""
 msgid "Fix fields names"
 msgstr ""
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr ""
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "MySQL tables uninstallation"
 msgstr ""
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr ""
 msgid "No item found"
 msgstr ""
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr ""
 
@@ -198,8 +198,8 @@ msgstr ""
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr ""
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Regenerates containers files."
 msgstr ""
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr ""
 
@@ -244,11 +244,11 @@ msgstr ""
 msgid "Tab"
 msgstr ""
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr ""
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr ""
 
@@ -266,7 +266,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr ""
 
@@ -282,7 +282,7 @@ msgstr ""
 msgid "Use this option to actually fix database"
 msgstr ""
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr ""
 
