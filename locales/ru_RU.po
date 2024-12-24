@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-16 01:07+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Ilia Kireev, 2024\n"
 "Language-Team: Russian (Russia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -41,7 +41,7 @@ msgstr "->\"%s.%s\" было удалено."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" должно быть удалено."
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "Добавить новое поле"
 
@@ -104,11 +104,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "База данных может содержать потерянные данные из %s неправильно удаленных полей."
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "Дата"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "Дата и время"
 
@@ -120,7 +120,7 @@ msgstr "Значение по умолчанию"
 msgid "Default value will be configurable once field will be created."
 msgstr "Значение по умолчанию будет настраиваться после создания поля."
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "Выпадающий список"
 
@@ -142,7 +142,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Название поля слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "Поля"
 
@@ -154,11 +154,11 @@ msgstr "Исправить названия контейнеров"
 msgid "Fix fields names"
 msgstr "Исправить названия полей"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "GLPI объект"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "Заголовок"
 
@@ -190,7 +190,7 @@ msgstr "Установка таблиц MySQL "
 msgid "MySQL tables uninstallation"
 msgstr "Удаление таблиц MySQL"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "Нет поля для этого блока"
 
@@ -198,7 +198,7 @@ msgstr "Нет поля для этого блока"
 msgid "No item found"
 msgstr "Объект не найден"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "Номер"
 
@@ -206,8 +206,8 @@ msgstr "Номер"
 msgid "Override by status"
 msgstr "Переопределение по статусу"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "Только чтение"
 
@@ -223,7 +223,7 @@ msgstr "Регенерировать файлы контейнеров"
 msgid "Regenerates containers files."
 msgstr "Восстановленные  файлы контейнеров."
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr "Расширенный текст"
 
@@ -252,11 +252,11 @@ msgstr "Переопределение статуса"
 msgid "Tab"
 msgstr "Вкладка"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "Текст (многострочный)"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "Тест (одна строка)"
 
@@ -274,7 +274,7 @@ msgid ""
 "them."
 msgstr "Эта команда очистит все файлы, сгенерированные плагином, и восстановит их заново."
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "URL"
 
@@ -290,7 +290,7 @@ msgstr "Обновление автоматически раскрывающег
 msgid "Use this option to actually fix database"
 msgstr "Используйте это условие чтобы исправить базу данных"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "Да/Нет"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-16 01:07+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2024\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -35,7 +35,7 @@ msgstr "-> \"%s.%s\" silindi."
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" silinmeli."
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "Alan ekle"
 
@@ -96,11 +96,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "Veri tabanında düzgün olmayan şekilde silinmiş %s alandan artakalmış sahipsiz veriler var."
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "Tarih ve saat"
 
@@ -112,7 +112,7 @@ msgstr "Varsayılan değer"
 msgid "Default value will be configurable once field will be created."
 msgstr "Alan eklendikten sonra varsayılan değer yapılandırılabilir."
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "Açılan kutu"
 
@@ -134,7 +134,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "Alan adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "Alanlar"
 
@@ -146,11 +146,11 @@ msgstr "Kapsayıcı adlarını düzelt"
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "GLPI ögesi"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "Üst bilgi"
 
@@ -182,7 +182,7 @@ msgstr "MySQL tabloları yükleme"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL tabloları kaldırma"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "Bu blokta henüz bir alan yok"
 
@@ -190,7 +190,7 @@ msgstr "Bu blokta henüz bir alan yok"
 msgid "No item found"
 msgstr "Herhangi bir öge bulunamadı"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "Sayı"
 
@@ -198,8 +198,8 @@ msgstr "Sayı"
 msgid "Override by status"
 msgstr "Duruma göre değiştir"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "Salt okunur"
 
@@ -215,7 +215,7 @@ msgstr "Kapsayıcıların dosyaları yeniden oluşturulsun"
 msgid "Regenerates containers files."
 msgstr "Kapsayıcı dosyaları yeniden oluşturur."
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr "Zengin metin"
 
@@ -244,11 +244,11 @@ msgstr "Durum değişiklikleri"
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "Metin (birden çok satır)"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "Metin (tek satır)"
 
@@ -266,7 +266,7 @@ msgid ""
 "them."
 msgstr "Bu komut uygulama eki tarafından oluşturulmuş tüm dosyaları siler ve yeniden oluşturur."
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "Adres"
 
@@ -282,7 +282,7 @@ msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 msgid "Use this option to actually fix database"
 msgstr "Veri tabanını onarmak için bu seçeneği kullanın"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 

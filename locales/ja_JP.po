@@ -5,15 +5,15 @@
 # Translators:
 # sai sai, 2019
 # INOUE Daisuke, 2023
-# INOUE Daisuke, 2023
+# INOUE Daisuke, 2023-2024
 # sai sai, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2024-12-20 00:59+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: INOUE Daisuke, 2023\n"
+"Last-Translator: INOUE Daisuke, 2023-2024\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "-> \"%s.%s\" を削除しました。"
 msgid "-> \"%s.%s\" should be deleted."
 msgstr "-> \"%s.%s\" は削除すべきです。"
 
-#: inc/field.class.php:585
+#: inc/field.class.php:608
 msgid "Add a new field"
 msgstr "新しいフィールドを追加"
 
@@ -98,11 +98,11 @@ msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
 msgstr "%s で不適切に削除したフィールドの孤立したデータがデータベースに残っていました。"
 
-#: inc/field.class.php:1320
+#: inc/field.class.php:1343
 msgid "Date"
 msgstr "日付"
 
-#: inc/field.class.php:1321
+#: inc/field.class.php:1344
 msgid "Date & time"
 msgstr "日時"
 
@@ -114,7 +114,7 @@ msgstr "既定値"
 msgid "Default value will be configurable once field will be created."
 msgstr "フィールドを作成した後でも、既定値は設定可能です。"
 
-#: inc/field.class.php:1318
+#: inc/field.class.php:1341
 msgid "Dropdown"
 msgstr "ドロップダウン"
 
@@ -136,7 +136,7 @@ msgid ""
 "characters, try to remove them)"
 msgstr "データベースに保存するフィールド名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
 
-#: inc/field.class.php:522
+#: inc/field.class.php:545
 msgid "Fields"
 msgstr "フィールド"
 
@@ -148,11 +148,11 @@ msgstr "コンテナ名を修正する"
 msgid "Fix fields names"
 msgstr "フィールド名を修正する"
 
-#: inc/field.class.php:1322
+#: inc/field.class.php:1345
 msgid "GLPI item"
 msgstr "GLPI アイテム"
 
-#: inc/field.class.php:1312
+#: inc/field.class.php:1335
 msgid "Header"
 msgstr "ヘッダー"
 
@@ -184,7 +184,7 @@ msgstr "MySQL テーブルのインストール"
 msgid "MySQL tables uninstallation"
 msgstr "MySQL テーブルのアンインストール"
 
-#: inc/field.class.php:589
+#: inc/field.class.php:612
 msgid "No field for this block"
 msgstr "このブロック用のフィールドがありません"
 
@@ -192,7 +192,7 @@ msgstr "このブロック用のフィールドがありません"
 msgid "No item found"
 msgstr "アイテムがありません"
 
-#: inc/field.class.php:1316
+#: inc/field.class.php:1339
 msgid "Number"
 msgstr "数値"
 
@@ -200,8 +200,8 @@ msgstr "数値"
 msgid "Override by status"
 msgstr "状態による上書き"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:602
-#: inc/field.class.php:782
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
 msgid "Read only"
 msgstr "読取専用"
 
@@ -217,7 +217,7 @@ msgstr "コンテナファイルを再生成"
 msgid "Regenerates containers files."
 msgstr "コンテナファイルを再生成します。"
 
-#: inc/field.class.php:1315
+#: inc/field.class.php:1338
 msgid "Rich Text"
 msgstr "リッチテキスト"
 
@@ -246,11 +246,11 @@ msgstr "状態による上書き"
 msgid "Tab"
 msgstr "タブ"
 
-#: inc/field.class.php:1314
+#: inc/field.class.php:1337
 msgid "Text (multiples lines)"
 msgstr "テキスト（複数行）"
 
-#: inc/field.class.php:1313
+#: inc/field.class.php:1336
 msgid "Text (single line)"
 msgstr "テキスト（単一行）"
 
@@ -268,7 +268,7 @@ msgid ""
 "them."
 msgstr "このコマンドでプラグインが生成したすべてのファイルを初期化し、再生成します。"
 
-#: inc/field.class.php:1317
+#: inc/field.class.php:1340
 msgid "URL"
 msgstr "URL"
 
@@ -284,13 +284,13 @@ msgstr "生成済みドロップダウン ファイルを更新しています"
 msgid "Use this option to actually fix database"
 msgstr "この設定で、実際にデータベースを修復します"
 
-#: inc/field.class.php:1319
+#: inc/field.class.php:1342
 msgid "Yes/No"
 msgstr "はい・いいえ"
 
 #: inc/field.class.php:277
 msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr ""
+msgstr "1 つのブロック内に、同じ「ドロップダウン」項目を複数追加することはできません。"
 
 #: inc/container.class.php:580
 msgid ""
