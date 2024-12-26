@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [UNRELAESE]
 
 ### Fixed
+- Change the decimal type of number fields to display the decimal part of the decimal numbers in search options.
 - Do not destroy the dropdown table/class if it is being used by another container.
 - Fix fields updates with multiple containers via the API.
 
