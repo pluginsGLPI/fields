@@ -1610,11 +1610,13 @@ HTML;
     {
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $data             = $item->input['_plugin_fields_data'];
-            $data['items_id'] = $item->getID();
             //update data
             $container = new self();
-            if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
-                return true;
+            foreach ($data as $container_class) {
+                $container_class['items_id'] = $item->getID();
+                if ($container->updateFieldsValues($container_class, $item->getType(), isset($_REQUEST['massiveaction']))) {
+                    return true;
+                }
             }
 
             return $item->input = [];
@@ -1720,6 +1722,9 @@ HTML;
                     $item->input = [];
 
                     return [];
+                }
+                if (!isset($item->input['_plugin_fields_data'])) {
+                    $item->input['_plugin_fields_data'] = [];
                 }
                 $item->input['_plugin_fields_data'][] = $populate_data;
             }
