@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Force decimal `datatype` of `numeric` fields  for more accurate display.
 - Do not destroy the dropdown table/class if it is being used by another container.
-- Fix fields updates with multiple containers via the API.
 
 ## [1.21.16] - 2024-12-11
 
