@@ -313,8 +313,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $dropdown_itemtype = getItemTypeForTable($so['table']);
             $dropdown          = new $dropdown_itemtype();
-            $dropdown->getFromDB($value);
-            $raw_value = $dropdown->fields['name'];
+            if ($dropdown->getFromDB($value)) {
+                $raw_value = $dropdown->fields['name'];
+            }
         } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
             switch ($so['field']) {
                 case 'status':
