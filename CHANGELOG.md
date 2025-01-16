@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELAESE]
 
-## [1.21.17] - 2024-01-16
+## [1.21.18] - 2024-01-16
 
 - Fix `PluginFieldsContainerDisplayCondition` display when value is no more available.
 - Fix issue where the value of custom fields could not be saved
