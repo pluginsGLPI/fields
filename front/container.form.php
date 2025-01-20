@@ -46,7 +46,7 @@ if (isset($_POST['add'])) {
     Html::redirect(PLUGINFIELDS_WEB_DIR . '/front/container.php');
 } elseif (isset($_REQUEST['purge'])) {
     $container->check($_REQUEST['id'], PURGE);
-    $container->delete($_REQUEST, 1);
+    $container->delete($_REQUEST, true);
     Html::redirect(PLUGINFIELDS_WEB_DIR . '/front/container.php');
 } elseif (isset($_POST['update'])) {
     $container->check($_POST['id'], UPDATE);

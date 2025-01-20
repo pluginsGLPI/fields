@@ -119,6 +119,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
+        if (!($item instanceof CommonDBTM)) {
+            return '';
+        }
         $nb = countElementsInTable(
             self::getTable(),
             [
@@ -132,6 +135,10 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
+        if (!($item instanceof CommonDBTM)) {
+            return false;
+        }
+
         self::showTranslations($item);
 
         return true;
@@ -237,7 +244,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             echo "<th class='b'>" . __('No translation found') . '</th></tr></table>';
         }
 
-        return true;
+        return;
     }
 
     /**
@@ -290,7 +297,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
         $this->showFormButtons();
 
-        return true;
+        return;
     }
 
     /**

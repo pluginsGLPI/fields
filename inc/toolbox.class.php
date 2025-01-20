@@ -325,6 +325,7 @@ class PluginFieldsToolbox
         ];
 
         $plugin = new Plugin();
+        /** @phpstan-ignore-next-line  */
         if ($plugin->isActivated('genericobject') && method_exists('PluginGenericobjectType', 'getTypes')) {
             $go_itemtypes = [];
             /** @phpstan-ignore-next-line  */

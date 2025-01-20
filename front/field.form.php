@@ -48,7 +48,7 @@ if (isset($_POST['add'])) {
     Html::back();
 } elseif (isset($_REQUEST['purge'])) {
     $field->check($_REQUEST['id'], PURGE);
-    $field->delete($_REQUEST, 1);
+    $field->delete($_REQUEST, true);
     $field->redirectToList();
 } elseif (isset($_POST['update'])) {
     $field->check($_POST['id'], UPDATE);

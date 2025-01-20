@@ -58,9 +58,11 @@ class PluginFieldsInventory extends CommonDBTM
                     if ($itemtype == Computer::getType()) {
                         //load inventory from DB because
                         //FI not update XML file if computer is not update
-                        /** @phpstan-ignore-next-line  */
+                        // @phpstan-ignore-next-line
                         $db_info = new PluginFusioninventoryInventoryComputerComputer();
+                        // @phpstan-ignore-next-line
                         if ($db_info->getFromDBByCrit(['computers_id' => $items_id])) {
+                            // @phpstan-ignore-next-line
                             $arrayinventory = unserialize(gzuncompress($db_info->fields['serialized_inventory']));
                             if (isset($arrayinventory['custom'])) {
                                 self::updateFields($arrayinventory['custom']['container'], $itemtype, $items_id);

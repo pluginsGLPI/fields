@@ -30,6 +30,7 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
+use GlpiPlugin\Scim\Controller\Common;
 
 class PluginFieldsContainerDisplayCondition extends CommonDBChild
 {
@@ -156,6 +157,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
+        if (!($item instanceof CommonDBTM)) {
+            return '';
+        }
         return self::createTabEntry(
             self::getTypeName(Session::getPluralNumber()),
             countElementsInTable(self::getTable(), ['plugin_fields_containers_id' => $item->getID()]),
@@ -479,8 +483,10 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     public static function checkRegex($regex)
     {
         // Avoid php notice when validating the regular expression
-        set_error_handler(function ($errno, $errstr, $errfile, $errline) {});
-        $isValid = !(preg_match($regex, null) === false);
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+            return true;
+        });
+        $isValid = !(preg_match($regex, '') === false);
         restore_error_handler();
 
         return $isValid;
@@ -520,6 +526,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     public static function showForTabContainer(CommonGLPI $item, $options = [])
     {
+        if (!$item instanceof CommonDBTM) {
+            return;
+        }
         $displayCondition_id = $options['displaycondition_id'] ?? 0;
         $display_condition   = null;
 

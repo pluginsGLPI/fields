@@ -282,6 +282,7 @@ function plugin_fields_rule_matched($params = [])
 
                         //retrieve computer
                         $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
+                        /** @phpstan-ignore-next-line */
                         $agent->getFromDB($agents_id);
 
                         // update current field
@@ -289,6 +290,7 @@ function plugin_fields_rule_matched($params = [])
                             [
                                 'plugin_fields_containers_id' => $data['id'],
                                 $field                        => $value,
+                                /** @phpstan-ignore-next-line */
                                 'items_id'                    => $agent->fields['computers_id'],
                             ],
                             Computer::getType(),

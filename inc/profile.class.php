@@ -91,6 +91,10 @@ class PluginFieldsProfile extends CommonDBRelation
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
+        if (!($item instanceof CommonDBTM)) {
+            return false;
+        }
+
         $profile        = new Profile();
         $found_profiles = $profile->find();
 
