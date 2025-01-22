@@ -493,7 +493,7 @@ class PluginFieldsField extends CommonDBChild
         // FIXME: see: https://bugs.mysql.com/bug.php?id=107165
         if (strlen($field_name) > 52) {
             $rand       = rand();
-            $field_name = substr($field_name, 0, 52 - strlen((string)$rand)) . $rand;
+            $field_name = substr($field_name, 0, 52 - strlen((string) $rand)) . $rand;
         }
 
         return $field_name;
