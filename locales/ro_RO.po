@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-06 01:02+0000\n"
+"POT-Creation-Date: 2025-01-24 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -53,8 +53,8 @@ msgstr "Adăugați un status suplimentar"
 msgid "Add tab"
 msgstr "Adăugați un tab"
 
-#: setup.php:223 front/container.form.php:63 front/container.php:34
-#: inc/menu.class.php:37
+#: front/container.php:34 front/container.form.php:63 inc/menu.class.php:37
+#: setup.php:223
 msgid "Additional fields"
 msgstr "Câmpuri adiționale"
 
@@ -309,8 +309,8 @@ msgstr "Nu puteți adăuga mai multe blocuri de tipul „Inserare în formular�
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nu puteți adăuga mai multe blocuri cu nume identic pe același obiect"
 
-#: inc/containerdisplaycondition.class.php:493
-#: inc/containerdisplaycondition.class.php:509
+#: inc/containerdisplaycondition.class.php:494
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr "Trebuie să specificați un tip de articol, o opțiune de căutare și o condiție."
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-06 01:02+0000\n"
+"POT-Creation-Date: 2025-01-24 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
@@ -51,8 +51,8 @@ msgstr "Pridať nové prepísanie stavu"
 msgid "Add tab"
 msgstr "Pridať kartu"
 
-#: setup.php:223 front/container.form.php:63 front/container.php:34
-#: inc/menu.class.php:37
+#: front/container.php:34 front/container.form.php:63 inc/menu.class.php:37
+#: setup.php:223
 msgid "Additional fields"
 msgstr "Dodatočné polia"
 
@@ -308,8 +308,8 @@ msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára\" na 
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nemôžete pridať niekoľko blokov s identickým názvom na rovnaký objekt"
 
-#: inc/containerdisplaycondition.class.php:493
-#: inc/containerdisplaycondition.class.php:509
+#: inc/containerdisplaycondition.class.php:494
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr "Musíte špecifikovať typ položky, možnosť hľadania a podmienku."
 

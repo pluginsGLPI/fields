@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-06 01:02+0000\n"
+"POT-Creation-Date: 2025-01-24 00:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,8 +51,8 @@ msgstr ""
 msgid "Add tab"
 msgstr ""
 
-#: setup.php:223 front/container.form.php:63 front/container.php:34
-#: inc/menu.class.php:37
+#: front/container.php:34 front/container.form.php:63 inc/menu.class.php:37
+#: setup.php:223
 msgid "Additional fields"
 msgstr ""
 
@@ -306,8 +306,8 @@ msgstr ""
 msgid "You cannot add several blocs with identical name on same object"
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:493
-#: inc/containerdisplaycondition.class.php:509
+#: inc/containerdisplaycondition.class.php:494
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr ""
 
