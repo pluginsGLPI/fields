@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 00:59+0000\n"
+"POT-Creation-Date: 2025-01-24 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: INOUE Daisuke, 2023-2024\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -54,8 +54,8 @@ msgstr "状態による上書きを追加"
 msgid "Add tab"
 msgstr "タブを追加"
 
-#: setup.php:223 front/container.form.php:63 front/container.php:34
-#: inc/menu.class.php:37
+#: front/container.php:34 front/container.form.php:63 inc/menu.class.php:37
+#: setup.php:223
 msgid "Additional fields"
 msgstr "追加フィールド"
 
@@ -308,8 +308,8 @@ msgstr "「フォームに挿入」型のブロックを、同じオブジェク
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "1 つのオブジェクトに、同じ名前のブロックを複数配置することはできません"
 
-#: inc/containerdisplaycondition.class.php:493
-#: inc/containerdisplaycondition.class.php:509
+#: inc/containerdisplaycondition.class.php:494
+#: inc/containerdisplaycondition.class.php:510
 msgid "You must specify an item type, search option and condition."
 msgstr "検索設定と状態では、アイテムの型を特定する必要があります。"
 
