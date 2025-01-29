@@ -119,11 +119,19 @@ if ($type === 'glpi_item') {
         if ($field->isNewItem() && $type == 'dropdown') {
             echo '<em class="form-control-plaintext">';
             echo __s('Default value will be configurable once field will be created.', 'fields');
+            if ($multiple) {
+                echo '<input type="hidden" name="default_value" value="[]" />';
+            } else {
+                echo '<input type="hidden" name="default_value" value="" />';
+            }
             echo '</em>';
         } else {
             $itemtype = $type == 'dropdown'
                 ? PluginFieldsDropdown::getClassname($field->fields['name'])
                 : $dropdown_matches['class'];
+            if ($field->fields['default_value'] === null) {
+                $field->fields['default_value'] = 0;
+            }
             $default_value = $multiple ? json_decode($field->fields['default_value']) : $field->fields['default_value'];
             Dropdown::show(
                 $itemtype,
