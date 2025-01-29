@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [UNRELAESE]
 
 - Fix container update from `API`
-- Fix: add default value for dropdown to avoid empty dropdown
+- Fix: fix default value for `dropdown` field to avoid empty dropdown
 
 ## [1.21.18] - 2024-01-16
 
