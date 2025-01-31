@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELAESE]
 
+- Fix container update from `API`
+
 ## [1.21.18] - 2024-01-16
 
 - Fix `PluginFieldsContainerDisplayCondition` display when value is no more available.
