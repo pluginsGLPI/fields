@@ -1709,7 +1709,7 @@ HTML;
 
         //workaround: when a ticket is created from readdonly profile,
         //it is not initialized; see https://github.com/glpi-project/glpi/issues/1438
-        if (!empty($item->fields) || count($item->fields) == 0) {
+        if (!empty($item->fields)) {
             $item->fields = $item->input;
         }
 
