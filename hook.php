@@ -254,51 +254,46 @@ function plugin_fields_rule_matched($params = [])
 
     $container = new PluginFieldsContainer();
 
-    switch ($params['sub_type']) {
-        case 'PluginFusioninventoryTaskpostactionRule':
-            /** @phpstan-ignore-next-line */
-            $agent = new PluginFusioninventoryAgent();
+    if (class_exists('PluginFusioninventoryAgent') && $params['sub_type'] == 'PluginFusioninventoryTaskpostactionRule') {
+        $agent = new PluginFusioninventoryAgent();
 
-            if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
-                foreach ($params['output'] as $field => $value) {
-                    // check if current field is in a tab container
-                    $iterator = $DB->request([
-                        'SELECT'    => 'glpi_plugin_fields_containers.id',
-                        'FROM'      => 'glpi_plugin_fields_containers',
-                        'LEFT JOIN' => [
-                            'glpi_plugin_fields_fields' => [
-                                'FKEY' => [
-                                    'glpi_plugin_fields_containers' => 'id',
-                                    'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
-                                ],
+        if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
+            foreach ($params['output'] as $field => $value) {
+                // check if current field is in a tab container
+                $iterator = $DB->request([
+                    'SELECT'    => 'glpi_plugin_fields_containers.id',
+                    'FROM'      => 'glpi_plugin_fields_containers',
+                    'LEFT JOIN' => [
+                        'glpi_plugin_fields_fields' => [
+                            'FKEY' => [
+                                'glpi_plugin_fields_containers' => 'id',
+                                'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
                             ],
                         ],
-                        'WHERE' => [
-                            'glpi_plugin_fields_fields.name' => $field,
+                    ],
+                    'WHERE' => [
+                        'glpi_plugin_fields_fields.name' => $field,
+                    ],
+                ]);
+                if (count($iterator) > 0) {
+                    $data = $iterator->current();
+
+                    //retrieve computer
+                    $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
+                    $agent->getFromDB($agents_id);
+
+                    // update current field
+                    $container->updateFieldsValues(
+                        [
+                            'plugin_fields_containers_id' => $data['id'],
+                            $field                        => $value,
+                            'items_id'                    => $agent->fields['computers_id'],
                         ],
-                    ]);
-                    if (count($iterator) > 0) {
-                        $data = $iterator->current();
-
-                        //retrieve computer
-                        $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
-                        /** @phpstan-ignore-next-line */
-                        $agent->getFromDB($agents_id);
-
-                        // update current field
-                        $container->updateFieldsValues(
-                            [
-                                'plugin_fields_containers_id' => $data['id'],
-                                $field                        => $value,
-                                /** @phpstan-ignore-next-line */
-                                'items_id'                    => $agent->fields['computers_id'],
-                            ],
-                            Computer::getType(),
-                        );
-                    }
+                        Computer::getType(),
+                    );
                 }
             }
-            break;
+        }
     }
 }
 
