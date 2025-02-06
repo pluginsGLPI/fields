@@ -69,7 +69,10 @@ class PluginFieldsInventory extends CommonDBTM
                         } else {
                             //Load XML file because FI always update XML file and don't store inventory into DB
                             $file = self::loadXMLFile($itemtype, $items_id);
-                            if ($file !== false) {
+                            if (
+                                $file !== false
+                                && class_exists('PluginFusioninventoryFormatconvert')
+                            ) {
                                 $arrayinventory = PluginFusioninventoryFormatconvert::XMLtoArray($file); // @phpstan-ignore-line
                                 if (isset($arrayinventory['CUSTOM'])) {
                                     self::updateFields($arrayinventory['CUSTOM']['CONTAINER'], $itemtype, $items_id);
