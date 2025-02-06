@@ -73,7 +73,7 @@ class PluginFieldsInventory extends CommonDBTM
                                 $file !== false
                                 && class_exists('PluginFusioninventoryFormatconvert')
                             ) {
-                                $arrayinventory = PluginFusioninventoryFormatconvert::XMLtoArray($file); // @phpstan-ignore-line
+                                $arrayinventory = PluginFusioninventoryFormatconvert::XMLtoArray($file);
                                 if (isset($arrayinventory['CUSTOM'])) {
                                     self::updateFields($arrayinventory['CUSTOM']['CONTAINER'], $itemtype, $items_id);
                                 }
