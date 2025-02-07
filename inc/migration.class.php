@@ -106,7 +106,7 @@ class PluginFieldsMigration extends Migration
      */
     public static function checkDeadFields(bool $fix): array
     {
-        /** @var DBMysql $DB */
+        /** @var DBmysql $DB */
         global $DB;
 
         $dead_fields = [];
@@ -144,7 +144,7 @@ class PluginFieldsMigration extends Migration
         }
 
         if ($fix) {
-            $migration = new PluginFieldsMigration(0);
+            $migration = new PluginFieldsMigration('0');
 
             foreach ($dead_fields as $table => $fields) {
                 foreach ($fields as $field) {
@@ -191,7 +191,7 @@ class PluginFieldsMigration extends Migration
     private static function getCustomFieldsInContainerTable(
         string $table
     ): array {
-        /** @var DBMysql $DB */
+        /** @var DBmysql $DB */
         global $DB;
 
         // Read table fields

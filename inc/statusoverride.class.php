@@ -92,7 +92,10 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        return self::createTabEntry(self::getTypeName(), self::countOverridesForContainer($item->getID()));
+        if ($item instanceof CommonDBTM) {
+            return self::createTabEntry(self::getTypeName(), self::countOverridesForContainer($item->getID()));
+        }
+        return '';
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
@@ -408,6 +411,9 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
     public static function showForTabContainer(CommonGLPI $item, $options = [])
     {
+        if (!($item instanceof CommonDBTM)) {
+            return;
+        }
         $container_id = $item->getID();
         $has_fields   = countElementsInTable(PluginFieldsField::getTable(), [
             'plugin_fields_containers_id' => $container_id,
