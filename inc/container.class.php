@@ -1667,10 +1667,10 @@ HTML;
     public static function preItem(CommonDBTM $item)
     {
         //find container (if not exist, do nothing)
-        if (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
-        } elseif (isset($item->input['c_id'])) {
+        if (isset($item->input['c_id'])) {
             $c_id = $item->input['c_id'];
+        } elseif (isset($_REQUEST['c_id'])) {
+            $c_id = $_REQUEST['c_id'];
         } else {
             $type = 'dom';
             if (isset($_REQUEST['_plugin_fields_type'])) {
