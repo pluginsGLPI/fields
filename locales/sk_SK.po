@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-24 00:58+0000\n"
+"POT-Creation-Date: 2025-02-10 01:02+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
@@ -47,7 +47,7 @@ msgstr "Pridať podmienku na skrytie bloku"
 msgid "Add new status override"
 msgstr "Pridať nové prepísanie stavu"
 
-#: inc/container.class.php:1037
+#: inc/container.class.php:1040
 msgid "Add tab"
 msgstr "Pridať kartu"
 
@@ -60,7 +60,7 @@ msgstr "Dodatočné polia"
 msgid "Allowed values"
 msgstr "Povolené hodnoty"
 
-#: inc/container.class.php:780
+#: inc/container.class.php:781
 msgid "Block"
 msgstr "Blok"
 
@@ -73,7 +73,7 @@ msgid "Component items"
 msgstr "Položky komponentov"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:154
+#: inc/containerdisplaycondition.class.php:155
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Podmienka na skrytie bloku"
@@ -81,7 +81,7 @@ msgstr[1] "Podmienky na skrytie bloku"
 msgstr[2] "Podmienky na skrytie bloku"
 msgstr[3] "Podmienky na skrytie bloku"
 
-#: inc/container.class.php:597
+#: inc/container.class.php:600
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -122,7 +122,7 @@ msgstr "Rozbaľovacia ponuka"
 msgid "Everything is in order - no action needed."
 msgstr "Všetko je v poriadku - nevyžaduje sa žiadna akcia."
 
-#: inc/container.class.php:53 inc/container.class.php:789
+#: inc/container.class.php:53 inc/container.class.php:790
 msgid "Export to YAML"
 msgstr "Export do YAML"
 
@@ -156,19 +156,19 @@ msgstr "GLPI položka"
 msgid "Header"
 msgstr "Hlavička"
 
-#: inc/container.class.php:1038
+#: inc/container.class.php:1041
 msgid "Insertion in the form (before save button)"
 msgstr "Vloženie do formulára (pred tlačidlo uložiť)"
 
-#: inc/container.class.php:1039
+#: inc/container.class.php:1042
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vloženie do formulára konkrétnej karty (pred tlačidlo uložiť)"
 
-#: inc/labeltranslation.class.php:198
+#: inc/labeltranslation.class.php:205
 msgid "Label"
 msgstr "Popisok"
 
-#: inc/labeltranslation.class.php:197
+#: inc/labeltranslation.class.php:204
 msgid "Language"
 msgstr "Jazyk"
 
@@ -226,15 +226,15 @@ msgstr "Textové pole s formátovaním"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Spustite \"%s\" na opravu nekonzistencií databázy."
 
-#: inc/container.class.php:1548
+#: inc/container.class.php:1550
 msgid "Some URL fields contains invalid links"
 msgstr "Niektoré URL polia obsahujú neplatné odkazy"
 
-#: inc/container.class.php:1538
+#: inc/container.class.php:1540
 msgid "Some mandatory fields are empty"
 msgstr "Niektoré povinné polia sú prázdne"
 
-#: inc/container.class.php:1543
+#: inc/container.class.php:1545
 msgid "Some numeric fields contains non numeric values"
 msgstr "Niektoré číselné polia obsahujú nečíselné hodnoty"
 
@@ -242,7 +242,7 @@ msgstr "Niektoré číselné polia obsahujú nečíselné hodnoty"
 msgid "Status overrides"
 msgstr "Prepísania stavov"
 
-#: inc/container.class.php:883
+#: inc/container.class.php:886
 msgid "Tab"
 msgstr "Karta"
 
@@ -292,34 +292,34 @@ msgstr "Áno/Nie"
 msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
 
-#: inc/container.class.php:580
+#: inc/container.class.php:583
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára konkrétnej karty\" na rovnakú kartu objektu"
 
-#: inc/container.class.php:564
+#: inc/container.class.php:567
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára\" na rovnaký objekt"
 
-#: inc/container.class.php:612
+#: inc/container.class.php:615
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nemôžete pridať niekoľko blokov s identickým názvom na rovnaký objekt"
 
-#: inc/containerdisplaycondition.class.php:494
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:500
+#: inc/containerdisplaycondition.class.php:516
 msgid "You must specify an item type, search option and condition."
 msgstr "Musíte špecifikovať typ položky, možnosť hľadania a podmienku."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:138
+#: inc/containerdisplaycondition.class.php:105
+#: inc/containerdisplaycondition.class.php:139
 msgid "not under"
 msgstr "nie je pod"
 
-#: inc/containerdisplaycondition.class.php:110
-#: inc/containerdisplaycondition.class.php:132
+#: inc/containerdisplaycondition.class.php:111
+#: inc/containerdisplaycondition.class.php:133
 msgid "regular expression matches"
 msgstr "regulárny výraz zodpovedá"
 
@@ -327,7 +327,7 @@ msgstr "regulárny výraz zodpovedá"
 msgid "show"
 msgstr "zobraziť"
 
-#: inc/containerdisplaycondition.class.php:103
-#: inc/containerdisplaycondition.class.php:135
+#: inc/containerdisplaycondition.class.php:104
+#: inc/containerdisplaycondition.class.php:136
 msgid "under"
 msgstr "pod"
