@@ -1962,7 +1962,7 @@ HTML;
                     $opt[$i]['datatype'] = 'text';
                     break;
                 case 'number':
-                    $opt[$i]['datatype'] = 'decimal';
+                    $opt[$i]['datatype'] = 'float';
                     break;
                 case 'date':
                 case 'datetime':
