@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Force float `datatype` of `numeric` fields for fix the search option
 - Fix container update from other context (like plugins)
 
 ## [1.21.19] - 2025-02-03
