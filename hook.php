@@ -341,11 +341,36 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     /** @var \DBmysql $DB */
     global $DB;
 
-    $searchopt = &Search::getOptions($itemtype);
-    $table     = $searchopt[$ID]['table'];
-    $field     = $searchopt[$ID]['field'];
+    $searchopt    = &Search::getOptions($itemtype);
+    $table        = $searchopt[$ID]['table'];
+    $field        = $searchopt[$ID]['field'];
+    $pfields_type = $searchopt[$ID]['pfields_type'];
 
     $field_field = new PluginFieldsField();
+
+    if (
+        $field_field->getFromDBByCrit(
+            [
+                'name'     => $field
+            ],
+        )
+        && $pfields_type == 'number'
+    ) {
+        // if 'number' field with name is found with searchtype 'equals' or 'notequals'
+        // update WHERE clause with `$table_$field.$field` because without `$table_$field.id` is used
+        if ($searchtype == 'equals' || $searchtype == 'notequals') {
+            $operator = ($searchtype == 'equals') ? '=' : '!=';
+            return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val) ;
+        } else {
+            // if 'number' field with name is found with <= or >= or < or > search
+            $val = html_entity_decode($val);
+            if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
+                $operator = $matches[1];
+                $val = trim(str_replace($operator, '', $val));
+                return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
+            }
+        }
+    }
 
     // if 'multiple' field with name is found -> 'Dropdown-XXXX' case
     // update WHERE clause with LIKE statement
