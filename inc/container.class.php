@@ -1962,7 +1962,7 @@ HTML;
                     $opt[$i]['datatype'] = 'text';
                     break;
                 case 'number':
-                    // change datatype to string because decimal 
+                    // change datatype to string because SO does not work correctly with decimal numbers
                     $opt[$i]['datatype'] = 'string';
                     $opt[$i]['searchtype'] = ['contains', 'notcontains', 'equals', 'notequals'];
                     break;
