@@ -363,6 +363,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val) ;
         } else {
             // if 'number' field with name is found with <= or >= or < or > search
+            // update WHERE clause with the correct operator
             $val = html_entity_decode($val);
             if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
                 $operator = $matches[1];
