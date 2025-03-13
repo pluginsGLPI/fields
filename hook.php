@@ -348,31 +348,6 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 
     $field_field = new PluginFieldsField();
 
-    if (
-        $field_field->getFromDBByCrit(
-            [
-                'name'     => $field
-            ],
-        )
-        && $pfields_type == 'number'
-    ) {
-        // if 'number' field with name is found with searchtype 'equals' or 'notequals'
-        // update WHERE clause with `$table_$field.$field` because without `$table_$field.id` is used
-        if ($searchtype == 'equals' || $searchtype == 'notequals') {
-            $operator = ($searchtype == 'equals') ? '=' : '!=';
-            return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val) ;
-        } else {
-            // if 'number' field with name is found with <= or >= or < or > search
-            // update WHERE clause with the correct operator
-            $val = html_entity_decode($val);
-            if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
-                $operator = $matches[1];
-                $val = trim(str_replace($operator, '', $val));
-                return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
-            }
-        }
-    }
-
     // if 'multiple' field with name is found -> 'Dropdown-XXXX' case
     // update WHERE clause with LIKE statement
     if (
