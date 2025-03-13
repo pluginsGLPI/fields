@@ -361,7 +361,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             case 'equals':
                 return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
             case 'notequals':
-                return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+                return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") . ' OR ' . $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'IS NULL ';
         }
     } else {
         // if 'multiple' field with cleaned name is found -> 'dropdown' case
