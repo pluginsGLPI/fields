@@ -352,7 +352,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         $field_field->getFromDBByCrit(
             [
                 'name'     => $field,
-                'type' => 'number'
+                'type' => 'number',
             ],
         )
         && $pfields_type == 'number'
