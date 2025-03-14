@@ -338,9 +338,6 @@ function plugin_datainjection_populate_fields()
 
 function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 {
-    /** @var \DBmysql $DB */
-    global $DB;
-
     $searchopt = &Search::getOptions($itemtype);
     $table     = $searchopt[$ID]['table'];
     $field     = $searchopt[$ID]['field'];
@@ -383,7 +380,6 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
                     return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals');
                 case 'notequals':
                     return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals');
-
             }
         } else {
             return false;
