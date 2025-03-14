@@ -254,4 +254,17 @@ class PluginFieldsDropdown
     {
         return 'PluginFields' . ucfirst($system_name) . 'Dropdown';
     }
+
+    public static function multipleDropdownAddWhere($link, $tablefield, $field, $val, $searchtype)
+    {
+        /** @var \DBmysql $DB */
+        global $DB;
+
+        switch ($searchtype) {
+            case 'equals':
+                return $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+            case 'notequals':
+                return $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . 'NOT LIKE ' . $DB->quoteValue("%\"$val\"%") . ' OR ' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . 'IS NULL ';
+        }
+    }
 }
