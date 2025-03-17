@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix container update from other context (like plugins)
-- Fix "not equals" search operator returning the same results as the "equals" operator.
+- Fix "not equals" search operator for dropdown `multiple`
 
 ## [1.21.19] - 2025-02-03
 
