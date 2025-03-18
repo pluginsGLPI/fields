@@ -1138,6 +1138,11 @@ HTML;
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
+        if ($withtemplate) {
+            //Do not display tab from template
+            return '';
+        }
+
         $itemtypes = self::getEntries('tab', true);
         if (isset($itemtypes[$item->getType()]) && $item instanceof CommonDBTM) {
             $tabs_entries = [];
