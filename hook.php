@@ -361,6 +361,9 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         // update WHERE clause with `$table_$field.$field` because without `$table_$field.id` is used
         if ($searchtype == 'equals' || $searchtype == 'notequals') {
             $operator = ($searchtype == 'equals') ? '=' : '!=';
+            if ($nott) {
+                $link = $link . ' NOT ';
+            }
             return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val) ;
         } else {
             // if 'number' field with name is found with <= or >= or < or > search
