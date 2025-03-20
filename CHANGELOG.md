@@ -10,13 +10,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix containers migration while adding is_recursive field
+- Fix container update from other context (like plugins)
+- Fix "not equals" search operator for dropdown `multiple`
 
 ## [1.21.19] - 2025-02-03
+
+### Fixed
 
 - Fix container update from `API`
 - Fix: fix default value for `dropdown` field to avoid empty dropdown
 
 ## [1.21.18] - 2024-01-16
+
+### Fixed
 
 - Fix `PluginFieldsContainerDisplayCondition` display when value is no more available.
 - Fix issue where the value of custom fields could not be saved

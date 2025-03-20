@@ -96,7 +96,7 @@ function plugin_init_fields()
         if (
             !empty($_POST)
             && isset($_POST['_plugin_fields_type'])
-            && $_SERVER['REQUEST_URI'] ?? '' == Ticket::getFormURL()
+            && ($_SERVER['REQUEST_URI'] == Ticket::getFormURL())
         ) {
             foreach ($_POST as $key => $value) {
                 if (!is_array($value)) {
@@ -385,7 +385,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         }
     }
 
-    if (count($yaml_conf)) {
+    if (!empty($yaml_conf['container'])) {
         $dump     = Yaml::dump($yaml_conf, 10);
         $filename = GLPI_TMP_DIR . '/fields_conf.yaml';
         file_put_contents($filename, $dump);

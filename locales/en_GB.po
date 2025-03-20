@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-24 00:58+0000\n"
-"PO-Revision-Date: 2025-01-24 00:58+0000\n"
+"POT-Creation-Date: 2025-02-10 01:02+0000\n"
+"PO-Revision-Date: 2025-02-10 01:02+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -48,7 +48,7 @@ msgstr "Add condition to hide block"
 msgid "Add new status override"
 msgstr "Add new status override"
 
-#: inc/container.class.php:1037
+#: inc/container.class.php:1040
 msgid "Add tab"
 msgstr "Add tab"
 
@@ -61,7 +61,7 @@ msgstr "Additional fields"
 msgid "Allowed values"
 msgstr "Allowed values"
 
-#: inc/container.class.php:780
+#: inc/container.class.php:781
 msgid "Block"
 msgstr "Block"
 
@@ -74,13 +74,13 @@ msgid "Component items"
 msgstr "Component items"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:154
+#: inc/containerdisplaycondition.class.php:155
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Condition to hide block"
 msgstr[1] "Conditions to hide block"
 
-#: inc/container.class.php:597
+#: inc/container.class.php:600
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -124,7 +124,7 @@ msgstr "Dropdown"
 msgid "Everything is in order - no action needed."
 msgstr "Everything is in order - no action needed."
 
-#: inc/container.class.php:53 inc/container.class.php:789
+#: inc/container.class.php:53 inc/container.class.php:790
 msgid "Export to YAML"
 msgstr "Export to YAML"
 
@@ -160,19 +160,19 @@ msgstr "GLPI item"
 msgid "Header"
 msgstr "Header"
 
-#: inc/container.class.php:1038
+#: inc/container.class.php:1041
 msgid "Insertion in the form (before save button)"
 msgstr "Insertion in the form (before save button)"
 
-#: inc/container.class.php:1039
+#: inc/container.class.php:1042
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Insertion in the form of a specific tab (before save button)"
 
-#: inc/labeltranslation.class.php:198
+#: inc/labeltranslation.class.php:205
 msgid "Label"
 msgstr "Label"
 
-#: inc/labeltranslation.class.php:197
+#: inc/labeltranslation.class.php:204
 msgid "Language"
 msgstr "Language"
 
@@ -230,15 +230,15 @@ msgstr "Rich Text"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Run \"%s\" to fix database inconsistencies."
 
-#: inc/container.class.php:1548
+#: inc/container.class.php:1550
 msgid "Some URL fields contains invalid links"
 msgstr "Some URL fields contains invalid links"
 
-#: inc/container.class.php:1538
+#: inc/container.class.php:1540
 msgid "Some mandatory fields are empty"
 msgstr "Some mandatory fields are empty"
 
-#: inc/container.class.php:1543
+#: inc/container.class.php:1545
 msgid "Some numeric fields contains non numeric values"
 msgstr "Some numeric fields contains non numeric values"
 
@@ -246,7 +246,7 @@ msgstr "Some numeric fields contains non numeric values"
 msgid "Status overrides"
 msgstr "Status overrides"
 
-#: inc/container.class.php:883
+#: inc/container.class.php:886
 msgid "Tab"
 msgstr "Tab"
 
@@ -298,7 +298,7 @@ msgstr "Yes/No"
 msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr "You cannot add same field 'dropdown' on same bloc"
 
-#: inc/container.class.php:580
+#: inc/container.class.php:583
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific "
 "tab' on same object tab"
@@ -306,7 +306,7 @@ msgstr ""
 "You cannot add several blocks with type 'Insertion in the form of a specific "
 "tab' on same object tab"
 
-#: inc/container.class.php:564
+#: inc/container.class.php:567
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
@@ -314,22 +314,22 @@ msgstr ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 
-#: inc/container.class.php:612
+#: inc/container.class.php:615
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "You cannot add several blocs with identical name on same object"
 
-#: inc/containerdisplaycondition.class.php:494
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:500
+#: inc/containerdisplaycondition.class.php:516
 msgid "You must specify an item type, search option and condition."
 msgstr "You must specify an item type, search option and condition."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:138
+#: inc/containerdisplaycondition.class.php:105
+#: inc/containerdisplaycondition.class.php:139
 msgid "not under"
 msgstr "not under"
 
-#: inc/containerdisplaycondition.class.php:110
-#: inc/containerdisplaycondition.class.php:132
+#: inc/containerdisplaycondition.class.php:111
+#: inc/containerdisplaycondition.class.php:133
 msgid "regular expression matches"
 msgstr "regular expression matches"
 
@@ -337,7 +337,7 @@ msgstr "regular expression matches"
 msgid "show"
 msgstr "show"
 
-#: inc/containerdisplaycondition.class.php:103
-#: inc/containerdisplaycondition.class.php:135
+#: inc/containerdisplaycondition.class.php:104
+#: inc/containerdisplaycondition.class.php:136
 msgid "under"
 msgstr "under"

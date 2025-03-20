@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-24 00:58+0000\n"
+"POT-Creation-Date: 2025-02-10 01:02+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Nicolás Gaviola, 2023\n"
 "Language-Team: Spanish (Argentina) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_AR/)\n"
@@ -47,7 +47,7 @@ msgstr "Agregar condición para ocultar el bloque"
 msgid "Add new status override"
 msgstr "Agregar nueva anulación de estado"
 
-#: inc/container.class.php:1037
+#: inc/container.class.php:1040
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
@@ -60,7 +60,7 @@ msgstr "Campos adicionales"
 msgid "Allowed values"
 msgstr "Valores permitidos"
 
-#: inc/container.class.php:780
+#: inc/container.class.php:781
 msgid "Block"
 msgstr "Bloque"
 
@@ -73,14 +73,14 @@ msgid "Component items"
 msgstr "Componentes"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:154
+#: inc/containerdisplaycondition.class.php:155
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Condición para ocultar el bloque"
 msgstr[1] "Condiciones para ocultar el bloque"
 msgstr[2] "Condición para ocultar el bloque"
 
-#: inc/container.class.php:597
+#: inc/container.class.php:600
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
@@ -121,7 +121,7 @@ msgstr "Menú desplegable"
 msgid "Everything is in order - no action needed."
 msgstr "Todo está en orden, no se necesita ninguna acción."
 
-#: inc/container.class.php:53 inc/container.class.php:789
+#: inc/container.class.php:53 inc/container.class.php:790
 msgid "Export to YAML"
 msgstr "Exportar a YAML"
 
@@ -155,19 +155,19 @@ msgstr "Ítem de GLPI"
 msgid "Header"
 msgstr "Encabezado"
 
-#: inc/container.class.php:1038
+#: inc/container.class.php:1041
 msgid "Insertion in the form (before save button)"
 msgstr "Inserto en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:1039
+#: inc/container.class.php:1042
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserto en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/labeltranslation.class.php:198
+#: inc/labeltranslation.class.php:205
 msgid "Label"
 msgstr "Etiqueta"
 
-#: inc/labeltranslation.class.php:197
+#: inc/labeltranslation.class.php:204
 msgid "Language"
 msgstr "Idioma"
 
@@ -225,15 +225,15 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Ejecute \"%s\" para corregir las inconsistencias de la base de datos."
 
-#: inc/container.class.php:1548
+#: inc/container.class.php:1550
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen enlaces no válidos"
 
-#: inc/container.class.php:1538
+#: inc/container.class.php:1540
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1543
+#: inc/container.class.php:1545
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
@@ -241,7 +241,7 @@ msgstr "Algunos campos numéricos contienen valores no numéricos"
 msgid "Status overrides"
 msgstr "Anulaciones de estado"
 
-#: inc/container.class.php:883
+#: inc/container.class.php:886
 msgid "Tab"
 msgstr "Pestaña"
 
@@ -291,34 +291,34 @@ msgstr "Sí/No"
 msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr ""
 
-#: inc/container.class.php:580
+#: inc/container.class.php:583
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'Inserción en forma de una pestaña específica' en la misma pestaña de un objeto"
 
-#: inc/container.class.php:564
+#: inc/container.class.php:567
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No puede agregar varios bloques con el tipo 'Inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:612
+#: inc/container.class.php:615
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No puede agregar varios bloques con el mismo nombre en el mismo objeto"
 
-#: inc/containerdisplaycondition.class.php:494
-#: inc/containerdisplaycondition.class.php:510
+#: inc/containerdisplaycondition.class.php:500
+#: inc/containerdisplaycondition.class.php:516
 msgid "You must specify an item type, search option and condition."
 msgstr "Debe especificar un tipo de ítem, una opción de búsqueda y una condición."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:138
+#: inc/containerdisplaycondition.class.php:105
+#: inc/containerdisplaycondition.class.php:139
 msgid "not under"
 msgstr "no debajo"
 
-#: inc/containerdisplaycondition.class.php:110
-#: inc/containerdisplaycondition.class.php:132
+#: inc/containerdisplaycondition.class.php:111
+#: inc/containerdisplaycondition.class.php:133
 msgid "regular expression matches"
 msgstr "coincidencias de expresiones regulares"
 
@@ -326,7 +326,7 @@ msgstr "coincidencias de expresiones regulares"
 msgid "show"
 msgstr "mostrar"
 
-#: inc/containerdisplaycondition.class.php:103
-#: inc/containerdisplaycondition.class.php:135
+#: inc/containerdisplaycondition.class.php:104
+#: inc/containerdisplaycondition.class.php:136
 msgid "under"
 msgstr "bajo"

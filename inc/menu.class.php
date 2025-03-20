@@ -40,7 +40,7 @@ class PluginFieldsMenu extends CommonGLPI
     public static function getMenuContent()
     {
         if (!Session::haveRight('entity', READ)) {
-            return;
+            return false;
         }
 
         $front_fields = Plugin::getPhpDir('fields', false) . '/front';

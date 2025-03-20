@@ -254,49 +254,46 @@ function plugin_fields_rule_matched($params = [])
 
     $container = new PluginFieldsContainer();
 
-    switch ($params['sub_type']) {
-        case 'PluginFusioninventoryTaskpostactionRule':
-            /** @phpstan-ignore-next-line */
-            $agent = new PluginFusioninventoryAgent();
+    if (class_exists('PluginFusioninventoryAgent') && $params['sub_type'] == 'PluginFusioninventoryTaskpostactionRule') {
+        $agent = new PluginFusioninventoryAgent();
 
-            if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
-                foreach ($params['output'] as $field => $value) {
-                    // check if current field is in a tab container
-                    $iterator = $DB->request([
-                        'SELECT'    => 'glpi_plugin_fields_containers.id',
-                        'FROM'      => 'glpi_plugin_fields_containers',
-                        'LEFT JOIN' => [
-                            'glpi_plugin_fields_fields' => [
-                                'FKEY' => [
-                                    'glpi_plugin_fields_containers' => 'id',
-                                    'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
-                                ],
+        if (isset($params['input']['plugin_fusioninventory_agents_id'])) {
+            foreach ($params['output'] as $field => $value) {
+                // check if current field is in a tab container
+                $iterator = $DB->request([
+                    'SELECT'    => 'glpi_plugin_fields_containers.id',
+                    'FROM'      => 'glpi_plugin_fields_containers',
+                    'LEFT JOIN' => [
+                        'glpi_plugin_fields_fields' => [
+                            'FKEY' => [
+                                'glpi_plugin_fields_containers' => 'id',
+                                'glpi_plugin_fields_fields'     => 'plugin_fields_containers_id',
                             ],
                         ],
-                        'WHERE' => [
-                            'glpi_plugin_fields_fields.name' => $field,
+                    ],
+                    'WHERE' => [
+                        'glpi_plugin_fields_fields.name' => $field,
+                    ],
+                ]);
+                if (count($iterator) > 0) {
+                    $data = $iterator->current();
+
+                    //retrieve computer
+                    $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
+                    $agent->getFromDB($agents_id);
+
+                    // update current field
+                    $container->updateFieldsValues(
+                        [
+                            'plugin_fields_containers_id' => $data['id'],
+                            $field                        => $value,
+                            'items_id'                    => $agent->fields['computers_id'],
                         ],
-                    ]);
-                    if (count($iterator) > 0) {
-                        $data = $iterator->current();
-
-                        //retrieve computer
-                        $agents_id = $params['input']['plugin_fusioninventory_agents_id'];
-                        $agent->getFromDB($agents_id);
-
-                        // update current field
-                        $container->updateFieldsValues(
-                            [
-                                'plugin_fields_containers_id' => $data['id'],
-                                $field                        => $value,
-                                'items_id'                    => $agent->fields['computers_id'],
-                            ],
-                            Computer::getType(),
-                        );
-                    }
+                        Computer::getType(),
+                    );
                 }
             }
-            break;
+        }
     }
 }
 
@@ -341,9 +338,6 @@ function plugin_datainjection_populate_fields()
 
 function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 {
-    /** @var \DBmysql $DB */
-    global $DB;
-
     $searchopt = &Search::getOptions($itemtype);
     $table     = $searchopt[$ID]['table'];
     $field     = $searchopt[$ID]['field'];
@@ -360,12 +354,19 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             ],
         )
     ) {
-        return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+        $tablefield = "$table" . '_' . "$field";
+        switch ($searchtype) {
+            case 'equals':
+                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals');
+            case 'notequals':
+                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals');
+        }
     } else {
         // if 'multiple' field with cleaned name is found -> 'dropdown' case
         // update WHERE clause with LIKE statement
         $cleanfield = str_replace('plugin_fields_', '', $field);
         $cleanfield = str_replace('dropdowns_id', '', $cleanfield);
+        $tablefield = "$table" . '_' . "$cleanfield";
         if (
             $field_field->getFromDBByCrit(
                 [
@@ -374,7 +375,12 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
                 ],
             )
         ) {
-            return $link . $DB->quoteName("$table" . '_' . "$cleanfield") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+            switch ($searchtype) {
+                case 'equals':
+                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals');
+                case 'notequals':
+                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals');
+            }
         } else {
             return false;
         }
