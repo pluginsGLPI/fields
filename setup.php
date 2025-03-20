@@ -31,7 +31,7 @@
 define('PLUGIN_FIELDS_VERSION', '1.21.19');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_FIELDS_MIN_GLPI', '10.0.0');
+define('PLUGIN_FIELDS_MIN_GLPI', '10.0.11');
 // Maximum GLPI version, exclusive
 define('PLUGIN_FIELDS_MAX_GLPI', '10.0.99');
 

@@ -96,7 +96,7 @@ class PluginFieldsContainer extends CommonDBTM
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query) or die($DB->error());
+            $DB->doQuery($query) or die($DB->error());
         }
 
         // multiple itemtype for one container
@@ -309,7 +309,7 @@ class PluginFieldsContainer extends CommonDBTM
                 }
 
                 //drop old table
-                $DB->query('DROP TABLE ' . $osdata::getTable());
+                $DB->doQuery('DROP TABLE ' . $osdata::getTable());
             } else {
                 $DB->update(
                     'glpi_plugin_fields_containers',
@@ -372,7 +372,7 @@ class PluginFieldsContainer extends CommonDBTM
         }
 
         //drop global container table
-        $DB->query('DROP TABLE IF EXISTS `' . self::getTable() . '`');
+        $DB->doQuery('DROP TABLE IF EXISTS `' . self::getTable() . '`');
 
         //delete display preferences for this item
         $pref = new DisplayPreference();
@@ -740,7 +740,7 @@ class PluginFieldsContainer extends CommonDBTM
             } else {
                 //class does not exists; try to remove any existing table
                 $tablename = getTableForItemType($classname);
-                $DB->query("DROP TABLE IF EXISTS `$tablename`");
+                $DB->doQuery("DROP TABLE IF EXISTS `$tablename`");
             }
 
             //clean session
