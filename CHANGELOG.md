@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix containers migration while adding `is_recursive` field
 - Fix container update from other context (like plugins)
 - Fix "not equals" search operator for dropdown `multiple`
+- Fix container data (`entities_id`) insert from `dom` type
 
 ## [1.21.19] - 2025-02-03
 
