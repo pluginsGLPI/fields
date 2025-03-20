@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASE]
 
+### Fixed
+
+- Fix containers migration while adding is_recursive field
 
 ## [1.21.19] - 2025-02-03
 
