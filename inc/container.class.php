@@ -1967,7 +1967,9 @@ HTML;
                     $opt[$i]['datatype'] = 'text';
                     break;
                 case 'number':
-                    $opt[$i]['datatype'] = 'decimal';
+                    // change datatype to string to get `is` / `is not` operator
+                    $opt[$i]['datatype'] = 'string';
+                    $opt[$i]['searchtype'] = ['contains', 'notcontains', 'equals', 'notequals'];
                     break;
                 case 'date':
                 case 'datetime':
