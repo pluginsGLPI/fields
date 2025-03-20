@@ -69,7 +69,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                   KEY `language`               (`language`),
                   UNIQUE KEY `unicity` (`itemtype`, `items_id`, `language`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query) or die($DB->error());
+            $DB->doQuery($query) or die($DB->error());
         }
 
         if ($DB->fieldExists($table, 'plugin_fields_itemtype')) {
@@ -94,7 +94,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         /** @var DBmysql $DB */
         global $DB;
 
-        $DB->query('DROP TABLE IF EXISTS `' . self::getTable() . '`');
+        $DB->doQuery('DROP TABLE IF EXISTS `' . self::getTable() . '`');
 
         return true;
     }
