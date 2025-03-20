@@ -338,9 +338,6 @@ function plugin_datainjection_populate_fields()
 
 function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 {
-    /** @var \DBmysql $DB */
-    global $DB;
-
     $searchopt = &Search::getOptions($itemtype);
     $table     = $searchopt[$ID]['table'];
     $field     = $searchopt[$ID]['field'];
@@ -357,12 +354,19 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             ],
         )
     ) {
-        return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+        $tablefield = "$table" . '_' . "$field";
+        switch ($searchtype) {
+            case 'equals':
+                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals');
+            case 'notequals':
+                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals');
+        }
     } else {
         // if 'multiple' field with cleaned name is found -> 'dropdown' case
         // update WHERE clause with LIKE statement
         $cleanfield = str_replace('plugin_fields_', '', $field);
         $cleanfield = str_replace('dropdowns_id', '', $cleanfield);
+        $tablefield = "$table" . '_' . "$cleanfield";
         if (
             $field_field->getFromDBByCrit(
                 [
@@ -371,7 +375,12 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
                 ],
             )
         ) {
-            return $link . $DB->quoteName("$table" . '_' . "$cleanfield") . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+            switch ($searchtype) {
+                case 'equals':
+                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals');
+                case 'notequals':
+                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals');
+            }
         } else {
             return false;
         }
