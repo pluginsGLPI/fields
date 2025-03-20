@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Fix containers migration while adding is_recursive field
+- Fix containers migration while adding `is_recursive` field
 - Fix container update from other context (like plugins)
 - Fix "not equals" search operator for dropdown `multiple`
 
