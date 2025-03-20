@@ -106,7 +106,10 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       * This block ensures that the 'is_recursive' field is created and populated if it
       * associated item type requires recursive assignment
       */
-      if (getItemForItemtype("%%ITEMTYPE%%")->maybeRecursive() && !$DB->fieldExists($table, 'is_recursive')) {
+      if (
+         getItemForItemtype("%%ITEMTYPE%%")->maybeRecursive()
+         && !$DB->fieldExists($table, 'is_recursive')
+         && $DB->fieldExists($table, 'entities_id')) {
          $migration->addField($table, 'is_recursive', 'bool', ['after'  => 'entities_id']);
          $migration->addKey($table, 'is_recursive');
          $migration->executeMigration();

@@ -92,7 +92,7 @@ class PluginFieldsField extends CommonDBChild
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query) or die($DB->error());
+            $DB->doQuery($query) or die($DB->error());
         }
 
         $migration->displayMessage("Updating $table");
@@ -233,7 +233,7 @@ class PluginFieldsField extends CommonDBChild
         /** @var DBmysql $DB */
         global $DB;
 
-        $DB->query('DROP TABLE IF EXISTS `' . self::getTable() . '`');
+        $DB->doQuery('DROP TABLE IF EXISTS `' . self::getTable() . '`');
 
         return true;
     }

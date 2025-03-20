@@ -77,7 +77,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id_itemtype`       (`plugin_fields_containers_id`, `itemtype`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query) or die($DB->error());
+            $DB->doQuery($query) or die($DB->error());
         }
 
         return true;
@@ -145,7 +145,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     {
         /** @var DBmysql $DB */
         global $DB;
-        $DB->query('DROP TABLE IF EXISTS `' . self::getTable() . '`');
+        $DB->doQuery('DROP TABLE IF EXISTS `' . self::getTable() . '`');
 
         return true;
     }
