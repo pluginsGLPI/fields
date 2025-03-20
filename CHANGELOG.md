@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASE]
 
+## [1.21.20] - 2025-03-20
+
 ### Fixed
 
 - Fix `numeric` field search
