@@ -1716,9 +1716,7 @@ HTML;
             $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
         }
 
-        //workaround: when a ticket is created from readdonly profile,
-        //it is not initialized; see https://github.com/glpi-project/glpi/issues/1438
-        if (!empty($item->fields)) {
+        if (count($item->fields) === 0) {
             $item->fields = $item->input;
         }
 
