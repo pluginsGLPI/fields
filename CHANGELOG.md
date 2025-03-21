@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASE]
 
+### Fixed
+
+- Fix of GLPI native fields update for objects with `fields` containers.
+
 ## [1.21.20] - 2025-03-20
 
 ### Fixed
