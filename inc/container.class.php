@@ -1523,6 +1523,7 @@ HTML;
                 && (
                     $value === null
                     || $value === ''
+                    || (is_array($value) && empty($value))
                     || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', $field['type'])) && $value == 0)
                     || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
                 )
