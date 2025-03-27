@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASE]
 
+### Fixed
+
+- Fix validation for mandatory multiple dropdown
+
 ## [1.21.21] - 2025-03-21
 
 ### Fixed
