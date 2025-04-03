@@ -54,7 +54,7 @@ if (isset($_POST['add'])) {
     $field->check($_POST['id'], UPDATE);
     $field->update($_POST);
     Html::back();
-} elseif (isset($_GET['id'])) {
+} else {
     $field->check($_GET['id'], READ);
 
     Html::header(PluginFieldsField::getTypeName(1), $_SERVER['PHP_SELF']);
