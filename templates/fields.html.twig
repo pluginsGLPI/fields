@@ -42,8 +42,9 @@
 
 {% for field in fields %}
 
+    {% set cid      = container.fields.id %}
     {% set type     = field['type'] %}
-    {% set name     = field['name'] %}
+    {% set name     = 'plugin_fields_' ~ cid ~ '_' ~ field['name'] %}
     {% set label    = field['label'] %}
     {% set value    = item.input[name]|default(field['value']) %}
     {% set readonly = field['is_readonly'] %}
