@@ -1700,7 +1700,7 @@ HTML;
             $obj = new $itemtype();
             if ($obj->getFromDB($itemId)) {
 
-                $entityId = $obj->fields['entities_id'];
+                $entityId = $obj->fields['entities_id'] ?? 0;
                 $entityIds = getAncestorsOf("glpi_entities", $entityId);
                 $entityIds[] = $entityId; // Add entity obj itself to the list
                 $glpiActiveEntities = $_SESSION['glpiactiveentities'] ?? 0;
