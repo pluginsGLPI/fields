@@ -886,6 +886,18 @@ class PluginFieldsField extends CommonDBChild
     public static function showForTab($params)
     {
         $item = $params['item'];
+//	var_dump($item);
+	if($item->fields['type'] == "")
+	{
+	    $item->fields['type'] = $params['options']['type'];
+	}
+	if($item->fields['itilcategories_id'] == "")
+        {
+            $item->fields['itilcategories_id'] = $params['options']['itilcategories_id'];
+        }
+//	var_dump($item->fields);
+//	var_dump($params);
+	Toolbox::logInFile("FIELDS_LOG", "[ Recieved parameters got item type ({$item->fields['type']}) ] ");
 
         $functions = array_column(debug_backtrace(), 'function');
         $subtype   = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : '';
@@ -956,7 +968,7 @@ class PluginFieldsField extends CommonDBChild
         }
 
         $html_id = 'plugin_fields_container_' . mt_rand();
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+        if (strpos($current_url, 'helpdesk.public.php') !== false || strpos($current_url, 'tracking.injector.php') !== false) {
             echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
             echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
             $field_options = [
@@ -967,7 +979,12 @@ class PluginFieldsField extends CommonDBChild
             echo "<div id='{$html_id}'>";
         }
         $display_condition = new PluginFieldsContainerDisplayCondition();
-        if ($display_condition->computeDisplayContainer($item, $c_id)) {
+
+	Toolbox::logInFile("FIELDS_LOG", "[ Item with Container ID {$c_id} and type ({$item->fields['type']}) ] ");
+
+        if ($display_condition->computeDisplayContainer($item, $c_id))
+	{
+	    Toolbox::logInFile("FIELDS_LOG", " [ WE COMPUTED THAT WE NEED TO SHOW CONTAINER OAOAOOA ] ");
             self::showDomContainer(
                 $c_id,
                 $item,
@@ -976,7 +993,11 @@ class PluginFieldsField extends CommonDBChild
                 $field_options ?? [],
             );
         }
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+	else
+	{
+            Toolbox::logInFile("FIELDS_LOG", " [ NO NEED TO SHOW CONTAINER AAAAAARGHHHHHH ] ");
+	}
+        if (strpos($current_url, 'helpdesk.public.php') !== false || strpos($current_url, 'tracking.injector.php') !== false) {
             echo '</div>';
         }
         echo '</div>';
@@ -984,6 +1005,8 @@ class PluginFieldsField extends CommonDBChild
         //JS to trigger any change and check if container need to be display or not
         $ajax_url = Plugin::getWebDir('fields') . '/ajax/container.php';
         $items_id = !$item->isNewItem() ? $item->getID() : 0;
+
+
         echo Html::scriptBlock(
             <<<JAVASCRIPT
             function refreshContainer() {
