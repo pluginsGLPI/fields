@@ -886,18 +886,15 @@ class PluginFieldsField extends CommonDBChild
     public static function showForTab($params)
     {
         $item = $params['item'];
-//	var_dump($item);
-	if($item->fields['type'] == "")
-	{
-	    $item->fields['type'] = $params['options']['type'];
-	}
-	if($item->fields['itilcategories_id'] == "")
+
+	    if($item->fields['type'] == "")
+	    {
+	        $item->fields['type'] = $params['options']['type'];
+	    }
+    	if($item->fields['itilcategories_id'] == "")
         {
             $item->fields['itilcategories_id'] = $params['options']['itilcategories_id'];
         }
-//	var_dump($item->fields);
-//	var_dump($params);
-	Toolbox::logInFile("FIELDS_LOG", "[ Recieved parameters got item type ({$item->fields['type']}) ] ");
 
         $functions = array_column(debug_backtrace(), 'function');
         $subtype   = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : '';
@@ -980,11 +977,8 @@ class PluginFieldsField extends CommonDBChild
         }
         $display_condition = new PluginFieldsContainerDisplayCondition();
 
-	Toolbox::logInFile("FIELDS_LOG", "[ Item with Container ID {$c_id} and type ({$item->fields['type']}) ] ");
-
         if ($display_condition->computeDisplayContainer($item, $c_id))
-	{
-	    Toolbox::logInFile("FIELDS_LOG", " [ WE COMPUTED THAT WE NEED TO SHOW CONTAINER OAOAOOA ] ");
+	    {
             self::showDomContainer(
                 $c_id,
                 $item,
@@ -993,10 +987,7 @@ class PluginFieldsField extends CommonDBChild
                 $field_options ?? [],
             );
         }
-	else
-	{
-            Toolbox::logInFile("FIELDS_LOG", " [ NO NEED TO SHOW CONTAINER AAAAAARGHHHHHH ] ");
-	}
+
         if (strpos($current_url, 'helpdesk.public.php') !== false || strpos($current_url, 'tracking.injector.php') !== false) {
             echo '</div>';
         }

@@ -418,7 +418,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
             return $display;
         } else {
-	    Toolbox::logInFile("FIELDS_LOG","no condition found -> display container");
             //no condition found -> display container
             return true;
         }
@@ -432,8 +431,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
   	$searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
 
         $fields = array_merge($item->fields, $item->input);
-
-	Toolbox::logInFile("FIELDS_LOG", " [ WE NEED TO CHECK {$value} ({$condition}) {$fields[$searchOption['linkfield']]} ] ");
 
         switch ($condition) {
             case self::SHOW_CONDITION_EQ:
