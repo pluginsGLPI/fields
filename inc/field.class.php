@@ -887,15 +887,6 @@ class PluginFieldsField extends CommonDBChild
     {
         $item = $params['item'];
 
-	    if($item->fields['type'] == "")
-	    {
-	        $item->fields['type'] = $params['options']['type'];
-	    }
-    	if($item->fields['itilcategories_id'] == "")
-        {
-            $item->fields['itilcategories_id'] = $params['options']['itilcategories_id'];
-        }
-
         $functions = array_column(debug_backtrace(), 'function');
         $subtype   = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : '';
         $type      = substr($subtype, -strlen('$main')) === '$main'
@@ -976,6 +967,15 @@ class PluginFieldsField extends CommonDBChild
             echo "<div id='{$html_id}'>";
         }
         $display_condition = new PluginFieldsContainerDisplayCondition();
+	    
+	if($item->fields['type'] == "")
+	{
+	        $item->fields['type'] = $params['options']['type'];
+	}
+    	if($item->fields['itilcategories_id'] == "")
+        {
+            $item->fields['itilcategories_id'] = $params['options']['itilcategories_id'];
+        }
 
         if ($display_condition->computeDisplayContainer($item, $c_id))
 	    {
