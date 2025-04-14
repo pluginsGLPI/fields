@@ -1776,10 +1776,10 @@ HTML;
                 continue;
             }
 
-            if (false !== ($data = self::populateData($c_id, $item))) {    
+            if (false !== ($data = self::populateData($c_id, $item))) {
                 if (self::validateValues($data, $item->getType(), isset($_REQUEST['massiveaction'])) === false) {
                     $item->input = [];
-                    
+
                     return false;
                 }
                 $all_data[] = $data;

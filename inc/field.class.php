@@ -913,7 +913,7 @@ class PluginFieldsField extends CommonDBChild
             return;
         }
         $itemId = $item->fields['id'];
-        
+
         $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $itemId);
 
         foreach ($container_ids as $container_id) {
