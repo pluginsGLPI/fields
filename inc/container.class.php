@@ -1590,6 +1590,7 @@ HTML;
 
     public static function findContainers($itemtype, $type = 'tab', $subtype = '', $itemId = '')
     {
+        /** @var DBmysql $DB */
         global $DB;
         $ids = [];
 
@@ -1605,7 +1606,7 @@ HTML;
 
                 $entityRestriction = getEntitiesRestrictCriteria('', '', $glpiActiveEntities, true, true);
 
-                if (empty($entityIds)) {
+                if (count($entityIds) === 0) {
                     $entityIds = [$entityId];
                 }
                 $entityIdList = implode(",", $entityIds);
@@ -1629,7 +1630,7 @@ HTML;
                     $sql .= " AND type = '$type'";
                 }
 
-                if (is_array($entityRestriction) && !empty($entityRestriction)) {
+                if (!empty($entityRestriction)) {
                     $allowedEntities = [];
                     foreach ($entityRestriction as $restriction) {
                         if (isset($restriction['entities_id']) && is_array($restriction['entities_id'])) {
@@ -1648,7 +1649,7 @@ HTML;
                     $containerId = (int) $row['id'];
 
                     //profiles restriction
-                    if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] !== null) {
+                    if (isset($_SESSION['glpiactiveprofile']['id'])) {
                         $profileId = $_SESSION['glpiactiveprofile']['id'];
                         $right = PluginFieldsProfile::getRightOnContainer($profileId, $containerId);
                         if ($right < READ) {
