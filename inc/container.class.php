@@ -1720,8 +1720,9 @@ HTML;
                             ],
                             [
                                 'is_recursive' => 0,
-                                'entities_id' => $entityId,
-                            ]
+                            ],
+                        ],
+                    ],
                         ]
                     ]
                 ];
