@@ -192,7 +192,7 @@ function plugin_init_fields()
         ];
 
         $PLUGIN_HOOKS['item_get_datas']['fields'] = [
-            NotificationTargetTicket::class => [PluginFieldsNotificationTargetTicket::class, 'addNotificationDatas']
+            NotificationTargetTicket::class => [PluginFieldsNotificationTargetTicket::class, 'addNotificationDatas'],
         ];
     }
 }

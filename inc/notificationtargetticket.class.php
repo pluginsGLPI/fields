@@ -2,17 +2,17 @@
 
 class PluginFieldsNotificationTargetTicket
 {
-
-    public static function addNotificationDatas(NotificationTargetTicket $target) {
+    public static function addNotificationDatas(NotificationTargetTicket $target)
+    {
 
         $event = $target->raiseevent;
         if (isset($target->obj->fields['id'])) {
             $tickets_id  = $target->obj->fields['id'];
 
             $containers = PluginFieldsContainer::findContainers('Ticket', 'dom', '', $tickets_id);
-    
+
             foreach ($containers as $c_id) {
-    
+
                 $container_obj = new PluginFieldsContainer();
                 $container_obj->getFromDB($c_id);
 
