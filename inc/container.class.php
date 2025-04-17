@@ -1708,31 +1708,36 @@ HTML;
 
                 $entityRestriction = getEntitiesRestrictCriteria('', '', $glpiActiveEntities, true, true);
 
-                if (count($entityIds) === 0) {
-                    $entityIds = [$entityId];
-                }
-                $entityIdList = implode(",", $entityIds);
-
-                $sql = "SELECT id FROM glpi_plugin_fields_containers
-                    WHERE is_active = 1
-                        AND type = '$type'
-                        AND JSON_CONTAINS(itemtypes, '\"$itemtype\"')
-                        AND (
-                            (is_recursive = 1 AND entities_id IN ($entityIdList))
-                            OR (is_recursive = 0 AND entities_id = '$entityId')
-                        )";
+                $where = [
+                    'is_active' => 1,
+                    'type'      => $type,
+                    new \QueryExpression("JSON_CONTAINS(itemtypes, " . $DB->quote('"' . $itemtype . '"') . ")"),
+                    'AND' => [
+                        'OR' => [
+                            [
+                                'is_recursive' => 1,
+                                'entities_id' => $entityIds,
+                            ],
+                            [
+                                'is_recursive' => 0,
+                                'entities_id' => $entityId,
+                            ]
+                        ]
+                    ]
+                ];
 
                 if ($subtype !== '') {
                     if ($subtype === $itemtype . '$main') {
-                        $sql .= " AND type = 'dom'";
+                        $where['type'] = 'dom';
                     } else {
-                        $sql .= " AND type != 'dom' AND subtype = '$subtype'";
+                        $where['type'] = ['!=', 'dom'];
+                        $where['subtype'] = $subtype;
                     }
                 } else {
-                    $sql .= " AND type = '$type'";
+                    $where['type'] = $type;
                 }
 
-                if (!empty($entityRestriction)) {
+                if (is_array($entityRestriction) && !empty($entityRestriction)) {
                     $allowedEntities = [];
                     foreach ($entityRestriction as $restriction) {
                         if (isset($restriction['entities_id']) && is_array($restriction['entities_id'])) {
@@ -1740,14 +1745,17 @@ HTML;
                         }
                     }
                     if (!empty($allowedEntities)) {
-                        $allowedEntitiesStr = implode(",", $allowedEntities);
-                        $sql .= " AND entities_id IN ($allowedEntitiesStr)";
+                        $where['entities_id'] = $allowedEntities;
                     }
                 }
 
-                $res = $DB->query($sql);
+                $iterator = $DB->request([
+                    'SELECT' => 'id',
+                    'FROM'   => self::getTable(),
+                    'WHERE'  => $where,
+                ]);
 
-                while ($row = $DB->fetchAssoc($res)) {
+                foreach ($iterator as $row) {
                     $containerId = (int) $row['id'];
 
                     //profiles restriction
