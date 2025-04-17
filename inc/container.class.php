@@ -1736,7 +1736,7 @@ HTML;
                     $where['type'] = $type;
                 }
 
-                if (is_array($entityRestriction) && !empty($entityRestriction)) {
+                if (!empty($entityRestriction)) {
                     $allowedEntities = [];
                     foreach ($entityRestriction as $restriction) {
                         if (isset($restriction['entities_id']) && is_array($restriction['entities_id'])) {
