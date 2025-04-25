@@ -39,21 +39,20 @@
                   {{ fields.dropdownArrayField('itemtype', container_display_condition.fields['itemtype']|default(null), container_itemtypes, __('Item type'), {'rand': rand, 'display_emptychoice': true}) }}
                   {% do call('Ajax::updateItemOnSelectEvent',
                      [
-                        'dropdown_itemtype'~ rand,
+                        'dropdown_itemtype' ~ rand,
                         'results_fields',
                         get_plugin_web_dir('fields') ~ '/ajax/container_display_condition.php',
                         {
                            'itemtype': '__VALUE__',
                            'action'  : 'get_itemtype_so',
                         }
-                     ])
-                  %}
+                     ]) %}
                   <div id='results_fields' class='form-field row col-12 col-sm-6  mb-2'>
                      {% if not container_display_condition.isNewItem() %}
                         {{ fields.dropdownArrayField('search_option', container_display_condition.fields['search_option']|default(null), search_options, '', {'no_label': true, 'rand': rand, 'display_emptychoice': false}) }}
                         {% do call('Ajax::updateItemOnSelectEvent',
                            [
-                              'dropdown_search_option'~ rand,
+                              'dropdown_search_option' ~ rand,
                               'results_condition',
                               get_plugin_web_dir('fields') ~ '/ajax/container_display_condition.php',
                               {
@@ -61,8 +60,7 @@
                                  'itemtype'  : container_display_condition.fields['itemtype'],
                                  'action'     : 'get_condition_switch_so'
                               }
-                           ])
-                        %}
+                           ]) %}
                      {% endif %}
                   </div>
 
