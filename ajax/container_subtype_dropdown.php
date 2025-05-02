@@ -29,5 +29,6 @@
  */
 
 include('../../../inc/includes.php');
+Session::checkLoginUser();
 
 PluginFieldsContainer::showFormSubtype($_REQUEST, true);

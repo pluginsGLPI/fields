@@ -29,6 +29,7 @@
  */
 
 include('../../../inc/includes.php');
+Session::checkLoginUser();
 
 if (isset($_POST['update'])) {
     PluginFieldsProfile::updateProfile($_POST);

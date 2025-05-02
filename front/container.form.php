@@ -29,6 +29,7 @@
  */
 
 include('../../../inc/includes.php');
+Session::checkLoginUser();
 
 if (empty($_GET['id'])) {
     $_GET['id'] = '';
