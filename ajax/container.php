@@ -35,7 +35,7 @@ use Glpi\Http\Response;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
-    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
     if ($right < READ) {
         Response::sendError(403, 'Forbidden');
         return;
