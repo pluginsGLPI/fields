@@ -29,10 +29,18 @@
  */
 
 include('../../../inc/includes.php');
+Session::checkLoginUser();
 
 use Glpi\Http\Response;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
+
+    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
+    if ($right < READ) {
+        Response::sendError(403, 'Forbidden');
+        return;
+    }
+
     $containers_id = $_GET['id'];
     $itemtype      = $_GET['itemtype'];
     $items_id      = (int) $_GET['items_id'];
