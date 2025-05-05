@@ -56,6 +56,17 @@ if (isset($_POST['add'])) {
 } elseif (isset($_POST['update_fields_values'])) {
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_POST['plugin_fields_containers_id']);
     if ($right > READ) {
+        $containerID = $_POST['plugin_fields_containers_id'];
+        $data = [];
+        foreach ($_REQUEST as $key => $value) {
+            // if key starts with plugin_fields_<containerID>_ remove the prefix
+            if (strpos($key, "plugin_fields_{$containerID}_") === 0) {
+                $new_key = substr($key, strlen("plugin_fields_{$containerID}_"));
+                $data[$new_key] = $value;
+            } else {
+                $data[$key] = $value;
+            }
+        }
         $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
     }
     Html::back();
