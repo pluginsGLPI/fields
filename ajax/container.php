@@ -37,7 +37,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
     if ($right < READ) {
-        echo '';
+        Response::sendError(403, 'Forbidden');
+        return;
     }
 
     $containers_id = $_GET['id'];
