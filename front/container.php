@@ -39,7 +39,7 @@ Html::header(
     'fieldscontainer',
 );
 
-Session::checkRight('entity', READ);
+Session::checkRight('config', READ);
 
 PluginFieldsContainer::titleList();
 Search::show('PluginFieldsContainer');

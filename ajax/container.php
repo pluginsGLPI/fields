@@ -34,6 +34,12 @@ Session::checkLoginUser();
 use Glpi\Http\Response;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
+
+    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+    if ($right < READ) {
+        echo '';
+    }
+
     $containers_id = $_GET['id'];
     $itemtype      = $_GET['itemtype'];
     $items_id      = (int) $_GET['items_id'];

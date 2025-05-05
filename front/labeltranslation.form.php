@@ -29,7 +29,7 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkLoginUser();
+Session::checkRight('config', UPDATE);
 
 $translation = new PluginFieldsLabelTranslation();
 if (isset($_POST['add'])) {
