@@ -66,7 +66,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
             $item,
             $type,
             $subtype,
-            //$field_options
+            $field_options
         );
         //echo "</div>";
     } else {
