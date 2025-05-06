@@ -29,7 +29,6 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkRight('config', READ);
 
 $status_override = new PluginFieldsContainerDisplayCondition();
 if (isset($_POST['add'])) {

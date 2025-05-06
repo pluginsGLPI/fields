@@ -29,7 +29,6 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkRight('config', UPDATE);
 
 if (isset($_POST['update'])) {
     PluginFieldsProfile::updateProfile($_POST);

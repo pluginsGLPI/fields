@@ -31,7 +31,7 @@
 include('../../../inc/includes.php');
 include('../hook.php');
 
-Session::checkRight('config', READ);
+Session::checkRight('entity', READ);
 
 $ID = null;
 if (isset($_GET['id'])) {
