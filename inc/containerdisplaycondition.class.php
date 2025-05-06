@@ -406,9 +406,11 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
         if (count($found_dc)) {
             $display = true;
+
             foreach ($found_dc as $data) {
                 $displayCondition->getFromDB($data['id']);
                 $result = $displayCondition->checkCondition($item);
+
                 if (!$result) {
                     return $result;
                 }
@@ -425,7 +427,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     {
         $value        = $this->fields['value'];
         $condition    = $this->fields['condition'];
-        $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
+
+  	$searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
 
         $fields = array_merge($item->fields, $item->input);
 

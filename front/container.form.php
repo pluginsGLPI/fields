@@ -29,7 +29,6 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkLoginUser();
 
 if (empty($_GET['id'])) {
     $_GET['id'] = '';
@@ -60,12 +59,6 @@ if (isset($_POST['add'])) {
     }
     Html::back();
 } else {
-
-    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
-    if ($right < READ) {
-        Html::displayRightError("User is missing the " . READ . " ('read') right for container");
-    }
-
     Html::header(
         __('Additional fields', 'fields'),
         $_SERVER['PHP_SELF'],

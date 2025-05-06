@@ -29,7 +29,6 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkLoginUser();
 
 Html::header(
     __('Additional fields', 'fields'),
@@ -39,7 +38,7 @@ Html::header(
     'fieldscontainer',
 );
 
-Session::checkRight('config', READ);
+Session::checkRight('entity', READ);
 
 PluginFieldsContainer::titleList();
 Search::show('PluginFieldsContainer');

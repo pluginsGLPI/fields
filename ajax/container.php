@@ -29,18 +29,10 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkLoginUser();
 
 use Glpi\Http\Response;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
-
-    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
-    if ($right < READ) {
-        Response::sendError(403, 'Forbidden');
-        return;
-    }
-
     $containers_id = $_GET['id'];
     $itemtype      = $_GET['itemtype'];
     $items_id      = (int) $_GET['items_id'];
@@ -56,12 +48,19 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $display_condition = new PluginFieldsContainerDisplayCondition();
     if ($display_condition->computeDisplayContainer($item, $containers_id)) {
+        $field_options = [
+            'label_class' => 'col-lg-3',
+            'input_class' => 'col-lg-9',
+        ];
+        echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
         PluginFieldsField::showDomContainer(
             $containers_id,
             $item,
             $type,
             $subtype,
+            $field_options
         );
+        echo "</div>";
     } else {
         echo '';
     }
