@@ -34,7 +34,7 @@ if (empty($_GET['id'])) {
     $_GET['id'] = '';
 }
 
-Session::checkRight('entity', READ);
+Session::checkRight('config', READ);
 
 $field = new PluginFieldsField();
 

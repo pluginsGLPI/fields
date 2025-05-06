@@ -48,8 +48,8 @@
     {% set rand = random() %}
 
     {% set field_options = field_options|merge({
-        'readonly':   readonly or not canedit,
-        'required':   field['mandatory'],
+        'readonly': readonly or not canedit,
+        'required': field['mandatory'],
         'full_width': already_wrapped
     }) %}
 
@@ -161,11 +161,11 @@
                 ]) %}
 
                 {# fake label for DOM disposition #}
-                <label class="col-form-label col-xxl-4 text-xxl-end" for="dropdown_items_id_testfield{{rand}}">
+                <label class="col-form-label col-xxl-4 text-xxl-end" for="dropdown_items_id_testfield{{ rand }}">
                 </label>
 
                 <div class="col-xxl-8 field-container">
-                    <span id='results_items_id{{rand}}' class='col-lg-14'>
+                    <span id='results_items_id{{ rand }}' class='col-lg-14'>
                         {% if value.itemtype != '' %}
                             {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, ' ', field_options|merge({
                                 'entity': value.itemtype == 'User' ? -1 : item.getEntityID(),

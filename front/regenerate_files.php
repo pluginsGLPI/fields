@@ -31,7 +31,7 @@
 include('../../../inc/includes.php');
 include('../hook.php');
 
-Session::checkRight('entity', READ);
+Session::checkRight('config', READ);
 
 plugin_fields_checkFiles();
 
