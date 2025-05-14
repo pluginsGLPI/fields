@@ -61,9 +61,11 @@ if (isset($_POST['add'])) {
     Html::back();
 } else {
 
-    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
-    if ($right < READ) {
-        Html::displayRightError("User is missing the " . READ . " ('read') right for container");
+    if ((int) $_GET['id'] > 0) {
+        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
+        if ($right < READ) {
+            Html::displayRightError("User is missing the " . READ . " ('read') right for container");
+        }
     }
 
     Html::header(
