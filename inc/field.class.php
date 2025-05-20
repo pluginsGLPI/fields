@@ -1033,9 +1033,9 @@ class PluginFieldsField extends CommonDBChild
                         'change',
                         'input, select, textarea',
                         function(evt) {
-                            if (evt.target.name == "itilcategories_id") {
+                            if (evt.target.name == "itilcategories_id" && {$items_id} == 0) {
                                 // Do not refresh tab container when form is reloaded
-                                // to prevent issues diues to duplicated calls
+                                // to prevent issues diues to duplicated calls (when object is new)
                                 return;
                             }
                             if ($(evt.target).closest('#{$html_id}').length > 0) {
