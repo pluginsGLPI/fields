@@ -871,8 +871,13 @@ class PluginFieldsField extends CommonDBChild
             $fields = [];
         }
 
+        $fieldTypeName = '_plugin_fields_type_' . $id;
+        $fieldSubTypeName = '_plugin_fields_subtype_' . $id;
+
         echo Html::hidden('_plugin_fields_type', ['value' => $type]);
         echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
+        echo Html::hidden($fieldTypeName, ['value' => $type]);
+        echo Html::hidden($fieldSubTypeName, ['value' => $subtype]);
         echo self::prepareHtmlFields($fields, $item, true, true, false, $field_options);
     }
 
@@ -904,172 +909,173 @@ class PluginFieldsField extends CommonDBChild
             $subtype = '';
         }
 
-        //find container (if not exist, do nothing)
-        if (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
-        } elseif (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
+        if (!isset($item->fields['id'])) {
             return;
         }
+        $itemId = $item->fields['id'];
 
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-        if ($right < READ) {
-            return;
-        }
+        $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $itemId);
 
-        Html::requireJs('tinymce');
+        foreach ($container_ids as $container_id) {
 
-        //need to check if container is usable on this object entity
-        $loc_c = new PluginFieldsContainer();
-        $loc_c->getFromDB($c_id);
-        $entities = [$loc_c->fields['entities_id']];
-        if ($loc_c->fields['is_recursive']) {
-            $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
-        }
-
-        if ($item->isEntityAssign()) {
-            $current_entity = $item->getEntityID();
-            if (!in_array($current_entity, $entities)) {
-                return;
+            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_id);
+            if ($right < READ) {
+                continue;
             }
-        }
 
-        //parse REQUEST_URI
-        if (!isset($_SERVER['REQUEST_URI'])) {
-            return;
-        }
-        $current_url = $_SERVER['REQUEST_URI'];
-        if (
-            strpos($current_url, '.form.php')            === false
-            && strpos($current_url, '.injector.php')     === false
-            && strpos($current_url, '.public.php')       === false
-            && strpos($current_url, 'ajax/timeline.php') === false // ITILSolution load from timeline
-        ) {
-            return;
-        }
+            //need to check if container is usable on this object entity
+            $loc_c = new PluginFieldsContainer();
+            $loc_c->getFromDB($container_id);
+            $entities = [$loc_c->fields['entities_id']];
+            if ($loc_c->fields['is_recursive']) {
+                $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+            }
 
-        //Retrieve dom container
-        $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
+            if ($item->isEntityAssign()) {
+                $current_entity = $item->getEntityID();
+                if (!in_array($current_entity, $entities)) {
+                    continue;
+                }
+            }
 
-        //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-        if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
-            return;
-        }
+            //parse REQUEST_URI
+            if (!isset($_SERVER['REQUEST_URI'])) {
+                continue;
+            }
+            $current_url = $_SERVER['REQUEST_URI'];
+            if (
+                strpos($current_url, '.form.php')            === false
+                && strpos($current_url, '.injector.php')     === false
+                && strpos($current_url, '.public.php')       === false
+                && strpos($current_url, 'ajax/timeline.php') === false // ITILSolution load from timeline
+            ) {
+                continue;
+            }
 
-        $html_id = 'plugin_fields_container_' . mt_rand();
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
-            echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
-            echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
-            $field_options = [
-                'label_class' => 'col-lg-3',
-                'input_class' => 'col-lg-9',
-            ];
-        } else {
-            echo "<div id='{$html_id}'>";
-        }
-        $display_condition = new PluginFieldsContainerDisplayCondition();
-        if ($display_condition->computeDisplayContainer($item, $c_id)) {
-            self::showDomContainer(
-                $c_id,
-                $item,
-                $type,
-                $subtype,
-                $field_options ?? [],
-            );
-        }
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+            //Retrieve dom container
+            $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
+
+            //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
+            if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
+                continue;
+            }
+
+            $html_id = 'plugin_fields_container_' . $container_id;
+            if (strpos($current_url, 'helpdesk.public.php') !== false) {
+                echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
+                echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
+                $field_options = [
+                    'label_class' => 'col-lg-3',
+                    'input_class' => 'col-lg-9',
+                ];
+            } else {
+                echo "<div id='{$html_id}'>";
+            }
+            $display_condition = new PluginFieldsContainerDisplayCondition();
+            if ($display_condition->computeDisplayContainer($item, $container_id)) {
+                self::showDomContainer(
+                    $container_id,
+                    $item,
+                    $type,
+                    $subtype,
+                    $field_options ?? [],
+                );
+            }
+            if (strpos($current_url, 'helpdesk.public.php') !== false) {
+                echo '</div>';
+            }
             echo '</div>';
-        }
-        echo '</div>';
 
-        //JS to trigger any change and check if container need to be display or not
-        $ajax_url = Plugin::getWebDir('fields') . '/ajax/container.php';
-        $items_id = !$item->isNewItem() ? $item->getID() : 0;
-        echo Html::scriptBlock(
-            <<<JAVASCRIPT
-            function refreshContainer() {
-                const data = $('#{$html_id}').closest('form').serializeArray().reduce(
-                    function(obj, item) {
-                        var multiple_matches = item.name.match(/^(.+)\[\]$/);
-                        if (multiple_matches) {
-                            var name = multiple_matches[1];
-                            if (!(name in obj)) {
-                                obj[name] = [];
+            //JS to trigger any change and check if container need to be display or not
+            $ajax_url = Plugin::getWebDir('fields') . '/ajax/container.php';
+            $items_id = !$item->isNewItem() ? $item->getID() : 0;
+            echo Html::scriptBlock(
+                <<<JAVASCRIPT
+                function refreshContainer() {
+                    const data = $('#{$html_id}').closest('form').serializeArray().reduce(
+                        function(obj, item) {
+                            var multiple_matches = item.name.match(/^(.+)\[\]$/);
+                            if (multiple_matches) {
+                                var name = multiple_matches[1];
+                                if (!(name in obj)) {
+                                    obj[name] = [];
+                                }
+                                obj[name].push(item.value);
+                            } else {
+                                obj[item.name] = item.value;
                             }
-                            obj[name].push(item.value);
-                        } else {
-                            obj[item.name] = item.value;
-                        }
-                        return obj;
-                    },
-                    {}
-                );
-
-                $.ajax(
-                    {
-                        url: '{$ajax_url}',
-                        type: 'GET',
-                        data: {
-                            action:   'get_fields_html',
-                            id:       {$c_id},
-                            itemtype: '{$item::getType()}',
-                            items_id: {$items_id},
-                            type:     '{$type}',
-                            subtype:  '{$subtype}',
-                            input:    data
+                            return obj;
                         },
-                        success: function(data) {
-                            // Close open select2 dropdown that will be replaced
-                            $('#{$html_id}').find('.select2-hidden-accessible').select2('close');
-                            // Refresh fields HTML
-                            $('#{$html_id}').html(data);
-                        }
-                    }
-                );
-            }
-            $(
-                function () {
-                    const form = $('#{$html_id}').closest('form');
-                    form.on(
-                        'change',
-                        'input, select, textarea',
-                        function(evt) {
-                            if (evt.target.name == "itilcategories_id") {
-                                // Do not refresh tab container when form is reloaded
-                                // to prevent issues diues to duplicated calls
-                                return;
-                            }
-                            if ($(evt.target).closest('#{$html_id}').length > 0) {
-                                return; // Do nothing if element is inside fields container
-                            }
-                            refreshContainer();
-                        }
+                        {}
                     );
 
-                    var refresh_timeout = null;
-                    form.find('textarea').each(
-                        function () {
-                            const editor = tinymce.get(this.id);
-                            if (editor !== null) {
-                                editor.on(
-                                    'change',
-                                    function(evt) {
-                                        if ($(evt.target.targetElm).closest('#{$html_id}').length > 0) {
-                                            return; // Do nothing if element is inside fields container
-                                        }
-
-                                        if (refresh_timeout !== null) {
-                                            window.clearTimeout(refresh_timeout);
-                                        }
-                                        refresh_timeout = window.setTimeout(refreshContainer, 1000);
-                                    }
-                                );
+                    $.ajax(
+                        {
+                            url: '{$ajax_url}',
+                            type: 'GET',
+                            data: {
+                                action:   'get_fields_html',
+                                id:       {$container_id},
+                                itemtype: '{$item::getType()}',
+                                items_id: {$items_id},
+                                type:     '{$type}',
+                                subtype:  '{$subtype}',
+                                input:    data
+                            },
+                            success: function(data) {
+                                // Close open select2 dropdown that will be replaced
+                                $('#{$html_id}').find('.select2-hidden-accessible').select2('close');
+                                // Refresh fields HTML
+                                $('#{$html_id}').html(data);
                             }
                         }
                     );
                 }
+                $(
+                    function () {
+                        const form = $('#{$html_id}').closest('form');
+                        form.on(
+                            'change',
+                            'input, select, textarea',
+                            function(evt) {
+                                if (evt.target.name == "itilcategories_id") {
+                                    // Do not refresh tab container when form is reloaded
+                                    // to prevent issues diues to duplicated calls
+                                    return;
+                                }
+                                if ($(evt.target).closest('#{$html_id}').length > 0) {
+                                    return; // Do nothing if element is inside fields container
+                                }
+                                refreshContainer();
+                            }
+                        );
+
+                        var refresh_timeout = null;
+                        form.find('textarea').each(
+                            function () {
+                                const editor = tinymce.get(this.id);
+                                if (editor !== null) {
+                                    editor.on(
+                                        'change',
+                                        function(evt) {
+                                            if ($(evt.target.targetElm).closest('#{$html_id}').length > 0) {
+                                                return; // Do nothing if element is inside fields container
+                                            }
+
+                                            if (refresh_timeout !== null) {
+                                                window.clearTimeout(refresh_timeout);
+                                            }
+                                            refresh_timeout = window.setTimeout(refreshContainer, 1000);
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+            JAVASCRIPT
             );
-JAVASCRIPT
-        );
+        }
     }
 
     public static function prepareHtmlFields(
