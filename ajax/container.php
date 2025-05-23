@@ -56,12 +56,19 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $display_condition = new PluginFieldsContainerDisplayCondition();
     if ($display_condition->computeDisplayContainer($item, $containers_id)) {
+        $field_options = [
+            'label_class' => 'col-lg-3',
+            'input_class' => 'col-lg-9',
+        ];
+        echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
         PluginFieldsField::showDomContainer(
             $containers_id,
             $item,
             $type,
             $subtype,
+            $field_options,
         );
+        echo "</div>";
     } else {
         echo '';
     }
