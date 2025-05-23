@@ -190,6 +190,10 @@ function plugin_init_fields()
             'PluginFieldsField',
             'showForTab',
         ];
+
+        $PLUGIN_HOOKS['item_get_datas']['fields'] = [
+            NotificationTargetTicket::class => [PluginFieldsNotificationTargetTicket::class, 'addNotificationDatas'],
+        ];
     }
 }
 
