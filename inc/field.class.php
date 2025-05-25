@@ -904,12 +904,10 @@ class PluginFieldsField extends CommonDBChild
             $subtype = '';
         }
 
-        if (!isset($item->fields['id'])) {
-            return;
-        }
-        $itemId = $item->fields['id'];
+        $itemEntityId = $item->getEntityID();
+        $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
 
-        $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $itemId);
+        $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $entityId);
 
         foreach ($container_ids as $container_id) {
 
@@ -951,6 +949,7 @@ class PluginFieldsField extends CommonDBChild
             //Retrieve dom container
             $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
+<<<<<<< HEAD
             //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
             if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
                 continue;
@@ -958,6 +957,11 @@ class PluginFieldsField extends CommonDBChild
 
             $html_id = 'plugin_fields_container_' . mt_rand();
             if (strpos($current_url, 'helpdesk.public.php') !== false) {
+=======
+            $html_id = 'plugin_fields_container_' . $container_id;
+            $in_helpdesk = (strpos($current_url, 'helpdesk.public.php') !== false);
+            if ($in_helpdesk) {
+>>>>>>> 820d069 (update: findContainers method to use entityId instead of itemId)
                 echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
                 echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
                 $field_options = [
@@ -977,7 +981,8 @@ class PluginFieldsField extends CommonDBChild
                     $field_options ?? [],
                 );
             }
-            if (strpos($current_url, 'helpdesk.public.php') !== false) {
+
+            if ($in_helpdesk) {
                 echo '</div>';
             }
             echo '</div>';

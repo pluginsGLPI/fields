@@ -1690,85 +1690,87 @@ HTML;
         return $id;
     }
 
-    public static function findContainers($itemtype, $type = 'tab', $subtype = '', $itemId = '')
+    /**
+     * Find containers for a specific itemtype, type, subtype and entity id
+     *
+     * @param string  $itemtype Itemtype GLPI
+     * @param string  $type     Type of container (tab, dom, domtab)
+     * @param string  $subtype
+     * @param integer $entityId Entity ID default is 0 (root entity)
+     *
+     * @return array List of container IDs
+     */
+    public static function findContainers($itemtype, $type = 'tab', $subtype = '', $entityId = 0): array
     {
         /** @var DBmysql $DB */
         global $DB;
-        $ids = [];
 
-        if (!empty($itemtype) && !empty($itemId) && class_exists($itemtype)) {
+        if ($itemtype === '') {
+            return [];
+        }
 
-            $obj = new $itemtype();
-            if ($obj->getFromDB($itemId)) {
+        $entitiesIds = getAncestorsOf("glpi_entities", (string) $entityId);
+        $entitiesIds[] = $entityId; // Add entity active itself to the list
 
-                $entityId = $obj->fields['entities_id'] ?? 0;
-                $entityIds = getAncestorsOf("glpi_entities", $entityId);
-                $entityIds[] = $entityId; // Add entity obj itself to the list
-                $glpiActiveEntities = $_SESSION['glpiactiveentities'] ?? 0;
-
-                $entityRestriction = getEntitiesRestrictCriteria('', '', $glpiActiveEntities, true, true);
-
-                $where = [
-                    'is_active' => 1,
-                    'type'      => $type,
-                    new \QueryExpression("JSON_CONTAINS(itemtypes, " . $DB->quote('"' . $itemtype . '"') . ")"),
-                    'AND' => [
-                        'OR' => [
-                            [
-                                'is_recursive' => 1,
-                                'entities_id' => $entityIds,
-                            ],
-                            [
-                                'is_recursive' => 0,
-                            ],
-                        ],
+        $where = [
+            'is_active' => 1,
+            'type'      => $type,
+            new \QueryExpression("JSON_CONTAINS(itemtypes, " . $DB->quote('"' . $itemtype . '"') . ")"),
+            'AND' => [
+                'OR' => [
+                    [
+                        'is_recursive' => 1,
+                        'entities_id' => $entitiesIds,
                     ],
-                ];
+                    [
+                        'is_recursive' => 0,
+                        'entities_id' => $entityId,
+                    ],
+                ],
+            ],
+        ];
 
-                if ($subtype !== '') {
-                    if ($subtype === $itemtype . '$main') {
-                        $where['type'] = 'dom';
-                    } else {
-                        $where['type'] = ['!=', 'dom'];
-                        $where['subtype'] = $subtype;
-                    }
-                } else {
-                    $where['type'] = $type;
-                }
+        if ($subtype !== '') {
+            if ($subtype === $itemtype . '$main') {
+                $where['type'] = 'dom';
+            } else {
+                $where['type'] = ['!=', 'dom'];
+                $where['subtype'] = $subtype;
+            }
+        } else {
+            $where['type'] = $type;
+        }
 
-                if (!empty($entityRestriction)) {
-                    $allowedEntities = [];
-                    foreach ($entityRestriction as $restriction) {
-                        if (isset($restriction['entities_id']) && is_array($restriction['entities_id'])) {
-                            $allowedEntities = array_merge($allowedEntities, $restriction['entities_id']);
-                        }
-                    }
-                    if (!empty($allowedEntities)) {
-                        $where['entities_id'] = $allowedEntities;
-                    }
-                }
-
-                $iterator = $DB->request([
-                    'SELECT' => 'id',
-                    'FROM'   => self::getTable(),
-                    'WHERE'  => $where,
-                ]);
-
-                foreach ($iterator as $row) {
-                    $containerId = (int) $row['id'];
-
-                    //profiles restriction
-                    if (isset($_SESSION['glpiactiveprofile']['id'])) {
-                        $profileId = $_SESSION['glpiactiveprofile']['id'];
-                        $right = PluginFieldsProfile::getRightOnContainer($profileId, $containerId);
-                        if ($right < READ) {
-                            continue;
-                        }
-                    }
-
-                    $ids[] = $containerId;
+        $entityRestriction = getEntitiesRestrictCriteria('', '', $entityId, true, true);
+        if (!empty($entityRestriction)) {
+            $allowedEntities = [];
+            foreach ($entityRestriction as $restriction) {
+                if (isset($restriction['entities_id']) && is_array($restriction['entities_id'])) {
+                    $allowedEntities = array_merge($allowedEntities, $restriction['entities_id']);
                 }
             }
+            if (!empty($allowedEntities)) {
+                $where['entities_id'] = $allowedEntities;
+            }
+        }
+
+        $iterator = $DB->request([
+            'SELECT' => 'id',
+            'FROM'   => self::getTable(),
+            'WHERE'  => $where,
+        ]);
+
+        $ids = [];
+        foreach ($iterator as $row) {
+            $containerId = (int) $row['id'];
+
+            if (isset($_SESSION['glpiactiveprofile']['id'])) {
+                $profileId = $_SESSION['glpiactiveprofile']['id'];
+                if (PluginFieldsProfile::getRightOnContainer($profileId, $containerId) < READ) {
+                    continue;
+                }
+            }
+            $ids[] = $containerId;
         }
 
         return $ids;
@@ -1843,34 +1845,28 @@ HTML;
      */
     public static function preItem(CommonDBTM $item)
     {
-        $type = 'dom';
-        if (isset($_REQUEST['_plugin_fields_type'])) {
-            $type = $_REQUEST['_plugin_fields_type'];
-        }
-        $subtype = '';
-        if ($type == 'domtab') {
-            $subtype = $_REQUEST['_plugin_fields_subtype'];
-        }
+        $type = $_REQUEST['_plugin_fields_type'] ?? 'dom';
+        $subtype = ($type === 'domtab') ? ($_REQUEST['_plugin_fields_subtype'] ?? '') : '';
 
-        $containers = self::findContainers($item->getType(), $type, $subtype, $item->getID());
+        $itemEntityId = $item->getEntityID();
+        $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
+
+        $containers = self::findContainers($item->getType(), $type, $subtype, $entityId);
 
         $all_data = [];
 
         foreach ($containers as $c_id) {
 
-            $loc_c = new PluginFieldsContainer();
-            $loc_c->getFromDB($c_id);
-
             // check rights on $c_id
-
-            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
+            if (isset($_SESSION['glpiactiveprofile']['id'])) {
                 $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-                if ($right > READ === false) {  // Si le droit est insuffisant, on passe au container suivant
-                    continue;
+                if ($right < READ) {
+                    continue; // insufficient rights
                 }
-            } else {
-                continue;
             }
+
+            $loc_c = new self();
+            $loc_c->getFromDB($c_id);
 
             // need to check if container is usable on this object entity
             $entities = [$loc_c->fields['entities_id']];
@@ -1883,11 +1879,12 @@ HTML;
             }
 
             if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
-                continue;
+                continue; // not the right entity
             }
 
             if (false !== ($data = self::populateData($c_id, $item))) {
-                if (self::validateValues($data, $item->getType(), isset($_REQUEST['massiveaction'])) === false) {
+                if (!self::validateValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
+                    // if validation fails, we need to remove the data from the item input
                     $item->input = [];
 
                     return false;
@@ -1930,13 +1927,8 @@ HTML;
         ];
 
         // Add status so it can be used with status overrides
-        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item->getType());
-        $data[$status_field_name] = null;
-        if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
-            $data[$status_field_name] = (int) $item->input[$status_field_name];
-        } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
-            $data[$status_field_name] = (int) $item->fields[$status_field_name];
-        }
+        $statusField = PluginFieldsStatusOverride::getStatusFieldName($item->getType());
+        $data[$statusField] = $item->input[$statusField] ?? $item->fields[$statusField] ?? null;
 
         $has_fields = false;
         // Prefix for input names
@@ -1944,6 +1936,7 @@ HTML;
 
         foreach ($fields as $field) {
             $base_name = $field['name'];
+            $isMulti = (bool) $field['multiple'];
             if ($field['type'] == 'glpi_item') {
                 $itemtype_key = "itemtype_{$base_name}";
                 $items_id_key = "items_id_{$base_name}";
@@ -1952,9 +1945,9 @@ HTML;
                     continue; // not a valid input
                 }
 
-                $has_fields             = true;
                 $data[$itemtype_key]    = $item->input[$itemtype_key];
                 $data[$items_id_key]    = $item->input[$items_id_key];
+                $has_fields             = true;
 
                 continue; // bypass unique field handling
             }
@@ -1963,87 +1956,68 @@ HTML;
             // "plugin_fields_{$c_id}_{$base_name}"
             if ($field['type'] === 'dropdown') {
                 // For dropdown fields, the input name is "plugin_fields_{$c_id}_{$base_name}dropdowns_id"
-                $input = $prefix . $base_name . "dropdowns_id";
-                if (isset($item->input[$input])) {
-                    $has_fields = true;
-                    $data[$base_name . "_dropdowns_id"] = $item->input[$input];
-                }
-                // If the field is a dropdown with multiple selection, we need to check if the input name is defined
-                elseif ($field['multiple']) {
-                    $multiple_key = $input;
-                    $multiple_defined = '_' . $multiple_key . '_defined';
-                    if (isset($item->input[$multiple_key])) {
-                        $has_fields = true;
-                        $data[$base_name . "_dropdowns_id"] = $item->input[$multiple_key];
-                    } elseif (isset($item->input[$multiple_defined]) && $item->input[$multiple_defined]) {
-                        $has_fields = true;
-                        $data[$base_name . "_dropdowns_id"] = [];
+                $htmlKeyWithId = $prefix . $base_name . "dropdowns_id"; // html key in POST data with id
+                $htmlKeyNoId   = "plugin_fields_{$base_name}dropdowns_id"; // html key in POST data without id
+                $colKey = 'plugin_fields_' . $base_name . 'dropdowns_id'; // column key in DB
+
+                if (array_key_exists($htmlKeyWithId, $item->input)) {
+                    $data[$colKey] = $item->input[$htmlKeyWithId];
+                    $has_fields    = true;
+                } elseif (array_key_exists($htmlKeyNoId, $item->input)) {
+                    $data[$colKey] = $item->input[$htmlKeyNoId];
+                    $has_fields    = true;
+                } elseif ($isMulti) {
+                    $definedKeyWithId = '_' . $htmlKeyWithId . '_defined';
+                    $definedKeyNoId   = '_' . $htmlKeyNoId . '_defined';
+                    if (!empty($item->input[$definedKeyWithId]) || !empty($item->input[$definedKeyNoId])) {
+                        $data[$colKey] = [];
+                        $has_fields    = true;
                     }
                 }
                 continue;
             }
 
             // For fields standard, the input name is "plugin_fields_{$c_id}_{$base_name}"
-            $input = $prefix . $base_name;
-            if (isset($item->input[$input])) {
-                $has_fields = true;
-                // Before is_number check, help user to have a number correct, during a massive action of a number field
-                if ($field['type'] == 'number') {
-                    $item->input[$input] = str_replace(',', '.', $item->input[$input]);
+            $htmlKeyWithId = $prefix . $base_name;
+            $htmlKeyNoId   = "plugin_fields_{$base_name}";
+
+            $valuePresent = false;
+            $value = null;
+            if (array_key_exists($htmlKeyWithId, $item->input)) {
+                $value        = $item->input[$htmlKeyWithId];
+                $valuePresent = true;
+            } elseif (array_key_exists($htmlKeyNoId, $item->input)) {
+                $value        = $item->input[$htmlKeyNoId];
+                $valuePresent = true;
+            } elseif ($isMulti) {
+                $definedKeyWithId = '_' . $htmlKeyWithId . '_defined';
+                $definedKeyNoId   = '_' . $htmlKeyNoId . '_defined';
+                if (!empty($item->input[$definedKeyWithId]) || !empty($item->input[$definedKeyNoId])) {
+                    $value        = [];
+                    $valuePresent = true;
                 }
-                $data[$base_name] = $item->input[$input];
+            }
 
-                if ($field['type'] === 'richtext') {
-                    $filename_input = "_" . $input;
-                    $prefix_input   = "_prefix_" . $input;
-                    $tag_input      = "_tag_" . $input;
+            if (!$valuePresent) {
+                continue; // not a valid input
+            }
 
-                    $data[$filename_input] = $item->input[$filename_input] ?? [];
-                    $data[$prefix_input]   = $item->input[$prefix_input] ?? [];
-                    $data[$tag_input]      = $item->input[$tag_input] ?? [];
-                }
-            } elseif ($field['multiple']) {
-                //the absence of the field in the input may be due to the fact that the input allows multiple selection
-                // ex my_dom[]
-                //in these conditions, the input is never sent by the browser
-                if ($field['multiple']) {
-                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'assign';
-                    //handle multi dropdown field
-                    if ($field['type'] == 'dropdown') {
-                        $multiple_key = $prefix . $base_name . "dropdowns_id";
-                        $multiple_defined = '_' . $multiple_key . '_defined';
-                        //values are defined by user
-                        if (isset($item->input[$multiple_key])) {
-                            $data[$base_name . "_dropdowns_id"] = $item->input[$multiple_key];
-                            $has_fields = true;
-                        } elseif (
-                            isset($item->input[$multiple_defined])
-                            && $item->input[$multiple_defined]
-                        ) { //multi dropdown is empty or has been emptied
-                            $data[$base_name . "_dropdowns_id"] = [];
-                            $has_fields                         = true;
-                        }
-                    }
+            if ($field['type'] === 'number') {
+                $value = str_replace(',', '.', $value);
+            }
 
-                    //managed multi GLPI item dropdown field
-                    if (preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1) {
-                        //values are defined by user
-                        if (isset($item->input[$field['name']])) {
-                            $data[$base_name] = $item->input[$field['name']];
-                            $has_fields = true;
-                        } else { //multi dropdown is empty or has been emptied
-                            $data[$base_name] = [];
-                        }
-                    }
+            $data[$base_name] = $value;
+            $has_fields = true;
+
+            // If the field is a richtext
+            if ($field['type'] === 'richtext') {
+                foreach (['_' . $htmlKeyWithId, '_prefix_' . $htmlKeyWithId, '_tag_' . $htmlKeyWithId] as $extra) {
+                    $data[$extra] = $item->input[$extra];
                 }
             }
         }
 
-        if ($has_fields === true) {
-            return $data;
-        } else {
-            return false;
-        }
+        return $has_fields ? $data : false;
     }
 
     public static function getAddSearchOptions($itemtype, $containers_id = false)
