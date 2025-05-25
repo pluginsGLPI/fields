@@ -909,33 +909,16 @@ class PluginFieldsField extends CommonDBChild
             $subtype = '';
         }
 
-        if (!isset($item->fields['id'])) {
-            return;
-        }
-        $itemId = $item->fields['id'];
+        $itemEntityId = $item->getEntityID();
+        $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
 
-        $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $itemId);
+        $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $entityId);
 
         foreach ($container_ids as $container_id) {
 
             $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_id);
             if ($right < READ) {
                 continue;
-            }
-
-            //need to check if container is usable on this object entity
-            $loc_c = new PluginFieldsContainer();
-            $loc_c->getFromDB($container_id);
-            $entities = [$loc_c->fields['entities_id']];
-            if ($loc_c->fields['is_recursive']) {
-                $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
-            }
-
-            if ($item->isEntityAssign()) {
-                $current_entity = $item->getEntityID();
-                if (!in_array($current_entity, $entities)) {
-                    continue;
-                }
             }
 
             //parse REQUEST_URI
@@ -955,13 +938,9 @@ class PluginFieldsField extends CommonDBChild
             //Retrieve dom container
             $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
-            //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-            if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
-                continue;
-            }
-
             $html_id = 'plugin_fields_container_' . $container_id;
-            if (strpos($current_url, 'helpdesk.public.php') !== false) {
+            $in_helpdesk = (strpos($current_url, 'helpdesk.public.php') !== false);
+            if ($in_helpdesk) {
                 echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
                 echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
                 $field_options = [
@@ -981,7 +960,8 @@ class PluginFieldsField extends CommonDBChild
                     $field_options ?? [],
                 );
             }
-            if (strpos($current_url, 'helpdesk.public.php') !== false) {
+
+            if ($in_helpdesk) {
                 echo '</div>';
             }
             echo '</div>';
