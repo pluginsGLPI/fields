@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-10 01:02+0000\n"
+"POT-Creation-Date: 2025-06-11 01:11+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -20,59 +20,18 @@ msgstr ""
 "Language: hr_HR\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr "- neka izbrisana polja su možda još uvijek prisutna u bazi podataka (greška uvedena u %s i ispravljena u verziji %s)"
+#: templates/forms/status_override.html.twig inc/field.class.php:243
+msgid "Field"
+msgstr "Polje"
 
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> „%s.%s” je izbrisano."
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> „%s.%s” treba izbrisati."
-
-#: inc/field.class.php:608
-msgid "Add a new field"
-msgstr "Dodaj novo polje"
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
+msgid "Read only"
+msgstr "Samo-za-čitanje"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
 msgstr "Dodaj uvjet za skrivanje bloka"
-
-#: templates/status_overrides.html.twig
-msgid "Add new status override"
-msgstr "Dodaj novu zamjenu stanja"
-
-#: inc/container.class.php:1040
-msgid "Add tab"
-msgstr "Dodaj karticu"
-
-#: front/container.php:34 front/container.form.php:63 inc/menu.class.php:37
-#: setup.php:223
-msgid "Additional fields"
-msgstr "Dodatna polja"
-
-#: ajax/field_specific_fields.php:53
-msgid "Allowed values"
-msgstr "Dozvoljene vrijednosti"
-
-#: inc/container.class.php:781
-msgid "Block"
-msgstr "Blok"
-
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr "Provjeri bazu podataka za otkrivanje nedosljednosti."
-
-#: inc/toolbox.class.php:322
-msgid "Component items"
-msgstr "Elementi komponente"
 
 #: templates/container_display_conditions.html.twig
 #: inc/containerdisplaycondition.class.php:155
@@ -82,22 +41,80 @@ msgstr[0] "Uvjet za skrivanje bloka"
 msgstr[1] "Uvjeti za skrivanje bloka"
 msgstr[2] "Uvjeti za skrivanje bloka"
 
-#: inc/container.class.php:600
+#: templates/status_overrides.html.twig
+msgid "Add new status override"
+msgstr "Dodaj novu zamjenu stanja"
+
+#: templates/status_overrides.html.twig
+msgid "Status overrides"
+msgstr "Zamjene stanja"
+
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr "Nijedan predmet nije pronađen"
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr "prikaži"
+
+#: front/container.form.php:72 front/container.php:35 inc/menu.class.php:37
+#: setup.php:223
+msgid "Additional fields"
+msgstr "Dodatna polja"
+
+#: inc/field.class.php:258 inc/field.class.php:285
 msgid ""
-"Container name is too long for database (digits in name are replaced by "
+"Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
+msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "Baza podataka sadrži nepovezane podatke iz %s nepropisno izbrisanih polja."
+#: inc/field.class.php:277
+msgid "You cannot add same field 'dropdown' on same bloc"
+msgstr ""
 
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "Baza podataka je sadržala nepovezane podatke iz %s nepropisno izbrisanih polja."
+#: inc/field.class.php:545
+msgid "Fields"
+msgstr "Polja"
+
+#: inc/field.class.php:608
+msgid "Add a new field"
+msgstr "Dodaj novo polje"
+
+#: inc/field.class.php:612
+msgid "No field for this block"
+msgstr "Nema polja za ovaj blok"
+
+#: inc/field.class.php:1335
+msgid "Header"
+msgstr "Zaglavlje"
+
+#: inc/field.class.php:1336
+msgid "Text (single line)"
+msgstr "Tekst (jednoredni)"
+
+#: inc/field.class.php:1337
+msgid "Text (multiples lines)"
+msgstr "Tekst (višeredni)"
+
+#: inc/field.class.php:1338
+msgid "Rich Text"
+msgstr "Formatirani tekst"
+
+#: inc/field.class.php:1339
+msgid "Number"
+msgstr "Broj"
+
+#: inc/field.class.php:1340
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:1341
+msgid "Dropdown"
+msgstr "Padajući popis"
+
+#: inc/field.class.php:1342
+msgid "Yes/No"
+msgstr "Da/Ne"
 
 #: inc/field.class.php:1343
 msgid "Date"
@@ -107,55 +124,63 @@ msgstr "Datum"
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
-#: ajax/field_specific_fields.php:90
-msgid "Default value"
-msgstr "Standardna vrijednost"
+#: inc/field.class.php:1345
+msgid "GLPI item"
+msgstr "GLPI predmet"
 
-#: ajax/field_specific_fields.php:121
-msgid "Default value will be configurable once field will be created."
-msgstr "Zadana vrijednost moći će se konfigurirati nakon što se polje stvori."
-
-#: inc/field.class.php:1341
-msgid "Dropdown"
-msgstr "Padajući popis"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr "Sve je u redu – nije potrebna nijedna radnja."
+#: inc/container.class.php:52
+msgid "Regenerate container files"
+msgstr "Ponovo generiraj datoteke spremnika"
 
 #: inc/container.class.php:53 inc/container.class.php:790
 msgid "Export to YAML"
 msgstr "Izvezi u YAML"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:243
-msgid "Field"
-msgstr "Polje"
-
-#: inc/field.class.php:258 inc/field.class.php:285
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
-
-#: inc/field.class.php:545
-msgid "Fields"
-msgstr "Polja"
+#: inc/container.class.php:190
+msgid "Regenerate containers files"
+msgstr "Ponovo generiraj datoteke kontejnera"
 
 #: inc/container.class.php:211
 msgid "Fix container names"
 msgstr "Ispravi imena spremnika"
 
-#: inc/toolbox.class.php:122
-msgid "Fix fields names"
-msgstr "Ispravi imena polja"
+#: inc/container.class.php:352
+msgid "Updating generated containers files"
+msgstr "Aktualiziranje generiranih datoteka spremnika"
 
-#: inc/field.class.php:1345
-msgid "GLPI item"
-msgstr "GLPI predmet"
+#: inc/container.class.php:567
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
 
-#: inc/field.class.php:1335
-msgid "Header"
-msgstr "Zaglavlje"
+#: inc/container.class.php:583
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
+
+#: inc/container.class.php:600
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
+
+#: inc/container.class.php:615
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
+
+#: inc/container.class.php:781
+msgid "Block"
+msgstr "Blok"
+
+#: inc/container.class.php:886
+msgid "Tab"
+msgstr "Kartica"
+
+#: inc/container.class.php:1040
+msgid "Add tab"
+msgstr "Dodaj karticu"
 
 #: inc/container.class.php:1041
 msgid "Insertion in the form (before save button)"
@@ -165,103 +190,25 @@ msgstr "Umetanje u obrazac (prije gumba za spremanje)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
 
-#: inc/labeltranslation.class.php:205
-msgid "Label"
-msgstr "Oznaka"
+#: inc/container.class.php:1544
+msgid "Some mandatory fields are empty"
+msgstr "Neka obavezna polja su prazna"
 
-#: inc/labeltranslation.class.php:204
-msgid "Language"
-msgstr "Jezik"
+#: inc/container.class.php:1549
+msgid "Some numeric fields contains non numeric values"
+msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 
-#: ajax/field_specific_fields.php:87
-msgid "Multiple dropdown"
-msgstr "Višestruki izbornik"
-
-#: hook.php:55 hook.php:59
-msgid "MySQL tables installation"
-msgstr "Instalacija MySQL tablica"
-
-#: hook.php:122
-msgid "MySQL tables uninstallation"
-msgstr "Deinstalacija MySQL tablica"
-
-#: inc/field.class.php:612
-msgid "No field for this block"
-msgstr "Nema polja za ovaj blok"
-
-#: templates/status_overrides.html.twig
-msgid "No item found"
-msgstr "Nijedan predmet nije pronađen"
-
-#: inc/field.class.php:1339
-msgid "Number"
-msgstr "Broj"
+#: inc/container.class.php:1554
+msgid "Some URL fields contains invalid links"
+msgstr "Neka URL polja sadrže neispravne poveznice"
 
 #: inc/statusoverride.class.php:90
 msgid "Override by status"
 msgstr "Zamijeni po stanju"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:625
-#: inc/field.class.php:805
-msgid "Read only"
-msgstr "Samo-za-čitanje"
-
-#: inc/container.class.php:52
-msgid "Regenerate container files"
-msgstr "Ponovo generiraj datoteke spremnika"
-
-#: inc/container.class.php:190
-msgid "Regenerate containers files"
-msgstr "Ponovo generiraj datoteke kontejnera"
-
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Ponovo generira datoteke kontejnera."
-
-#: inc/field.class.php:1338
-msgid "Rich Text"
-msgstr "Formatirani tekst"
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Za ispravljanje nedosljednosti u bazi podataka pokreni „%s”."
-
-#: inc/container.class.php:1550
-msgid "Some URL fields contains invalid links"
-msgstr "Neka URL polja sadrže neispravne poveznice"
-
-#: inc/container.class.php:1540
-msgid "Some mandatory fields are empty"
-msgstr "Neka obavezna polja su prazna"
-
-#: inc/container.class.php:1545
-msgid "Some numeric fields contains non numeric values"
-msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
-
-#: templates/status_overrides.html.twig
-msgid "Status overrides"
-msgstr "Zamjene stanja"
-
-#: inc/container.class.php:886
-msgid "Tab"
-msgstr "Kartica"
-
-#: inc/field.class.php:1337
-msgid "Text (multiples lines)"
-msgstr "Tekst (višeredni)"
-
-#: inc/field.class.php:1336
-msgid "Text (single line)"
-msgstr "Tekst (jednoredni)"
-
-#: hook.php:109
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr "Ova će naredba provjeriti bazu podataka kako bi otkrila sljedeće nedosljednosti:"
 
 #: inc/command/regeneratefilescommand.class.php:43
 msgid ""
@@ -269,50 +216,26 @@ msgid ""
 "them."
 msgstr "Ova naredba će očistiti sve datoteke koje je dodatak generirao i ponovno će ih generirati."
 
-#: inc/field.class.php:1340
-msgid "URL"
-msgstr "URL"
+#: inc/labeltranslation.class.php:204
+msgid "Language"
+msgstr "Jezik"
 
-#: inc/container.class.php:352
-msgid "Updating generated containers files"
-msgstr "Aktualiziranje generiranih datoteka spremnika"
+#: inc/labeltranslation.class.php:205
+msgid "Label"
+msgstr "Oznaka"
 
-#: inc/dropdown.class.php:78
-msgid "Updating generated dropdown files"
-msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
+#: inc/toolbox.class.php:122
+msgid "Fix fields names"
+msgstr "Ispravi imena polja"
 
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
+#: inc/toolbox.class.php:322
+msgid "Component items"
+msgstr "Elementi komponente"
 
-#: inc/field.class.php:1342
-msgid "Yes/No"
-msgstr "Da/Ne"
-
-#: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr ""
-
-#: inc/container.class.php:583
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
-
-#: inc/container.class.php:567
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
-
-#: inc/container.class.php:615
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
-
-#: inc/containerdisplaycondition.class.php:500
-#: inc/containerdisplaycondition.class.php:516
-msgid "You must specify an item type, search option and condition."
-msgstr "Moraš navesti vrstu predmeta, opciju pretraživanja i uvjet."
+#: inc/containerdisplaycondition.class.php:104
+#: inc/containerdisplaycondition.class.php:136
+msgid "under"
+msgstr "ispod"
 
 #: inc/containerdisplaycondition.class.php:105
 #: inc/containerdisplaycondition.class.php:139
@@ -324,11 +247,88 @@ msgstr "ne ispod"
 msgid "regular expression matches"
 msgstr "regularni izraz se podudara"
 
-#: templates/fields.html.twig
-msgid "show"
-msgstr "prikaži"
+#: inc/containerdisplaycondition.class.php:500
+#: inc/containerdisplaycondition.class.php:516
+msgid "You must specify an item type, search option and condition."
+msgstr "Moraš navesti vrstu predmeta, opciju pretraživanja i uvjet."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:136
-msgid "under"
-msgstr "ispod"
+#: inc/dropdown.class.php:78
+msgid "Updating generated dropdown files"
+msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Provjeri bazu podataka za otkrivanje nedosljednosti."
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "Ova će naredba provjeriti bazu podataka kako bi otkrila sljedeće nedosljednosti:"
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "- neka izbrisana polja su možda još uvijek prisutna u bazi podataka (greška uvedena u %s i ispravljena u verziji %s)"
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Koristi ovu opciju za stvarno ispravljanje baze podataka"
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Sve je u redu – nije potrebna nijedna radnja."
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "Baza podataka je sadržala nepovezane podatke iz %s nepropisno izbrisanih polja."
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "Baza podataka sadrži nepovezane podatke iz %s nepropisno izbrisanih polja."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> „%s.%s” je izbrisano."
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> „%s.%s” treba izbrisati."
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "Za ispravljanje nedosljednosti u bazi podataka pokreni „%s”."
+
+#: ajax/field_specific_fields.php:53
+msgid "Allowed values"
+msgstr "Dozvoljene vrijednosti"
+
+#: ajax/field_specific_fields.php:87
+msgid "Multiple dropdown"
+msgstr "Višestruki izbornik"
+
+#: ajax/field_specific_fields.php:90
+msgid "Default value"
+msgstr "Standardna vrijednost"
+
+#: ajax/field_specific_fields.php:121
+msgid "Default value will be configurable once field will be created."
+msgstr "Zadana vrijednost moći će se konfigurirati nakon što se polje stvori."
+
+#: hook.php:55 hook.php:59
+msgid "MySQL tables installation"
+msgstr "Instalacija MySQL tablica"
+
+#: hook.php:109
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
+
+#: hook.php:122
+msgid "MySQL tables uninstallation"
+msgstr "Deinstalacija MySQL tablica"

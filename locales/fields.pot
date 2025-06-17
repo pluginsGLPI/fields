@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-10 01:02+0000\n"
+"POT-Creation-Date: 2025-06-17 01:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,58 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
+#: templates/forms/status_override.html.twig inc/field.class.php:243
+msgid "Field"
 msgstr ""
 
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr ""
-
-#: inc/field.class.php:608
-msgid "Add a new field"
+#: templates/forms/status_override.html.twig inc/field.class.php:625
+#: inc/field.class.php:805
+msgid "Read only"
 msgstr ""
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
-
-#: templates/status_overrides.html.twig
-msgid "Add new status override"
-msgstr ""
-
-#: inc/container.class.php:1040
-msgid "Add tab"
-msgstr ""
-
-#: front/container.php:34 front/container.form.php:63 inc/menu.class.php:37
-#: setup.php:223
-msgid "Additional fields"
-msgstr ""
-
-#: ajax/field_specific_fields.php:53
-msgid "Allowed values"
-msgstr ""
-
-#: inc/container.class.php:781
-msgid "Block"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr ""
-
-#: inc/toolbox.class.php:322
-msgid "Component items"
 msgstr ""
 
 #: templates/container_display_conditions.html.twig
@@ -79,21 +38,79 @@ msgid_plural "Conditions to hide block"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/container.class.php:600
+#: templates/status_overrides.html.twig
+msgid "Add new status override"
+msgstr ""
+
+#: templates/status_overrides.html.twig
+msgid "Status overrides"
+msgstr ""
+
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr ""
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr ""
+
+#: front/container.form.php:72 front/container.php:35 inc/menu.class.php:37
+#: setup.php:223
+msgid "Additional fields"
+msgstr ""
+
+#: inc/field.class.php:258 inc/field.class.php:285
 msgid ""
-"Container name is too long for database (digits in name are replaced by "
+"Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
+#: inc/field.class.php:277
+msgid "You cannot add same field 'dropdown' on same bloc"
 msgstr ""
 
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
+#: inc/field.class.php:545
+msgid "Fields"
+msgstr ""
+
+#: inc/field.class.php:608
+msgid "Add a new field"
+msgstr ""
+
+#: inc/field.class.php:612
+msgid "No field for this block"
+msgstr ""
+
+#: inc/field.class.php:1335
+msgid "Header"
+msgstr ""
+
+#: inc/field.class.php:1336
+msgid "Text (single line)"
+msgstr ""
+
+#: inc/field.class.php:1337
+msgid "Text (multiples lines)"
+msgstr ""
+
+#: inc/field.class.php:1338
+msgid "Rich Text"
+msgstr ""
+
+#: inc/field.class.php:1339
+msgid "Number"
+msgstr ""
+
+#: inc/field.class.php:1340
+msgid "URL"
+msgstr ""
+
+#: inc/field.class.php:1341
+msgid "Dropdown"
+msgstr ""
+
+#: inc/field.class.php:1342
+msgid "Yes/No"
 msgstr ""
 
 #: inc/field.class.php:1343
@@ -104,54 +121,62 @@ msgstr ""
 msgid "Date & time"
 msgstr ""
 
-#: ajax/field_specific_fields.php:90
-msgid "Default value"
+#: inc/field.class.php:1345
+msgid "GLPI item"
 msgstr ""
 
-#: ajax/field_specific_fields.php:121
-msgid "Default value will be configurable once field will be created."
-msgstr ""
-
-#: inc/field.class.php:1341
-msgid "Dropdown"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
+#: inc/container.class.php:52
+msgid "Regenerate container files"
 msgstr ""
 
 #: inc/container.class.php:53 inc/container.class.php:790
 msgid "Export to YAML"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:243
-msgid "Field"
-msgstr ""
-
-#: inc/field.class.php:258 inc/field.class.php:285
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr ""
-
-#: inc/field.class.php:545
-msgid "Fields"
+#: inc/container.class.php:190
+msgid "Regenerate containers files"
 msgstr ""
 
 #: inc/container.class.php:211
 msgid "Fix container names"
 msgstr ""
 
-#: inc/toolbox.class.php:122
-msgid "Fix fields names"
+#: inc/container.class.php:352
+msgid "Updating generated containers files"
 msgstr ""
 
-#: inc/field.class.php:1345
-msgid "GLPI item"
+#: inc/container.class.php:567
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
 msgstr ""
 
-#: inc/field.class.php:1335
-msgid "Header"
+#: inc/container.class.php:583
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific "
+"tab' on same object tab"
+msgstr ""
+
+#: inc/container.class.php:600
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+
+#: inc/container.class.php:615
+msgid "You cannot add several blocs with identical name on same object"
+msgstr ""
+
+#: inc/container.class.php:781
+msgid "Block"
+msgstr ""
+
+#: inc/container.class.php:886
+msgid "Tab"
+msgstr ""
+
+#: inc/container.class.php:1040
+msgid "Add tab"
 msgstr ""
 
 #: inc/container.class.php:1041
@@ -162,102 +187,24 @@ msgstr ""
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/labeltranslation.class.php:205
-msgid "Label"
+#: inc/container.class.php:1544
+msgid "Some mandatory fields are empty"
 msgstr ""
 
-#: inc/labeltranslation.class.php:204
-msgid "Language"
+#: inc/container.class.php:1549
+msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: ajax/field_specific_fields.php:87
-msgid "Multiple dropdown"
-msgstr ""
-
-#: hook.php:55 hook.php:59
-msgid "MySQL tables installation"
-msgstr ""
-
-#: hook.php:122
-msgid "MySQL tables uninstallation"
-msgstr ""
-
-#: inc/field.class.php:612
-msgid "No field for this block"
-msgstr ""
-
-#: templates/status_overrides.html.twig
-msgid "No item found"
-msgstr ""
-
-#: inc/field.class.php:1339
-msgid "Number"
+#: inc/container.class.php:1554
+msgid "Some URL fields contains invalid links"
 msgstr ""
 
 #: inc/statusoverride.class.php:90
 msgid "Override by status"
 msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:625
-#: inc/field.class.php:805
-msgid "Read only"
-msgstr ""
-
-#: inc/container.class.php:52
-msgid "Regenerate container files"
-msgstr ""
-
-#: inc/container.class.php:190
-msgid "Regenerate containers files"
-msgstr ""
-
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
-msgstr ""
-
-#: inc/field.class.php:1338
-msgid "Rich Text"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr ""
-
-#: inc/container.class.php:1550
-msgid "Some URL fields contains invalid links"
-msgstr ""
-
-#: inc/container.class.php:1540
-msgid "Some mandatory fields are empty"
-msgstr ""
-
-#: inc/container.class.php:1545
-msgid "Some numeric fields contains non numeric values"
-msgstr ""
-
-#: templates/status_overrides.html.twig
-msgid "Status overrides"
-msgstr ""
-
-#: inc/container.class.php:886
-msgid "Tab"
-msgstr ""
-
-#: inc/field.class.php:1337
-msgid "Text (multiples lines)"
-msgstr ""
-
-#: inc/field.class.php:1336
-msgid "Text (single line)"
-msgstr ""
-
-#: hook.php:109
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
 msgstr ""
 
 #: inc/command/regeneratefilescommand.class.php:43
@@ -266,49 +213,25 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/field.class.php:1340
-msgid "URL"
+#: inc/labeltranslation.class.php:204
+msgid "Language"
 msgstr ""
 
-#: inc/container.class.php:352
-msgid "Updating generated containers files"
+#: inc/labeltranslation.class.php:205
+msgid "Label"
 msgstr ""
 
-#: inc/dropdown.class.php:78
-msgid "Updating generated dropdown files"
+#: inc/toolbox.class.php:122
+msgid "Fix fields names"
 msgstr ""
 
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
+#: inc/toolbox.class.php:322
+msgid "Component items"
 msgstr ""
 
-#: inc/field.class.php:1342
-msgid "Yes/No"
-msgstr ""
-
-#: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr ""
-
-#: inc/container.class.php:583
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific "
-"tab' on same object tab"
-msgstr ""
-
-#: inc/container.class.php:567
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr ""
-
-#: inc/container.class.php:615
-msgid "You cannot add several blocs with identical name on same object"
-msgstr ""
-
-#: inc/containerdisplaycondition.class.php:500
-#: inc/containerdisplaycondition.class.php:516
-msgid "You must specify an item type, search option and condition."
+#: inc/containerdisplaycondition.class.php:104
+#: inc/containerdisplaycondition.class.php:136
+msgid "under"
 msgstr ""
 
 #: inc/containerdisplaycondition.class.php:105
@@ -321,11 +244,88 @@ msgstr ""
 msgid "regular expression matches"
 msgstr ""
 
-#: templates/fields.html.twig
-msgid "show"
+#: inc/containerdisplaycondition.class.php:500
+#: inc/containerdisplaycondition.class.php:516
+msgid "You must specify an item type, search option and condition."
 msgstr ""
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:136
-msgid "under"
+#: inc/dropdown.class.php:78
+msgid "Updating generated dropdown files"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr ""
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr ""
+
+#: ajax/field_specific_fields.php:53
+msgid "Allowed values"
+msgstr ""
+
+#: ajax/field_specific_fields.php:87
+msgid "Multiple dropdown"
+msgstr ""
+
+#: ajax/field_specific_fields.php:90
+msgid "Default value"
+msgstr ""
+
+#: ajax/field_specific_fields.php:121
+msgid "Default value will be configurable once field will be created."
+msgstr ""
+
+#: hook.php:55 hook.php:59
+msgid "MySQL tables installation"
+msgstr ""
+
+#: hook.php:109
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr ""
+
+#: hook.php:122
+msgid "MySQL tables uninstallation"
 msgstr ""
