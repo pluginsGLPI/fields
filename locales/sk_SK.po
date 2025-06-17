@@ -68,7 +68,7 @@ msgid ""
 msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
 
 #: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
+msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
 
 #: inc/field.class.php:545

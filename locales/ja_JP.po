@@ -68,7 +68,7 @@ msgid ""
 msgstr "データベースに保存するフィールド名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
 
 #: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
+msgid "You cannot add same field 'dropdown' on same block"
 msgstr "1 つのブロック内に、同じ「ドロップダウン」項目を複数追加することはできません。"
 
 #: inc/field.class.php:545

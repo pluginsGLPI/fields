@@ -67,8 +67,8 @@ msgstr ""
 "characters, try to remove them)"
 
 #: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
-msgstr "You cannot add same field 'dropdown' on same bloc"
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "You cannot add same field 'dropdown' on same block"
 
 #: inc/field.class.php:545
 msgid "Fields"

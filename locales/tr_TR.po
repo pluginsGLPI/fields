@@ -66,7 +66,7 @@ msgid ""
 msgstr "Alan adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
 #: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
+msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Aynı blok içine aynı 'açılan kutu' alanı eklenemez"
 
 #: inc/field.class.php:545
