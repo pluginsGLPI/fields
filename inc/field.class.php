@@ -272,9 +272,9 @@ class PluginFieldsField extends CommonDBChild
                 ],
             );
 
-            //reject adding for same dropdown on same bloc
+            //reject adding for same dropdown on same block
             if (!empty($found)) {
-                Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same bloc", 'fields'), false, ERROR);
+                Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same block", 'fields'), false, ERROR);
 
                 return false;
             }

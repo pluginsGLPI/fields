@@ -74,7 +74,7 @@ msgid ""
 msgstr "O nome do campo é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
 
 #: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
+msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Você não pode adicionar o mesmo campo 'dropdown' no mesmo bloco"
 
 #: inc/field.class.php:545
