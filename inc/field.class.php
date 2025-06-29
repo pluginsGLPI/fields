@@ -98,18 +98,18 @@ class PluginFieldsField extends CommonDBChild
         $migration->displayMessage("Updating $table");
 
         if (!$DB->fieldExists($table, 'is_active')) {
-            $migration->addField($table, 'is_active', 'bool', ['value' => 1]);
+            $migration->addField($table, 'is_active', 'bool', ['value' => '1']);
             $migration->addKey($table, 'is_active', 'is_active');
         }
         if (!$DB->fieldExists($table, 'is_readonly')) {
-            $migration->addField($table, 'is_readonly', 'bool', ['default' => false]);
+            $migration->addField($table, 'is_readonly', 'bool', ['default' => 'false']);
             $migration->addKey($table, 'is_readonly', 'is_readonly');
         }
         if (!$DB->fieldExists($table, 'mandatory')) {
-            $migration->addField($table, 'mandatory', 'bool', ['value' => 0]);
+            $migration->addField($table, 'mandatory', 'bool', ['value' => '0']);
         }
         if (!$DB->fieldExists($table, 'multiple')) {
-            $migration->addField($table, 'multiple', 'bool', ['value' => 0]);
+            $migration->addField($table, 'multiple', 'bool', ['value' => '0']);
         }
 
         //increase the size of column 'type' (25 to 255)
@@ -313,7 +313,7 @@ class PluginFieldsField extends CommonDBChild
         }
 
         if (isset($input['allowed_values'])) {
-            $input['allowed_values'] = Sanitizer::dbEscape(json_encode($input['allowed_values']));
+            $input['allowed_values'] = json_encode($input['allowed_values']);
         }
 
         return $input;
@@ -431,7 +431,7 @@ class PluginFieldsField extends CommonDBChild
         $DB->update(
             $table,
             [
-                'ranking' => new QueryExpression($DB->quoteName('ranking') . ' - 1'),
+                'ranking' => new \Glpi\DBAL\QueryExpression($DB->quoteName('ranking') . ' - 1'),
             ],
             [
                 'plugin_fields_containers_id' => $old_container,
@@ -510,7 +510,7 @@ class PluginFieldsField extends CommonDBChild
         global $DB;
 
         $iterator = $DB->request([
-            'SELECT' => new \QueryExpression(
+            'SELECT' => new \Glpi\DBAL\QueryExpression(
                 'max(' . $DB->quoteName('ranking') . ') AS ' . $DB->quoteName('rank'),
             ),
             'FROM'  => self::getTable(),
@@ -547,6 +547,8 @@ class PluginFieldsField extends CommonDBChild
                 self::getTable(),
                 ['plugin_fields_containers_id' => $item->getID()],
             ),
+            null,
+            'ti ti-forms',
         );
     }
 
@@ -636,7 +638,7 @@ class PluginFieldsField extends CommonDBChild
 
                     echo '<td>';
                     $label = !empty($this->fields['label']) ? $this->fields['label'] : NOT_AVAILABLE;
-                    echo "<a href='" . Plugin::getWebDir('fields') . "/front/field.form.php?id={$this->getID()}'>{$label}</a>";
+                    echo "<a href='" . $CFG_GLPI['root_doc'] . "/plugins/fields/front/field.form.php?id={$this->getID()}'>{$label}</a>";
                     echo '</td>';
                     echo '<td>' . $fields_type[$this->fields['type']] . '</td>';
                     echo '<td>' ;
@@ -815,6 +817,9 @@ class PluginFieldsField extends CommonDBChild
 
     public static function showForTabContainer($c_id, $item)
     {
+        /** @var array $CFG_GLPI */
+        global $CFG_GLPI;
+
         //profile restriction
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
         if ($right < READ) {
@@ -825,7 +830,7 @@ class PluginFieldsField extends CommonDBChild
         //get fields for this container
         $field_obj = new self();
         $fields    = $field_obj->find(['plugin_fields_containers_id' => $c_id, 'is_active' => 1], 'ranking');
-        echo "<form method='POST' action='" . Plugin::getWebDir('fields') . "/front/container.form.php'>";
+        echo "<form method='POST' action='" . $CFG_GLPI['root_doc'] . "/plugins/fields/front/container.form.php'>";
         echo Html::hidden('plugin_fields_containers_id', ['value' => $c_id]);
         echo Html::hidden('items_id', ['value' => $item->getID()]);
         echo Html::hidden('itemtype', ['value' => $item->getType()]);
@@ -885,6 +890,9 @@ class PluginFieldsField extends CommonDBChild
      */
     public static function showForTab($params)
     {
+        /** @var array $CFG_GLPI */
+        global $CFG_GLPI;
+
         $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
@@ -982,7 +990,7 @@ class PluginFieldsField extends CommonDBChild
         echo '</div>';
 
         //JS to trigger any change and check if container need to be display or not
-        $ajax_url = Plugin::getWebDir('fields') . '/ajax/container.php';
+        $ajax_url = $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/container.php';
         $items_id = !$item->isNewItem() ? $item->getID() : 0;
         echo Html::scriptBlock(
             <<<JAVASCRIPT
@@ -1410,7 +1418,7 @@ JAVASCRIPT
         if (array_key_exists('allowed_values', $input) && !empty($input['allowed_values'])) {
             // $input has been transformed with `Toolbox::addslashes_deep()`, and `self::prepareInputForAdd()`
             // is expecting an array, so it have to be unslashed then json decoded.
-            $input['allowed_values'] = json_decode(Sanitizer::dbUnescape($input['allowed_values']));
+            $input['allowed_values'] = json_decode($input['allowed_values']);
         } else {
             unset($input['allowed_values']);
         }

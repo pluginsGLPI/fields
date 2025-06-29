@@ -42,7 +42,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
                   KEY                                       `plugin_fields_%%FIELDNAME%%dropdowns_id`
                                                             (`plugin_fields_%%FIELDNAME%%dropdowns_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-         $DB->query($query) or die ($DB->error());
+         $DB->doQuery($query);
       }
    }
 

@@ -72,7 +72,7 @@ if ($old_order < $new_order) {
     $DB->update(
         $table,
         [
-            'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' - 1'),
+            'ranking' => new \Glpi\DBAL\QueryExpression($DB->quoteName('ranking') . ' - 1'),
         ],
         [
             'plugin_fields_containers_id' => $container_id,
@@ -84,7 +84,7 @@ if ($old_order < $new_order) {
     $DB->update(
         $table,
         [
-            'ranking' => new \QueryExpression($DB->quoteName('ranking') . ' + 1'),
+            'ranking' => new \Glpi\DBAL\QueryExpression($DB->quoteName('ranking') . ' + 1'),
         ],
         [
             'plugin_fields_containers_id' => $container_id,
