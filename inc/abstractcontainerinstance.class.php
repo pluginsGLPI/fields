@@ -62,16 +62,12 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                     $completeinput,
                 )
             ) {
-                if (
-                    ($itemToGetEntity instanceof CommonDBTM)
-                ) {
-                    if ($itemToGetEntity->isEntityAssign()) {
-                        $input['entities_id']  = $itemToGetEntity->getEntityID();
-                    }
+                if ($itemToGetEntity->isEntityAssign()) {
+                    $input['entities_id']  = $itemToGetEntity->getEntityID();
+                }
 
-                    if ($itemToGetEntity->maybeRecursive()) {
-                        $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
-                    }
+                if ($itemToGetEntity->maybeRecursive()) {
+                    $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
                 }
             }
         }

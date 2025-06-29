@@ -31,15 +31,15 @@
 define('PLUGIN_FIELDS_VERSION', '1.21.23');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_FIELDS_MIN_GLPI', '10.0.11');
+define('PLUGIN_FIELDS_MIN_GLPI', '11.0.0');
 // Maximum GLPI version, exclusive
-define('PLUGIN_FIELDS_MAX_GLPI', '10.0.99');
+define('PLUGIN_FIELDS_MAX_GLPI', '11.0.99');
 
 if (!defined('PLUGINFIELDS_DIR')) {
     define('PLUGINFIELDS_DIR', Plugin::getPhpDir('fields'));
 }
 if (!defined('PLUGINFIELDS_WEB_DIR')) {
-    define('PLUGINFIELDS_WEB_DIR', Plugin::getWebDir('fields'));
+    define('PLUGINFIELDS_WEB_DIR', $CFG_GLPI['root_doc'] . '/plugins/fields');
 }
 
 if (!defined('PLUGINFIELDS_DOC_DIR')) {

@@ -39,7 +39,7 @@
                   {% set itemtype = override.fields['itemtype']|default(container_itemtypes|keys|first) %}
 
                   {{ fields.dropdownArrayField('itemtype', itemtype, container_itemtypes, __('Item type')) }}
-                  {{ fields.dropdownArrayField('plugin_fields_fields_id', override.fields['plugin_fields_fields_id'], container_fields, __('Field', 'fields')) }}
+                  {{ fields.dropdownArrayField('plugin_fields_fields_id', override.fields['plugin_fields_fields_id']|default(null), container_fields, __('Field', 'fields')) }}
 
                   {% set status_field_html %}
                      <div id="status_inner_container{{ rand }}">
@@ -58,7 +58,7 @@
                         <span>{{ _x('button', 'Add') }}</span>
                      </button>
                   {% else %}
-                     <input type="hidden" name="id" value="{{ override.fields['id'] }}" />
+                     <input type="hidden" name="id" value="{{ override.fields['id']|default('') }}" />
                      <button class="btn btn-primary me-2" type="submit" name="update" value="1">
                         <i class="far fa-save"></i>
                         <span>{{ _x('button', 'Update') }}</span>
@@ -76,7 +76,7 @@
       const refresh_status_dropdown = () => {
          const itemtype = $('#form{{ rand }}').find('select[name="itemtype"]').val();
          $.ajax({
-            url: CFG_GLPI.root_doc + '/' + GLPI_PLUGINS_PATH.fields + '/ajax/status_override.php',
+            url: CFG_GLPI.root_doc + '/plugins/fields/ajax/status_override.php',
             method: 'GET',
             data: {
                 action: 'get_status_dropdown',

@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 include('../../../inc/includes.php');
 Session::checkLoginUser();
 
@@ -64,7 +66,7 @@ if (isset($_POST['add'])) {
     if ((int) $_GET['id'] > 0) {
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
         if ($right < READ) {
-            Html::displayRightError("User is missing the " . READ . " ('read') right for container");
+            throw new AccessDeniedHttpException();
         }
     }
 
