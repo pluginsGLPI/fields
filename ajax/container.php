@@ -31,14 +31,13 @@
 include('../../../inc/includes.php');
 Session::checkLoginUser();
 
-use Glpi\Http\Response;
+use Glpi\Exception\Http\HttpException;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
     if ($right < READ) {
-        Response::sendError(403, 'Forbidden');
-        return;
+        throw new HttpException(403, 'Forbidden');
     }
 
     $containers_id = $_GET['id'];
@@ -50,7 +49,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $item = new $itemtype();
     if ($items_id > 0 && !$item->getFromDB($items_id)) {
-        Response::sendError(404, 'Not Found');
+        throw new HttpException(404, 'Not Found');
     }
     $item->input = $input;
 
@@ -66,5 +65,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
         echo '';
     }
 } else {
-    Response::sendError(404, 'Not Found');
+    throw new HttpException(404, 'Not Found');
 }

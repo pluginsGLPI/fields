@@ -20,7 +20,7 @@ jobs:
     name: "Generate CI matrix"
     uses: "glpi-project/plugin-ci-workflows/.github/workflows/generate-ci-matrix.yml@v1"
     with:
-      glpi-version: "10.0.x"
+      glpi-version: "11.0.x"
   ci:
     name: "GLPI ${{ matrix.glpi-version }} - php:${{ matrix.php-version }} - ${{ matrix.db-image }}"
     needs: "generate-ci-matrix"

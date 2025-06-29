@@ -53,5 +53,3 @@ if ($canedit) {
 } else {
     echo __('Access denied');
 }
-
-Html::ajaxFooter();

@@ -86,7 +86,12 @@ class PluginFieldsProfile extends CommonDBRelation
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        return self::createTabEntry(_n('Profile', 'Profiles', 2));
+        return self::createTabEntry(
+            _n('Profile', 'Profiles', 2),
+            0,
+            null,
+            'ti ti-user-check',
+        );
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)

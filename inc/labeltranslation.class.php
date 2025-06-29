@@ -130,7 +130,12 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             ],
         );
 
-        return self::createTabEntry(self::getTypeName($nb), $nb);
+        return self::createTabEntry(
+            self::getTypeName($nb),
+            $nb,
+            null,
+            'ti ti-language',
+        );
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
@@ -153,6 +158,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
      */
     public static function showTranslations(CommonDBTM $item)
     {
+        /** @var array $CFG_GLPI */
+        global $CFG_GLPI;
+
         $canedit = $item->can($item->getID(), UPDATE);
         $rand    = mt_rand();
         if ($canedit) {
@@ -167,7 +175,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             echo Html::scriptBlock('
                 addTranslation' . $item->getID() . $rand . ' = function() {
                     $("#viewtranslation' . $item->getID() . $rand . '").load(
-                        "' . Plugin::getWebDir('fields') . '/ajax/viewtranslations.php",
+                        "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
                         ' . json_encode($ajax_params) . '
                     );
                 };
@@ -222,7 +230,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                     echo Html::scriptBlock('
                         viewEditTranslation' . $data['id'] . $rand . ' = function() {
                             $("#viewtranslation' . $item->getID() . $rand . '").load(
-                                "' . Plugin::getWebDir('fields') . '/ajax/viewtranslations.php",
+                                "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
                                 ' . json_encode($ajax_params) . '
                             );
                         };

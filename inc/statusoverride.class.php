@@ -93,7 +93,12 @@ class PluginFieldsStatusOverride extends CommonDBChild
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         if ($item instanceof CommonDBTM) {
-            return self::createTabEntry(self::getTypeName(), self::countOverridesForContainer($item->getID()));
+            return self::createTabEntry(
+                self::getTypeName(),
+                self::countOverridesForContainer($item->getID()),
+                null,
+                'ti ti-adjustments-alt',
+            );
         }
         return '';
     }
