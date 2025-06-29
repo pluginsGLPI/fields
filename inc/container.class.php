@@ -36,12 +36,12 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static $rightname = 'config';
 
-    public static function canCreate()
+    public static function canCreate(): bool
     {
         return self::canUpdate();
     }
 
-    public static function canPurge()
+    public static function canPurge(): bool
     {
         return self::canUpdate();
     }
@@ -104,10 +104,10 @@ class PluginFieldsContainer extends CommonDBTM
             $migration->changeField($table, 'itemtype', 'itemtypes', 'longtext');
             $migration->migrationOneTable($table);
 
-            $DB->updateOrDie(
+            $DB->update(
                 $table,
                 [
-                    'itemtypes' => new QueryExpression(
+                    'itemtypes' => new \Glpi\DBAL\QueryExpression(
                         sprintf(
                             'CONCAT(%s, %s, %s)',
                             $DB->quoteValue('[\"'),
@@ -620,7 +620,7 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
-        $input['itemtypes'] = Sanitizer::dbEscape(json_encode($input['itemtypes']));
+        $input['itemtypes'] = json_encode($input['itemtypes']);
 
         return $input;
     }
@@ -783,10 +783,13 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
+        /** @var array $CFG_GLPI */
+        global $CFG_GLPI;
+
         $this->initForm($ID, $options);
 
         if (!$this->isNewID($ID)) {
-            $btn_url    = Plugin::getWebDir('fields') . '/front/export_to_yaml.php?id=' . $ID;
+            $btn_url    = $CFG_GLPI['root_doc'] . '/plugins/fields/front/export_to_yaml.php?id=' . $ID;
             $btn_label  = __('Export to YAML', 'fields');
             $export_btn = <<<HTML
                 <a href="{$btn_url}" class="btn btn-ghost-secondary"
@@ -1182,7 +1185,7 @@ HTML;
 
         //retrieve container for current tab
         $container = new self();
-        $found_c   = $container->find(['type' => 'tab', 'name' => Sanitizer::sanitize($tabnum), 'is_active' => 1]);
+        $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
         foreach ($found_c as $data) {
             $dataitemtypes = json_decode($data['itemtypes']);
             if (in_array(get_class($item), $dataitemtypes) != false) {
@@ -1891,7 +1894,7 @@ HTML;
                 'glpi_plugin_fields_containers.label AS container_label',
                 (
                     Session::isCron()
-                        ? new QueryExpression(sprintf('%s AS %s', READ + CREATE, $DB->quoteName('right')))
+                        ? new \Glpi\DBAL\QueryExpression(sprintf('%s AS %s', READ + CREATE, $DB->quoteName('right')))
                         : 'glpi_plugin_fields_profiles.right'
                 ),
             ],
@@ -2137,7 +2140,7 @@ HTML;
         if (array_key_exists('itemtypes', $input) && !empty($input['itemtypes'])) {
             // $input has been transformed with `Toolbox::addslashes_deep()`, and `self::prepareInputForAdd()`
             // is expecting an array, so it have to be unslashed then json decoded.
-            $input['itemtypes'] = json_decode(Sanitizer::dbUnescape($input['itemtypes']));
+            $input['itemtypes'] = json_decode($input['itemtypes']);
         } else {
             unset($input['itemtypes']);
         }
