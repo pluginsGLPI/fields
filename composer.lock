@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2180777cbb2d05d963d2e9a2e5c85cf5",
+    "content-hash": "5fe2db1807b19288c1388ec0d5d1a1cf",
     "packages": [
         {
             "name": "symfony/deprecation-contracts",
@@ -787,6 +787,55 @@
                 "source": "https://github.com/friendsoftwig/twigcs/tree/6.5.0"
             },
             "time": "2024-11-27T21:59:24+00:00"
+        },
+        {
+            "name": "glpi-project/phpstan-glpi",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glpi-project/phpstan-glpi.git",
+                "reference": "e98ef833abc1389a0cc69743db5b1f3a7dc8ccfe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glpi-project/phpstan-glpi/zipball/e98ef833abc1389a0cc69743db5b1f3a7dc8ccfe",
+                "reference": "e98ef833abc1389a0cc69743db5b1f3a7dc8ccfe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "phpstan/phpstan": "^2.1",
+                "symfony/polyfill-php80": "^1.32"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.85",
+                "php-parallel-lint/php-parallel-lint": "^1.4",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStanGlpi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan rules for GLPI.",
+            "support": {
+                "issues": "https://github.com/glpi-project/phpstan-glpi/issues",
+                "source": "https://github.com/glpi-project/phpstan-glpi/tree/1.1.1"
+            },
+            "time": "2025-08-11T13:48:13+00:00"
         },
         {
             "name": "glpi-project/tools",
