@@ -6,6 +6,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.75",
         "friendsoftwig/twigcs": "^6.1",
+        "glpi-project/phpstan-glpi": "^1.0",
         "glpi-project/tools": "^0.7.5",
         "php-parallel-lint/php-parallel-lint": "^1.4",
         "phpstan/extension-installer": "^1.4",
