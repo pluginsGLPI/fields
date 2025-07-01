@@ -77,7 +77,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id_itemtype`       (`plugin_fields_containers_id`, `itemtype`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                throw new \RuntimeException('Error creating plugin_fields_containers_displayconditions table: ' . $DB->error());
+            }
         }
 
         return true;
@@ -297,7 +299,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 case 'impact':
                 case 'urgency':
                 case 'priority':
-                    $twig_params['item']           = new $itemtype();
+                    $dbu = new DbUtils();
+                    $twig_params['item']           = $dbu->getItemForItemtype($itemtype);
                     $twig_params['itemtype_field'] = $so['field'];
                     break;
                 case 'global_validation':
@@ -321,7 +324,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $dropdown_itemtype = getItemTypeForTable($so['table']);
-            $dropdown          = new $dropdown_itemtype();
+            $dbu = new DbUtils();
+            $dropdown = $dbu->getItemForItemtype($dropdown_itemtype);
             if ($dropdown->getFromDB($value)) {
                 $raw_value = $dropdown->fields['name'];
             }
@@ -355,7 +359,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     public static function removeBlackListedOption($array, $itemtype_class)
     {
-        $itemtype_object = new $itemtype_class();
+        $dbu = new DbUtils();
+        $itemtype_object = $dbu->getItemForItemtype($itemtype_class);
         $allowed_so      = [];
 
         //remove "Common"

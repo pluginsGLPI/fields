@@ -37,7 +37,7 @@ if (
     || !array_key_exists('new_order', $_POST)
 ) {
     // Missing input
-    exit();
+    throw new \RuntimeException('Missing input', 400);
 }
 
 $table        = PluginFieldsField::getTable();
@@ -62,7 +62,7 @@ $field_iterator = $DB->request(
 
 if (0 === $field_iterator->count()) {
     // Unknown field
-    exit();
+    throw new \RuntimeException('Unknown field', 404);
 }
 
 $field_id = $field_iterator->current()['id'];

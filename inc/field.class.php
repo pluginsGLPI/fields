@@ -92,7 +92,9 @@ class PluginFieldsField extends CommonDBChild
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                throw new \RuntimeException('Error creating plugin_fields_fields table: ' . $DB->error());
+            }
         }
 
         $migration->displayMessage("Updating $table");
@@ -1121,7 +1123,8 @@ JAVASCRIPT
         if (!$item->isNewItem()) {
             //find row for this object with the items_id
             $classname    = PluginFieldsContainer::getClassname($item->getType(), $container_obj->fields['name']);
-            $obj          = new $classname();
+            $dbu = new DbUtils();
+            $obj = $dbu->getItemForItemtype($classname);
             $found_values = $obj->find(
                 [
                     'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
@@ -1164,12 +1167,15 @@ JAVASCRIPT
                 $field['dropdown_class']     = $dropdown_class;
                 $field['dropdown_condition'] = [];
 
-                $object = new $dropdown_class();
-                if ($object->maybeDeleted()) {
-                    $field['dropdown_condition']['is_deleted'] = false;
-                }
-                if ($object->maybeActive()) {
-                    $field['dropdown_condition']['is_active'] = true;
+                $dbu = new DbUtils();
+                $object = $dbu->getItemForItemtype($dropdown_class);
+                if ($object !== false) {
+                    if ($object->maybeDeleted()) {
+                        $field['dropdown_condition']['is_deleted'] = false;
+                    }
+                    if ($object->maybeActive()) {
+                        $field['dropdown_condition']['is_active'] = true;
+                    }
                 }
             }
 
@@ -1322,7 +1328,8 @@ JAVASCRIPT
         ];
 
         //show field
-        $item = new $itemtype();
+        $dbu = new DbUtils();
+        $item = $dbu->getItemForItemtype($itemtype);
         $item->getEmpty();
 
         echo self::prepareHtmlFields($fields, $item, true, false, $massiveaction);

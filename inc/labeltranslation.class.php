@@ -69,7 +69,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                   KEY `language`               (`language`),
                   UNIQUE KEY `unicity` (`itemtype`, `items_id`, `language`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                throw new \RuntimeException('Error creating plugin_fields_labeltranslations table: ' . $DB->error());
+            }
         }
 
         if ($DB->fieldExists($table, 'plugin_fields_itemtype')) {

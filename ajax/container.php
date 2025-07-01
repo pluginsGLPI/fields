@@ -47,7 +47,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     $subtype       = $_GET['subtype'];
     $input         = $_GET['input'];
 
-    $item = new $itemtype();
+    $dbu = new DbUtils();
+    $item = $dbu->getItemForItemtype($itemtype);
     if ($items_id > 0 && !$item->getFromDB($items_id)) {
         throw new HttpException(404, 'Not Found');
     }
