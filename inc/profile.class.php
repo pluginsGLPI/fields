@@ -68,7 +68,9 @@ class PluginFieldsProfile extends CommonDBRelation
                   KEY `profiles_id`                   (`profiles_id`),
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                throw new \RuntimeException('Error creating plugin_fields_profiles table: ' . $DB->error());
+            }
         }
 
         return true;
