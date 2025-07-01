@@ -39,7 +39,7 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || !isset($_POST['id'])) {
-    exit();
+    throw new \RuntimeException('Missing required parameters', 400);
 }
 
 $translation = new PluginFieldsLabelTranslation();
@@ -53,5 +53,3 @@ if ($canedit) {
 } else {
     echo __('Access denied');
 }
-
-Html::ajaxFooter();
