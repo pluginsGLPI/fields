@@ -1291,6 +1291,7 @@ JAVASCRIPT
                 'fields.is_readonly',
                 'fields.multiple',
                 'fields.default_value',
+                'fields.mandatory',
             ],
             'FROM'      => self::getTable() . ' AS fields',
             'LEFT JOIN' => [
@@ -1325,6 +1326,7 @@ JAVASCRIPT
             'is_readonly'                 => $data['is_readonly'],
             'default_value'               => $data['default_value'],
             'multiple'                    => $data['multiple'],
+            'mandatory'                   => $data['mandatory'],
         ],
         ];
 
