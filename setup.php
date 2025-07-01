@@ -350,13 +350,14 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
 
                             switch ($field['type']) {
                                 case 'dropdown':
-                                    $obj = new $itemtype();
+                                    $dbu = new DbUtils();
+                                    $obj = $dbu->getItemForItemtype($itemtype);
                                     $obj->getEmpty();
 
                                     $dropdown_itemtype     = PluginFieldsDropdown::getClassname($field['name']);
                                     $tmp_field['xml_node'] = strtoupper(getForeignKeyFieldForItemType($dropdown_itemtype));
 
-                                    $dropdown_obj   = new $dropdown_itemtype();
+                                    $dropdown_obj = $dbu->getItemForItemtype($dropdown_itemtype);
                                     $dropdown_datas = $dropdown_obj->find();
                                     $datas          = [];
                                     foreach ($dropdown_datas as $value) {
