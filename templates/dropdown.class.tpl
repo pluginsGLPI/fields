@@ -50,7 +50,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
       global $DB;
 
       $obj = new self();
-      return $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
+      return $DB->doQuery("DROP TABLE IF EXISTS `".$obj->getTable()."`");
    }
 
    /**
