@@ -163,7 +163,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       global $DB;
 
       $obj = new self();
-      return $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
+      return $DB->doQuery("DROP TABLE IF EXISTS `".$obj->getTable()."`");
    }
 
    static function addField($fieldname, $type, array $options) {
