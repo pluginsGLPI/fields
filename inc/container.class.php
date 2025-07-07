@@ -1833,6 +1833,9 @@ HTML;
                         ) { //multi dropdown is empty or has been emptied
                             $data[$multiple_key] = [];
                             $has_fields          = true;
+                        } elseif ($_POST[$multiple_key] ?? false) {
+                            $data[$multiple_key] = $_POST[$multiple_key];
+                            $has_fields          = true;
                         }
                     }
 
