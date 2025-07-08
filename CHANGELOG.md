@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASE]
 
-- Fix incompatibility with multiple dropdowns
+- Fix incompatibility of `multiple` dropdowns with `massiveaction`
 
 ## [1.21.22] - 2025-05-28
 
