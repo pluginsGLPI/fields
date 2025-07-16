@@ -65,5 +65,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
         echo '';
     }
 } else {
-    throw new HttpException(404, 'Not Found');
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
