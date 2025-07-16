@@ -77,9 +77,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_containers_id_itemtype`       (`plugin_fields_containers_id`, `itemtype`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            if (!$DB->doQuery($query)) {
-                throw new \RuntimeException('Error creating plugin_fields_containers_displayconditions table: ' . $DB->error());
-            }
+            $DB->doQuery($query);
         }
 
         return true;
