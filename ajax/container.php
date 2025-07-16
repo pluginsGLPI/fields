@@ -31,7 +31,6 @@
 include('../../../inc/includes.php');
 Session::checkLoginUser();
 
-use Glpi\Exception\Http\HttpException;
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
