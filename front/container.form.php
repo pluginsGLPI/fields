@@ -30,7 +30,6 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-include('../../../inc/includes.php');
 Session::checkLoginUser();
 
 if (empty($_GET['id'])) {
