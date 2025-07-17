@@ -376,6 +376,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             }
         }
     }
+
     // if 'multiple' field with name is found -> 'Dropdown-XXXX' case
     // update WHERE clause with LIKE statement
     if (
