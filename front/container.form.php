@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Exception\Http\\AccessDeniedHttpException;
+use Glpi\Exception\Http\AccessDeniedHttpException;
 
 Session::checkLoginUser();
 
