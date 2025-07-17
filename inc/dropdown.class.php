@@ -255,16 +255,32 @@ class PluginFieldsDropdown
         return 'PluginFields' . ucfirst($system_name) . 'Dropdown';
     }
 
-    public static function multipleDropdownAddWhere($link, $tablefield, $field, $val, $searchtype)
+    public static function multipleDropdownAddWhere($link, $tablefield, $field, $val, $searchtype, $itemtype, $field_field)
     {
         /** @var \DBmysql $DB */
         global $DB;
 
+        $default_value_request = "";
+
+        if ($field_field->fields['default_value'] === '["' . $val . '"]') {
+            switch ($searchtype) {
+                case 'equals':
+                    $default_value_request = ' OR (' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName('itemtype') . ' IS NULL' .
+                    ' AND ' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName('items_id') . ' IS NULL)';
+                    break;
+                case 'notequals':
+                    $default_value_request = ' AND (' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName('itemtype') . '=' . $DB->quoteValue($itemtype) .
+                    ' OR ' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName('items_id') . '=' . $itemtype::getTable() . '.id)';
+                    break;
+            }
+        }
+
         switch ($searchtype) {
             case 'equals':
-                return $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . 'LIKE ' . $DB->quoteValue("%\"$val\"%") ;
+                return $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . ' LIKE ' . $DB->quoteValue("%\"$val\"%") . $default_value_request;
             case 'notequals':
-                return $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . 'NOT LIKE ' . $DB->quoteValue("%\"$val\"%") . ' OR ' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . 'IS NULL ';
+                return $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . ' NOT LIKE ' . $DB->quoteValue("%\"$val\"%") .
+                ' OR ' . $link . $DB->quoteName($tablefield) . '.' . $DB->quoteName($field) . ' IS NULL' . $default_value_request;
         }
     }
 }
