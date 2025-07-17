@@ -115,18 +115,16 @@
         {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge(dropdown_options)) }}
 
     {% elseif type matches '/^dropdown-.+/i' %}
-        {% if not massiveaction %}
-            {% set dropdown_options = {'condition': field['dropdown_condition'], 'entity': item.getEntityID()} %}
-            {% if field['dropdown_class'] == 'User' %}
-                {% set dropdown_options = dropdown_options|merge({'entity': -1, 'right': 'all'}) %}
-            {% elseif field['dropdown_class'] == 'Entity' or item.isRecursive() %}
-                {% set dropdown_options = dropdown_options|merge({'entity_sons': true}) %}
-            {% endif %}
-            {% if field['multiple'] %}
-                {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
-            {% endif %}
-            {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge(dropdown_options)) }}
+        {% set dropdown_options = {'condition': field['dropdown_condition'], 'entity': item.getEntityID()} %}
+        {% if field['dropdown_class'] == 'User' %}
+            {% set dropdown_options = dropdown_options|merge({'entity': -1, 'right': 'all'}) %}
+        {% elseif field['dropdown_class'] == 'Entity' or item.isRecursive() %}
+            {% set dropdown_options = dropdown_options|merge({'entity_sons': true}) %}
         {% endif %}
+        {% if field['multiple'] %}
+            {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
+        {% endif %}
+        {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge(dropdown_options)) }}
 
     {% elseif type == 'glpi_item' %}
         {% if not massiveaction %}
