@@ -55,6 +55,5 @@ if (isset($_GET['action'])) {
         }
     }
 } else {
-    http_response_code(400);
-    die();
+    throw new \RuntimeException('Invalid request', 400);
 }
