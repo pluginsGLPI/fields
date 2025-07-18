@@ -98,8 +98,8 @@
     {% elseif type == 'datetime' %}
         {{ macros.datetimeField(name, value, label, field_options) }}
 
+    {% set dropdown_options = {'entity': item.getEntityID()} %}
     {% elseif type == 'dropdown' %}
-        {% set dropdown_options = {'entity': item.getEntityID()} %}
         {% if field['multiple'] %}
             {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
         {% endif %}
