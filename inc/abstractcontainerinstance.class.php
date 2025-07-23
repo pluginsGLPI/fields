@@ -158,10 +158,13 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                 && $field_specs->fields['multiple']
             ) {
                 $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
-                if (empty($values[$field]) && empty($field_specs->fields["default_value"])) {
-                    return ''; // Value not defined
-                } elseif (empty($values[$field]) && !empty($field_specs->fields["default_value"])) {
-                    $values[$field] = $field_specs->fields['default_value'];
+                if (empty($values[$field]) {
+                    if (!empty($field_specs->fields["default_value"])) {
+                        $values[$field] = $field_specs->fields['default_value'];
+                    } else {
+                        return ''; // Value not defined
+                    }
+                }
                 }
                 $values = json_decode($values[$field]);
                 if (!is_array($values)) {
