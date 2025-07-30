@@ -26,11 +26,11 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
                   UNIQUE INDEX `itemtype_item_container`
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-         $DB->query($query) or die ($DB->error());
+         $DB->doQuery($query);
       } else {
          // 1.15.4
          // fix nullable state for 'glpi_item' field
-         $result = $DB->query("SHOW COLUMNS FROM `$table`");
+         $result = $DB->doQuery("SHOW COLUMNS FROM `$table`");
          if ($result && $DB->numrows($result) > 0) {
             $changed = false;
             while ($data = $DB->fetchAssoc($result)) {
@@ -163,7 +163,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       global $DB;
 
       $obj = new self();
-      return $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
+      return $DB->doQuery("DROP TABLE IF EXISTS `".$obj->getTable()."`");
    }
 
    static function addField($fieldname, $type, array $options) {
