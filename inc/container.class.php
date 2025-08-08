@@ -149,6 +149,36 @@ class PluginFieldsContainer extends CommonDBTM
             $migration->migrationOneTable($table);
         }
 
+        // Get itemtypes from PluginGenericobject
+        $migration_genericobject_itemtype = [];
+        $result = $DB->request(['FROM' => 'glpi_plugin_genericobject_types']);
+        foreach ($result as $type) {
+            $migration_genericobject_itemtype[$type['itemtype']] = "Glpi\\CustomAsset\\" . $type['name'] . "Asset";
+        }
+
+        // Get containers with PluginGenericobject itemtype
+        $result = $DB->request([
+            'FROM'   => $table,
+            'WHERE'  => [
+                new Glpi\DBAL\QueryExpression(
+                    $table . ".itemtypes LIKE '%PluginGenericobject%'",
+                ),
+            ],
+        ]);
+
+        $container_class = new self();
+        foreach ($result as $container) {
+            $itemtypes = strtr($container['itemtypes'], $migration_genericobject_itemtype);
+            $container_class->update(
+                [
+                    'id'         => $container['id'],
+                    'itemtypes'  => $itemtypes,
+                ]
+            );
+        }
+
+        plugin_fields_checkFiles();
+
         return true;
     }
 
