@@ -168,6 +168,18 @@ class PluginFieldsContainer extends CommonDBTM
 
         $container_class = new self();
         foreach ($result as $container) {
+            foreach(json_decode($container['itemtypes']) as $itemtype) {
+                $classname = self::getClassname($itemtype, $container);
+                $table = $classname::getTable();
+                if ($DB->tableExists($table) && strpos($table, 'glpi_plugin_fields_plugingenericobject')) {
+                    // Rename table
+                    $new_table = str_replace('plugingenericobject', 'glpicustomasset', $table);
+                    $query = "RENAME TABLE `$table` TO `$new_table`";
+                    if (!$DB->doQuery($query)) {
+                        throw new \RuntimeException('Error renaming table: ' . $DB->error());
+                    }
+                }
+            }
             $itemtypes = strtr($container['itemtypes'], $migration_genericobject_itemtype);
             $container_class->update(
                 [
