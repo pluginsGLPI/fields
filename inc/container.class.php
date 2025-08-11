@@ -180,7 +180,7 @@ class PluginFieldsContainer extends CommonDBTM
                 if ($DB->tableExists($old_table) && strpos($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name']) !== false) {
                     // Rename table
                     $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . $migration_genericobject_itemtype[$itemtype]['name'], $old_table);
-                    $query = "RENAME TABLE `$table` TO `$new_table`";
+                    $query = "RENAME TABLE `$old_table` TO `$new_table`";
                     if (!$DB->doQuery($query)) {
                         throw new \RuntimeException('Error renaming table: ' . $DB->error());
                     }
