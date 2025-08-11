@@ -173,12 +173,15 @@ class PluginFieldsContainer extends CommonDBTM
 
         $container_class = new self();
         foreach ($result as $container) {
-            self::generateTemplate($container);
             foreach(json_decode($container['itemtypes']) as $itemtype) {
                 $classname = self::getClassname($itemtype, $container["name"]);
                 $old_table = $classname::getTable();
-                if ($DB->tableExists($old_table) && strpos($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name']) !== false) {
-                    // Rename table
+                // Rename genericobkect container table
+                if (
+                    $DB->tableExists($old_table) &&
+                    isset($migration_genericobject_itemtype[$itemtype]) &&
+                    strpos($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name']) !== false
+                ) {
                     $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . strtolower($migration_genericobject_itemtype[$itemtype]['name']), $old_table);
                     $query = "RENAME TABLE `$old_table` TO `$new_table`";
                     if (!$DB->doQuery($query)) {
@@ -186,6 +189,7 @@ class PluginFieldsContainer extends CommonDBTM
                     }
                 }
             }
+            // Update old genericobject itemtypes in container
             $map = array_column($migration_genericobject_itemtype, 'itemtype', 'genericobject_itemtype');
             $itemtypes = strtr($container['itemtypes'], $map);
             $container_class->update(
