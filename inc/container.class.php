@@ -173,6 +173,7 @@ class PluginFieldsContainer extends CommonDBTM
 
         $container_class = new self();
         foreach ($result as $container) {
+            self::generateTemplate($container);
             foreach(json_decode($container['itemtypes']) as $itemtype) {
                 $classname = self::getClassname($itemtype, $container["name"]);
                 $old_table = $classname::getTable();
