@@ -153,7 +153,12 @@ class PluginFieldsContainer extends CommonDBTM
         $migration_genericobject_itemtype = [];
         $result = $DB->request(['FROM' => 'glpi_plugin_genericobject_types']);
         foreach ($result as $type) {
-            $migration_genericobject_itemtype[$type['itemtype']] = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . "Asset";
+            $migration_genericobject_itemtype[$type['itemtype']] = [
+                'genericobject_itemtype' => $type['itemtype'],
+                'itemtype' => 'Glpi\\\\CustomAsset\\\\' . $type['name'] . "Asset",
+                'genericobject_name' => $type['name'],
+                'name' => $type['name'] . 'Asset',
+            ];
         }
 
         // Get containers with PluginGenericobject itemtype
@@ -171,17 +176,18 @@ class PluginFieldsContainer extends CommonDBTM
             self::generateTemplate($container);
             foreach(json_decode($container['itemtypes']) as $itemtype) {
                 $classname = self::getClassname($itemtype, $container["name"]);
-                $table = $classname::getTable();
-                if ($DB->tableExists($table) && strpos($table, 'glpi_plugin_fields_plugingenericobject')) {
+                $old_table = $classname::getTable();
+                if ($DB->tableExists($old_table) && strpos($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name']) !== false) {
                     // Rename table
-                    $new_table = str_replace('plugingenericobject', 'glpicustomasset', $table);
+                    $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . $migration_genericobject_itemtype[$itemtype]['name'], $old_table);
                     $query = "RENAME TABLE `$table` TO `$new_table`";
                     if (!$DB->doQuery($query)) {
                         throw new \RuntimeException('Error renaming table: ' . $DB->error());
                     }
                 }
             }
-            $itemtypes = strtr($container['itemtypes'], $migration_genericobject_itemtype);
+            $map = array_column($migration_genericobject_itemtype, 'itemtype', 'genericobject_itemtype');
+            $itemtypes = strtr($container['itemtypes'], $map);
             $container_class->update(
                 [
                     'id'         => $container['id'],
