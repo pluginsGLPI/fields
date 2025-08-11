@@ -168,8 +168,9 @@ class PluginFieldsContainer extends CommonDBTM
 
         $container_class = new self();
         foreach ($result as $container) {
+            self::generateTemplate($container);
             foreach(json_decode($container['itemtypes']) as $itemtype) {
-                $classname = self::getClassname($itemtype, $container);
+                $classname = self::getClassname($itemtype, $container["name"]);
                 $table = $classname::getTable();
                 if ($DB->tableExists($table) && strpos($table, 'glpi_plugin_fields_plugingenericobject')) {
                     // Rename table
@@ -188,8 +189,6 @@ class PluginFieldsContainer extends CommonDBTM
                 ]
             );
         }
-
-        plugin_fields_checkFiles();
 
         return true;
     }
