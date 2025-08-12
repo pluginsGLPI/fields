@@ -102,7 +102,7 @@ msgid ""
 msgstr "Название поля слишком длинное для базы данных (цифры в имени были заменены символами, попробуйте их удалить)"
 
 #: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same bloc"
+msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Вы не можете добавить одно и то же поле \"выпадающий список\" в один и тот же блок"
 
 #: inc/field.class.php:545
