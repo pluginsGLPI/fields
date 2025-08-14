@@ -67,6 +67,7 @@ function plugin_fields_install()
         PluginFieldsContainerDisplayCondition::class,
         PluginFieldsDropdown::class,
         PluginFieldsField::class,
+        PluginFieldsFieldDisplayCondition::class,
         PluginFieldsLabelTranslation::class,
         PluginFieldsProfile::class,
         PluginFieldsStatusOverride::class,
@@ -132,6 +133,7 @@ function plugin_fields_uninstall()
         'PluginFieldsProfile',
         'PluginFieldsStatusOverride',
         'PluginFieldsContainerDisplayCondition',
+        'PluginFieldsFieldDisplayCondition',
     ];
 
     foreach ($classesToUninstall as $class) {

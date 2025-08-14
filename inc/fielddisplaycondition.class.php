@@ -32,13 +32,13 @@ use Glpi\Application\View\TemplateRenderer;
 use Glpi\Toolbox\Sanitizer;
 use GlpiPlugin\Scim\Controller\Common;
 
-class PluginFieldsContainerDisplayCondition extends CommonDBChild
+class PluginFieldsFieldDisplayCondition extends CommonDBChild
 {
     use Glpi\Features\Clonable;
 
-    public static $itemtype = PluginFieldsContainer::class;
-    public static $items_id = 'plugin_fields_containers_id';
-
+    public static $itemtype = PluginFieldsField::class;
+    public static $items_id = 'plugin_fields_fields_id';
+    
     public const SHOW_CONDITION_EQ        = 1;
     public const SHOW_CONDITION_NE        = 2;
     public const SHOW_CONDITION_LT        = 3;
@@ -46,7 +46,6 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     public const SHOW_CONDITION_REGEX     = 5;
     public const SHOW_CONDITION_UNDER     = 6;
     public const SHOW_CONDITION_NOT_UNDER = 7;
-
     /**
      * Install or update plugin base data.
      *
@@ -68,21 +67,20 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             $migration->displayMessage(sprintf(__('Installing %s'), $table));
             $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
-                  `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
+                  `plugin_fields_fields_id`           INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `itemtype`                          VARCHAR(100)   DEFAULT NULL,
-                  `search_option`                            VARCHAR(255)   DEFAULT NULL,
+                  `search_option`                     VARCHAR(255)   DEFAULT NULL,
                   `condition`                         VARCHAR(255)   DEFAULT NULL,
                   `value`                             VARCHAR(255)   DEFAULT NULL,
                   `is_visible`                        TINYINT        NOT NULL DEFAULT '0',
                   PRIMARY KEY                         (`id`),
-                  KEY `plugin_fields_containers_id_itemtype`       (`plugin_fields_containers_id`, `itemtype`)
+                  KEY `plugin_fields_fields_id_itemtype`       (`plugin_fields_fields_id`, `itemtype`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             $DB->doQuery($query) or die($DB->error());
         }
 
         return true;
     }
-
     /**
      * Get display condition comparison operators.
      *
@@ -141,6 +139,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         }
     }
 
+
     public static function uninstall()
     {
         /** @var DBmysql $DB */
@@ -152,7 +151,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
     public static function getTypeName($nb = 0)
     {
-        return _n('Condition to hide block', 'Conditions to hide block', $nb, 'fields');
+        return _n('Condition to hide field', 'Conditions to hide field', $nb, 'fields');
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
@@ -162,13 +161,13 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         }
         return self::createTabEntry(
             self::getTypeName(Session::getPluralNumber()),
-            countElementsInTable(self::getTable(), ['plugin_fields_containers_id' => $item->getID()]),
+            countElementsInTable(self::getTable(), ['plugin_fields_fields_id' => $item->getID()]),
         );
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        if ($item instanceof PluginFieldsContainer) {
+        if ($item instanceof PluginFieldsField) {
             self::showForTabContainer($item);
 
             return true;
@@ -177,7 +176,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         return false;
     }
 
-    public static function getDisplayConditionForContainer(int $container_id): array
+    public static function getDisplayConditionForField(int $field_id): array
     {
         /** @var DBmysql $DB */
         global $DB;
@@ -187,7 +186,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             ],
             'FROM'  => self::getTable(),
             'WHERE' => [
-                'plugin_fields_containers_id' => $container_id,
+                'plugin_fields_fields_id' => $field_id,
             ],
         ]);
 
@@ -199,12 +198,29 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         return $conditions;
     }
 
-    private static function getItemtypesForContainer(int $container_id): array
+    private static function getItemtypesForField(int $field_id): array
     {
         /** @var DBmysql $DB */
         global $DB;
 
         $results = [];
+
+        $container_iterator = $DB->request([
+            'SELECT' => ['plugin_fields_containers_id'],
+            'FROM'   => PluginFieldsField::getTable(),
+            'WHERE'  => [
+                'id' => $field_id,
+            ],
+        ]);
+
+        $container_id = -1;
+        if(count($container_iterator)) {
+            $container_id = $container_iterator->current()["plugin_fields_containers_id"];
+        }
+
+        if($container_id < 0){
+            return $results;
+        }
 
         $iterator = $DB->request([
             'SELECT' => ['itemtypes'],
@@ -221,7 +237,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 $results[$itemtype] = $itemtype::getTypeName();
             }
         }
-
+          
         return $results;
     }
 
@@ -239,7 +255,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $out .= Ajax::updateItemOnSelectEvent(
             'dropdown_search_option' . $rand,
             'results_condition',
-            Plugin::getWebDir('fields') . '/ajax/container_display_condition.php',
+            Plugin::getWebDir('fields') . '/ajax/field_display_condition.php',
             [
                 'search_option_id' => '__VALUE__',
                 'itemtype'         => $itemtype,
@@ -304,7 +320,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             $twig_params['list_conditions'] = self::getComparisonOperators();
         }
 
-        TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition_so_condition.html.twig', $twig_params);
+        TemplateRenderer::getInstance()->display('@fields/forms/field_display_condition_so_condition.html.twig', $twig_params);
     }
 
     public static function getRawValue($searchoption_id, $itemtype, $value)
@@ -398,25 +414,26 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         return $allowed_so;
     }
 
-    public function computeDisplayContainer($item, $container_id)
+    public function computeDisplayField($item, $field_id, $use_or = true)
     {
-        //load all condition for itemtype and container
+        //load all condition for itemtype and field
         $displayCondition = new self();
-        $found_dc         = $displayCondition->find(['itemtype' => get_class($item), 'plugin_fields_containers_id' => $container_id]);
-
+        $found_dc         = $displayCondition->find(['itemtype' => get_class($item), 'plugin_fields_fields_id' => $field_id]);
+        
         if (count($found_dc)) {
-            $display = true;
+            $display = true && !$use_or;
             foreach ($found_dc as $data) {
                 $displayCondition->getFromDB($data['id']);
                 $result = $displayCondition->checkCondition($item);
-                if (!$result) {
+                
+                if ($result == $use_or) {
                     return $result;
                 }
             }
 
             return $display;
         } else {
-            //no condition found -> display container
+            //no condition found -> display field
             return true;
         }
     }
@@ -426,7 +443,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $value        = $this->fields['value'];
         $condition    = $this->fields['condition'];
         $searchOption = Search::getOptions(get_class($item))[$this->fields['search_option']];
-
+        
         $fields = array_merge($item->fields, $item->input);
 
         switch ($condition) {
@@ -537,33 +554,30 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             $display_condition->getFromDB($displayCondition_id);
         }
 
-        $container_id = $item->getID();
-        $has_fields   = countElementsInTable(PluginFieldsField::getTable(), [
-            'plugin_fields_containers_id' => $container_id,
-        ]) > 0;
+        $field_id = $item->getID();
         $twig_params = [
-            'container_id'                 => $container_id,
-            'container_display_conditions' => self::getDisplayConditionForContainer($container_id),
-            'has_fields'                   => $has_fields,
+            'field_id'                 => $field_id,
+            'field_display_conditions' => self::getDisplayConditionForField($field_id),
+            'has_fields'               => true,
         ];
 
-        TemplateRenderer::getInstance()->display('@fields/container_display_conditions.html.twig', $twig_params);
+        TemplateRenderer::getInstance()->display('@fields/field_display_conditions.html.twig', $twig_params);
     }
 
     public function showForm($ID, array $options = [])
     {
-        $container_id = $options['plugin_fields_containers_id'];
+        $field_id = $options['plugin_fields_fields_id'];
 
         $twig_params = [
-            'container_display_condition' => $this,
-            'container_id'                => $container_id,
-            'container_itemtypes'         => self::getItemtypesForContainer($container_id),
+            'field_display_condition' => $this,
+            'field_id'                => $field_id,
+            'field_itemtypes'         => self::getItemtypesForField($field_id),
             'search_options'              => $this->isNewItem()
                 ? []
                 : self::removeBlackListedOption(Search::getOptions($this->fields['itemtype']), $this->fields['itemtype']),
         ];
 
-        TemplateRenderer::getInstance()->display('@fields/forms/container_display_condition.html.twig', $twig_params);
+        TemplateRenderer::getInstance()->display('@fields/forms/field_display_condition.html.twig', $twig_params);
 
         return true;
     }

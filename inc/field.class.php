@@ -563,6 +563,7 @@ class PluginFieldsField extends CommonDBChild
         $ong = [];
         $this->addDefaultFormTab($ong);
         $this->addStandardTab('PluginFieldsLabelTranslation', $ong, $options);
+        $this->addStandardTab('PluginFieldsFieldDisplayCondition', $ong, $options);
 
         return $ong;
     }
@@ -704,7 +705,7 @@ class PluginFieldsField extends CommonDBChild
         echo '</div>';
         echo Html::scriptBlock('$(document).ready(function() {
             redipsInit()
-        });');
+        });');    
     }
 
     public function showForm($ID, $options = [])
@@ -809,7 +810,7 @@ class PluginFieldsField extends CommonDBChild
         echo '</tr>';
 
         $this->showFormButtons($options);
-
+        
         return true;
     }
 
@@ -841,7 +842,7 @@ class PluginFieldsField extends CommonDBChild
 
         echo '</table>';
         Html::closeForm();
-
+        
         return true;
     }
 
@@ -857,6 +858,7 @@ class PluginFieldsField extends CommonDBChild
      */
     public static function showDomContainer($id, $item, $type = 'dom', $subtype = '', $field_options = [])
     {
+        global $DB;
         if ($id != 0) {
             //get fields for this container
             $field_obj = new self();
@@ -867,6 +869,31 @@ class PluginFieldsField extends CommonDBChild
                 ],
                 'ranking',
             );
+            
+            $dc = new PluginFieldsFieldDisplayCondition();
+            $fields_to_pass = [];
+            
+            foreach($fields as $field)
+            {
+                $id = $field['id'];
+                
+                $iterator = $DB->request([
+                    'SELECT' => '*',
+                    'FROM'   => PluginFieldsFieldDisplayCondition::getTable(),
+                    'WHERE'  => [
+                        'plugin_fields_fields_id' => $id,
+                    ],
+                ]);
+
+                $res = $dc->computeDisplayField($item, $id, true);
+                //if res is true - we display field
+                if($res)
+                {
+                    array_push($fields_to_pass, $field);
+                }                
+            }
+
+            $fields = $fields_to_pass;
         } else {
             $fields = [];
         }
@@ -887,6 +914,12 @@ class PluginFieldsField extends CommonDBChild
     {
         $item = $params['item'];
 
+        if ($item->fields['type'] == "") {
+            $item->fields['type'] = $params['options']['type'];
+        }
+        if ($item->fields['itilcategories_id'] == "") {
+            $item->fields['itilcategories_id'] = $params['options']['itilcategories_id'];
+        }
         $functions = array_column(debug_backtrace(), 'function');
         $subtype   = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : '';
         $type      = substr($subtype, -strlen('$main')) === '$main'
@@ -956,7 +989,7 @@ class PluginFieldsField extends CommonDBChild
         }
 
         $html_id = 'plugin_fields_container_' . mt_rand();
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+        if (strpos($current_url, 'helpdesk.public.php') !== false || strpos($current_url, 'tracking.injector.php') !== false) {
             echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
             echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
             $field_options = [
@@ -976,7 +1009,7 @@ class PluginFieldsField extends CommonDBChild
                 $field_options ?? [],
             );
         }
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+        if (strpos($current_url, 'helpdesk.public.php') !== false || strpos($current_url, 'tracking.injector.php') !== false) {
             echo '</div>';
         }
         echo '</div>';
