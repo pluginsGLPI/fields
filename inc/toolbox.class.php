@@ -308,7 +308,7 @@ class PluginFieldsToolbox
             NetworkPort::class,
             Notification::class,
             NotificationTemplate::class,
-            ComputerVirtualMachine::class,
+            ItemVirtualMachine::class,
         ];
 
         $all_itemtypes = [

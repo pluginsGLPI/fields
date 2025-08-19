@@ -43,7 +43,7 @@
     {% set type     = field['type'] %}
     {% set name     = field['name'] %}
     {% set label    = field['label'] %}
-    {% set value    = item.input[name] ?: field['value'] %}
+    {% set value    = item.input[name]|default(field['value']) %}
     {% set readonly = field['is_readonly'] %}
     {% set rand = random() %}
 
@@ -136,7 +136,7 @@
                 <div class="w-100"></div>
             {% endif %}
 
-            {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype, field['allowed_values'], label, field_options|merge({
+            {{ macros.dropdownArrayField(itemtype_prefix ~ name, value.itemtype|default(''), field['allowed_values'], label, field_options|merge({
                 'rand': rand,
                 'display_emptychoice': true,
             })) }}
@@ -164,9 +164,9 @@
 
                 <div class="col-xxl-8 field-container">
                     <span id='results_items_id{{ rand }}' class='col-lg-14'>
-                        {% if value.itemtype != '' %}
-                            {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id, ' ', field_options|merge({
-                                'entity': value.itemtype == 'User' ? -1 : item.getEntityID(),
+                        {% if value.itemtype|default('') != '' %}
+                            {{ macros.dropdownField(value.itemtype, items_id_prefix ~ name, value.items_id|default(''), ' ', field_options|merge({
+                                'entity': value.itemtype|default('') == 'User' ? -1 : item.getEntityID(),
                                 'rand': rand,
                                 'right': 'all',
                                 'displaywith': ['otherserial', 'serial'],
