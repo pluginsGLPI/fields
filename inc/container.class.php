@@ -177,7 +177,7 @@ class PluginFieldsContainer extends CommonDBTM
             foreach(json_decode($container['itemtypes']) as $itemtype) {
                 $classname = self::getClassname($itemtype, $container["name"]);
                 $old_table = $classname::getTable();
-                // Rename genericobkect container table
+                // Rename genericobject container table
                 if (
                     $DB->tableExists($old_table) &&
                     isset($migration_genericobject_itemtype[$itemtype]) &&
