@@ -281,7 +281,9 @@ class PluginFieldsContainer extends CommonDBTM
                             ],
                         );
                     }
-                    $compdata->addField($newname, $field['type']);
+                    if ($compdata instanceof PluginFieldsAbstractContainerInstance) {
+                        $compdata->addField($newname, $field['type']);
+                    }
                     $fieldnames[$field['name']] = $newname;
                 }
 
