@@ -212,7 +212,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
                 [
                     'replace' => __('Replace'),
                     'add' => __('Add'),
-                ]
+                ],
             );
         }
 
