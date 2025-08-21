@@ -210,8 +210,8 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
             Dropdown::showFromArray(
                 'multiple_dropdown_action',
                 [
-                    'replace' => __('Replace'),
-                    'add' => __('Add'),
+                    'assign' => __('Assign'),
+                    'append' => __('Add'),
                 ],
             );
         }
