@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fix incompatibility of `multiple` dropdowns with `massiveaction`
 
+### Added
+- Add `replace` and `add` options in massive action for the multiple dropdowns fields
+
 ## [1.21.22] - 2025-05-28
 
 ### Fixed
