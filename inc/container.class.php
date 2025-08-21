@@ -160,6 +160,13 @@ class PluginFieldsContainer extends CommonDBTM
                 );
             }
 
+            // Check glpi_plugin_genericobject_types table
+            if (!$DB->fieldExists('glpi_plugin_genericobject_types', 'itemtype')) {
+                throw new \RuntimeException(
+                    'Integrity error on the glpi_plugin_genericobject_types table from the GenericObject plugin.',
+                );
+            }
+
             $migration_genericobject_itemtype = [];
             $result = $DB->request(['FROM' => 'glpi_plugin_genericobject_types']);
             foreach ($result as $type) {
