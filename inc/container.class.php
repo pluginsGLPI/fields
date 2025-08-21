@@ -29,7 +29,6 @@
  */
 
 use Glpi\Toolbox\Sanitizer;
-use GlpiPlugin\Scim\Controller\Common;
 
 class PluginFieldsContainer extends CommonDBTM
 {
@@ -1735,7 +1734,7 @@ HTML;
             return false;
         }
 
-        if (false !== ($data = self::populateData($c_id, $item, $loc_c))) {
+        if (false !== ($data = self::populateData($c_id, $item))) {
             if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
                 $item->input = [];
 
@@ -1758,7 +1757,7 @@ HTML;
      *
      * @return array|false
      */
-    private static function populateData($c_id, CommonDBTM $item, CommonDBTM $fielditem)
+    private static function populateData($c_id, CommonDBTM $item)
     {
         //find fields associated to found container
         $field_obj = new PluginFieldsField();
@@ -1848,7 +1847,7 @@ HTML;
                             $data[$multiple_key] = [];
                             $has_fields          = true;
                         } elseif (isset($_REQUEST['massiveaction'])) { // called from massiveaction
-                            if (is_array($_POST[$multiple_key])) {
+                            if (isset($_POST[$multiple_key])) {
                                 $data[$multiple_key] = $_POST[$multiple_key];
                                 $has_fields          = true;
                             }
