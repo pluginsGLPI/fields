@@ -112,10 +112,13 @@
             {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [name]) %}
         {% endif %}
         {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
-        {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge(dropdown_options)) }}
+        {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge(dropdown_options|default({}))) }}
 
     {% elseif type matches '/^dropdown-.+/i' %}
-        {% set dropdown_options = {'condition': field['dropdown_condition'], 'entity': item.getEntityID()} %}
+        {% set dropdown_options = {'entity': item.getEntityID()} %}
+        {% if field['dropdown_condition'] is defined and field['dropdown_condition']|length %}
+            {% set dropdown_options = dropdown_options|merge({'condition': field['dropdown_condition']}) %}
+        {% endif %}
         {% if field['dropdown_class'] == 'User' %}
             {% set dropdown_options = dropdown_options|merge({'entity': -1, 'right': 'all'}) %}
         {% elseif field['dropdown_class'] == 'Entity' or item.isRecursive() %}
@@ -124,7 +127,7 @@
         {% if field['multiple'] %}
             {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
         {% endif %}
-        {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge(dropdown_options)) }}
+        {{ macros.dropdownField(field['dropdown_class'], name, value, label, field_options|merge(dropdown_options|default({}))) }}
 
     {% elseif type == 'glpi_item' %}
         {% if not massiveaction %}

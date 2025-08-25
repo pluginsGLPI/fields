@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix condition check logic for dropdown field values
 - Fix validation for mandatory multiple dropdown
+- Fix `twig` error about undefined `dropdown_options`
 
 ## [1.21.21] - 2025-03-21
 
