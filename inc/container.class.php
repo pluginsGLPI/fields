@@ -1404,7 +1404,7 @@ HTML;
             //for all change find searchoption
             foreach ($updates as $key => $changes) {
                 foreach ($searchoptions as $id_search_option => $searchoption) {
-                    if ($searchoption['linkfield'] == $key) {
+                    if ($searchoption['field'] == $key) {
                         $changes[0] = $id_search_option;
 
                         if ($searchoption['datatype'] === 'dropdown') {

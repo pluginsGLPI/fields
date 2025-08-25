@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix default value properly applied in multiple dropdown search options
 - Fix `search option` for default values in `multiple` dropdown
 - Fix shared dropdowns not displaying in `massiveaction`
+- The field name was empty in the GLPI logs
 
 ### Added
 - Add `replace` and `add` options in massive action for the multiple dropdowns fields
