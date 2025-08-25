@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 01:12+0000\n"
+"POT-Creation-Date: 2025-08-25 01:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -155,15 +155,15 @@ msgstr ""
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/container.class.php:1544
+#: inc/container.class.php:1555
 msgid "Some mandatory fields are empty"
 msgstr ""
 
-#: inc/container.class.php:1549
+#: inc/container.class.php:1560
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/container.class.php:1554
+#: inc/container.class.php:1565
 msgid "Some URL fields contains invalid links"
 msgstr ""
 
