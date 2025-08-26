@@ -172,7 +172,7 @@ class PluginFieldsContainer extends CommonDBTM
             foreach ($result as $type) {
                 $migration_genericobject_itemtype[$type['itemtype']] = [
                     'genericobject_itemtype' => $type['itemtype'],
-                    'itemtype' => 'Glpi\\\\CustomAsset\\\\' . $type['name'] . "Asset",
+                    'itemtype' => 'Glpi\CustomAsset\\' . $type['name'] . 'Asset',
                     'genericobject_name' => $type['name'],
                     'name' => $type['name'] . 'Asset',
                 ];
