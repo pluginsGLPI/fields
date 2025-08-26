@@ -151,10 +151,7 @@ class PluginFieldsContainer extends CommonDBTM
         if ($DB->tableExists('glpi_plugin_genericobject_types')) {
             // Check GenericObject version
             $genericobject_info = Plugin::getInfo('genericobject');
-            if (
-                isset($genericobject_info['version']) &&
-                version_compare($genericobject_info['version'], '2.14.14', '>=')
-            ) {
+            if (version_compare($genericobject_info['version'] ?? '0', '2.14.14', '<')) {
                 throw new \RuntimeException(
                     'GenericObject plugin cannot be migrated. Please update it to the latest version.',
                 );
