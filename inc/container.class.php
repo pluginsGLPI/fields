@@ -1237,7 +1237,7 @@ HTML;
                 $field_name = 'plugin_fields_' . $field_data['name'] . 'dropdowns_id';
             }
             if (array_key_exists($field_name, $data)) {
-                if ($data['multiple_dropdown_action'] === 'append' && $exist) {
+                if (isset($data['multiple_dropdown_action']) && $data['multiple_dropdown_action'] === 'append' && $exist) {
                     // Add new values to existing ones
                     $existing_values = json_decode($obj->fields[$field_name] ?? '[]', true);
                     $new_values      = is_array($data[$field_name]) ? $data[$field_name] : [$data[$field_name]];
@@ -1831,7 +1831,7 @@ HTML;
                 // ex my_dom[]
                 //in these conditions, the input is never sent by the browser
                 if ($field['multiple']) {
-                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'];
+                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'add';
                     //handle multi dropdown field
                     if ($field['type'] == 'dropdown') {
                         $multiple_key         = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
