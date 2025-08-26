@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.21.23] - 2025-08-25
+## [1.21.23] - 2025-08-26
 
 - Fix incompatibility of `multiple` dropdowns with `massiveaction`
 - Fix default value properly applied in multiple dropdown search options
