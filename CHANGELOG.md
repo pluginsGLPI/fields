@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASE]
 
+- FIx undefined array key `multiple_dropdown_action` during import
 - Fix incompatibility of `multiple` dropdowns with `massiveaction`
 - Fix default value properly applied in multiple dropdown search options
 - Fix `search option` for default values in `multiple` dropdown
