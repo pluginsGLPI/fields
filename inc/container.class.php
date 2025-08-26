@@ -1831,7 +1831,7 @@ HTML;
                 // ex my_dom[]
                 //in these conditions, the input is never sent by the browser
                 if ($field['multiple']) {
-                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'add';
+                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'assign';
                     //handle multi dropdown field
                     if ($field['type'] == 'dropdown') {
                         $multiple_key         = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
