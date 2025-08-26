@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASE]
+## [1.21.23] - 2025-08-26
 
 - FIx undefined array key `multiple_dropdown_action` during import
 - Fix incompatibility of `multiple` dropdowns with `massiveaction`
