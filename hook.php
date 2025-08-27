@@ -206,6 +206,16 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
     $itemtypes = PluginFieldsContainer::getEntries('all');
 
     if (in_array($options['itemtype'], $itemtypes)) {
+        if ($options['options']['is_multiple']) {
+            Dropdown::showFromArray(
+                'multiple_dropdown_action',
+                [
+                    'assign' => __('Assign'),
+                    'append' => __('Add'),
+                ],
+            );
+        }
+
         PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
 
         return true;
