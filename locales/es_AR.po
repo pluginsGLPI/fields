@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 01:12+0000\n"
+"POT-Creation-Date: 2025-08-25 01:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Nicolás Gaviola, 2023\n"
 "Language-Team: Spanish (Argentina) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_AR/)\n"
@@ -156,15 +156,15 @@ msgstr "Inserto en el formulario (antes del botón guardar)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserto en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/container.class.php:1544
+#: inc/container.class.php:1555
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1549
+#: inc/container.class.php:1560
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
-#: inc/container.class.php:1554
+#: inc/container.class.php:1565
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen enlaces no válidos"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 01:12+0000\n"
+"POT-Creation-Date: 2025-08-25 01:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -158,15 +158,15 @@ msgstr "Umetanje u obrazac (prije gumba za spremanje)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
 
-#: inc/container.class.php:1544
+#: inc/container.class.php:1555
 msgid "Some mandatory fields are empty"
 msgstr "Neka obavezna polja su prazna"
 
-#: inc/container.class.php:1549
+#: inc/container.class.php:1560
 msgid "Some numeric fields contains non numeric values"
 msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 
-#: inc/container.class.php:1554
+#: inc/container.class.php:1565
 msgid "Some URL fields contains invalid links"
 msgstr "Neka URL polja sadrže neispravne poveznice"
 
