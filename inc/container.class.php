@@ -28,8 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Toolbox\Sanitizer;
-
 class PluginFieldsContainer extends CommonDBTM
 {
     use Glpi\Features\Clonable;
@@ -147,6 +145,72 @@ class PluginFieldsContainer extends CommonDBTM
         if (!$DB->fieldExists($table, 'subtype')) {
             $migration->addField($table, 'subtype', 'VARCHAR(255) DEFAULT NULL', ['after' => 'type']);
             $migration->migrationOneTable($table);
+        }
+
+        // Get itemtypes from PluginGenericobject
+        if ($DB->tableExists('glpi_plugin_genericobject_types')) {
+            // Check GenericObject version
+            $genericobject_info = Plugin::getInfo('genericobject');
+            if (version_compare($genericobject_info['version'] ?? '0', '2.14.14', '<')) {
+                throw new \RuntimeException(
+                    'GenericObject plugin cannot be migrated. Please update it to the latest version.',
+                );
+            }
+
+            // Check glpi_plugin_genericobject_types table
+            if (!$DB->fieldExists('glpi_plugin_genericobject_types', 'itemtype')) {
+                throw new \RuntimeException(
+                    'Integrity error on the glpi_plugin_genericobject_types table from the GenericObject plugin.',
+                );
+            }
+
+            $migration_genericobject_itemtype = [];
+            $result = $DB->request(['FROM' => 'glpi_plugin_genericobject_types']);
+            foreach ($result as $type) {
+                $migration_genericobject_itemtype[$type['itemtype']] = [
+                    'genericobject_itemtype' => $type['itemtype'],
+                    'itemtype' => 'Glpi\CustomAsset\\' . $type['name'] . 'Asset',
+                    'genericobject_name' => $type['name'],
+                    'name' => $type['name'] . 'Asset',
+                ];
+            }
+
+            // Get containers with PluginGenericobject itemtype
+            $result = $DB->request([
+                'FROM'   => $table,
+                'WHERE'  => [
+                    new Glpi\DBAL\QueryExpression(
+                        $table . ".itemtypes LIKE '%PluginGenericobject%'",
+                    ),
+                ],
+            ]);
+
+            $container_class = new self();
+            foreach ($result as $container) {
+                self::generateTemplate($container);
+                foreach (json_decode($container['itemtypes']) as $itemtype) {
+                    $classname = self::getClassname($itemtype, $container["name"]);
+                    $old_table = $classname::getTable();
+                    // Rename genericobject container table
+                    if (
+                        $DB->tableExists($old_table) &&
+                        isset($migration_genericobject_itemtype[$itemtype]) &&
+                        strpos($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name']) !== false
+                    ) {
+                        $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . strtolower($migration_genericobject_itemtype[$itemtype]['name']), $old_table);
+                        $migration->renameTable($old_table, $new_table);
+                    }
+                }
+                // Update old genericobject itemtypes in container
+                $map = array_column($migration_genericobject_itemtype, 'itemtype', 'genericobject_itemtype');
+                $itemtypes = strtr($container['itemtypes'], $map);
+                $container_class->update(
+                    [
+                        'id'         => $container['id'],
+                        'itemtypes'  => $itemtypes,
+                    ],
+                );
+            }
         }
 
         return true;

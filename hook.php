@@ -72,6 +72,7 @@ function plugin_fields_install()
         PluginFieldsStatusOverride::class,
     ];
 
+
     // First, install base data
     foreach ($classesToInstall as $class) {
         if (method_exists($class, 'installBaseData')) {
