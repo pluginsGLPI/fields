@@ -5,9 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+
+### Fixed
+
+- Fix `search option` for `multiple` dropdown
+
 ## [1.21.23] - 2025-08-26
 
-- FIx undefined array key `multiple_dropdown_action` during import
+### Fixed
+
+- Fix undefined array key `multiple_dropdown_action` during import
 - Fix incompatibility of `multiple` dropdowns with `massiveaction`
 - Fix default value properly applied in multiple dropdown search options
 - Fix `search option` for default values in `multiple` dropdown
@@ -15,11 +23,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The field name was empty in the GLPI logs
 
 ### Added
+
 - Add `replace` and `add` options in massive action for the multiple dropdowns fields
 
 ## [1.21.22] - 2025-05-28
 
 ### Fixed
+
 - Fix condition check logic for dropdown field values
 - Fix validation for mandatory multiple dropdown
 - Fix `twig` error about undefined `dropdown_options`
