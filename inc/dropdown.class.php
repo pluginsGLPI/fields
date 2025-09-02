@@ -262,13 +262,13 @@ class PluginFieldsDropdown
 
         // Determines the default value
         $default_value = $field_field->fields['default_value'] ?? '';
-        $default_value = ($default_value == '[]') ? '' : $DB->quoteValue($default_value);
+        $default_value = ($default_value == '[]') ? '""' : $DB->quoteValue($default_value);
 
         // Constructs the SQL query base
         $quotedField = $DB->quoteName($tablefield) . '.' . $DB->quoteName($field);
         $sqlBase = $link . ' COALESCE(' . $quotedField . ', ' . $default_value . ')';
 
-        // Handles “equals” and “notequals” cases in a unified manner
+        // Handles "equals" and "notequals" cases in a unified manner
         $operator = ($searchtype === 'equals') ? '' : 'NOT ';
         $condition = ($val == '0')
             ? $operator . 'IN("", "[]")'
