@@ -137,9 +137,9 @@ function plugin_init_fields()
             $debug = (isset($_SESSION['glpi_use_mode'])
                    && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
             if (!$debug && file_exists(__DIR__ . '/public/css/fields.min.css')) {
-                $PLUGIN_HOOKS['add_css']['fields'][] = 'public/css/fields.min.css';
+                $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
             } else {
-                $PLUGIN_HOOKS['add_css']['fields'][] = 'public/css/fields.css';
+                $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.css';
             }
 
             // Add/delete profiles to automaticaly to container
@@ -151,11 +151,11 @@ function plugin_init_fields()
             if (
                 plugin_fields_script_endswith('container.form.php')
             ) {
-                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'public/lib/redips-drag-min.js';
+                $PLUGIN_HOOKS['add_javascript']['fields'][] = 'lib/redips-drag-min.js';
                 if (!$debug && file_exists(__DIR__ . '/public/js/drag-field-row.min.js')) {
-                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'public/js/drag-field-row.min.js';
+                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
                 } else {
-                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'public/js/drag-field-row.js';
+                    $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
                 }
             }
         }
