@@ -768,6 +768,7 @@ class PluginFieldsContainer extends CommonDBTM
             $itemtypes = json_decode($container['itemtypes']);
             if (in_array($itemtype, $itemtypes)) {
                 $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
+                $classname = preg_replace('/s{2}$/i', 's', $classname); // in case name ends with 'ss' remove last 's'
                 $fields    = new $classname();
                 $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
             }
