@@ -942,6 +942,7 @@ class PluginFieldsField extends CommonDBChild
             strpos($current_url, '.form.php')            === false
             && strpos($current_url, '.injector.php')     === false
             && strpos($current_url, '.public.php')       === false
+            && strpos($current_url, 'ajax/planning')       === false
             && strpos($current_url, 'ajax/timeline.php') === false // ITILSolution load from timeline
         ) {
             return;
