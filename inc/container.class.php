@@ -767,9 +767,8 @@ class PluginFieldsContainer extends CommonDBTM
         foreach ($founded_containers as $container) {
             $itemtypes = json_decode($container['itemtypes']);
             if (in_array($itemtype, $itemtypes)) {
-                $toolbox       = new PluginFieldsToolbox();
-                $container_name = $toolbox->getSystemNameFromLabel($container['label']);
-                $classname = self::getClassname($itemtype, $container_name);
+                $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
+                $classname = preg_replace('/s{2}$/i', 's', $classname); // in case name ends with 'ss' remove last 's'
                 $fields    = new $classname();
                 $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
             }
