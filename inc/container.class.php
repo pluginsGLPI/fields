@@ -414,6 +414,8 @@ class PluginFieldsContainer extends CommonDBTM
             'table'         => self::getTable(),
             'field'         => 'label',
             'name'          => __('Label'),
+            'datatype'      => 'itemlink',
+            'itemlink_type' => self::getType(),
             'massiveaction' => false,
             'autocomplete'  => true,
         ];
