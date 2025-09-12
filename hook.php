@@ -400,9 +400,9 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         $tablefield = "$table" . '_' . "$field";
         switch ($searchtype) {
             case 'equals':
-                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $itemtype, $field_field);
+                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field);
             case 'notequals':
-                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $itemtype, $field_field);
+                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $field_field);
         }
     } else {
         // if 'multiple' field with cleaned name is found -> 'dropdown' case
@@ -420,9 +420,9 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         ) {
             switch ($searchtype) {
                 case 'equals':
-                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $itemtype, $field_field);
+                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field);
                 case 'notequals':
-                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $itemtype, $field_field);
+                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $field_field);
             }
         } else {
             return false;
