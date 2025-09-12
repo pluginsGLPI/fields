@@ -10,7 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix  `massive action` for adding value to `multiple` dropdown fields
+- Fix for the `COALESCE` part of the `SQL query` for `multiple` dropdowns
 - Fix `search option` for `multiple` dropdown
+- Fix display from Planning view
+- Fix `classname` resolution when multiple `s` at end of container name
 
 ## [1.21.23] - 2025-08-26
 
