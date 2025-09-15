@@ -1242,7 +1242,8 @@ HTML;
                     // Add new values to existing ones
                     $existing_values = json_decode($obj->fields[$field_name] ?? '[]', true);
                     $new_values      = is_array($data[$field_name]) ? $data[$field_name] : [$data[$field_name]];
-                    $data[$field_name] = json_encode(array_unique(array_merge($existing_values, $new_values)));
+                    $data[$field_name] = json_encode(array_values(array_unique(array_merge($existing_values, $new_values))));
+
                 } else {
                     $data[$field_name] = json_encode($data[$field_name]);
                 }

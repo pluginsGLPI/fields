@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix  `massive action` for adding value to `multiple` dropdown fields
 - Fix for the `COALESCE` part of the `SQL query` for `multiple` dropdowns
 - Fix `search option` for `multiple` dropdown
 - Fix display from Planning view
