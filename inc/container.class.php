@@ -36,12 +36,12 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static $rightname = 'config';
 
-    public static function canCreate()
+    public static function canCreate(): bool
     {
         return self::canUpdate();
     }
 
-    public static function canPurge()
+    public static function canPurge(): bool
     {
         return self::canUpdate();
     }
@@ -96,7 +96,9 @@ class PluginFieldsContainer extends CommonDBTM
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                throw new \RuntimeException('Error creating plugin_fields_containers table: ' . $DB->error());
+            }
         }
 
         // multiple itemtype for one container
@@ -104,10 +106,10 @@ class PluginFieldsContainer extends CommonDBTM
             $migration->changeField($table, 'itemtype', 'itemtypes', 'longtext');
             $migration->migrationOneTable($table);
 
-            $DB->updateOrDie(
+            $DB->update(
                 $table,
                 [
-                    'itemtypes' => new QueryExpression(
+                    'itemtypes' => new \Glpi\DBAL\QueryExpression(
                         sprintf(
                             'CONCAT(%s, %s, %s)',
                             $DB->quoteValue('[\"'),
@@ -256,9 +258,10 @@ class PluginFieldsContainer extends CommonDBTM
                 $fieldsdata = $fields->find(['plugin_fields_containers_id' => $ostab]);
 
                 $classname = self::getClassname(Computer::getType(), $oscontainer->fields['name']);
-                $osdata    = new $classname();
+                $dbu = new DbUtils();
+                $osdata    = $dbu->getItemForItemtype($classname);
                 $classname = self::getClassname(Computer::getType(), $compcontainer->fields['name']);
-                $compdata  = new $classname();
+                $compdata  = $dbu->getItemForItemtype($classname);
 
                 $fieldnames = [];
                 //add fields to compcontainer
@@ -278,7 +281,9 @@ class PluginFieldsContainer extends CommonDBTM
                             ],
                         );
                     }
-                    $compdata::addField($newname, $field['type']);
+                    if ($compdata instanceof PluginFieldsAbstractContainerInstance) {
+                        $compdata->addField($newname, $field['type']);
+                    }
                     $fieldnames[$field['name']] = $newname;
                 }
 
@@ -409,6 +414,8 @@ class PluginFieldsContainer extends CommonDBTM
             'table'         => self::getTable(),
             'field'         => 'label',
             'name'          => __('Label'),
+            'datatype'      => 'itemlink',
+            'itemlink_type' => self::getType(),
             'massiveaction' => false,
             'autocomplete'  => true,
         ];
@@ -620,7 +627,7 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
-        $input['itemtypes'] = Sanitizer::dbEscape(json_encode($input['itemtypes']));
+        $input['itemtypes'] = json_encode($input['itemtypes']);
 
         return $input;
     }
@@ -769,7 +776,8 @@ class PluginFieldsContainer extends CommonDBTM
             if (in_array($itemtype, $itemtypes)) {
                 $classname = 'PluginFields' . $itemtype . getSingular($container['name']);
                 $classname = preg_replace('/s{2}$/i', 's', $classname); // in case name ends with 'ss' remove last 's'
-                $fields    = new $classname();
+                $dbu = new DbUtils();
+                $fields = $dbu->getItemForItemtype($classname);
                 $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
             }
         }
@@ -784,10 +792,13 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
+        /** @var array $CFG_GLPI */
+        global $CFG_GLPI;
+
         $this->initForm($ID, $options);
 
         if (!$this->isNewID($ID)) {
-            $btn_url    = Plugin::getWebDir('fields') . '/front/export_to_yaml.php?id=' . $ID;
+            $btn_url    = $CFG_GLPI['root_doc'] . '/plugins/fields/front/export_to_yaml.php?id=' . $ID;
             $btn_label  = __('Export to YAML', 'fields');
             $export_btn = <<<HTML
                 <a href="{$btn_url}" class="btn btn-ghost-secondary"
@@ -890,7 +901,8 @@ HTML;
         if ($ID > 0 && !empty($this->fields['subtype'])) {
             $itemtypes = json_decode($this->fields['itemtypes'], true);
             $itemtype  = array_shift($itemtypes);
-            $item      = new $itemtype();
+            $dbu = new DbUtils();
+            $item = $dbu->getItemForItemtype($itemtype);
             $item->getEmpty();
             $tabs = self::getSubtypes($item);
             echo $tabs[$this->fields['subtype']];
@@ -960,41 +972,44 @@ HTML;
         $out = "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
         if (isset($params['type']) && $params['type'] == 'domtab') {
             if (class_exists($params['itemtype'])) {
-                $item = new $params['itemtype']();
-                $item->getEmpty();
+                $dbu = new DbUtils();
+                $item = $dbu->getItemForItemtype($params['itemtype']);
+                if ($item !== false) {
+                    $item->getEmpty();
 
-                $tabs = self::getSubtypes($item);
+                    $tabs = self::getSubtypes($item);
 
-                if (count($tabs)) {
-                    // delete Log of array (don't work with this tab)
-                    $tabs_to_remove = ['Log$1', 'Document_Item$1'];
-                    foreach ($tabs_to_remove as $tab_to_remove) {
-                        if (isset($tabs[$tab_to_remove])) {
-                            unset($tabs[$tab_to_remove]);
+                    if (count($tabs)) {
+                        // delete Log of array (don't work with this tab)
+                        $tabs_to_remove = ['Log$1', 'Document_Item$1'];
+                        foreach ($tabs_to_remove as $tab_to_remove) {
+                            if (isset($tabs[$tab_to_remove])) {
+                                unset($tabs[$tab_to_remove]);
+                            }
                         }
-                    }
 
-                    // For delete <sup class='tab_nb'>number</sup> :
-                    foreach ($tabs as &$value) {
-                        $results = [];
-                        if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
-                            $value = str_replace($results[0][0], '', $value);
+                        // For delete <sup class='tab_nb'>number</sup> :
+                        foreach ($tabs as &$value) {
+                            $results = [];
+                            if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
+                                $value = str_replace($results[0][0], '', $value);
+                            }
                         }
-                    }
 
-                    if (!isset($params['subtype'])) {
-                        $params['subtype'] = null;
-                    }
+                        if (!isset($params['subtype'])) {
+                            $params['subtype'] = null;
+                        }
 
-                    $out .= Dropdown::showFromArray(
-                        'subtype',
-                        $tabs,
-                        ['value'      => $params['subtype'],
-                            'width'   => '100%',
-                            'display' => false,
-                        ],
-                    );
-                    $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+                        $out .= Dropdown::showFromArray(
+                            'subtype',
+                            $tabs,
+                            ['value'      => $params['subtype'],
+                                'width'   => '100%',
+                                'display' => false,
+                            ],
+                        );
+                        $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+                    }
                 }
             }
         }
@@ -1161,7 +1176,7 @@ HTML;
                         if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
                             $display_condition = new PluginFieldsContainerDisplayCondition();
                             if ($display_condition->computeDisplayContainer($item, $data['id'])) {
-                                $tabs_entries[$tab_name] = $data['label'];
+                                $tabs_entries[$tab_name] = self::createTabEntry($data['label'], 0, null, PluginFieldsContainer::getIcon());
                             }
                         }
                     }
@@ -1183,7 +1198,7 @@ HTML;
 
         //retrieve container for current tab
         $container = new self();
-        $found_c   = $container->find(['type' => 'tab', 'name' => Sanitizer::sanitize($tabnum), 'is_active' => 1]);
+        $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
         foreach ($found_c as $data) {
             $dataitemtypes = json_decode($data['itemtypes']);
             if (in_array(get_class($item), $dataitemtypes) != false) {
@@ -1251,6 +1266,15 @@ HTML;
                 $data[$field_name] = json_encode([]);
             }
         }
+
+        $container_obj = new PluginFieldsContainer();
+        $container_obj->getFromDB($data['plugin_fields_containers_id']);
+
+        $items_id  = $data['items_id'];
+        $classname = self::getClassname($itemtype, $container_obj->fields['name']);
+
+        $dbu = new DbUtils();
+        $obj = $dbu->getItemForItemtype($classname);
 
         if ($exist === false) {
             // add fields data
@@ -1325,7 +1349,8 @@ HTML;
         $field_obj
     ) {
         // Don't log few itemtypes
-        $obj = new $itemtype();
+        $dbu = new DbUtils();
+        $obj = $dbu->getItemForItemtype($itemtype);
         if ($obj->dohistory == false) {
             return;
         }
@@ -1477,7 +1502,8 @@ HTML;
         if ($container->fields['type'] === 'dom') {
             $status_value = $data[$status_field_name] ?? null;
         } else {
-            $relatedItem  = new $itemtype();
+            $dbu = new DbUtils();
+            $relatedItem = $dbu->getItemForItemtype($itemtype);
             $status_value = $relatedItem->fields[$status_field_name] ?? null;
         }
         // Apply status overrides
@@ -1906,7 +1932,7 @@ HTML;
                 'glpi_plugin_fields_containers.label AS container_label',
                 (
                     Session::isCron()
-                        ? new QueryExpression(sprintf('%s AS %s', READ + CREATE, $DB->quoteName('right')))
+                        ? new \Glpi\DBAL\QueryExpression(sprintf('%s AS %s', READ + CREATE, $DB->quoteName('right')))
                         : 'glpi_plugin_fields_profiles.right'
                 ),
             ],
@@ -2156,7 +2182,7 @@ HTML;
         if (array_key_exists('itemtypes', $input) && !empty($input['itemtypes'])) {
             // $input has been transformed with `Toolbox::addslashes_deep()`, and `self::prepareInputForAdd()`
             // is expecting an array, so it have to be unslashed then json decoded.
-            $input['itemtypes'] = json_decode(Sanitizer::dbUnescape($input['itemtypes']));
+            $input['itemtypes'] = json_decode($input['itemtypes']);
         } else {
             unset($input['itemtypes']);
         }
