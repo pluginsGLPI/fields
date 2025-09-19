@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "main"
+      - "**/bugfixes"
     paths:
       - "setup.php"
 
