@@ -151,7 +151,7 @@ class PluginFieldsContainer extends CommonDBTM
         if ($DB->tableExists('glpi_plugin_genericobject_types')) {
             // Check GenericObject version
             $genericobject_info = Plugin::getInfo('genericobject');
-            if (version_compare($genericobject_info['version'] ?? '0', '2.14.14', '<')) {
+            if (version_compare($genericobject_info['version'] ?? '0', '3.0.0', '<')) {
                 throw new \RuntimeException(
                     'GenericObject plugin cannot be migrated. Please update it to the latest version.',
                 );
@@ -552,6 +552,7 @@ class PluginFieldsContainer extends CommonDBTM
                 return $types[$values[$field]];
             case 'itemtypes':
                 $types = json_decode($values[$field]);
+                $types = PluginFieldsToolbox::decodeJSONItemtypes($values[$field]);
                 $obj   = '';
                 $count = count($types);
                 $i     = 1;
@@ -714,7 +715,7 @@ class PluginFieldsContainer extends CommonDBTM
             return false;
         }
 
-        foreach (json_decode($fields['itemtypes']) as $itemtype) {
+        foreach (PluginFieldsToolbox::decodeJSONItemtypes($fields['itemtypes']) as $itemtype) {
             //install table for receive field
             $classname = self::getClassname($itemtype, $fields['name']);
             $classname::install();
@@ -724,7 +725,7 @@ class PluginFieldsContainer extends CommonDBTM
     public static function generateTemplate($fields)
     {
         $itemtypes = strlen($fields['itemtypes']) > 0
-            ? json_decode($fields['itemtypes'], true)
+            ? PluginFieldsToolbox::decodeJSONItemtypes($fields['itemtypes'], true)
             : [];
         foreach ($itemtypes as $itemtype) {
             // prevent usage of plugin class if not loaded
@@ -1166,7 +1167,7 @@ HTML;
                 continue;
             }
 
-            $jsonitemtypes = json_decode($item['itemtypes']);
+            $jsonitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($item['itemtypes']);
             //show more info or not
             foreach ($jsonitemtypes as $v) {
                 if ($full) {
@@ -1206,8 +1207,10 @@ HTML;
         ]);
 
         foreach ($iterator as $data) {
-            $jsonitemtype = json_decode($data['itemtypes']);
-            $itemtypes    = array_merge($itemtypes, $jsonitemtype);
+            $jsonitemtype = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
+            if (is_array($jsonitemtype)) {
+                $itemtypes = array_merge($itemtypes, $jsonitemtype);
+            }
         }
 
         return $itemtypes;
@@ -1667,7 +1670,7 @@ HTML;
         }
 
         foreach ($itemtypes as $data) {
-            $dataitemtypes = json_decode($data['itemtypes']);
+            $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
             if (in_array($itemtype, $dataitemtypes) != false) {
                 $id = $data['id'];
             }
