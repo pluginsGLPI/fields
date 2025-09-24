@@ -551,7 +551,6 @@ class PluginFieldsContainer extends CommonDBTM
 
                 return $types[$values[$field]];
             case 'itemtypes':
-                $types = json_decode($values[$field]);
                 $types = PluginFieldsToolbox::decodeJSONItemtypes($values[$field]);
                 $obj   = '';
                 $count = count($types);
