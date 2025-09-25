@@ -309,7 +309,7 @@ function plugin_fields_rule_matched($params = [])
 
 function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 {
-    $searchopt = &Search::getOptions($itemtype);
+    $searchopt = Search::getOptions($itemtype);
     $table     = $searchopt[$ID]['table'];
 
     //fix glpi default Search::giveItem who for empty date display "--"
