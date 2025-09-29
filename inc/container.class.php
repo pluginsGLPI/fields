@@ -1366,7 +1366,7 @@ HTML;
             return true;
         }
 
-        return dalse;
+        return false;
     }
 
     private function addRichTextFiles(CommonDBTM $object): void
