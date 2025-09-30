@@ -308,7 +308,7 @@ class PluginFieldsToolbox
             NetworkPort::class,
             Notification::class,
             NotificationTemplate::class,
-            ComputerVirtualMachine::class,
+            ItemVirtualMachine::class,
         ];
 
         $all_itemtypes = [
@@ -360,5 +360,15 @@ class PluginFieldsToolbox
         $all_itemtypes = array_filter($all_itemtypes);
 
         return $all_itemtypes;
+    }
+
+    public static function decodeJSONItemtypes(string $itemtypes, ?bool $associative = null)
+    {
+        $jsonitemtype = json_decode($itemtypes, $associative);
+        if ($jsonitemtype === null && json_last_error() !== JSON_ERROR_NONE) {
+            $fixed_json = str_replace('\\', '\\\\', $itemtypes);
+            $jsonitemtype = json_decode($fixed_json, $associative);
+        }
+        return $jsonitemtype;
     }
 }

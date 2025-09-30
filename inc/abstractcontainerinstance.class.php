@@ -62,16 +62,12 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                     $completeinput,
                 )
             ) {
-                if (
-                    ($itemToGetEntity instanceof CommonDBTM)
-                ) {
-                    if ($itemToGetEntity->isEntityAssign()) {
-                        $input['entities_id']  = $itemToGetEntity->getEntityID();
-                    }
+                if ($itemToGetEntity->isEntityAssign()) {
+                    $input['entities_id']  = $itemToGetEntity->getEntityID();
+                }
 
-                    if ($itemToGetEntity->maybeRecursive()) {
-                        $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
-                    }
+                if ($itemToGetEntity->maybeRecursive()) {
+                    $input['is_recursive'] = intval($itemToGetEntity->isRecursive());
                 }
             }
         }
@@ -178,5 +174,29 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
         }
 
         return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
+
+    public static function addField($fieldname, $type, array $options = [])
+    {
+        $migration = new PluginFieldsMigration('0');
+
+        $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type, $options);
+        foreach ($sql_fields as $sql_field_name => $sql_field_type) {
+            $migration->addField(self::getTable(), $sql_field_name, $sql_field_type);
+        }
+
+        $migration->migrationOneTable(self::getTable());
+    }
+
+    public static function removeField($fieldname, $type)
+    {
+        $migration = new PluginFieldsMigration('0');
+
+        $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type);
+        foreach (array_keys($sql_fields) as $sql_field_name) {
+            $migration->dropField(self::getTable(), $sql_field_name);
+        }
+
+        $migration->migrationOneTable(self::getTable());
     }
 }

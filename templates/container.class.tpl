@@ -26,11 +26,11 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
                   UNIQUE INDEX `itemtype_item_container`
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-         $DB->query($query) or die ($DB->error());
+         $DB->doQuery($query);
       } else {
          // 1.15.4
          // fix nullable state for 'glpi_item' field
-         $result = $DB->query("SHOW COLUMNS FROM `$table`");
+         $result = $DB->doQuery("SHOW COLUMNS FROM `$table`");
          if ($result && $DB->numrows($result) > 0) {
             $changed = false;
             while ($data = $DB->fetchAssoc($result)) {
@@ -51,7 +51,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       * This block ensures that the 'entities_id' field is created and populated if it
       * associated item type requires entity assignment
       */
-      if (getItemForItemtype("%%ITEMTYPE%%")->isEntityAssign() && !$DB->fieldExists($table, 'entities_id')) {
+      if (getItemForItemtype('%%ITEMTYPE%%')->isEntityAssign() && !$DB->fieldExists($table, 'entities_id')) {
          $migration->addField($table, 'entities_id', 'fkey', ['after' => 'plugin_fields_containers_id']);
          $migration->addKey($table, 'entities_id');
          $migration->executeMigration();
@@ -107,7 +107,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       * associated item type requires recursive assignment
       */
       if (
-         getItemForItemtype("%%ITEMTYPE%%")->maybeRecursive()
+         getItemForItemtype('%%ITEMTYPE%%')->maybeRecursive()
          && !$DB->fieldExists($table, 'is_recursive')
          && $DB->fieldExists($table, 'entities_id')) {
          $migration->addField($table, 'is_recursive', 'bool', ['after'  => 'entities_id']);
@@ -163,28 +163,6 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       global $DB;
 
       $obj = new self();
-      return $DB->query("DROP TABLE IF EXISTS `".$obj->getTable()."`");
-   }
-
-   static function addField($fieldname, $type, array $options) {
-      $migration = new PluginFieldsMigration(0);
-
-      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type, $options);
-      foreach ($sql_fields as $sql_field_name => $sql_field_type) {
-         $migration->addField(self::getTable(), $sql_field_name, $sql_field_type);
-      }
-
-      $migration->migrationOneTable(self::getTable());
-   }
-
-   static function removeField($fieldname, $type) {
-      $migration = new PluginFieldsMigration(0);
-
-      $sql_fields = PluginFieldsMigration::getSQLFields($fieldname, $type);
-      foreach (array_keys($sql_fields) as $sql_field_name) {
-         $migration->dropField(self::getTable(), $sql_field_name);
-      }
-
-      $migration->migrationOneTable(self::getTable());
+      return $DB->doQuery("DROP TABLE IF EXISTS `".$obj->getTable()."`");
    }
 }

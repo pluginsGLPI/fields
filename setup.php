@@ -28,18 +28,21 @@
  * -------------------------------------------------------------------------
  */
 
-define('PLUGIN_FIELDS_VERSION', '1.21.23');
+/** @var array $CFG_GLPI */
+global $CFG_GLPI;
+
+define('PLUGIN_FIELDS_VERSION', '1.22.0');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_FIELDS_MIN_GLPI', '10.0.11');
+define('PLUGIN_FIELDS_MIN_GLPI', '11.0.0');
 // Maximum GLPI version, exclusive
-define('PLUGIN_FIELDS_MAX_GLPI', '10.0.99');
+define('PLUGIN_FIELDS_MAX_GLPI', '11.0.99');
 
 if (!defined('PLUGINFIELDS_DIR')) {
     define('PLUGINFIELDS_DIR', Plugin::getPhpDir('fields'));
 }
 if (!defined('PLUGINFIELDS_WEB_DIR')) {
-    define('PLUGINFIELDS_WEB_DIR', Plugin::getWebDir('fields'));
+    define('PLUGINFIELDS_WEB_DIR', $CFG_GLPI['root_doc'] . '/plugins/fields');
 }
 
 if (!defined('PLUGINFIELDS_DOC_DIR')) {
@@ -133,7 +136,7 @@ function plugin_init_fields()
             //include js and css
             $debug = (isset($_SESSION['glpi_use_mode'])
                    && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
-            if (!$debug && file_exists(__DIR__ . '/css/fields.min.css')) {
+            if (!$debug && file_exists(__DIR__ . '/public/css/fields.min.css')) {
                 $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
             } else {
                 $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.css';
@@ -149,7 +152,7 @@ function plugin_init_fields()
                 plugin_fields_script_endswith('container.form.php')
             ) {
                 $PLUGIN_HOOKS['add_javascript']['fields'][] = 'lib/redips-drag-min.js';
-                if (!$debug && file_exists(__DIR__ . '/js/drag-field-row.min.js')) {
+                if (!$debug && file_exists(__DIR__ . '/public/js/drag-field-row.min.js')) {
                     $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.min.js';
                 } else {
                     $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/drag-field-row.js';
@@ -347,13 +350,14 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
 
                             switch ($field['type']) {
                                 case 'dropdown':
-                                    $obj = new $itemtype();
+                                    $dbu = new DbUtils();
+                                    $obj = $dbu->getItemForItemtype($itemtype);
                                     $obj->getEmpty();
 
                                     $dropdown_itemtype     = PluginFieldsDropdown::getClassname($field['name']);
                                     $tmp_field['xml_node'] = strtoupper(getForeignKeyFieldForItemType($dropdown_itemtype));
 
-                                    $dropdown_obj   = new $dropdown_itemtype();
+                                    $dropdown_obj = $dbu->getItemForItemtype($dropdown_itemtype);
                                     $dropdown_datas = $dropdown_obj->find();
                                     $datas          = [];
                                     foreach ($dropdown_datas as $value) {

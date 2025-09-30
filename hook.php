@@ -72,6 +72,7 @@ function plugin_fields_install()
         PluginFieldsStatusOverride::class,
     ];
 
+
     // First, install base data
     foreach ($classesToInstall as $class) {
         if (method_exists($class, 'installBaseData')) {
@@ -309,7 +310,7 @@ function plugin_fields_rule_matched($params = [])
 
 function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 {
-    $searchopt = &Search::getOptions($itemtype);
+    $searchopt = Search::getOptions($itemtype);
     $table     = $searchopt[$ID]['table'];
 
     //fix glpi default Search::giveItem who for empty date display "--"
