@@ -1240,13 +1240,12 @@ HTML;
                         if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
                             $display_condition = new PluginFieldsContainerDisplayCondition();
                             if ($display_condition->computeDisplayContainer($item, $data['id'])) {
-                                $tabs_entries[$tab_name] = self::createTabEntry($data['label'], 0, null, PluginFieldsContainer::getIcon());
+                                $tabs_entries[$data['id']] = self::createTabEntry($data['label'], 0, null, PluginFieldsContainer::getIcon());
                             }
                         }
                     }
                 }
             }
-
             return $tabs_entries;
         }
 
@@ -1262,11 +1261,10 @@ HTML;
 
         //retrieve container for current tab
         $container = new self();
-        $found_c   = $container->find(['type' => 'tab', 'name' => $tabnum, 'is_active' => 1]);
-        foreach ($found_c as $data) {
-            $dataitemtypes = json_decode($data['itemtypes']);
+        if ($container->getFromDB($tabnum)) {
+            $dataitemtypes = json_decode($container->fields['itemtypes']);
             if (in_array(get_class($item), $dataitemtypes) != false) {
-                return PluginFieldsField::showForTabContainer($data['id'], $item);
+                return PluginFieldsField::showForTabContainer($container->fields['id'], $item);
             }
         }
 
