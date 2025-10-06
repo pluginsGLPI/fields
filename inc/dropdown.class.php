@@ -146,47 +146,6 @@ class PluginFieldsDropdown
             return false;
         }
 
-        //get front template
-        $template_front = file_get_contents(PLUGINFIELDS_DIR . '/templates/dropdown.tpl');
-        if ($template_front === false) {
-            Toolbox::logDebug('Error : get dropdown front template error');
-
-            return false;
-        }
-
-        //create dropdown front file
-        $template_front = str_replace('%%CLASSNAME%%', $classname, $template_front);
-        $front_filename = $input['name'] . 'dropdown.php';
-        if (
-            file_put_contents(
-                PLUGINFIELDS_FRONT_PATH . "/$front_filename",
-                $template_front,
-            ) === false
-        ) {
-            Toolbox::logDebug("Error : dropdown front file creation - $class_filename");
-
-            return false;
-        }
-
-        //get form template
-        $template_form = file_get_contents(PLUGINFIELDS_DIR . '/templates/dropdown.form.tpl');
-        if ($template_form === false) {
-            return false;
-        }
-
-        //create dropdown form file
-        $template_form = str_replace('%%CLASSNAME%%', $classname, $template_form);
-        $form_filename = $input['name'] . 'dropdown.form.php';
-        if (
-            file_put_contents(
-                PLUGINFIELDS_FRONT_PATH . "/$form_filename",
-                $template_form,
-            ) === false
-        ) {
-            Toolbox::logDebug('Error : get dropdown form template error');
-
-            return false;
-        }
 
         //load class manually on plugin installation
         if (!class_exists($classname)) {
