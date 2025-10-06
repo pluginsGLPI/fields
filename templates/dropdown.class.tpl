@@ -59,9 +59,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
     * @param $full path or relative one (true by default)
    **/
    static function getTabsURL($full=true) {
-      $url = Toolbox::getItemTypeTabsURL('PluginFieldsCommonDropdown', $full);
-      $plug = isPluginItemType(get_called_class());
-      $url .= '?ddtype=' . strtolower($plug['class']);
+      $url = Toolbox::getItemTypeTabsURL(get_called_class(), $full);
       return $url;
    }
 
@@ -71,45 +69,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
     * @param $full path or relative one (true by default)
    **/
    static function getSearchURL($full=true) {
-      $url = Toolbox::getItemTypeSearchURL('PluginFieldsCommonDropdown', $full);
-      $plug = isPluginItemType(get_called_class());
-      $url .= '?ddtype=' . strtolower($plug['class']);
+      $url = Toolbox::getItemTypeSearchURL(get_called_class(), $full);
       return $url;
-   }
-
-   /**
-    * Get the form page URL for the current class
-    *
-    * @param $full path or relative one (true by default)
-   **/
-   static function getFormURL($full=true) {
-      $url = Toolbox::getItemTypeFormURL('PluginFieldsCommonDropdown', $full);
-      $plug = isPluginItemType(get_called_class());
-      $url .= '?ddtype=' . strtolower($plug['class']);
-      return $url;
-   }
-
-   /**
-    * Get the form page URL for the current class and point to a specific ID
-    *
-    * @param $id      (default 0)
-    * @param $full    path or relative one (true by default)
-    *
-    * @since version 0.90
-   **/
-   static function getFormURLWithID($id=0, $full=true) {
-
-      $link     = self::getFormURL($full);
-      $link    .= '&id=' . $id;
-      return $link;
-   }
-
-   /**
-    * Get default values to search engine to override
-   **/
-   static function getDefaultSearchRequest() {
-      $plug = isPluginItemType(get_called_class());
-      $search = ['addhidden' => ['ddtype' => strtolower($plug['class'])]];
-      return $search;
    }
 }
