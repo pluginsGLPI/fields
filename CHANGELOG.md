@@ -5,19 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [UNRELEASED]
+
+### Fixed
+
+- Fix `classname` resolution when multiple `s` at end of container name
+
 ## [1.22.0] - 2025-09-30
 
 ### Added
 
 - GLPI 11 compatibility
-
-### Fixed
-
-- Fix  `massive action` for adding value to `multiple` dropdown fields
-- Fix for the `COALESCE` part of the `SQL query` for `multiple` dropdowns
-- Fix `search option` for `multiple` dropdown
-- Fix display from Planning view
-- Fix `classname` resolution when multiple `s` at end of container name
 
 ## [1.21.23] - 2025-08-26
 
