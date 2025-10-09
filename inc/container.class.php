@@ -1709,13 +1709,13 @@ HTML;
             return [];
         }
 
-        $entitiesIds = getAncestorsOf("glpi_entities", (string) $entityId);
+        $entitiesIds = getAncestorsOf("glpi_entities", (int) $entityId);
         $entitiesIds[] = $entityId; // Add entity active itself to the list
 
         $where = [
             'is_active' => 1,
             'type'      => $type,
-            new \QueryExpression("JSON_CONTAINS(itemtypes, " . $DB->quote('"' . $itemtype . '"') . ")"),
+            new QueryExpression("JSON_CONTAINS(itemtypes, " . $DB->quote('"' . $itemtype . '"') . ")"),
             'AND' => [
                 'OR' => [
                     [
