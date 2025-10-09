@@ -813,9 +813,6 @@ class PluginFieldsField extends CommonDBChild
 
     public static function showForTabContainer($c_id, $item)
     {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
-
         //profile restriction
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
         if ($right < READ) {
@@ -826,20 +823,16 @@ class PluginFieldsField extends CommonDBChild
         //get fields for this container
         $field_obj = new self();
         $fields    = $field_obj->find(['plugin_fields_containers_id' => $c_id, 'is_active' => 1], 'ranking');
-        echo "<form method='POST' class='mt-5' action='" . $CFG_GLPI['root_doc'] . "/plugins/fields/front/container.form.php'>";
-        echo Html::hidden('plugin_fields_containers_id', ['value' => $c_id]);
-        echo Html::hidden('items_id', ['value' => $item->getID()]);
-        echo Html::hidden('itemtype', ['value' => $item->getType()]);
-        echo self::prepareHtmlFields($fields, $item, $canedit);
+        $html_fields = self::prepareHtmlFields($fields, $item, $canedit);
 
-        if ($canedit) {
-            echo "<div class='d-flex flex-row-reverse px-4 mb-4'>";
-            echo "<input class='btn btn-primary' type='submit' name='update_fields_values' value=\"" .
-            _sx('button', 'Save') . "\" class='submit'>";
-            echo '</td></tr>';
-        }
+        //display fields as tab container
+        TemplateRenderer::getInstance()->display('@fields/forms/tab_container.html.twig', [
+            'canedit' => $canedit,
+            'html_fields' => $html_fields,
+            'item'   => $item,
+            'c_id'   => $c_id,
+        ]);
 
-        Html::closeForm();
 
         return true;
     }
