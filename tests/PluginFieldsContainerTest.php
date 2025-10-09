@@ -654,14 +654,14 @@ class PluginFieldsContainerTest extends TestCase
 
         // check if the HTML contains both containers
         $this->assertStringContainsString(
-            'id=\'plugin_fields_container_'.$idContainer1.'\'',
+            'id=\'plugin_fields_container_' . $idContainer1 . '\'',
             $html,
-            "Container 1 (id=$idContainer1) not displayed"
+            "Container 1 (id=$idContainer1) not displayed",
         );
         $this->assertStringContainsString(
-            'id=\'plugin_fields_container_'.$idContainer2.'\'',
+            'id=\'plugin_fields_container_' . $idContainer2 . '\'',
             $html,
-            "Container 2 (id=$idContainer2) not displayed"
+            "Container 2 (id=$idContainer2) not displayed",
         );
         $this->deleteAllContainers();
     }
@@ -703,7 +703,7 @@ class PluginFieldsContainerTest extends TestCase
         $this->assertNotSame(
             '',
             $htmlWithRight,
-            'Container should be visible for a profile with right.'
+            'Container should be visible for a profile with right.',
         );
         // end case 1
 
@@ -717,7 +717,7 @@ class PluginFieldsContainerTest extends TestCase
         $this->assertSame(
             '',
             $htmlNoRight,
-            'Container should not be visible for a profile without right.'
+            'Container should not be visible for a profile without right.',
         );
         // end case 2
         $this->deleteAllContainers();
