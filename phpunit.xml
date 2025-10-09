@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<phpunit bootstrap="tests/bootstrap.php"
-        colors="true"
-        verbose="true">
-    <testsuite name='Fields Plugin Tests'>
-        <directory suffix='.php'>./tests/</directory>
-    </testsuite>
+<phpunit
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    testdox="true"
+    cacheDirectory="var/phpunit"
+>
+    <testsuites>
+        <testsuite name="Tests">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

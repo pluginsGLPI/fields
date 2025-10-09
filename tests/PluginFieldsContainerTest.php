@@ -33,7 +33,7 @@ class PluginFieldsContainerTest extends TestCase
             $fieldsProfile      = new PluginFieldsProfile();
             $fieldsObj          = new PluginFieldsField();
             $fieldscontainer    = new PluginFieldsContainer();
-            
+
             $fieldsProfile->deleteByCriteria(['plugin_fields_containers_id' => $containerId]);
             $fieldsObj->deleteByCriteria(['plugin_fields_containers_id' => $containerId]);
             $fieldscontainer->delete(['id' => $containerId]);
@@ -424,9 +424,6 @@ class PluginFieldsContainerTest extends TestCase
         ]);
         $this->addFieldToContainer($containerId2, 'field2');
 
-        require_once GLPI_ROOT . "/files/_plugins/fields/inc/ticketcontainerpostitemaddone.class.php";
-        require_once GLPI_ROOT . "/files/_plugins/fields/inc/ticketcontainerpostitemaddtwo.class.php";
-
         // add a ticket
         $ticket = $this->addTicket([
             'name'                                      => 'Test ticket postItemAdd',
@@ -496,9 +493,6 @@ class PluginFieldsContainerTest extends TestCase
             'is_recursive' => 0,
         ]);
         $this->addFieldToContainer($containerId2, 'field2');
-
-        require_once GLPI_ROOT . "/files/_plugins/fields/inc/ticketcontainerupdateone.class.php";
-        require_once GLPI_ROOT . "/files/_plugins/fields/inc/ticketcontainerupdatetwo.class.php";
 
         // add a ticket
         $ticket = $this->addTicket([
