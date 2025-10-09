@@ -1,5 +1,7 @@
 <?php
 
+use Glpi\DBAL\QueryExpression;
+
 /**
  * -------------------------------------------------------------------------
  * Fields plugin for GLPI
