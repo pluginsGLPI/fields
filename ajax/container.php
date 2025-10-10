@@ -28,15 +28,16 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
-Session::checkLoginUser();
+use Glpi\Exception\Http\AccessDeniedHttpException;
+use Glpi\Exception\Http\NotFoundHttpException;
 
+Session::checkLoginUser();
 
 if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
     if ($right < READ) {
-        throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+        throw new AccessDeniedHttpException();
     }
 
     $containers_id = $_GET['id'];
@@ -49,7 +50,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     $dbu = new DbUtils();
     $item = $dbu->getItemForItemtype($itemtype);
     if ($items_id > 0 && !$item->getFromDB($items_id)) {
-        throw new \Glpi\Exception\Http\NotFoundHttpException();
+        throw new NotFoundHttpException();
     }
     $item->input = $input;
 
@@ -65,5 +66,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
         echo '';
     }
 } else {
-    throw new \Glpi\Exception\Http\NotFoundHttpException();
+    throw new NotFoundHttpException();
 }

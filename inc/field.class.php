@@ -27,13 +27,13 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
+use Glpi\Features\Clonable;
+use Glpi\DBAL\QueryExpression;
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\Toolbox\Sanitizer;
 
 class PluginFieldsField extends CommonDBChild
 {
-    use Glpi\Features\Clonable;
+    use Clonable;
 
     /**
      * Starting index for search options.
@@ -93,7 +93,7 @@ class PluginFieldsField extends CommonDBChild
                   KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             if (!$DB->doQuery($query)) {
-                throw new \RuntimeException('Error creating plugin_fields_fields table: ' . $DB->error());
+                throw new RuntimeException('Error creating plugin_fields_fields table: ' . $DB->error());
             }
         }
 
@@ -346,7 +346,7 @@ class PluginFieldsField extends CommonDBChild
     public function pre_deleteItem()
     {
         /**
-         * @var \DBmysql $DB
+         * @var DBmysql $DB
          */
         global $DB;
 
@@ -368,10 +368,8 @@ class PluginFieldsField extends CommonDBChild
                     if ($so_value['linkfield'] == 'plugin_fields_' . $this->fields['name'] . 'dropdowns_id') {
                         $this->cleanDisplayPreferences($itemtype, $so_id);
                     }
-                } else {
-                    if ($so_value['field'] == $this->fields['name']) {
-                        $this->cleanDisplayPreferences($itemtype, $so_id);
-                    }
+                } elseif ($so_value['field'] == $this->fields['name']) {
+                    $this->cleanDisplayPreferences($itemtype, $so_id);
                 }
             }
         }
@@ -426,14 +424,14 @@ class PluginFieldsField extends CommonDBChild
         /** @var DBmysql $DB */
         global $DB;
 
-        $table         = getTableForItemType(__CLASS__);
+        $table         = getTableForItemType(self::class);
         $old_container = $this->fields['plugin_fields_containers_id'];
         $old_ranking   = $this->fields['ranking'];
 
         $DB->update(
             $table,
             [
-                'ranking' => new \Glpi\DBAL\QueryExpression($DB->quoteName('ranking') . ' - 1'),
+                'ranking' => new QueryExpression($DB->quoteName('ranking') . ' - 1'),
             ],
             [
                 'plugin_fields_containers_id' => $old_container,
@@ -494,7 +492,7 @@ class PluginFieldsField extends CommonDBChild
         // but there is a bug when trying to drop the column and the real max len is 53 chars
         // FIXME: see: https://bugs.mysql.com/bug.php?id=107165
         if (strlen($field_name) > 52) {
-            $rand       = rand();
+            $rand       = random_int(0, mt_getrandmax());
             $field_name = substr($field_name, 0, 52 - strlen((string) $rand)) . $rand;
         }
 
@@ -512,7 +510,7 @@ class PluginFieldsField extends CommonDBChild
         global $DB;
 
         $iterator = $DB->request([
-            'SELECT' => new \Glpi\DBAL\QueryExpression(
+            'SELECT' => new QueryExpression(
                 'max(' . $DB->quoteName('ranking') . ') AS ' . $DB->quoteName('rank'),
             ),
             'FROM'  => self::getTable(),
@@ -534,8 +532,8 @@ class PluginFieldsField extends CommonDBChild
     {
         if (!$withtemplate) {
             switch ($item->getType()) {
-                case __CLASS__:
-                    return $this->getTypeName(1);
+                case self::class:
+                    return static::getTypeName(1);
             }
         }
 
@@ -593,7 +591,7 @@ class PluginFieldsField extends CommonDBChild
         echo "<div id='viewField$cID$rand'></div>";
 
         $ajax_params = [
-            'type'                        => __CLASS__,
+            'type'                        => self::class,
             'parenttype'                  => PluginFieldsContainer::class,
             'plugin_fields_containers_id' => $cID,
             'id'                          => -1,
@@ -655,19 +653,15 @@ class PluginFieldsField extends CommonDBChild
                             $item = new $itemtype();
                             if ($this->fields['multiple']) {
                                 $values = json_decode($this->fields['default_value']);
-
                                 $names = [];
                                 foreach ($values as $value) {
                                     if ($item->getFromDB($value)) {
                                         $names[] = $item->getName();
                                     }
                                 }
-
                                 echo implode(', ', $names);
-                            } else {
-                                if ($item->getFromDB($this->fields['default_value'])) {
-                                    echo $item->getName();
-                                }
+                            } elseif ($item->getFromDB($this->fields['default_value'])) {
+                                echo $item->getName();
                             }
                         }
                     } elseif ($this->fields['type'] === 'dropdown' && !empty($this->fields['default_value'])) {
@@ -898,8 +892,8 @@ class PluginFieldsField extends CommonDBChild
         $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
-        $subtype   = isset($_SESSION['glpi_tabs'][strtolower($item::getType())]) ? $_SESSION['glpi_tabs'][strtolower($item::getType())] : '';
-        $type      = substr($subtype, -strlen('$main')) === '$main'
+        $subtype   = $_SESSION['glpi_tabs'][strtolower($item::getType())] ?? '';
+        $type      = str_ends_with($subtype, '$main')
             || in_array('showForm', $functions)
             || in_array('showPrimaryForm', $functions)
             || in_array('showFormHelpdesk', $functions)
@@ -949,11 +943,11 @@ class PluginFieldsField extends CommonDBChild
         }
         $current_url = $_SERVER['REQUEST_URI'];
         if (
-            strpos($current_url, '.form.php')            === false
-            && strpos($current_url, '.injector.php')     === false
-            && strpos($current_url, '.public.php')       === false
-            && strpos($current_url, 'ajax/planning')       === false
-            && strpos($current_url, 'ajax/timeline.php') === false // ITILSolution load from timeline
+            !str_contains($current_url, '.form.php')
+            && !str_contains($current_url, '.injector.php')
+            && !str_contains($current_url, '.public.php')
+            && !str_contains($current_url, 'ajax/planning')
+            && !str_contains($current_url, 'ajax/timeline.php') // ITILSolution load from timeline
         ) {
             return;
         }
@@ -967,7 +961,7 @@ class PluginFieldsField extends CommonDBChild
         }
 
         $html_id = 'plugin_fields_container_' . mt_rand();
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+        if (str_contains($current_url, 'helpdesk.public.php')) {
             echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
             echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
             $field_options = [
@@ -987,7 +981,7 @@ class PluginFieldsField extends CommonDBChild
                 $field_options ?? [],
             );
         }
-        if (strpos($current_url, 'helpdesk.public.php') !== false) {
+        if (str_contains($current_url, 'helpdesk.public.php')) {
             echo '</div>';
         }
         echo '</div>';
@@ -1217,13 +1211,11 @@ JAVASCRIPT
                     } elseif (isset($item->input['items_id_' . $field['name']])) {
                         $value['items_id'] = $item->input['items_id_' . $field['name']] ?? '';
                     }
-                } else {
-                    if (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
-                        $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
-                    } elseif (isset($item->input[$field['name']])) {
-                        // find from $item->input due to ajax refresh container
-                        $value = $item->input[$field['name']];
-                    }
+                } elseif (isset($_SESSION['plugin']['fields']['values_sent'][$field['name']])) {
+                    $value = $_SESSION['plugin']['fields']['values_sent'][$field['name']];
+                } elseif (isset($item->input[$field['name']])) {
+                    // find from $item->input due to ajax refresh container
+                    $value = $item->input[$field['name']];
                 }
             }
 
@@ -1244,15 +1236,13 @@ JAVASCRIPT
                 }
             }
 
-            if ($field['multiple']) {
-                if (!is_array($value)) {
-                    // Value may be set:
-                    // - either from a default value in DB (it will be a JSON string),
-                    // - either from a previous input (it will be an array).
-                    //
-                    // -> Decode it only if it is not already an array.
-                    $value = json_decode($value);
-                }
+            if ($field['multiple'] && !is_array($value)) {
+                // Value may be set:
+                // - either from a default value in DB (it will be a JSON string),
+                // - either from a previous input (it will be an array).
+                //
+                // -> Decode it only if it is not already an array.
+                $value = json_decode($value);
             }
 
             $field['value'] = $value;

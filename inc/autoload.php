@@ -41,8 +41,8 @@ class PluginFieldsAutoloader
 
     public function setOptions($options)
     {
-        if (!is_array($options) && !($options instanceof \Traversable)) {
-            throw new \InvalidArgumentException();
+        if (!is_array($options) && !($options instanceof Traversable)) {
+            throw new InvalidArgumentException();
         }
 
         foreach ($options as $path) {

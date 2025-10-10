@@ -32,22 +32,17 @@
 * @brief
 */
 
-include('../../../inc/includes.php');
 header('Content-Type: text/html; charset=UTF-8');
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || !isset($_POST['id'])) {
-    throw new \RuntimeException('Missing required parameters', 400);
+    throw new RuntimeException('Missing required parameters', 400);
 }
 
 $translation = new PluginFieldsLabelTranslation();
-if ($_POST['id'] == -1) {
-    $canedit = $translation->can(-1, CREATE, $_POST);
-} else {
-    $canedit = $translation->can($_POST['id'], UPDATE);
-}
+$canedit = $_POST['id'] == -1 ? $translation->can(-1, CREATE, $_POST) : $translation->can($_POST['id'], UPDATE);
 if ($canedit) {
     $translation->showFormForItem($_POST['itemtype'], $_POST['items_id'], $_POST['id']);
 } else {

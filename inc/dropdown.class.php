@@ -92,7 +92,7 @@ class PluginFieldsDropdown
 
         //remove dropdown tables and files
         if ($DB->tableExists('glpi_plugin_fields_fields')) {
-            require_once 'field.class.php';
+            require_once __DIR__ . '/field.class.php';
             $field     = new PluginFieldsField();
             $dropdowns = $field->find(['type' => 'dropdown']);
             foreach ($dropdowns as $dropdown) {
@@ -178,32 +178,23 @@ class PluginFieldsDropdown
         }
 
         //remove class file for this dropdown
-        if (file_exists($class_filename)) {
-            if (unlink($class_filename) === false) {
-                Toolbox::logDebug('Error : dropdown class file creation - ' . $dropdown_name . 'dropdown.class.php');
-
-                return false;
-            }
+        if (file_exists($class_filename) && unlink($class_filename) === false) {
+            Toolbox::logDebug('Error : dropdown class file creation - ' . $dropdown_name . 'dropdown.class.php');
+            return false;
         }
 
         //remove front file for this dropdown
         $front_filename = PLUGINFIELDS_FRONT_PATH . '/' . $dropdown_name . 'dropdown.php';
-        if (file_exists($front_filename)) {
-            if (unlink($front_filename) === false) {
-                Toolbox::logDebug('Error : dropdown front file removing - ' . $dropdown_name . 'dropdown.php');
-
-                return false;
-            }
+        if (file_exists($front_filename) && unlink($front_filename) === false) {
+            Toolbox::logDebug('Error : dropdown front file removing - ' . $dropdown_name . 'dropdown.php');
+            return false;
         }
 
         //remove front.form file for this dropdown
         $form_filename = PLUGINFIELDS_FRONT_PATH . '/' . $dropdown_name . 'dropdown.form.php';
-        if (file_exists($form_filename)) {
-            if (unlink($form_filename) === false) {
-                Toolbox::logDebug('Error : dropdown form file removing - ' . $dropdown_name . 'dropdown.form.php');
-
-                return false;
-            }
+        if (file_exists($form_filename) && unlink($form_filename) === false) {
+            Toolbox::logDebug('Error : dropdown form file removing - ' . $dropdown_name . 'dropdown.form.php');
+            return false;
         }
 
         return true;
@@ -216,7 +207,7 @@ class PluginFieldsDropdown
 
     public static function multipleDropdownAddWhere($link, $tablefield, $field, $val, $searchtype, $field_field = [])
     {
-        /** @var \DBmysql $DB */
+        /** @var DBmysql $DB */
         global $DB;
 
         // Determines the default value

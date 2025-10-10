@@ -28,7 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
 Session::checkRight('config', READ);
 
 $status_override = new PluginFieldsStatusOverride();

@@ -135,7 +135,7 @@ function plugin_init_fields()
 
             //include js and css
             $debug = (isset($_SESSION['glpi_use_mode'])
-                   && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE ? true : false);
+                   && $_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
             if (!$debug && file_exists(__DIR__ . '/public/css/fields.min.css')) {
                 $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
             } else {
@@ -209,7 +209,7 @@ function plugin_fields_script_endswith($scriptname)
     $scriptname  = 'fields/front/' . $scriptname;
     $script_name = $_SERVER['SCRIPT_NAME'];
 
-    return substr($script_name, -strlen($scriptname)) === $scriptname;
+    return str_ends_with($script_name, $scriptname);
 }
 
 
@@ -298,91 +298,84 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         'container' => [],
     ];
 
-    if (
-        isset($_SESSION['glpiactiveentities'])
-        && Session::getLoginUserID()
-        && Plugin::isPluginActive('fields')
-    ) {
-        if ($DB->tableExists(PluginFieldsContainer::getTable())) {
-            $where              = [];
-            $where['is_active'] = true;
-            if ($container_id != null) {
-                $where['id'] = $container_id;
-            }
-            $container_obj = new PluginFieldsContainer();
-            $containers    = $container_obj->find($where);
+    if (isset($_SESSION['glpiactiveentities']) && Session::getLoginUserID() && Plugin::isPluginActive('fields') && $DB->tableExists(PluginFieldsContainer::getTable())) {
+        $where              = [];
+        $where['is_active'] = true;
+        if ($container_id != null) {
+            $where['id'] = $container_id;
+        }
+        $container_obj = new PluginFieldsContainer();
+        $containers    = $container_obj->find($where);
+        foreach ($containers as $container) {
+            $itemtypes = (strlen($container['itemtypes']) > 0)
+                ? json_decode($container['itemtypes'], true)
+                : [];
 
-            foreach ($containers as $container) {
-                $itemtypes = (strlen($container['itemtypes']) > 0)
-                    ? json_decode($container['itemtypes'], true)
-                    : [];
+            foreach ($itemtypes as $itemtype) {
+                $fields_obj = new PluginFieldsField();
+                // to get translation
+                $container['itemtype']                                      = PluginFieldsContainer::getType();
+                $yaml_conf['container'][$container['id'] . '-' . $itemtype] = [
+                    'id'       => (int) $container['id'],
+                    'name'     => PluginFieldsLabelTranslation::getLabelFor($container),
+                    'itemtype' => $itemtype,
+                    'type'     => $container['type'],
+                    'subtype'  => $container['subtype'],
+                    'fields'   => [],
+                ];
+                $fields = $fields_obj->find(['plugin_fields_containers_id' => $container['id'],
+                    'is_active'                                            => true,
+                    'is_readonly'                                          => false,
+                ]);
+                if (count($fields)) {
+                    foreach ($fields as $field) {
+                        $tmp_field       = [];
+                        $tmp_field['id'] = (int) $field['id'];
 
-                foreach ($itemtypes as $itemtype) {
-                    $fields_obj = new PluginFieldsField();
-                    // to get translation
-                    $container['itemtype']                                      = PluginFieldsContainer::getType();
-                    $yaml_conf['container'][$container['id'] . '-' . $itemtype] = [
-                        'id'       => (int) $container['id'],
-                        'name'     => PluginFieldsLabelTranslation::getLabelFor($container),
-                        'itemtype' => $itemtype,
-                        'type'     => $container['type'],
-                        'subtype'  => $container['subtype'],
-                        'fields'   => [],
-                    ];
-                    $fields = $fields_obj->find(['plugin_fields_containers_id' => $container['id'],
-                        'is_active'                                            => true,
-                        'is_readonly'                                          => false,
-                    ]);
-                    if (count($fields)) {
-                        foreach ($fields as $field) {
-                            $tmp_field       = [];
-                            $tmp_field['id'] = (int) $field['id'];
+                        //to get translation
+                        $field['itemtype']           = PluginFieldsField::getType();
+                        $tmp_field['label']          = PluginFieldsLabelTranslation::getLabelFor($field);
+                        $tmp_field['xml_node']       = strtoupper($field['name']);
+                        $tmp_field['type']           = $field['type'];
+                        $tmp_field['ranking']        = $field['ranking'];
+                        $tmp_field['default_value']  = $field['default_value'];
+                        $tmp_field['mandatory']      = $field['mandatory'];
+                        $tmp_field['possible_value'] = '';
 
-                            //to get translation
-                            $field['itemtype']           = PluginFieldsField::getType();
-                            $tmp_field['label']          = PluginFieldsLabelTranslation::getLabelFor($field);
-                            $tmp_field['xml_node']       = strtoupper($field['name']);
-                            $tmp_field['type']           = $field['type'];
-                            $tmp_field['ranking']        = $field['ranking'];
-                            $tmp_field['default_value']  = $field['default_value'];
-                            $tmp_field['mandatory']      = $field['mandatory'];
-                            $tmp_field['possible_value'] = '';
+                        switch ($field['type']) {
+                            case 'dropdown':
+                                $dbu = new DbUtils();
+                                $obj = $dbu->getItemForItemtype($itemtype);
+                                $obj->getEmpty();
 
-                            switch ($field['type']) {
-                                case 'dropdown':
-                                    $dbu = new DbUtils();
-                                    $obj = $dbu->getItemForItemtype($itemtype);
-                                    $obj->getEmpty();
+                                $dropdown_itemtype     = PluginFieldsDropdown::getClassname($field['name']);
+                                $tmp_field['xml_node'] = strtoupper(getForeignKeyFieldForItemType($dropdown_itemtype));
 
-                                    $dropdown_itemtype     = PluginFieldsDropdown::getClassname($field['name']);
-                                    $tmp_field['xml_node'] = strtoupper(getForeignKeyFieldForItemType($dropdown_itemtype));
-
-                                    $dropdown_obj = $dbu->getItemForItemtype($dropdown_itemtype);
-                                    $dropdown_datas = $dropdown_obj->find();
-                                    $datas          = [];
-                                    foreach ($dropdown_datas as $value) {
-                                        $items          = [];
-                                        $items['id']    = (int) $value['id'];
-                                        $items['value'] = $value['name'];
-                                        $datas[]        = $items;
-                                    }
-                                    $tmp_field['possible_value'] = $datas;
-                                    break;
-                                case 'yesno':
-                                    $datas                       = [];
-                                    $datas['0']['id']            = 0;
-                                    $datas['0']['value']         = __('No');
-                                    $datas['1']['id']            = 1;
-                                    $datas['1']['value']         = __('Yes');
-                                    $tmp_field['possible_value'] = $datas;
-                                    break;
-                                case 'dropdownuser':
-                                    $datas                       = Dropdown::getDropdownUsers(['is_active' => 1, 'is_deleted' => 0], false);
-                                    $tmp_field['possible_value'] = $datas['results'];
-                                    break;
-                            }
-                            $yaml_conf['container'][$container['id'] . '-' . $itemtype]['fields'][] = $tmp_field;
+                                $dropdown_obj = $dbu->getItemForItemtype($dropdown_itemtype);
+                                $dropdown_datas = $dropdown_obj->find();
+                                $datas          = [];
+                                foreach ($dropdown_datas as $value) {
+                                    $items          = [];
+                                    $items['id']    = (int) $value['id'];
+                                    $items['value'] = $value['name'];
+                                    $datas[]        = $items;
+                                }
+                                $tmp_field['possible_value'] = $datas;
+                                break;
+                            case 'yesno':
+                                $datas                       = [];
+                                $datas['0']['id']            = 0;
+                                $datas['0']['value']         = __('No');
+                                $datas['1']['id']            = 1;
+                                $datas['1']['value']         = __('Yes');
+                                $tmp_field['possible_value'] = $datas;
+                                break;
+                            case 'dropdownuser':
+                                $datas                       = Dropdown::getDropdownUsers(['is_active' => 1, 'is_deleted' => 0], false);
+                                $tmp_field['possible_value'] = $datas['results'];
+                                break;
                         }
+                        $yaml_conf['container'][$container['id'] . '-' . $itemtype]['fields'][] = $tmp_field;
                     }
                 }
             }

@@ -28,7 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+use Glpi\DBAL\QueryExpression;
+
 Session::checkLoginUser();
 
 if (
@@ -37,7 +38,7 @@ if (
     || !array_key_exists('new_order', $_POST)
 ) {
     // Missing input
-    throw new \RuntimeException('Missing input', 400);
+    throw new RuntimeException('Missing input', 400);
 }
 
 $table        = PluginFieldsField::getTable();
@@ -62,7 +63,7 @@ $field_iterator = $DB->request(
 
 if (0 === $field_iterator->count()) {
     // Unknown field
-    throw new \RuntimeException('Unknown field', 404);
+    throw new RuntimeException('Unknown field', 404);
 }
 
 $field_id = $field_iterator->current()['id'];
@@ -72,7 +73,7 @@ if ($old_order < $new_order) {
     $DB->update(
         $table,
         [
-            'ranking' => new \Glpi\DBAL\QueryExpression($DB->quoteName('ranking') . ' - 1'),
+            'ranking' => new QueryExpression($DB->quoteName('ranking') . ' - 1'),
         ],
         [
             'plugin_fields_containers_id' => $container_id,
@@ -84,7 +85,7 @@ if ($old_order < $new_order) {
     $DB->update(
         $table,
         [
-            'ranking' => new \Glpi\DBAL\QueryExpression($DB->quoteName('ranking') . ' + 1'),
+            'ranking' => new QueryExpression($DB->quoteName('ranking') . ' + 1'),
         ],
         [
             'plugin_fields_containers_id' => $container_id,

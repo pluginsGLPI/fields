@@ -28,9 +28,11 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Features\Clonable;
+
 class PluginFieldsProfile extends CommonDBRelation
 {
-    use Glpi\Features\Clonable;
+    use Clonable;
 
     public static $itemtype_1 = PluginFieldsContainer::class;
     public static $items_id_1 = 'plugin_fields_containers_id';
@@ -69,7 +71,7 @@ class PluginFieldsProfile extends CommonDBRelation
                   KEY `plugin_fields_containers_id`   (`plugin_fields_containers_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             if (!$DB->doQuery($query)) {
-                throw new \RuntimeException('Error creating plugin_fields_profiles table: ' . $DB->error());
+                throw new RuntimeException('Error creating plugin_fields_profiles table: ' . $DB->error());
             }
         }
 

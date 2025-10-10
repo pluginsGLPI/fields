@@ -28,7 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
 Session::checkRight('config', UPDATE);
 
 if (isset($_POST['update'])) {
