@@ -813,9 +813,6 @@ class PluginFieldsField extends CommonDBChild
 
     public static function showForTabContainer($c_id, $item)
     {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
-
         //profile restriction
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
         if ($right < READ) {
@@ -826,22 +823,16 @@ class PluginFieldsField extends CommonDBChild
         //get fields for this container
         $field_obj = new self();
         $fields    = $field_obj->find(['plugin_fields_containers_id' => $c_id, 'is_active' => 1], 'ranking');
-        echo "<form method='POST' action='" . $CFG_GLPI['root_doc'] . "/plugins/fields/front/container.form.php'>";
-        echo Html::hidden('plugin_fields_containers_id', ['value' => $c_id]);
-        echo Html::hidden('items_id', ['value' => $item->getID()]);
-        echo Html::hidden('itemtype', ['value' => $item->getType()]);
-        echo "<table class='tab_cadre_fixe'>";
-        echo self::prepareHtmlFields($fields, $item, $canedit);
+        $html_fields = self::prepareHtmlFields($fields, $item, $canedit);
 
-        if ($canedit) {
-            echo "<tr><td class='tab_bg_2 center' colspan='4'>";
-            echo "<input class='btn btn-primary' type='submit' name='update_fields_values' value=\"" .
-            _sx('button', 'Save') . "\" class='submit'>";
-            echo '</td></tr>';
-        }
+        //display fields as tab container
+        TemplateRenderer::getInstance()->display('@fields/forms/tab_container.html.twig', [
+            'canedit' => $canedit,
+            'html_fields' => $html_fields,
+            'item'   => $item,
+            'c_id'   => $c_id,
+        ]);
 
-        echo '</table>';
-        Html::closeForm();
 
         return true;
     }
@@ -960,17 +951,15 @@ class PluginFieldsField extends CommonDBChild
             return;
         }
 
+        $class = match (true) {
+            !($item instanceof CommonITILObject) && $item instanceof CommonDropdown => 'card-body row',
+            // @phpstan-ignore-next-line -> Instanceof between CommonDBTM and CommonDropdown will always evaluate to false.
+            !($item instanceof CommonITILObject) && !($item instanceof CommonDropdown) => 'card-body d-flex flex-wrap', // lign 969
+            default => '',
+        };
         $html_id = 'plugin_fields_container_' . mt_rand();
-        if (str_contains($current_url, 'helpdesk.public.php')) {
-            echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
-            echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
-            $field_options = [
-                'label_class' => 'col-lg-3',
-                'input_class' => 'col-lg-9',
-            ];
-        } else {
-            echo "<div id='{$html_id}'>";
-        }
+
+        echo "<div id='{$html_id}' class='" . $class . "'>";
         $display_condition = new PluginFieldsContainerDisplayCondition();
         if ($display_condition->computeDisplayContainer($item, $c_id)) {
             self::showDomContainer(
@@ -978,11 +967,8 @@ class PluginFieldsField extends CommonDBChild
                 $item,
                 $type,
                 $subtype,
-                $field_options ?? [],
+                [],
             );
-        }
-        if (str_contains($current_url, 'helpdesk.public.php')) {
-            echo '</div>';
         }
         echo '</div>';
 
@@ -1085,6 +1071,7 @@ JAVASCRIPT
         $massiveaction = false,
         $field_options = []
     ) {
+
         if (empty($fields)) {
             return false;
         }
