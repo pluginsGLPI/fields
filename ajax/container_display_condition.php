@@ -27,8 +27,6 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
-include(__DIR__ . '/../../../inc/includes.php');
 Session::checkLoginUser();
 
 if (isset($_GET['action'])) {

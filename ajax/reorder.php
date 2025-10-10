@@ -30,7 +30,6 @@
 
 use Glpi\DBAL\QueryExpression;
 
-include(__DIR__ . '/../../../inc/includes.php');
 Session::checkLoginUser();
 
 if (
