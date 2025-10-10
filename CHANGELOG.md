@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+## [1.21.24] - 2025-10-10
+
 ### Fixed
 
 - Fix  `massive action` for adding value to `multiple` dropdown fields
