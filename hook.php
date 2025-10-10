@@ -315,9 +315,9 @@ function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 
     //fix glpi default Search::giveItem who for empty date display "--"
     if (
-        strpos($table, 'glpi_plugin_fields') !== false
+        str_contains($table, 'glpi_plugin_fields')
         && isset($searchopt[$ID]['datatype'])
-        && strpos($searchopt[$ID]['datatype'], 'date') !== false
+        && str_contains($searchopt[$ID]['datatype'], 'date')
         && empty($data['raw']["ITEM_$num"])
     ) {
         return ' ';
@@ -349,7 +349,7 @@ function plugin_datainjection_populate_fields()
 
 function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 {
-    /** @var \DBmysql $DB */
+    /** @var DBmysql $DB */
     global $DB;
 
     $searchopt    = &Search::getOptions($itemtype);
@@ -373,7 +373,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         if ($searchtype == 'equals' || $searchtype == 'notequals') {
             $operator = ($searchtype == 'equals') ? '=' : '!=';
             if ($nott) {
-                $link = $link . ' NOT ';
+                $link .= ' NOT ';
             }
             return $link . 'CAST(' . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val) ;
         } else {

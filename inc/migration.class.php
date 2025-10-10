@@ -58,11 +58,7 @@ class PluginFieldsMigration extends Migration
                 if ($field_type === 'dropdown') {
                     $field_name = getForeignKeyFieldForItemType(PluginFieldsDropdown::getClassname($field_name));
                 }
-                if ($options['multiple'] ?? false) {
-                    $fields[$field_name] = 'LONGTEXT';
-                } else {
-                    $fields[$field_name] = "INT {$default_key_sign} NOT NULL DEFAULT 0";
-                }
+                $fields[$field_name] = $options['multiple'] ?? false ? 'LONGTEXT' : "INT {$default_key_sign} NOT NULL DEFAULT 0";
                 break;
             case $field_type === 'textarea':
             case $field_type === 'url':
@@ -210,9 +206,7 @@ class PluginFieldsMigration extends Migration
 
         return array_filter(
             $fields,
-            function (string $field) use ($basic_fields) {
-                return !in_array($field, $basic_fields);
-            },
+            fn(string $field) => !in_array($field, $basic_fields),
         );
     }
 }

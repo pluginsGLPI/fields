@@ -1,5 +1,8 @@
 <?php
 
+use Glpi\Features\Clonable;
+use Glpi\DBAL\QueryExpression;
+
 /**
  * -------------------------------------------------------------------------
  * Fields plugin for GLPI
@@ -27,10 +30,9 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
 class PluginFieldsContainer extends CommonDBTM
 {
-    use Glpi\Features\Clonable;
+    use Clonable;
 
     public static $rightname = 'config';
 
@@ -95,7 +97,7 @@ class PluginFieldsContainer extends CommonDBTM
                   KEY            `entities_id`  (`entities_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             if (!$DB->doQuery($query)) {
-                throw new \RuntimeException('Error creating plugin_fields_containers table: ' . $DB->error());
+                throw new RuntimeException('Error creating plugin_fields_containers table: ' . $DB->error());
             }
         }
 
@@ -107,7 +109,7 @@ class PluginFieldsContainer extends CommonDBTM
             $DB->update(
                 $table,
                 [
-                    'itemtypes' => new \Glpi\DBAL\QueryExpression(
+                    'itemtypes' => new QueryExpression(
                         sprintf(
                             'CONCAT(%s, %s, %s)',
                             $DB->quoteValue('[\"'),
@@ -122,19 +124,19 @@ class PluginFieldsContainer extends CommonDBTM
 
         //add display preferences for this class
         $d_pref = new DisplayPreference();
-        $found  = $d_pref->find(['itemtype' => __CLASS__]);
+        $found  = $d_pref->find(['itemtype' => self::class]);
         if (count($found) === 0) {
             for ($i = 2; $i <= 5; $i++) {
                 $DB->updateOrInsert(
                     DisplayPreference::getTable(),
                     [
-                        'itemtype' => __CLASS__,
+                        'itemtype' => self::class,
                         'num'      => $i,
                         'rank'     => $i - 1,
                         'users_id' => 0,
                     ],
                     [
-                        'itemtype' => __CLASS__,
+                        'itemtype' => self::class,
                         'num'      => $i,
                         'users_id' => 0,
                     ],
@@ -152,14 +154,14 @@ class PluginFieldsContainer extends CommonDBTM
             // Check GenericObject version
             $genericobject_info = Plugin::getInfo('genericobject');
             if (version_compare($genericobject_info['version'] ?? '0', '3.0.0', '<')) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     'GenericObject plugin cannot be migrated. Please update it to the latest version.',
                 );
             }
 
             // Check glpi_plugin_genericobject_types table
             if (!$DB->fieldExists('glpi_plugin_genericobject_types', 'itemtype')) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     'Integrity error on the glpi_plugin_genericobject_types table from the GenericObject plugin.',
                 );
             }
@@ -179,7 +181,7 @@ class PluginFieldsContainer extends CommonDBTM
             $result = $DB->request([
                 'FROM'   => $table,
                 'WHERE'  => [
-                    new Glpi\DBAL\QueryExpression(
+                    new QueryExpression(
                         $table . ".itemtypes LIKE '%PluginGenericobject%'",
                     ),
                 ],
@@ -195,7 +197,7 @@ class PluginFieldsContainer extends CommonDBTM
                     if (
                         $DB->tableExists($old_table) &&
                         isset($migration_genericobject_itemtype[$itemtype]) &&
-                        strpos($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name']) !== false
+                        str_contains($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'])
                     ) {
                         $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . strtolower($migration_genericobject_itemtype[$itemtype]['name']), $old_table);
                         $migration->renameTable($old_table, $new_table);
@@ -333,7 +335,7 @@ class PluginFieldsContainer extends CommonDBTM
                     $newname    = $field['name'];
                     $compfields = $fields->find(['plugin_fields_containers_id' => $comptab, 'name' => $newname]);
                     if ($compfields) {
-                        $newname = $newname . '_os';
+                        $newname .= '_os';
                         $DB->update(
                             'glpi_plugin_fields_fields',
                             [
@@ -446,7 +448,7 @@ class PluginFieldsContainer extends CommonDBTM
         //delete display preferences for this item
         $pref = new DisplayPreference();
         $pref->deleteByCriteria([
-            'itemtype' => __CLASS__,
+            'itemtype' => self::class,
         ]);
 
         return true;
@@ -1033,46 +1035,44 @@ HTML;
     public static function showFormSubtype($params, $display = false)
     {
         $out = "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
-        if (isset($params['type']) && $params['type'] == 'domtab') {
-            if (class_exists($params['itemtype'])) {
-                $dbu = new DbUtils();
-                $item = $dbu->getItemForItemtype($params['itemtype']);
-                if ($item !== false) {
-                    $item->getEmpty();
+        if (isset($params['type']) && $params['type'] == 'domtab' && class_exists($params['itemtype'])) {
+            $dbu = new DbUtils();
+            $item = $dbu->getItemForItemtype($params['itemtype']);
+            if ($item !== false) {
+                $item->getEmpty();
 
-                    $tabs = self::getSubtypes($item);
+                $tabs = self::getSubtypes($item);
 
-                    if (count($tabs)) {
-                        // delete Log of array (don't work with this tab)
-                        $tabs_to_remove = ['Log$1', 'Document_Item$1'];
-                        foreach ($tabs_to_remove as $tab_to_remove) {
-                            if (isset($tabs[$tab_to_remove])) {
-                                unset($tabs[$tab_to_remove]);
-                            }
+                if (count($tabs)) {
+                    // delete Log of array (don't work with this tab)
+                    $tabs_to_remove = ['Log$1', 'Document_Item$1'];
+                    foreach ($tabs_to_remove as $tab_to_remove) {
+                        if (isset($tabs[$tab_to_remove])) {
+                            unset($tabs[$tab_to_remove]);
                         }
-
-                        // For delete <sup class='tab_nb'>number</sup> :
-                        foreach ($tabs as &$value) {
-                            $results = [];
-                            if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
-                                $value = str_replace($results[0][0], '', $value);
-                            }
-                        }
-
-                        if (!isset($params['subtype'])) {
-                            $params['subtype'] = null;
-                        }
-
-                        $out .= Dropdown::showFromArray(
-                            'subtype',
-                            $tabs,
-                            ['value'      => $params['subtype'],
-                                'width'   => '100%',
-                                'display' => false,
-                            ],
-                        );
-                        $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
                     }
+
+                    // For delete <sup class='tab_nb'>number</sup> :
+                    foreach ($tabs as &$value) {
+                        $results = [];
+                        if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
+                            $value = str_replace($results[0][0], '', $value);
+                        }
+                    }
+
+                    if (!isset($params['subtype'])) {
+                        $params['subtype'] = null;
+                    }
+
+                    $out .= Dropdown::showFromArray(
+                        'subtype',
+                        $tabs,
+                        ['value'      => $params['subtype'],
+                            'width'   => '100%',
+                            'display' => false,
+                        ],
+                    );
+                    $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
                 }
             }
         }
@@ -1099,9 +1099,7 @@ HTML;
             foreach ($all_itemtypes as $section => $itemtypes) {
                 $all_itemtypes[$section] = array_filter(
                     $itemtypes,
-                    function ($itemtype) {
-                        return count(self::getSubtypes($itemtype)) > 0;
-                    },
+                    fn($itemtype) => count(self::getSubtypes($itemtype)) > 0,
                     ARRAY_FILTER_USE_KEY,
                 );
             }
@@ -1446,7 +1444,7 @@ HTML;
             foreach ($data as $key => $value) {
                 //log only not empty values
                 //do not log if value is empty or if dom name is part of file upload
-                if (!empty($value) && strpos($key, '_uploader_') === false) {
+                if (!empty($value) && !str_contains($key, '_uploader_')) {
                     //prepare log
                     $changes = [0, 'N/A', $value];
 
@@ -1615,10 +1613,8 @@ HTML;
                 $value = $data[$name];
             } elseif (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
                 $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } else {
-                if ($massiveaction) {
-                    continue;
-                }
+            } elseif ($massiveaction) {
+                continue;
             }
 
             //translate label
@@ -1648,17 +1644,17 @@ HTML;
             }
         }
 
-        if (!empty($empty_errors)) {
+        if ($empty_errors !== []) {
             Session::AddMessageAfterRedirect(__('Some mandatory fields are empty', 'fields') .
                                           ' : ' . implode(', ', $empty_errors), false, ERROR);
         }
 
-        if (!empty($number_errors)) {
+        if ($number_errors !== []) {
             Session::AddMessageAfterRedirect(__('Some numeric fields contains non numeric values', 'fields') .
                                           ' : ' . implode(', ', $number_errors), false, ERROR);
         }
 
-        if (!empty($url_errors)) {
+        if ($url_errors !== []) {
             Session::AddMessageAfterRedirect(__('Some URL fields contains invalid links', 'fields') .
                                           ' : ' . implode(', ', $url_errors), false, ERROR);
         }
@@ -1673,9 +1669,7 @@ HTML;
             ['type'     => $type],
         ];
 
-        $entity = isset($_SESSION['glpiactiveentities'])
-                  ? $_SESSION['glpiactiveentities']
-                  : 0;
+        $entity = $_SESSION['glpiactiveentities'] ?? 0;
         $condition += getEntitiesRestrictCriteria('', '', $entity, true, true);
 
         if ($subtype != '') {
@@ -1794,11 +1788,9 @@ HTML;
             if ($type == 'domtab') {
                 $subtype = $_REQUEST['_plugin_fields_subtype'];
             }
-            if (false === ($c_id = self::findContainer(get_Class($item), $type, $subtype))) {
-                // tries for 'tab'
-                if (false === ($c_id = self::findContainer(get_Class($item)))) {
-                    return false;
-                }
+            // tries for 'tab'
+            if (false === ($c_id = self::findContainer(get_Class($item), $type, $subtype)) && false === $c_id = self::findContainer(get_Class($item))) {
+                return false;
             }
         }
 
@@ -1913,7 +1905,6 @@ HTML;
                     $item->input[$input] = str_replace(',', '.', $item->input[$input]);
                 }
                 $data[$input] = $item->input[$input];
-
                 if ($field['type'] === 'richtext') {
                     $filename_input = sprintf('_%s', $input);
                     $prefix_input   = sprintf('_prefix_%s', $input);
@@ -1923,43 +1914,40 @@ HTML;
                     $data[$prefix_input]   = $item->input[$prefix_input]   ?? [];
                     $data[$tag_input]      = $item->input[$tag_input]      ?? [];
                 }
-            } else {
+            } elseif ($field['multiple']) {
                 //the absence of the field in the input may be due to the fact that the input allows multiple selection
                 // ex my_dom[]
                 //in these conditions, the input is never sent by the browser
-                if ($field['multiple']) {
-                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'assign';
-                    //handle multi dropdown field
-                    if ($field['type'] == 'dropdown') {
-                        $multiple_key         = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
-                        $multiple_key_defined = '_' . $multiple_key . '_defined';
-                        //values are defined by user
-                        if (isset($item->input[$multiple_key])) {
-                            $data[$multiple_key] = $item->input[$multiple_key];
+                $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'assign';
+                //handle multi dropdown field
+                if ($field['type'] == 'dropdown') {
+                    $multiple_key         = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
+                    $multiple_key_defined = '_' . $multiple_key . '_defined';
+                    //values are defined by user
+                    if (isset($item->input[$multiple_key])) {
+                        $data[$multiple_key] = $item->input[$multiple_key];
+                        $has_fields          = true;
+                    } elseif (
+                        isset($item->input[$multiple_key_defined])
+                        && $item->input[$multiple_key_defined]
+                    ) { //multi dropdown is empty or has been emptied
+                        $data[$multiple_key] = [];
+                        $has_fields          = true;
+                    } elseif (isset($_REQUEST['massiveaction'])) { // called from massiveaction
+                        if (isset($_POST[$multiple_key])) {
+                            $data[$multiple_key] = $_POST[$multiple_key];
                             $has_fields          = true;
-                        } elseif (
-                            isset($item->input[$multiple_key_defined])
-                            && $item->input[$multiple_key_defined]
-                        ) { //multi dropdown is empty or has been emptied
-                            $data[$multiple_key] = [];
-                            $has_fields          = true;
-                        } elseif (isset($_REQUEST['massiveaction'])) { // called from massiveaction
-                            if (isset($_POST[$multiple_key])) {
-                                $data[$multiple_key] = $_POST[$multiple_key];
-                                $has_fields          = true;
-                            }
                         }
                     }
-
-                    //managed multi GLPI item dropdown field
-                    if (preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1) {
-                        //values are defined by user
-                        if (isset($item->input[$field['name']])) {
-                            $data[$field['name']] = $item->input[$field['name']];
-                            $has_fields           = true;
-                        } else { //multi dropdown is empty or has been emptied
-                            $data[$field['name']] = [];
-                        }
+                }
+                //managed multi GLPI item dropdown field
+                if (preg_match('/^dropdown-(?<type>.+)$/', $field['type'], $match) === 1) {
+                    //values are defined by user
+                    if (isset($item->input[$field['name']])) {
+                        $data[$field['name']] = $item->input[$field['name']];
+                        $has_fields           = true;
+                    } else { //multi dropdown is empty or has been emptied
+                        $data[$field['name']] = [];
                     }
                 }
             }
@@ -2001,7 +1989,7 @@ HTML;
                 'glpi_plugin_fields_containers.label AS container_label',
                 (
                     Session::isCron()
-                        ? new \Glpi\DBAL\QueryExpression(sprintf('%s AS %s', READ + CREATE, $DB->quoteName('right')))
+                        ? new QueryExpression(sprintf('%s AS %s', READ + CREATE, $DB->quoteName('right')))
                         : 'glpi_plugin_fields_profiles.right'
                 ),
             ],

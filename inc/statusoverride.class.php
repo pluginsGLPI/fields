@@ -27,12 +27,12 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
+use Glpi\Features\Clonable;
 use Glpi\Application\View\TemplateRenderer;
 
 class PluginFieldsStatusOverride extends CommonDBChild
 {
-    use Glpi\Features\Clonable;
+    use Clonable;
 
     public static $itemtype = PluginFieldsField::class;
     public static $items_id = 'plugin_fields_fields_id';
@@ -70,7 +70,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
                   KEY `plugin_fields_fields_id`       (`plugin_fields_fields_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             if (!$DB->doQuery($query)) {
-                throw new \RuntimeException('Error creating plugin_fields_statusoverrides table: ' . $DB->error());
+                throw new RuntimeException('Error creating plugin_fields_statusoverrides table: ' . $DB->error());
             }
         }
 
@@ -252,9 +252,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
         $overrides = self::getOverridesForContainer($container_id);
 
-        return array_filter($overrides, static function ($override) use ($itemtype, $status) {
-            return $override['itemtype'] === $itemtype && in_array($status, $override['states'], false);
-        });
+        return array_filter($overrides, static fn($override) => $override['itemtype'] === $itemtype && in_array($status, $override['states'], false));
     }
 
     private static function getItemtypesForContainer(int $container_id): array
@@ -270,14 +268,12 @@ class PluginFieldsStatusOverride extends CommonDBChild
             ],
         ]);
 
-        if (count($iterator)) {
+        if (count($iterator) > 0) {
             $itemtypes        = $iterator->current()['itemtypes'];
             $itemtypes        = importArrayFromDB($itemtypes);
             $status_itemtypes = self::getStatusItemtypes();
             // Get only itemtypes that exist and have a status field
-            $itemtypes = array_filter($itemtypes, static function ($itemtype) use ($status_itemtypes) {
-                return class_exists($itemtype) && in_array($itemtype, $status_itemtypes, true);
-            });
+            $itemtypes = array_filter($itemtypes, static fn($itemtype) => class_exists($itemtype) && in_array($itemtype, $status_itemtypes, true));
             $results = [];
             foreach ($itemtypes as $itemtype) {
                 $results[$itemtype] = $itemtype::getTypeName();
@@ -337,9 +333,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
         foreach ($overrides as &$override) {
             $names                    = $statuses[$override['itemtype']] ?? $statuses['Other'];
-            $override['status_names'] = array_filter($names, static function ($name, $id) use ($override) {
-                return in_array($id, $override['states']);
-            }, ARRAY_FILTER_USE_BOTH);
+            $override['status_names'] = array_filter($names, static fn($name, $id) => in_array($id, $override['states']), ARRAY_FILTER_USE_BOTH);
         }
     }
 

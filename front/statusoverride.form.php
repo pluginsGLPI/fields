@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+include(__DIR__ . '/../../../inc/includes.php');
 Session::checkRight('config', READ);
 
 $status_override = new PluginFieldsStatusOverride();

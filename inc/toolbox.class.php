@@ -1,5 +1,7 @@
 <?php
 
+use Glpi\Socket;
+
 /**
  * -------------------------------------------------------------------------
  * Fields plugin for GLPI
@@ -27,7 +29,6 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
 class PluginFieldsToolbox
 {
     /**
@@ -49,7 +50,7 @@ class PluginFieldsToolbox
 
         // 3. if empty, uses a random number
         if (strlen($name) == 0) {
-            $name = rand();
+            $name = random_int(0, mt_getrandmax());
         }
 
         // 4. replace numbers by letters
@@ -228,7 +229,7 @@ class PluginFieldsToolbox
             PDU::class,
             PassiveDCEquipment::class,
             Cable::class,
-            Glpi\Socket::class,
+            Socket::class,
         ];
 
         $assistance_itemtypes = [

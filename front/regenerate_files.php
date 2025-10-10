@@ -28,8 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
-include('../hook.php');
+include(__DIR__ . '/../../../inc/includes.php');
+include(__DIR__ . '/../hook.php');
 
 Session::checkRight('config', READ);
 

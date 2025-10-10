@@ -31,7 +31,7 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+include(__DIR__ . '/../../../inc/includes.php');
 header('Content-Type: text/html; charset=UTF-8');
 Html::header_nocache();
 Session::checkLoginUser();
@@ -66,11 +66,9 @@ if ($type === 'glpi_item') {
         echo implode(
             ', ',
             array_map(
-                function ($itemtype) {
-                    return is_a($itemtype, CommonDBTM::class, true)
-                    ? $itemtype::getTypeName(Session::getPluralNumber())
-                    : $itemtype;
-                },
+                fn($itemtype) => is_a($itemtype, CommonDBTM::class, true)
+                ? $itemtype::getTypeName(Session::getPluralNumber())
+                : $itemtype,
                 $allowed_itemtypes,
             ),
         );

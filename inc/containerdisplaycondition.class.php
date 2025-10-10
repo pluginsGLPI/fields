@@ -27,14 +27,12 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
+use Glpi\Features\Clonable;
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\Toolbox\Sanitizer;
-use GlpiPlugin\Scim\Controller\Common;
 
 class PluginFieldsContainerDisplayCondition extends CommonDBChild
 {
-    use Glpi\Features\Clonable;
+    use Clonable;
 
     public static $itemtype = PluginFieldsContainer::class;
     public static $items_id = 'plugin_fields_containers_id';
@@ -216,7 +214,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             ],
         ]);
 
-        if (count($iterator)) {
+        if (count($iterator) > 0) {
             $itemtypes = $iterator->current()['itemtypes'];
             $itemtypes = importArrayFromDB($itemtypes);
             foreach ($itemtypes as $itemtype) {
@@ -262,7 +260,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $itemtypetable = $itemtype::getTable();
 
         $twig_params = [
-            'rand'           => rand(),
+            'rand'           => random_int(0, mt_getrandmax()),
             'is_dropdown'    => false,
             'is_specific'    => false,
             'is_list_values' => false,
@@ -366,7 +364,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
         $allowed_table = [getTableForItemType($itemtype_class), User::getTable(), Group::getTable()];
         if ($itemtype_object->maybeLocated()) {
-            array_push($allowed_table, Location::getTable());
+            $allowed_table[] = Location::getTable();
         }
 
         //use relation.constant.php to allow some tables (exclude Location which is managed using `CommonDBTM::maybeLocated()`)
@@ -464,10 +462,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 break;
             case self::SHOW_CONDITION_REGEX:
                 //'regex';
-                if (self::checkRegex($value)) {
-                    if (preg_match_all($value . 'i', $fields[$searchOption['linkfield']]) > 0) {
-                        return false;
-                    }
+                if (self::checkRegex($value) && preg_match_all($value . 'i', $fields[$searchOption['linkfield']]) > 0) {
+                    return false;
                 }
                 break;
             case self::SHOW_CONDITION_UNDER:
@@ -490,10 +486,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
     public static function checkRegex($regex)
     {
         // Avoid php notice when validating the regular expression
-        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-            return true;
-        });
-        $isValid = !(preg_match($regex, '') === false);
+        set_error_handler(fn($errno, $errstr, $errfile, $errline) => true);
+        $isValid = preg_match($regex, '') !== false;
         restore_error_handler();
 
         return $isValid;

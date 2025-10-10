@@ -1,5 +1,7 @@
 <?php
 
+use Glpi\Features\Clonable;
+
 /**
  * -------------------------------------------------------------------------
  * Fields plugin for GLPI
@@ -27,10 +29,9 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-
 class PluginFieldsLabelTranslation extends CommonDBChild
 {
-    use Glpi\Features\Clonable;
+    use Clonable;
 
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
@@ -70,7 +71,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                   UNIQUE KEY `unicity` (`itemtype`, `items_id`, `language`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             if (!$DB->doQuery($query)) {
-                throw new \RuntimeException('Error creating plugin_fields_labeltranslations table: ' . $DB->error());
+                throw new RuntimeException('Error creating plugin_fields_labeltranslations table: ' . $DB->error());
             }
         }
 
@@ -169,7 +170,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             echo "<div id='viewtranslation" . $item->getID() . "$rand'></div>";
 
             $ajax_params = [
-                'type'     => __CLASS__,
+                'type'     => self::class,
                 'itemtype' => $item::getType(),
                 'items_id' => $item->fields['id'],
                 'id'       => -1,
@@ -199,8 +200,8 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
         if (count($found) > 0) {
             if ($canedit) {
-                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                $massiveactionparams = ['container' => 'mass' . __CLASS__ . $rand];
+                Html::openMassiveActionsForm('mass' . self::class . $rand);
+                $massiveactionparams = ['container' => 'mass' . self::class . $rand];
                 Html::showMassiveActions($massiveactionparams);
             }
             echo "<div class='center'>";
@@ -208,7 +209,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             echo "<th colspan='4'>" . __('List of translations') . '</th></tr>';
             if ($canedit) {
                 echo "<th width='10'>";
-                echo Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand);
+                echo Html::getCheckAllAsCheckbox('mass' . self::class . $rand);
                 echo '</th>';
             }
             echo '<th>' . __('Language', 'fields') . '</th>';
@@ -218,13 +219,13 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                       onClick=\"viewEditTranslation" . $data['id'] . "$rand();\"" : '') . '>';
                 if ($canedit) {
                     echo "<td class='center'>";
-                    Html::showMassiveActionCheckBox(__CLASS__, $data['id']);
+                    Html::showMassiveActionCheckBox(self::class, $data['id']);
                     echo '</td>';
                 }
                 echo '<td>';
                 if ($canedit) {
                     $ajax_params = [
-                        'type'     => __CLASS__,
+                        'type'     => self::class,
                         'itemtype' => $item::getType(),
                         'items_id' => $item->getID(),
                         'id'       => $data['id'],
