@@ -949,41 +949,29 @@ class PluginFieldsField extends CommonDBChild
             //Retrieve dom container
             $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
-<<<<<<< HEAD
             //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
             if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
-                continue;
+                return;
             }
 
-            $html_id = 'plugin_fields_container_' . mt_rand();
-            if (strpos($current_url, 'helpdesk.public.php') !== false) {
-=======
+            $class = match (true) {
+                !($item instanceof CommonITILObject) && $item instanceof CommonDropdown => 'card-body row',
+                // @phpstan-ignore-next-line -> Instanceof between CommonDBTM and CommonDropdown will always evaluate to false.
+                !($item instanceof CommonITILObject) && !($item instanceof CommonDropdown) => 'card-body d-flex flex-wrap', // lign 969
+                default => '',
+            };
             $html_id = 'plugin_fields_container_' . $container_id;
-            $in_helpdesk = (strpos($current_url, 'helpdesk.public.php') !== false);
-            if ($in_helpdesk) {
->>>>>>> 820d069 (update: findContainers method to use entityId instead of itemId)
-                echo "<div id='{$html_id}' class='card-body row mx-0' style='border-top:0'>";
-                echo "<div class='offset-md-1 col-md-8 col-xxl-6'>";
-                $field_options = [
-                    'label_class' => 'col-lg-3',
-                    'input_class' => 'col-lg-9',
-                ];
-            } else {
-                echo "<div id='{$html_id}'>";
-            }
+
+            echo "<div id='{$html_id}' class='" . $class . "'>";
             $display_condition = new PluginFieldsContainerDisplayCondition();
-            if ($display_condition->computeDisplayContainer($item, $c_id)) {
+            if ($display_condition->computeDisplayContainer($item, $container_id)) {
                 self::showDomContainer(
-                    $c_id,
+                    $container_id,
                     $item,
                     $type,
                     $subtype,
-                    $field_options ?? [],
+                    [],
                 );
-            }
-
-            if ($in_helpdesk) {
-                echo '</div>';
             }
             echo '</div>';
 
