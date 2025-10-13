@@ -38,7 +38,7 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
 {
     protected function configure()
     {
-        $this->setName('plugin:fields:check_database');
+        $this->setName('plugins:fields:check_database');
         $this->setDescription(__('Check database to detect inconsistencies.', 'fields'));
         $this->setHelp(
             __('This command will check database to detect following inconsistencies:', 'fields')
