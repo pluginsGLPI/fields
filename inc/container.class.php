@@ -237,9 +237,13 @@ class PluginFieldsContainer extends CommonDBTM
         $obj        = new self();
         $containers = $obj->find();
         foreach ($containers as $container) {
-            $itemtypes = !empty($container['itemtypes'])
-                ? json_decode($container['itemtypes'], true)
-                : [];
+            $itemtypes = [];
+            if (!empty($container['itemtypes'])) {
+                $decoded = json_decode($container['itemtypes'], true);
+                if (is_array($decoded)) {
+                    $itemtypes = $decoded;
+                }
+            }
 
             foreach ($itemtypes as $itemtype) {
                 $sysname        = self::getSystemName($itemtype, $container['name']);
