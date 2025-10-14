@@ -43,10 +43,9 @@ class PluginFieldsMenu extends CommonGLPI
             return false;
         }
 
-        $front_fields = Plugin::getPhpDir('fields', false) . '/front';
         $menu         = [
             'title' => self::getMenuName(),
-            'page'  => "$front_fields/container.php",
+            'page'  => "/plugins/fields/front/container.php",
             'icon'  => PluginFieldsContainer::getIcon(),
         ];
 
