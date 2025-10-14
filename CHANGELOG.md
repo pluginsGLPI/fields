@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fix drag and drop
 - Increased the maximum length of the language column to support longer locale codes
+- Fix left side menu url
 
 ## [1.22.1] - 2025-10-10
 
