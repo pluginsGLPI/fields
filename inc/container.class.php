@@ -168,11 +168,27 @@ class PluginFieldsContainer extends CommonDBTM
             }
 
             $migration_genericobject_itemtype = [];
-            $result = $DB->request(['FROM' => 'glpi_plugin_genericobject_types']);
+            $result = $DB->request([
+                'FROM' => 'glpi_plugin_genericobject_types',
+                'WHERE'  => [
+                    new QueryExpression(
+                        $table . ".itemtypes LIKE '%PluginGenericobject%'",
+                    ),
+                ],
+            ]);
             foreach ($result as $type) {
+                $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'Asset';
+                if (str_contains($type['itemtype'], 'Model')) {
+                    $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'AssetModel';
+                }
+
+                if (str_contains($type['itemtype'], 'Model')) {
+                    $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'AssetType';
+                }
+
                 $migration_genericobject_itemtype[$type['itemtype']] = [
                     'genericobject_itemtype' => $type['itemtype'],
-                    'itemtype' => 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'Asset',
+                    'itemtype' => $customasset_classname,
                     'genericobject_name' => $type['name'],
                     'name' => $type['name'] . 'Asset',
                 ];
