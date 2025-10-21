@@ -63,7 +63,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                   `id`                         INT          {$default_key_sign} NOT NULL auto_increment,
                   `itemtype`                   VARCHAR(30)  NOT NULL,
                   `items_id`                   INT          {$default_key_sign} NOT NULL,
-                  `language`                   VARCHAR(5)   NOT NULL,
+                  `language`                   VARCHAR(10)   NOT NULL,
                   `label`                      VARCHAR(255) DEFAULT NULL,
                   PRIMARY KEY                  (`id`),
                   KEY `itemtype`               (`itemtype`),
@@ -88,6 +88,10 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             $migration->migrationOneTable($table);
             $migration->changeField($table, 'plugin_fields_items_id', 'items_id', "INT {$default_key_sign} NOT NULL");
             $migration->addKey($table, 'items_id');
+        }
+
+        if ($DB->fieldExists($table, 'language')) {
+            $migration->changeField($table, 'language', 'language', "VARCHAR(10) NOT NULL");
         }
 
         return true;
