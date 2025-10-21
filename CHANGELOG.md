@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Increased the maximum length of the language column to support longer locale codes
+
 ## [1.21.24] - 2025-10-10
 
 ### Fixed
