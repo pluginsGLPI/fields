@@ -94,8 +94,6 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             $migration->changeField($table, 'language', 'language', "VARCHAR(10) NOT NULL");
         }
 
-
-
         return true;
     }
 
