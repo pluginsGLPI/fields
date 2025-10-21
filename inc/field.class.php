@@ -995,6 +995,9 @@ class PluginFieldsField extends CommonDBChild
                     {}
                 );
 
+                // Check current visibility state before refresh
+                const wasVisible = $('#{$html_id}').children().length > 0;
+
                 $.ajax(
                     {
                         url: '{$ajax_url}',
@@ -1009,10 +1012,18 @@ class PluginFieldsField extends CommonDBChild
                             input:    data
                         },
                         success: function(data) {
-                            // Close open select2 dropdown that will be replaced
-                            $('#{$html_id}').find('.select2-hidden-accessible').select2('close');
-                            // Refresh fields HTML
-                            $('#{$html_id}').html(data);
+                            // Check if visibility will change
+                            const willBeVisible = data.trim() !== '';
+
+                            // Only refresh if visibility state changes
+                            // This prevents unnecessary DOM replacement that breaks validation event listeners
+                            if (wasVisible !== willBeVisible) {
+                                // Close open select2 dropdown that will be replaced
+                                $('#{$html_id}').find('.select2-hidden-accessible').select2('close');
+
+                                // Refresh fields HTML
+                                $('#{$html_id}').html(data);
+                            }
                         }
                     }
                 );
