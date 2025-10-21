@@ -178,7 +178,7 @@ class PluginFieldsContainer extends CommonDBTM
             ]);
             foreach ($result as $type) {
                 $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'Asset';
-                if (str_contains($type['itemtype'], 'Model')) {
+                if (str_ends_with($type['itemtype'], 'Model')) {
                     $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'AssetModel';
                 }
 
