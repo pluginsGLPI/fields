@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## ['UNRELEASED']
+## [UNRELEASED]
+
+### Fixed
+
+- Increased the maximum length of the language column to support longer locale codes
 
 ## [1.22.1] - 2025-10-10
 
