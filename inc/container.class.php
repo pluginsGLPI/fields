@@ -242,6 +242,10 @@ class PluginFieldsContainer extends CommonDBTM
                         ],
                     );
                 }
+            } else {
+                throw new RuntimeException(
+                    'The Fields plugin is referencing a GenericObject class, but the corresponding table glpi_plugin_genericobject_types could not be found in the database.',
+                );
             }
         }
 
