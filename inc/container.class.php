@@ -248,10 +248,6 @@ class PluginFieldsContainer extends CommonDBTM
                 );
             }
         }
-
-
-
-
         return true;
     }
 
