@@ -205,11 +205,7 @@ function plugin_init_fields()
  */
 function plugin_fields_script_endswith($scriptname)
 {
-    //append plugin directory to avoid dumb errors...
-    $scriptname  = 'fields/front/' . $scriptname;
-    $script_name = $_SERVER['REQUEST_URI'];
-
-    return str_contains($script_name, $scriptname);
+    return str_contains($_SERVER['REQUEST_URI'], $scriptname);
 }
 
 
