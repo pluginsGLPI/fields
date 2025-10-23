@@ -1,4 +1,7 @@
-dist/
-vendor/
+/dist/
+/node_modules/
+/vendor/
 .gh_token
+.phpunit.result.cache
+tests/files/
 *.min.*

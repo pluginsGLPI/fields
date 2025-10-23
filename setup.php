@@ -34,7 +34,7 @@ global $CFG_GLPI;
 define('PLUGIN_FIELDS_VERSION', '1.22.2');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_FIELDS_MIN_GLPI', '11.0.0');
+define('PLUGIN_FIELDS_MIN_GLPI', '11.0.2');
 // Maximum GLPI version, exclusive
 define('PLUGIN_FIELDS_MAX_GLPI', '11.0.99');
 
@@ -66,6 +66,8 @@ if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
     mkdir(PLUGINFIELDS_FRONT_PATH);
 }
 
+use Glpi\Form\Migration\TypesConversionMapper;
+use Glpi\Form\QuestionType\QuestionTypesManager;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -139,7 +141,7 @@ function plugin_init_fields()
             if (!$debug && file_exists(__DIR__ . '/public/css/fields.min.css')) {
                 $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.min.css';
             } else {
-                $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.css';
+                $PLUGIN_HOOKS['add_css']['fields'][] = 'css/fields.scss';
             }
 
             // Add/delete profiles to automaticaly to container
@@ -193,6 +195,9 @@ function plugin_init_fields()
             'PluginFieldsField',
             'showForTab',
         ];
+
+        // Register fields question type
+        plugin_fields_register_plugin_types();
     }
 }
 
@@ -388,4 +393,17 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
     }
 
     return false;
+}
+
+function plugin_fields_register_plugin_types(): void
+{
+    $types = QuestionTypesManager::getInstance();
+    $type_mapper = TypesConversionMapper::getInstance();
+
+    // Register question category, type and converter if valid fields are defined
+    if (PluginFieldsQuestionType::hasAvailableFields()) {
+        $types->registerPluginCategory(new PluginFieldsQuestionTypeCategory());
+        $types->registerPluginQuestionType(new PluginFieldsQuestionType());
+        $type_mapper->registerPluginQuestionTypeConverter('fields', new PluginFieldsQuestionType());
+    }
 }
