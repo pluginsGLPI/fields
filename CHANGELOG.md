@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+## [1.22.2] - 2025-10-24
+
 ### Fixed
 
 - Fix `GenericObject` Model and Type migration
