@@ -305,7 +305,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         $containers    = $container_obj->find($where);
         foreach ($containers as $container) {
             $itemtypes = (strlen($container['itemtypes']) > 0)
-                ? json_decode($container['itemtypes'], true)
+                ? PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes'], true)
                 : [];
 
             foreach ($itemtypes as $itemtype) {

@@ -338,7 +338,7 @@ function plugin_datainjection_populate_fields()
     $container = new PluginFieldsContainer();
     $found     = $container->find(['is_active' => 1]);
     foreach ($found as $values) {
-        $types = json_decode($values['itemtypes']);
+        $types = PluginFieldsToolbox::decodeJSONItemtypes($values['itemtypes']);
 
         foreach ($types as $type) {
             $classname                    = PluginFieldsContainer::getClassname($type, $values['name'], 'Injection');
