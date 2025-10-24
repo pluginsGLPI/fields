@@ -42,8 +42,9 @@
 
 {% for field in fields %}
 
+    {% set cid      = container.fields.id %}
     {% set type     = field['type'] %}
-    {% set name     = field['name'] %}
+    {% set name     = 'plugin_fields_' ~ cid ~ '_' ~ field['name'] %}
     {% set label    = field['label'] %}
     {% set value    = item.input[name]|default(field['value']) %}
     {% set readonly = field['is_readonly'] %}
@@ -109,9 +110,9 @@
             {% set dropdown_options = dropdown_options|merge({'entity_sons': true}) %}
         {% endif %}
         {% if "dropdowns_id" in name %}
-            {% set dropdown_itemtype = call("getItemtypeForForeignKeyField", [name]) %}
+            {% set dropdown_itemtype = call("getItemtypeForForeignKeyField", ['plugin_fields_' ~ field['name'] ~ 'dropdowns_id']) %}
         {% else %}
-            {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [name]) %}
+            {% set dropdown_itemtype = call("PluginFieldsDropdown::getClassname", [field['name']]) %}
         {% endif %}
         {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
         {{ macros.dropdownField(dropdown_itemtype, name_fk, value, label, field_options|merge(dropdown_options|default({}))) }}

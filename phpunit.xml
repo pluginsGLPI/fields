@@ -1,0 +1,12 @@
+<phpunit
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    testdox="true"
+    cacheDirectory="var/phpunit"
+>
+    <testsuites>
+        <testsuite name="Tests">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

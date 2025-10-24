@@ -863,8 +863,13 @@ class PluginFieldsField extends CommonDBChild
             $fields = [];
         }
 
+        $fieldTypeName = '_plugin_fields_type_' . $id;
+        $fieldSubTypeName = '_plugin_fields_subtype_' . $id;
+
         echo Html::hidden('_plugin_fields_type', ['value' => $type]);
         echo Html::hidden('_plugin_fields_subtype', ['value' => $subtype]);
+        echo Html::hidden($fieldTypeName, ['value' => $type]);
+        echo Html::hidden($fieldSubTypeName, ['value' => $subtype]);
         echo self::prepareHtmlFields($fields, $item, true, true, false, $field_options);
     }
 
@@ -899,84 +904,82 @@ class PluginFieldsField extends CommonDBChild
             $subtype = '';
         }
 
-        //find container (if not exist, do nothing)
-        if (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
-        } elseif (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
-            return;
-        }
+        $itemEntityId = $item->getEntityID();
+        $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
 
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-        if ($right < READ) {
-            return;
-        }
+        $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $entityId);
 
-        Html::requireJs('tinymce');
+        foreach ($container_ids as $container_id) {
 
-        //need to check if container is usable on this object entity
-        $loc_c = new PluginFieldsContainer();
-        $loc_c->getFromDB($c_id);
-        $entities = [$loc_c->fields['entities_id']];
-        if ($loc_c->fields['is_recursive']) {
-            $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
-        }
+            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_id);
+            if ($right < READ) {
+                continue;
+            }
 
-        if ($item->isEntityAssign()) {
-            $current_entity = $item->getEntityID();
-            if (!in_array($current_entity, $entities)) {
+            //need to check if container is usable on this object entity
+            $loc_c = new PluginFieldsContainer();
+            $loc_c->getFromDB($container_id);
+            $entities = [$loc_c->fields['entities_id']];
+            if ($loc_c->fields['is_recursive']) {
+                $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+            }
+
+            if ($item->isEntityAssign()) {
+                $current_entity = $item->getEntityID();
+                if (!in_array($current_entity, $entities)) {
+                    continue;
+                }
+            }
+
+            //parse REQUEST_URI
+            if (!isset($_SERVER['REQUEST_URI'])) {
+                continue;
+            }
+            $current_url = $_SERVER['REQUEST_URI'];
+            if (
+                !str_contains($current_url, '.form.php')
+                && !str_contains($current_url, '.injector.php')
+                && !str_contains($current_url, '.public.php')
+                && !str_contains($current_url, 'ajax/planning')
+                && !str_contains($current_url, 'ajax/timeline.php') // ITILSolution load from timeline
+            ) {
+                continue;
+            }
+
+            //Retrieve dom container
+            $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
+
+            //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
+            if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
                 return;
             }
-        }
 
-        //parse REQUEST_URI
-        if (!isset($_SERVER['REQUEST_URI'])) {
-            return;
-        }
-        $current_url = $_SERVER['REQUEST_URI'];
-        if (
-            !str_contains($current_url, '.form.php')
-            && !str_contains($current_url, '.injector.php')
-            && !str_contains($current_url, '.public.php')
-            && !str_contains($current_url, 'ajax/planning')
-            && !str_contains($current_url, 'ajax/timeline.php') // ITILSolution load from timeline
-        ) {
-            return;
-        }
+            $class = match (true) {
+                !($item instanceof CommonITILObject) && $item instanceof CommonDropdown => 'card-body row',
+                // @phpstan-ignore-next-line -> Instanceof between CommonDBTM and CommonDropdown will always evaluate to false.
+                !($item instanceof CommonITILObject) && !($item instanceof CommonDropdown) => 'card-body d-flex flex-wrap', // lign 969
+                default => '',
+            };
+            $html_id = 'plugin_fields_container_' . $container_id;
 
-        //Retrieve dom container
-        $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
+            echo "<div id='{$html_id}' class='" . $class . "'>";
+            $display_condition = new PluginFieldsContainerDisplayCondition();
+            if ($display_condition->computeDisplayContainer($item, $container_id)) {
+                self::showDomContainer(
+                    $container_id,
+                    $item,
+                    $type,
+                    $subtype,
+                    [],
+                );
+            }
+            echo '</div>';
 
-        //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-        if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
-            return;
-        }
-
-        $class = match (true) {
-            !($item instanceof CommonITILObject) && $item instanceof CommonDropdown => 'card-body row',
-            // @phpstan-ignore-next-line -> Instanceof between CommonDBTM and CommonDropdown will always evaluate to false.
-            !($item instanceof CommonITILObject) && !($item instanceof CommonDropdown) => 'card-body d-flex flex-wrap', // lign 969
-            default => '',
-        };
-        $html_id = 'plugin_fields_container_' . mt_rand();
-
-        echo "<div id='{$html_id}' class='" . $class . "'>";
-        $display_condition = new PluginFieldsContainerDisplayCondition();
-        if ($display_condition->computeDisplayContainer($item, $c_id)) {
-            self::showDomContainer(
-                $c_id,
-                $item,
-                $type,
-                $subtype,
-                [],
-            );
-        }
-        echo '</div>';
-
-        //JS to trigger any change and check if container need to be display or not
-        $ajax_url = $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/container.php';
-        $items_id = !$item->isNewItem() ? $item->getID() : 0;
-        echo Html::scriptBlock(
-            <<<JAVASCRIPT
+            //JS to trigger any change and check if container need to be display or not
+            $ajax_url = $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/container.php';
+            $items_id = !$item->isNewItem() ? $item->getID() : 0;
+            echo Html::scriptBlock(
+                <<<JAVASCRIPT
             function refreshContainer() {
                 const data = $('#{$html_id}').closest('form').serializeArray().reduce(
                     function(obj, item) {
@@ -1004,7 +1007,7 @@ class PluginFieldsField extends CommonDBChild
                         type: 'GET',
                         data: {
                             action:   'get_fields_html',
-                            id:       {$c_id},
+                            id:       {$container_id},
                             itemtype: '{$item::getType()}',
                             items_id: {$items_id},
                             type:     '{$type}',
@@ -1037,7 +1040,7 @@ class PluginFieldsField extends CommonDBChild
                         function(evt) {
                             if (evt.target.name == "itilcategories_id" && {$items_id} == 0) {
                                 // Do not refresh tab container when form is reloaded
-                                // to prevent issues diues to duplicated calls (when object is new)
+                                // to prevent issues diues to duplicated calls
                                 return;
                             }
                             if ($(evt.target).closest('#{$html_id}').length > 0) {
@@ -1047,31 +1050,32 @@ class PluginFieldsField extends CommonDBChild
                         }
                     );
 
-                    var refresh_timeout = null;
-                    form.find('textarea').each(
-                        function () {
-                            const editor = tinymce.get(this.id);
-                            if (editor !== null) {
-                                editor.on(
-                                    'change',
-                                    function(evt) {
-                                        if ($(evt.target.targetElm).closest('#{$html_id}').length > 0) {
-                                            return; // Do nothing if element is inside fields container
-                                        }
+                        var refresh_timeout = null;
+                        form.find('textarea').each(
+                            function () {
+                                const editor = tinymce.get(this.id);
+                                if (editor !== null) {
+                                    editor.on(
+                                        'change',
+                                        function(evt) {
+                                            if ($(evt.target.targetElm).closest('#{$html_id}').length > 0) {
+                                                return; // Do nothing if element is inside fields container
+                                            }
 
-                                        if (refresh_timeout !== null) {
-                                            window.clearTimeout(refresh_timeout);
+                                            if (refresh_timeout !== null) {
+                                                window.clearTimeout(refresh_timeout);
+                                            }
+                                            refresh_timeout = window.setTimeout(refreshContainer, 1000);
                                         }
-                                        refresh_timeout = window.setTimeout(refreshContainer, 1000);
-                                    }
-                                );
+                                    );
+                                }
                             }
-                        }
-                    );
-                }
+                        );
+                    }
+                );
+            JAVASCRIPT
             );
-JAVASCRIPT
-        );
+        }
     }
 
     public static function prepareHtmlFields(
