@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix `GenericObject` Model and Type migration
 - Fix `json_decode` using class with namespace
 - Fix drag and drop
 - Increased the maximum length of the language column to support longer locale codes
