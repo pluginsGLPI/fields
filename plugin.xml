@@ -99,6 +99,11 @@ Il existe un [script de migration](https://github.com/pluginsGLPI/customfields/b
    </authors>
    <versions>
       <version>
+         <num>1.22.2</num>
+         <compatibility>~11.0.0</compatibility>
+         <download_url>https://github.com/pluginsGLPI/fields/releases/download/1.22.2/glpi-fields-1.22.2.tar.bz2</download_url>
+      </version>
+      <version>
          <num>1.21.24</num>
          <compatibility>~10.0.11</compatibility>
          <download_url>https://github.com/pluginsGLPI/fields/releases/download/1.21.24/glpi-fields-1.21.24.tar.bz2</download_url>
