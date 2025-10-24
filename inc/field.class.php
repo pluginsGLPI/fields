@@ -302,7 +302,7 @@ class PluginFieldsField extends CommonDBChild
         if ($input['type'] !== 'header') {
             $container_obj = new PluginFieldsContainer();
             $container_obj->getFromDB($input['plugin_fields_containers_id']);
-            foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
+            foreach (PluginFieldsToolbox::decodeJSONItemtypes($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
                 $classname::addField(
                     $input['name'],
@@ -354,7 +354,7 @@ class PluginFieldsField extends CommonDBChild
         $container_obj = new PluginFieldsContainer();
         $container_obj->getFromDB($this->fields['plugin_fields_containers_id']);
 
-        foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
+        foreach (PluginFieldsToolbox::decodeJSONItemtypes($container_obj->fields['itemtypes']) as $itemtype) {
             $so = PluginFieldsContainer::getAddSearchOptions($itemtype, $this->fields['plugin_fields_containers_id']);
             foreach ($so as $so_id => $so_value) {
                 if ($this->fields['type'] == 'glpi_item') {
@@ -380,7 +380,7 @@ class PluginFieldsField extends CommonDBChild
             && !isset($_SESSION['uninstall_fields'])
             && !isset($_SESSION['delete_container'])
         ) {
-            foreach (json_decode($container_obj->fields['itemtypes']) as $itemtype) {
+            foreach (PluginFieldsToolbox::decodeJSONItemtypes($container_obj->fields['itemtypes']) as $itemtype) {
                 $classname = PluginFieldsContainer::getClassname($itemtype, $container_obj->fields['name']);
                 $classname::removeField($this->fields['name'], $this->fields['type']);
             }
@@ -400,7 +400,7 @@ class PluginFieldsField extends CommonDBChild
 
             $use_by_another = false;
             foreach ($all_container as $container_fields) {
-                foreach (json_decode($container_fields['itemtypes']) as $itemtype) {
+                foreach (PluginFieldsToolbox::decodeJSONItemtypes($container_fields['itemtypes']) as $itemtype) {
                     $dropdown_classname = PluginFieldsDropdown::getClassname($this->fields['name']);
                     $classname = PluginFieldsContainer::getClassname($itemtype, $container_fields['name']);
                     $dropdown_fk = getForeignKeyFieldForItemType($dropdown_classname);
