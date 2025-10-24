@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-16 01:05+0000\n"
+"POT-Creation-Date: 2025-10-24 01:05+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Christian Hoffmeister, 2025\n"
 "Language-Team: German (Germany) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/de_DE/)\n"
@@ -18,18 +18,18 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:243
-msgid "Field"
-msgstr "Feld"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:625
-#: inc/field.class.php:805
-msgid "Read only"
-msgstr "Nur lesen"
-
 #: templates/fields.html.twig
 msgid "show"
 msgstr "anzeigen"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:245
+msgid "Field"
+msgstr "Feld"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:627
+#: inc/field.class.php:803
+msgid "Read only"
+msgstr "Nur lesen"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -48,196 +48,44 @@ msgid "Add condition to hide block"
 msgstr "Bedingung zum Ausblenden des Blocks hinzufügen"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:155
+#: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Bedingung zum Ausblenden des Blocks hinzufügen"
 msgstr[1] "Bedingungen zum Ausblenden des Blocks"
 
-#: setup.php:223 front/container.php:35 front/container.form.php:72
-#: inc/menu.class.php:37
+#: setup.php:226 inc/menu.class.php:37 front/container.form.php:73
+#: front/container.php:34
 msgid "Additional fields"
 msgstr "Zusätzliche Felder"
 
-#: ajax/field_specific_fields.php:53
-msgid "Allowed values"
-msgstr "Erlaubte Werte"
+#: inc/containerdisplaycondition.class.php:102
+#: inc/containerdisplaycondition.class.php:134
+msgid "under"
+msgstr "unter"
 
-#: ajax/field_specific_fields.php:87
-msgid "Multiple dropdown"
-msgstr "Mehrere Dropdown-Listen"
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:137
+msgid "not under"
+msgstr "nicht unter"
 
-#: ajax/field_specific_fields.php:90
-msgid "Default value"
-msgstr "Standardwert"
+#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:131
+msgid "regular expression matches"
+msgstr "Übereinstimmungen mit regulären Ausdrücken"
 
-#: ajax/field_specific_fields.php:121
-msgid "Default value will be configurable once field will be created."
-msgstr "Der Standardwert ist konfigurierbar, sobald das Feld erstellt ist."
+#: inc/containerdisplaycondition.class.php:501
+#: inc/containerdisplaycondition.class.php:517
+msgid "You must specify an item type, search option and condition."
+msgstr "Sie müssen einen Artikeltyp, eine Suchoption und eine Bedingung angeben."
 
-#: hook.php:55 hook.php:59
-msgid "MySQL tables installation"
-msgstr "Installation der MySQL-Tabellen"
-
-#: hook.php:109
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Das Plugin kann nicht deinstalliert werden, wenn das Plugin deaktiviert ist"
-
-#: hook.php:122
-msgid "MySQL tables uninstallation"
-msgstr "Deinstallation der MySQL-Tabellen"
-
-#: inc/dropdown.class.php:78
-msgid "Updating generated dropdown files"
-msgstr "Aktualisierung der generierten Dropdown-Dateien"
-
-#: inc/toolbox.class.php:122
+#: inc/toolbox.class.php:124
 msgid "Fix fields names"
 msgstr "Feldnamen reparieren"
 
-#: inc/toolbox.class.php:322
+#: inc/toolbox.class.php:324
 msgid "Component items"
 msgstr "Komponenten"
-
-#: inc/field.class.php:258 inc/field.class.php:285
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Der Feldname ist zu lang für die Datenbank (Ziffern im Namen werden durch Zeichen ersetzt, versuchen Sie, diese zu entfernen)"
-
-#: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
-
-#: inc/field.class.php:545
-msgid "Fields"
-msgstr "Felder"
-
-#: inc/field.class.php:608
-msgid "Add a new field"
-msgstr "Ein neues Feld hinzufügen"
-
-#: inc/field.class.php:612
-msgid "No field for this block"
-msgstr "Kein Feld für diesen Block"
-
-#: inc/field.class.php:1336
-msgid "Header"
-msgstr "Überschrift"
-
-#: inc/field.class.php:1337
-msgid "Text (single line)"
-msgstr "Text (einzeilig)"
-
-#: inc/field.class.php:1338
-msgid "Text (multiples lines)"
-msgstr "Text (mehrzeilig)"
-
-#: inc/field.class.php:1339
-msgid "Rich Text"
-msgstr "Rich text"
-
-#: inc/field.class.php:1340
-msgid "Number"
-msgstr "Nummer"
-
-#: inc/field.class.php:1341
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:1342
-msgid "Dropdown"
-msgstr "Auswahlliste"
-
-#: inc/field.class.php:1343
-msgid "Yes/No"
-msgstr "Ja/Nein"
-
-#: inc/field.class.php:1344
-msgid "Date"
-msgstr "Datum"
-
-#: inc/field.class.php:1345
-msgid "Date & time"
-msgstr "Datum & Zeit"
-
-#: inc/field.class.php:1346
-msgid "GLPI item"
-msgstr "GLPI-Artikel"
-
-#: inc/container.class.php:52
-msgid "Regenerate container files"
-msgstr "Containerdateien neu generieren"
-
-#: inc/container.class.php:53 inc/container.class.php:791
-msgid "Export to YAML"
-msgstr "Nach YAML exportieren"
-
-#: inc/container.class.php:190
-msgid "Regenerate containers files"
-msgstr "Containerdateien neu generieren"
-
-#: inc/container.class.php:211
-msgid "Fix container names"
-msgstr "Containernamen reparieren"
-
-#: inc/container.class.php:352
-msgid "Updating generated containers files"
-msgstr "Aktualisierung der erzeugten Containerdateien"
-
-#: inc/container.class.php:567
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Sie können nicht mehrere Blöcke mit dem Typ 'Einfügen in das Formular' auf demselben Objekt hinzufügen"
-
-#: inc/container.class.php:583
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Es ist nicht möglich, mehrere Blöcke vom Typ 'Einfügen in Form einer bestimmten Registerkarte' auf derselben Objektregisterkarte hinzuzufügen"
-
-#: inc/container.class.php:600
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Der Feldname ist zu lang für die Datenbank (Ziffern im Namen werden durch Zeichen ersetzt, versuchen Sie, diese zu entfernen)"
-
-#: inc/container.class.php:615
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Sie können nicht mehrere Blöcke mit identischem Namen zum selben Objekt hinzufügen"
-
-#: inc/container.class.php:782
-msgid "Block"
-msgstr "Block"
-
-#: inc/container.class.php:887
-msgid "Tab"
-msgstr "Tab"
-
-#: inc/container.class.php:1041
-msgid "Add tab"
-msgstr "Registerkarte hinzufügen"
-
-#: inc/container.class.php:1042
-msgid "Insertion in the form (before save button)"
-msgstr "Einfügen in das Formular (vor der Schaltfläche „Speichern“)"
-
-#: inc/container.class.php:1043
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Einfügen in Form einer bestimmten Registerkarte (vor der Schaltfläche „Speichern“)"
-
-#: inc/container.class.php:1557
-msgid "Some mandatory fields are empty"
-msgstr "Einige Pflichtfelder sind leer"
-
-#: inc/container.class.php:1562
-msgid "Some numeric fields contains non numeric values"
-msgstr "Einige numerische Felder enthalten nicht numerische Werte"
-
-#: inc/container.class.php:1567
-msgid "Some URL fields contains invalid links"
-msgstr "Einige URL-Felder enthalten ungültige Links"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -288,18 +136,6 @@ msgstr ""
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Führen Sie \" %s \" aus, um Datenbankinkonsistenzen zu beheben."
 
-#: inc/labeltranslation.class.php:204
-msgid "Language"
-msgstr "Sprache"
-
-#: inc/labeltranslation.class.php:205
-msgid "Label"
-msgstr "Bezeichnung"
-
-#: inc/statusoverride.class.php:90
-msgid "Override by status"
-msgstr "Überschreibung durch Status"
-
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Containerdateien neu generieren"
@@ -310,22 +146,186 @@ msgid ""
 "them."
 msgstr "Dieser Befehl bereinigt alle vom Plugin erzeugten Dateien und generiert sie neu."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:136
-msgid "under"
-msgstr "unter"
+#: inc/labeltranslation.class.php:220
+msgid "Language"
+msgstr "Sprache"
 
-#: inc/containerdisplaycondition.class.php:105
-#: inc/containerdisplaycondition.class.php:139
-msgid "not under"
-msgstr "nicht unter"
+#: inc/labeltranslation.class.php:221
+msgid "Label"
+msgstr "Bezeichnung"
 
-#: inc/containerdisplaycondition.class.php:111
-#: inc/containerdisplaycondition.class.php:133
-msgid "regular expression matches"
-msgstr "Übereinstimmungen mit regulären Ausdrücken"
+#: inc/dropdown.class.php:78
+msgid "Updating generated dropdown files"
+msgstr "Aktualisierung der generierten Dropdown-Dateien"
 
-#: inc/containerdisplaycondition.class.php:500
-#: inc/containerdisplaycondition.class.php:516
-msgid "You must specify an item type, search option and condition."
-msgstr "Sie müssen einen Artikeltyp, eine Suchoption und eine Bedingung angeben."
+#: inc/container.class.php:53
+msgid "Regenerate container files"
+msgstr "Containerdateien neu generieren"
+
+#: inc/container.class.php:54 inc/container.class.php:872
+msgid "Export to YAML"
+msgstr "Nach YAML exportieren"
+
+#: inc/container.class.php:263
+msgid "Regenerate containers files"
+msgstr "Containerdateien neu generieren"
+
+#: inc/container.class.php:284
+msgid "Fix container names"
+msgstr "Containernamen reparieren"
+
+#: inc/container.class.php:428
+msgid "Updating generated containers files"
+msgstr "Aktualisierung der erzeugten Containerdateien"
+
+#: inc/container.class.php:645
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Sie können nicht mehrere Blöcke mit dem Typ 'Einfügen in das Formular' auf demselben Objekt hinzufügen"
+
+#: inc/container.class.php:661
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Es ist nicht möglich, mehrere Blöcke vom Typ 'Einfügen in Form einer bestimmten Registerkarte' auf derselben Objektregisterkarte hinzuzufügen"
+
+#: inc/container.class.php:678
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Der Feldname ist zu lang für die Datenbank (Ziffern im Namen werden durch Zeichen ersetzt, versuchen Sie, diese zu entfernen)"
+
+#: inc/container.class.php:693
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Sie können nicht mehrere Blöcke mit identischem Namen zum selben Objekt hinzufügen"
+
+#: inc/container.class.php:860
+msgid "Block"
+msgstr "Block"
+
+#: inc/container.class.php:968
+msgid "Tab"
+msgstr "Tab"
+
+#: inc/container.class.php:1122
+msgid "Add tab"
+msgstr "Registerkarte hinzufügen"
+
+#: inc/container.class.php:1123
+msgid "Insertion in the form (before save button)"
+msgstr "Einfügen in das Formular (vor der Schaltfläche „Speichern“)"
+
+#: inc/container.class.php:1124
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Einfügen in Form einer bestimmten Registerkarte (vor der Schaltfläche „Speichern“)"
+
+#: inc/container.class.php:1652
+msgid "Some mandatory fields are empty"
+msgstr "Einige Pflichtfelder sind leer"
+
+#: inc/container.class.php:1657
+msgid "Some numeric fields contains non numeric values"
+msgstr "Einige numerische Felder enthalten nicht numerische Werte"
+
+#: inc/container.class.php:1662
+msgid "Some URL fields contains invalid links"
+msgstr "Einige URL-Felder enthalten ungültige Links"
+
+#: inc/statusoverride.class.php:92
+msgid "Override by status"
+msgstr "Überschreibung durch Status"
+
+#: inc/field.class.php:260 inc/field.class.php:287
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Der Feldname ist zu lang für die Datenbank (Ziffern im Namen werden durch Zeichen ersetzt, versuchen Sie, diese zu entfernen)"
+
+#: inc/field.class.php:279
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr ""
+
+#: inc/field.class.php:545
+msgid "Fields"
+msgstr "Felder"
+
+#: inc/field.class.php:610
+msgid "Add a new field"
+msgstr "Ein neues Feld hinzufügen"
+
+#: inc/field.class.php:614
+msgid "No field for this block"
+msgstr "Kein Feld für diesen Block"
+
+#: inc/field.class.php:1341
+msgid "Header"
+msgstr "Überschrift"
+
+#: inc/field.class.php:1342
+msgid "Text (single line)"
+msgstr "Text (einzeilig)"
+
+#: inc/field.class.php:1343
+msgid "Text (multiples lines)"
+msgstr "Text (mehrzeilig)"
+
+#: inc/field.class.php:1344
+msgid "Rich Text"
+msgstr "Rich text"
+
+#: inc/field.class.php:1345
+msgid "Number"
+msgstr "Nummer"
+
+#: inc/field.class.php:1346
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:1347
+msgid "Dropdown"
+msgstr "Auswahlliste"
+
+#: inc/field.class.php:1348
+msgid "Yes/No"
+msgstr "Ja/Nein"
+
+#: inc/field.class.php:1349
+msgid "Date"
+msgstr "Datum"
+
+#: inc/field.class.php:1350
+msgid "Date & time"
+msgstr "Datum & Zeit"
+
+#: inc/field.class.php:1351
+msgid "GLPI item"
+msgstr "GLPI-Artikel"
+
+#: hook.php:55 hook.php:59
+msgid "MySQL tables installation"
+msgstr "Installation der MySQL-Tabellen"
+
+#: hook.php:110
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Das Plugin kann nicht deinstalliert werden, wenn das Plugin deaktiviert ist"
+
+#: hook.php:123
+msgid "MySQL tables uninstallation"
+msgstr "Deinstallation der MySQL-Tabellen"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "Erlaubte Werte"
+
+#: ajax/field_specific_fields.php:84
+msgid "Multiple dropdown"
+msgstr "Mehrere Dropdown-Listen"
+
+#: ajax/field_specific_fields.php:87
+msgid "Default value"
+msgstr "Standardwert"
+
+#: ajax/field_specific_fields.php:118
+msgid "Default value will be configurable once field will be created."
+msgstr "Der Standardwert ist konfigurierbar, sobald das Feld erstellt ist."

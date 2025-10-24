@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-16 01:05+0000\n"
+"POT-Creation-Date: 2025-10-24 01:05+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -20,18 +20,18 @@ msgstr ""
 "Language: hr_HR\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:243
-msgid "Field"
-msgstr "Polje"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:625
-#: inc/field.class.php:805
-msgid "Read only"
-msgstr "Samo-za-čitanje"
-
 #: templates/fields.html.twig
 msgid "show"
 msgstr "prikaži"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:245
+msgid "Field"
+msgstr "Polje"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:627
+#: inc/field.class.php:803
+msgid "Read only"
+msgstr "Samo-za-čitanje"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -50,197 +50,45 @@ msgid "Add condition to hide block"
 msgstr "Dodaj uvjet za skrivanje bloka"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:155
+#: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Uvjet za skrivanje bloka"
 msgstr[1] "Uvjeti za skrivanje bloka"
 msgstr[2] "Uvjeti za skrivanje bloka"
 
-#: setup.php:223 front/container.php:35 front/container.form.php:72
-#: inc/menu.class.php:37
+#: setup.php:226 inc/menu.class.php:37 front/container.form.php:73
+#: front/container.php:34
 msgid "Additional fields"
 msgstr "Dodatna polja"
 
-#: ajax/field_specific_fields.php:53
-msgid "Allowed values"
-msgstr "Dozvoljene vrijednosti"
+#: inc/containerdisplaycondition.class.php:102
+#: inc/containerdisplaycondition.class.php:134
+msgid "under"
+msgstr "ispod"
 
-#: ajax/field_specific_fields.php:87
-msgid "Multiple dropdown"
-msgstr "Višestruki izbornik"
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:137
+msgid "not under"
+msgstr "ne ispod"
 
-#: ajax/field_specific_fields.php:90
-msgid "Default value"
-msgstr "Standardna vrijednost"
+#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:131
+msgid "regular expression matches"
+msgstr "regularni izraz se podudara"
 
-#: ajax/field_specific_fields.php:121
-msgid "Default value will be configurable once field will be created."
-msgstr "Zadana vrijednost moći će se konfigurirati nakon što se polje stvori."
+#: inc/containerdisplaycondition.class.php:501
+#: inc/containerdisplaycondition.class.php:517
+msgid "You must specify an item type, search option and condition."
+msgstr "Moraš navesti vrstu predmeta, opciju pretraživanja i uvjet."
 
-#: hook.php:55 hook.php:59
-msgid "MySQL tables installation"
-msgstr "Instalacija MySQL tablica"
-
-#: hook.php:109
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
-
-#: hook.php:122
-msgid "MySQL tables uninstallation"
-msgstr "Deinstalacija MySQL tablica"
-
-#: inc/dropdown.class.php:78
-msgid "Updating generated dropdown files"
-msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
-
-#: inc/toolbox.class.php:122
+#: inc/toolbox.class.php:124
 msgid "Fix fields names"
 msgstr "Ispravi imena polja"
 
-#: inc/toolbox.class.php:322
+#: inc/toolbox.class.php:324
 msgid "Component items"
 msgstr "Elementi komponente"
-
-#: inc/field.class.php:258 inc/field.class.php:285
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
-
-#: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
-
-#: inc/field.class.php:545
-msgid "Fields"
-msgstr "Polja"
-
-#: inc/field.class.php:608
-msgid "Add a new field"
-msgstr "Dodaj novo polje"
-
-#: inc/field.class.php:612
-msgid "No field for this block"
-msgstr "Nema polja za ovaj blok"
-
-#: inc/field.class.php:1336
-msgid "Header"
-msgstr "Zaglavlje"
-
-#: inc/field.class.php:1337
-msgid "Text (single line)"
-msgstr "Tekst (jednoredni)"
-
-#: inc/field.class.php:1338
-msgid "Text (multiples lines)"
-msgstr "Tekst (višeredni)"
-
-#: inc/field.class.php:1339
-msgid "Rich Text"
-msgstr "Formatirani tekst"
-
-#: inc/field.class.php:1340
-msgid "Number"
-msgstr "Broj"
-
-#: inc/field.class.php:1341
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:1342
-msgid "Dropdown"
-msgstr "Padajući popis"
-
-#: inc/field.class.php:1343
-msgid "Yes/No"
-msgstr "Da/Ne"
-
-#: inc/field.class.php:1344
-msgid "Date"
-msgstr "Datum"
-
-#: inc/field.class.php:1345
-msgid "Date & time"
-msgstr "Datum i vrijeme"
-
-#: inc/field.class.php:1346
-msgid "GLPI item"
-msgstr "GLPI predmet"
-
-#: inc/container.class.php:52
-msgid "Regenerate container files"
-msgstr "Ponovo generiraj datoteke spremnika"
-
-#: inc/container.class.php:53 inc/container.class.php:791
-msgid "Export to YAML"
-msgstr "Izvezi u YAML"
-
-#: inc/container.class.php:190
-msgid "Regenerate containers files"
-msgstr "Ponovo generiraj datoteke kontejnera"
-
-#: inc/container.class.php:211
-msgid "Fix container names"
-msgstr "Ispravi imena spremnika"
-
-#: inc/container.class.php:352
-msgid "Updating generated containers files"
-msgstr "Aktualiziranje generiranih datoteka spremnika"
-
-#: inc/container.class.php:567
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
-
-#: inc/container.class.php:583
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
-
-#: inc/container.class.php:600
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
-
-#: inc/container.class.php:615
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
-
-#: inc/container.class.php:782
-msgid "Block"
-msgstr "Blok"
-
-#: inc/container.class.php:887
-msgid "Tab"
-msgstr "Kartica"
-
-#: inc/container.class.php:1041
-msgid "Add tab"
-msgstr "Dodaj karticu"
-
-#: inc/container.class.php:1042
-msgid "Insertion in the form (before save button)"
-msgstr "Umetanje u obrazac (prije gumba za spremanje)"
-
-#: inc/container.class.php:1043
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
-
-#: inc/container.class.php:1557
-msgid "Some mandatory fields are empty"
-msgstr "Neka obavezna polja su prazna"
-
-#: inc/container.class.php:1562
-msgid "Some numeric fields contains non numeric values"
-msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
-
-#: inc/container.class.php:1567
-msgid "Some URL fields contains invalid links"
-msgstr "Neka URL polja sadrže neispravne poveznice"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -291,18 +139,6 @@ msgstr "-> „%s.%s” treba izbrisati."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Za ispravljanje nedosljednosti u bazi podataka pokreni „%s”."
 
-#: inc/labeltranslation.class.php:204
-msgid "Language"
-msgstr "Jezik"
-
-#: inc/labeltranslation.class.php:205
-msgid "Label"
-msgstr "Oznaka"
-
-#: inc/statusoverride.class.php:90
-msgid "Override by status"
-msgstr "Zamijeni po stanju"
-
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Ponovo generira datoteke kontejnera."
@@ -313,22 +149,186 @@ msgid ""
 "them."
 msgstr "Ova naredba će očistiti sve datoteke koje je dodatak generirao i ponovno će ih generirati."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:136
-msgid "under"
-msgstr "ispod"
+#: inc/labeltranslation.class.php:220
+msgid "Language"
+msgstr "Jezik"
 
-#: inc/containerdisplaycondition.class.php:105
-#: inc/containerdisplaycondition.class.php:139
-msgid "not under"
-msgstr "ne ispod"
+#: inc/labeltranslation.class.php:221
+msgid "Label"
+msgstr "Oznaka"
 
-#: inc/containerdisplaycondition.class.php:111
-#: inc/containerdisplaycondition.class.php:133
-msgid "regular expression matches"
-msgstr "regularni izraz se podudara"
+#: inc/dropdown.class.php:78
+msgid "Updating generated dropdown files"
+msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 
-#: inc/containerdisplaycondition.class.php:500
-#: inc/containerdisplaycondition.class.php:516
-msgid "You must specify an item type, search option and condition."
-msgstr "Moraš navesti vrstu predmeta, opciju pretraživanja i uvjet."
+#: inc/container.class.php:53
+msgid "Regenerate container files"
+msgstr "Ponovo generiraj datoteke spremnika"
+
+#: inc/container.class.php:54 inc/container.class.php:872
+msgid "Export to YAML"
+msgstr "Izvezi u YAML"
+
+#: inc/container.class.php:263
+msgid "Regenerate containers files"
+msgstr "Ponovo generiraj datoteke kontejnera"
+
+#: inc/container.class.php:284
+msgid "Fix container names"
+msgstr "Ispravi imena spremnika"
+
+#: inc/container.class.php:428
+msgid "Updating generated containers files"
+msgstr "Aktualiziranje generiranih datoteka spremnika"
+
+#: inc/container.class.php:645
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
+
+#: inc/container.class.php:661
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
+
+#: inc/container.class.php:678
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
+
+#: inc/container.class.php:693
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
+
+#: inc/container.class.php:860
+msgid "Block"
+msgstr "Blok"
+
+#: inc/container.class.php:968
+msgid "Tab"
+msgstr "Kartica"
+
+#: inc/container.class.php:1122
+msgid "Add tab"
+msgstr "Dodaj karticu"
+
+#: inc/container.class.php:1123
+msgid "Insertion in the form (before save button)"
+msgstr "Umetanje u obrazac (prije gumba za spremanje)"
+
+#: inc/container.class.php:1124
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
+
+#: inc/container.class.php:1652
+msgid "Some mandatory fields are empty"
+msgstr "Neka obavezna polja su prazna"
+
+#: inc/container.class.php:1657
+msgid "Some numeric fields contains non numeric values"
+msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
+
+#: inc/container.class.php:1662
+msgid "Some URL fields contains invalid links"
+msgstr "Neka URL polja sadrže neispravne poveznice"
+
+#: inc/statusoverride.class.php:92
+msgid "Override by status"
+msgstr "Zamijeni po stanju"
+
+#: inc/field.class.php:260 inc/field.class.php:287
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
+
+#: inc/field.class.php:279
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr ""
+
+#: inc/field.class.php:545
+msgid "Fields"
+msgstr "Polja"
+
+#: inc/field.class.php:610
+msgid "Add a new field"
+msgstr "Dodaj novo polje"
+
+#: inc/field.class.php:614
+msgid "No field for this block"
+msgstr "Nema polja za ovaj blok"
+
+#: inc/field.class.php:1341
+msgid "Header"
+msgstr "Zaglavlje"
+
+#: inc/field.class.php:1342
+msgid "Text (single line)"
+msgstr "Tekst (jednoredni)"
+
+#: inc/field.class.php:1343
+msgid "Text (multiples lines)"
+msgstr "Tekst (višeredni)"
+
+#: inc/field.class.php:1344
+msgid "Rich Text"
+msgstr "Formatirani tekst"
+
+#: inc/field.class.php:1345
+msgid "Number"
+msgstr "Broj"
+
+#: inc/field.class.php:1346
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:1347
+msgid "Dropdown"
+msgstr "Padajući popis"
+
+#: inc/field.class.php:1348
+msgid "Yes/No"
+msgstr "Da/Ne"
+
+#: inc/field.class.php:1349
+msgid "Date"
+msgstr "Datum"
+
+#: inc/field.class.php:1350
+msgid "Date & time"
+msgstr "Datum i vrijeme"
+
+#: inc/field.class.php:1351
+msgid "GLPI item"
+msgstr "GLPI predmet"
+
+#: hook.php:55 hook.php:59
+msgid "MySQL tables installation"
+msgstr "Instalacija MySQL tablica"
+
+#: hook.php:110
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Nije moguće deinstalirati dodatak kad je dodatak deaktiviran"
+
+#: hook.php:123
+msgid "MySQL tables uninstallation"
+msgstr "Deinstalacija MySQL tablica"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "Dozvoljene vrijednosti"
+
+#: ajax/field_specific_fields.php:84
+msgid "Multiple dropdown"
+msgstr "Višestruki izbornik"
+
+#: ajax/field_specific_fields.php:87
+msgid "Default value"
+msgstr "Standardna vrijednost"
+
+#: ajax/field_specific_fields.php:118
+msgid "Default value will be configurable once field will be created."
+msgstr "Zadana vrijednost moći će se konfigurirati nakon što se polje stvori."

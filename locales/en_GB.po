@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-23 01:03+0000\n"
-"PO-Revision-Date: 2025-09-23 01:03+0000\n"
+"POT-Creation-Date: 2025-10-24 01:05+0000\n"
+"PO-Revision-Date: 2025-10-24 01:05+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -17,18 +17,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:243
-msgid "Field"
-msgstr "Field"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:625
-#: inc/field.class.php:805
-msgid "Read only"
-msgstr "Read only"
-
 #: templates/fields.html.twig
 msgid "show"
 msgstr "show"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:245
+msgid "Field"
+msgstr "Field"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:627
+#: inc/field.class.php:803
+msgid "Read only"
+msgstr "Read only"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -47,204 +47,44 @@ msgid "Add condition to hide block"
 msgstr "Add condition to hide block"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:155
+#: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Condition to hide block"
 msgstr[1] "Conditions to hide block"
 
-#: setup.php:223 front/container.php:35 front/container.form.php:72
-#: inc/menu.class.php:37
+#: setup.php:226 inc/menu.class.php:37 front/container.form.php:73
+#: front/container.php:34
 msgid "Additional fields"
 msgstr "Additional fields"
 
-#: ajax/field_specific_fields.php:53
-msgid "Allowed values"
-msgstr "Allowed values"
+#: inc/containerdisplaycondition.class.php:102
+#: inc/containerdisplaycondition.class.php:134
+msgid "under"
+msgstr "under"
 
-#: ajax/field_specific_fields.php:87
-msgid "Multiple dropdown"
-msgstr "Multiple dropdown"
+#: inc/containerdisplaycondition.class.php:103
+#: inc/containerdisplaycondition.class.php:137
+msgid "not under"
+msgstr "not under"
 
-#: ajax/field_specific_fields.php:90
-msgid "Default value"
-msgstr "Default value"
+#: inc/containerdisplaycondition.class.php:109
+#: inc/containerdisplaycondition.class.php:131
+msgid "regular expression matches"
+msgstr "regular expression matches"
 
-#: ajax/field_specific_fields.php:121
-msgid "Default value will be configurable once field will be created."
-msgstr "Default value will be configurable once field will be created."
+#: inc/containerdisplaycondition.class.php:501
+#: inc/containerdisplaycondition.class.php:517
+msgid "You must specify an item type, search option and condition."
+msgstr "You must specify an item type, search option and condition."
 
-#: hook.php:55 hook.php:59
-msgid "MySQL tables installation"
-msgstr "MySQL tables installation"
-
-#: hook.php:109
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "The plugin can't be uninstalled when the plugin is disabled"
-
-#: hook.php:122
-msgid "MySQL tables uninstallation"
-msgstr "MySQL tables uninstallation"
-
-#: inc/dropdown.class.php:78
-msgid "Updating generated dropdown files"
-msgstr "Updating generated dropdown files"
-
-#: inc/toolbox.class.php:122
+#: inc/toolbox.class.php:124
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/toolbox.class.php:322
+#: inc/toolbox.class.php:324
 msgid "Component items"
 msgstr "Component items"
-
-#: inc/field.class.php:258 inc/field.class.php:285
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-
-#: inc/field.class.php:277
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "You cannot add same field 'dropdown' on same block"
-
-#: inc/field.class.php:545
-msgid "Fields"
-msgstr "Fields"
-
-#: inc/field.class.php:608
-msgid "Add a new field"
-msgstr "Add a new field"
-
-#: inc/field.class.php:612
-msgid "No field for this block"
-msgstr "No field for this block"
-
-#: inc/field.class.php:1336
-msgid "Header"
-msgstr "Header"
-
-#: inc/field.class.php:1337
-msgid "Text (single line)"
-msgstr "Text (single line)"
-
-#: inc/field.class.php:1338
-msgid "Text (multiples lines)"
-msgstr "Text (multiples lines)"
-
-#: inc/field.class.php:1339
-msgid "Rich Text"
-msgstr "Rich Text"
-
-#: inc/field.class.php:1340
-msgid "Number"
-msgstr "Number"
-
-#: inc/field.class.php:1341
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:1342
-msgid "Dropdown"
-msgstr "Dropdown"
-
-#: inc/field.class.php:1343
-msgid "Yes/No"
-msgstr "Yes/No"
-
-#: inc/field.class.php:1344
-msgid "Date"
-msgstr "Date"
-
-#: inc/field.class.php:1345
-msgid "Date & time"
-msgstr "Date & time"
-
-#: inc/field.class.php:1346
-msgid "GLPI item"
-msgstr "GLPI item"
-
-#: inc/container.class.php:52
-msgid "Regenerate container files"
-msgstr "Regenerate container files"
-
-#: inc/container.class.php:53 inc/container.class.php:791
-msgid "Export to YAML"
-msgstr "Export to YAML"
-
-#: inc/container.class.php:190
-msgid "Regenerate containers files"
-msgstr "Regenerate containers files"
-
-#: inc/container.class.php:211
-msgid "Fix container names"
-msgstr "Fix container names"
-
-#: inc/container.class.php:352
-msgid "Updating generated containers files"
-msgstr "Updating generated containers files"
-
-#: inc/container.class.php:567
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-
-#: inc/container.class.php:583
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific "
-"tab' on same object tab"
-msgstr ""
-"You cannot add several blocks with type 'Insertion in the form of a specific "
-"tab' on same object tab"
-
-#: inc/container.class.php:600
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr ""
-"Container name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-
-#: inc/container.class.php:615
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "You cannot add several blocs with identical name on same object"
-
-#: inc/container.class.php:782
-msgid "Block"
-msgstr "Block"
-
-#: inc/container.class.php:887
-msgid "Tab"
-msgstr "Tab"
-
-#: inc/container.class.php:1041
-msgid "Add tab"
-msgstr "Add tab"
-
-#: inc/container.class.php:1042
-msgid "Insertion in the form (before save button)"
-msgstr "Insertion in the form (before save button)"
-
-#: inc/container.class.php:1043
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Insertion in the form of a specific tab (before save button)"
-
-#: inc/container.class.php:1557
-msgid "Some mandatory fields are empty"
-msgstr "Some mandatory fields are empty"
-
-#: inc/container.class.php:1562
-msgid "Some numeric fields contains non numeric values"
-msgstr "Some numeric fields contains non numeric values"
-
-#: inc/container.class.php:1567
-msgid "Some URL fields contains invalid links"
-msgstr "Some URL fields contains invalid links"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -298,18 +138,6 @@ msgstr "-> \"%s.%s\" should be deleted."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Run \"%s\" to fix database inconsistencies."
 
-#: inc/labeltranslation.class.php:204
-msgid "Language"
-msgstr "Language"
-
-#: inc/labeltranslation.class.php:205
-msgid "Label"
-msgstr "Label"
-
-#: inc/statusoverride.class.php:90
-msgid "Override by status"
-msgstr "Override by status"
-
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Regenerates containers files."
@@ -322,22 +150,194 @@ msgstr ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
 
-#: inc/containerdisplaycondition.class.php:104
-#: inc/containerdisplaycondition.class.php:136
-msgid "under"
-msgstr "under"
+#: inc/labeltranslation.class.php:220
+msgid "Language"
+msgstr "Language"
 
-#: inc/containerdisplaycondition.class.php:105
-#: inc/containerdisplaycondition.class.php:139
-msgid "not under"
-msgstr "not under"
+#: inc/labeltranslation.class.php:221
+msgid "Label"
+msgstr "Label"
 
-#: inc/containerdisplaycondition.class.php:111
-#: inc/containerdisplaycondition.class.php:133
-msgid "regular expression matches"
-msgstr "regular expression matches"
+#: inc/dropdown.class.php:78
+msgid "Updating generated dropdown files"
+msgstr "Updating generated dropdown files"
 
-#: inc/containerdisplaycondition.class.php:500
-#: inc/containerdisplaycondition.class.php:516
-msgid "You must specify an item type, search option and condition."
-msgstr "You must specify an item type, search option and condition."
+#: inc/container.class.php:53
+msgid "Regenerate container files"
+msgstr "Regenerate container files"
+
+#: inc/container.class.php:54 inc/container.class.php:872
+msgid "Export to YAML"
+msgstr "Export to YAML"
+
+#: inc/container.class.php:263
+msgid "Regenerate containers files"
+msgstr "Regenerate containers files"
+
+#: inc/container.class.php:284
+msgid "Fix container names"
+msgstr "Fix container names"
+
+#: inc/container.class.php:428
+msgid "Updating generated containers files"
+msgstr "Updating generated containers files"
+
+#: inc/container.class.php:645
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+
+#: inc/container.class.php:661
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific "
+"tab' on same object tab"
+msgstr ""
+"You cannot add several blocks with type 'Insertion in the form of a specific "
+"tab' on same object tab"
+
+#: inc/container.class.php:678
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+
+#: inc/container.class.php:693
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "You cannot add several blocs with identical name on same object"
+
+#: inc/container.class.php:860
+msgid "Block"
+msgstr "Block"
+
+#: inc/container.class.php:968
+msgid "Tab"
+msgstr "Tab"
+
+#: inc/container.class.php:1122
+msgid "Add tab"
+msgstr "Add tab"
+
+#: inc/container.class.php:1123
+msgid "Insertion in the form (before save button)"
+msgstr "Insertion in the form (before save button)"
+
+#: inc/container.class.php:1124
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Insertion in the form of a specific tab (before save button)"
+
+#: inc/container.class.php:1652
+msgid "Some mandatory fields are empty"
+msgstr "Some mandatory fields are empty"
+
+#: inc/container.class.php:1657
+msgid "Some numeric fields contains non numeric values"
+msgstr "Some numeric fields contains non numeric values"
+
+#: inc/container.class.php:1662
+msgid "Some URL fields contains invalid links"
+msgstr "Some URL fields contains invalid links"
+
+#: inc/statusoverride.class.php:92
+msgid "Override by status"
+msgstr "Override by status"
+
+#: inc/field.class.php:260 inc/field.class.php:287
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+
+#: inc/field.class.php:279
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "You cannot add same field 'dropdown' on same block"
+
+#: inc/field.class.php:545
+msgid "Fields"
+msgstr "Fields"
+
+#: inc/field.class.php:610
+msgid "Add a new field"
+msgstr "Add a new field"
+
+#: inc/field.class.php:614
+msgid "No field for this block"
+msgstr "No field for this block"
+
+#: inc/field.class.php:1341
+msgid "Header"
+msgstr "Header"
+
+#: inc/field.class.php:1342
+msgid "Text (single line)"
+msgstr "Text (single line)"
+
+#: inc/field.class.php:1343
+msgid "Text (multiples lines)"
+msgstr "Text (multiples lines)"
+
+#: inc/field.class.php:1344
+msgid "Rich Text"
+msgstr "Rich Text"
+
+#: inc/field.class.php:1345
+msgid "Number"
+msgstr "Number"
+
+#: inc/field.class.php:1346
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:1347
+msgid "Dropdown"
+msgstr "Dropdown"
+
+#: inc/field.class.php:1348
+msgid "Yes/No"
+msgstr "Yes/No"
+
+#: inc/field.class.php:1349
+msgid "Date"
+msgstr "Date"
+
+#: inc/field.class.php:1350
+msgid "Date & time"
+msgstr "Date & time"
+
+#: inc/field.class.php:1351
+msgid "GLPI item"
+msgstr "GLPI item"
+
+#: hook.php:55 hook.php:59
+msgid "MySQL tables installation"
+msgstr "MySQL tables installation"
+
+#: hook.php:110
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "The plugin can't be uninstalled when the plugin is disabled"
+
+#: hook.php:123
+msgid "MySQL tables uninstallation"
+msgstr "MySQL tables uninstallation"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "Allowed values"
+
+#: ajax/field_specific_fields.php:84
+msgid "Multiple dropdown"
+msgstr "Multiple dropdown"
+
+#: ajax/field_specific_fields.php:87
+msgid "Default value"
+msgstr "Default value"
+
+#: ajax/field_specific_fields.php:118
+msgid "Default value will be configurable once field will be created."
+msgstr "Default value will be configurable once field will be created."
