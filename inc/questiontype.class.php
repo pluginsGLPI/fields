@@ -38,7 +38,7 @@ use Glpi\Form\QuestionType\QuestionTypeCategoryInterface;
 use function Safe\json_decode;
 use function Safe\json_encode;
 
-class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuestionDataConverterInterface
+final class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuestionDataConverterInterface
 {
     #[Override]
     public function getCategory(): QuestionTypeCategoryInterface
@@ -47,7 +47,7 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
     }
 
     #[Override]
-    public function getExtraDataConfigClass(): ?string
+    public function getExtraDataConfigClass(): string
     {
         return PluginFieldsQuestionTypeExtraDataConfig::class;
     }
@@ -71,13 +71,13 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
     }
 
     #[Override]
-    public function getSubTypeDefaultValue(?Question $question): ?string
+    public function getSubTypeDefaultValue(?Question $question): string
     {
         return (string) $this->getDefaultValueBlockId($question);
     }
 
     #[Override]
-    public function formatDefaultValueForDB(mixed $value): ?string
+    public function formatDefaultValueForDB(mixed $value): string
     {
         return json_encode($value);
     }
@@ -102,7 +102,7 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
         }
 
         // Check if the field_id exists in the selected block
-        $available_fields = $this->getFieldsFromBlock($input['block_id']);
+        $available_fields = self::getFieldsFromBlock($input['block_id']);
         return isset($available_fields[$input['field_id']]);
     }
 
@@ -114,7 +114,7 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
         if ($block_id === null) {
             $block_id = current(array_keys($this->getAvailableBlocks()));
         }
-        $available_fields = $this->getFieldsFromBlock($block_id);
+        $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
         $current_field_id = $this->getDefaultValueFieldId($question);
@@ -149,7 +149,7 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
         if ($block_id === null) {
             $block_id = current(array_keys($this->getAvailableBlocks()));
         }
-        $available_fields = $this->getFieldsFromBlock($block_id);
+        $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
         $current_field_id = $this->getDefaultValueFieldId($question);
@@ -328,7 +328,7 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
         return $available_blocks;
     }
 
-    private function getFieldsFromBlock(?int $block_id): array
+    public static function getFieldsFromBlock(?int $block_id): array
     {
         $fields = [];
         $field_container = PluginFieldsContainer::getById($block_id);

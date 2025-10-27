@@ -57,11 +57,8 @@ final class QuestionTypeAjaxController extends AbstractController
             return new Response('Invalid block_id', Response::HTTP_BAD_REQUEST);
         }
 
-        // Get the question type instance
-        $question_type = new PluginFieldsQuestionType();
-
         // Get available fields for the selected block
-        $available_fields = $this->getFieldsFromBlock((int) $block_id);
+        $available_fields = PluginFieldsQuestionType::getFieldsFromBlock((int) $block_id);
 
         // If field_id is not provided or invalid, use the first available field
         $current_field_id = null;
@@ -105,32 +102,5 @@ final class QuestionTypeAjaxController extends AbstractController
             'field'             => $current_field->fields,
             'is_ajax_reload'    => true,
         ]);
-    }
-
-    /**
-     * Get fields from a block
-     *
-     * @param int|null $block_id
-     * @return array
-     */
-    private function getFieldsFromBlock(?int $block_id): array
-    {
-        $fields = [];
-        $field_container = PluginFieldsContainer::getById($block_id);
-        if ($field_container) {
-            $field = new PluginFieldsField();
-            $result = $field->find([
-                'is_active'                   => 1,
-                'plugin_fields_containers_id' => $block_id,
-                'NOT'                         => [
-                    ['type' => 'header'], // Exclude headers
-                ],
-            ]);
-            foreach ($result as $id => $data) {
-                $fields[$id] = $data['label'];
-            }
-        }
-
-        return $fields;
     }
 }
