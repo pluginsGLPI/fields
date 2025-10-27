@@ -103,11 +103,7 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
 
         // Check if the field_id exists in the selected block
         $available_fields = $this->getFieldsFromBlock($input['block_id']);
-        if (!isset($available_fields[$input['field_id']])) {
-            return false;
-        }
-
-        return true;
+        return isset($available_fields[$input['field_id']]);
     }
 
     #[Override]
@@ -361,9 +357,9 @@ class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuest
     public static function hasAvailableFields(): bool
     {
         $blocks = (new self())->getAvailableBlocks();
-        foreach ($blocks as $block_id => $block_label) {
+        foreach (array_keys($blocks) as $block_id) {
             $fields = (new self())->getFieldsFromBlock($block_id);
-            if (!empty($fields)) {
+            if ($fields !== []) {
                 return true;
             }
         }
