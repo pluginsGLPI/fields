@@ -26,8 +26,6 @@
  # -------------------------------------------------------------------------
  #}
 
-{% import 'components/form/fields_macros.html.twig' as fields %}
-
 {% set field = field|merge({
     'default_value': default_value ?? field.default_value
 }) %}
