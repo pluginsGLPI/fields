@@ -30,6 +30,7 @@
 use Glpi\Features\Clonable;
 use Glpi\DBAL\QueryExpression;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Form\Question;
 
 class PluginFieldsField extends CommonDBChild
 {
@@ -349,6 +350,27 @@ class PluginFieldsField extends CommonDBChild
          * @var DBmysql $DB
          */
         global $DB;
+
+        // Check if the field is used in a form question
+        $question = new Question();
+        $found = $question->find([
+            'type' => PluginFieldsQuestionType::class,
+            $this->fields['id'] => new QueryExpression(sprintf(
+                "JSON_VALUE(%s, '$.field_id')",
+                DBmysql::quoteName('extra_data'),
+            )),
+        ]);
+        if (!empty($found)) {
+            $question->getFromDB(current($found)['id']);
+            Session::addMessageAfterRedirect(
+                msg: $question->formatSessionMessageAfterAction(sprintf(
+                    __('The field "%s" cannot be deleted because it is used in a form question', 'fields'),
+                    $this->fields['label'],
+                )),
+                message_type: ERROR,
+            );
+            return false;
+        }
 
         //retrieve search option ID to clean DiplayPreferences
         $container_obj = new PluginFieldsContainer();

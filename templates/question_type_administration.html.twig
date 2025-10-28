@@ -1,0 +1,101 @@
+{#
+ # -------------------------------------------------------------------------
+ # Fields plugin for GLPI
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of Fields.
+ #
+ # Fields is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 2 of the License, or
+ # (at your option) any later version.
+ #
+ # Fields is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Fields. If not, see <http://www.gnu.org/licenses/>.
+ # -------------------------------------------------------------------------
+ # @copyright Copyright (C) 2013-2023 by Fields plugin team.
+ # @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ # @link      https://github.com/pluginsGLPI/fields
+ # -------------------------------------------------------------------------
+ #}
+
+{% import 'components/form/fields_macros.html.twig' as fields %}
+
+{% set rand = random() %}
+
+{% set is_ajax_reload = is_ajax_reload|default(false) %}
+
+{% set field = field|merge({
+    'default_value': default_value ?? field.default_value
+}) %}
+
+{{ call('PluginFieldsField::prepareHtmlFields', [
+    [field],
+    item,
+    true,
+    true,
+    false,
+    {
+        'input_name'     : 'default_value',
+        'full_width'     : not (field.type starts with 'dropdown' or field.type == 'glpi_item'),
+        'no_label'       : true,
+        'mb'             : '',
+        'init'           : is_ajax_reload or (question is not null),
+        'add_field_class': 'glpi-fields-plugin-question-type-glpi-item-field',
+        'comments'       : false
+    }
+])|raw }}
+
+{{ fields.dropdownArrayField(
+    'field_id',
+    selected_field_id,
+    available_fields,
+    '',
+    {
+        'no_label'           : true,
+        'field_class'        : '',
+        'class'              : 'form-select form-select-sm',
+        'mb'                 : '',
+        'init'               : is_ajax_reload or (question is not null),
+        'add_data_attributes': {
+            'glpi-form-editor-specific-question-extra-data'          : '',
+            'glpi-form-editor-question-type-fields-field-id-selector': rand
+        }
+    }
+) }}
+
+{% if not is_ajax_reload %}
+    <script>
+        import(GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
+            const questionField = new m.GlpiPluginFieldsQuestionTypeField();
+
+            {% if question is not null %}
+                questionField.initExistingQuestion('{{ rand }}');
+            {% else %}
+                questionField.initEventHandlers();
+            {% endif %}
+
+            questionField.lockMandatoryInput(
+                $('[data-glpi-form-editor-question-type-fields-field-id-selector="{{ rand }}"]').closest('[data-glpi-form-editor-question-details]'),
+                {{ field.mandatory ? '1' : '0' }}
+            );
+        });
+    </script>
+{% else %}
+    <script>
+        import(GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
+            const questionField = new m.GlpiPluginFieldsQuestionTypeField();
+            questionField.lockMandatoryInput(
+                $('[data-glpi-form-editor-question-type-fields-field-id-selector="{{ rand }}"]').closest('[data-glpi-form-editor-question-details]'),
+                {{ field.mandatory ? '1' : '0' }}
+            );
+        });
+    </script>
+{% endif %}

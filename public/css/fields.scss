@@ -51,3 +51,41 @@ div.fields_clear {
    clear: both;
    width:100%;
 }
+
+[data-glpi-form-editor-question-type-specific] .glpi-fields-plugin-question-type-glpi-item-field .select2-selection:first-of-type:not(:only-child) {
+   border-radius: 0;
+}
+
+[data-glpi-form-editor-question-type-specific]:has(.glpi-fields-plugin-question-type-glpi-item-field),
+[data-glpi-form-renderer-fields-question-type-specific-container]:has(.glpi-fields-plugin-question-type-glpi-item-field) {
+   &:has(> div > span select[data-select2-id]) {
+      > div:first-of-type .select2-selection {
+         border-bottom-left-radius: 0;
+         border-bottom-right-radius: 0;
+      }
+
+      > div:not(:first-of-type) {
+         .glpi-fields-plugin-question-type-glpi-item-field {
+            width: 100%;
+         }
+
+         .select2-selection {
+            margin-top: calc(-1 * var(--tblr-border-width));
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+         }
+
+         .dropdown_tooltip {
+            margin-top: calc(-1 * var(--tblr-border-width));
+
+            &:last-of-type {
+               border-bottom-right-radius: var(--tblr-border-radius);
+            }
+         }
+      }
+
+      > div:has([data-glpi-form-editor-question-type-fields-field-id-selector]) {
+         display: none;
+      }
+   }
+}
