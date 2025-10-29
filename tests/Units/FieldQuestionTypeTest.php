@@ -43,9 +43,6 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 {
     public function testFieldsQuestionCategoryIsAvailableWhenValidFieldExists(): void
     {
-        // Arrange: create block and field
-        $this->createFieldAndContainer();
-
         // Act: get enabled question type categories
         $manager = QuestionTypesManager::getInstance();
         $categories = $manager->getCategories();
@@ -59,6 +56,12 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
     public function testFieldsQuestionCategoryIsNotAvailableWhenNoValidFieldExists(): void
     {
+        // Arrange: clean created field and container
+        $this->tearDownFieldTest();
+        $this->deleteSingletonInstance([
+            QuestionTypesManager::class,
+        ]);
+
         // Act: get enabled question type categories
         $manager = QuestionTypesManager::getInstance();
         $categories = $manager->getCategories();
@@ -72,9 +75,6 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
     public function testFieldsQuestionIsAvailableWhenValidFieldExists(): void
     {
-        // Arrange: create block and field
-        $this->createFieldAndContainer();
-
         // Act: get enabled question types
         $manager = QuestionTypesManager::getInstance();
         $types = $manager->getQuestionTypes();
@@ -88,6 +88,12 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
     public function testFieldsQuestionIsNotAvailableWhenNoValidFieldExists(): void
     {
+        // Arrange: clean created field and container
+        $this->tearDownFieldTest();
+        $this->deleteSingletonInstance([
+            QuestionTypesManager::class,
+        ]);
+
         // Act: get enabled question types
         $manager = QuestionTypesManager::getInstance();
         $types = $manager->getQuestionTypes();
@@ -101,8 +107,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
     public function testFieldsQuestionEditorRendering(): void
     {
-        // Arrange: create field and container
-        $this->createFieldAndContainer();
+        $this->login();
 
         // Arrange: create form with Field question
         $builder = new FormBuilder("My form");
@@ -118,15 +123,11 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
         // Assert: item was rendered
         $this->assertNotEmpty($crawler->filter('.form-editor-container [data-glpi-form-editor-question] .glpi-fields-plugin-question-type-glpi-item-field'));
-
-        // Cleanup
-        $form->delete($form->fields, true);
     }
 
     public function testFieldsQuestionHelpdeskRendering(): void
     {
-        // Arrange: create field and container
-        $this->createFieldAndContainer();
+        $this->login();
 
         // Arrange: create form with Field question
         $builder = new FormBuilder("My form");
@@ -142,9 +143,6 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
         // Assert: item was rendered
         $this->assertNotEmpty($crawler->filter('[data-glpi-form-renderer-fields-question-type-specific-container]'));
-
-        // Cleanup
-        $form->delete($form->fields, true);
     }
 
     private function getFieldExtraDataConfig(): PluginFieldsQuestionTypeExtraDataConfig

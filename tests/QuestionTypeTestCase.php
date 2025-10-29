@@ -30,10 +30,9 @@
 
 namespace GlpiPlugin\Field\Tests;
 
+use DbTestCase;
 use Glpi\Controller\Form\RendererController;
 use Glpi\Form\Form;
-use Glpi\Form\Migration\TypesConversionMapper;
-use Glpi\Form\QuestionType\QuestionTypesManager;
 use Glpi\Tests\FormTesterTrait;
 use PluginFieldsContainer;
 use PluginFieldsField;
@@ -42,9 +41,10 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Ticket;
 
-abstract class QuestionTypeTestCase extends FieldTestCase
+abstract class QuestionTypeTestCase extends DbTestCase
 {
     use FormTesterTrait;
+    use FieldTestTrait;
 
     protected ?PluginFieldsContainer $block = null;
     protected ?PluginFieldsField $field     = null;
@@ -60,30 +60,25 @@ abstract class QuestionTypeTestCase extends FieldTestCase
             'entities_id' => $this->getTestRootEntity(true),
         ]);
 
-        $this->field = $this->createItem(PluginFieldsField::class, [
+        $this->field = $this->createField([
             'label'                                     => 'GLPI Item',
             'type'                                      => 'glpi_item',
             PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
-            'ranking'                                   => 2,
+            'ranking'                                   => 1,
             'is_active'                                 => 1,
         ]);
-
-        // Register plugin question types
-        plugin_fields_register_plugin_types();
     }
 
     public function setUp(): void
     {
+        $this->createFieldAndContainer();
         parent::setUp();
+    }
 
-        // Delete form related single instances
-        $this->deleteSingletonInstance([
-            QuestionTypesManager::class,
-            TypesConversionMapper::class,
-        ]);
-
-        // Login
-        $this->login();
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->tearDownFieldTest();
     }
 
     protected function renderFormEditor(Form $form): Crawler
@@ -110,7 +105,7 @@ abstract class QuestionTypeTestCase extends FieldTestCase
         return new Crawler($response->getContent());
     }
 
-    private function deleteSingletonInstance(array $classes)
+    protected function deleteSingletonInstance(array $classes)
     {
         foreach ($classes as $class) {
             $reflection_class = new ReflectionClass($class);

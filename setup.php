@@ -65,7 +65,10 @@ if (!defined('PLUGINFIELDS_FRONT_PATH')) {
 if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
     mkdir(PLUGINFIELDS_FRONT_PATH);
 }
-
+use Glpi\Form\Destination\FormDestinationChange;
+use Glpi\Form\Destination\FormDestinationManager;
+use Glpi\Form\Destination\FormDestinationProblem;
+use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Migration\TypesConversionMapper;
 use Glpi\Form\QuestionType\QuestionTypesManager;
 use Symfony\Component\Yaml\Yaml;
@@ -399,11 +402,29 @@ function plugin_fields_register_plugin_types(): void
 {
     $types = QuestionTypesManager::getInstance();
     $type_mapper = TypesConversionMapper::getInstance();
+    $destination_manager = FormDestinationManager::getInstance();
 
     // Register question category, type and converter if valid fields are defined
     if (PluginFieldsQuestionType::hasAvailableFields()) {
+        // Register question category
         $types->registerPluginCategory(new PluginFieldsQuestionTypeCategory());
+
+        // Register question type
         $types->registerPluginQuestionType(new PluginFieldsQuestionType());
+
+        // Register common ITIL field for tickets, changes and problems
+        foreach ([
+            new FormDestinationTicket(),
+            new FormDestinationChange(),
+            new FormDestinationProblem(),
+        ] as $itil_destination) {
+            $destination_manager->registerPluginCommonITILConfigField(
+                $itil_destination::class,
+                new PluginFieldsDestinationField($itil_destination),
+            );
+        }
+
+        // Register converter for migration
         $type_mapper->registerPluginQuestionTypeConverter('fields', new PluginFieldsQuestionType());
     }
 }

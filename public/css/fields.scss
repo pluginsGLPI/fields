@@ -89,3 +89,9 @@ div.fields_clear {
       }
    }
 }
+
+.glpi-fields-plugin-question-type-glpi-destination-toggle {
+   .field-container > label {
+      margin-top: 0 !important;
+   }
+}

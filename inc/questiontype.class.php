@@ -205,6 +205,11 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             case 'datetime':
                 return (new DateTime($answer))->format('Y-m-d H:i');
             case 'glpi_item':
+                $itemtype = $answer['itemtype'];
+                if (!is_a($itemtype, CommonDBTM::class, true)) {
+                    return '';
+                }
+
                 $item = $answer['itemtype']::getById($answer['items_id']);
                 if (!$item) {
                     return '';
@@ -219,10 +224,17 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 return '';
             }
 
-            if (is_string($answer)) {
+            if (!is_array($answer)) {
                 $answer = [$answer];
             }
-            return implode(', ', array_map(fn($items_id) => $itemtype::getById($items_id)->fields['name'], $answer));
+            $names = [];
+            foreach ($answer as $items_id) {
+                $item = $itemtype::getById($items_id);
+                if ($item) {
+                    $names[] = $item->fields['name'];
+                }
+            }
+            return implode(', ', $names);
         }
 
         return (string) $answer;

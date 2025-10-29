@@ -75,10 +75,9 @@ final class FieldQuestionTypeMigrationTest extends QuestionTypeTestCase
     {
         global $DB;
 
-        $question_name = 'GLPI item fields question';
+        $this->login();
 
-        // Arrange: create block and field
-        $this->createFieldAndContainer();
+        $question_name = 'GLPI item fields question';
 
         // Create a form
         $this->assertTrue($DB->insert(
@@ -125,9 +124,5 @@ final class FieldQuestionTypeMigrationTest extends QuestionTypeTestCase
         $question = getItemByTypeName(Question::class, $question_name);
         $question_type = $question->getQuestionType();
         $this->assertInstanceOf(PluginFieldsQuestionType::class, $question_type);
-
-        // Delete created items
-        $form = $question->getForm();
-        $form->delete($form->fields, true);
     }
 }
