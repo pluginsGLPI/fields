@@ -37,7 +37,7 @@
 
 {% if not already_wrapped and not dropdown_item%}
 
-{% set class = item.isNewItem() ? 'col-xxl-12' : 'col-xxl-9' %}
+{% set class = item.isNewItem() or item is instanceof('User') ? 'col-xxl-12' : 'col-xxl-9' %}
     <div class="col-12  {{ class }} flex-column">
         <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
             <div class="row flex-row align-items-start flex-grow-1">
