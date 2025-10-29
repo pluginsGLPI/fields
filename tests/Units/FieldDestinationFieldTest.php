@@ -135,7 +135,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 
     public function testDestinationWithNoAdditionalFields(): void
     {
-        $builder = new FormBuilder()->addQuestion("Short text", QuestionTypeShortText::class);
+        $builder = (new FormBuilder())->addQuestion("Short text", QuestionTypeShortText::class);
         $form = $this->createForm($builder);
 
         $this->sendFormAndAssertITILObjectAdditionalFields(
