@@ -68,25 +68,8 @@ class PluginFieldsDestinationField extends AbstractConfigField
             throw new InvalidArgumentException("Unexpected config class");
         }
 
-        $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-
-            {{ fields.sliderField(
-                input_name,
-                value,
-                __('Bind additional fields to the destination', 'fields'),
-                options|merge({
-                    'field_class': 'glpi-fields-plugin-question-type-glpi-destination-toggle',
-                    'label_class': 'col fw-normal pt-0',
-                    'input_class': 'col-auto',
-                    'label_align': 'start',
-                    'mb'         : '',
-                })
-            ) }}
-TWIG;
-
         $twig = TemplateRenderer::getInstance();
-        return $twig->renderFromStringTemplate($template, [
+        return $twig->render('@fields/destinationfield.html.twig', [
             'value'      => $config->getValue(),
             'input_name' => $input_name . "[" . SimpleValueConfig::VALUE . "]",
             'options'    => $display_options,
