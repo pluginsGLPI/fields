@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Implement `Field` question type for new GLPI forms
+- Bind the answers to the `Field` question type to the corresponding additional fields
 
 ## [1.22.2] - 2025-10-24
 
