@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Implement `Field` question type for new GLPI forms
 
+### Fixes
+
+- Align the fields of the plugin with the user form
+
 ## [1.22.2] - 2025-10-24
 
 ### Fixed
