@@ -31,15 +31,21 @@
 namespace GlpiPlugin\Field\Tests;
 
 use DBmysql;
-use DbTestCase;
 use PluginFieldsContainer;
+use PluginFieldsField;
 
-abstract class FieldTestCase extends DbTestCase
+trait FieldTestTrait
 {
+    /** @var PluginFieldsContainer[] */
     private static array $createdContainers = [];
+    /** @var PluginFieldsField[] */
+    private static array $createdFields = [];
 
-    public function tearDown(): void
+    public function tearDownFieldTest(): void
     {
+        // Re-login to ensure we are logged in
+        $this->login();
+
         // Clean created containers
         array_map(
             fn(PluginFieldsContainer $container) => $container->delete($container->fields, true),
@@ -47,18 +53,53 @@ abstract class FieldTestCase extends DbTestCase
         );
         self::$createdContainers = [];
 
+        // Clean created fields
+        array_map(
+            fn(PluginFieldsField $field) => $field->delete($field->fields, true),
+            self::$createdFields,
+        );
+        self::$createdFields = [];
+
         /** @var DBmysql $DB */
         global $DB;
         $DB->clearSchemaCache();
-
-        parent::tearDown();
     }
 
     public function createFieldContainer(array $inputs): PluginFieldsContainer
     {
+        // Re-login to ensure we are logged in
+        $this->login();
+
         $container = $this->createItem(PluginFieldsContainer::class, $inputs, ['itemtypes']);
         self::$createdContainers[] = $container;
 
+        // Re-initialize fields plugin to register new container logic
+        plugin_init_fields();
+
+        // Clear DB schema cache to avoid issues with new container
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->clearSchemaCache();
+
         return $container;
+    }
+
+    public function createField(array $inputs): PluginFieldsField
+    {
+        // Re-login to ensure we are logged in
+        $this->login();
+
+        $field = $this->createItem(PluginFieldsField::class, $inputs, ['allowed_values', 'question_types']);
+        self::$createdFields[] = $field;
+
+        // Re-initialize fields plugin to register new field logic
+        plugin_init_fields();
+
+        // Clear DB schema cache to avoid issues with new field
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->clearSchemaCache();
+
+        return $field;
     }
 }
