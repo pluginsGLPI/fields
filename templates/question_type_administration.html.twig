@@ -32,12 +32,13 @@
 
 {% set is_ajax_reload = is_ajax_reload|default(false) %}
 
-{% set field = field|merge({
-    'default_value': default_value ?? field.default_value
+{% set field_for_html = field|merge({
+    'default_value': default_value ?? field.default_value,
+    'mandatory': false
 }) %}
 
 {{ call('PluginFieldsField::prepareHtmlFields', [
-    [field],
+    [field_for_html],
     item,
     true,
     true,
