@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 01:05+0000\n"
+"POT-Creation-Date: 2025-10-30 01:12+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Davide <spam@habilitas.it>, 2025\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/it_IT/)\n"
@@ -23,12 +23,12 @@ msgstr ""
 msgid "show"
 msgstr "mostra"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:245
+#: templates/forms/status_override.html.twig inc/field.class.php:246
 msgid "Field"
 msgstr "Campo"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:627
-#: inc/field.class.php:803
+#: templates/forms/status_override.html.twig inc/field.class.php:649
+#: inc/field.class.php:825
 msgid "Read only"
 msgstr "Sola lettura"
 
@@ -56,8 +56,12 @@ msgstr[0] "Condizione per nascondere il blocco"
 msgstr[1] "Condizioni per nascondere il blocco"
 msgstr[2] "Condizioni per nascondere il blocco"
 
-#: setup.php:226 inc/menu.class.php:37 front/container.form.php:73
-#: front/container.php:34
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr ""
+
+#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr "Campi aggiuntivi"
 
@@ -164,73 +168,73 @@ msgstr "Aggiornamento dei file a tendina generati"
 msgid "Regenerate container files"
 msgstr "Rigenera i file dei contenitori"
 
-#: inc/container.class.php:54 inc/container.class.php:872
+#: inc/container.class.php:54 inc/container.class.php:903
 msgid "Export to YAML"
 msgstr "Esporta in YAML"
 
-#: inc/container.class.php:263
+#: inc/container.class.php:295
 msgid "Regenerate containers files"
 msgstr "Rigenera i file dei contenitori"
 
-#: inc/container.class.php:284
+#: inc/container.class.php:316
 msgid "Fix container names"
 msgstr "Ripara i nomi dei contenitori"
 
-#: inc/container.class.php:428
+#: inc/container.class.php:460
 msgid "Updating generated containers files"
 msgstr "Aggiornamento dei file dei contenitori generati"
 
-#: inc/container.class.php:645
+#: inc/container.class.php:677
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Non è possibile aggiungere più blocchi con il tipo 'Inserimento nel modulo' sullo stesso oggetto"
 
-#: inc/container.class.php:661
+#: inc/container.class.php:693
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Non è possibile aggiungere più blocchi con il tipo 'Inserimento sotto forma di una scheda specifica' sulla scheda dello stesso oggetto"
 
-#: inc/container.class.php:678
+#: inc/container.class.php:710
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Il nome del contenitore è troppo lungo per il database (le cifre nel nome sono sostituite da caratteri, provare a rimuoverle)"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:725
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Non è possibile aggiungere più blocchi con lo stesso nome sullo stesso oggetto"
 
-#: inc/container.class.php:860
+#: inc/container.class.php:891
 msgid "Block"
 msgstr "Blocco"
 
-#: inc/container.class.php:968
+#: inc/container.class.php:999
 msgid "Tab"
 msgstr "Scheda"
 
-#: inc/container.class.php:1122
+#: inc/container.class.php:1153
 msgid "Add tab"
 msgstr "Aggiungi scheda"
 
-#: inc/container.class.php:1123
+#: inc/container.class.php:1154
 msgid "Insertion in the form (before save button)"
 msgstr "Inserimento nel modulo (prima del pulsante di salvataggio)"
 
-#: inc/container.class.php:1124
+#: inc/container.class.php:1155
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserimento sotto forma di una scheda specifica (prima del pulsante di salvataggio)"
 
-#: inc/container.class.php:1652
+#: inc/container.class.php:1683
 msgid "Some mandatory fields are empty"
 msgstr "Alcuni campi obbligatori sono vuoti"
 
-#: inc/container.class.php:1657
+#: inc/container.class.php:1688
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alcuni campi numerici contengono valori non numerici"
 
-#: inc/container.class.php:1662
+#: inc/container.class.php:1693
 msgid "Some URL fields contains invalid links"
 msgstr "Alcuni campi URL contengono link non validi"
 
@@ -238,69 +242,74 @@ msgstr "Alcuni campi URL contengono link non validi"
 msgid "Override by status"
 msgstr "Sovrascritture per stato"
 
-#: inc/field.class.php:260 inc/field.class.php:287
+#: inc/field.class.php:261 inc/field.class.php:288
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Il nome del campo è troppo lungo per il database (le cifre nel nome sono sostituite da caratteri, provare a rimuoverle)"
 
-#: inc/field.class.php:279
+#: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr ""
 
-#: inc/field.class.php:545
+#: inc/field.class.php:367
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
+
+#: inc/field.class.php:567
 msgid "Fields"
 msgstr "Campi"
 
-#: inc/field.class.php:610
+#: inc/field.class.php:632
 msgid "Add a new field"
 msgstr "Aggiungi nuovo campo"
 
-#: inc/field.class.php:614
+#: inc/field.class.php:636
 msgid "No field for this block"
 msgstr "Nessun campo per questo blocco"
 
-#: inc/field.class.php:1341
+#: inc/field.class.php:1363
 msgid "Header"
 msgstr "Intestazione"
 
-#: inc/field.class.php:1342
+#: inc/field.class.php:1364
 msgid "Text (single line)"
 msgstr "Testo (riga singola)"
 
-#: inc/field.class.php:1343
+#: inc/field.class.php:1365
 msgid "Text (multiples lines)"
 msgstr "Testo (righe multiple)"
 
-#: inc/field.class.php:1344
+#: inc/field.class.php:1366
 msgid "Rich Text"
 msgstr "Rich Text"
 
-#: inc/field.class.php:1345
+#: inc/field.class.php:1367
 msgid "Number"
 msgstr "Numero"
 
-#: inc/field.class.php:1346
+#: inc/field.class.php:1368
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:1347
+#: inc/field.class.php:1369
 msgid "Dropdown"
 msgstr "A tendina"
 
-#: inc/field.class.php:1348
+#: inc/field.class.php:1370
 msgid "Yes/No"
 msgstr "Sì/No"
 
-#: inc/field.class.php:1349
+#: inc/field.class.php:1371
 msgid "Date"
 msgstr "Data"
 
-#: inc/field.class.php:1350
+#: inc/field.class.php:1372
 msgid "Date & time"
 msgstr "Data & ora"
 
-#: inc/field.class.php:1351
+#: inc/field.class.php:1373
 msgid "GLPI item"
 msgstr "Oggetto GLPI"
 

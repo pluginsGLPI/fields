@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 01:05+0000\n"
+"POT-Creation-Date: 2025-10-30 01:12+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -24,12 +24,12 @@ msgstr ""
 msgid "show"
 msgstr "prikaži"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:245
+#: templates/forms/status_override.html.twig inc/field.class.php:246
 msgid "Field"
 msgstr "Polje"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:627
-#: inc/field.class.php:803
+#: templates/forms/status_override.html.twig inc/field.class.php:649
+#: inc/field.class.php:825
 msgid "Read only"
 msgstr "Samo-za-čitanje"
 
@@ -57,8 +57,12 @@ msgstr[0] "Uvjet za skrivanje bloka"
 msgstr[1] "Uvjeti za skrivanje bloka"
 msgstr[2] "Uvjeti za skrivanje bloka"
 
-#: setup.php:226 inc/menu.class.php:37 front/container.form.php:73
-#: front/container.php:34
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr ""
+
+#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr "Dodatna polja"
 
@@ -165,73 +169,73 @@ msgstr "Aktualiziranje generiranih datoteka padajućih popisa"
 msgid "Regenerate container files"
 msgstr "Ponovo generiraj datoteke spremnika"
 
-#: inc/container.class.php:54 inc/container.class.php:872
+#: inc/container.class.php:54 inc/container.class.php:903
 msgid "Export to YAML"
 msgstr "Izvezi u YAML"
 
-#: inc/container.class.php:263
+#: inc/container.class.php:295
 msgid "Regenerate containers files"
 msgstr "Ponovo generiraj datoteke kontejnera"
 
-#: inc/container.class.php:284
+#: inc/container.class.php:316
 msgid "Fix container names"
 msgstr "Ispravi imena spremnika"
 
-#: inc/container.class.php:428
+#: inc/container.class.php:460
 msgid "Updating generated containers files"
 msgstr "Aktualiziranje generiranih datoteka spremnika"
 
-#: inc/container.class.php:645
+#: inc/container.class.php:677
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac” na isti objekt"
 
-#: inc/container.class.php:661
+#: inc/container.class.php:693
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Nije moguće dodati višestruke blokove s vrstom „Umetanje u obrazac određene kartice” na istu karticu objekta"
 
-#: inc/container.class.php:678
+#: inc/container.class.php:710
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Ime spremnika je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:725
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nije moguće dodati blokove s jednakim imenon na isti objekt"
 
-#: inc/container.class.php:860
+#: inc/container.class.php:891
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:968
+#: inc/container.class.php:999
 msgid "Tab"
 msgstr "Kartica"
 
-#: inc/container.class.php:1122
+#: inc/container.class.php:1153
 msgid "Add tab"
 msgstr "Dodaj karticu"
 
-#: inc/container.class.php:1123
+#: inc/container.class.php:1154
 msgid "Insertion in the form (before save button)"
 msgstr "Umetanje u obrazac (prije gumba za spremanje)"
 
-#: inc/container.class.php:1124
+#: inc/container.class.php:1155
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Umetanje u obrazac određene kartice (prije gumba za spremanje)"
 
-#: inc/container.class.php:1652
+#: inc/container.class.php:1683
 msgid "Some mandatory fields are empty"
 msgstr "Neka obavezna polja su prazna"
 
-#: inc/container.class.php:1657
+#: inc/container.class.php:1688
 msgid "Some numeric fields contains non numeric values"
 msgstr "Neka numerička polja sadrže ne numeričke vrijednosti"
 
-#: inc/container.class.php:1662
+#: inc/container.class.php:1693
 msgid "Some URL fields contains invalid links"
 msgstr "Neka URL polja sadrže neispravne poveznice"
 
@@ -239,69 +243,74 @@ msgstr "Neka URL polja sadrže neispravne poveznice"
 msgid "Override by status"
 msgstr "Zamijeni po stanju"
 
-#: inc/field.class.php:260 inc/field.class.php:287
+#: inc/field.class.php:261 inc/field.class.php:288
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:279
+#: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr ""
 
-#: inc/field.class.php:545
+#: inc/field.class.php:367
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
+
+#: inc/field.class.php:567
 msgid "Fields"
 msgstr "Polja"
 
-#: inc/field.class.php:610
+#: inc/field.class.php:632
 msgid "Add a new field"
 msgstr "Dodaj novo polje"
 
-#: inc/field.class.php:614
+#: inc/field.class.php:636
 msgid "No field for this block"
 msgstr "Nema polja za ovaj blok"
 
-#: inc/field.class.php:1341
+#: inc/field.class.php:1363
 msgid "Header"
 msgstr "Zaglavlje"
 
-#: inc/field.class.php:1342
+#: inc/field.class.php:1364
 msgid "Text (single line)"
 msgstr "Tekst (jednoredni)"
 
-#: inc/field.class.php:1343
+#: inc/field.class.php:1365
 msgid "Text (multiples lines)"
 msgstr "Tekst (višeredni)"
 
-#: inc/field.class.php:1344
+#: inc/field.class.php:1366
 msgid "Rich Text"
 msgstr "Formatirani tekst"
 
-#: inc/field.class.php:1345
+#: inc/field.class.php:1367
 msgid "Number"
 msgstr "Broj"
 
-#: inc/field.class.php:1346
+#: inc/field.class.php:1368
 msgid "URL"
 msgstr "URL"
 
-#: inc/field.class.php:1347
+#: inc/field.class.php:1369
 msgid "Dropdown"
 msgstr "Padajući popis"
 
-#: inc/field.class.php:1348
+#: inc/field.class.php:1370
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: inc/field.class.php:1349
+#: inc/field.class.php:1371
 msgid "Date"
 msgstr "Datum"
 
-#: inc/field.class.php:1350
+#: inc/field.class.php:1372
 msgid "Date & time"
 msgstr "Datum i vrijeme"
 
-#: inc/field.class.php:1351
+#: inc/field.class.php:1373
 msgid "GLPI item"
 msgstr "GLPI predmet"
 
