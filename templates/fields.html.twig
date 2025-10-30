@@ -190,7 +190,7 @@
             {{ macros.dropdownArrayField(itemtype_input_name, value.itemtype|default(''), field['allowed_values'], label, field_options|merge({
                 'rand'               : rand,
                 'display_emptychoice': true,
-                'add_field_class'    : 'glpi-fields-plugin-glpi-item-field',
+                'add_field_class'    : field_options.add_field_class|default('') ~ ' glpi-fields-plugin-glpi-item-field',
                 'add_field_html'     : items_id_dropdown
             })) }}
         {% endif %}
