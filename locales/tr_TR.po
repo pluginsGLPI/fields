@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 01:05+0000\n"
+"POT-Creation-Date: 2025-10-30 01:12+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2025\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -22,12 +22,12 @@ msgstr ""
 msgid "show"
 msgstr "görüntüle"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:245
+#: templates/forms/status_override.html.twig inc/field.class.php:246
 msgid "Field"
 msgstr "Alan"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:627
-#: inc/field.class.php:803
+#: templates/forms/status_override.html.twig inc/field.class.php:649
+#: inc/field.class.php:825
 msgid "Read only"
 msgstr "Salt okunur"
 
@@ -54,8 +54,12 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Bloğu gizleyecek koşul"
 msgstr[1] "Bloğu gizleyecek koşullar"
 
-#: setup.php:226 inc/menu.class.php:37 front/container.form.php:73
-#: front/container.php:34
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr ""
+
+#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr "Ek alanlar"
 
@@ -162,73 +166,73 @@ msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 msgid "Regenerate container files"
 msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
-#: inc/container.class.php:54 inc/container.class.php:872
+#: inc/container.class.php:54 inc/container.class.php:903
 msgid "Export to YAML"
 msgstr "YAML olarak dışa aktar"
 
-#: inc/container.class.php:263
+#: inc/container.class.php:295
 msgid "Regenerate containers files"
 msgstr "Kapsayıcıların dosyaları yeniden oluşturulsun"
 
-#: inc/container.class.php:284
+#: inc/container.class.php:316
 msgid "Fix container names"
 msgstr "Kapsayıcı adlarını düzelt"
 
-#: inc/container.class.php:428
+#: inc/container.class.php:460
 msgid "Updating generated containers files"
 msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 
-#: inc/container.class.php:645
+#: inc/container.class.php:677
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:661
+#: inc/container.class.php:693
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:678
+#: inc/container.class.php:710
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Kapsayıcı adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:725
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 
-#: inc/container.class.php:860
+#: inc/container.class.php:891
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:968
+#: inc/container.class.php:999
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/container.class.php:1122
+#: inc/container.class.php:1153
 msgid "Add tab"
 msgstr "Sekme ekle"
 
-#: inc/container.class.php:1123
+#: inc/container.class.php:1154
 msgid "Insertion in the form (before save button)"
 msgstr "Forma eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:1124
+#: inc/container.class.php:1155
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:1652
+#: inc/container.class.php:1683
 msgid "Some mandatory fields are empty"
 msgstr "Bazı zorunlu alanlar boş"
 
-#: inc/container.class.php:1657
+#: inc/container.class.php:1688
 msgid "Some numeric fields contains non numeric values"
 msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
-#: inc/container.class.php:1662
+#: inc/container.class.php:1693
 msgid "Some URL fields contains invalid links"
 msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 
@@ -236,69 +240,74 @@ msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 msgid "Override by status"
 msgstr "Duruma göre değiştir"
 
-#: inc/field.class.php:260 inc/field.class.php:287
+#: inc/field.class.php:261 inc/field.class.php:288
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Alan adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/field.class.php:279
+#: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Aynı blok içine aynı 'açılan kutu' alanı eklenemez"
 
-#: inc/field.class.php:545
+#: inc/field.class.php:367
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
+
+#: inc/field.class.php:567
 msgid "Fields"
 msgstr "Alanlar"
 
-#: inc/field.class.php:610
+#: inc/field.class.php:632
 msgid "Add a new field"
 msgstr "Alan ekle"
 
-#: inc/field.class.php:614
+#: inc/field.class.php:636
 msgid "No field for this block"
 msgstr "Bu blokta henüz bir alan yok"
 
-#: inc/field.class.php:1341
+#: inc/field.class.php:1363
 msgid "Header"
 msgstr "Üst bilgi"
 
-#: inc/field.class.php:1342
+#: inc/field.class.php:1364
 msgid "Text (single line)"
 msgstr "Metin (tek satır)"
 
-#: inc/field.class.php:1343
+#: inc/field.class.php:1365
 msgid "Text (multiples lines)"
 msgstr "Metin (birden çok satır)"
 
-#: inc/field.class.php:1344
+#: inc/field.class.php:1366
 msgid "Rich Text"
 msgstr "Zengin metin"
 
-#: inc/field.class.php:1345
+#: inc/field.class.php:1367
 msgid "Number"
 msgstr "Sayı"
 
-#: inc/field.class.php:1346
+#: inc/field.class.php:1368
 msgid "URL"
 msgstr "Adres"
 
-#: inc/field.class.php:1347
+#: inc/field.class.php:1369
 msgid "Dropdown"
 msgstr "Açılan kutu"
 
-#: inc/field.class.php:1348
+#: inc/field.class.php:1370
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
-#: inc/field.class.php:1349
+#: inc/field.class.php:1371
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:1350
+#: inc/field.class.php:1372
 msgid "Date & time"
 msgstr "Tarih ve saat"
 
-#: inc/field.class.php:1351
+#: inc/field.class.php:1373
 msgid "GLPI item"
 msgstr "GLPI ögesi"
 
