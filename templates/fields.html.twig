@@ -154,21 +154,7 @@
                 <div class="w-100"></div>
             {% endif %}
 
-            {{ macros.dropdownArrayField(itemtype_input_name, value.itemtype|default(''), field['allowed_values'], label, field_options|merge({
-                'rand': rand,
-                'display_emptychoice': true,
-            })) }}
-
-            {% set items_id_container_class = ['col-12'] %}
-            {% if item is instanceof('Glpi\\Form\\Form') %}
-                {% set items_id_container_class = items_id_container_class|merge(['col-sm-6']) %}
-            {% else %}
-                {% set items_id_container_class = items_id_container_class|merge(['form-field row mb-2']) %}
-                {% if container.fields['type'] == 'tab' %}
-                    {% set items_id_container_class = items_id_container_class|merge(['col-sm-6']) %}
-                {% endif %}
-            {% endif %}
-            <div class='{{ items_id_container_class|join(' ') }}'>
+            {% set items_id_dropdown %}
                 {% do call('Ajax::updateItemOnSelectEvent',
                     [
                         'dropdown_' ~ itemtype_input_name ~ rand,
@@ -186,29 +172,27 @@
                         }
                 ]) %}
 
-                {% if item is not instanceof('Glpi\\Form\\Form') %}
-                    {# fake label for DOM disposition #}
-                    <label class="col-form-label col-xxl-4 text-xxl-end" for="dropdown_items_id_testfield{{ rand }}">
-                    </label>
-
-                    <div class="col-xxl-8 field-container">
-                {% endif %}
-                        <span id='results_items_id{{ rand }}' class='col-lg-14'>
-                        {% if value.itemtype|default('') != '' %}
-                            {{ macros.dropdownField(value.itemtype, items_id_input_name, value.items_id|default(''), ' ', field_options|merge({
-                                'entity': value.itemtype|default('') == 'User' ? -1 : item.getEntityID(),
-                                'rand': rand,
-                                'right': 'all',
-                                'displaywith': ['otherserial', 'serial'],
-                                'display_emptychoice' : false,
-                                'no_label': true
-                            })) }}
-                        {% endif %}
-                        </span>
-                    {% if item is not instanceof('Glpi\\Form\\Form') %}
-                        </div>
+                <span id='results_items_id{{ rand }}' class='col-lg-14'>
+                    {% if value.itemtype|default('') != '' %}
+                        {{ macros.dropdownField(value.itemtype, items_id_input_name, value.items_id|default(''), ' ', field_options|merge({
+                            'entity': value.itemtype|default('') == 'User' ? -1 : item.getEntityID(),
+                            'rand': rand,
+                            'right': 'all',
+                            'displaywith': ['otherserial', 'serial'],
+                            'display_emptychoice' : false,
+                            'no_label': true,
+                            'full_width': true,
+                        })) }}
                     {% endif %}
-            </div>
+                </span>
+            {% endset %}
+
+            {{ macros.dropdownArrayField(itemtype_input_name, value.itemtype|default(''), field['allowed_values'], label, field_options|merge({
+                'rand'               : rand,
+                'display_emptychoice': true,
+                'add_field_class'    : field_options.add_field_class|default('') ~ ' glpi-fields-plugin-glpi-item-field',
+                'add_field_html'     : items_id_dropdown
+            })) }}
         {% endif %}
     {% endif %}
 {% endfor %}

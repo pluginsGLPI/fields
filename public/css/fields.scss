@@ -56,15 +56,15 @@ div.fields_clear {
    border-radius: 0;
 }
 
-[data-glpi-form-editor-question-type-specific]:has(.glpi-fields-plugin-question-type-glpi-item-field),
-[data-glpi-form-renderer-fields-question-type-specific-container]:has(.glpi-fields-plugin-question-type-glpi-item-field) {
-   &:has(> div > span select[data-select2-id]) {
-      > div:first-of-type .select2-selection {
+.glpi-fields-plugin-glpi-item-field,
+.glpi-fields-plugin-glpi-item-field .field-container {
+   &:has(> span select[data-select2-id]) {
+      > span:first-of-type .select2-selection {
          border-bottom-left-radius: 0;
          border-bottom-right-radius: 0;
       }
 
-      > div:not(:first-of-type) {
+      > span:not(:first-of-type) {
          .glpi-fields-plugin-question-type-glpi-item-field {
             width: 100%;
          }
