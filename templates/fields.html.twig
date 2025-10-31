@@ -42,6 +42,9 @@
         <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
             <div class="row flex-row align-items-start flex-grow-1">
                 <div class="row flex-row">
+                    {% if item.isNewItem() and item is instanceof('User') %}
+                        <div>
+                    {% endif %}
 {% endif %}
 
 {% for field in fields %}
@@ -215,6 +218,9 @@
 
 {% if not already_wrapped and not dropdown_item%}
 
+                    {% if item.isNewItem() and item is instanceof('User') %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
