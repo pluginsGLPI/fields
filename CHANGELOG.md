@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Bind the answers to the `Field` question type to the corresponding additional fields
 - Update dropdowns layout/style for “GLPI Item” fields
 
+### Fixed
+
+- Align the fields of the plugin with the user form
+
 ## [1.22.2] - 2025-10-24
 
 ### Fixed
