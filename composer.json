@@ -4,9 +4,9 @@
         "symfony/yaml": "^7.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.86",
+        "friendsofphp/php-cs-fixer": "^3.89",
         "friendsoftwig/twigcs": "^6.1",
-        "glpi-project/tools": "^0.8.0",
+        "glpi-project/tools": "^0.8.3",
         "php-parallel-lint/php-parallel-lint": "^1.4",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
