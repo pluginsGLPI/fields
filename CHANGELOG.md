@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fix bad SQL query for `GenericObject`
+
 ### Added
 
 - Implement `Field` question type for new GLPI forms
