@@ -1626,7 +1626,7 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
-        if (array_key_exists('_plugin_fields_data', $item->input)) {
+        if (is_array($item->input) && array_key_exists('_plugin_fields_data', $item->input)) {
             $data             = $item->input['_plugin_fields_data'];
             $data['items_id'] = $item->getID();
             $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
@@ -1654,7 +1654,7 @@ HTML;
     public static function preItemUpdate(CommonDBTM $item)
     {
         self::preItem($item);
-        if (array_key_exists('_plugin_fields_data', $item->input)) {
+        if (is_array($item->input) && array_key_exists('_plugin_fields_data', $item->input)) {
             $data = $item->input['_plugin_fields_data'];
             $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
             //update data
