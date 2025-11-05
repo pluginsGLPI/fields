@@ -5,11 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
-
-### Fixed
-
-- Fix bad SQL query for `GenericObject`
+## [1.23.0] - 2025-11-05
 
 ### Added
 
@@ -20,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Align the fields of the plugin with the user form
+- Fix bad SQL query for `GenericObject`
 
 ## [1.22.2] - 2025-10-24
 
