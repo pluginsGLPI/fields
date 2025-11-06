@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 01:12+0000\n"
+"POT-Creation-Date: 2025-11-06 01:11+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2025\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -56,7 +56,7 @@ msgstr[1] "Bloğu gizleyecek koşullar"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Ek alanları hedefe bağla"
 
 #: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
@@ -166,73 +166,73 @@ msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 msgid "Regenerate container files"
 msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
-#: inc/container.class.php:54 inc/container.class.php:903
+#: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
 msgstr "YAML olarak dışa aktar"
 
-#: inc/container.class.php:295
+#: inc/container.class.php:287
 msgid "Regenerate containers files"
 msgstr "Kapsayıcıların dosyaları yeniden oluşturulsun"
 
-#: inc/container.class.php:316
+#: inc/container.class.php:308
 msgid "Fix container names"
 msgstr "Kapsayıcı adlarını düzelt"
 
-#: inc/container.class.php:460
+#: inc/container.class.php:452
 msgid "Updating generated containers files"
 msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 
-#: inc/container.class.php:677
+#: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:685
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:710
+#: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Kapsayıcı adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/container.class.php:725
+#: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 
-#: inc/container.class.php:891
+#: inc/container.class.php:883
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:999
+#: inc/container.class.php:991
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/container.class.php:1153
+#: inc/container.class.php:1145
 msgid "Add tab"
 msgstr "Sekme ekle"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
 msgstr "Forma eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:1155
+#: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:1683
+#: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
 msgstr "Bazı zorunlu alanlar boş"
 
-#: inc/container.class.php:1688
+#: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
 msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
-#: inc/container.class.php:1693
+#: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
 msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 
@@ -253,7 +253,7 @@ msgstr "Aynı blok içine aynı 'açılan kutu' alanı eklenemez"
 #: inc/field.class.php:367
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "\"%s\" alanı bir form sorusunda kullanıldığı için silinemez"
 
 #: inc/field.class.php:567
 msgid "Fields"
