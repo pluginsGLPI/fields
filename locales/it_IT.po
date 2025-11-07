@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-04 01:10+0000\n"
+"POT-Creation-Date: 2025-11-07 01:09+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Davide <spam@habilitas.it>, 2025\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/it_IT/)\n"
@@ -58,7 +58,7 @@ msgstr[2] "Condizioni per nascondere il blocco"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Associa campi aggiuntivi alla destinazione"
 
 #: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
@@ -250,12 +250,12 @@ msgstr "Il nome del campo è troppo lungo per il database (le cifre nel nome son
 
 #: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+msgstr "Non è possibile aggiungere lo stesso campo \"dropdown\" sullo stesso blocco."
 
 #: inc/field.class.php:367
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "Il campo \"%s\" non può essere cancellato perché è utilizzato in una domanda del modulo."
 
 #: inc/field.class.php:567
 msgid "Fields"
