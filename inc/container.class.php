@@ -2258,7 +2258,7 @@ HTML;
 
     public static function getNameField()
     {
-        return 'label';
+        return 'name';
     }
 
     public function prepareInputForClone($input)
