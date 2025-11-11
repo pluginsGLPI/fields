@@ -1,341 +1,340 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
+# Peter Rundqvist, 2025
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-11 01:10+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2015-09-18 09:34+0000\n"
+"Last-Translator: Peter Rundqvist, 2025\n"
+"Language-Team: Swedish (Sweden) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: templates/fields.html.twig
 msgid "show"
-msgstr ""
+msgstr "visa"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:246
 msgid "Field"
-msgstr ""
+msgstr "Fält"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:649
 #: inc/field.class.php:825
 msgid "Read only"
-msgstr ""
+msgstr "Endast läs"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
+msgstr "Lägg till ny statusåsidosättning"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "Åsidosättningar"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr ""
+msgstr "Inga objekt"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr ""
+msgstr "Lägg till villkor för att dölja block"
 
 #: templates/container_display_conditions.html.twig
 #: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Villkor för att dölja block"
+msgstr[1] "Villkor för att dölja block"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Knyt ytterligare fält till målet"
 
 #: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
-msgstr ""
+msgstr "Ytterligare fält"
 
 #: inc/containerdisplaycondition.class.php:102
 #: inc/containerdisplaycondition.class.php:134
 msgid "under"
-msgstr ""
+msgstr "nedanför"
 
 #: inc/containerdisplaycondition.class.php:103
 #: inc/containerdisplaycondition.class.php:137
 msgid "not under"
-msgstr ""
+msgstr "ej nedanför"
 
 #: inc/containerdisplaycondition.class.php:109
 #: inc/containerdisplaycondition.class.php:131
 msgid "regular expression matches"
-msgstr ""
+msgstr "Regex matchar"
 
 #: inc/containerdisplaycondition.class.php:501
 #: inc/containerdisplaycondition.class.php:517
 msgid "You must specify an item type, search option and condition."
-msgstr ""
+msgstr "Du måste ange en objekttyp, ett sökalternativ och ett villkor."
 
 #: inc/toolbox.class.php:124
 msgid "Fix fields names"
-msgstr ""
+msgstr "Korrigera fältnamn"
 
 #: inc/toolbox.class.php:324
 msgid "Component items"
-msgstr ""
+msgstr "Komponentobjekt"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
-msgstr ""
+msgstr "Kontrollera databasen för att upptäcka problem."
 
 #: inc/checkdatabasecommand.class.php:44
 msgid "This command will check database to detect following inconsistencies:"
-msgstr ""
+msgstr "Detta kommando söker efter följande problem i databasen:"
 
 #: inc/checkdatabasecommand.class.php:47
 #, php-format
 msgid ""
 "- some deleted fields may still be present in database (bug introduced in "
 "version %s and fixed in version %s)"
-msgstr ""
+msgstr "– vissa borttagna fält kan fortfarande finnas kvar i databasen (fel i version %s som åtgärdades i version %s)"
 
 #: inc/checkdatabasecommand.class.php:57
 msgid "Use this option to actually fix database"
-msgstr ""
+msgstr "Använd detta alternativ för att reparera databasen"
 
 #: inc/checkdatabasecommand.class.php:72
 msgid "Everything is in order - no action needed."
-msgstr ""
+msgstr "Allt OK - ingen åtgärd krävs."
 
 #: inc/checkdatabasecommand.class.php:80
 #, php-format
 msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr ""
+msgstr "Databasen innehöll övergivna data från %s felaktigt borttagna fält."
 
 #: inc/checkdatabasecommand.class.php:81
 #, php-format
 msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr ""
+msgstr "Databasen innehåller övergivna data från %s felaktigt borttagna fält."
 
 #: inc/checkdatabasecommand.class.php:87
 #, php-format
 msgid "-> \"%s.%s\" has been deleted."
-msgstr ""
+msgstr "-> \"%s.%s\" har tagits bort."
 
 #: inc/checkdatabasecommand.class.php:88
 #, php-format
 msgid "-> \"%s.%s\" should be deleted."
-msgstr ""
+msgstr "-> \"%s.%s\" bör tas bort."
 
 #: inc/checkdatabasecommand.class.php:97
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
-msgstr ""
+msgstr "Kör \"%s\" för att korrigera problem i databasen."
 
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
-msgstr ""
+msgstr "Återskapar behållarfiler."
 
 #: inc/command/regeneratefilescommand.class.php:43
 msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
-msgstr ""
+msgstr "Detta kommando rensar alla filer som genererats av tillägget och återskapar dem."
 
 #: inc/labeltranslation.class.php:220
 msgid "Language"
-msgstr ""
+msgstr "Språk"
 
 #: inc/labeltranslation.class.php:221
 msgid "Label"
-msgstr ""
+msgstr "Etikett"
 
 #: inc/dropdown.class.php:78
 msgid "Updating generated dropdown files"
-msgstr ""
+msgstr "Uppdaterar genererade filer över menyalternativ"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
-msgstr ""
+msgstr "Återskapa behållarfiler"
 
 #: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
-msgstr ""
+msgstr "Exportera till YAML"
 
 #: inc/container.class.php:287
 msgid "Regenerate containers files"
-msgstr ""
+msgstr "Återskapa behållarfiler"
 
 #: inc/container.class.php:308
 msgid "Fix container names"
-msgstr ""
+msgstr "Reparera containernamn"
 
 #: inc/container.class.php:452
 msgid "Updating generated containers files"
-msgstr ""
+msgstr "Uppdaterar skapade containerfiler"
 
 #: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr ""
+msgstr "Du kan inte lägga till flera block av typen 'Infoga i formulär' på samma objekt."
 
 #: inc/container.class.php:685
 msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific "
-"tab' on same object tab"
-msgstr ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Du kan inte lägga till flera block av typen 'Infoga i formulär för en specifik flik' på samma objektsflik."
 
 #: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Behållarnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i behållarnamnet."
 
 #: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
-msgstr ""
+msgstr "Du kan inte lägga till flera block med samma namn på samma objekt."
 
 #: inc/container.class.php:883
 msgid "Block"
-msgstr ""
+msgstr "Block"
 
 #: inc/container.class.php:991
 msgid "Tab"
-msgstr ""
+msgstr "Flik"
 
 #: inc/container.class.php:1145
 msgid "Add tab"
-msgstr ""
+msgstr "Lägg till flik"
 
 #: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
-msgstr ""
+msgstr "Infoga i formulär (före 'Spara'-knappen)"
 
 #: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr ""
+msgstr "Infoga i formulär för en specifik flik (före 'Spara'-knappen)"
 
 #: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
-msgstr ""
+msgstr "Vissa obligatoriska fält är tomma"
 
 #: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
-msgstr ""
+msgstr "Vissa numeriska fält innehåller icke-numeriska värden"
 
 #: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
-msgstr ""
+msgstr "Vissa URL-fält innehåler ogiltiga länkar"
 
 #: inc/statusoverride.class.php:92
 msgid "Override by status"
-msgstr ""
+msgstr "Åsidosätt via status"
 
 #: inc/field.class.php:261 inc/field.class.php:288
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr ""
+msgstr "Fältnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i fältnamnet."
 
 #: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+msgstr "Du kan inte lägga till samma fält 'nedrullningsmeny' i samma block."
 
 #: inc/field.class.php:367
 #, php-format
-msgid ""
-"The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "Kan inte ta bort fältet \"%s\" eftersom det används av en fråga i ett formulär."
 
 #: inc/field.class.php:567
 msgid "Fields"
-msgstr ""
+msgstr "Fält"
 
 #: inc/field.class.php:632
 msgid "Add a new field"
-msgstr ""
+msgstr "Lägg till nytt fält"
 
 #: inc/field.class.php:636
 msgid "No field for this block"
-msgstr ""
+msgstr "Inga fält för detta block"
 
 #: inc/field.class.php:1363
 msgid "Header"
-msgstr ""
+msgstr "Rubrik"
 
 #: inc/field.class.php:1364
 msgid "Text (single line)"
-msgstr ""
+msgstr "Text (enkelrad)"
 
 #: inc/field.class.php:1365
 msgid "Text (multiples lines)"
-msgstr ""
+msgstr "Text (flera rader)"
 
 #: inc/field.class.php:1366
 msgid "Rich Text"
-msgstr ""
+msgstr "Formaterad text"
 
 #: inc/field.class.php:1367
 msgid "Number"
-msgstr ""
+msgstr "Tal"
 
 #: inc/field.class.php:1368
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: inc/field.class.php:1369
 msgid "Dropdown"
-msgstr ""
+msgstr "Nedrullningsmeny"
 
 #: inc/field.class.php:1370
 msgid "Yes/No"
-msgstr ""
+msgstr "Ja/Nej"
 
 #: inc/field.class.php:1371
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: inc/field.class.php:1372
 msgid "Date & time"
-msgstr ""
+msgstr "Datum och tid"
 
 #: inc/field.class.php:1373
 msgid "GLPI item"
-msgstr ""
+msgstr "GLPI-objekt"
 
 #: hook.php:55 hook.php:59
 msgid "MySQL tables installation"
-msgstr ""
+msgstr "Installera MySQL-tabeller"
 
 #: hook.php:110
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr ""
+msgstr "Tillägget kan inte avinstalleras när det är inaktivt"
 
 #: hook.php:123
 msgid "MySQL tables uninstallation"
-msgstr ""
+msgstr "Avinstallera MySQL-tabeller"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
-msgstr ""
+msgstr "Tillåtna värden"
 
 #: ajax/field_specific_fields.php:84
 msgid "Multiple dropdown"
-msgstr ""
+msgstr "Flervalsmeny"
 
 #: ajax/field_specific_fields.php:87
 msgid "Default value"
-msgstr ""
+msgstr "Standardvärde"
 
 #: ajax/field_specific_fields.php:118
 msgid "Default value will be configurable once field will be created."
-msgstr ""
+msgstr "Standardvärdet går att konfigurera när fältet skapats."
