@@ -33,8 +33,6 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
 
-    public static $mustBeAttached     = false;
-
     /**
      * This function relies on the static property `static::$plugins_forward_entity`,
      * which should be populated using the following method (from setup):
