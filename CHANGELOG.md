@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fixed a bug that prevented the creation of additional field data for objects
+- Hide config menu if user does not have read permission
 
 ## [1.23.0] - 2025-11-05
 
