@@ -127,7 +127,7 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
             // add entry to configuration menu
-            $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => 'PluginFieldsMenu'];
+            $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => PluginFieldsMenu::class];
 
             // add tabs to itemtypes
             $itemtypes = array_unique(PluginFieldsContainer::getEntries());

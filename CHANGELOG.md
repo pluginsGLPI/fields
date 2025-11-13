@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+
+### Fixed
+
+- Fix left side menu url (with `DIR_MARKETPLACE`)
+
+
 ## [1.23.0] - 2025-11-05
 
 ### Added

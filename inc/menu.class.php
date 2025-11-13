@@ -48,7 +48,7 @@ class PluginFieldsMenu extends CommonGLPI
 
         $menu         = [
             'title' => self::getMenuName(),
-            'page'  => $CFG_GLPI['root_doc'] . "/plugins/fields/front/container.php",
+            'page'  => PluginFieldsContainer::getSearchURL(false),
             'icon'  => PluginFieldsContainer::getIcon(),
         ];
 
