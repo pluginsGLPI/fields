@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 01:12+0000\n"
+"POT-Creation-Date: 2025-11-07 01:09+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Davide <spam@habilitas.it>, 2025\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/it_IT/)\n"
@@ -58,7 +58,7 @@ msgstr[2] "Condizioni per nascondere il blocco"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Associa campi aggiuntivi alla destinazione"
 
 #: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
@@ -168,73 +168,73 @@ msgstr "Aggiornamento dei file a tendina generati"
 msgid "Regenerate container files"
 msgstr "Rigenera i file dei contenitori"
 
-#: inc/container.class.php:54 inc/container.class.php:903
+#: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
 msgstr "Esporta in YAML"
 
-#: inc/container.class.php:295
+#: inc/container.class.php:287
 msgid "Regenerate containers files"
 msgstr "Rigenera i file dei contenitori"
 
-#: inc/container.class.php:316
+#: inc/container.class.php:308
 msgid "Fix container names"
 msgstr "Ripara i nomi dei contenitori"
 
-#: inc/container.class.php:460
+#: inc/container.class.php:452
 msgid "Updating generated containers files"
 msgstr "Aggiornamento dei file dei contenitori generati"
 
-#: inc/container.class.php:677
+#: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Non è possibile aggiungere più blocchi con il tipo 'Inserimento nel modulo' sullo stesso oggetto"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:685
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Non è possibile aggiungere più blocchi con il tipo 'Inserimento sotto forma di una scheda specifica' sulla scheda dello stesso oggetto"
 
-#: inc/container.class.php:710
+#: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Il nome del contenitore è troppo lungo per il database (le cifre nel nome sono sostituite da caratteri, provare a rimuoverle)"
 
-#: inc/container.class.php:725
+#: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Non è possibile aggiungere più blocchi con lo stesso nome sullo stesso oggetto"
 
-#: inc/container.class.php:891
+#: inc/container.class.php:883
 msgid "Block"
 msgstr "Blocco"
 
-#: inc/container.class.php:999
+#: inc/container.class.php:991
 msgid "Tab"
 msgstr "Scheda"
 
-#: inc/container.class.php:1153
+#: inc/container.class.php:1145
 msgid "Add tab"
 msgstr "Aggiungi scheda"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
 msgstr "Inserimento nel modulo (prima del pulsante di salvataggio)"
 
-#: inc/container.class.php:1155
+#: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserimento sotto forma di una scheda specifica (prima del pulsante di salvataggio)"
 
-#: inc/container.class.php:1683
+#: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
 msgstr "Alcuni campi obbligatori sono vuoti"
 
-#: inc/container.class.php:1688
+#: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alcuni campi numerici contengono valori non numerici"
 
-#: inc/container.class.php:1693
+#: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
 msgstr "Alcuni campi URL contengono link non validi"
 
@@ -250,12 +250,12 @@ msgstr "Il nome del campo è troppo lungo per il database (le cifre nel nome son
 
 #: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+msgstr "Non è possibile aggiungere lo stesso campo \"dropdown\" sullo stesso blocco."
 
 #: inc/field.class.php:367
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "Il campo \"%s\" non può essere cancellato perché è utilizzato in una domanda del modulo."
 
 #: inc/field.class.php:567
 msgid "Fields"

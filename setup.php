@@ -31,7 +31,7 @@
 /** @var array $CFG_GLPI */
 global $CFG_GLPI;
 
-define('PLUGIN_FIELDS_VERSION', '1.22.2');
+define('PLUGIN_FIELDS_VERSION', '1.23.0');
 
 // Minimal GLPI version, inclusive
 define('PLUGIN_FIELDS_MIN_GLPI', '11.0.2');
@@ -126,8 +126,10 @@ function plugin_init_fields()
             // add link in plugin page
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
-            // add entry to configuration menu
-            $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => 'PluginFieldsMenu'];
+            // add entry to configuration menu (only if user has read access to config)
+            if (Session::haveRight('config', READ)) {
+                $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => 'PluginFieldsMenu'];
+            }
 
             // add tabs to itemtypes
             $itemtypes = array_unique(PluginFieldsContainer::getEntries());

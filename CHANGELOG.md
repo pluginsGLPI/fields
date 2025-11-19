@@ -5,12 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
+## [Unreleased]
 
 ### Fixed
 
 - Fix default value format for multiple dropdown (GLPIObject)
 - Fix bad SQL query for `GenericObject`
+- Fixed a bug that prevented the creation of additional field data for objects
+- Hide config menu if user does not have read permission
+
+## [1.23.0] - 2025-11-05
 
 ### Added
 
@@ -21,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Align the fields of the plugin with the user form
+- Fix bad SQL query for `GenericObject`
 
 ## [1.22.2] - 2025-10-24
 

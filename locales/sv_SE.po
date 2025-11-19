@@ -3,306 +3,301 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# David Stepan <stepand@tiscali.cz>, 2016,2025
-# Merlin Merlin <mmerlin10@gmail.com>, 2017
-# Michal Čermák <michal.cermak79@gmail.com>, 2024
-# Pavel Borecki <pavel.borecki@gmail.com>, 2018-2019
+# Peter Rundqvist, 2025
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-04 01:10+0000\n"
+"POT-Creation-Date: 2025-11-11 01:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: David Stepan <stepand@tiscali.cz>, 2016,2025\n"
-"Language-Team: Czech (Czech Republic) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
+"Last-Translator: Peter Rundqvist, 2025\n"
+"Language-Team: Swedish (Sweden) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs_CZ\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: templates/fields.html.twig
 msgid "show"
-msgstr "zobrazit"
+msgstr "visa"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:246
 msgid "Field"
-msgstr "Kolonka"
+msgstr "Fält"
 
 #: templates/forms/status_override.html.twig inc/field.class.php:649
 #: inc/field.class.php:825
 msgid "Read only"
-msgstr "Pouze pro čtení"
+msgstr "Endast läs"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr "Přidat nové přepsání stavu"
+msgstr "Lägg till ny statusåsidosättning"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr "Přepsání stavu"
+msgstr "Åsidosättningar"
 
 #: templates/status_overrides.html.twig
 msgid "No item found"
-msgstr "Žádná položka nenalezena"
+msgstr "Inga objekt"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
-msgstr "Přidat podmínku pro skrytí bloku"
+msgstr "Lägg till villkor för att dölja block"
 
 #: templates/container_display_conditions.html.twig
 #: inc/containerdisplaycondition.class.php:153
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
-msgstr[0] "Podmínka pro skrytí bloku"
-msgstr[1] "Podmínky pro skrytí bloku"
-msgstr[2] "Podmínek pro skrytí bloku"
-msgstr[3] "Podmínky pro skrytí bloku"
+msgstr[0] "Villkor för att dölja block"
+msgstr[1] "Villkor för att dölja block"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Knyt ytterligare fält till målet"
 
 #: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
-msgstr "Další kolonky"
+msgstr "Ytterligare fält"
 
 #: inc/containerdisplaycondition.class.php:102
 #: inc/containerdisplaycondition.class.php:134
 msgid "under"
-msgstr "pod"
+msgstr "nedanför"
 
 #: inc/containerdisplaycondition.class.php:103
 #: inc/containerdisplaycondition.class.php:137
 msgid "not under"
-msgstr "ne pod"
+msgstr "ej nedanför"
 
 #: inc/containerdisplaycondition.class.php:109
 #: inc/containerdisplaycondition.class.php:131
 msgid "regular expression matches"
-msgstr "shody regulárních výrazů"
+msgstr "Regex matchar"
 
 #: inc/containerdisplaycondition.class.php:501
 #: inc/containerdisplaycondition.class.php:517
 msgid "You must specify an item type, search option and condition."
-msgstr "Musíte zadat typ položky, možnost vyhledávání a podmínku."
+msgstr "Du måste ange en objekttyp, ett sökalternativ och ett villkor."
 
 #: inc/toolbox.class.php:124
 msgid "Fix fields names"
-msgstr "Opravit názvy kolonek"
+msgstr "Korrigera fältnamn"
 
 #: inc/toolbox.class.php:324
 msgid "Component items"
-msgstr "Položky komponent"
+msgstr "Komponentobjekt"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
-msgstr "Zkontrolujte databázi, abyste odhalili nesrovnalosti."
+msgstr "Kontrollera databasen för att upptäcka problem."
 
 #: inc/checkdatabasecommand.class.php:44
 msgid "This command will check database to detect following inconsistencies:"
-msgstr "Tento příkaz zkontroluje databázi a zjistí následující nekonzistence:"
+msgstr "Detta kommando söker efter följande problem i databasen:"
 
 #: inc/checkdatabasecommand.class.php:47
 #, php-format
 msgid ""
 "- some deleted fields may still be present in database (bug introduced in "
 "version %s and fixed in version %s)"
-msgstr "- některá smazaná pole mohou být stále přítomna v databázi (chyba zavedená ve verzi %s a opravená ve verzi %s)"
+msgstr "– vissa borttagna fält kan fortfarande finnas kvar i databasen (fel i version %s som åtgärdades i version %s)"
 
 #: inc/checkdatabasecommand.class.php:57
 msgid "Use this option to actually fix database"
-msgstr "Použijte tuto možnost k opravě databáze"
+msgstr "Använd detta alternativ för att reparera databasen"
 
 #: inc/checkdatabasecommand.class.php:72
 msgid "Everything is in order - no action needed."
-msgstr "Všechno je v pořádku - není třeba nic dělat."
+msgstr "Allt OK - ingen åtgärd krävs."
 
 #: inc/checkdatabasecommand.class.php:80
 #, php-format
 msgid ""
 "Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "Databáze obsahovala osiřelá data z nesprávně smazaných pole(í) %s."
+msgstr "Databasen innehöll övergivna data från %s felaktigt borttagna fält."
 
 #: inc/checkdatabasecommand.class.php:81
 #, php-format
 msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "Databáze obsahuje osiřelá data z nesprávně smazaných pole(í) %s."
+msgstr "Databasen innehåller övergivna data från %s felaktigt borttagna fält."
 
 #: inc/checkdatabasecommand.class.php:87
 #, php-format
 msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> „%s.%s“ byl smazán."
+msgstr "-> \"%s.%s\" har tagits bort."
 
 #: inc/checkdatabasecommand.class.php:88
 #, php-format
 msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> „%s.%s“ by mělo být smazáno."
+msgstr "-> \"%s.%s\" bör tas bort."
 
 #: inc/checkdatabasecommand.class.php:97
 #, php-format
 msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Spuštěním příkazu \"%s\" opravíte nekonzistence v databázi."
+msgstr "Kör \"%s\" för att korrigera problem i databasen."
 
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
-msgstr "Regeneruje soubory kontejnerů."
+msgstr "Återskapar behållarfiler."
 
 #: inc/command/regeneratefilescommand.class.php:43
 msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
-msgstr "Tento příkaz vyčistí všechny soubory vygenerované zásuvným modulem a regeneruje je."
+msgstr "Detta kommando rensar alla filer som genererats av tillägget och återskapar dem."
 
 #: inc/labeltranslation.class.php:220
 msgid "Language"
-msgstr "Jazyk"
+msgstr "Språk"
 
 #: inc/labeltranslation.class.php:221
 msgid "Label"
-msgstr "Štítek"
+msgstr "Etikett"
 
 #: inc/dropdown.class.php:78
 msgid "Updating generated dropdown files"
-msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
+msgstr "Uppdaterar genererade filer över menyalternativ"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
-msgstr "Znovu vytvořit kontejnerové soubory"
+msgstr "Återskapa behållarfiler"
 
 #: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
-msgstr "Exportovat do YAML"
+msgstr "Exportera till YAML"
 
 #: inc/container.class.php:287
 msgid "Regenerate containers files"
-msgstr "Obnovení souborů kontejnerů"
+msgstr "Återskapa behållarfiler"
 
 #: inc/container.class.php:308
 msgid "Fix container names"
-msgstr "Opravit názvy kontejnerů"
+msgstr "Reparera containernamn"
 
 #: inc/container.class.php:452
 msgid "Updating generated containers files"
-msgstr "Aktualizují se vytvořené soubory kontejnerů"
+msgstr "Uppdaterar skapade containerfiler"
 
 #: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
-msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
+msgstr "Du kan inte lägga till flera block av typen 'Infoga i formulär' på samma objekt."
 
 #: inc/container.class.php:685
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
-msgstr "Není možné přidat několik bloků typu „Vložení ve formuláři konkrétní karty“ na té stejné kartě objektu"
+msgstr "Du kan inte lägga till flera block av typen 'Infoga i formulär för en specifik flik' på samma objektsflik."
 
 #: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "Název kontejneru je pro databázi příliš dlouhý (číslice v názvu jsou nahrazeny znaky, zkuste je odstranit)"
+msgstr "Behållarnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i behållarnamnet."
 
 #: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
-msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
+msgstr "Du kan inte lägga till flera block med samma namn på samma objekt."
 
 #: inc/container.class.php:883
 msgid "Block"
-msgstr "Blok"
+msgstr "Block"
 
 #: inc/container.class.php:991
 msgid "Tab"
-msgstr "Tabulka"
+msgstr "Flik"
 
 #: inc/container.class.php:1145
 msgid "Add tab"
-msgstr "Přidat tabulku"
+msgstr "Lägg till flik"
 
 #: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
-msgstr "Vložení do formuláře (před tlačítkem uložit)"
+msgstr "Infoga i formulär (före 'Spara'-knappen)"
 
 #: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
+msgstr "Infoga i formulär för en specifik flik (före 'Spara'-knappen)"
 
 #: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
-msgstr "Některá povinná pole nejsou vyplněná"
+msgstr "Vissa obligatoriska fält är tomma"
 
 #: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
-msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
+msgstr "Vissa numeriska fält innehåller icke-numeriska värden"
 
 #: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
-msgstr "Některé URL kolonky obsahují neplatné odkazy"
+msgstr "Vissa URL-fält innehåler ogiltiga länkar"
 
 #: inc/statusoverride.class.php:92
 msgid "Override by status"
-msgstr "Přepsat podle stavu"
+msgstr "Åsidosätt via status"
 
 #: inc/field.class.php:261 inc/field.class.php:288
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "Název pole je pro databázi příliš dlouhý (číslice v názvu jsou nahrazeny znaky, zkuste je odstranit)"
+msgstr "Fältnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i fältnamnet."
 
 #: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr "Nelze přidat stejné pole 'rozbalovací nabídka' do stejného bloku."
+msgstr "Du kan inte lägga till samma fält 'nedrullningsmeny' i samma block."
 
 #: inc/field.class.php:367
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "Kan inte ta bort fältet \"%s\" eftersom det används av en fråga i ett formulär."
 
 #: inc/field.class.php:567
 msgid "Fields"
-msgstr "Kolonky"
+msgstr "Fält"
 
 #: inc/field.class.php:632
 msgid "Add a new field"
-msgstr "Přidat novou kolonku"
+msgstr "Lägg till nytt fält"
 
 #: inc/field.class.php:636
 msgid "No field for this block"
-msgstr "Žádná kolonka pro tento blok"
+msgstr "Inga fält för detta block"
 
 #: inc/field.class.php:1363
 msgid "Header"
-msgstr "Hlavička"
+msgstr "Rubrik"
 
 #: inc/field.class.php:1364
 msgid "Text (single line)"
-msgstr "Text (jednořádkový)"
+msgstr "Text (enkelrad)"
 
 #: inc/field.class.php:1365
 msgid "Text (multiples lines)"
-msgstr "Text (víceřádkový)"
+msgstr "Text (flera rader)"
 
 #: inc/field.class.php:1366
 msgid "Rich Text"
-msgstr "Formátovaný text"
+msgstr "Formaterad text"
 
 #: inc/field.class.php:1367
 msgid "Number"
-msgstr "Číslo"
+msgstr "Tal"
 
 #: inc/field.class.php:1368
 msgid "URL"
-msgstr "URL adresa"
+msgstr "URL"
 
 #: inc/field.class.php:1369
 msgid "Dropdown"
-msgstr "Rozbalovací"
+msgstr "Nedrullningsmeny"
 
 #: inc/field.class.php:1370
 msgid "Yes/No"
-msgstr "Ano/Ne"
+msgstr "Ja/Nej"
 
 #: inc/field.class.php:1371
 msgid "Date"
@@ -310,36 +305,36 @@ msgstr "Datum"
 
 #: inc/field.class.php:1372
 msgid "Date & time"
-msgstr "Datum a čas"
+msgstr "Datum och tid"
 
 #: inc/field.class.php:1373
 msgid "GLPI item"
-msgstr "GLPI položka"
+msgstr "GLPI-objekt"
 
 #: hook.php:55 hook.php:59
 msgid "MySQL tables installation"
-msgstr "Instalace MySQL tabulek"
+msgstr "Installera MySQL-tabeller"
 
 #: hook.php:110
 msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Zásuvný modul nemůže být odinstalován protože je vypnutý."
+msgstr "Tillägget kan inte avinstalleras när det är inaktivt"
 
 #: hook.php:123
 msgid "MySQL tables uninstallation"
-msgstr "Odebrání MySQL tabulek"
+msgstr "Avinstallera MySQL-tabeller"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
-msgstr "Povolené hodnoty"
+msgstr "Tillåtna värden"
 
 #: ajax/field_specific_fields.php:84
 msgid "Multiple dropdown"
-msgstr "Více rozbalovacích nabídek"
+msgstr "Flervalsmeny"
 
 #: ajax/field_specific_fields.php:87
 msgid "Default value"
-msgstr "Výchozí hodnota"
+msgstr "Standardvärde"
 
 #: ajax/field_specific_fields.php:118
 msgid "Default value will be configurable once field will be created."
-msgstr "Výchozí hodnota bude konfigurovatelná po vytvoření pole."
+msgstr "Standardvärdet går att konfigurera när fältet skapats."

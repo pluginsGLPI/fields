@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 01:12+0000\n"
+"POT-Creation-Date: 2025-11-13 01:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,73 +166,73 @@ msgstr ""
 msgid "Regenerate container files"
 msgstr ""
 
-#: inc/container.class.php:54 inc/container.class.php:903
+#: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
 msgstr ""
 
-#: inc/container.class.php:295
+#: inc/container.class.php:287
 msgid "Regenerate containers files"
 msgstr ""
 
-#: inc/container.class.php:316
+#: inc/container.class.php:308
 msgid "Fix container names"
 msgstr ""
 
-#: inc/container.class.php:460
+#: inc/container.class.php:452
 msgid "Updating generated containers files"
 msgstr ""
 
-#: inc/container.class.php:677
+#: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr ""
 
-#: inc/container.class.php:693
+#: inc/container.class.php:685
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific "
 "tab' on same object tab"
 msgstr ""
 
-#: inc/container.class.php:710
+#: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr ""
 
-#: inc/container.class.php:725
+#: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
 msgstr ""
 
-#: inc/container.class.php:891
+#: inc/container.class.php:883
 msgid "Block"
 msgstr ""
 
-#: inc/container.class.php:999
+#: inc/container.class.php:991
 msgid "Tab"
 msgstr ""
 
-#: inc/container.class.php:1153
+#: inc/container.class.php:1145
 msgid "Add tab"
 msgstr ""
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
 msgstr ""
 
-#: inc/container.class.php:1155
+#: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr ""
 
-#: inc/container.class.php:1683
+#: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
 msgstr ""
 
-#: inc/container.class.php:1688
+#: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
 msgstr ""
 
-#: inc/container.class.php:1693
+#: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
 msgstr ""
 

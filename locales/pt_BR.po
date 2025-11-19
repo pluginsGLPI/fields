@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 01:12+0000\n"
+"POT-Creation-Date: 2025-11-04 01:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Diego Nobre <diego@koruma.com.br>, 2023,2025\n"
 "Language-Team: Portuguese (Brazil) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_BR/)\n"
@@ -174,73 +174,73 @@ msgstr "Atualizando arquivos que foram baixados"
 msgid "Regenerate container files"
 msgstr "Regerar arquivos de contêiner"
 
-#: inc/container.class.php:54 inc/container.class.php:903
+#: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
 msgstr "Exportar para YAML"
 
-#: inc/container.class.php:295
+#: inc/container.class.php:287
 msgid "Regenerate containers files"
 msgstr "Regerar arquivos de contêineres"
 
-#: inc/container.class.php:316
+#: inc/container.class.php:308
 msgid "Fix container names"
 msgstr "Corrigir nomes de containers"
 
-#: inc/container.class.php:460
+#: inc/container.class.php:452
 msgid "Updating generated containers files"
 msgstr "Atualizando arquivos de contêineres gerados"
 
-#: inc/container.class.php:677
+#: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção no formulário' no mesmo objeto"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:685
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção na forma de uma guia específica' na mesma guia de objeto"
 
-#: inc/container.class.php:710
+#: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "O nome do contêiner é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
 
-#: inc/container.class.php:725
+#: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Você não pode adicionar vários blocos com nome idêntico no mesmo objeto"
 
-#: inc/container.class.php:891
+#: inc/container.class.php:883
 msgid "Block"
 msgstr "Bloco"
 
-#: inc/container.class.php:999
+#: inc/container.class.php:991
 msgid "Tab"
 msgstr "Aba"
 
-#: inc/container.class.php:1153
+#: inc/container.class.php:1145
 msgid "Add tab"
 msgstr "Adicionar aba"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
 msgstr "Inserção no formulário (antes do botão de salvar)"
 
-#: inc/container.class.php:1155
+#: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
 
-#: inc/container.class.php:1683
+#: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
 msgstr "Alguns campos obrigatórios estão vazios"
 
-#: inc/container.class.php:1688
+#: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alguns campos numéricos contém valores não numéricos"
 
-#: inc/container.class.php:1693
+#: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
 msgstr "Alguns campos de URL contém links inválidos"
 

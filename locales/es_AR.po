@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Alan Lehoux, 2025
 # Nicolás Gaviola, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 01:12+0000\n"
+"POT-Creation-Date: 2025-11-13 01:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Nicolás Gaviola, 2023\n"
+"Last-Translator: Alan Lehoux, 2025\n"
 "Language-Team: Spanish (Argentina) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +58,7 @@ msgstr[2] "Condición para ocultar el bloque"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Vincular campos adicionales al destino"
 
 #: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
@@ -167,73 +168,73 @@ msgstr "Actualización de archivos desplegables generados"
 msgid "Regenerate container files"
 msgstr "Regenerar archivos contenedores"
 
-#: inc/container.class.php:54 inc/container.class.php:903
+#: inc/container.class.php:54 inc/container.class.php:895
 msgid "Export to YAML"
 msgstr "Exportar a YAML"
 
-#: inc/container.class.php:295
+#: inc/container.class.php:287
 msgid "Regenerate containers files"
 msgstr "Regenerar archivos de contenedores"
 
-#: inc/container.class.php:316
+#: inc/container.class.php:308
 msgid "Fix container names"
 msgstr "Corrija los nombres de los contenedores"
 
-#: inc/container.class.php:460
+#: inc/container.class.php:452
 msgid "Updating generated containers files"
 msgstr "Actualización de archivos de contenedores generados"
 
-#: inc/container.class.php:677
+#: inc/container.class.php:669
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "No puede agregar varios bloques con el tipo 'Inserción en el formulario' en el mismo objeto"
 
-#: inc/container.class.php:693
+#: inc/container.class.php:685
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "No puede agregar varios bloques con el tipo 'Inserción en forma de una pestaña específica' en la misma pestaña de un objeto"
 
-#: inc/container.class.php:710
+#: inc/container.class.php:702
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "El nombre del contenedor es demasiado largo para la base de datos (los dígitos del nombre se reemplazan por caracteres, intente eliminarlos)"
 
-#: inc/container.class.php:725
+#: inc/container.class.php:717
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "No puede agregar varios bloques con el mismo nombre en el mismo objeto"
 
-#: inc/container.class.php:891
+#: inc/container.class.php:883
 msgid "Block"
 msgstr "Bloque"
 
-#: inc/container.class.php:999
+#: inc/container.class.php:991
 msgid "Tab"
 msgstr "Pestaña"
 
-#: inc/container.class.php:1153
+#: inc/container.class.php:1145
 msgid "Add tab"
 msgstr "Agregar pestaña"
 
-#: inc/container.class.php:1154
+#: inc/container.class.php:1146
 msgid "Insertion in the form (before save button)"
 msgstr "Inserto en el formulario (antes del botón guardar)"
 
-#: inc/container.class.php:1155
+#: inc/container.class.php:1147
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserto en el formulario de una pestaña específica (antes del botón guardar)"
 
-#: inc/container.class.php:1683
+#: inc/container.class.php:1675
 msgid "Some mandatory fields are empty"
 msgstr "Algunos campos obligatorios están vacíos"
 
-#: inc/container.class.php:1688
+#: inc/container.class.php:1680
 msgid "Some numeric fields contains non numeric values"
 msgstr "Algunos campos numéricos contienen valores no numéricos"
 
-#: inc/container.class.php:1693
+#: inc/container.class.php:1685
 msgid "Some URL fields contains invalid links"
 msgstr "Algunos campos de URL contienen enlaces no válidos"
 
@@ -249,12 +250,12 @@ msgstr "El nombre del campo es demasiado largo para la base de datos (los dígit
 
 #: inc/field.class.php:280
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+msgstr "No podés agregar el mismo campo 'menú desplegable' en el mismo bloque"
 
 #: inc/field.class.php:367
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "El campo \"%s\" no puede ser eliminado porque está siendo usado en una pregunta del formulario"
 
 #: inc/field.class.php:567
 msgid "Fields"
@@ -282,7 +283,7 @@ msgstr "Texto (múltiples líneas)"
 
 #: inc/field.class.php:1366
 msgid "Rich Text"
-msgstr ""
+msgstr "Texto Enriquecido"
 
 #: inc/field.class.php:1367
 msgid "Number"
