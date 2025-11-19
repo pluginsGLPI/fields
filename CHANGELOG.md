@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix default value format for multiple dropdown (GLPIObject)
 - Increased the maximum length of the language column to support longer locale codes
 
 ## [1.21.24] - 2025-10-10
