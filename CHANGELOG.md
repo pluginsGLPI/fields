@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix left side menu url (with `DIR_MARKETPLACE`)
 - Fix default value format for multiple dropdown (GLPIObject)
 - Fix bad SQL query for `GenericObject`
 - Fixed a bug that prevented the creation of additional field data for objects

@@ -128,7 +128,7 @@ function plugin_init_fields()
 
             // add entry to configuration menu (only if user has read access to config)
             if (Session::haveRight('config', READ)) {
-                $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => 'PluginFieldsMenu'];
+                $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => PluginFieldsMenu::class];
             }
 
             // add tabs to itemtypes
