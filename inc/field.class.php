@@ -249,7 +249,7 @@ class PluginFieldsField extends CommonDBChild
         $input['name'] = $this->prepareName($input);
 
         if ($input['multiple'] ?? false) {
-            $input['default_value'] = json_encode($input['default_value'] ?? []);
+            $input['default_value'] = json_encode($input['default_value'] ?: []);
         }
 
         //reject adding when field name is too long for mysql
