@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix default value format for multiple dropdown (GLPIObject)
 - Fix bad SQL query for `GenericObject`
 
 ### Added
