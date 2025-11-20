@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 01:10+0000\n"
+"POT-Creation-Date: 2025-11-14 01:09+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Peter Rundqvist, 2025\n"
 "Language-Team: Swedish (Sweden) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sv_SE/)\n"
@@ -58,7 +58,7 @@ msgstr[1] "Villkor för att dölja block"
 msgid "Bind additional fields to the destination"
 msgstr "Knyt ytterligare fält till målet"
 
-#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: setup.php:233 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr "Ytterligare fält"

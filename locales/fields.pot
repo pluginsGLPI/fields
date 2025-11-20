@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 01:10+0000\n"
+"POT-Creation-Date: 2025-11-20 01:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgstr[1] ""
 msgid "Bind additional fields to the destination"
 msgstr ""
 
-#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: setup.php:233 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr ""
