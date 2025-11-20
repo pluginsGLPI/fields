@@ -47,6 +47,7 @@ abstract class QuestionTypeTestCase extends DbTestCase
     use FieldTestTrait;
 
     protected ?PluginFieldsContainer $block = null;
+
     protected ?PluginFieldsField $field     = null;
 
     public function createFieldAndContainer(): void
@@ -72,12 +73,10 @@ abstract class QuestionTypeTestCase extends DbTestCase
     public function setUp(): void
     {
         $this->createFieldAndContainer();
-        parent::setUp();
     }
 
     public function tearDown(): void
     {
-        parent::tearDown();
         $this->tearDownFieldTest();
     }
 
@@ -113,6 +112,7 @@ abstract class QuestionTypeTestCase extends DbTestCase
                 $reflection_property = $reflection_class->getProperty('instance');
                 $reflection_property->setValue(null, null);
             }
+
             if ($reflection_class->hasProperty('_instances')) {
                 $reflection_property = $reflection_class->getProperty('_instances');
                 $reflection_property->setValue(null, []);

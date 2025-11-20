@@ -65,7 +65,7 @@ final class QuestionTypeAjaxController extends AbstractController
         if ($field_id && is_numeric($field_id) && isset($available_fields[$field_id])) {
             $current_field_id = (int) $field_id;
         } else {
-            $current_field_id = !empty($available_fields) ? (int) current(array_keys($available_fields)) : null;
+            $current_field_id = $available_fields === [] ? null : (int) current(array_keys($available_fields));
         }
 
         if ($current_field_id === null) {
@@ -83,10 +83,8 @@ final class QuestionTypeAjaxController extends AbstractController
         // Process default value if provided
         if ($default_value !== null && !empty($default_value)) {
             // If the field is multiple, convert the default value to an array
-            if ($current_field->fields['multiple']) {
-                if (!is_array($default_value)) {
-                    $default_value = explode(',', $default_value);
-                }
+            if ($current_field->fields['multiple'] && !is_array($default_value)) {
+                $default_value = explode(',', $default_value);
             }
         } else {
             $default_value = null;

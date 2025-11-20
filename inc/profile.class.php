@@ -35,8 +35,11 @@ class PluginFieldsProfile extends CommonDBRelation
     use Clonable;
 
     public static $itemtype_1 = PluginFieldsContainer::class;
+
     public static $items_id_1 = 'plugin_fields_containers_id';
+
     public static $itemtype_2 = Profile::class;
+
     public static $items_id_2 = 'profiles_id';
 
     /**
@@ -61,7 +64,7 @@ class PluginFieldsProfile extends CommonDBRelation
         if (!$DB->tableExists($table)) {
             $migration->displayMessage(sprintf(__('Installing %s'), $table));
 
-            $query = "CREATE TABLE IF NOT EXISTS `$table` (
+            $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT {$default_key_sign} NOT NULL auto_increment,
                   `profiles_id`                       INT {$default_key_sign} NOT NULL DEFAULT '0',
                   `plugin_fields_containers_id`       INT {$default_key_sign} NOT NULL DEFAULT '0',
@@ -132,6 +135,7 @@ class PluginFieldsProfile extends CommonDBRelation
             echo '</td>';
             echo '<tr>';
         }
+
         echo '<ul>';
         echo "<tr><td class='tab_bg_2 center' colspan='2'>";
         echo "<input type='hidden' name='plugin_fields_containers_id' value='" . $item->fields['id'] . "' />";

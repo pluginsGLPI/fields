@@ -91,6 +91,7 @@ class PluginFieldsInventory extends CommonDBTM
             // $containersData contains only one element, encapsulate it into an array
             $containersData = [$containersData];
         }
+
         foreach ($containersData as $key => $containerData) {
             $container = new PluginFieldsContainer();
             $container->getFromDB($containerData['ID']);
@@ -99,30 +100,29 @@ class PluginFieldsInventory extends CommonDBTM
             $data['itemtype']                    = $itemtype;
             $data['plugin_fields_containers_id'] = $containerData['ID'];
             foreach ($containerData['FIELDS'] as $key => $value) {
-                $data[strtolower($key)] = $value;
+                $data[strtolower((string) $key)] = $value;
             }
+
             $container->updateFieldsValues($data, $itemtype, false);
         }
     }
 
     public static function loadXMLFile($itemtype, $items_id)
     {
-        $pxml   = false;
-        $folder = substr($items_id, 0, -1);
-        if (empty($folder)) {
+        $folder = substr((string) $items_id, 0, -1);
+        if ($folder === '' || $folder === '0') {
             $folder = '0';
         }
 
         //Check if the file exists with the .xml extension (new format)
         /** @phpstan-ignore-next-line  */
-        $file = PLUGIN_FUSIONINVENTORY_XML_DIR . strtolower($itemtype) . '/' . $folder . '/' . $items_id;
+        $file = PLUGIN_FUSIONINVENTORY_XML_DIR . strtolower((string) $itemtype) . '/' . $folder . '/' . $items_id;
         if (file_exists($file . '.xml')) {
             $file .= '.xml';
         } elseif (!file_exists($file)) {
             return false;
         }
-        $pxml = simplexml_load_file($file, 'SimpleXMLElement', LIBXML_NOCDATA);
 
-        return $pxml;
+        return simplexml_load_file($file, 'SimpleXMLElement', LIBXML_NOCDATA);
     }
 }

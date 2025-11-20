@@ -41,6 +41,7 @@ define('PLUGIN_FIELDS_MAX_GLPI', '11.0.99');
 if (!defined('PLUGINFIELDS_DIR')) {
     define('PLUGINFIELDS_DIR', Plugin::getPhpDir('fields'));
 }
+
 if (!defined('PLUGINFIELDS_WEB_DIR')) {
     define('PLUGINFIELDS_WEB_DIR', $CFG_GLPI['root_doc'] . '/plugins/fields');
 }
@@ -48,6 +49,7 @@ if (!defined('PLUGINFIELDS_WEB_DIR')) {
 if (!defined('PLUGINFIELDS_DOC_DIR')) {
     define('PLUGINFIELDS_DOC_DIR', GLPI_PLUGIN_DOC_DIR . '/fields');
 }
+
 if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
     mkdir(PLUGINFIELDS_DOC_DIR);
 }
@@ -55,6 +57,7 @@ if (!file_exists(PLUGINFIELDS_DOC_DIR)) {
 if (!defined('PLUGINFIELDS_CLASS_PATH')) {
     define('PLUGINFIELDS_CLASS_PATH', PLUGINFIELDS_DOC_DIR . '/inc');
 }
+
 if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
     mkdir(PLUGINFIELDS_CLASS_PATH);
 }
@@ -62,9 +65,11 @@ if (!file_exists(PLUGINFIELDS_CLASS_PATH)) {
 if (!defined('PLUGINFIELDS_FRONT_PATH')) {
     define('PLUGINFIELDS_FRONT_PATH', PLUGINFIELDS_DOC_DIR . '/front');
 }
+
 if (!file_exists(PLUGINFIELDS_FRONT_PATH)) {
     mkdir(PLUGINFIELDS_FRONT_PATH);
 }
+
 use Glpi\Form\Destination\FormDestinationChange;
 use Glpi\Form\Destination\FormDestinationManager;
 use Glpi\Form\Destination\FormDestinationProblem;
@@ -102,7 +107,7 @@ function plugin_init_fields()
 
         // When a Category is changed during ticket creation
         if (
-            !empty($_POST)
+            $_POST !== []
             && isset($_POST['_plugin_fields_type'])
             && ($_SERVER['REQUEST_URI'] == Ticket::getFormURL())
         ) {
@@ -133,7 +138,7 @@ function plugin_init_fields()
 
             // add tabs to itemtypes
             $itemtypes = array_unique(PluginFieldsContainer::getEntries());
-            if (count($itemtypes) > 0) {
+            if ($itemtypes !== []) {
                 Plugin::registerClass(
                     'PluginFieldsContainer',
                     ['addtabon' => $itemtypes],
@@ -215,7 +220,7 @@ function plugin_init_fields()
  */
 function plugin_fields_script_endswith($scriptname)
 {
-    return str_contains($_SERVER['REQUEST_URI'], $scriptname);
+    return str_contains((string) $_SERVER['REQUEST_URI'], $scriptname);
 }
 
 
@@ -232,7 +237,7 @@ function plugin_version_fields()
     return [
         'name'         => __('Additional fields', 'fields'),
         'version'      => PLUGIN_FIELDS_VERSION,
-        'author'       => 'Teclib\', Olivier Moron',
+        'author'       => "Teclib', Olivier Moron",
         'homepage'     => 'https://github.com/pluginsGLPI/fields',
         'license'      => 'GPLv2+',
         'requirements' => [
@@ -311,10 +316,11 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         if ($container_id != null) {
             $where['id'] = $container_id;
         }
+
         $container_obj = new PluginFieldsContainer();
         $containers    = $container_obj->find($where);
         foreach ($containers as $container) {
-            $itemtypes = (strlen($container['itemtypes']) > 0)
+            $itemtypes = (strlen((string) $container['itemtypes']) > 0)
                 ? PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes'], true)
                 : [];
 
@@ -334,7 +340,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                     'is_active'                                            => true,
                     'is_readonly'                                          => false,
                 ]);
-                if (count($fields)) {
+                if (count($fields) > 0) {
                     foreach ($fields as $field) {
                         $tmp_field       = [];
                         $tmp_field['id'] = (int) $field['id'];
@@ -342,7 +348,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                         //to get translation
                         $field['itemtype']           = PluginFieldsField::getType();
                         $tmp_field['label']          = PluginFieldsLabelTranslation::getLabelFor($field);
-                        $tmp_field['xml_node']       = strtoupper($field['name']);
+                        $tmp_field['xml_node']       = strtoupper((string) $field['name']);
                         $tmp_field['type']           = $field['type'];
                         $tmp_field['ranking']        = $field['ranking'];
                         $tmp_field['default_value']  = $field['default_value'];
@@ -367,6 +373,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                                     $items['value'] = $value['name'];
                                     $datas[]        = $items;
                                 }
+
                                 $tmp_field['possible_value'] = $datas;
                                 break;
                             case 'yesno':
@@ -382,6 +389,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                                 $tmp_field['possible_value'] = $datas['results'];
                                 break;
                         }
+
                         $yaml_conf['container'][$container['id'] . '-' . $itemtype]['fields'][] = $tmp_field;
                     }
                 }
@@ -389,7 +397,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         }
     }
 
-    if (!empty($yaml_conf['container'])) {
+    if ($yaml_conf['container'] !== []) {
         $dump     = Yaml::dump($yaml_conf, 10);
         $filename = GLPI_TMP_DIR . '/fields_conf.yaml';
         file_put_contents($filename, $dump);

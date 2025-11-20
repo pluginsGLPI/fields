@@ -38,6 +38,7 @@ trait FieldTestTrait
 {
     /** @var PluginFieldsContainer[] */
     private static array $createdContainers = [];
+
     /** @var PluginFieldsField[] */
     private static array $createdFields = [];
 
