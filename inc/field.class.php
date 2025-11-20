@@ -627,8 +627,8 @@ class PluginFieldsField extends CommonDBChild
             };
         ');
 
-        echo "<div class='center'>" .
-           "<a href='javascript:viewAddField$cID$rand();'>";
+        echo "<div class='center'>"
+           . "<a href='javascript:viewAddField$cID$rand();'>";
         echo __('Add a new field', 'fields') . '</a></div><br>';
 
         if (count($iterator) == 0) {
@@ -1092,7 +1092,7 @@ class PluginFieldsField extends CommonDBChild
                     );
                 }
             );
-JAVASCRIPT
+JAVASCRIPT,
         );
     }
 
@@ -1102,7 +1102,7 @@ JAVASCRIPT
         $canedit = true,
         $show_table = true,
         $massiveaction = false,
-        $field_options = []
+        $field_options = [],
     ) {
 
         if (empty($fields)) {

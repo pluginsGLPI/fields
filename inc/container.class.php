@@ -49,9 +49,9 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function titleList()
     {
-        echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;" .
-            __('Regenerate container files', 'fields') . "</a>&nbsp;&nbsp;<a class='vsubmit' href='export_to_yaml.php'><i class='pointer fa fa-refresh'></i>&nbsp;" .
-            __('Export to YAML', 'fields') . '</a></div><br>';
+        echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;"
+            . __('Regenerate container files', 'fields') . "</a>&nbsp;&nbsp;<a class='vsubmit' href='export_to_yaml.php'><i class='pointer fa fa-refresh'></i>&nbsp;"
+            . __('Export to YAML', 'fields') . '</a></div><br>';
     }
 
     public function getForbiddenStandardMassiveAction()
@@ -216,9 +216,9 @@ class PluginFieldsContainer extends CommonDBTM
                         $old_table = $classname::getTable();
                         // Rename genericobject container table
                         if (
-                            $DB->tableExists($old_table) &&
-                            isset($migration_genericobject_itemtype[$itemtype]) &&
-                            str_contains($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'])
+                            $DB->tableExists($old_table)
+                            && isset($migration_genericobject_itemtype[$itemtype])
+                            && str_contains($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'])
                         ) {
                             $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . strtolower($migration_genericobject_itemtype[$itemtype]['name']), $old_table);
                             $migration->renameTable($old_table, $new_table);
@@ -1439,7 +1439,7 @@ HTML;
         $items_id,
         $itemtype,
         $data,
-        $field_obj
+        $field_obj,
     ) {
         // Don't log few itemtypes
         $dbu = new DbUtils();
@@ -1672,18 +1672,18 @@ HTML;
         }
 
         if ($empty_errors !== []) {
-            Session::AddMessageAfterRedirect(__('Some mandatory fields are empty', 'fields') .
-                                          ' : ' . implode(', ', $empty_errors), false, ERROR);
+            Session::AddMessageAfterRedirect(__('Some mandatory fields are empty', 'fields')
+                                          . ' : ' . implode(', ', $empty_errors), false, ERROR);
         }
 
         if ($number_errors !== []) {
-            Session::AddMessageAfterRedirect(__('Some numeric fields contains non numeric values', 'fields') .
-                                          ' : ' . implode(', ', $number_errors), false, ERROR);
+            Session::AddMessageAfterRedirect(__('Some numeric fields contains non numeric values', 'fields')
+                                          . ' : ' . implode(', ', $number_errors), false, ERROR);
         }
 
         if ($url_errors !== []) {
-            Session::AddMessageAfterRedirect(__('Some URL fields contains invalid links', 'fields') .
-                                          ' : ' . implode(', ', $url_errors), false, ERROR);
+            Session::AddMessageAfterRedirect(__('Some URL fields contains invalid links', 'fields')
+                                          . ' : ' . implode(', ', $url_errors), false, ERROR);
         }
 
         return $valid;

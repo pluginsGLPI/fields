@@ -62,7 +62,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
         FormDestination $destination,
         JsonFieldInterface $config,
         string $input_name,
-        array $display_options
+        array $display_options,
     ): string {
         if (!$config instanceof SimpleValueConfig) {
             throw new InvalidArgumentException("Unexpected config class");
@@ -80,7 +80,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
     public function applyConfiguratedValueToInputUsingAnswers(
         JsonFieldInterface $config,
         array $input,
-        AnswersSet $answers_set
+        AnswersSet $answers_set,
     ): array {
         if (!$config instanceof SimpleValueConfig) {
             throw new InvalidArgumentException("Unexpected config class");

@@ -185,7 +185,7 @@ class PluginFieldsMigration extends Migration
      * @return array
      */
     private static function getCustomFieldsInContainerTable(
-        string $table
+        string $table,
     ): array {
         /** @var DBmysql $DB */
         global $DB;

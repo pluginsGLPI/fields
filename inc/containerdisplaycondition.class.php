@@ -91,7 +91,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
      */
     private static function getComparisonOperators(
         bool $only_simple_conditions = false,
-        bool $with_treedropdown_conditions = false
+        bool $with_treedropdown_conditions = false,
     ): array {
         $conditions = [
             self::SHOW_CONDITION_EQ => '=',

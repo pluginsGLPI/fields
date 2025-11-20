@@ -189,9 +189,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 };
             ');
 
-            echo "<div class='center'>" .
-                "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . "$rand();'>" .
-                __('Add a new translation') . '</a></div><br>';
+            echo "<div class='center'>"
+                . "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . "$rand();'>"
+                . __('Add a new translation') . '</a></div><br>';
         }
 
         $obj   = new self();

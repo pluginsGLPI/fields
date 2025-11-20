@@ -4,23 +4,14 @@
         "symfony/yaml": "^7.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.89",
-        "friendsoftwig/twigcs": "^6.1",
-        "glpi-project/tools": "^0.8.3",
-        "php-parallel-lint/php-parallel-lint": "^1.4",
-        "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^2.1",
-        "phpstan/phpstan-deprecation-rules": "^2.0"
+        "glpi-project/tools": "^0.8.3"
     },
     "config": {
         "optimize-autoloader": true,
         "platform": {
             "php": "8.2.99"
         },
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
+        "sort-packages": true
     },
     "autoload-dev": {
         "psr-4": {
