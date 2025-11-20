@@ -340,7 +340,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                     'is_active'                                            => true,
                     'is_readonly'                                          => false,
                 ]);
-                if (count($fields)) {
+                if (count($fields) > 0) {
                     foreach ($fields as $field) {
                         $tmp_field       = [];
                         $tmp_field['id'] = (int) $field['id'];
@@ -397,7 +397,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         }
     }
 
-    if (isset($yaml_conf['container']) && $yaml_conf['container'] !== []) {
+    if ($yaml_conf['container'] !== []) {
         $dump     = Yaml::dump($yaml_conf, 10);
         $filename = GLPI_TMP_DIR . '/fields_conf.yaml';
         file_put_contents($filename, $dump);
