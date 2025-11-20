@@ -27,9 +27,9 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-use Glpi\Features\Clonable;
-use Glpi\DBAL\QueryExpression;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\DBAL\QueryExpression;
+use Glpi\Features\Clonable;
 use Glpi\Form\Question;
 
 class PluginFieldsField extends CommonDBChild
@@ -43,6 +43,7 @@ class PluginFieldsField extends CommonDBChild
     public const SEARCH_OPTION_STARTING_INDEX = 76665;
 
     public static $itemtype = PluginFieldsContainer::class;
+
     public static $items_id = 'plugin_fields_containers_id';
 
     public function getForbiddenStandardMassiveAction()
@@ -75,7 +76,7 @@ class PluginFieldsField extends CommonDBChild
         if (!$DB->tableExists($table)) {
             $migration->displayMessage(sprintf(__('Installing %s'), $table));
 
-            $query = "CREATE TABLE IF NOT EXISTS `$table` (
+            $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                              VARCHAR(255)   DEFAULT NULL,
                   `label`                             VARCHAR(255)   DEFAULT NULL,
@@ -98,19 +99,22 @@ class PluginFieldsField extends CommonDBChild
             }
         }
 
-        $migration->displayMessage("Updating $table");
+        $migration->displayMessage('Updating ' . $table);
 
         if (!$DB->fieldExists($table, 'is_active')) {
             $migration->addField($table, 'is_active', 'bool', ['value' => '1']);
             $migration->addKey($table, 'is_active', 'is_active');
         }
+
         if (!$DB->fieldExists($table, 'is_readonly')) {
             $migration->addField($table, 'is_readonly', 'bool', ['default' => 'false']);
             $migration->addKey($table, 'is_readonly', 'is_readonly');
         }
+
         if (!$DB->fieldExists($table, 'mandatory')) {
             $migration->addField($table, 'mandatory', 'bool', ['value' => '0']);
         }
+
         if (!$DB->fieldExists($table, 'multiple')) {
             $migration->addField($table, 'multiple', 'bool', ['value' => '0']);
         }
@@ -168,8 +172,6 @@ class PluginFieldsField extends CommonDBChild
      * Producing an exact mapping between previous unstable SO ID and new stable SO ID is almost impossible in many cases, due to
      * previously described behaviours. Basically, we cannot know if the current SO ID in database is still correct
      * and what were the profile rights when it was generated.
-     *
-     * @param Migration $migration
      */
     private static function migrateToStableSO(Migration $migration): void
     {
@@ -513,9 +515,9 @@ class PluginFieldsField extends CommonDBChild
         // MySQL/MariaDB official limit for a column name is 64 chars,
         // but there is a bug when trying to drop the column and the real max len is 53 chars
         // FIXME: see: https://bugs.mysql.com/bug.php?id=107165
-        if (strlen($field_name) > 52) {
+        if (strlen((string) $field_name) > 52) {
             $rand       = random_int(0, mt_getrandmax());
-            $field_name = substr($field_name, 0, 52 - strlen((string) $rand)) . $rand;
+            $field_name = substr((string) $field_name, 0, 52 - strlen((string) $rand)) . $rand;
         }
 
         return $field_name;
@@ -552,11 +554,8 @@ class PluginFieldsField extends CommonDBChild
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (!$withtemplate) {
-            switch ($item->getType()) {
-                case self::class:
-                    return static::getTypeName(1);
-            }
+        if (!$withtemplate && $item->getType() === self::class) {
+            return static::getTypeName(1);
         }
 
         if (!($item instanceof CommonDBTM)) {
@@ -610,7 +609,7 @@ class PluginFieldsField extends CommonDBChild
         ]);
 
         $rand = mt_rand();
-        echo "<div id='viewField$cID$rand'></div>";
+        echo sprintf("<div id='viewField%s%d'></div>", $cID, $rand);
 
         $ajax_params = [
             'type'                        => self::class,
@@ -628,7 +627,7 @@ class PluginFieldsField extends CommonDBChild
         ');
 
         echo "<div class='center'>"
-           . "<a href='javascript:viewAddField$cID$rand();'>";
+           . sprintf("<a href='javascript:viewAddField%s%d();'>", $cID, $rand);
         echo __('Add a new field', 'fields') . '</a></div><br>';
 
         if (count($iterator) == 0) {
@@ -659,14 +658,14 @@ class PluginFieldsField extends CommonDBChild
                     echo "<tr class='tab_bg_2' style='cursor:pointer'>";
 
                     echo '<td>';
-                    $label = !empty($this->fields['label']) ? $this->fields['label'] : NOT_AVAILABLE;
-                    echo "<a href='" . $CFG_GLPI['root_doc'] . "/plugins/fields/front/field.form.php?id={$this->getID()}'>{$label}</a>";
+                    $label = empty($this->fields['label']) ? NOT_AVAILABLE : $this->fields['label'];
+                    echo "<a href='" . $CFG_GLPI['root_doc'] . sprintf("/plugins/fields/front/field.form.php?id=%d'>%s</a>", $this->getID(), $label);
                     echo '</td>';
                     echo '<td>' . $fields_type[$this->fields['type']] . '</td>';
                     echo '<td>' ;
                     $dropdown_matches = [];
                     if (
-                        preg_match('/^dropdown-(?<class>.+)$/', $this->fields['type'], $dropdown_matches) === 1
+                        preg_match('/^dropdown-(?<class>.+)$/', (string) $this->fields['type'], $dropdown_matches) === 1
                         && !empty($this->fields['default_value'])
                     ) {
                         $itemtype = $dropdown_matches['class'];
@@ -674,13 +673,14 @@ class PluginFieldsField extends CommonDBChild
                         if (is_a($itemtype, CommonDBTM::class, true)) {
                             $item = new $itemtype();
                             if ($this->fields['multiple']) {
-                                $values = json_decode($this->fields['default_value']);
+                                $values = json_decode((string) $this->fields['default_value']);
                                 $names = [];
                                 foreach ($values as $value) {
                                     if ($item->getFromDB($value)) {
                                         $names[] = $item->getName();
                                     }
                                 }
+
                                 echo implode(', ', $names);
                             } elseif ($item->getFromDB($this->fields['default_value'])) {
                                 echo $item->getName();
@@ -691,7 +691,7 @@ class PluginFieldsField extends CommonDBChild
                         if ($this->fields['multiple']) {
                             echo implode(
                                 ', ',
-                                Dropdown::getDropdownArrayNames($table, json_decode($this->fields['default_value'])),
+                                Dropdown::getDropdownArrayNames($table, json_decode((string) $this->fields['default_value'])),
                             );
                         } else {
                             echo Dropdown::getDropdownName($table, $this->fields['default_value']);
@@ -699,6 +699,7 @@ class PluginFieldsField extends CommonDBChild
                     } else {
                         echo $this->fields['default_value'];
                     }
+
                     echo '</td>';
                     echo "<td align='center'>" . Dropdown::getYesNo($this->fields['mandatory']) . '</td>';
                     echo "<td align='center'>";
@@ -720,6 +721,7 @@ class PluginFieldsField extends CommonDBChild
                 }
             }
         }
+
         echo '</table>';
         echo '</div>';
         echo Html::scriptBlock('$(document).ready(function() {
@@ -789,8 +791,8 @@ class PluginFieldsField extends CommonDBChild
         echo '<tr id="plugin_fields_specific_fields_' . $rand . '" style="line-height: 46px;">';
         echo '<td>';
         Ajax::updateItemOnSelectEvent(
-            "dropdown_type$rand",
-            "plugin_fields_specific_fields_$rand",
+            'dropdown_type' . $rand,
+            'plugin_fields_specific_fields_' . $rand,
             '../ajax/field_specific_fields.php',
             [
                 'id'   => $ID,
@@ -799,7 +801,7 @@ class PluginFieldsField extends CommonDBChild
             ],
         );
         Ajax::updateItem(
-            "plugin_fields_specific_fields_$rand",
+            'plugin_fields_specific_fields_' . $rand,
             '../ajax/field_specific_fields.php',
             [
                 'id'   => $ID,
@@ -838,8 +840,9 @@ class PluginFieldsField extends CommonDBChild
         //profile restriction
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
         if ($right < READ) {
-            return;
+            return null;
         }
+
         $canedit = $right > READ;
 
         //get fields for this container
@@ -905,8 +908,8 @@ class PluginFieldsField extends CommonDBChild
         $item = $params['item'];
 
         $functions = array_column(debug_backtrace(), 'function');
-        $subtype   = $_SESSION['glpi_tabs'][strtolower($item::getType())] ?? '';
-        $type      = str_ends_with($subtype, '$main')
+        $subtype   = $_SESSION['glpi_tabs'][strtolower((string) $item::getType())] ?? '';
+        $type      = str_ends_with((string) $subtype, '$main')
             || in_array('showForm', $functions)
             || in_array('showPrimaryForm', $functions)
             || in_array('showFormHelpdesk', $functions)
@@ -916,15 +919,16 @@ class PluginFieldsField extends CommonDBChild
         if ($subtype == -1) {
             $type = 'dom';
         }
+
         // if we are in 'dom' or 'tab' type, no need for subtype ('domtab' specific)
-        if ($type != 'domtab') {
+        if ($type !== 'domtab') {
             $subtype = '';
         }
 
         //find container (if not exist, do nothing)
         if (isset($_REQUEST['c_id'])) {
             $c_id = $_REQUEST['c_id'];
-        } elseif (!$c_id = PluginFieldsContainer::findContainer(get_Class($item), $type, $subtype)) {
+        } elseif (!$c_id = PluginFieldsContainer::findContainer($item::class, $type, $subtype)) {
             return;
         }
 
@@ -938,6 +942,7 @@ class PluginFieldsField extends CommonDBChild
         //need to check if container is usable on this object entity
         $loc_c = new PluginFieldsContainer();
         $loc_c->getFromDB($c_id);
+
         $entities = [$loc_c->fields['entities_id']];
         if ($loc_c->fields['is_recursive']) {
             $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
@@ -954,13 +959,14 @@ class PluginFieldsField extends CommonDBChild
         if (!isset($_SERVER['REQUEST_URI'])) {
             return;
         }
+
         $current_url = $_SERVER['REQUEST_URI'];
         if (
-            !str_contains($current_url, '.form.php')
-            && !str_contains($current_url, '.injector.php')
-            && !str_contains($current_url, '.public.php')
-            && !str_contains($current_url, 'ajax/planning')
-            && !str_contains($current_url, 'ajax/timeline.php') // ITILSolution load from timeline
+            !str_contains((string) $current_url, '.form.php')
+            && !str_contains((string) $current_url, '.injector.php')
+            && !str_contains((string) $current_url, '.public.php')
+            && !str_contains((string) $current_url, 'ajax/planning')
+            && !str_contains((string) $current_url, 'ajax/timeline.php') // ITILSolution load from timeline
         ) {
             return;
         }
@@ -969,7 +975,7 @@ class PluginFieldsField extends CommonDBChild
         $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
         //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-        if (!in_array(strtolower($item::getType()), array_map('strtolower', $itemtypes))) {
+        if (!in_array(strtolower((string) $item::getType()), array_map('strtolower', $itemtypes))) {
             return;
         }
 
@@ -981,7 +987,7 @@ class PluginFieldsField extends CommonDBChild
         };
         $html_id = 'plugin_fields_container_' . mt_rand();
 
-        echo "<div id='{$html_id}' class='" . $class . "'>";
+        echo sprintf("<div id='%s' class='", $html_id) . $class . "'>";
         $display_condition = new PluginFieldsContainerDisplayCondition();
         if ($display_condition->computeDisplayContainer($item, $c_id)) {
             self::showDomContainer(
@@ -992,11 +998,12 @@ class PluginFieldsField extends CommonDBChild
                 [],
             );
         }
+
         echo '</div>';
 
         //JS to trigger any change and check if container need to be display or not
         $ajax_url = $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/container.php';
-        $items_id = !$item->isNewItem() ? $item->getID() : 0;
+        $items_id = $item->isNewItem() ? 0 : $item->getID();
         echo Html::scriptBlock(
             <<<JAVASCRIPT
             function refreshContainer() {
@@ -1119,8 +1126,9 @@ JAVASCRIPT,
         // check if current profile can edit fields
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_obj->getID());
         if ($right < READ) {
-            return;
+            return null;
         }
+
         $canedit = $right > READ;
 
         // Fill status overrides if needed
@@ -1159,7 +1167,7 @@ JAVASCRIPT,
             $field['itemtype'] = self::getType();
             $field['label']    = PluginFieldsLabelTranslation::getLabelFor($field);
 
-            $field['allowed_values'] = !empty($field['allowed_values']) ? json_decode($field['allowed_values']) : [];
+            $field['allowed_values'] = empty($field['allowed_values']) ? [] : json_decode((string) $field['allowed_values']);
             if ($field['type'] === 'glpi_item') {
                 // Convert allowed values to [$itemtype_class => $itemtype_name] format
                 $allowed_itemtypes = [];
@@ -1168,13 +1176,14 @@ JAVASCRIPT,
                         $allowed_itemtypes[$allowed_itemtype] = $allowed_itemtype::getTypeName(Session::getPluralNumber());
                     }
                 }
+
                 $field['allowed_values'] = $allowed_itemtypes;
             }
 
             //compute classname for 'dropdown-XXXXXX' field
             $dropdown_matches = [];
             if (
-                preg_match('/^dropdown-(?<class>.+)$/i', $field['type'], $dropdown_matches)
+                preg_match('/^dropdown-(?<class>.+)$/i', (string) $field['type'], $dropdown_matches)
                 && class_exists($dropdown_matches['class'])
             ) {
                 $dropdown_class = $dropdown_matches['class'];
@@ -1188,6 +1197,7 @@ JAVASCRIPT,
                     if ($object->maybeDeleted()) {
                         $field['dropdown_condition']['is_deleted'] = false;
                     }
+
                     if ($object->maybeActive()) {
                         $field['dropdown_condition']['is_active'] = true;
                     }
@@ -1226,6 +1236,7 @@ JAVASCRIPT,
                     } elseif (isset($item->input['itemtype_' . $field['name']])) {
                         $value['itemtype'] = $item->input['itemtype_' . $field['name']] ?? '';
                     }
+
                     if (isset($_SESSION['plugin']['fields']['values_sent']['items_id_' . $field['name']])) {
                         $value['items_id'] = $_SESSION['plugin']['fields']['values_sent']['items_id_' . $field['name']];
                     } elseif (isset($item->input['items_id_' . $field['name']])) {
@@ -1262,7 +1273,7 @@ JAVASCRIPT,
                 // - either from a previous input (it will be an array).
                 //
                 // -> Decode it only if it is not already an array.
-                $value = json_decode($value);
+                $value = json_decode((string) $value);
             }
 
             $field['value'] = $value;
@@ -1291,7 +1302,7 @@ JAVASCRIPT,
         $cleaned_linkfield = preg_replace(
             '/plugin_fields_(.*)dropdowns_id/',
             '$1',
-            $searchOption['linkfield'],
+            (string) $searchOption['linkfield'],
         );
 
         //find field
@@ -1314,7 +1325,7 @@ JAVASCRIPT,
             ],
             'WHERE' => [
                 'fields.name'          => $cleaned_linkfield,
-                'containers.itemtypes' => ['LIKE', "%$itemtype%"],
+                'containers.itemtypes' => ['LIKE', sprintf('%%%s%%', $itemtype)],
             ],
         ]);
 
@@ -1410,27 +1421,21 @@ JAVASCRIPT,
 
     public function rawSearchOptions()
     {
-        $tab = [];
-
-        $tab[] = [
+        return [[
             'id'            => 2,
             'table'         => self::getTable(),
             'field'         => 'label',
             'name'          => __('Label'),
             'massiveaction' => false,
             'autocomplete'  => true,
-        ];
-
-        $tab[] = [
+        ], [
             'id'            => 3,
             'table'         => self::getTable(),
             'field'         => 'default_value',
             'name'          => __('Default values'),
             'massiveaction' => false,
             'autocomplete'  => true,
-        ];
-
-        return $tab;
+        ]];
     }
 
     public function prepareInputForClone($input)
@@ -1438,7 +1443,7 @@ JAVASCRIPT,
         if (array_key_exists('allowed_values', $input) && !empty($input['allowed_values'])) {
             // $input has been transformed with `Toolbox::addslashes_deep()`, and `self::prepareInputForAdd()`
             // is expecting an array, so it have to be unslashed then json decoded.
-            $input['allowed_values'] = json_decode($input['allowed_values']);
+            $input['allowed_values'] = json_decode((string) $input['allowed_values']);
         } else {
             unset($input['allowed_values']);
         }

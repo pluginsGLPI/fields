@@ -57,7 +57,7 @@ class PluginFieldsAutoloader
     public function processClassname($classname)
     {
         $matches = [];
-        preg_match("/Plugin([A-Z][a-z0-9]+)([A-Z]\w+)/", $classname, $matches);
+        preg_match("/Plugin([A-Z][a-z0-9]+)([A-Z]\w+)/", (string) $classname, $matches);
 
         if (count($matches) < 3) {
             return false;
@@ -71,8 +71,8 @@ class PluginFieldsAutoloader
         $matches = $this->processClassname($classname);
 
         if ($matches !== false) {
-            $plugin_name = strtolower($matches[1]);
-            $class_name  = strtolower($matches[2]);
+            $plugin_name = strtolower((string) $matches[1]);
+            $class_name  = strtolower((string) $matches[2]);
 
             if ($plugin_name !== 'fields') {
                 return false;
@@ -97,6 +97,6 @@ class PluginFieldsAutoloader
 
     public function register()
     {
-        spl_autoload_register([$this, 'autoload']);
+        spl_autoload_register($this->autoload(...));
     }
 }

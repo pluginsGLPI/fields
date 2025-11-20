@@ -59,9 +59,9 @@ if ($type === 'glpi_item') {
             'multiple'            => true,
         ]);
     } else {
-        $allowed_itemtypes = !empty($field->fields['allowed_values'])
-            ? json_decode($field->fields['allowed_values'])
-            : [];
+        $allowed_itemtypes = empty($field->fields['allowed_values'])
+            ? []
+            : json_decode((string) $field->fields['allowed_values']);
         echo implode(
             ', ',
             array_map(
@@ -72,10 +72,11 @@ if ($type === 'glpi_item') {
             ),
         );
     }
+
     echo '</td>';
 } else {
     $dropdown_matches  = [];
-    $is_dropdown       = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', $type, $dropdown_matches) === 1;
+    $is_dropdown       = $type == 'dropdown' || preg_match('/^dropdown-(?<class>.+)$/', (string) $type, $dropdown_matches) === 1;
     $is_dropdown_multi = ($is_dropdown && ($type != 'dropdown-Document'));
 
     // Display "default value(s)" field
@@ -84,10 +85,12 @@ if ($type === 'glpi_item') {
         echo __('Multiple dropdown', 'fields') . ' :';
         echo '<br />';
     }
+
     echo __('Default value', 'fields') . ' :';
     if (in_array($type, ['date', 'datetime'])) {
         echo '<i class="pointer fa fa-info" title="' . __s("You can use 'now' for date and datetime field") . '"></i>';
     }
+
     echo '</td>';
 
     echo '<td>';
@@ -107,6 +110,7 @@ if ($type === 'glpi_item') {
             } else {
                 echo Dropdown::getYesNo($multiple);
             }
+
             echo '<br />';
         } else {
             $multiple = false;
@@ -119,6 +123,7 @@ if ($type === 'glpi_item') {
             if (!$multiple) {
                 echo '<input type="hidden" name="default_value" value="" />';
             }
+
             echo '</em>';
         } else {
             $itemtype = $type == 'dropdown'
@@ -127,6 +132,7 @@ if ($type === 'glpi_item') {
             if ($field->fields['default_value'] === null) {
                 $field->fields['default_value'] = '';
             }
+
             $default_value = $multiple ? json_decode($field->fields['default_value']) : $field->fields['default_value'];
             Dropdown::show(
                 $itemtype,
@@ -139,10 +145,11 @@ if ($type === 'glpi_item') {
                 ],
             );
         }
+
         echo '</div>';
         Ajax::updateItemOnSelectEvent(
-            "dropdown_multiple$rand",
-            "plugin_fields_specific_fields_$rand",
+            'dropdown_multiple' . $rand,
+            'plugin_fields_specific_fields_' . $rand,
             '../ajax/field_specific_fields.php',
             [
                 'id'       => $id,
@@ -159,5 +166,6 @@ if ($type === 'glpi_item') {
             ],
         );
     }
+
     echo '</td>';
 }

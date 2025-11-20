@@ -114,6 +114,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         if ($block_id === null) {
             $block_id = current(array_keys($this->getAvailableBlocks()));
         }
+
         $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
@@ -126,7 +127,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
 
         // Compute default value for the field
         $default_value = null;
-        if ($question !== null && !empty($question->fields['default_value'])) {
+        if ($question instanceof Question && !empty($question->fields['default_value'])) {
             $default_value = json_decode($question->fields['default_value'], true);
         }
 
@@ -149,6 +150,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         if ($block_id === null) {
             $block_id = current(array_keys($this->getAvailableBlocks()));
         }
+
         $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
@@ -182,7 +184,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             throw new LogicException('No field configured for this question');
         }
 
-        $current_field = PluginFieldsField::getById((int) $current_field_id);
+        $current_field = PluginFieldsField::getById($current_field_id);
 
         switch ($current_field->fields['type']) {
             case 'header':
@@ -218,8 +220,8 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 return $item->fields['name'];
         }
 
-        if (str_starts_with($current_field->fields['type'], 'dropdown-')) {
-            $itemtype = substr($current_field->fields['type'], strlen('dropdown-'));
+        if (str_starts_with((string) $current_field->fields['type'], 'dropdown-')) {
+            $itemtype = substr((string) $current_field->fields['type'], strlen('dropdown-'));
             if (!getItemForItemtype($itemtype)) {
                 return '';
             }
@@ -227,6 +229,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             if (!is_array($answer)) {
                 $answer = [$answer];
             }
+
             $names = [];
             foreach ($answer as $items_id) {
                 $item = $itemtype::getById($items_id);
@@ -234,6 +237,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                     $names[] = $item->fields['name'];
                 }
             }
+
             return implode(', ', $names);
         }
 
@@ -283,11 +287,10 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
      * Retrieve the default value block from the question's extra data
      *
      * @param Question|null $question The question to retrieve the default value from
-     * @return ?int
      */
     public function getDefaultValueBlockId(?Question $question): ?int
     {
-        if ($question === null) {
+        if (!$question instanceof Question) {
             return null;
         }
 
@@ -304,11 +307,10 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
      * Retrieve the default value field from the question's extra data
      *
      * @param Question|null $question The question to retrieve the default value from
-     * @return ?int
      */
     public function getDefaultValueFieldId(?Question $question): ?int
     {
-        if ($question === null) {
+        if (!$question instanceof Question) {
             return null;
         }
 
@@ -321,7 +323,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         return $config->getFieldId();
     }
 
-    private function getAvailableBlocks(?Form $form = null): array
+    private function getAvailableBlocks(): array
     {
         $field_container  = new PluginFieldsContainer();
         $available_blocks = [];
@@ -337,6 +339,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         foreach ($result as $id => $data) {
             $available_blocks[$id] = $data['label'];
         }
+
         return $available_blocks;
     }
 
@@ -363,8 +366,6 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
 
     /**
      * Check if there is at least one available field in the available blocks
-     *
-     * @return bool
      */
     public static function hasAvailableFields(): bool
     {

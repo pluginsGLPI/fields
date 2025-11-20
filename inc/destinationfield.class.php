@@ -42,7 +42,7 @@ use Glpi\Form\QuestionType\QuestionTypeItemDropdown;
 
 class PluginFieldsDestinationField extends AbstractConfigField
 {
-    public function __construct(private AbstractCommonITILFormDestination $itil_destination) {}
+    public function __construct(private readonly AbstractCommonITILFormDestination $itil_destination) {}
 
     #[Override]
     public function getLabel(): string
@@ -139,6 +139,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                 }
             }
         }
+
         return $input;
     }
 

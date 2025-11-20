@@ -41,12 +41,14 @@ function plugin_fields_install()
     if ($memory_limit > 0 && $memory_limit < (512 * 1024 * 1024)) {
         ini_set('memory_limit', '512M');
     }
+
     if ($max_execution_time > 0 && $max_execution_time < 300) {
         ini_set('max_execution_time', '300');
     }
 
     $plugin_fields = new Plugin();
     $plugin_fields->getFromDBbyDir('fields');
+
     $version = $plugin_fields->fields['version'];
 
 
@@ -79,6 +81,7 @@ function plugin_fields_install()
             $class::installBaseData($migration, $version);
         }
     }
+
     $migration->executeMigration();
 
     // Then process specific user classes/tables
@@ -87,6 +90,7 @@ function plugin_fields_install()
             $class::installUserData($migration, $version);
         }
     }
+
     $migration->executeMigration();
 
     if (!isCommandLine()) {
@@ -138,10 +142,10 @@ function plugin_fields_uninstall()
     foreach ($classesToUninstall as $class) {
         if ($plug = isPluginItemType($class)) {
             $dir  = PLUGINFIELDS_DIR . '/inc/';
-            $item = strtolower($plug['class']);
+            $item = strtolower((string) $plug['class']);
 
-            if (file_exists("$dir$item.class.php")) {
-                include_once("$dir$item.class.php");
+            if (file_exists(sprintf('%s%s.class.php', $dir, $item))) {
+                include_once(sprintf('%s%s.class.php', $dir, $item));
                 if (!call_user_func([$class, 'uninstall'])) {
                     return false;
                 }
@@ -169,7 +173,7 @@ function plugin_fields_getAddSearchOptions($itemtype)
     if (
         isset($_SESSION['glpiactiveentities'])
         && is_array($_SESSION['glpiactiveentities'])
-        && count($_SESSION['glpiactiveentities']) > 0
+        && $_SESSION['glpiactiveentities'] !== []
     ) {
         $itemtypes = PluginFieldsContainer::getEntries('all');
         if (in_array($itemtype, $itemtypes)) {
@@ -190,7 +194,7 @@ function plugin_fields_getDropdown()
     foreach ($fields as $field) {
         $field['itemtype']                                                = PluginFieldsField::getType();
         $label                                                            = PluginFieldsLabelTranslation::getLabelFor($field);
-        $dropdowns['PluginFields' . ucfirst($field['name']) . 'Dropdown'] = $label;
+        $dropdowns['PluginFields' . ucfirst((string) $field['name']) . 'Dropdown'] = $label;
     }
 
     asort($dropdowns);
@@ -240,18 +244,15 @@ function plugin_fields_getRuleActions($params = [])
 {
     $actions = [];
 
-    switch ($params['rule_itemtype']) {
-        case 'PluginFusioninventoryTaskpostactionRule':
-            $options = PluginFieldsContainer::getAddSearchOptions('Computer');
-            foreach ($options as $option) {
-                $actions[$option['linkfield']]['name'] = $option['name'];
-                $actions[$option['linkfield']]['type'] = $option['pfields_type'];
-                if ($option['pfields_type'] == 'dropdown') {
-                    $actions[$option['linkfield']]['table'] = $option['table'];
-                }
+    if ($params['rule_itemtype'] === 'PluginFusioninventoryTaskpostactionRule') {
+        $options = PluginFieldsContainer::getAddSearchOptions('Computer');
+        foreach ($options as $option) {
+            $actions[$option['linkfield']]['name'] = $option['name'];
+            $actions[$option['linkfield']]['type'] = $option['pfields_type'];
+            if ($option['pfields_type'] == 'dropdown') {
+                $actions[$option['linkfield']]['table'] = $option['table'];
             }
-
-            break;
+        }
     }
 
     return $actions;
@@ -315,10 +316,10 @@ function plugin_fields_giveItem($itemtype, $ID, $data, $num)
 
     //fix glpi default Search::giveItem who for empty date display "--"
     if (
-        str_contains($table, 'glpi_plugin_fields')
+        str_contains((string) $table, 'glpi_plugin_fields')
         && isset($searchopt[$ID]['datatype'])
         && str_contains($searchopt[$ID]['datatype'], 'date')
-        && empty($data['raw']["ITEM_$num"])
+        && empty($data['raw']['ITEM_' . $num])
     ) {
         return ' ';
     }
@@ -375,15 +376,16 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             if ($nott) {
                 $link .= ' NOT ';
             }
-            return $link . 'CAST(' . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val) ;
+
+            return $link . 'CAST(' . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val) ;
         } else {
             // if 'number' field with name is found with <= or >= or < or > search
             // update WHERE clause with the correct operator
-            $val = html_entity_decode($val);
+            $val = html_entity_decode((string) $val);
             if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
                 $operator = $matches[1];
                 $val = trim(str_replace($operator, '', $val));
-                return $link . $DB->quoteName("$table" . '_' . "$field") . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
+                return $link . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
             }
         }
     }
@@ -398,7 +400,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             ],
         )
     ) {
-        $tablefield = "$table" . '_' . "$field";
+        $tablefield = $table . '_' . $field;
         switch ($searchtype) {
             case 'equals':
                 return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field);
@@ -410,7 +412,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         // update WHERE clause with LIKE statement
         $cleanfield = str_replace('plugin_fields_', '', $field);
         $cleanfield = str_replace('dropdowns_id', '', $cleanfield);
-        $tablefield = "$table" . '_' . "$cleanfield";
+        $tablefield = $table . '_' . $cleanfield;
         if (
             $field_field->getFromDBByCrit(
                 [
@@ -429,4 +431,6 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             return false;
         }
     }
+
+    return null;
 }

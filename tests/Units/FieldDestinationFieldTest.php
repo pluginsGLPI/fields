@@ -58,6 +58,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
     use FieldTestTrait;
 
     private array $blocks = [];
+
     private array $fields = [];
 
     private function initFieldTest(): void
@@ -93,7 +94,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
             'allowed_values'                            => [User::class, Group::class],
-        ], ['allowed_values']);
+        ]);
         $this->fields[] = $this->createField([
             'label'                                     => 'Short text',
             'type'                                      => 'text',
@@ -110,7 +111,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
             'allowed_values'                            => [User::class, Group::class],
-        ], ['allowed_values']);
+        ]);
         $this->fields[] = $this->createField([
             'label'                                     => 'Location Field',
             'type'                                      => 'dropdown-Location',
@@ -294,7 +295,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
                 fn(?CommonITILObject $carry, CommonITILObject $item) => $carry ?? ($item instanceof $itil_class ? $item : null),
                 null,
             );
-            $this->assertNotNull($itil_object, "No created item of type $itil_class found.");
+            $this->assertNotNull($itil_object, sprintf('No created item of type %s found.', $itil_class));
 
             // Check field values
             $classname = PluginFieldsContainer::getClassname($itil_class, $this->blocks[$itil_class]->fields['name']);
@@ -314,7 +315,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
                 $this->assertEquals(
                     $expected_value,
                     $values[$field_name],
-                    "Field '$field_name' does not have the expected value.",
+                    sprintf("Field '%s' does not have the expected value.", $field_name),
                 );
             }
         }

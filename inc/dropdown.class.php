@@ -31,6 +31,7 @@
 class PluginFieldsDropdown
 {
     public static $rightname  = 'dropdown';
+
     public $can_be_translated = true;
 
     /**
@@ -53,18 +54,18 @@ class PluginFieldsDropdown
         foreach ($fields as $field) {
             //First, drop old fields from plugin directories
             $class_filename = $field['name'] . 'dropdown.class.php';
-            if (file_exists(PLUGINFIELDS_DIR . "/inc/$class_filename")) {
-                unlink(PLUGINFIELDS_DIR . "/inc/$class_filename");
+            if (file_exists(PLUGINFIELDS_DIR . ('/inc/' . $class_filename))) {
+                unlink(PLUGINFIELDS_DIR . ('/inc/' . $class_filename));
             }
 
             $front_filename = $field['name'] . 'dropdown.php';
-            if (file_exists(PLUGINFIELDS_DIR . "/front/$front_filename")) {
-                unlink(PLUGINFIELDS_DIR . "/front/$front_filename");
+            if (file_exists(PLUGINFIELDS_DIR . ('/front/' . $front_filename))) {
+                unlink(PLUGINFIELDS_DIR . ('/front/' . $front_filename));
             }
 
             $form_filename = $field['name'] . 'dropdown.form.php';
-            if (file_exists(PLUGINFIELDS_DIR . "/front/$form_filename")) {
-                unlink(PLUGINFIELDS_DIR . "/front/$form_filename");
+            if (file_exists(PLUGINFIELDS_DIR . ('/front/' . $form_filename))) {
+                unlink(PLUGINFIELDS_DIR . ('/front/' . $form_filename));
             }
         }
 
@@ -76,6 +77,7 @@ class PluginFieldsDropdown
 
         // Regenerate files and install missing tables
         $migration->displayMessage(__('Updating generated dropdown files', 'fields'));
+
         $obj    = new PluginFieldsField();
         $fields = $obj->find(['type' => 'dropdown']);
         foreach ($fields as $field) {
@@ -137,11 +139,11 @@ class PluginFieldsDropdown
         $class_filename = $input['name'] . 'dropdown.class.php';
         if (
             file_put_contents(
-                PLUGINFIELDS_CLASS_PATH . "/$class_filename",
+                PLUGINFIELDS_CLASS_PATH . ('/' . $class_filename),
                 $template_class,
             ) === false
         ) {
-            Toolbox::logDebug("Error : dropdown class file creation - $class_filename");
+            Toolbox::logDebug('Error : dropdown class file creation - ' . $class_filename);
 
             return false;
         }
@@ -154,7 +156,7 @@ class PluginFieldsDropdown
 
         //call install method (create table)
         if ($classname::install() === false) {
-            Toolbox::logDebug("Error : calling dropdown $classname installation");
+            Toolbox::logDebug(sprintf('Error : calling dropdown %s installation', $classname));
 
             return false;
         }
@@ -172,7 +174,7 @@ class PluginFieldsDropdown
 
         //call uninstall method in dropdown class
         if ($classname::uninstall() === false) {
-            Toolbox::logDebug("Error : calling dropdown $classname uninstallation");
+            Toolbox::logDebug(sprintf('Error : calling dropdown %s uninstallation', $classname));
 
             return false;
         }
@@ -202,7 +204,7 @@ class PluginFieldsDropdown
 
     public static function getClassname($system_name)
     {
-        return 'PluginFields' . ucfirst($system_name) . 'Dropdown';
+        return 'PluginFields' . ucfirst((string) $system_name) . 'Dropdown';
     }
 
     public static function multipleDropdownAddWhere($link, $tablefield, $field, $val, $searchtype, $field_field = [])
@@ -222,7 +224,7 @@ class PluginFieldsDropdown
         $operator = ($searchtype === 'equals') ? '' : 'NOT ';
         $condition = ($val == '0')
             ? $operator . 'IN("", "[]")'
-            : $operator . 'LIKE ' . $DB->quoteValue("%\"$val\"%");
+            : $operator . 'LIKE ' . $DB->quoteValue(sprintf('%%"%s"%%', $val));
 
         return $sqlBase . ' ' . $condition;
     }

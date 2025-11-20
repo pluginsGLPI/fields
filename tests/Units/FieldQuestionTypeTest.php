@@ -33,6 +33,9 @@ namespace GlpiPlugin\Field\Tests\Units;
 use Glpi\Form\QuestionType\QuestionTypesManager;
 use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
+use LogicException;
+use PluginFieldsContainer;
+use PluginFieldsField;
 use PluginFieldsQuestionType;
 use PluginFieldsQuestionTypeCategory;
 use PluginFieldsQuestionTypeExtraDataConfig;
@@ -50,7 +53,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         // Assert: check that Field question type category is registered
         $this->assertContains(
             PluginFieldsQuestionTypeCategory::class,
-            array_map(fn($category) => get_class($category), $categories),
+            array_map(fn($category) => $category::class, $categories),
         );
     }
 
@@ -69,7 +72,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         // Assert: check that Field question type category isn't registered
         $this->assertNotContains(
             PluginFieldsQuestionTypeCategory::class,
-            array_map(fn($category) => get_class($category), $categories),
+            array_map(fn($category) => $category::class, $categories),
         );
     }
 
@@ -82,7 +85,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         // Assert: check that Field question type is registered
         $this->assertContains(
             PluginFieldsQuestionType::class,
-            array_map(fn($type) => get_class($type), $types),
+            array_map(fn($type) => $type::class, $types),
         );
     }
 
@@ -101,7 +104,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         // Assert: check that Field question type isn't registered
         $this->assertNotContains(
             PluginFieldsQuestionType::class,
-            array_map(fn($type) => get_class($type), $types),
+            array_map(fn($type) => $type::class, $types),
         );
     }
 
@@ -147,8 +150,8 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
     private function getFieldExtraDataConfig(): PluginFieldsQuestionTypeExtraDataConfig
     {
-        if ($this->block === null || $this->field === null) {
-            throw new \LogicException("Field and container must be created before getting extra data config");
+        if (!$this->block instanceof PluginFieldsContainer || !$this->field instanceof PluginFieldsField) {
+            throw new LogicException("Field and container must be created before getting extra data config");
         }
 
         return new PluginFieldsQuestionTypeExtraDataConfig($this->block->getID(), $this->field->getID());

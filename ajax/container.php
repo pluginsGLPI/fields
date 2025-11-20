@@ -52,6 +52,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     if ($items_id > 0 && !$item->getFromDB($items_id)) {
         throw new NotFoundHttpException();
     }
+
     $item->input = $input;
 
     $display_condition = new PluginFieldsContainerDisplayCondition();

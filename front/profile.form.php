@@ -33,4 +33,5 @@ Session::checkRight('config', UPDATE);
 if (isset($_POST['update'])) {
     PluginFieldsProfile::updateProfile($_POST);
 }
+
 Html::back();

@@ -34,11 +34,12 @@ class PluginFieldsQuestionTypeExtraDataConfig implements JsonFieldInterface
 {
     // Unique reference to hardcoded name used for serialization
     public const BLOCK_ID = "block_id";
+
     public const FIELD_ID = "field_id";
 
     public function __construct(
-        private ?int $block_id = null,
-        private ?int $field_id = null,
+        private readonly ?int $block_id = null,
+        private readonly ?int $field_id = null,
     ) {}
 
     #[Override]

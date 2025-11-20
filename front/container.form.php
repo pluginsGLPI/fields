@@ -41,7 +41,7 @@ $container = new PluginFieldsContainer();
 if (isset($_POST['add'])) {
     $container->check(-1, CREATE, $_POST);
     $newID = $container->add($_POST);
-    Html::redirect(PLUGINFIELDS_WEB_DIR . "/front/container.form.php?id=$newID");
+    Html::redirect(PLUGINFIELDS_WEB_DIR . ('/front/container.form.php?id=' . $newID));
 } elseif (isset($_POST['delete'])) {
     $container->check($_POST['id'], DELETE);
     $ok = $container->delete($_POST);
@@ -59,6 +59,7 @@ if (isset($_POST['add'])) {
     if ($right > READ) {
         $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
     }
+
     Html::back();
 } else {
 

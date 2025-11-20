@@ -50,7 +50,7 @@ class PluginFieldsToolbox
         $name = preg_replace('/[^\da-z]/i', '', $name);
 
         // 3. if empty, uses a random number
-        if (strlen($name) == 0) {
+        if (strlen((string) $name) == 0) {
             $name = random_int(0, mt_getrandmax());
         }
 
@@ -92,9 +92,7 @@ class PluginFieldsToolbox
     /**
      * Fix dropdown names that were generated prior to Fields 1.9.2.
      *
-     * @param Migration $migration
      * @param mixed     $condition
-     *
      * @return void
      */
     public function fixFieldsNames(Migration $migration, $condition)
@@ -117,7 +115,7 @@ class PluginFieldsToolbox
             }
         }
 
-        if (count($bad_named_fields) === 0) {
+        if ($bad_named_fields === []) {
             return;
         }
 
@@ -134,6 +132,7 @@ class PluginFieldsToolbox
                 // limit fields names to 64 chars (MySQL limit)
                 $new_name = substr($new_name, 0, 64);
             }
+
             while (
                 'dropdown' === $field['type']
                 && strlen(getTableForItemType(PluginFieldsDropdown::getClassname($new_name))) > 64
@@ -141,6 +140,7 @@ class PluginFieldsToolbox
                 // limit tables names to 64 chars (MySQL limit)
                 $new_name = substr($new_name, 0, -1);
             }
+
             $DB->update(
                 PluginFieldsField::getTable(),
                 ['name' => $new_name],
@@ -188,6 +188,7 @@ class PluginFieldsToolbox
                         // other cases can be ignored
                         continue;
                     }
+
                     $migration->changeField(
                         $table_to_update['TABLE_NAME'],
                         $old_field_name,
@@ -204,8 +205,6 @@ class PluginFieldsToolbox
      * Return a list of GLPI itemtypes.
      * These itemtypes will be available to attach fields containers on them,
      * and will be usable in dropdown / glpi_item fields.
-     *
-     * @return array
      */
     public static function getGlpiItemtypes(): array
     {
@@ -280,12 +279,14 @@ class PluginFieldsToolbox
         foreach (CommonDevice::getDeviceTypes() as $device_itemtype) {
             $components_itemtypes[] = $device_itemtype;
         }
+
         sort($components_itemtypes, SORT_NATURAL);
 
         $component_items_itemtypes = [];
         foreach (Item_Devices::getDeviceTypes() as $deviceitem_itemtype) {
             $component_items_itemtypes[] = $deviceitem_itemtype;
         }
+
         sort($component_items_itemtypes, SORT_NATURAL);
 
         $plugins_itemtypes = [];
@@ -333,9 +334,11 @@ class PluginFieldsToolbox
                 if (!class_exists($go_itemtype)) {
                     continue;
                 }
+
                 $go_itemtypes[] = $go_itemtype;
             }
-            if (count($go_itemtypes) > 0) {
+
+            if ($go_itemtypes !== []) {
                 $all_itemtypes[$plugin->getInfo('genericobject', 'name')] = $go_itemtypes;
             }
         }
@@ -350,11 +353,13 @@ class PluginFieldsToolbox
                     if (!array_key_exists($plugin_key, $plugins_names)) {
                         $plugins_names[$plugin_key] = Plugin::getInfo($plugin_key, 'name');
                     }
+
                     $prefix = $plugins_names[$plugin_key] . ' - ';
                 }
 
                 $named_itemtypes[$itemtype] = $prefix . $itemtype::getTypeName(Session::getPluralNumber());
             }
+
             $all_itemtypes[$section] = $named_itemtypes;
         }
 
@@ -371,6 +376,7 @@ class PluginFieldsToolbox
             $fixed_json = str_replace('\\', '\\\\', $itemtypes);
             $jsonitemtype = json_decode($fixed_json, $associative);
         }
+
         return $jsonitemtype;
     }
 }

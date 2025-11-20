@@ -27,14 +27,15 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-use Glpi\Features\Clonable;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Features\Clonable;
 
 class PluginFieldsStatusOverride extends CommonDBChild
 {
     use Clonable;
 
     public static $itemtype = PluginFieldsField::class;
+
     public static $items_id = 'plugin_fields_fields_id';
 
     /**
@@ -59,7 +60,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
         if (!$DB->tableExists($table)) {
             $migration->displayMessage(sprintf(__('Installing %s'), $table));
 
-            $query = "CREATE TABLE IF NOT EXISTS `$table` (
+            $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `plugin_fields_fields_id`           INT            {$default_key_sign} NOT NULL DEFAULT '0',
                   `itemtype`                          VARCHAR(100)   DEFAULT NULL,
@@ -102,6 +103,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
                 'ti ti-adjustments-alt',
             );
         }
+
         return '';
     }
 
@@ -138,8 +140,9 @@ class PluginFieldsStatusOverride extends CommonDBChild
     public function post_getFromDB()
     {
         if (isset($this->fields['states']) && !empty($this->fields['states'])) {
-            $this->fields['states'] = json_decode($this->fields['states']);
+            $this->fields['states'] = json_decode((string) $this->fields['states']);
         }
+
         parent::post_getFromDB();
     }
 
@@ -217,9 +220,10 @@ class PluginFieldsStatusOverride extends CommonDBChild
 
         $overrides = [];
         foreach ($iterator as $data) {
-            $data['states'] = !empty($data['states']) ? json_decode($data['states']) : [];
+            $data['states'] = empty($data['states']) ? [] : json_decode((string) $data['states']);
             $overrides[]    = $data;
         }
+
         self::addStatusNames($overrides);
 
         return $overrides;
@@ -255,7 +259,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
         return array_filter($overrides, static fn($override) => $override['itemtype'] === $itemtype && in_array($status, $override['states'], false));
     }
 
-    private static function getItemtypesForContainer(int $container_id): array
+    private function getItemtypesForContainer(int $container_id): array
     {
         /** @var DBmysql $DB */
         global $DB;
@@ -321,6 +325,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
         foreach ($iterator as $row) {
             $statuses['Project'][$row['id']] = $row['name'];
         }
+
         $statuses['ProjectTask'] = $statuses['Project'];
 
         $iterator = $DB->request([
@@ -337,7 +342,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
         }
     }
 
-    private static function getFieldsChoiceForContainer(int $container_id): array
+    private function getFieldsChoiceForContainer(int $container_id): array
     {
         /** @var DBmysql $DB */
         global $DB;
@@ -393,6 +398,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
                 foreach ($iterator as $data) {
                     $statuses[] = $data['name'];
                 }
+
                 break;
             default:
                 return State::dropdown([
@@ -415,6 +421,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
         if (!($item instanceof CommonDBTM)) {
             return;
         }
+
         $container_id = $item->getID();
         $has_fields   = countElementsInTable(PluginFieldsField::getTable(), [
             'plugin_fields_containers_id' => $container_id,
@@ -434,8 +441,8 @@ class PluginFieldsStatusOverride extends CommonDBChild
         $twig_params = [
             'override'            => $this,
             'container_id'        => $container_id,
-            'container_itemtypes' => self::getItemtypesForContainer($container_id),
-            'container_fields'    => self::getFieldsChoiceForContainer($container_id),
+            'container_itemtypes' => $this->getItemtypesForContainer($container_id),
+            'container_fields'    => $this->getFieldsChoiceForContainer($container_id),
         ];
         TemplateRenderer::getInstance()->display('@fields/forms/status_override.html.twig', $twig_params);
 
