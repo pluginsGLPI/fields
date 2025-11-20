@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Fix `add` operations when a linked object already exists before the plugin container fields are created.
+
 ### Fixed
 
 - Fix left side menu url (with `DIR_MARKETPLACE`)

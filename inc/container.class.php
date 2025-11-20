@@ -1780,6 +1780,7 @@ HTML;
         self::preItem($item);
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $data = $item->input['_plugin_fields_data'];
+            $data['itemtype'] = $item::class;
             $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
             //update data
             $container = new self();
