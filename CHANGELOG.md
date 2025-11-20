@@ -7,10 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.23.1] - 2025-11-20
+
 - Fix `add` operations when a linked object already exists before the plugin container fields are created.
-
-### Fixed
-
 - Fix left side menu url (with `DIR_MARKETPLACE`)
 - Fix default value format for multiple dropdown (GLPIObject)
 - Fix bad SQL query for `GenericObject`
