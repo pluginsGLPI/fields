@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+## [1.21.25] - 2025-11-20
+
 ### Fixed
 
 - Fix default value format for multiple dropdown (GLPIObject)
