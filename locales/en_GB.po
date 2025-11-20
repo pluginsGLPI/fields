@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 01:10+0000\n"
-"PO-Revision-Date: 2025-11-13 01:10+0000\n"
+"POT-Creation-Date: 2025-11-20 01:07+0000\n"
+"PO-Revision-Date: 2025-11-20 01:07+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -57,7 +57,7 @@ msgstr[1] "Conditions to hide block"
 msgid "Bind additional fields to the destination"
 msgstr "Bind additional fields to the destination"
 
-#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: setup.php:233 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr "Additional fields"

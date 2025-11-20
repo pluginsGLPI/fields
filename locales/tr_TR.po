@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-06 01:11+0000\n"
+"POT-Creation-Date: 2025-11-14 01:09+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2025\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -58,7 +58,7 @@ msgstr[1] "Bloğu gizleyecek koşullar"
 msgid "Bind additional fields to the destination"
 msgstr "Ek alanları hedefe bağla"
 
-#: setup.php:231 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: setup.php:233 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:73 front/container.php:34
 msgid "Additional fields"
 msgstr "Ek alanlar"
