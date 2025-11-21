@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-14 01:09+0000\n"
+"POT-Creation-Date: 2025-11-21 01:08+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -24,12 +24,12 @@ msgstr ""
 msgid "show"
 msgstr "arată"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
+#: templates/forms/status_override.html.twig inc/field.class.php:248
 msgid "Field"
 msgstr "Câmp"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:649
-#: inc/field.class.php:825
+#: templates/forms/status_override.html.twig inc/field.class.php:648
+#: inc/field.class.php:827
 msgid "Read only"
 msgstr "Nu poate fi editat"
 
@@ -50,7 +50,7 @@ msgid "Add condition to hide block"
 msgstr "Adăugați o condiție pentru a ascunde blocul"
 
 #: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:153
+#: inc/containerdisplaycondition.class.php:157
 msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "Condiții pentru ascunderea blocului"
@@ -61,36 +61,36 @@ msgstr[2] "Condiții pentru ascunderea blocului"
 msgid "Bind additional fields to the destination"
 msgstr ""
 
-#: setup.php:233 inc/destinationfield.class.php:50 inc/menu.class.php:37
-#: front/container.form.php:73 front/container.php:34
+#: setup.php:238 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: front/container.form.php:74 front/container.php:34
 msgid "Additional fields"
 msgstr "Câmpuri adiționale"
 
-#: inc/containerdisplaycondition.class.php:102
-#: inc/containerdisplaycondition.class.php:134
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
 msgid "under"
 msgstr "sub"
 
-#: inc/containerdisplaycondition.class.php:103
-#: inc/containerdisplaycondition.class.php:137
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
 msgid "not under"
 msgstr "nu sub"
 
-#: inc/containerdisplaycondition.class.php:109
-#: inc/containerdisplaycondition.class.php:131
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
 msgid "regular expression matches"
 msgstr "expresia se potrivește"
 
-#: inc/containerdisplaycondition.class.php:501
-#: inc/containerdisplaycondition.class.php:517
+#: inc/containerdisplaycondition.class.php:507
+#: inc/containerdisplaycondition.class.php:523
 msgid "You must specify an item type, search option and condition."
 msgstr "Trebuie să specificați un tip de articol, o opțiune de căutare și o condiție."
 
-#: inc/toolbox.class.php:124
+#: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Remediați numele câmpurilor"
 
-#: inc/toolbox.class.php:324
+#: inc/toolbox.class.php:325
 msgid "Component items"
 msgstr "Elemente componente"
 
@@ -153,15 +153,15 @@ msgid ""
 "them."
 msgstr ""
 
-#: inc/labeltranslation.class.php:220
+#: inc/labeltranslation.class.php:224
 msgid "Language"
 msgstr "Limba"
 
-#: inc/labeltranslation.class.php:221
+#: inc/labeltranslation.class.php:225
 msgid "Label"
 msgstr "Eticheta"
 
-#: inc/dropdown.class.php:78
+#: inc/dropdown.class.php:79
 msgid "Updating generated dropdown files"
 msgstr "Actualizarea fișierelor tip desfășurător generate"
 
@@ -169,160 +169,116 @@ msgstr "Actualizarea fișierelor tip desfășurător generate"
 msgid "Regenerate container files"
 msgstr "Regenerați fișierele container"
 
-#: inc/container.class.php:54 inc/container.class.php:895
+#: inc/container.class.php:54 inc/container.class.php:889
 msgid "Export to YAML"
 msgstr "Exportați în YAML"
 
-#: inc/container.class.php:287
+#: inc/container.class.php:289
 msgid "Regenerate containers files"
 msgstr ""
 
-#: inc/container.class.php:308
+#: inc/container.class.php:310
 msgid "Fix container names"
 msgstr "Remediați numele containerelor"
 
-#: inc/container.class.php:452
+#: inc/container.class.php:458
 msgid "Updating generated containers files"
 msgstr "Actualizarea fișierelor container generate"
 
-#: inc/container.class.php:669
+#: inc/container.class.php:661
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nu puteți adăuga mai multe blocuri de tipul „Inserare în formular” pe același obiect"
 
-#: inc/container.class.php:685
+#: inc/container.class.php:677
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Nu puteți adăuga blocuri multiple folosind „Inserare formular într-un tab specific”."
 
-#: inc/container.class.php:702
+#: inc/container.class.php:694
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Numele conținut este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
 
-#: inc/container.class.php:717
+#: inc/container.class.php:709
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nu puteți adăuga mai multe blocuri cu nume identic pe același obiect"
 
-#: inc/container.class.php:883
+#: inc/container.class.php:877
 msgid "Block"
 msgstr "Bloc"
 
-#: inc/container.class.php:991
+#: inc/container.class.php:990
 msgid "Tab"
 msgstr "Tab"
 
-#: inc/container.class.php:1145
+#: inc/container.class.php:1148
 msgid "Add tab"
 msgstr "Adăugați un tab"
 
-#: inc/container.class.php:1146
+#: inc/container.class.php:1149
 msgid "Insertion in the form (before save button)"
 msgstr "Inserare în formular (înainte de butonul de salvare)"
 
-#: inc/container.class.php:1147
+#: inc/container.class.php:1150
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserarea într-un tab separat (înainte de butonul de salvare)"
 
-#: inc/container.class.php:1675
+#: inc/container.class.php:1681
 msgid "Some mandatory fields are empty"
 msgstr "Unele câmpuri obligatorii sunt goale"
 
-#: inc/container.class.php:1680
+#: inc/container.class.php:1686
 msgid "Some numeric fields contains non numeric values"
 msgstr "Unele câmpuri numerice conțin valori non numerice"
 
-#: inc/container.class.php:1685
+#: inc/container.class.php:1691
 msgid "Some URL fields contains invalid links"
 msgstr "Unele câmpuri URL conțin linkuri nevalide"
 
-#: inc/statusoverride.class.php:92
+#: inc/statusoverride.class.php:93
 msgid "Override by status"
 msgstr "Ignorați în funcție de stare"
 
-#: inc/field.class.php:261 inc/field.class.php:288
+#: inc/field.class.php:263 inc/field.class.php:290
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Numele câmpului este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
 
-#: inc/field.class.php:280
+#: inc/field.class.php:282
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr ""
 
-#: inc/field.class.php:367
+#: inc/field.class.php:369
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
 msgstr ""
 
-#: inc/field.class.php:567
+#: inc/field.class.php:566
 msgid "Fields"
 msgstr "Câmpuri"
 
-#: inc/field.class.php:632
+#: inc/field.class.php:631
 msgid "Add a new field"
 msgstr "Adaugă un câmp nou"
 
-#: inc/field.class.php:636
+#: inc/field.class.php:635
 msgid "No field for this block"
 msgstr "Nu există niciun câmp pentru acest bloc"
 
-#: inc/field.class.php:1363
-msgid "Header"
-msgstr "Antet"
-
-#: inc/field.class.php:1364
-msgid "Text (single line)"
-msgstr "Text (un singur rând)"
-
-#: inc/field.class.php:1365
-msgid "Text (multiples lines)"
-msgstr "Text (mai multe rânduri)"
-
-#: inc/field.class.php:1366
-msgid "Rich Text"
-msgstr ""
-
-#: inc/field.class.php:1367
-msgid "Number"
-msgstr "Număr"
-
-#: inc/field.class.php:1368
-msgid "URL"
-msgstr "URL"
-
-#: inc/field.class.php:1369
-msgid "Dropdown"
-msgstr "Desfășurător"
-
-#: inc/field.class.php:1370
-msgid "Yes/No"
-msgstr "Da/Nu"
-
-#: inc/field.class.php:1371
-msgid "Date"
-msgstr "Dată"
-
-#: inc/field.class.php:1372
-msgid "Date & time"
-msgstr "Dată & oră"
-
-#: inc/field.class.php:1373
-msgid "GLPI item"
-msgstr "Element GLPI"
-
-#: hook.php:55 hook.php:59
+#: hook.php:57 hook.php:61
 msgid "MySQL tables installation"
 msgstr "Generarea tabelelor MySQL pentru instalare "
 
-#: hook.php:110
+#: hook.php:114
 msgid "The plugin can't be uninstalled when the plugin is disabled"
 msgstr "Plugin-ul nu poate fi dezinstalat când este dezactivat"
 
-#: hook.php:123
+#: hook.php:127
 msgid "MySQL tables uninstallation"
 msgstr "Ștergerea tabelelor MySQL instalate"
 
@@ -330,14 +286,14 @@ msgstr "Ștergerea tabelelor MySQL instalate"
 msgid "Allowed values"
 msgstr "Valorile permise"
 
-#: ajax/field_specific_fields.php:84
+#: ajax/field_specific_fields.php:85
 msgid "Multiple dropdown"
 msgstr ""
 
-#: ajax/field_specific_fields.php:87
+#: ajax/field_specific_fields.php:89
 msgid "Default value"
 msgstr ""
 
-#: ajax/field_specific_fields.php:118
+#: ajax/field_specific_fields.php:122
 msgid "Default value will be configurable once field will be created."
 msgstr ""
