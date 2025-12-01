@@ -33,7 +33,7 @@
                 <div class="row flex-row">
 
                     {% if canedit %}
-                        <form method='POST' class='mt-5' action='/plugins/fields/front/container.form.php'>
+                        <form method='POST' class='mt-5' action='{{ path('/plugins/fields/front/container.form.php') }} '>
                             <input type="hidden" name="plugin_fields_containers_id" value="{{ c_id }}">
                             <input type="hidden" name="items_id" value="{{ item.getID() }}">
                             <input type="hidden" name="itemtype" value="{{ item.getType() }}">
