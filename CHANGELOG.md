@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Fix form `path` for `tab` `container`
+
 ## [1.23.1] - 2025-11-20
 
 - Fix `add` operations when a linked object already exists before the plugin container fields are created.

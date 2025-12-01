@@ -36,6 +36,7 @@ use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\FormDestinationProblem;
 use Glpi\Form\Form;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
+use Glpi\Tests\AbstractDestinationFieldTest;
 use Glpi\Tests\FormBuilder;
 use Glpi\Tests\FormTesterTrait;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
@@ -46,7 +47,6 @@ use PluginFieldsContainer;
 use PluginFieldsDestinationField;
 use PluginFieldsQuestionType;
 use Problem;
-use tests\units\Glpi\Form\Destination\CommonITILField\AbstractDestinationFieldTest;
 use Ticket;
 use User;
 

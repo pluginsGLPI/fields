@@ -30,9 +30,9 @@
 
 namespace GlpiPlugin\Field\Tests;
 
-use DbTestCase;
 use Glpi\Controller\Form\RendererController;
 use Glpi\Form\Form;
+use Glpi\Tests\DbTestCase;
 use Glpi\Tests\FormTesterTrait;
 use PluginFieldsContainer;
 use PluginFieldsField;
