@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Fix prevent failure when attempting to delete an actor
 - Fix form `path` for `tab` `container`
 
 ## [1.23.1] - 2025-11-20
