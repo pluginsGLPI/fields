@@ -1064,6 +1064,11 @@ class PluginFieldsField extends CommonDBChild
                         'change',
                         'input, select, textarea',
                         function(evt) {
+                            if (evt.target.hasAttribute('data-actor-type')) {
+                                // Do not handle actor type changes
+                                return;
+                            }
+
                             if (evt.target.name == "itilcategories_id" && {$items_id} == 0) {
                                 // Do not refresh tab container when form is reloaded
                                 // to prevent issues diues to duplicated calls (when object is new)
