@@ -327,6 +327,8 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     {
         $field_container  = new PluginFieldsContainer();
         $available_blocks = [];
+
+        $entity_restrict = isCommandLine() ? [] : getEntitiesRestrictCriteria(PluginFieldsContainer::getTable(), '', '', true);
         $result           = $field_container->find([
             'is_active' => 1,
             'type'      => 'dom',
@@ -335,7 +337,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 ['itemtypes' => ['LIKE', '%\"Change\"%']],
                 ['itemtypes' => ['LIKE', '%\"Problem\"%']],
             ],
-        ] + getEntitiesRestrictCriteria(PluginFieldsContainer::getTable(), '', '', true), 'name');
+        ] + $entity_restrict, 'name');
         foreach ($result as $id => $data) {
             $available_blocks[$id] = $data['label'];
         }
