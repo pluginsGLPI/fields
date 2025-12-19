@@ -26,6 +26,27 @@
 -- -------------------------------------------------------------------------
 --
 
+DROP TABLE IF EXISTS `glpi_plugin_formcreator_formanswers`;
+CREATE TABLE IF NOT EXISTS `glpi_plugin_formcreator_formanswers` (
+  `id`                          int unsigned NOT NULL AUTO_INCREMENT,
+  `name`                        varchar(255) NOT NULL DEFAULT '',
+  `entities_id`                 int unsigned NOT NULL DEFAULT '0',
+  `is_recursive`                tinyint(1)   NOT NULL DEFAULT '0',
+  `plugin_formcreator_forms_id` int unsigned NOT NULL DEFAULT '0',
+  `requester_id`                int unsigned NOT NULL DEFAULT '0',
+  `users_id_validator`          int unsigned NOT NULL DEFAULT '0' COMMENT 'User in charge of validation',
+  `groups_id_validator`         int unsigned NOT NULL DEFAULT '0' COMMENT 'Group in charge of validation',
+  `request_date`                timestamp    NULL,
+  `status`                      int(11)      NOT NULL DEFAULT '101',
+  `comment`                     mediumtext,
+  PRIMARY KEY (`id`),
+  INDEX `plugin_formcreator_forms_id` (`plugin_formcreator_forms_id`),
+  INDEX `entities_id_is_recursive` (`entities_id`, `is_recursive`),
+  INDEX `requester_id` (`requester_id`),
+  INDEX `users_id_validator` (`users_id_validator`),
+  INDEX `groups_id_validator` (`groups_id_validator`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
 DROP TABLE IF EXISTS `glpi_plugin_formcreator_categories`;
 CREATE TABLE `glpi_plugin_formcreator_categories` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
