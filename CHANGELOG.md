@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+
+### Added
+
+- Add compatibility with GLPI `CustomAsset`
+
+
 ## [1.23.2] - 2025-12-22
 
 - Fix prevent failure when attempting to delete an actor
