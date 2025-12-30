@@ -353,7 +353,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     /** @var DBmysql $DB */
     global $DB;
 
-    $searchopt    = &Search::getOptions($itemtype);
+    $searchopt    = Search::getOptions($itemtype);
     $table        = $searchopt[$ID]['table'];
     $field        = $searchopt[$ID]['field'];
     $pfields_type = $searchopt[$ID]['pfields_type'] ?? '';

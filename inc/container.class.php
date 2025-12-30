@@ -2013,7 +2013,11 @@ HTML;
         // > To search for \, specify it as \\\\; this is because the backslashes are stripped
         // > once by the parser and again when the pattern match is made,
         // > leaving a single backslash to be matched against.
-        $search_string = str_replace('\\', '\\\\', $search_string);
+
+        // But do not escape backslashes for CustomAsset, as they are alrady escaped
+        if (!str_contains($search_string, 'CustomAsset')) {
+            $search_string = str_replace('\\', '\\\\', $search_string);
+        }
 
         $request = [
             'SELECT' => [
