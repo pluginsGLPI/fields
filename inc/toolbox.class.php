@@ -233,7 +233,7 @@ class PluginFieldsToolbox
         ];
 
         foreach ($CFG_GLPI['asset_types'] as $asset_type) {
-            if (str_starts_with($asset_type, "Glpi\CustomAsset")) {
+            if (str_starts_with((string) $asset_type, "Glpi\CustomAsset")) {
                 $assets_itemtypes[] = $asset_type;
             }
         }
