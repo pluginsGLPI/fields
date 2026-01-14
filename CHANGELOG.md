@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fix the value of `id_search_option` in the log table when updating a dropdown field
+
 ## [1.21.25] - 2025-11-20
 
 ### Fixed
