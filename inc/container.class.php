@@ -213,6 +213,11 @@ class PluginFieldsContainer extends CommonDBTM
                     self::generateTemplate($container);
                     foreach (json_decode((string) $container['itemtypes']) as $itemtype) {
                         $classname = self::getClassname($itemtype, $container["name"]);
+                        // prevent usage of plugin class if not loaded
+                        if (!class_exists($classname)) {
+                            continue;
+                        }
+
                         $old_table = $classname::getTable();
                         // Rename genericobject container table
                         if (
@@ -741,8 +746,10 @@ class PluginFieldsContainer extends CommonDBTM
 
         foreach (PluginFieldsToolbox::decodeJSONItemtypes($fields['itemtypes']) as $itemtype) {
             //install table for receive field
-            $classname = self::getClassname($itemtype, $fields['name']);
-            $classname::install();
+            if (class_exists($itemtype)) {
+                $classname = self::getClassname($itemtype, $fields['name']);
+                $classname::install();
+            }
         }
 
         return null;
@@ -754,20 +761,30 @@ class PluginFieldsContainer extends CommonDBTM
             ? PluginFieldsToolbox::decodeJSONItemtypes($fields['itemtypes'], true)
             : [];
         foreach ($itemtypes as $itemtype) {
-            // prevent usage of plugin class if not loaded
-            if (!class_exists($itemtype)) {
-                continue;
-            }
 
             $sysname   = self::getSystemName($itemtype, $fields['name']);
             $classname = self::getClassname($itemtype, $fields['name']);
+            $class_filename = $sysname . '.class.php';
+            $injection_filename = $sysname . 'injection.class.php';
+
+            // prevent usage of plugin class if not loaded
+            if (!class_exists($itemtype)) {
+                //remove file
+                if (file_exists(PLUGINFIELDS_CLASS_PATH . ('/' . $class_filename))) {
+                    unlink(PLUGINFIELDS_CLASS_PATH . ('/' . $class_filename));
+                }
+
+                if (file_exists(PLUGINFIELDS_CLASS_PATH . ('/' . $injection_filename))) {
+                    unlink(PLUGINFIELDS_CLASS_PATH . ('/' . $injection_filename));
+                }
+                continue;
+            }
 
             $template_class = file_get_contents(PLUGINFIELDS_DIR . '/templates/container.class.tpl');
             $template_class = str_replace('%%CLASSNAME%%', $classname, $template_class);
             $template_class = str_replace('%%ITEMTYPE%%', $itemtype, $template_class);
             $template_class = str_replace('%%CONTAINER%%', $fields['id'], $template_class);
             $template_class = str_replace('%%ITEMTYPE_RIGHT%%', $itemtype::$rightname, $template_class);
-            $class_filename = $sysname . '.class.php';
             if (file_put_contents(PLUGINFIELDS_CLASS_PATH . ('/' . $class_filename), $template_class) === false) {
                 Toolbox::logDebug('Error : class file creation - ' . $class_filename);
 
@@ -780,9 +797,8 @@ class PluginFieldsContainer extends CommonDBTM
             $template_class = str_replace('%%ITEMTYPE%%', $itemtype, $template_class);
             $template_class = str_replace('%%CONTAINER_ID%%', $fields['id'], $template_class);
             $template_class = str_replace('%%CONTAINER_NAME%%', $fields['label'], $template_class);
-            $class_filename = $sysname . 'injection.class.php';
-            if (file_put_contents(PLUGINFIELDS_CLASS_PATH . ('/' . $class_filename), $template_class) === false) {
-                Toolbox::logDebug('Error : datainjection class file creation - ' . $class_filename);
+            if (file_put_contents(PLUGINFIELDS_CLASS_PATH . ('/' . $injection_filename), $template_class) === false) {
+                Toolbox::logDebug('Error : datainjection class file creation - ' . $injection_filename);
 
                 return false;
             }
