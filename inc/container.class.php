@@ -777,6 +777,7 @@ class PluginFieldsContainer extends CommonDBTM
                 if (file_exists(PLUGINFIELDS_CLASS_PATH . ('/' . $injection_filename))) {
                     unlink(PLUGINFIELDS_CLASS_PATH . ('/' . $injection_filename));
                 }
+
                 continue;
             }
 
