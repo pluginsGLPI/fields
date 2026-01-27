@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-11 01:13+0000\n"
+"POT-Creation-Date: 2026-01-15 01:14+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: hamkms, 2024\n"
 "Language-Team: Russian (Russia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ru_RU/)\n"
@@ -95,7 +95,7 @@ msgstr "Необходимо указать тип элемента, вариа�
 msgid "Fix fields names"
 msgstr "Исправить названия полей"
 
-#: inc/toolbox.class.php:325
+#: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Составные элементы"
 

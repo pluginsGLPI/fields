@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-11 01:13+0000\n"
+"POT-Creation-Date: 2026-01-15 01:14+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Shawn Long <webaccounts@kkg.org>, 2016-2017,2019,2023-2025\n"
 "Language-Team: English (United States) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/en_US/)\n"
@@ -89,7 +89,7 @@ msgstr "You must specify an item type, search option and condition."
 msgid "Fix fields names"
 msgstr "Fix fields names"
 
-#: inc/toolbox.class.php:325
+#: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Component Items"
 

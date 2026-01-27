@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Carlos Moreno Rodríguez <carlosm.rodriguez@prodigy.net.mx>, 2022-2023
+# Edwin Elias Alvarez <sistemas@cyalimentos.com>, 2026
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-11 01:13+0000\n"
+"POT-Creation-Date: 2026-01-27 01:21+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Carlos Moreno Rodríguez <carlosm.rodriguez@prodigy.net.mx>, 2022-2023\n"
+"Last-Translator: Edwin Elias Alvarez <sistemas@cyalimentos.com>, 2026\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +58,7 @@ msgstr[2] "Condiciones para ocultar bloque"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Vincular campos adicionales al destino"
 
 #: setup.php:238 inc/destinationfield.class.php:50 inc/menu.class.php:37
 #: front/container.form.php:74 front/container.php:34
@@ -88,7 +89,7 @@ msgstr "Debes especificar un tipo de artículo, una opción de búsqueda y una c
 msgid "Fix fields names"
 msgstr "Corregir los nombres de los campos"
 
-#: inc/toolbox.class.php:325
+#: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Elementos componentes"
 
@@ -249,12 +250,12 @@ msgstr "El nombre del campo es demasiado largo para la base de datos (los dígit
 
 #: inc/field.class.php:282
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+msgstr "No podés agregar el mismo campo 'menú desplegable' en el mismo bloque"
 
 #: inc/field.class.php:369
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "El campo \"%s\" no puede ser eliminado porque está siendo usado en una pregunta del formulario"
 
 #: inc/field.class.php:566
 msgid "Fields"
