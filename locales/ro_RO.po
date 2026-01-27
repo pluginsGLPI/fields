@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-11 01:13+0000\n"
+"POT-Creation-Date: 2026-01-15 01:14+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -90,7 +90,7 @@ msgstr "Trebuie să specificați un tip de articol, o opțiune de căutare și o
 msgid "Fix fields names"
 msgstr "Remediați numele câmpurilor"
 
-#: inc/toolbox.class.php:325
+#: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Elemente componente"
 
