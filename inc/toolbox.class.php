@@ -50,7 +50,7 @@ class PluginFieldsToolbox
         $name = preg_replace('/[^\da-z]/i', '', $name);
 
         // 3. if empty, uses a random number
-        if (strlen((string) $name) == 0) {
+        if ((string) (string) $name === '') {
             $name = random_int(0, mt_getrandmax());
         }
 

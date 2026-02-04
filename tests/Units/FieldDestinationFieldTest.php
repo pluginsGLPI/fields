@@ -293,7 +293,6 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             $itil_object = array_reduce(
                 $created_items,
                 fn(?CommonITILObject $carry, CommonITILObject $item) => $carry ?? ($item instanceof $itil_class ? $item : null),
-                null,
             );
             $this->assertNotNull($itil_object, sprintf('No created item of type %s found.', $itil_class));
 
