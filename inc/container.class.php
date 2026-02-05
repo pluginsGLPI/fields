@@ -210,19 +210,44 @@ class PluginFieldsContainer extends CommonDBTM
 
                 $container_class = new self();
                 foreach ($result as $container) {
-                    self::generateTemplate($container);
                     foreach (json_decode((string) $container['itemtypes']) as $itemtype) {
-                        $classname = self::getClassname($itemtype, $container["name"]);
-                        $old_table = $classname::getTable();
-                        // Rename genericobject container table
-                        if (
-                            $DB->tableExists($old_table)
-                            && isset($migration_genericobject_itemtype[$itemtype])
-                            && str_contains($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'])
-                        ) {
-                            $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . strtolower($migration_genericobject_itemtype[$itemtype]['name']), $old_table);
-                            $migration->renameTable($old_table, $new_table);
+                        if (!isset($migration_genericobject_itemtype[$itemtype])) {
+                            continue;
                         }
+
+                        // Use original container name for old table lookup
+                        $classname = self::getClassname($itemtype, $container['name']);
+                        $old_table = $classname::getTable();
+
+                        // Skip table rename if old table doesn't exist (already migrated)
+                        if (
+                            !$DB->tableExists($old_table)
+                            || !str_contains($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'])
+                        ) {
+                            continue;
+                        }
+
+                        // Use abbreviated prefix 'gca' (GLPI CustomAsset) instead of 'glpicustomasset'
+                        // to avoid exceeding MySQL's 64 character table name limit
+                        // This prevents name collisions that would occur if container names were truncated
+                        $new_table = str_replace(
+                            'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'],
+                            'glpi_plugin_fields_gca' . strtolower($migration_genericobject_itemtype[$itemtype]['name']),
+                            $old_table,
+                        );
+
+                        if (strlen($new_table) > 64) {
+                            throw new RuntimeException(
+                                sprintf(
+                                    'Cannot migrate GenericObject container "%s": resulting table name "%s" (%d characters) would exceed MySQL 64 character limit. Please contact support.',
+                                    $container['label'],
+                                    $new_table,
+                                    strlen($new_table),
+                                ),
+                            );
+                        }
+
+                        $migration->renameTable($old_table, $new_table);
                     }
 
                     // Update old genericobject itemtypes in container
@@ -234,6 +259,8 @@ class PluginFieldsContainer extends CommonDBTM
                             'itemtypes'  => $itemtypes,
                         ],
                     );
+                    // Note: Template regeneration is handled by installUserData()
+                    // which runs after all base migrations are complete
                 }
             } else {
                 throw new RuntimeException(
@@ -2263,7 +2290,15 @@ HTML;
      */
     protected static function getSystemName(string $itemtype, string $container_name): string
     {
-        return strtolower(str_replace('\\', '', $itemtype) . preg_replace('/s$/', '', $container_name));
+        $itemtype_cleaned = str_replace('\\', '', $itemtype);
+
+        // Use abbreviated prefix 'gca' for GLPI CustomAssets to avoid long table names
+        // This matches the naming convention used during GenericObject migration
+        if (str_starts_with($itemtype, 'Glpi\\CustomAsset\\')) {
+            $itemtype_cleaned = str_replace('GlpiCustomAsset', 'Gca', $itemtype_cleaned);
+        }
+
+        return strtolower($itemtype_cleaned . preg_replace('/s$/', '', $container_name));
     }
 
     public static function getIcon()
