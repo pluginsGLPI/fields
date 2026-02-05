@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Prevent MySQL table name overflow during GenericObject to CustomAsset migration
+
 ### Added
 
 - Add compatibility with GLPI `CustomAsset`
