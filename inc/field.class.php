@@ -1278,7 +1278,6 @@ JAVASCRIPT,
                 // - either from a previous input (it will be an array).
                 //
                 // -> Decode it only if it is not already an array.
-                $value = json_decode((string) $value);
                 $decoded = json_decode((string) $value, true);
                 $value = is_array($decoded) ? $decoded : [];
             }
