@@ -1370,9 +1370,7 @@ HTML;
 
                 } else {
                     $value = $data[$field_name];
-                    if (!is_array($value)) {
-                        $value = ($value === '' || $value === null) ? [] : [$value];
-                    }
+                    $value = is_array($value) ? $value : [];
                     $data[$field_name] = json_encode($value);
                 }
             } elseif (array_key_exists('_' . $field_name . '_defined', $data)) {
