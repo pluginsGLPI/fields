@@ -748,7 +748,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function generateTemplate($fields)
     {
-        $itemtypes = strlen((string) $fields['itemtypes']) > 0
+        $itemtypes = (string) $fields['itemtypes'] !== ''
             ? PluginFieldsToolbox::decodeJSONItemtypes($fields['itemtypes'], true)
             : [];
         foreach ($itemtypes as $itemtype) {
@@ -1173,7 +1173,7 @@ HTML;
             if (!in_array($item['entities_id'], $_SESSION['glpiactiveentities'])) {
                 if ($item['is_recursive'] == 1) {
                     $entities = getSonsOf('glpi_entities', $item['entities_id']);
-                    if (count(array_intersect($entities, $_SESSION['glpiactiveentities'])) == 0) {
+                    if (array_intersect($entities, $_SESSION['glpiactiveentities']) === []) {
                         continue;
                     }
                 } else {
@@ -1259,7 +1259,7 @@ HTML;
                 // needs to check if entity of item is in hierachy of $tab_name
                 foreach ($container->find(['is_active' => 1, 'name' => $tab_name]) as $data) {
                     $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
-                    if (in_array($item::class, $dataitemtypes) != false) {
+                    if (in_array($item::class, $dataitemtypes)) {
                         $entities = [$data['entities_id']];
                         if ($data['is_recursive']) {
                             $entities = getSonsOf(getTableForItemType('Entity'), $data['entities_id']);
@@ -1292,7 +1292,7 @@ HTML;
         $container = new self();
         if ($container->getFromDB($tabnum)) {
             $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']);
-            if (in_array($item::class, $dataitemtypes) != false) {
+            if (in_array($item::class, $dataitemtypes)) {
                 return PluginFieldsField::showForTabContainer($container->fields['id'], $item);
             }
         }
@@ -1721,7 +1721,7 @@ HTML;
 
         foreach ($itemtypes as $data) {
             $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
-            if (in_array($itemtype, $dataitemtypes) != false) {
+            if (in_array($itemtype, $dataitemtypes)) {
                 $id = $data['id'];
             }
         }
@@ -1783,7 +1783,7 @@ HTML;
             //update data
             $container = new self();
             if (
-                count($data) == 0
+                count($data) === 0
                 || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
             ) {
                 $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
