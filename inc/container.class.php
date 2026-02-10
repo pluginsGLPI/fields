@@ -97,9 +97,7 @@ class PluginFieldsContainer extends CommonDBTM
                   PRIMARY KEY    (`id`),
                   KEY            `entities_id`  (`entities_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            if (!$DB->doQuery($query)) {
-                throw new RuntimeException('Error creating plugin_fields_containers table: ' . $DB->error());
-            }
+            $DB->doQuery($query);
         }
 
         // multiple itemtype for one container

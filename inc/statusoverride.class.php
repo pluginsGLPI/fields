@@ -70,9 +70,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
                   PRIMARY KEY                         (`id`),
                   KEY `plugin_fields_fields_id`       (`plugin_fields_fields_id`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            if (!$DB->doQuery($query)) {
-                throw new RuntimeException('Error creating plugin_fields_statusoverrides table: ' . $DB->error());
-            }
+            $DB->doQuery($query);
         }
 
         return true;

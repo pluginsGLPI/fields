@@ -94,9 +94,7 @@ class PluginFieldsField extends CommonDBChild
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            if (!$DB->doQuery($query)) {
-                throw new RuntimeException('Error creating plugin_fields_fields table: ' . $DB->error());
-            }
+            $DB->doQuery($query);
         }
 
         $migration->displayMessage('Updating ' . $table);
