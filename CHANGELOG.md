@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix migration error caused by unknown itemtype in containers
+- Fix empty default value in multiple dropdown fields
 
 ## [1.23.2] - 2025-12-22
 

@@ -1369,7 +1369,9 @@ HTML;
                     $data[$field_name] = json_encode(array_values(array_unique(array_merge($existing_values, $new_values))));
 
                 } else {
-                    $data[$field_name] = json_encode($data[$field_name]);
+                    $value = $data[$field_name];
+                    $value = is_array($value) ? $value : [];
+                    $data[$field_name] = json_encode($value);
                 }
             } elseif (array_key_exists('_' . $field_name . '_defined', $data)) {
                 $data[$field_name] = json_encode([]);
