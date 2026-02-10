@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Add compatibility with GLPI `CustomAsset`
 
+### Fixed
+
+- Fix migration error caused by unknown itemtype in containers
 
 ## [1.23.2] - 2025-12-22
 
