@@ -133,7 +133,7 @@ if ($type === 'glpi_item') {
                 $field->fields['default_value'] = '';
             }
 
-            $default_value = $multiple ? json_decode($field->fields['default_value']) : $field->fields['default_value'];
+            $default_value = $multiple ? json_decode((string) $field->fields['default_value']) : $field->fields['default_value'];
             Dropdown::show(
                 $itemtype,
                 [

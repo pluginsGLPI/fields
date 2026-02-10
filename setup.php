@@ -278,7 +278,7 @@ function plugin_fields_checkFiles()
     global $DB;
 
     // Clean all existing files
-    array_map('unlink', glob(PLUGINFIELDS_DOC_DIR . '/*/*'));
+    array_map(unlink(...), glob(PLUGINFIELDS_DOC_DIR . '/*/*'));
 
     // Regenerate dropdowns
     if ($DB->tableExists(PluginFieldsField::getTable())) {
@@ -320,7 +320,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         $container_obj = new PluginFieldsContainer();
         $containers    = $container_obj->find($where);
         foreach ($containers as $container) {
-            $itemtypes = (strlen((string) $container['itemtypes']) > 0)
+            $itemtypes = ((string) $container['itemtypes'] !== '')
                 ? PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes'], true)
                 : [];
 

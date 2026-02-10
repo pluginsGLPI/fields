@@ -94,9 +94,7 @@ class PluginFieldsField extends CommonDBChild
                   KEY `is_active`                     (`is_active`),
                   KEY `is_readonly`                   (`is_readonly`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            if (!$DB->doQuery($query)) {
-                throw new RuntimeException('Error creating plugin_fields_fields table: ' . $DB->error());
-            }
+            $DB->doQuery($query);
         }
 
         $migration->displayMessage('Updating ' . $table);
@@ -630,7 +628,7 @@ class PluginFieldsField extends CommonDBChild
            . sprintf("<a href='javascript:viewAddField%s%d();'>", $cID, $rand);
         echo __('Add a new field', 'fields') . '</a></div><br>';
 
-        if (count($iterator) == 0) {
+        if (count($iterator) === 0) {
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
             echo "<th class='b'>" . __('No field for this block', 'fields') . '</th></tr></table>';
         } else {
@@ -975,7 +973,7 @@ class PluginFieldsField extends CommonDBChild
         $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
         //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-        if (!in_array(strtolower((string) $item::getType()), array_map('strtolower', $itemtypes))) {
+        if (!in_array(strtolower((string) $item::getType()), array_map(strtolower(...), $itemtypes))) {
             return;
         }
 
