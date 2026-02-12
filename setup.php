@@ -110,6 +110,8 @@ function plugin_init_fields()
             = ['PluginFieldsInventory', 'updateInventory'];
         }
 
+        Plugin::load('genericobject', true);
+
         // complete rule engine
         $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];
         $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
