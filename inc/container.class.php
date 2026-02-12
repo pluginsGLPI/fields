@@ -682,6 +682,7 @@ class PluginFieldsContainer extends CommonDBTM
                 continue;
             }
 
+            $template_class = file_get_contents(PLUGINFIELDS_DIR . '/templates/container.class.tpl');
             $template_class = str_replace(
                 ['%%CLASSNAME%%', '%%ITEMTYPE%%', '%%CONTAINER%%', '%%ITEMTYPE_RIGHT%%'],
                 [
@@ -701,6 +702,7 @@ class PluginFieldsContainer extends CommonDBTM
             }
 
             // Generate Datainjection files
+            $template_class = file_get_contents(PLUGINFIELDS_DIR . '/templates/injection.class.tpl');
             if ($template_class === false) {
                 Toolbox::logInFile('php-errors', 'Error: unable to load injection.class.tpl template.');
                 return false;
