@@ -86,6 +86,8 @@ function plugin_init_fields()
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
+    Plugin::load('genericobject', true);
+
     if ((Session::getLoginUserID() || isCommandLine()) && Plugin::isPluginActive('fields')) {
         // Init hook about itemtype(s) for plugin fields
         if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
@@ -109,8 +111,6 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['fusioninventory_inventory']['fields']
             = ['PluginFieldsInventory', 'updateInventory'];
         }
-
-        Plugin::load('genericobject', true);
 
         // complete rule engine
         $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];

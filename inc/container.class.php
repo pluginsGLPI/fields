@@ -694,6 +694,9 @@ class PluginFieldsContainer extends CommonDBTM
                 $template_class,
             );
 
+            Toolbox::logDebug(str_replace('\'', '', var_export($itemtype, true)));
+            Toolbox::logDebug(var_export($itemtype, true));
+
             $class_filename = basename($sysname) . '.class.php';
             $filepath = rtrim(PLUGINFIELDS_CLASS_PATH, '/') . '/' . $class_filename;
             if (file_put_contents($filepath, $template_class) === false) {
