@@ -130,7 +130,7 @@ class PluginFieldsToolbox
             $new_name      = $field_obj->prepareName($field);
             if ($new_name > 64) {
                 // limit fields names to 64 chars (MySQL limit)
-                $new_name = substr($new_name, 0, 64);
+                $new_name = substr((string) $new_name, 0, 64);
             }
 
             while (
@@ -138,7 +138,7 @@ class PluginFieldsToolbox
                 && strlen(getTableForItemType(PluginFieldsDropdown::getClassname($new_name))) > 64
             ) {
                 // limit tables names to 64 chars (MySQL limit)
-                $new_name = substr($new_name, 0, -1);
+                $new_name = substr((string) $new_name, 0, -1);
             }
 
             $DB->update(
@@ -384,5 +384,10 @@ class PluginFieldsToolbox
         }
 
         return $jsonitemtype;
+    }
+
+    public static function sanitizeLabel(string $label): string
+    {
+        return preg_replace('/[^\p{L}\p{N}\s\-\_\.]/u', '', $label);
     }
 }

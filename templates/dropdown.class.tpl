@@ -24,13 +24,15 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
       $obj = new self();
       $table = $obj->getTable();
 
+      $plugin_fields_fieldname_dropdowns_id = 'plugin_fields_' . preg_replace('/[^a-zA-Z0-9_]/', '', %%FIELDNAME%%) . 'dropdowns_id';
+
       if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                                      INT            {$default_key_sign} NOT NULL auto_increment,
                   `name`                                    VARCHAR(255)   DEFAULT NULL,
                   `completename`                            TEXT           DEFAULT NULL,
                   `comment`                                 TEXT           DEFAULT NULL,
-                  `plugin_fields_%%FIELDNAME%%dropdowns_id` INT            {$default_key_sign} DEFAULT NULL,
+                  `{$plugin_fields_fieldname_dropdowns_id}` INT            {$default_key_sign} DEFAULT NULL,
                   `level`                                   INT            DEFAULT NULL,
                   `ancestors_cache`                         TEXT           DEFAULT NULL,
                   `sons_cache`                              TEXT           DEFAULT NULL,
@@ -39,8 +41,8 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
                   PRIMARY KEY                               (`id`),
                   KEY                                       `entities_id`  (`entities_id`),
                   KEY                                       `is_recursive` (`is_recursive`),
-                  KEY                                       `plugin_fields_%%FIELDNAME%%dropdowns_id`
-                                                            (`plugin_fields_%%FIELDNAME%%dropdowns_id`)
+                  KEY                                       `{$plugin_fields_fieldname_dropdowns_id}`
+                                                            (`{$plugin_fields_fieldname_dropdowns_id}`)
                ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->doQuery($query);
       }

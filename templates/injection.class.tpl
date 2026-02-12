@@ -5,7 +5,7 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     static $rightname = 'plugin_datainjection_model';
 
     /**
-     * Return the table used to stor this object
+     * Return the table used to store this object
      *
      * @see CommonDBTM::getTable()
      *
@@ -16,36 +16,40 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     }
 
     static function getTypeName($nb = 0) {
-        return %%ITEMTYPE%%::getTypeName() . " - %%CONTAINER_NAME%%";
+        $itemtype = %%ITEMTYPE%%;
+        $container_name = %%CONTAINER_NAME%%;
+        return $itemtype::getTypeName($nb) . " - " . $container_name;
     }
 
     /**
-     * Tells datainjection is the type is a primary type or not
+     * Tells datainjection if the type is a primary type or not
      *
-     * @return iboolean
+     * @return boolean
     **/
     function isPrimaryType() {
         return false;
     }
 
     /**
-     * Indicates to with other types it can be connected
+     * Indicates with which other types it can be connected
      *
      * @return an array of GLPI types
     **/
     function connectedTo() {
-        return array('%%ITEMTYPE%%');
+        return [%%ITEMTYPE%%];
     }
 
     /**
-     * Function which calls getSearchOptions and add more parameters specific to display
+     * Function which calls getSearchOptions and adds more parameters specific to display
      *
      * @param string $primary_type (default '')
      *
      * @return array of search options, as defined in each commondbtm object
     **/
     function getOptions($primary_type='') {
-        $searchoptions = PluginFieldsContainer::getAddSearchOptions('%%ITEMTYPE%%', %%CONTAINER_ID%%);
+        $container_id = (int) %%CONTAINER_ID%%;
+
+        $searchoptions = PluginFieldsContainer::getAddSearchOptions(%%ITEMTYPE%%, $container_id);
 
         foreach ($searchoptions as $id => $data) {
             $searchoptions[$id]['injectable'] = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
@@ -62,9 +66,9 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     }
 
     /**
-     * Standard method to add an object into glpi
+     * Standard method to add an object into GLPI
      *
-     * @param $values    array fields to add into glpi
+     * @param $values    array fields to add into GLPI
      * @param $options   array options used during creation
      *
      * @return array of IDs of newly created objects:
