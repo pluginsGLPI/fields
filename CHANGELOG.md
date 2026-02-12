@@ -5,10 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
+## [1.21.27] - 2026-02-12
 
 - Fix template generation error on update
-
 
 ## [1.21.26] - 2026-02-12
 
