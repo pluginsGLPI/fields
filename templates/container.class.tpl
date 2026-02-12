@@ -51,7 +51,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       * This block ensures that the 'entities_id' field is created and populated if it
       * associated item type requires entity assignment
       */
-      if (getItemForItemtype("%%ITEMTYPE%%")->isEntityAssign() && !$DB->fieldExists($table, 'entities_id')) {
+      if (getItemForItemtype(%%ITEMTYPE%%::class)->isEntityAssign() && !$DB->fieldExists($table, 'entities_id')) {
          $migration->addField($table, 'entities_id', 'fkey', ['after' => 'plugin_fields_containers_id']);
          $migration->addKey($table, 'entities_id');
          $migration->executeMigration();
@@ -107,7 +107,7 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
       * associated item type requires recursive assignment
       */
       if (
-         getItemForItemtype("%%ITEMTYPE%%")->maybeRecursive()
+         getItemForItemtype(%%ITEMTYPE%%::class)->maybeRecursive()
          && !$DB->fieldExists($table, 'is_recursive')
          && $DB->fieldExists($table, 'entities_id')) {
          $migration->addField($table, 'is_recursive', 'bool', ['after'  => 'entities_id']);

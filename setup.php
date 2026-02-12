@@ -86,6 +86,8 @@ function plugin_init_fields()
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
+    Plugin::load('genericobject', true);
+
     if ((Session::getLoginUserID() || isCommandLine()) && Plugin::isPluginActive('fields')) {
         // Init hook about itemtype(s) for plugin fields
         if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
