@@ -434,3 +434,20 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 
     return null;
 }
+
+function plugin_item_transfer_fields(array $options): void
+{
+    $itemtype = $options['type'] ?? null;
+    $container_ids = PluginFieldsContainer::findAllContainers($itemtype);
+
+    $container = new PluginFieldsContainer();
+    foreach ($container_ids as $id) {
+        $container->getFromDB($id);
+        $data = [
+            'plugin_fields_containers_id' => $id,
+            'items_id' => $options['newID'],
+            'entities_id' => $options['entities_id'],
+        ];
+        $container->updateFieldsValues($data, $itemtype, true);
+    }
+}

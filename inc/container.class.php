@@ -1793,6 +1793,38 @@ HTML;
         return $id;
     }
 
+    public static function findAllContainers($itemtype)
+    {
+        $condition = ['is_active' => 1];
+
+        $entity = $_SESSION['glpiactiveentities'] ?? 0;
+        $condition += getEntitiesRestrictCriteria('', '', $entity, true, true);
+
+        $container = new PluginFieldsContainer();
+        $itemtypes = $container->find($condition);
+
+        if (empty($itemtypes)) {
+            return false;
+        }
+
+        $ids = [];
+        foreach ($itemtypes as $data) {
+            $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
+            if (in_array($itemtype, $dataitemtypes)) {
+                $id = $data['id'];
+                //profiles restriction
+                if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $id > 0) {
+                    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $id);
+                    if ($right >= READ) {
+                        $ids[] = $id;
+                    }
+                }
+            }
+        }
+
+        return $ids;
+    }
+
     /**
      * Post item hook for add
      * Do store data in db
