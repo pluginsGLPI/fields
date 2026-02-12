@@ -130,14 +130,14 @@ class PluginFieldsToolbox
             $new_name      = $field_obj->prepareName($field);
             if ($new_name > 64) {
                 // limit fields names to 64 chars (MySQL limit)
-                $new_name = substr($new_name, 0, 64);
+                $new_name = substr((string) $new_name, 0, 64);
             }
             while (
                 'dropdown' === $field['type']
                 && strlen(getTableForItemType(PluginFieldsDropdown::getClassname($new_name))) > 64
             ) {
                 // limit tables names to 64 chars (MySQL limit)
-                $new_name = substr($new_name, 0, -1);
+                $new_name = substr((string) $new_name, 0, -1);
             }
             $DB->update(
                 PluginFieldsField::getTable(),
@@ -360,5 +360,21 @@ class PluginFieldsToolbox
         $all_itemtypes = array_filter($all_itemtypes);
 
         return $all_itemtypes;
+    }
+
+    public static function sanitizeLabel(string $label): string
+    {
+        return preg_replace('/[^\p{L}\p{N}\s\-\_\.]/u', '', $label);
+    }
+
+    public static function decodeJSONItemtypes(string $itemtypes, ?bool $associative = null)
+    {
+        $jsonitemtype = json_decode($itemtypes, $associative);
+        if ($jsonitemtype === null && json_last_error() !== JSON_ERROR_NONE) {
+            $fixed_json = str_replace('\\', '\\\\', $itemtypes);
+            $jsonitemtype = json_decode($fixed_json, $associative);
+        }
+
+        return $jsonitemtype;
     }
 }

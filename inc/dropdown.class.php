@@ -111,37 +111,31 @@ class PluginFieldsDropdown
             return false;
         }
 
+        $input['name'] = PluginFieldsToolbox::sanitizeLabel((string) $input['name']);
+        $input['id'] = (int) PluginFieldsToolbox::sanitizeLabel((string) $input['id']);
+        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) $input['label']);
+
         $classname = self::getClassname($input['name']);
 
         //create dropdown class file
         $template_class = str_replace(
-            '%%CLASSNAME%%',
-            $classname,
+            ['%%CLASSNAME%%', '%%FIELDNAME%%', '%%FIELDID%%', '%%LABEL%%'],
+            [
+                $classname,
+                var_export($input['name'], true),
+                var_export($input['id'], true),
+                var_export($input['label'], true),
+            ],
             $template_class,
         );
-        $template_class = str_replace(
-            '%%FIELDNAME%%',
-            $input['name'],
-            $template_class,
-        );
-        $template_class = str_replace(
-            '%%FIELDID%%',
-            $input['id'],
-            $template_class,
-        );
-        $template_class = str_replace(
-            '%%LABEL%%',
-            $input['label'],
-            $template_class,
-        );
-        $class_filename = $input['name'] . 'dropdown.class.php';
+        $class_filename = basename((string) $input['name']) . 'dropdown.class.php';
         if (
             file_put_contents(
                 PLUGINFIELDS_CLASS_PATH . "/$class_filename",
                 $template_class,
             ) === false
         ) {
-            Toolbox::logDebug("Error : dropdown class file creation - $class_filename");
+            Toolbox::logInFile('php-errors', 'Error : dropdown class file creation - ' . $class_filename);
 
             return false;
         }
@@ -195,7 +189,7 @@ class PluginFieldsDropdown
 
         //call install method (create table)
         if ($classname::install() === false) {
-            Toolbox::logDebug("Error : calling dropdown $classname installation");
+            Toolbox::logInFile('php-errors', sprintf('Error : calling dropdown %s installation', $classname));
 
             return false;
         }
@@ -213,7 +207,7 @@ class PluginFieldsDropdown
 
         //call uninstall method in dropdown class
         if ($classname::uninstall() === false) {
-            Toolbox::logDebug("Error : calling dropdown $classname uninstallation");
+            Toolbox::logInFile('php-errors', sprintf('Error : calling dropdown %s uninstallation', $classname));
 
             return false;
         }
@@ -221,7 +215,7 @@ class PluginFieldsDropdown
         //remove class file for this dropdown
         if (file_exists($class_filename)) {
             if (unlink($class_filename) === false) {
-                Toolbox::logDebug('Error : dropdown class file creation - ' . $dropdown_name . 'dropdown.class.php');
+                Toolbox::logInFile('php-errors', 'Error : dropdown class file creation - ' . $dropdown_name . 'dropdown.class.php');
 
                 return false;
             }
@@ -231,7 +225,7 @@ class PluginFieldsDropdown
         $front_filename = PLUGINFIELDS_FRONT_PATH . '/' . $dropdown_name . 'dropdown.php';
         if (file_exists($front_filename)) {
             if (unlink($front_filename) === false) {
-                Toolbox::logDebug('Error : dropdown front file removing - ' . $dropdown_name . 'dropdown.php');
+                Toolbox::logInFile('php-errors', 'Error : dropdown front file removing - ' . $dropdown_name . 'dropdown.php');
 
                 return false;
             }
@@ -241,7 +235,7 @@ class PluginFieldsDropdown
         $form_filename = PLUGINFIELDS_FRONT_PATH . '/' . $dropdown_name . 'dropdown.form.php';
         if (file_exists($form_filename)) {
             if (unlink($form_filename) === false) {
-                Toolbox::logDebug('Error : dropdown form file removing - ' . $dropdown_name . 'dropdown.form.php');
+                Toolbox::logInFile('php-errors', 'Error : dropdown form file removing - ' . $dropdown_name . 'dropdown.form.php');
 
                 return false;
             }

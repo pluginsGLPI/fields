@@ -2,7 +2,7 @@
 
 class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
 {
-   static $rightname = '%%ITEMTYPE_RIGHT%%';
+   static $rightname = %%ITEMTYPE_RIGHT%%;
 
    static function install() {
       global $DB;
@@ -20,8 +20,8 @@ class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                   `id`                               INT          {$default_key_sign} NOT NULL auto_increment,
                   `items_id`                         INT          {$default_key_sign} NOT NULL,
-                  `itemtype`                         VARCHAR(255) DEFAULT '%%ITEMTYPE%%',
-                  `plugin_fields_containers_id`      INT          {$default_key_sign} NOT NULL DEFAULT '%%CONTAINER%%',
+                  `itemtype`                         VARCHAR(255) DEFAULT " . var_export(%%ITEMTYPE%%, true) . ",
+                  `plugin_fields_containers_id`      INT          {$default_key_sign} NOT NULL DEFAULT " . var_export(%%CONTAINER%%, true) . ",
                   PRIMARY KEY                        (`id`),
                   UNIQUE INDEX `itemtype_item_container`
                      (`itemtype`, `items_id`, `plugin_fields_containers_id`)

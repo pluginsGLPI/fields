@@ -654,40 +654,73 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function generateTemplate($fields)
     {
-        $itemtypes = strlen($fields['itemtypes']) > 0
-            ? json_decode($fields['itemtypes'], true)
-            : [];
+        if (!isset($fields['itemtypes'], $fields['name'], $fields['id'], $fields['label'])) {
+            return false;
+        }
+
+        $itemtypes = [];
+        if (strlen((string) $fields['itemtypes']) > 0) {
+            $decoded = PluginFieldsToolbox::decodeJSONItemtypes($fields['itemtypes'], true);
+            if (is_array($decoded)) {
+                $itemtypes = $decoded;
+            }
+        }
+
+        $fields['name'] = PluginFieldsToolbox::sanitizeLabel((string) $fields['name']);
+        $fields['id'] = (int) PluginFieldsToolbox::sanitizeLabel((string) $fields['id']);
+        $fields['label'] = PluginFieldsToolbox::sanitizeLabel((string) $fields['label']);
         foreach ($itemtypes as $itemtype) {
             // prevent usage of plugin class if not loaded
             if (!class_exists($itemtype)) {
                 continue;
             }
 
-            $sysname   = self::getSystemName($itemtype, $fields['name']);
+            $sysname = self::getSystemName($itemtype, $fields['name']);
             $classname = self::getClassname($itemtype, $fields['name']);
 
-            $template_class = file_get_contents(PLUGINFIELDS_DIR . '/templates/container.class.tpl');
-            $template_class = str_replace('%%CLASSNAME%%', $classname, $template_class);
-            $template_class = str_replace('%%ITEMTYPE%%', $itemtype, $template_class);
-            $template_class = str_replace('%%CONTAINER%%', $fields['id'], $template_class);
-            $template_class = str_replace('%%ITEMTYPE_RIGHT%%', $itemtype::$rightname, $template_class);
-            $class_filename = $sysname . '.class.php';
-            if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename", $template_class) === false) {
-                Toolbox::logDebug("Error : class file creation - $class_filename");
+            if ($sysname === '' || $sysname === '0' || ($classname === '' || $classname === '0')) {
+                continue;
+            }
 
+            $template_class = str_replace(
+                ['%%CLASSNAME%%', '%%ITEMTYPE%%', '%%CONTAINER%%', '%%ITEMTYPE_RIGHT%%'],
+                [
+                    $classname,
+                    var_export($itemtype, true),
+                    var_export($fields['id'], true),
+                    var_export($itemtype::$rightname, true),
+                ],
+                $template_class,
+            );
+
+            $class_filename = basename($sysname) . '.class.php';
+            $filepath = rtrim(PLUGINFIELDS_CLASS_PATH, '/') . '/' . $class_filename;
+            if (file_put_contents($filepath, $template_class) === false) {
+                Toolbox::logInFile('php-errors', 'Error : class file creation - ' . $class_filename);
                 return false;
             }
 
             // Generate Datainjection files
-            $template_class = file_get_contents(PLUGINFIELDS_DIR . '/templates/injection.class.tpl');
-            $template_class = str_replace('%%CLASSNAME%%', $classname, $template_class);
-            $template_class = str_replace('%%ITEMTYPE%%', $itemtype, $template_class);
-            $template_class = str_replace('%%CONTAINER_ID%%', $fields['id'], $template_class);
-            $template_class = str_replace('%%CONTAINER_NAME%%', $fields['label'], $template_class);
-            $class_filename = $sysname . 'injection.class.php';
-            if (file_put_contents(PLUGINFIELDS_CLASS_PATH . "/$class_filename", $template_class) === false) {
-                Toolbox::logDebug("Error : datainjection class file creation - $class_filename");
+            if ($template_class === false) {
+                Toolbox::logInFile('php-errors', 'Error: unable to load injection.class.tpl template.');
+                return false;
+            }
 
+            $template_class = str_replace(
+                ['%%CLASSNAME%%', '%%ITEMTYPE%%', '%%CONTAINER_ID%%', '%%CONTAINER_NAME%%'],
+                [
+                    $classname,
+                    var_export($itemtype, true),
+                    var_export($fields['id'], true),
+                    var_export($fields['label'], true),
+                ],
+                $template_class,
+            );
+
+            $class_filename = basename($sysname) . 'injection.class.php';
+            $filepath = rtrim(PLUGINFIELDS_CLASS_PATH, '/') . '/' . $class_filename;
+            if (file_put_contents($filepath, $template_class) === false) {
+                Toolbox::logInFile('php-errors', 'Error: datainjection class file creation - ' . $class_filename);
                 return false;
             }
         }
