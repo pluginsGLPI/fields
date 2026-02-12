@@ -687,7 +687,7 @@ class PluginFieldsContainer extends CommonDBTM
                 ['%%CLASSNAME%%', '%%ITEMTYPE%%', '%%CONTAINER%%', '%%ITEMTYPE_RIGHT%%'],
                 [
                     $classname,
-                    var_export($itemtype, true),
+                    str_replace('\'','', var_export($itemtype, true)),
                     var_export($fields['id'], true),
                     var_export($itemtype::$rightname, true),
                 ],
@@ -712,7 +712,7 @@ class PluginFieldsContainer extends CommonDBTM
                 ['%%CLASSNAME%%', '%%ITEMTYPE%%', '%%CONTAINER_ID%%', '%%CONTAINER_NAME%%'],
                 [
                     $classname,
-                    var_export($itemtype, true),
+                    str_replace('\'','', var_export($itemtype, true)),
                     var_export($fields['id'], true),
                     var_export($fields['label'], true),
                 ],
