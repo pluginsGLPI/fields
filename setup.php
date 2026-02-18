@@ -76,6 +76,7 @@ use Glpi\Form\Destination\FormDestinationProblem;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Migration\TypesConversionMapper;
 use Glpi\Form\QuestionType\QuestionTypesManager;
+use Glpi\Plugin\Hooks;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -205,6 +206,8 @@ function plugin_init_fields()
             'PluginFieldsField',
             'showForTab',
         ];
+
+        $PLUGIN_HOOKS[Hooks::ITEM_TRANSFER]['fields'] = 'plugin_item_transfer_fields';
 
         // Register fields question type
         plugin_fields_register_plugin_types();
