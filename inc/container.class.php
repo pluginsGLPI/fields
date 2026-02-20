@@ -2217,8 +2217,10 @@ HTML;
                     $opt[$i]['datatype']   = 'specific';
                     $opt[$i]['searchtype'] = ['equals', 'notequals'];
                 } else {
-                    $opt[$i]['table']    = CommonDBTM::getTable($dropdown_matches['class']);
-                    $opt[$i]['field']    = 'name';
+                    $opt[$i]['table']    = getTableForItemType($dropdown_matches['class']);
+                    $opt[$i]['field']    = is_a($dropdown_matches['class'], CommonTreeDropdown::class, true)
+                        ? 'completename'
+                        : 'name';
                     $opt[$i]['right']    = 'all';
                     $opt[$i]['datatype'] = 'dropdown';
 
