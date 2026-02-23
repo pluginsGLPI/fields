@@ -211,7 +211,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
     $itemtypes = PluginFieldsContainer::getEntries('all');
 
     if (in_array($options['itemtype'], $itemtypes)) {
-        if ($options['options']['is_multiple']) {
+        if (isset($options['options']['is_multiple']) && $options['options']['is_multiple']) {
             Dropdown::showFromArray(
                 'multiple_dropdown_action',
                 [

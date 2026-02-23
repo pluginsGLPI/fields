@@ -2221,6 +2221,7 @@ HTML;
                     $opt[$i]['field']    = is_a($dropdown_matches['class'], CommonTreeDropdown::class, true)
                         ? 'completename'
                         : 'name';
+                    $opt[$i]['itemtype'] = $dropdown_matches['class'];
                     $opt[$i]['right']    = 'all';
                     $opt[$i]['datatype'] = 'dropdown';
 
