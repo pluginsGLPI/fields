@@ -445,6 +445,7 @@ function plugin_item_transfer_fields(array $options): void
         $container->getFromDB($id);
         $data = [
             'plugin_fields_containers_id' => $id,
+            'itemtype' => $itemtype,
             'items_id' => $options['newID'],
             'entities_id' => $options['entities_id'],
         ];
