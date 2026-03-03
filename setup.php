@@ -100,7 +100,42 @@ function plugin_init_fields()
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
-    if ((Session::getLoginUserID() || isCommandLine()) && Plugin::isPluginActive('fields')) {
+    if (!Plugin::isPluginActive('fields')) {
+        return;
+    }
+
+    // Register CRUD hooks for all itemtypes that have Fields containers.
+    // These hooks must be registered regardless of session state so that
+    // REST API and CLI contexts also trigger the plugin data persistence.
+    // Permission checks are enforced inside the hook callbacks themselves.
+    $itemtypes = PluginFieldsContainer::getUsedItemtypes();
+    if ($itemtypes !== false) {
+        foreach ($itemtypes as $itemtype) {
+            $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = [
+                'PluginFieldsContainer',
+                'preItemUpdate',
+            ];
+            $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype] = [
+                'PluginFieldsContainer',
+                'preItem',
+            ];
+            $PLUGIN_HOOKS['item_add']['fields'][$itemtype] = [
+                'PluginFieldsContainer',
+                'postItemAdd',
+            ];
+            $PLUGIN_HOOKS['pre_item_purge']['fields'][$itemtype] = [
+                'PluginFieldsContainer',
+                'preItemPurge',
+            ];
+        }
+    }
+
+    $PLUGIN_HOOKS[Hooks::ITEM_TRANSFER]['fields'] = 'plugin_item_transfer_fields';
+
+    // Register fields question type
+    plugin_fields_register_plugin_types();
+
+    if (Session::getLoginUserID() || isCommandLine()) {
         // Init hook about itemtype(s) for plugin fields
         if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
             $PLUGIN_HOOKS['plugin_fields'] = [];
@@ -178,39 +213,11 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = 'plugin_datainjection_populate_fields';
         }
 
-        //Retrieve dom container
-        $itemtypes = PluginFieldsContainer::getUsedItemtypes();
-        if ($itemtypes !== false) {
-            foreach ($itemtypes as $itemtype) {
-                $PLUGIN_HOOKS['pre_item_update']['fields'][$itemtype] = [
-                    'PluginFieldsContainer',
-                    'preItemUpdate',
-                ];
-                $PLUGIN_HOOKS['pre_item_add']['fields'][$itemtype] = [
-                    'PluginFieldsContainer',
-                    'preItem',
-                ];
-                $PLUGIN_HOOKS['item_add']['fields'][$itemtype] = [
-                    'PluginFieldsContainer',
-                    'postItemAdd',
-                ];
-                $PLUGIN_HOOKS['pre_item_purge'] ['fields'][$itemtype] = [
-                    'PluginFieldsContainer',
-                    'preItemPurge',
-                ];
-            }
-        }
-
         // Display fields in any existing tab
         $PLUGIN_HOOKS['post_item_form']['fields'] = [
             'PluginFieldsField',
             'showForTab',
         ];
-
-        $PLUGIN_HOOKS[Hooks::ITEM_TRANSFER]['fields'] = 'plugin_item_transfer_fields';
-
-        // Register fields question type
-        plugin_fields_register_plugin_types();
     }
 }
 
@@ -223,7 +230,7 @@ function plugin_init_fields()
  */
 function plugin_fields_script_endswith($scriptname)
 {
-    return str_contains((string) $_SERVER['REQUEST_URI'], $scriptname);
+    return str_contains((string) ($_SERVER['REQUEST_URI'] ?? ''), $scriptname);
 }
 
 

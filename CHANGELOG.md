@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix CRUD hooks to support the REST API regardless of session state
 - Fix SQL errors with custom dropdown fields
 - Fix wrong values displayed in massive actions when a form contains multiple custom dropdowns
 - Fix field entity during parent asset entity transfer
