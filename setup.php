@@ -230,7 +230,7 @@ function plugin_init_fields()
  */
 function plugin_fields_script_endswith($scriptname)
 {
-    return str_contains((string) $_SERVER['REQUEST_URI'] ?? '', $scriptname);
+    return str_contains((string) ($_SERVER['REQUEST_URI'] ?? ''), $scriptname);
 }
 
 
