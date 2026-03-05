@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix the value of `id_search_option` in the log table when updating a dropdown field
+- Fix `CVE-2026-23489`
 
 ## [1.21.25] - 2025-11-20
 
