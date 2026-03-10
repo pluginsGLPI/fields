@@ -82,6 +82,7 @@
     {% elseif type == 'richtext' %}
         {{ macros.textareaField(name, value, label, field_options|merge({
             'enable_richtext': true,
+            'disabled': readonly,
             'field_class': 'col-12',
             'label_class': '',
             'input_class': '',
