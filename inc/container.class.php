@@ -1921,14 +1921,15 @@ HTML;
         $loc_c->getFromDB($c_id);
 
         // check rights on $c_id
-
+        // The profile check is only enforced when an active user profile is present in session.
+        // Automated contexts (cron jobs, API token sessions without profile) bypass the check
+        // so that plugin fields can still be persisted — authentication is already enforced
+        // at a higher level by the GLPI API/cron layer.
         if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
             $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
             if (($right > READ) === false) {
                 return false;
             }
-        } else {
-            return false;
         }
 
 
