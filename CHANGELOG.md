@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+
+- Fix application of the read-only option on RichText fields.
+
 ## [1.21.28] - 2026-02-16
 
 - Fix template generation
