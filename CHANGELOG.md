@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix `CVE-2026-23489`
 - Fix migration error caused by unknown itemtype in containers
 - Fix empty default value in multiple dropdown fields
 
