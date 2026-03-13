@@ -1178,8 +1178,8 @@ JAVASCRIPT
                         'itemtype' => $found_v[$itemtype_key],
                         'items_id' => $found_v[$items_id_key],
                     ];
-                } else {
-                    $value = $found_v[$field['name']] ?? '';
+                } elseif (isset($found_v[$field['name']])) {
+                    $value = $found_v[$field['name']];
                 }
             }
 
