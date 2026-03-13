@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [UNRELEASED]
 
 - Fix application of the read-only option on RichText fields.
+- Fix loading of default value for RichText fields.
 
 ## [1.21.28] - 2026-02-16
 
