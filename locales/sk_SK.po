@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# feonsu <feonsu@gmail.com>, 2023-2025
+# feonsu <feonsu@gmail.com>, 2023-2026
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 01:26+0000\n"
+"POT-Creation-Date: 2026-03-17 01:42+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: feonsu <feonsu@gmail.com>, 2023-2025\n"
+"Last-Translator: feonsu <feonsu@gmail.com>, 2023-2026\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,15 +21,6 @@ msgstr ""
 #: templates/fields.html.twig
 msgid "show"
 msgstr "zobraziť"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:248
-msgid "Field"
-msgstr "Pole"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:648
-#: inc/field.class.php:827
-msgid "Read only"
-msgstr "Iba na čítanie"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -42,6 +33,15 @@ msgstr "Prepísania stavov"
 #: templates/status_overrides.html.twig
 msgid "No item found"
 msgstr "Nenašla sa žiadna položka"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:246
+msgid "Field"
+msgstr "Pole"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:646
+#: inc/field.class.php:825
+msgid "Read only"
+msgstr "Iba na čítanie"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -58,12 +58,71 @@ msgstr[3] "Podmienky na skrytie bloku"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Pripojiť dodatočné polia k cieľu"
 
-#: setup.php:238 inc/destinationfield.class.php:50 inc/menu.class.php:37
+#: hook.php:57 hook.php:61
+msgid "MySQL tables installation"
+msgstr "Inštalácia MySQL tabuliek"
+
+#: hook.php:114
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Plugin nemožno odinštalovať ak je plugin vypnutý"
+
+#: hook.php:127
+msgid "MySQL tables uninstallation"
+msgstr "Odinštalovanie MySQL tabuliek"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "Povolené hodnoty"
+
+#: ajax/field_specific_fields.php:85
+msgid "Multiple dropdown"
+msgstr "Viac rozbaľovacích ponúk"
+
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr "Predvolená hodnota"
+
+#: ajax/field_specific_fields.php:122
+msgid "Default value will be configurable once field will be created."
+msgstr "Predvolená hodnota bude konfigurovateľná po vytvorení poľa."
+
+#: inc/field.class.php:261 inc/field.class.php:288
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
+
+#: inc/field.class.php:280
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
+
+#: inc/field.class.php:367
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "Pole \"%s\" nemožno zmazať, pretože sa používa v otázke formulára"
+
+#: inc/field.class.php:564
+msgid "Fields"
+msgstr "Polia"
+
+#: inc/field.class.php:629
+msgid "Add a new field"
+msgstr "Pridať nové pole"
+
+#: inc/field.class.php:633
+msgid "No field for this block"
+msgstr "Žiadne pole pre tento blok"
+
+#: inc/menu.class.php:37 inc/destinationfield.class.php:50 setup.php:248
 #: front/container.form.php:74 front/container.php:34
 msgid "Additional fields"
 msgstr "Dodatočné polia"
+
+#: inc/statusoverride.class.php:91
+msgid "Override by status"
+msgstr "Prepísanie podľa stavu"
 
 #: inc/containerdisplaycondition.class.php:106
 #: inc/containerdisplaycondition.class.php:138
@@ -85,13 +144,13 @@ msgstr "regulárny výraz zodpovedá"
 msgid "You must specify an item type, search option and condition."
 msgstr "Musíte špecifikovať typ položky, možnosť hľadania a podmienku."
 
-#: inc/toolbox.class.php:122
-msgid "Fix fields names"
-msgstr "Opraviť názvy polí"
+#: inc/labeltranslation.class.php:222
+msgid "Language"
+msgstr "Jazyk"
 
-#: inc/toolbox.class.php:331
-msgid "Component items"
-msgstr "Položky komponentov"
+#: inc/labeltranslation.class.php:223
+msgid "Label"
+msgstr "Popisok"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -142,23 +201,13 @@ msgstr "-> \"%s.%s\" by mala byť vymazaná."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Spustite \"%s\" na opravu nekonzistencií databázy."
 
-#: inc/command/regeneratefilescommand.class.php:41
-msgid "Regenerates containers files."
-msgstr "Znova generovať kontajnerové súbory."
+#: inc/toolbox.class.php:122
+msgid "Fix fields names"
+msgstr "Opraviť názvy polí"
 
-#: inc/command/regeneratefilescommand.class.php:43
-msgid ""
-"This command will clean up all files generated by the plugin and regenerate "
-"them."
-msgstr "Tento príkaz vyčistí všetky súbory vygenerované týmto pluginom a znova ich vygeneruje."
-
-#: inc/labeltranslation.class.php:224
-msgid "Language"
-msgstr "Jazyk"
-
-#: inc/labeltranslation.class.php:225
-msgid "Label"
-msgstr "Popisok"
+#: inc/toolbox.class.php:331
+msgid "Component items"
+msgstr "Položky komponentov"
 
 #: inc/dropdown.class.php:79
 msgid "Updating generated dropdown files"
@@ -168,131 +217,82 @@ msgstr "Aktualizácia vygenerovaných súborov rozbaľovacích ponúk"
 msgid "Regenerate container files"
 msgstr "Znova generovať kontajnerové súbory"
 
-#: inc/container.class.php:54 inc/container.class.php:889
+#: inc/container.class.php:54 inc/container.class.php:941
 msgid "Export to YAML"
 msgstr "Export do YAML"
 
-#: inc/container.class.php:289
+#: inc/container.class.php:292
 msgid "Regenerate containers files"
 msgstr "Znova generovať kontajnerové súbory"
 
-#: inc/container.class.php:310
+#: inc/container.class.php:313
 msgid "Fix container names"
 msgstr "Opraviť názvy kontajnerov"
 
-#: inc/container.class.php:458
+#: inc/container.class.php:461
 msgid "Updating generated containers files"
 msgstr "Aktualizácia vygenerovaných kontajnerových súborov"
 
-#: inc/container.class.php:661
+#: inc/container.class.php:664
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára\" na rovnaký objekt"
 
-#: inc/container.class.php:677
+#: inc/container.class.php:680
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Nemôžete pridať niekoľko blokov typu \"Vloženie do formulára konkrétnej karty\" na rovnakú kartu objektu"
 
-#: inc/container.class.php:694
+#: inc/container.class.php:697
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Názov kontajneru je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
 
-#: inc/container.class.php:709
+#: inc/container.class.php:712
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Nemôžete pridať niekoľko blokov s identickým názvom na rovnaký objekt"
 
-#: inc/container.class.php:877
+#: inc/container.class.php:929
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:990
+#: inc/container.class.php:1042
 msgid "Tab"
 msgstr "Karta"
 
-#: inc/container.class.php:1148
+#: inc/container.class.php:1200
 msgid "Add tab"
 msgstr "Pridať kartu"
 
-#: inc/container.class.php:1149
+#: inc/container.class.php:1201
 msgid "Insertion in the form (before save button)"
 msgstr "Vloženie do formulára (pred tlačidlo uložiť)"
 
-#: inc/container.class.php:1150
+#: inc/container.class.php:1202
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vloženie do formulára konkrétnej karty (pred tlačidlo uložiť)"
 
-#: inc/container.class.php:1681
+#: inc/container.class.php:1735
 msgid "Some mandatory fields are empty"
 msgstr "Niektoré povinné polia sú prázdne"
 
-#: inc/container.class.php:1686
+#: inc/container.class.php:1740
 msgid "Some numeric fields contains non numeric values"
 msgstr "Niektoré číselné polia obsahujú nečíselné hodnoty"
 
-#: inc/container.class.php:1691
+#: inc/container.class.php:1745
 msgid "Some URL fields contains invalid links"
 msgstr "Niektoré URL polia obsahujú neplatné odkazy"
 
-#: inc/statusoverride.class.php:93
-msgid "Override by status"
-msgstr "Prepísanie podľa stavu"
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr "Znova generovať kontajnerové súbory."
 
-#: inc/field.class.php:263 inc/field.class.php:290
+#: inc/command/regeneratefilescommand.class.php:43
 msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
-
-#: inc/field.class.php:282
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
-
-#: inc/field.class.php:369
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
-
-#: inc/field.class.php:566
-msgid "Fields"
-msgstr "Polia"
-
-#: inc/field.class.php:631
-msgid "Add a new field"
-msgstr "Pridať nové pole"
-
-#: inc/field.class.php:635
-msgid "No field for this block"
-msgstr "Žiadne pole pre tento blok"
-
-#: hook.php:57 hook.php:61
-msgid "MySQL tables installation"
-msgstr "Inštalácia MySQL tabuliek"
-
-#: hook.php:114
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Plugin nemožno odinštalovať ak je plugin vypnutý"
-
-#: hook.php:127
-msgid "MySQL tables uninstallation"
-msgstr "Odinštalovanie MySQL tabuliek"
-
-#: ajax/field_specific_fields.php:52
-msgid "Allowed values"
-msgstr "Povolené hodnoty"
-
-#: ajax/field_specific_fields.php:85
-msgid "Multiple dropdown"
-msgstr "Viac rozbaľovacích ponúk"
-
-#: ajax/field_specific_fields.php:89
-msgid "Default value"
-msgstr "Predvolená hodnota"
-
-#: ajax/field_specific_fields.php:122
-msgid "Default value will be configurable once field will be created."
-msgstr "Predvolená hodnota bude konfigurovateľná po vytvorení poľa."
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr "Tento príkaz vyčistí všetky súbory vygenerované týmto pluginom a znova ich vygeneruje."
