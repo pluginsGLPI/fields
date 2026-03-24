@@ -1151,13 +1151,15 @@ JAVASCRIPT,
             $classname    = PluginFieldsContainer::getClassname($item->getType(), $container_obj->fields['name']);
             $dbu = new DbUtils();
             $obj = $dbu->getItemForItemtype($classname);
-            $found_values = $obj->find(
-                [
-                    'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
-                    'items_id'                    => $item->getID(),
-                ],
-            );
-            $found_v = array_shift($found_values);
+            if ($obj instanceof CommonDBTM) {
+                $found_values = $obj->find(
+                    [
+                        'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
+                        'items_id'                    => $item->getID(),
+                    ],
+                );
+                $found_v = array_shift($found_values);
+            }
         }
 
         // test status for "CommonITILObject" objects
