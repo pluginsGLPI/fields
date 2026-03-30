@@ -35,6 +35,7 @@ use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
 use LogicException;
 use PluginFieldsContainer;
+use PluginFieldsDropdown;
 use PluginFieldsField;
 use PluginFieldsQuestionType;
 use PluginFieldsQuestionTypeCategory;
@@ -117,7 +118,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $builder->addQuestion(
             "My question",
             PluginFieldsQuestionType::class,
-            extra_data: json_encode($this->getFieldExtraDataConfig()),
+            extra_data: json_encode($this->getFieldExtraDataConfig('glpi_item')),
         );
         $form = $this->createForm($builder);
 
@@ -137,7 +138,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $builder->addQuestion(
             "My question",
             PluginFieldsQuestionType::class,
-            extra_data: json_encode($this->getFieldExtraDataConfig()),
+            extra_data: json_encode($this->getFieldExtraDataConfig('glpi_item')),
         );
         $form = $this->createForm($builder);
 
@@ -148,12 +149,40 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $this->assertNotEmpty($crawler->filter('[data-glpi-form-renderer-fields-question-type-specific-container]'));
     }
 
-    private function getFieldExtraDataConfig(): PluginFieldsQuestionTypeExtraDataConfig
+    public function testFieldsQuestionSubmitEmptyDropdown(): void
     {
-        if (!$this->block instanceof PluginFieldsContainer || !$this->field instanceof PluginFieldsField) {
+        $this->login();
+
+        /** @var CommonDBTM $dropdown_item */
+        $dropdown_item = getItemForItemtype(PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']));
+        $dropdown_ids = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $dropdown_ids[] = $dropdown_item->add([
+                'name' => 'Option ' . $i,
+            ]);
+        }
+
+        // Arrange: create form with Field question
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Dropdown field question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $form = $this->createForm($builder);
+
+        // Act: submit form
+        $this->sendFormAndGetCreatedTicket($form, [
+            "Dropdown field question" => '0',
+        ]);
+    }
+
+    private function getFieldExtraDataConfig(string $field_name): PluginFieldsQuestionTypeExtraDataConfig
+    {
+        if (!$this->block instanceof PluginFieldsContainer || !$this->fields[$field_name] instanceof PluginFieldsField) {
             throw new LogicException("Field and container must be created before getting extra data config");
         }
 
-        return new PluginFieldsQuestionTypeExtraDataConfig($this->block->getID(), $this->field->getID());
+        return new PluginFieldsQuestionTypeExtraDataConfig($this->block->getID(), $this->fields[$field_name]->getID());
     }
 }

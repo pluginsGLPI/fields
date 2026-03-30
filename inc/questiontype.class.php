@@ -201,7 +201,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 }
 
                 $itemtype = PluginFieldsDropdown::getClassname($current_field->fields['name']);
-                return implode(', ', array_map(fn($opt_id) => $itemtype::getById($opt_id)->fields['name'], $answer));
+                return implode(', ', array_map(fn($opt_id) => $itemtype::getById($opt_id)?->fields['name'] ?? '', $answer));
             case 'yesno':
                 return $answer ? __('Yes') : __('No');
             case 'datetime':

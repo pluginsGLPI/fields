@@ -39,6 +39,7 @@ use PluginFieldsQuestionType;
 
 final class FieldQuestionTypeMigrationTest extends QuestionTypeTestCase
 {
+    public $field;
     public static function setUpBeforeClass(): void
     {
         global $DB;
