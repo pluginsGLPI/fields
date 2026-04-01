@@ -26,9 +26,19 @@
  # -------------------------------------------------------------------------
  #}
 
+{% import 'components/form/fields_macros.html.twig' as fields %}
+
 {% set field = field|merge({
-    'default_value': default_value ?? field.default_value
+    'default_value': default_value.items_id ?? default_value ?? field.default_value
 }) %}
+
+{% set is_dropdown = field.type starts with 'dropdown' %}
+{% set name_suffix = is_dropdown ? '[items_id]' : '' %}
+
+{{ fields.hiddenField(
+    question.getEndUserInputName() ~ '[itemtype]',
+    itemtype
+) }}
 
 <div data-glpi-form-renderer-fields-question-type-specific-container>
     {{ call('PluginFieldsField::prepareHtmlFields', [
@@ -38,7 +48,7 @@
         true,
         false,
         {
-            'input_name'     : question.getEndUserInputName(),
+            'input_name'     : question.getEndUserInputName() ~ name_suffix,
             'full_width'     : not (field.type starts with 'dropdown' or field.type == 'glpi_item'),
             'no_label'       : true,
             'mb'             : '',

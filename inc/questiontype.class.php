@@ -29,6 +29,9 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\DBAL\JsonFieldInterface;
+use Glpi\Form\Condition\ConditionHandler\ItemAsTextConditionHandler;
+use Glpi\Form\Condition\ConditionHandler\ItemConditionHandler;
 use Glpi\Form\Form;
 use Glpi\Form\Migration\FormQuestionDataConverterInterface;
 use Glpi\Form\Question;
@@ -167,12 +170,24 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             $default_value = json_decode($question->fields['default_value'], true);
         }
 
+        $itemtype = null;
+        if (str_starts_with((string) $current_field->fields['type'], 'dropdown')) {
+            if ($current_field->fields['type'] == 'dropdown') {
+                $itemtype = PluginFieldsDropdown::getClassname($current_field->fields['name']);
+            } else {
+                $dropdown_matches = [];
+                preg_match('/^dropdown-(?<class>.+)$/', (string) $current_field->fields['type'], $dropdown_matches);
+                $itemtype = $dropdown_matches['class'];
+            }
+        }
+
         $twig = TemplateRenderer::getInstance();
         return $twig->render('@fields/question_type_end_user.html.twig', [
             'question'      => $question,
             'field'         => $current_field->fields,
             'default_value' => $default_value,
             'item'          => new Form(),
+            'itemtype'      => $itemtype,
         ]);
     }
 
@@ -196,7 +211,8 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             case 'date':
                 return (string) $answer;
             case 'dropdown':
-                if (is_string($answer)) {
+                $answer = $answer['items_id'];
+                if (is_string($answer) || is_numeric($answer)) {
                     $answer = [$answer];
                 }
 
@@ -281,6 +297,42 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     public function getTargetQuestionType(array $rawData): string
     {
         return self::class;
+    }
+
+    #[Override]
+    public function getConditionHandlers(
+        ?JsonFieldInterface $question_config,
+    ): array {
+        $condition_handlers = parent::getConditionHandlers($question_config);
+        if (!$question_config instanceof PluginFieldsQuestionTypeExtraDataConfig) {
+            throw new InvalidArgumentException();
+        }
+
+        if (!$question_config->getFieldId()) {
+            return parent::getConditionHandlers($question_config);
+        }
+
+        // If the question is configured with a dropdown field, we add condition handlers to handle item and item as text conditions on the dropdown options
+        $field = PluginFieldsField::getById($question_config->getFieldId());
+        if ($field && str_starts_with((string) $field->fields['type'], 'dropdown')) {
+            if ($field->fields['type'] == 'dropdown') {
+                $itemtype = PluginFieldsDropdown::getClassname($field->fields['name']);
+            } else {
+                $dropdown_matches = [];
+                preg_match('/^dropdown-(?<class>.+)$/', (string) $field->fields['type'], $dropdown_matches);
+                $itemtype = $dropdown_matches['class'];
+            }
+
+            $condition_handlers = array_merge(
+                $condition_handlers,
+                [
+                    new ItemConditionHandler($itemtype),
+                    new ItemAsTextConditionHandler($itemtype),
+                ],
+            );
+        }
+
+        return $condition_handlers;
     }
 
     /**

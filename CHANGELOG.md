@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Support for new value operators for “Field” question type linked to a field that is a dropdown in forms
+
 ### Fixed
 
 - Fix error when submitting a form with an hidden question of type `Field`

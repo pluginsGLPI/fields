@@ -32,8 +32,11 @@
 
 {% set is_ajax_reload = is_ajax_reload|default(false) %}
 
+{% set is_dropdown = field.type starts with 'dropdown' %}
+{% set name_suffix = is_dropdown ? '[items_id]' : '' %}
+
 {% set field_for_html = field|merge({
-    'default_value': default_value ?? field.default_value,
+    'default_value': default_value.items_id ?? default_value ?? field.default_value,
     'mandatory': false
 }) %}
 
@@ -44,8 +47,8 @@
     true,
     false,
     {
-        'input_name'     : 'default_value',
-        'full_width'     : not (field.type starts with 'dropdown' or field.type == 'glpi_item'),
+        'input_name'     : 'default_value' ~ name_suffix,
+        'full_width'     : not (is_dropdown or field.type == 'glpi_item'),
         'no_label'       : true,
         'mb'             : '',
         'init'           : is_ajax_reload or (question is not null),

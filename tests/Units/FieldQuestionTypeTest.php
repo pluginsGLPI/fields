@@ -30,6 +30,15 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Glpi\Form\Condition\ConditionHandler\ItemAsTextConditionHandler;
+use Glpi\Form\Condition\ConditionHandler\ItemConditionHandler;
+use Glpi\Form\Condition\Engine;
+use Glpi\Form\Condition\EngineInput;
+use Glpi\Form\Condition\LogicOperator;
+use Glpi\Form\Condition\Type;
+use Glpi\Form\Condition\ValueOperator;
+use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Form\QuestionType\QuestionTypesManager;
 use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
@@ -173,8 +182,184 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
         // Act: submit form
         $this->sendFormAndGetCreatedTicket($form, [
-            "Dropdown field question" => '0',
+            "Dropdown field question" => [
+                'items_id' => '0',
+            ],
         ]);
+    }
+
+    public function testGetConditionHandlersForDropdownFieldIncludesItemHandlers(): void
+    {
+        $question_type = new PluginFieldsQuestionType();
+        $config = $this->getFieldExtraDataConfig('dropdown');
+
+        $handlers = $question_type->getConditionHandlers($config);
+        $handler_classes = array_map(fn($h) => $h::class, $handlers);
+
+        $this->assertContains(ItemConditionHandler::class, $handler_classes);
+        $this->assertContains(ItemAsTextConditionHandler::class, $handler_classes);
+    }
+
+    public function testGetConditionHandlersForNonDropdownFieldExcludesItemHandlers(): void
+    {
+        $question_type = new PluginFieldsQuestionType();
+        $config = $this->getFieldExtraDataConfig('glpi_item');
+
+        $handlers = $question_type->getConditionHandlers($config);
+        $handler_classes = array_map(fn($h) => $h::class, $handlers);
+
+        $this->assertNotContains(ItemConditionHandler::class, $handler_classes);
+        $this->assertNotContains(ItemAsTextConditionHandler::class, $handler_classes);
+    }
+
+    public function testDropdownConditionHandlerEqualsOperator(): void
+    {
+        $this->login();
+
+        [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id] = $this->createDropdownConditionForm(
+            ValueOperator::EQUALS,
+        );
+
+        // Test: matching item → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item1_id]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: different item → question is not visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item2_id]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
+    }
+
+    public function testDropdownConditionHandlerNotEqualsOperator(): void
+    {
+        $this->login();
+
+        [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id] = $this->createDropdownConditionForm(
+            ValueOperator::NOT_EQUALS,
+        );
+
+        // Test: same item → question is not visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item1_id]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: different item → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item2_id]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+    }
+
+    public function testDropdownConditionHandlerContainsOperator(): void
+    {
+        $this->login();
+
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $dropdown_item = getItemForItemtype($itemtype);
+        $item_id = $dropdown_item->add(['name' => 'Alpha Option']);
+
+        $builder = new FormBuilder("Dropdown contains test form");
+        $builder->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $builder->addQuestion("Subject", QuestionTypeShortText::class);
+        $builder->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [
+            [
+                'logic_operator' => LogicOperator::AND,
+                'item_name'      => "Dropdown question",
+                'item_type'      => Type::QUESTION,
+                'value_operator' => ValueOperator::CONTAINS,
+                'value'          => 'alpha',
+            ],
+        ]);
+        $form = $this->createForm($builder);
+
+        $question_id = $this->getQuestionId($form, "Subject");
+        $dropdown_question_id = $this->getQuestionId($form, "Dropdown question");
+
+        // Test: item name contains the condition value → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: item name does not contain the condition value → question is not visible
+        $builder2 = new FormBuilder("Dropdown contains mismatch form");
+        $builder2->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $builder2->addQuestion("Subject", QuestionTypeShortText::class);
+        $builder2->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [
+            [
+                'logic_operator' => LogicOperator::AND,
+                'item_name'      => "Dropdown question",
+                'item_type'      => Type::QUESTION,
+                'value_operator' => ValueOperator::CONTAINS,
+                'value'          => 'xyz',
+            ],
+        ]);
+        $form2 = $this->createForm($builder2);
+        $question_id2 = $this->getQuestionId($form2, "Subject");
+        $dropdown_question_id2 = $this->getQuestionId($form2, "Dropdown question");
+
+        $engine = new Engine($form2, new EngineInput([$dropdown_question_id2 => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id2));
+    }
+
+    public function testDropdownConditionHandlerNotContainsOperator(): void
+    {
+        $this->login();
+
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $dropdown_item = getItemForItemtype($itemtype);
+        $item_id = $dropdown_item->add(['name' => 'Beta Option']);
+
+        $builder = new FormBuilder("Dropdown not contains test form");
+        $builder->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $builder->addQuestion("Subject", QuestionTypeShortText::class);
+        $builder->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [
+            [
+                'logic_operator' => LogicOperator::AND,
+                'item_name'      => "Dropdown question",
+                'item_type'      => Type::QUESTION,
+                'value_operator' => ValueOperator::NOT_CONTAINS,
+                'value'          => 'xyz',
+            ],
+        ]);
+        $form = $this->createForm($builder);
+
+        $question_id = $this->getQuestionId($form, "Subject");
+        $dropdown_question_id = $this->getQuestionId($form, "Dropdown question");
+
+        // Test: item name does not contain the value → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: item name contains the value → question is not visible
+        $builder2 = new FormBuilder("Dropdown not contains match form");
+        $builder2->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $builder2->addQuestion("Subject", QuestionTypeShortText::class);
+        $builder2->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [
+            [
+                'logic_operator' => LogicOperator::AND,
+                'item_name'      => "Dropdown question",
+                'item_type'      => Type::QUESTION,
+                'value_operator' => ValueOperator::NOT_CONTAINS,
+                'value'          => 'beta',
+            ],
+        ]);
+        $form2 = $this->createForm($builder2);
+        $question_id2 = $this->getQuestionId($form2, "Subject");
+        $dropdown_question_id2 = $this->getQuestionId($form2, "Dropdown question");
+
+        $engine = new Engine($form2, new EngineInput([$dropdown_question_id2 => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id2));
     }
 
     private function getFieldExtraDataConfig(string $field_name): PluginFieldsQuestionTypeExtraDataConfig
@@ -184,5 +369,42 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         }
 
         return new PluginFieldsQuestionTypeExtraDataConfig($this->block->getID(), $this->fields[$field_name]->getID());
+    }
+
+    /**
+     * Helper to create a form with a dropdown question and a condition on it.
+     * Returns [form, question_id, dropdown_question_id, itemtype, item1_id, item2_id].
+     */
+    private function createDropdownConditionForm(ValueOperator $operator): array
+    {
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $dropdown_item = getItemForItemtype($itemtype);
+        $item1_id = $dropdown_item->add(['name' => 'First Option']);
+        $item2_id = $dropdown_item->add(['name' => 'Second Option']);
+
+        $condition_value = ['itemtype' => $itemtype, 'items_id' => $item1_id];
+
+        $builder = new FormBuilder("Dropdown condition form");
+        $builder->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $builder->addQuestion("Subject", QuestionTypeShortText::class);
+        $builder->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [
+            [
+                'logic_operator' => LogicOperator::AND,
+                'item_name'      => "Dropdown question",
+                'item_type'      => Type::QUESTION,
+                'value_operator' => $operator,
+                'value'          => $condition_value,
+            ],
+        ]);
+        $form = $this->createForm($builder);
+
+        $question_id = $this->getQuestionId($form, "Subject");
+        $dropdown_question_id = $this->getQuestionId($form, "Dropdown question");
+
+        return [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id];
     }
 }
