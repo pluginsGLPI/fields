@@ -1,14 +1,14 @@
 <?php
 
 class %%CLASSNAME%% extends CommonTreeDropdown {
-   public $field_name      = "%%FIELDNAME%%";
+   public $field_name      = %%FIELDNAME%%;
    public $can_be_translated = true;
 
    static function getTypeName($nb=0) {
       $item = [
          "itemtype" => PluginFieldsField::getType(),
-         "id"       => "%%FIELDID%%",
-         "label"    => "%%LABEL%%"
+         "id"       => %%FIELDID%%,
+         "label"    => %%LABEL%%
       ];
       $label = PluginFieldsLabelTranslation::getLabelFor($item);
       return $label;

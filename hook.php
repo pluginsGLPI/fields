@@ -211,7 +211,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
     $itemtypes = PluginFieldsContainer::getEntries('all');
 
     if (in_array($options['itemtype'], $itemtypes)) {
-        if ($options['options']['is_multiple']) {
+        if (isset($options['options']['is_multiple']) && $options['options']['is_multiple']) {
             Dropdown::showFromArray(
                 'multiple_dropdown_action',
                 [
@@ -433,4 +433,22 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     }
 
     return null;
+}
+
+function plugin_item_transfer_fields(array $options): void
+{
+    $itemtype = $options['type'] ?? null;
+    $container_ids = PluginFieldsContainer::findAllContainers($itemtype);
+
+    $container = new PluginFieldsContainer();
+    foreach ($container_ids as $id) {
+        $container->getFromDB($id);
+        $data = [
+            'plugin_fields_containers_id' => $id,
+            'itemtype' => $itemtype,
+            'items_id' => $options['newID'],
+            'entities_id' => $options['entities_id'],
+        ];
+        $container->updateFieldsValues($data, $itemtype, true);
+    }
 }

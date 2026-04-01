@@ -1793,6 +1793,38 @@ HTML;
         return $id;
     }
 
+    public static function findAllContainers($itemtype)
+    {
+        $condition = ['is_active' => 1];
+
+        $entity = $_SESSION['glpiactiveentities'] ?? 0;
+        $condition += getEntitiesRestrictCriteria('', '', $entity, true, true);
+
+        $container = new PluginFieldsContainer();
+        $itemtypes = $container->find($condition);
+
+        if (empty($itemtypes)) {
+            return false;
+        }
+
+        $ids = [];
+        foreach ($itemtypes as $data) {
+            $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
+            if (in_array($itemtype, $dataitemtypes)) {
+                $id = $data['id'];
+                //profiles restriction
+                if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $id > 0) {
+                    $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $id);
+                    if ($right >= READ) {
+                        $ids[] = $id;
+                    }
+                }
+            }
+        }
+
+        return $ids;
+    }
+
     /**
      * Post item hook for add
      * Do store data in db
@@ -1889,14 +1921,15 @@ HTML;
         $loc_c->getFromDB($c_id);
 
         // check rights on $c_id
-
+        // The profile check is only enforced when an active user profile is present in session.
+        // Automated contexts (cron jobs, API token sessions without profile) bypass the check
+        // so that plugin fields can still be persisted — authentication is already enforced
+        // at a higher level by the GLPI API/cron layer.
         if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
             $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
             if (($right > READ) === false) {
                 return false;
             }
-        } else {
-            return false;
         }
 
 
@@ -2217,8 +2250,11 @@ HTML;
                     $opt[$i]['datatype']   = 'specific';
                     $opt[$i]['searchtype'] = ['equals', 'notequals'];
                 } else {
-                    $opt[$i]['table']    = CommonDBTM::getTable($dropdown_matches['class']);
-                    $opt[$i]['field']    = 'name';
+                    $opt[$i]['table']    = getTableForItemType($dropdown_matches['class']);
+                    $opt[$i]['field']    = is_a($dropdown_matches['class'], CommonTreeDropdown::class, true)
+                        ? 'completename'
+                        : 'name';
+                    $opt[$i]['itemtype'] = $dropdown_matches['class'];
                     $opt[$i]['right']    = 'all';
                     $opt[$i]['datatype'] = 'dropdown';
 

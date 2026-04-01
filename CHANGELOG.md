@@ -5,11 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.23.4] - Unreleased
+## [1.23.5] - Unreleased
 
 ### Fixed
 
 - Fix error when submitting a form with an hidden question of type `Field`
+
+## [1.23.4] - 2026-03-26
+
+### Fixed
+
+- Fix CRUD hooks to support the REST API regardless of session state
+- Fix SQL errors with custom dropdown fields
+- Fix wrong values displayed in massive actions when a form contains multiple custom dropdowns
+- Fix field entity during parent asset entity transfer
 
 ## [1.23.3] - 2026-02-12
 
@@ -19,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix `CVE-2026-23489`
 - Fix migration error caused by unknown itemtype in containers
 - Fix empty default value in multiple dropdown fields
 
