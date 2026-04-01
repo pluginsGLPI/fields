@@ -188,6 +188,60 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         ]);
     }
 
+    public function testFieldDeletionWhenUsedInForm(): void
+    {
+        $this->login();
+
+        // Arrange: create form with Field question
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "My question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('glpi_item')),
+        );
+        $this->createForm($builder);
+
+        // Act: try to delete field
+        $response = $this->fields['glpi_item']->delete($this->fields['glpi_item']->fields);
+
+        // Assert: deletion is blocked with appropriate message
+        $this->assertFalse($response);
+        $this->hasSessionMessageThatContains('The field &quot;GLPI Item&quot; cannot be deleted because it is used in a form question', ERROR);
+    }
+
+    public function testFieldDeletionWhenNotUsedInForm(): void
+    {
+        $this->login();
+
+        // Act: try to delete field
+        $response = $this->fields['glpi_item']->delete($this->fields['glpi_item']->fields);
+
+        // Assert: deletion is successful
+        $this->assertTrue($response);
+        $this->hasNoSessionMessage(ERROR);
+    }
+
+    public function testFieldDeletionWhenAnotherFieldUsedInForm(): void
+    {
+        $this->login();
+
+        // Arrange: create form with Field question using dropdown field
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "My question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $this->createForm($builder);
+
+        // Act: try to delete glpi_item field which isn't used in form but exists
+        $response = $this->fields['glpi_item']->delete($this->fields['glpi_item']->fields);
+
+        // Assert: deletion is successful and not blocked by the fact that another field is used in form
+        $this->assertTrue($response);
+        $this->hasNoSessionMessage(ERROR);
+    }
+
     public function testGetConditionHandlersForDropdownFieldIncludesItemHandlers(): void
     {
         $question_type = new PluginFieldsQuestionType();

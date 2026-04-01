@@ -355,9 +355,10 @@ class PluginFieldsField extends CommonDBChild
         $question = new Question();
         $found = $question->find([
             'type' => PluginFieldsQuestionType::class,
-            $this->fields['id'] => new QueryExpression(sprintf(
-                "JSON_VALUE(%s, '$.field_id')",
+            new QueryExpression(sprintf(
+                "JSON_VALUE(%s, '$.field_id') = %s",
                 DBmysql::quoteName('extra_data'),
+                DBmysql::quoteValue((int) $this->fields['id']),
             )),
         ]);
         if (!empty($found)) {
