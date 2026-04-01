@@ -973,7 +973,7 @@ class PluginFieldsField extends CommonDBChild
         $itemtypes = PluginFieldsContainer::getUsedItemtypes($type, true);
 
         //if no dom containers defined for this itemtype, do nothing (in_array case insensitive)
-        if (!in_array(strtolower((string) $item::getType()), array_map(strtolower(...), $itemtypes))) {
+        if (!in_array(strtolower((string) $item::getType()), array_map(strtolower(...), $itemtypes), true)) {
             return;
         }
 
