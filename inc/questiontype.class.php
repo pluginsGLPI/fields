@@ -380,7 +380,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         $field_container  = new PluginFieldsContainer();
         $available_blocks = [];
 
-        $entity_restrict = isCommandLine() ? [] : getEntitiesRestrictCriteria(PluginFieldsContainer::getTable(), '', '', true);
+        $entity_restrict = (isCommandLine() || !Session::getLoginUserID()) ? [] : getEntitiesRestrictCriteria(PluginFieldsContainer::getTable(), '', '', true);
         $result           = $field_container->find([
             'is_active' => 1,
             'type'      => 'dom',
