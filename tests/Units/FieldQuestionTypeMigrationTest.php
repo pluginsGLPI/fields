@@ -39,6 +39,8 @@ use PluginFieldsQuestionType;
 
 final class FieldQuestionTypeMigrationTest extends QuestionTypeTestCase
 {
+    public array $fields;
+
     public static function setUpBeforeClass(): void
     {
         global $DB;
@@ -104,7 +106,7 @@ final class FieldQuestionTypeMigrationTest extends QuestionTypeTestCase
                 'row'                            => 0,
                 'col'                            => 0,
                 'values'                         => json_encode([
-                    'dropdown_fields_field' => $this->field->fields['name'],
+                    'dropdown_fields_field' => $this->fields['glpi_item']->fields['name'],
                     'blocks_field'          => $this->block->getID(),
                 ]),
             ],

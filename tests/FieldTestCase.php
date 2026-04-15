@@ -31,8 +31,10 @@
 namespace GlpiPlugin\Field\Tests;
 
 use DBmysql;
+use Glpi\Form\Question;
 use PluginFieldsContainer;
 use PluginFieldsField;
+use PluginFieldsQuestionType;
 
 trait FieldTestTrait
 {
@@ -46,6 +48,12 @@ trait FieldTestTrait
     {
         // Re-login to ensure we are logged in
         $this->login();
+
+        // Clean all questions that use QuestionTypeField to avoid issues with foreign key constraints when deleting fields
+        array_map(
+            fn(Question $question) => $question->delete($question->fields, true),
+            iterator_to_array(Question::getSeveralFromDBByCrit(['type' => PluginFieldsQuestionType::class])),
+        );
 
         // Clean created containers
         array_map(

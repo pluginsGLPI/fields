@@ -197,7 +197,7 @@ class PluginFieldsMigration extends Migration
 
         return array_filter(
             $fields,
-            fn(string $field) => !in_array($field, $basic_fields),
+            fn(string $field) => !in_array($field, $basic_fields, true),
         );
     }
 }

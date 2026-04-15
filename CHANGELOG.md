@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
+## [Unreleased]
+
+### Added
+
+- Support for new value operators for “Field” question type linked to a field that is a dropdown in forms
 
 ### Fixed
 
 - Fix text area fields alignment
+- Fix error when submitting a form with an hidden question of type `Field`
+- Fixed a bug where a field was deleted when at least one question in a form was linked to another field
 
 ## [1.23.4] - 2026-03-26
 

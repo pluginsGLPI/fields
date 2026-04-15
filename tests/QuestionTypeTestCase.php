@@ -48,7 +48,8 @@ abstract class QuestionTypeTestCase extends DbTestCase
 
     protected ?PluginFieldsContainer $block = null;
 
-    protected ?PluginFieldsField $field     = null;
+    /** @var PluginFieldsField[] */
+    protected array $fields     = [];
 
     public function createFieldAndContainer(): void
     {
@@ -61,9 +62,17 @@ abstract class QuestionTypeTestCase extends DbTestCase
             'entities_id' => $this->getTestRootEntity(true),
         ]);
 
-        $this->field = $this->createField([
+        $this->fields['glpi_item'] = $this->createField([
             'label'                                     => 'GLPI Item',
             'type'                                      => 'glpi_item',
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+        ]);
+
+        $this->fields['dropdown'] = $this->createField([
+            'label'                                     => 'Dropdown',
+            'type'                                      => 'dropdown',
             PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
             'ranking'                                   => 1,
             'is_active'                                 => 1,
@@ -73,11 +82,13 @@ abstract class QuestionTypeTestCase extends DbTestCase
     public function setUp(): void
     {
         $this->createFieldAndContainer();
+        parent::setUp();
     }
 
     public function tearDown(): void
     {
         $this->tearDownFieldTest();
+        parent::tearDown();
     }
 
     protected function renderFormEditor(Form $form): Crawler
