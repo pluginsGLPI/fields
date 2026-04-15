@@ -77,7 +77,7 @@
 
 {% if not is_ajax_reload %}
     <script>
-        import(GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
+        import(CFG_GLPI.root_doc + GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
             const questionField = new m.GlpiPluginFieldsQuestionTypeField();
 
             {% if question is not null %}
@@ -94,7 +94,7 @@
     </script>
 {% else %}
     <script>
-        import(GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
+        import(CFG_GLPI.root_doc + GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
             const questionField = new m.GlpiPluginFieldsQuestionTypeField();
             questionField.lockMandatoryInput(
                 $('[data-glpi-form-editor-question-type-fields-field-id-selector="{{ rand }}"]').closest('[data-glpi-form-editor-question-details]'),

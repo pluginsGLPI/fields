@@ -28,16 +28,46 @@
 
 {% import 'components/form/fields_macros.html.twig' as macros %}
 
-{% set already_wrapped = item is instanceof('CommonITILObject') and container.fields['type'] == 'dom' %}
-{% set dropdown_item = item is instanceof('CommonDropdown') and container.fields['type'] == 'dom' %}
+{% set in_itilobject   = item is instanceof('CommonITILObject') and container.fields['type'] == 'dom' %}
+{% set in_form_builder = item is instanceof('Glpi\\Form\\Form') %}
+{% set already_wrapped = in_itilobject or in_form_builder %}
+{% set dropdown_item   = item is instanceof('CommonDropdown') and container.fields['type'] == 'dom' %}
 
-{% if item is instanceof('Glpi\\Form\\Form') %}
-    {% set already_wrapped = true %}
+{% set textarea_display_options = {
+    'in_itilobject': {
+        'field_class': 'col-12',
+        'label_class': 'col-2',
+        'input_class': 'col-10',
+        'is_horizontal': true,
+        'align_label_right': true,
+    },
+    'in_form_builder': {
+        'field_class': 'col-12',
+        'label_class': 'form-label',
+        'input_class': 'w-100',
+        'is_horizontal': false,
+        'align_label_right': false,
+    },
+    'default': {
+        'field_class': 'col-12',
+        'label_class': 'col-xxl-2',
+        'input_class': 'col-xxl-10',
+        'is_horizontal': true,
+        'align_label_right': true,
+    },
+} %}
+
+{% if in_itilobject %}
+    {% set current_textarea_options = textarea_display_options.in_itilobject %}
+{% elseif in_form_builder %}
+    {% set current_textarea_options = textarea_display_options.in_form_builder %}
+{% else %}
+    {% set current_textarea_options = textarea_display_options.default %}
 {% endif %}
 
 {% if not already_wrapped and not dropdown_item%}
 
-{% set class = item.isNewItem() or item is instanceof('User') ? 'col-xxl-12' : 'col-xxl-9' %}
+{% set class = item.isNewItem() or item is instanceof('User') or container.fields['type'] == 'dom' ? 'col-xxl-12' : 'col-xxl-9' %}
     <div class="col-12  {{ class }} flex-column">
         <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
             <div class="row flex-row align-items-start flex-grow-1">
@@ -88,15 +118,11 @@
             })) }}
 
     {% elseif type == 'textarea' %}
-        {{ macros.textareaField(input_name, value, label, field_options) }}
+        {{ macros.textareaField(input_name, value, label, field_options|merge(current_textarea_options)) }}
 
     {% elseif type == 'richtext' %}
-        {{ macros.textareaField(input_name, value, label, field_options|merge({
+        {{ macros.textareaField(input_name, value, label, field_options|merge(current_textarea_options)|merge({
             'enable_richtext': true,
-            'field_class': 'col-12',
-            'label_class': '',
-            'input_class': '',
-            'align_label_right': false,
         })) }}
 
     {% elseif type == 'yesno' %}

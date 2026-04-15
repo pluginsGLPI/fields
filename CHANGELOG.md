@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix SQL warning when no user session is active during plugin init
+- Fix text area fields alignment
 - Fix error when submitting a form with an hidden question of type `Field`
 - Fixed a bug where a field was deleted when at least one question in a form was linked to another field
 
