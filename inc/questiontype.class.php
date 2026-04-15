@@ -380,7 +380,17 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         $field_container  = new PluginFieldsContainer();
         $available_blocks = [];
 
-        $entity_restrict = (isCommandLine() || !Session::getLoginUserID()) ? [] : getEntitiesRestrictCriteria(PluginFieldsContainer::getTable(), '', '', true);
+        $entity_restrict = isCommandLine() ? [] : getEntitiesRestrictCriteria(PluginFieldsContainer::getTable(), '', '', true);
+
+        // If entity restriction contains an empty string value, it means no valid session
+        // is active. Running the query would produce a MySQL
+        // warning (1292: Truncated incorrect DECIMAL value)
+        foreach ($entity_restrict as $criterion) {
+            if (is_array($criterion) && in_array('', $criterion, true)) {
+                return $available_blocks;
+            }
+        }
+
         $result           = $field_container->find([
             'is_active' => 1,
             'type'      => 'dom',
