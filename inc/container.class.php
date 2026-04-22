@@ -209,8 +209,9 @@ class PluginFieldsContainer extends CommonDBTM
                 $container_class = new self();
                 foreach ($result as $container) {
                     self::generateTemplate($container);
+                    $container_name = $container['name'];
                     foreach (json_decode((string) $container['itemtypes']) as $itemtype) {
-                        $classname = self::getClassname($itemtype, $container["name"]);
+                        $classname = self::getClassname($itemtype, $container['name']);
                         // prevent usage of plugin class if not loaded
                         if (!class_exists($classname)) {
                             continue;
@@ -223,7 +224,13 @@ class PluginFieldsContainer extends CommonDBTM
                             && isset($migration_genericobject_itemtype[$itemtype])
                             && str_contains($old_table, 'glpi_plugin_fields_plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'])
                         ) {
-                            $new_table = str_replace('plugingenericobject' . $migration_genericobject_itemtype[$itemtype]['genericobject_name'], 'glpicustomasset' . strtolower($migration_genericobject_itemtype[$itemtype]['name']), $old_table);
+                            $new_itemtype = $migration_genericobject_itemtype[$itemtype]['itemtype'];
+                            // Limit table names to 64 chars (MySQL limit)
+                            while (strlen(getTableForItemType(self::getClassname($new_itemtype, $container_name))) > 64) {
+                                $container_name = substr((string) $container_name, 0, -1);
+                            }
+
+                            $new_table = getTableForItemType(self::getClassname($new_itemtype, $container_name));
                             $migration->renameTable($old_table, $new_table);
                         }
                     }
@@ -231,12 +238,15 @@ class PluginFieldsContainer extends CommonDBTM
                     // Update old genericobject itemtypes in container
                     $map = array_column($migration_genericobject_itemtype, 'itemtype', 'genericobject_itemtype');
                     $itemtypes = strtr($container['itemtypes'], $map);
-                    $container_class->update(
-                        [
-                            'id'         => $container['id'],
-                            'itemtypes'  => $itemtypes,
-                        ],
-                    );
+                    $update_data = [
+                        'id'        => $container['id'],
+                        'itemtypes' => $itemtypes,
+                    ];
+                    if ($container_name !== $container['name']) {
+                        $update_data['name'] = $container_name;
+                    }
+
+                    $container_class->update($update_data);
                 }
             } else {
                 throw new RuntimeException(
