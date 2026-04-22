@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+
+### Fixed
+
+- Fix migration abort when a GenericObject container name produces a table name exceeding MySQL's 64-character limit after conversion to GlpiCustomAsset.
+
 ## [1.24.0] - 2026-04-16
 
 ### Added
