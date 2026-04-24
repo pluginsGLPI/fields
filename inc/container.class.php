@@ -2213,6 +2213,7 @@ HTML;
                 case 'date':
                 case 'datetime':
                     $opt[$i]['datatype'] = $data['type'];
+                    $opt[$i]['maybefuture'] = true;
                     break;
                 case 'url':
                     $opt[$i]['datatype'] = 'weblink';
