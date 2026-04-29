@@ -476,7 +476,7 @@ TWIG;
 
         $result           = $field_container->find([
             'is_active' => 1,
-            'type'      => 'dom',
+            'type'      => ['dom', 'tab'],
             'OR'        => [
                 ['itemtypes' => ['LIKE', '%\"Ticket\"%']],
                 ['itemtypes' => ['LIKE', '%\"Change\"%']],

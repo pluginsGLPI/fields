@@ -142,6 +142,10 @@
         {% set dropdown_options = {'entity': item.getEntityID()} %}
         {% if field['multiple'] %}
             {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
+            {% if value is iterable %}
+                {% set dropdown_options = dropdown_options|merge({'values': value}) %}
+                {% set value = '' %}
+            {% endif %}
         {% endif %}
         {% if item.isRecursive() %}
             {% set dropdown_options = dropdown_options|merge({'entity_sons': true}) %}
@@ -168,6 +172,10 @@
         {% endif %}
         {% if field['multiple'] %}
             {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
+            {% if value is iterable %}
+                {% set dropdown_options = dropdown_options|merge({'values': value}) %}
+                {% set value = '' %}
+            {% endif %}
         {% endif %}
         {{ macros.dropdownField(field['dropdown_class'], input_name, value, label, field_options|merge(dropdown_options|default({}))) }}
 
