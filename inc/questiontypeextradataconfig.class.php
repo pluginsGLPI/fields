@@ -37,9 +37,12 @@ class PluginFieldsQuestionTypeExtraDataConfig implements JsonFieldInterface
 
     public const FIELD_ID = "field_id";
 
+    public const IS_MULTIPLE = "is_multiple";
+
     public function __construct(
         private readonly ?int $block_id = null,
         private readonly ?int $field_id = null,
+        private readonly bool $is_multiple = false,
     ) {}
 
     #[Override]
@@ -48,6 +51,7 @@ class PluginFieldsQuestionTypeExtraDataConfig implements JsonFieldInterface
         return new self(
             block_id: $data[self::BLOCK_ID] ?? null,
             field_id: $data[self::FIELD_ID] ?? null,
+            is_multiple: (bool) ($data[self::IS_MULTIPLE] ?? false),
         );
     }
 
@@ -57,6 +61,7 @@ class PluginFieldsQuestionTypeExtraDataConfig implements JsonFieldInterface
         return [
             self::BLOCK_ID => $this->block_id,
             self::FIELD_ID => $this->field_id,
+            self::IS_MULTIPLE => $this->is_multiple,
         ];
     }
 
@@ -68,5 +73,10 @@ class PluginFieldsQuestionTypeExtraDataConfig implements JsonFieldInterface
     public function getFieldId(): ?int
     {
         return $this->field_id;
+    }
+
+    public function isMultiple(): bool
+    {
+        return $this->is_multiple;
     }
 }
