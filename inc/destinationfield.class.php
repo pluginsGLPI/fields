@@ -144,7 +144,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                 } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
                     $items_id = $raw_answer['items_id'] ?? $raw_answer;
                     if ($is_multiple && is_array($items_id)) {
-                        $input[$field_name] = json_encode(array_values(array_map('intval', $items_id)));
+                        $input[$field_name] = json_encode(array_values(array_map(intval(...), $items_id)));
                     } else {
                         $input[$field_name] = $items_id;
                     }

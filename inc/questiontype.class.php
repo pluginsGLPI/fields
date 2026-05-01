@@ -89,10 +89,8 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     #[Override]
     public function prepareEndUserAnswer(Question $question, mixed $answer): mixed
     {
-        if ($this->isMultipleForQuestion($question)) {
-            if (isset($answer['items_id']) && is_array($answer['items_id'])) {
-                $answer['items_id'] = array_values(array_map('intval', $answer['items_id']));
-            }
+        if ($this->isMultipleForQuestion($question) && (isset($answer['items_id']) && is_array($answer['items_id']))) {
+            $answer['items_id'] = array_values(array_map(intval(...), $answer['items_id']));
         }
 
         return $answer;
@@ -376,7 +374,7 @@ TWIG;
 
             if ($field->fields['multiple'] || $question_config->isMultiple()) {
                 $condition_handlers[] = new MultipleChoiceFromValuesConditionHandler(
-                    $this->getDropdownValuesForCondition($itemtype)
+                    $this->getDropdownValuesForCondition($itemtype),
                 );
             }
         }
@@ -392,6 +390,7 @@ TWIG;
         foreach ($rows as $row) {
             $values[(string) $row['id']] = $row['name'];
         }
+
         return $values;
     }
 
