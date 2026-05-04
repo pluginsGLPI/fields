@@ -440,6 +440,7 @@ TWIG;
         if ($field_id === null) {
             return null;
         }
+
         return PluginFieldsField::getById($field_id) ?: null;
     }
 
@@ -456,7 +457,7 @@ TWIG;
         }
 
         $field = $this->getFieldForQuestion($question);
-        return $field !== null && (bool) $field->fields['multiple'];
+        return $field instanceof PluginFieldsField && (bool) $field->fields['multiple'];
     }
 
     private function getAvailableBlocks(): array
