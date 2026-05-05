@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix text area fields size and alignment
+- Optimize container loading when there are a large number of entities
 
 ## [1.24.0] - 2026-04-16
 
