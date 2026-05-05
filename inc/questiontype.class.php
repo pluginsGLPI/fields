@@ -32,6 +32,7 @@ use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\JsonFieldInterface;
 use Glpi\Form\Condition\ConditionHandler\ItemAsTextConditionHandler;
 use Glpi\Form\Condition\ConditionHandler\ItemConditionHandler;
+use Glpi\Form\Condition\ConditionHandler\MultipleChoiceFromValuesConditionHandler;
 use Glpi\Form\Form;
 use Glpi\Form\Migration\FormQuestionDataConverterInterface;
 use Glpi\Form\Question;
@@ -86,6 +87,41 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     }
 
     #[Override]
+    public function prepareEndUserAnswer(Question $question, mixed $answer): mixed
+    {
+        if ($this->isMultipleForQuestion($question) && (isset($answer['items_id']) && is_array($answer['items_id']))) {
+            $answer['items_id'] = array_values(array_map(intval(...), $answer['items_id']));
+        }
+
+        return $answer;
+    }
+
+    #[Override]
+    public function renderAdministrationOptionsTemplate(?Question $question): string
+    {
+        $is_multiple = $this->isMultipleForQuestion($question);
+
+        $template = <<<TWIG
+            <div class="d-flex gap-2">
+                <label class="form-check form-switch mb-0">
+                    <input type="hidden" name="is_multiple" value="0"
+                        data-glpi-form-editor-specific-question-extra-data>
+                    <input class="form-check-input" type="checkbox" name="is_multiple"
+                        value="1" {{ is_multiple ? 'checked' : '' }}
+                        data-glpi-form-editor-specific-question-extra-data>
+                    <span class="form-check-label">{{ label }}</span>
+                </label>
+            </div>
+TWIG;
+
+        $twig = TemplateRenderer::getInstance();
+        return $twig->renderFromStringTemplate($template, [
+            'is_multiple' => $is_multiple,
+            'label'       => __('Allow multiple options'),
+        ]);
+    }
+
+    #[Override]
     public function validateExtraDataInput(array $input): bool
     {
         // Check if the block_id is set and is numeric
@@ -134,6 +170,9 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             $default_value = json_decode($question->fields['default_value'], true);
         }
 
+        $field_data = $current_field->fields;
+        $field_data['multiple'] = $this->isMultipleForQuestion($question) ? 1 : 0;
+
         $twig = TemplateRenderer::getInstance();
         return $twig->render('@fields/question_type_administration.html.twig', [
             'question'          => $question,
@@ -141,7 +180,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             'selected_field_id' => $current_field_id,
             'available_fields'  => $available_fields,
             'item'              => new Form(),
-            'field'             => $current_field->fields,
+            'field'             => $field_data,
         ]);
     }
 
@@ -181,10 +220,13 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             }
         }
 
+        $field_data = $current_field->fields;
+        $field_data['multiple'] = $this->isMultipleForQuestion($question) ? 1 : 0;
+
         $twig = TemplateRenderer::getInstance();
         return $twig->render('@fields/question_type_end_user.html.twig', [
             'question'      => $question,
-            'field'         => $current_field->fields,
+            'field'         => $field_data,
             'default_value' => $default_value,
             'item'          => new Form(),
             'itemtype'      => $itemtype,
@@ -312,7 +354,6 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             return parent::getConditionHandlers($question_config);
         }
 
-        // If the question is configured with a dropdown field, we add condition handlers to handle item and item as text conditions on the dropdown options
         $field = PluginFieldsField::getById($question_config->getFieldId());
         if ($field && str_starts_with((string) $field->fields['type'], 'dropdown')) {
             if ($field->fields['type'] == 'dropdown') {
@@ -330,9 +371,27 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                     new ItemAsTextConditionHandler($itemtype),
                 ],
             );
+
+            if ($field->fields['multiple'] || $question_config->isMultiple()) {
+                $condition_handlers[] = new MultipleChoiceFromValuesConditionHandler(
+                    $this->getDropdownValuesForCondition($itemtype),
+                );
+            }
         }
 
         return $condition_handlers;
+    }
+
+    private function getDropdownValuesForCondition(string $itemtype): array
+    {
+        $values = [];
+        $item = new $itemtype();
+        $rows = $item->find([], 'name');
+        foreach ($rows as $row) {
+            $values[(string) $row['id']] = $row['name'];
+        }
+
+        return $values;
     }
 
     /**
@@ -375,6 +434,32 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         return $config->getFieldId();
     }
 
+    private function getFieldForQuestion(Question $question): ?PluginFieldsField
+    {
+        $field_id = $this->getDefaultValueFieldId($question);
+        if ($field_id === null) {
+            return null;
+        }
+
+        return PluginFieldsField::getById($field_id) ?: null;
+    }
+
+    private function isMultipleForQuestion(?Question $question): bool
+    {
+        if (!$question instanceof Question) {
+            return false;
+        }
+
+        /** @var ?PluginFieldsQuestionTypeExtraDataConfig $config */
+        $config = $this->getExtraDataConfig(json_decode($question->fields['extra_data'], true) ?? []);
+        if ($config !== null && $config->isMultiple()) {
+            return true;
+        }
+
+        $field = $this->getFieldForQuestion($question);
+        return $field instanceof PluginFieldsField && (bool) $field->fields['multiple'];
+    }
+
     private function getAvailableBlocks(): array
     {
         $field_container  = new PluginFieldsContainer();
@@ -391,7 +476,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
 
         $result           = $field_container->find([
             'is_active' => 1,
-            'type'      => 'dom',
+            'type'      => ['dom', 'tab'],
             'OR'        => [
                 ['itemtypes' => ['LIKE', '%\"Ticket\"%']],
                 ['itemtypes' => ['LIKE', '%\"Change\"%']],

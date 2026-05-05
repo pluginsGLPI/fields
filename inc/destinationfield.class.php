@@ -131,13 +131,25 @@ class PluginFieldsDestinationField extends AbstractConfigField
                     $field_name = $field->fields['name'];
                 }
 
+                $raw_answer = $answer->getRawAnswer();
+                $is_multiple = (bool) $field->fields['multiple'];
+                if (!$is_multiple && $question->getQuestionType() instanceof PluginFieldsQuestionType) {
+                    $extra = json_decode($question->fields['extra_data'] ?? '{}', true) ?? [];
+                    $is_multiple = (bool) ($extra[PluginFieldsQuestionTypeExtraDataConfig::IS_MULTIPLE] ?? false);
+                }
+
                 if ($field->fields['type'] == 'glpi_item') {
-                    $input[sprintf('itemtype_%s', $field_name)] = $answer->getRawAnswer()['itemtype'];
-                    $input[sprintf('items_id_%s', $field_name)] = $answer->getRawAnswer()['items_id'];
-                } elseif ($field->fields['type'] == 'dropdown') {
-                    $input[$field_name] = $answer->getRawAnswer()['items_id'];
+                    $input[sprintf('itemtype_%s', $field_name)] = $raw_answer['itemtype'];
+                    $input[sprintf('items_id_%s', $field_name)] = $raw_answer['items_id'];
+                } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
+                    $items_id = $raw_answer['items_id'] ?? $raw_answer;
+                    if ($is_multiple && is_array($items_id)) {
+                        $input[$field_name] = json_encode(array_values(array_map(intval(...), $items_id)));
+                    } else {
+                        $input[$field_name] = $items_id;
+                    }
                 } else {
-                    $input[$field_name] = $value ?? $answer->getRawAnswer();
+                    $input[$field_name] = $value ?? $raw_answer;
                 }
             }
         }
