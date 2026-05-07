@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix migration abort when a GenericObject container name produces a table name exceeding MySQL's 64-character limit after conversion to GlpiCustomAsset.
+- Fix text area fields size and alignment
+- Optimize container loading when there are a large number of entities
 
 ## [1.24.0] - 2026-04-16
 
 ### Added
 
 - Support for new value operators for “Field” question type linked to a field that is a dropdown in forms
+- Support for searching future dates and times in date/datetime fields
 
 ### Fixed
 

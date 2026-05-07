@@ -1766,9 +1766,6 @@ HTML;
             ['type'     => $type],
         ];
 
-        $entity = $_SESSION['glpiactiveentities'] ?? 0;
-        $condition += getEntitiesRestrictCriteria('', '', $entity, true, true);
-
         if ($subtype != '') {
             if ($subtype == $itemtype . '$main') {
                 $condition[] = ['type' => 'dom'];
@@ -1787,7 +1784,7 @@ HTML;
 
         foreach ($itemtypes as $data) {
             $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
-            if (in_array($itemtype, $dataitemtypes)) {
+            if (in_array($itemtype, $dataitemtypes) && Session::haveAccessToEntity($data['entities_id'], $data['is_recursive'])) {
                 $id = $data['id'];
             }
         }
@@ -1807,9 +1804,6 @@ HTML;
     {
         $condition = ['is_active' => 1];
 
-        $entity = $_SESSION['glpiactiveentities'] ?? 0;
-        $condition += getEntitiesRestrictCriteria('', '', $entity, true, true);
-
         $container = new PluginFieldsContainer();
         $itemtypes = $container->find($condition);
 
@@ -1820,7 +1814,7 @@ HTML;
         $ids = [];
         foreach ($itemtypes as $data) {
             $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
-            if (in_array($itemtype, $dataitemtypes)) {
+            if (in_array($itemtype, $dataitemtypes) && Session::haveAccessToEntity($data['entities_id'], $data['is_recursive'])) {
                 $id = $data['id'];
                 //profiles restriction
                 if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $id > 0) {
@@ -2223,6 +2217,7 @@ HTML;
                 case 'date':
                 case 'datetime':
                     $opt[$i]['datatype'] = $data['type'];
+                    $opt[$i]['maybefuture'] = true;
                     break;
                 case 'url':
                     $opt[$i]['datatype'] = 'weblink';
