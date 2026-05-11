@@ -1011,7 +1011,7 @@ class PluginFieldsField extends CommonDBChild
                         var multiple_matches = item.name.match(/^(.+)\[\]$/);
                         if (multiple_matches) {
                             var name = multiple_matches[1];
-                            if (!(name in obj)) {
+                            if (!(name in obj) || obj[name] == "") {
                                 obj[name] = [];
                             }
                             obj[name].push(item.value);
