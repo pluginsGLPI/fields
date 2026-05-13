@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix empty dropdown value (-1) on form submission
 - Fix text area fields size and alignment
 - Optimize container loading when there are a large number of entities
 
