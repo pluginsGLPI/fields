@@ -1413,11 +1413,12 @@ HTML;
                     // Add new values to existing ones
                     $existing_values = json_decode($obj->fields[$field_name] ?? '[]', true);
                     $new_values      = is_array($data[$field_name]) ? $data[$field_name] : [$data[$field_name]];
+                    $new_values      = $this->flattenScalars($new_values);
                     $data[$field_name] = json_encode(array_values(array_unique(array_merge($existing_values, $new_values))));
 
                 } else {
                     $value = $data[$field_name];
-                    $value = is_array($value) ? $value : [];
+                    $value = is_array($value) ? $this->flattenScalars($value) : [];
                     $data[$field_name] = json_encode($value);
                 }
             } elseif (array_key_exists('_' . $field_name . '_defined', $data)) {
@@ -1964,6 +1965,29 @@ HTML;
         }
 
         return false;
+    }
+
+    /**
+     * Flatten a one-level-deep array of mixed scalars/arrays into a flat array of scalars.
+     * Guards against nested arrays produced when a readonly multiple-dropdown field submits
+     * with a doubly-bracketed name (e.g. foo[][][]).
+     */
+    private function flattenScalars(array $values): array
+    {
+        $flat = [];
+        foreach ($values as $v) {
+            if (is_array($v)) {
+                foreach ($v as $inner) {
+                    if (is_scalar($inner)) {
+                        $flat[] = $inner;
+                    }
+                }
+            } elseif (is_scalar($v)) {
+                $flat[] = $v;
+            }
+        }
+
+        return $flat;
     }
 
     /**
