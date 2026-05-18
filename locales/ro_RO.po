@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-12 01:25+0000\n"
+"POT-Creation-Date: 2026-05-18 02:45+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Virgiliu Antonescu, 2022\n"
 "Language-Team: Romanian (Romania) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ro_RO/)\n"
@@ -19,10 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ro_RO\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "arată"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -36,14 +32,13 @@ msgstr "Status nepreluat"
 msgid "No item found"
 msgstr "Nu a fost găsit niciun element"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
-msgid "Field"
-msgstr "Câmp"
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr ""
 
-#: templates/forms/status_override.html.twig inc/field.class.php:646
-#: inc/field.class.php:825
-msgid "Read only"
-msgstr "Nu poate fi editat"
+#: templates/fields.html.twig
+msgid "show"
+msgstr "arată"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -57,21 +52,14 @@ msgstr[0] "Condiții pentru ascunderea blocului"
 msgstr[1] "Condiții ascundere bloc"
 msgstr[2] "Condiții pentru ascunderea blocului"
 
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr ""
+#: templates/forms/status_override.html.twig inc/field.class.php:246
+msgid "Field"
+msgstr "Câmp"
 
-#: hook.php:57 hook.php:61
-msgid "MySQL tables installation"
-msgstr "Generarea tabelelor MySQL pentru instalare "
-
-#: hook.php:114
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Plugin-ul nu poate fi dezinstalat când este dezactivat"
-
-#: hook.php:127
-msgid "MySQL tables uninstallation"
-msgstr "Ștergerea tabelelor MySQL instalate"
+#: templates/forms/status_override.html.twig inc/field.class.php:647
+#: inc/field.class.php:826
+msgid "Read only"
+msgstr "Nu poate fi editat"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
@@ -89,61 +77,14 @@ msgstr ""
 msgid "Default value will be configurable once field will be created."
 msgstr ""
 
-#: inc/field.class.php:261 inc/field.class.php:288
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Numele câmpului este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
-
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
-
-#: inc/field.class.php:367
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
-
-#: inc/field.class.php:564
-msgid "Fields"
-msgstr "Câmpuri"
-
-#: inc/field.class.php:629
-msgid "Add a new field"
-msgstr "Adaugă un câmp nou"
-
-#: inc/field.class.php:633
-msgid "No field for this block"
-msgstr "Nu există niciun câmp pentru acest bloc"
-
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50 setup.php:248
-#: front/container.form.php:74 front/container.php:34
+#: setup.php:248 front/container.php:34 front/container.form.php:74
+#: inc/menu.class.php:37 inc/destinationfield.class.php:50
 msgid "Additional fields"
 msgstr "Câmpuri adiționale"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "Ignorați în funcție de stare"
-
-#: inc/containerdisplaycondition.class.php:106
-#: inc/containerdisplaycondition.class.php:138
-msgid "under"
-msgstr "sub"
-
-#: inc/containerdisplaycondition.class.php:107
-#: inc/containerdisplaycondition.class.php:141
-msgid "not under"
-msgstr "nu sub"
-
-#: inc/containerdisplaycondition.class.php:113
-#: inc/containerdisplaycondition.class.php:135
-msgid "regular expression matches"
-msgstr "expresia se potrivește"
-
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
-msgid "You must specify an item type, search option and condition."
-msgstr "Trebuie să specificați un tip de articol, o opțiune de căutare și o condiție."
 
 #: inc/labeltranslation.class.php:222
 msgid "Language"
@@ -153,55 +94,6 @@ msgstr "Limba"
 msgid "Label"
 msgstr "Eticheta"
 
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr "Verificați baza de date pentru a detecta inconsecvența datelor."
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr "Această comandă va verifica baza de date pentru a detecta următoarele inconsecvențe:"
-
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr "- unele câmpuri șterse pot fi încă prezente în baza de date (bug existent in versiunea %s și remediat în versiunea %s)"
-
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr "Utilizați această opțiune pentru a remedia baza de date"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr "Totul este în ordine - nu este necesară nicio acțiune."
-
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "Baza de date conținea date orfane din %s câmp(uri) șterse incorect."
-
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "Baza de date conține date orfane din %s câmp(uri) șterse incorect."
-
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> \"%s.%s\" a fost șters."
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> \"%s.%s\" trebuie șters."
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Rulați „%s” pentru a remedia inconsecvențele bazei de date."
-
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Remediați numele câmpurilor"
@@ -209,10 +101,6 @@ msgstr "Remediați numele câmpurilor"
 #: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Elemente componente"
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Actualizarea fișierelor tip desfășurător generate"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
@@ -288,6 +176,26 @@ msgstr "Unele câmpuri numerice conțin valori non numerice"
 msgid "Some URL fields contains invalid links"
 msgstr "Unele câmpuri URL conțin linkuri nevalide"
 
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
+msgid "under"
+msgstr "sub"
+
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
+msgid "not under"
+msgstr "nu sub"
+
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
+msgid "regular expression matches"
+msgstr "expresia se potrivește"
+
+#: inc/containerdisplaycondition.class.php:507
+#: inc/containerdisplaycondition.class.php:523
+msgid "You must specify an item type, search option and condition."
+msgstr "Trebuie să specificați un tip de articol, o opțiune de căutare și o condiție."
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr ""
@@ -297,3 +205,95 @@ msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
 msgstr ""
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Actualizarea fișierelor tip desfășurător generate"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Verificați baza de date pentru a detecta inconsecvența datelor."
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "Această comandă va verifica baza de date pentru a detecta următoarele inconsecvențe:"
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "- unele câmpuri șterse pot fi încă prezente în baza de date (bug existent in versiunea %s și remediat în versiunea %s)"
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Utilizați această opțiune pentru a remedia baza de date"
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Totul este în ordine - nu este necesară nicio acțiune."
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "Baza de date conținea date orfane din %s câmp(uri) șterse incorect."
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "Baza de date conține date orfane din %s câmp(uri) șterse incorect."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> \"%s.%s\" a fost șters."
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> \"%s.%s\" trebuie șters."
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "Rulați „%s” pentru a remedia inconsecvențele bazei de date."
+
+#: inc/field.class.php:261 inc/field.class.php:288
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Numele câmpului este prea lung pentru baza de date (cifrele din nume sunt înlocuite cu caractere, încercați să le eliminați)"
+
+#: inc/field.class.php:280
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr ""
+
+#: inc/field.class.php:368
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
+
+#: inc/field.class.php:565
+msgid "Fields"
+msgstr "Câmpuri"
+
+#: inc/field.class.php:630
+msgid "Add a new field"
+msgstr "Adaugă un câmp nou"
+
+#: inc/field.class.php:634
+msgid "No field for this block"
+msgstr "Nu există niciun câmp pentru acest bloc"
+
+#: hook.php:57 hook.php:61
+msgid "MySQL tables installation"
+msgstr "Generarea tabelelor MySQL pentru instalare "
+
+#: hook.php:114
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Plugin-ul nu poate fi dezinstalat când este dezactivat"
+
+#: hook.php:127
+msgid "MySQL tables uninstallation"
+msgstr "Ștergerea tabelelor MySQL instalate"

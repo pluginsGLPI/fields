@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 01:42+0000\n"
+"POT-Creation-Date: 2026-05-18 02:45+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2026\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sk_SK/)\n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sk_SK\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "zobraziť"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -34,14 +30,13 @@ msgstr "Prepísania stavov"
 msgid "No item found"
 msgstr "Nenašla sa žiadna položka"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
-msgid "Field"
-msgstr "Pole"
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr "Pripojiť dodatočné polia k cieľu"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:646
-#: inc/field.class.php:825
-msgid "Read only"
-msgstr "Iba na čítanie"
+#: templates/fields.html.twig
+msgid "show"
+msgstr "zobraziť"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -56,21 +51,14 @@ msgstr[1] "Podmienky na skrytie bloku"
 msgstr[2] "Podmienky na skrytie bloku"
 msgstr[3] "Podmienky na skrytie bloku"
 
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr "Pripojiť dodatočné polia k cieľu"
+#: templates/forms/status_override.html.twig inc/field.class.php:246
+msgid "Field"
+msgstr "Pole"
 
-#: hook.php:57 hook.php:61
-msgid "MySQL tables installation"
-msgstr "Inštalácia MySQL tabuliek"
-
-#: hook.php:114
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Plugin nemožno odinštalovať ak je plugin vypnutý"
-
-#: hook.php:127
-msgid "MySQL tables uninstallation"
-msgstr "Odinštalovanie MySQL tabuliek"
+#: templates/forms/status_override.html.twig inc/field.class.php:647
+#: inc/field.class.php:826
+msgid "Read only"
+msgstr "Iba na čítanie"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
@@ -88,61 +76,14 @@ msgstr "Predvolená hodnota"
 msgid "Default value will be configurable once field will be created."
 msgstr "Predvolená hodnota bude konfigurovateľná po vytvorení poľa."
 
-#: inc/field.class.php:261 inc/field.class.php:288
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
-
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
-
-#: inc/field.class.php:367
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr "Pole \"%s\" nemožno zmazať, pretože sa používa v otázke formulára"
-
-#: inc/field.class.php:564
-msgid "Fields"
-msgstr "Polia"
-
-#: inc/field.class.php:629
-msgid "Add a new field"
-msgstr "Pridať nové pole"
-
-#: inc/field.class.php:633
-msgid "No field for this block"
-msgstr "Žiadne pole pre tento blok"
-
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50 setup.php:248
-#: front/container.form.php:74 front/container.php:34
+#: setup.php:248 front/container.php:34 front/container.form.php:74
+#: inc/menu.class.php:37 inc/destinationfield.class.php:50
 msgid "Additional fields"
 msgstr "Dodatočné polia"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "Prepísanie podľa stavu"
-
-#: inc/containerdisplaycondition.class.php:106
-#: inc/containerdisplaycondition.class.php:138
-msgid "under"
-msgstr "pod"
-
-#: inc/containerdisplaycondition.class.php:107
-#: inc/containerdisplaycondition.class.php:141
-msgid "not under"
-msgstr "nie je pod"
-
-#: inc/containerdisplaycondition.class.php:113
-#: inc/containerdisplaycondition.class.php:135
-msgid "regular expression matches"
-msgstr "regulárny výraz zodpovedá"
-
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
-msgid "You must specify an item type, search option and condition."
-msgstr "Musíte špecifikovať typ položky, možnosť hľadania a podmienku."
 
 #: inc/labeltranslation.class.php:222
 msgid "Language"
@@ -152,55 +93,6 @@ msgstr "Jazyk"
 msgid "Label"
 msgstr "Popisok"
 
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr "Kontrola databázy na zistenie nekonzistencií."
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr "Tento príkaz skontroluje databázu na zistenie nasledujúcich nekonzistencií:"
-
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr "- niektoré vymazané polia sa môžu stále nachádzať v databáze (chyba zavedená vo verzii %s a opravená vo verzii %s)"
-
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr "Použite túto voľbu na skutočnú opravu databázy"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr "Všetko je v poriadku - nevyžaduje sa žiadna akcia."
-
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "Databáza obsahovala osamotené dáta z %s neplatne vymazaných polí."
-
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "Databáza obsahuje osamotené dáta z %s neplatne vymazaných polí."
-
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> \"%s.%s\" bola vymazaná."
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> \"%s.%s\" by mala byť vymazaná."
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Spustite \"%s\" na opravu nekonzistencií databázy."
-
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Opraviť názvy polí"
@@ -208,10 +100,6 @@ msgstr "Opraviť názvy polí"
 #: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Položky komponentov"
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Aktualizácia vygenerovaných súborov rozbaľovacích ponúk"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
@@ -287,6 +175,26 @@ msgstr "Niektoré číselné polia obsahujú nečíselné hodnoty"
 msgid "Some URL fields contains invalid links"
 msgstr "Niektoré URL polia obsahujú neplatné odkazy"
 
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
+msgid "under"
+msgstr "pod"
+
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
+msgid "not under"
+msgstr "nie je pod"
+
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
+msgid "regular expression matches"
+msgstr "regulárny výraz zodpovedá"
+
+#: inc/containerdisplaycondition.class.php:507
+#: inc/containerdisplaycondition.class.php:523
+msgid "You must specify an item type, search option and condition."
+msgstr "Musíte špecifikovať typ položky, možnosť hľadania a podmienku."
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Znova generovať kontajnerové súbory."
@@ -296,3 +204,95 @@ msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
 msgstr "Tento príkaz vyčistí všetky súbory vygenerované týmto pluginom a znova ich vygeneruje."
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Aktualizácia vygenerovaných súborov rozbaľovacích ponúk"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Kontrola databázy na zistenie nekonzistencií."
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "Tento príkaz skontroluje databázu na zistenie nasledujúcich nekonzistencií:"
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "- niektoré vymazané polia sa môžu stále nachádzať v databáze (chyba zavedená vo verzii %s a opravená vo verzii %s)"
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Použite túto voľbu na skutočnú opravu databázy"
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Všetko je v poriadku - nevyžaduje sa žiadna akcia."
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "Databáza obsahovala osamotené dáta z %s neplatne vymazaných polí."
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "Databáza obsahuje osamotené dáta z %s neplatne vymazaných polí."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> \"%s.%s\" bola vymazaná."
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> \"%s.%s\" by mala byť vymazaná."
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "Spustite \"%s\" na opravu nekonzistencií databázy."
+
+#: inc/field.class.php:261 inc/field.class.php:288
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Názov poľa je pre databázu príliš dlhý (číslice v názve sú nahradené znakmi, skúste ich vymazať)"
+
+#: inc/field.class.php:280
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "Nemôžete pridať rovnaké pole \"rozbaľovacia ponuka\" na rovnaký blok"
+
+#: inc/field.class.php:368
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "Pole \"%s\" nemožno zmazať, pretože sa používa v otázke formulára"
+
+#: inc/field.class.php:565
+msgid "Fields"
+msgstr "Polia"
+
+#: inc/field.class.php:630
+msgid "Add a new field"
+msgstr "Pridať nové pole"
+
+#: inc/field.class.php:634
+msgid "No field for this block"
+msgstr "Žiadne pole pre tento blok"
+
+#: hook.php:57 hook.php:61
+msgid "MySQL tables installation"
+msgstr "Inštalácia MySQL tabuliek"
+
+#: hook.php:114
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Plugin nemožno odinštalovať ak je plugin vypnutý"
+
+#: hook.php:127
+msgid "MySQL tables uninstallation"
+msgstr "Odinštalovanie MySQL tabuliek"

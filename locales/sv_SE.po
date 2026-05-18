@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-12 01:25+0000\n"
+"POT-Creation-Date: 2026-05-18 02:45+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Peter Rundqvist, 2025\n"
 "Language-Team: Swedish (Sweden) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sv_SE/)\n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sv_SE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "visa"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -34,14 +30,13 @@ msgstr "Åsidosättningar"
 msgid "No item found"
 msgstr "Inga objekt"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
-msgid "Field"
-msgstr "Fält"
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr "Knyt ytterligare fält till målet"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:646
-#: inc/field.class.php:825
-msgid "Read only"
-msgstr "Skrivskyddat"
+#: templates/fields.html.twig
+msgid "show"
+msgstr "visa"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -54,21 +49,14 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Villkor för att dölja block"
 msgstr[1] "Villkor för att dölja block"
 
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr "Knyt ytterligare fält till målet"
+#: templates/forms/status_override.html.twig inc/field.class.php:246
+msgid "Field"
+msgstr "Fält"
 
-#: hook.php:57 hook.php:61
-msgid "MySQL tables installation"
-msgstr "Installera MySQL-tabeller"
-
-#: hook.php:114
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Tillägget kan inte avinstalleras när det är inaktivt"
-
-#: hook.php:127
-msgid "MySQL tables uninstallation"
-msgstr "Avinstallera MySQL-tabeller"
+#: templates/forms/status_override.html.twig inc/field.class.php:647
+#: inc/field.class.php:826
+msgid "Read only"
+msgstr "Skrivskyddat"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
@@ -86,61 +74,14 @@ msgstr "Standardvärde"
 msgid "Default value will be configurable once field will be created."
 msgstr "Standardvärdet går att konfigurera när fältet skapats."
 
-#: inc/field.class.php:261 inc/field.class.php:288
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Fältnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i fältnamnet."
-
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "Du kan inte lägga till samma fält 'nedrullningsmeny' i samma block."
-
-#: inc/field.class.php:367
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr "Kan inte ta bort fältet \"%s\" eftersom det används av en fråga i ett formulär."
-
-#: inc/field.class.php:564
-msgid "Fields"
-msgstr "Fält"
-
-#: inc/field.class.php:629
-msgid "Add a new field"
-msgstr "Lägg till nytt fält"
-
-#: inc/field.class.php:633
-msgid "No field for this block"
-msgstr "Inga fält för detta block"
-
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50 setup.php:248
-#: front/container.form.php:74 front/container.php:34
+#: setup.php:248 front/container.php:34 front/container.form.php:74
+#: inc/menu.class.php:37 inc/destinationfield.class.php:50
 msgid "Additional fields"
 msgstr "Ytterligare fält"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "Åsidosätt via status"
-
-#: inc/containerdisplaycondition.class.php:106
-#: inc/containerdisplaycondition.class.php:138
-msgid "under"
-msgstr "nedanför"
-
-#: inc/containerdisplaycondition.class.php:107
-#: inc/containerdisplaycondition.class.php:141
-msgid "not under"
-msgstr "ej nedanför"
-
-#: inc/containerdisplaycondition.class.php:113
-#: inc/containerdisplaycondition.class.php:135
-msgid "regular expression matches"
-msgstr "Regex matchar"
-
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
-msgid "You must specify an item type, search option and condition."
-msgstr "Du måste ange en objekttyp, ett sökalternativ och ett villkor."
 
 #: inc/labeltranslation.class.php:222
 msgid "Language"
@@ -150,55 +91,6 @@ msgstr "Språk"
 msgid "Label"
 msgstr "Etikett"
 
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr "Kontrollera databasen för att upptäcka problem."
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr "Detta kommando söker efter följande problem i databasen:"
-
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr "– vissa borttagna fält kan fortfarande finnas kvar i databasen (fel i version %s som åtgärdades i version %s)"
-
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr "Använd detta alternativ för att reparera databasen"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr "Allt OK - ingen åtgärd krävs."
-
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "Databasen innehöll övergivna data från %s felaktigt borttagna fält."
-
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "Databasen innehåller övergivna data från %s felaktigt borttagna fält."
-
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> \"%s.%s\" har tagits bort."
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> \"%s.%s\" bör tas bort."
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Kör \"%s\" för att korrigera problem i databasen."
-
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Korrigera fältnamn"
@@ -206,10 +98,6 @@ msgstr "Korrigera fältnamn"
 #: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Komponentobjekt"
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Uppdaterar genererade filer över menyalternativ"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
@@ -285,6 +173,26 @@ msgstr "Vissa numeriska fält innehåller icke-numeriska värden"
 msgid "Some URL fields contains invalid links"
 msgstr "Vissa URL-fält innehåler ogiltiga länkar"
 
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
+msgid "under"
+msgstr "nedanför"
+
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
+msgid "not under"
+msgstr "ej nedanför"
+
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
+msgid "regular expression matches"
+msgstr "Regex matchar"
+
+#: inc/containerdisplaycondition.class.php:507
+#: inc/containerdisplaycondition.class.php:523
+msgid "You must specify an item type, search option and condition."
+msgstr "Du måste ange en objekttyp, ett sökalternativ och ett villkor."
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Återskapar behållarfiler."
@@ -294,3 +202,95 @@ msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
 msgstr "Detta kommando rensar alla filer som genererats av tillägget och återskapar dem."
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Uppdaterar genererade filer över menyalternativ"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Kontrollera databasen för att upptäcka problem."
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "Detta kommando söker efter följande problem i databasen:"
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "– vissa borttagna fält kan fortfarande finnas kvar i databasen (fel i version %s som åtgärdades i version %s)"
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Använd detta alternativ för att reparera databasen"
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Allt OK - ingen åtgärd krävs."
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "Databasen innehöll övergivna data från %s felaktigt borttagna fält."
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "Databasen innehåller övergivna data från %s felaktigt borttagna fält."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> \"%s.%s\" har tagits bort."
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> \"%s.%s\" bör tas bort."
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "Kör \"%s\" för att korrigera problem i databasen."
+
+#: inc/field.class.php:261 inc/field.class.php:288
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Fältnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i fältnamnet."
+
+#: inc/field.class.php:280
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "Du kan inte lägga till samma fält 'nedrullningsmeny' i samma block."
+
+#: inc/field.class.php:368
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "Kan inte ta bort fältet \"%s\" eftersom det används av en fråga i ett formulär."
+
+#: inc/field.class.php:565
+msgid "Fields"
+msgstr "Fält"
+
+#: inc/field.class.php:630
+msgid "Add a new field"
+msgstr "Lägg till nytt fält"
+
+#: inc/field.class.php:634
+msgid "No field for this block"
+msgstr "Inga fält för detta block"
+
+#: hook.php:57 hook.php:61
+msgid "MySQL tables installation"
+msgstr "Installera MySQL-tabeller"
+
+#: hook.php:114
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Tillägget kan inte avinstalleras när det är inaktivt"
+
+#: hook.php:127
+msgid "MySQL tables uninstallation"
+msgstr "Avinstallera MySQL-tabeller"
