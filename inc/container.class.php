@@ -1969,25 +1969,18 @@ HTML;
 
     /**
      * Flatten a one-level-deep array of mixed scalars/arrays into a flat array of scalars.
-     * Guards against nested arrays produced when a readonly multiple-dropdown field submits
-     * with a doubly-bracketed name (e.g. foo[][][]).
+     *
+     * @param array<mixed, mixed> $values
+     * @return array<mixed, mixed> $values the flattened array with only scalar values
      */
     private function flattenScalars(array $values): array
     {
         $flat = [];
         foreach ($values as $v) {
-            if (is_array($v)) {
-                foreach ($v as $inner) {
-                    if (is_scalar($inner)) {
-                        $flat[] = $inner;
-                    }
-                }
-            } elseif (is_scalar($v)) {
-                $flat[] = $v;
-            }
+            array_push($flat, ...(is_array($v) ? $v : [$v]));
         }
 
-        return $flat;
+        return array_values(array_filter($flat, is_scalar(...)));
     }
 
     /**
