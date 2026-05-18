@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-12 01:25+0000\n"
+"POT-Creation-Date: 2026-05-18 02:45+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2025\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "görüntüle"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -34,14 +30,13 @@ msgstr "Durum değişiklikleri"
 msgid "No item found"
 msgstr "Herhangi bir öge bulunamadı"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
-msgid "Field"
-msgstr "Alan"
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr "Ek alanları hedefe bağla"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:646
-#: inc/field.class.php:825
-msgid "Read only"
-msgstr "Salt okunur"
+#: templates/fields.html.twig
+msgid "show"
+msgstr "görüntüle"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -54,21 +49,14 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Bloğu gizleyecek koşul"
 msgstr[1] "Bloğu gizleyecek koşullar"
 
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr "Ek alanları hedefe bağla"
+#: templates/forms/status_override.html.twig inc/field.class.php:246
+msgid "Field"
+msgstr "Alan"
 
-#: hook.php:57 hook.php:61
-msgid "MySQL tables installation"
-msgstr "MySQL tabloları yükleme"
-
-#: hook.php:114
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Bu uygulama eklenti kullanımdan kaldırılmışken kaldırılamaz"
-
-#: hook.php:127
-msgid "MySQL tables uninstallation"
-msgstr "MySQL tabloları kaldırma"
+#: templates/forms/status_override.html.twig inc/field.class.php:647
+#: inc/field.class.php:826
+msgid "Read only"
+msgstr "Salt okunur"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
@@ -86,61 +74,14 @@ msgstr "Varsayılan değer"
 msgid "Default value will be configurable once field will be created."
 msgstr "Alan eklendikten sonra varsayılan değer yapılandırılabilir."
 
-#: inc/field.class.php:261 inc/field.class.php:288
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Alan adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
-
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "Aynı blok içine aynı 'açılan kutu' alanı eklenemez"
-
-#: inc/field.class.php:367
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr "\"%s\" alanı bir form sorusunda kullanıldığı için silinemez"
-
-#: inc/field.class.php:564
-msgid "Fields"
-msgstr "Alanlar"
-
-#: inc/field.class.php:629
-msgid "Add a new field"
-msgstr "Alan ekle"
-
-#: inc/field.class.php:633
-msgid "No field for this block"
-msgstr "Bu blokta henüz bir alan yok"
-
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50 setup.php:248
-#: front/container.form.php:74 front/container.php:34
+#: setup.php:248 front/container.php:34 front/container.form.php:74
+#: inc/menu.class.php:37 inc/destinationfield.class.php:50
 msgid "Additional fields"
 msgstr "Ek alanlar"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "Duruma göre değiştir"
-
-#: inc/containerdisplaycondition.class.php:106
-#: inc/containerdisplaycondition.class.php:138
-msgid "under"
-msgstr "şunun altında olan"
-
-#: inc/containerdisplaycondition.class.php:107
-#: inc/containerdisplaycondition.class.php:141
-msgid "not under"
-msgstr "şunun altında olmayan"
-
-#: inc/containerdisplaycondition.class.php:113
-#: inc/containerdisplaycondition.class.php:135
-msgid "regular expression matches"
-msgstr "kurallı ifade eşleşmeleri"
-
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
-msgid "You must specify an item type, search option and condition."
-msgstr "Bir öge türü, arama seçeneği ve koşulu belirtmelisiniz."
 
 #: inc/labeltranslation.class.php:222
 msgid "Language"
@@ -150,55 +91,6 @@ msgstr "Dil"
 msgid "Label"
 msgstr "Etiket"
 
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr "Veri tabanını tutarsızlıklara karşı denetle."
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr "Bu komut veirtabanını şu tutarsızlıklara karşı denetleyecek:"
-
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr "- Bazı silinmiş alanlar hala veri tabanında kalabilir (hata %s sürümünde bulundu ve %s sürümünde düzeltildi)"
-
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr "Veri tabanını onarmak için bu seçeneği kullanın"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr "Herşey düzgün. Herhangi bir işlem yapılması gerekmiyor."
-
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "Veri tabanında düzgün olmayan şekilde silinmiş %s alandan artakalmış sahipsiz veriler var."
-
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "Veri tabanında düzgün olmayan şekilde silinmiş %s alandan artakalmış sahipsiz veriler var."
-
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> \"%s.%s\" silindi."
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> \"%s.%s\" silinmeli."
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Veri tabanı tutarsızlıklarını düzeltmek için \"%s\" çalıştırın."
-
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
 msgstr "Alan adlarını düzelt"
@@ -206,10 +98,6 @@ msgstr "Alan adlarını düzelt"
 #: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Bileşen ögeleri"
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
@@ -285,6 +173,26 @@ msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 msgid "Some URL fields contains invalid links"
 msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
+msgid "under"
+msgstr "şunun altında olan"
+
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
+msgid "not under"
+msgstr "şunun altında olmayan"
+
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
+msgid "regular expression matches"
+msgstr "kurallı ifade eşleşmeleri"
+
+#: inc/containerdisplaycondition.class.php:507
+#: inc/containerdisplaycondition.class.php:523
+msgid "You must specify an item type, search option and condition."
+msgstr "Bir öge türü, arama seçeneği ve koşulu belirtmelisiniz."
+
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Kapsayıcı dosyaları yeniden oluşturur."
@@ -294,3 +202,95 @@ msgid ""
 "This command will clean up all files generated by the plugin and regenerate "
 "them."
 msgstr "Bu komut eklenti tarafından oluşturulmuş tüm dosyaları siler ve yeniden oluşturur."
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Veri tabanını tutarsızlıklara karşı denetle."
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "Bu komut veirtabanını şu tutarsızlıklara karşı denetleyecek:"
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "- Bazı silinmiş alanlar hala veri tabanında kalabilir (hata %s sürümünde bulundu ve %s sürümünde düzeltildi)"
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Veri tabanını onarmak için bu seçeneği kullanın"
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Herşey düzgün. Herhangi bir işlem yapılması gerekmiyor."
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "Veri tabanında düzgün olmayan şekilde silinmiş %s alandan artakalmış sahipsiz veriler var."
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "Veri tabanında düzgün olmayan şekilde silinmiş %s alandan artakalmış sahipsiz veriler var."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> \"%s.%s\" silindi."
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> \"%s.%s\" silinmeli."
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "Veri tabanı tutarsızlıklarını düzeltmek için \"%s\" çalıştırın."
+
+#: inc/field.class.php:261 inc/field.class.php:288
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Alan adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
+
+#: inc/field.class.php:280
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "Aynı blok içine aynı 'açılan kutu' alanı eklenemez"
+
+#: inc/field.class.php:368
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "\"%s\" alanı bir form sorusunda kullanıldığı için silinemez"
+
+#: inc/field.class.php:565
+msgid "Fields"
+msgstr "Alanlar"
+
+#: inc/field.class.php:630
+msgid "Add a new field"
+msgstr "Alan ekle"
+
+#: inc/field.class.php:634
+msgid "No field for this block"
+msgstr "Bu blokta henüz bir alan yok"
+
+#: hook.php:57 hook.php:61
+msgid "MySQL tables installation"
+msgstr "MySQL tabloları yükleme"
+
+#: hook.php:114
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Bu uygulama eklenti kullanımdan kaldırılmışken kaldırılamaz"
+
+#: hook.php:127
+msgid "MySQL tables uninstallation"
+msgstr "MySQL tabloları kaldırma"
