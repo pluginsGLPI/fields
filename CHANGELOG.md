@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased] -
+## [UNRELEASED]
 
 ### Fixed
 
+- Fix migration abort when a GenericObject container name produces a table name exceeding MySQL's 64-character limit after conversion to GlpiCustomAsset.
 - Fix empty dropdown value (-1) on form submission
 - Fix text area fields size and alignment
 - Optimize container loading when there are a large number of entities
