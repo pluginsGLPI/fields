@@ -200,4 +200,44 @@ class PluginFieldsMigration extends Migration
             fn(string $field) => !in_array($field, $basic_fields, true),
         );
     }
+
+    public static function getGenericObjectTypes() {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        // Check GenericObject version
+        $genericobject_info = Plugin::getInfo('genericobject');
+        if (version_compare($genericobject_info['version'] ?? '0', '3.0.0', '<')) {
+            throw new RuntimeException(
+                'GenericObject plugin cannot be migrated. Please update it to the latest version.',
+            );
+        }
+
+        // Check glpi_plugin_genericobject_types table
+        if (!$DB->fieldExists('glpi_plugin_genericobject_types', 'itemtype')) {
+            throw new RuntimeException(
+                'Integrity error on the glpi_plugin_genericobject_types table from the GenericObject plugin.',
+            );
+        }
+
+        $migration_genericobject_itemtype = [];
+        $result = $DB->request(['FROM' => 'glpi_plugin_genericobject_types']);
+        foreach ($result as $type) {
+            $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'Asset';
+            if (str_ends_with((string) $type['itemtype'], 'Model')) {
+                $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'AssetModel';
+            } elseif (str_ends_with((string) $type['itemtype'], 'Type')) {
+                $customasset_classname = 'Glpi\\\\CustomAsset\\\\' . $type['name'] . 'AssetType';
+            }
+
+            $migration_genericobject_itemtype[$type['itemtype']] = [
+                'genericobject_itemtype' => $type['itemtype'],
+                'itemtype' => $customasset_classname,
+                'genericobject_name' => $type['name'],
+                'name' => $type['name'] . 'Asset',
+            ];
+        }
+
+        return $migration_genericobject_itemtype;
+    }
 }
