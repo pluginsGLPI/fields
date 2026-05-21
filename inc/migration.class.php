@@ -201,7 +201,8 @@ class PluginFieldsMigration extends Migration
         );
     }
 
-    public static function getGenericObjectTypes() {
+    public static function getGenericObjectTypes()
+    {
         /** @var DBmysql $DB */
         global $DB;
 
