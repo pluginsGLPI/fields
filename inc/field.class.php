@@ -187,7 +187,7 @@ class PluginFieldsField extends CommonDBChild
                             'type' => 'dropdown-' . $itemtype,
                         ],
                         [
-                            'type' => ['LIKE', 'dropdown-' . $type['genericobject_itemtype'] . '%'],
+                            'type' => ['LIKE', 'dropdown-' . $type['genericobject_itemtype']],
                         ],
                     ),
                 );
