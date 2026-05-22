@@ -138,7 +138,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                     $raw_id = (int) $answer->getRawAnswer()['items_id'];
                     $input[$field_name] = ($raw_id > 0) ? $raw_id : null;
                 } else {
-                    $input[$field_name] = $value ?? $answer->getRawAnswer();
+                    $input[$field_name] = $answer->getRawAnswer();
                 }
             }
         }
