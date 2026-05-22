@@ -159,16 +159,6 @@ class PluginFieldsField extends CommonDBChild
             $migration_genericobject_itemtypes = PluginFieldsMigration::getGenericObjectTypes();
 
             foreach ($migration_genericobject_itemtypes as $type) {
-                // Check if genericobject and customasset itemtypes exist
-                if (!class_exists($type['genericobject_itemtype'])) {
-                    $migration->addDebugMessage(sprintf(
-                        'The itemtype %s does not exist, please check if %s.class.php is present',
-                        $type['genericobject_itemtype'],
-                        $type['genericobject_name'],
-                    ));
-                    continue;
-                }
-
                 $itemtype = str_replace('\\\\', '\\', $type['itemtype']);
                 if (!class_exists($itemtype)) {
                     $migration->addDebugMessage(sprintf(
