@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix plugin configuration deletion during uninstallation
 - Fix nested array stored in DB for readonly dropdown
 - Fix migration abort when a GenericObject container name produces a table name exceeding MySQL's 64-character limit after conversion to GlpiCustomAsset.
 - Fix empty dropdown value (-1) on form submission
