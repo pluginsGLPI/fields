@@ -165,6 +165,12 @@ function plugin_fields_uninstall()
         'itemtype' => ['LIKE' , 'PluginFields%'],
     ]);
 
+    // clean plugin configuration
+    $config = new PluginConfig();
+    $config->deleteByCriteria([
+        'context' => ['plugin:fields'],
+    ]);
+
     return true;
 }
 
