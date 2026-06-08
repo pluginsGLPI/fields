@@ -168,7 +168,7 @@ function plugin_fields_uninstall()
     // clean configuration values
     $config = new Config();
     $config->deleteByCriteria([
-        'context' => 'plugin_fields',
+        'context' => 'plugin:fields',
     ]);
 
     return true;
