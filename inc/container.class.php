@@ -1145,7 +1145,7 @@ HTML;
                     // For delete <sup class='tab_nb'>number</sup> :
                     foreach ($tabs as &$value) {
                         $results = [];
-                        if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
+                        if (preg_match_all('#<sup.*>(.+)</sup>#', (string) $value, $results)) {
                             $value = str_replace($results[0][0], '', $value);
                         }
                     }
