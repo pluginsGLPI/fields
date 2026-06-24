@@ -645,6 +645,12 @@ class PluginFieldsContainer extends CommonDBTM
         return $ong;
     }
 
+
+    public function prepareInputForUpdate($input)
+    {
+        return PluginFieldsToolbox::prepareLabel($input);
+    }
+
     public function prepareInputForAdd($input)
     {
         if (!isset($input['itemtypes'])) {
@@ -696,8 +702,7 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
-        $toolbox       = new PluginFieldsToolbox();
-        $input['name'] = $toolbox->getSystemNameFromLabel($input['label']);
+        $input = PluginFieldsToolbox::prepareLabel($input);
 
         //reject adding when container name is too long for mysql table name
         foreach ($input['itemtypes'] as $itemtype) {

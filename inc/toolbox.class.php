@@ -390,4 +390,19 @@ class PluginFieldsToolbox
     {
         return preg_replace('/[^\p{L}\p{N}\s\-\_\.]/u', '', $label);
     }
+
+    /**
+     * Sanitize the label in $input and derive the system name from it.
+     * Centralises the prepare-label pattern used in prepareInputForAdd/Update.
+     *
+     * @param array $input Input array with at least a 'label' key.
+     * @return array Updated input with sanitized 'label' and derived 'name'.
+     */
+    public static function prepareLabel(array $input): array
+    {
+        $input['label'] = self::sanitizeLabel((string) ($input['label'] ?? ''));
+        $input['name']  = (new self())->getSystemNameFromLabel($input['label']);
+
+        return $input;
+    }
 }
