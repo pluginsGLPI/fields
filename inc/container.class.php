@@ -1337,7 +1337,7 @@ HTML;
                         if (!$item->isEntityAssign() || in_array($item->fields['entities_id'], $entities)) {
                             $display_condition = new PluginFieldsContainerDisplayCondition();
                             if ($display_condition->computeDisplayContainer($item, $data['id'])) {
-                                $tabs_entries[$data['id']] = self::createTabEntry($data['label'], 0, null, PluginFieldsContainer::getIcon());
+                                $tabs_entries[$data['id']] = self::createTabEntry(PluginFieldsLabelTranslation::getLabelFor(array_merge($data, ['itemtype' => 'PluginFieldsContainer'])), 0, null, PluginFieldsContainer::getIcon());
                             }
                         }
                     }
