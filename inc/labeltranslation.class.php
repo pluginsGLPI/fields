@@ -111,9 +111,25 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         return _n('Translation', 'Translations', $nb);
     }
 
+    public function prepareInputForUpdate($input)
+    {
+        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
+
+        return $input;
+    }
+
+    public function prepareInputForAdd($input)
+    {
+        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
+
+        return $input;
+    }
+
+
     public static function createForItem(CommonDBTM $item)
     {
         $translation = new PluginFieldsLabelTranslation();
+
         $translation->add([
             'itemtype' => $item::getType(),
             'items_id' => $item->getID(),
@@ -250,7 +266,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
                 echo Dropdown::getLanguageName($data['language']);
                 echo '</td><td>';
-                echo  $data['label'];
+                echo htmlspecialchars((string) $data['label'], ENT_QUOTES);
                 echo '</td></tr>';
             }
 

@@ -614,6 +614,12 @@ class PluginFieldsContainer extends CommonDBTM
         return $ong;
     }
 
+
+    public function prepareInputForUpdate($input)
+    {
+        return PluginFieldsToolbox::prepareLabel($input);
+    }
+
     public function prepareInputForAdd($input)
     {
         if (!isset($input['itemtypes'])) {
@@ -665,8 +671,7 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
-        $toolbox       = new PluginFieldsToolbox();
-        $input['name'] = $toolbox->getSystemNameFromLabel($input['label']);
+        $input = PluginFieldsToolbox::prepareLabel($input);
 
         //reject adding when container name is too long for mysql table name
         foreach ($input['itemtypes'] as $itemtype) {
@@ -1114,7 +1119,7 @@ HTML;
                     // For delete <sup class='tab_nb'>number</sup> :
                     foreach ($tabs as &$value) {
                         $results = [];
-                        if (preg_match_all('#<sup.*>(.+)</sup>#', $value, $results)) {
+                        if (preg_match_all('#<sup.*>(.+)</sup>#', (string) $value, $results)) {
                             $value = str_replace($results[0][0], '', $value);
                         }
                     }
@@ -1563,7 +1568,7 @@ HTML;
             //for all change find searchoption
             foreach ($updates as $key => $changes) {
                 foreach ($searchoptions as $id_search_option => $searchoption) {
-                    if ($searchoption['field'] == $key) {
+                    if ($searchoption['field'] == $key || $searchoption['linkfield'] == $key) {
                         $changes[0] = $id_search_option;
 
                         if ($searchoption['datatype'] === 'dropdown') {

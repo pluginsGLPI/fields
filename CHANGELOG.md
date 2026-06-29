@@ -5,10 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
+## [1.24.1] - 2026-06-24
 
 ### Fixed
 
+- Fix the name of dropdown fields in logs when updating an item
+- Fix plugin configuration deletion during uninstallation
 - Fix nested array stored in DB for readonly dropdown
 - Fix migration abort when a GenericObject container name produces a table name exceeding MySQL's 64-character limit after conversion to GlpiCustomAsset.
 - Fix empty dropdown value (-1) on form submission
@@ -16,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Optimize container loading when there are a large number of entities
 - Adding a verification in refreshContainer function for obj value which can be an empty string instead of an array
 - Fix GenericObject type dropdowns migration
+- Fix refreshContainer crash when a field is serialized both as a scalar and as an array
+- Centralized label preparation and system name generation.
 
 ## [1.24.0] - 2026-04-16
 

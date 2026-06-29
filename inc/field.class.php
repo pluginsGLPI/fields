@@ -1044,6 +1044,8 @@ class PluginFieldsField extends CommonDBChild
                             var name = multiple_matches[1];
                             if (!(name in obj) || obj[name] == "") {
                                 obj[name] = [];
+                            } else if (!Array.isArray(obj[name])) {
+                                obj[name] = [obj[name]];
                             }
                             obj[name].push(item.value);
                         } else {
