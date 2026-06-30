@@ -653,7 +653,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForAdd($input)
     {
-        if (!isset($input['itemtypes'])) {
+        if (empty($input['itemtypes'])) {
             Session::AddMessageAfterRedirect(
                 __(
                     'You cannot add block without associated element type',
@@ -1101,6 +1101,7 @@ HTML;
                 'multiple'            => !$is_domtab,
                 'width'               => 200,
                 'display_emptychoice' => $is_domtab,
+                'required'            => true,
             ],
         );
 
