@@ -396,12 +396,21 @@ class PluginFieldsToolbox
      * Centralises the prepare-label pattern used in prepareInputForAdd/Update.
      *
      * @param array $input Input array with at least a 'label' key.
-     * @return array Updated input with sanitized 'label' and derived 'name'.
+     * @return array|bool Updated input with sanitized 'label' and derived 'name', or false on error.
      */
-    public static function prepareLabel(array $input): array
+    public static function prepareLabel(array $input): array|bool
     {
         $input['label'] = self::sanitizeLabel((string) ($input['label'] ?? ''));
         $input['name']  = (new self())->getSystemNameFromLabel($input['label']);
+
+        if (!PluginFieldsContainer::checkContainerName($input)) {
+            Session::addMessageAfterRedirect(
+                __('Container name is too long for database', 'fields'),
+                false,
+                ERROR,
+            );
+            return false;
+        }
 
         return $input;
     }
