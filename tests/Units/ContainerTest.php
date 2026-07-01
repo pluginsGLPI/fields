@@ -105,4 +105,59 @@ final class ContainerTest extends DbTestCase
 
         $this->assertGreaterThan(0, $container->getID());
     }
+
+    /**
+     * Provides invalid container names for testing.
+     */
+    public static function provideInvalidContainerName(): iterable
+    {
+        yield 'wrong numeric name' => ['11753069'];
+        yield 'long name' => [str_repeat('a', 256)];
+    }
+
+    /**
+     * Tests that adding a container with an invalid name is rejected.
+     */
+    #[DataProvider('provideInvalidContainerName')]
+    public function testInvalidCheckContainerName(string $label): void
+    {
+        $container = new PluginFieldsContainer();
+        $input = [
+            'label'     => $label,
+            'itemtypes' => [Computer::class],
+            'type'      => 'tab',
+            'entities_id'  => 0,
+        ];
+        $result = $container->add($input);
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Provides valid container names for testing.
+     */
+    public static function provideSuccessContainerName(): iterable
+    {
+        yield 'empty name' => [''];
+        yield 'valid name'  => ['Valid Container Name'];
+        yield 'another valid name' => ['111'];
+        yield 'numeric and letter name' => ['d7'];
+    }
+
+    /**
+     * Tests that adding a container with a valid name succeeds.
+     */
+    #[DataProvider('provideSuccessContainerName')]
+    public function testSuccessCheckContainerName(string $label): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => $label . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $this->assertGreaterThan(0, $container->getID());
+    }
 }
