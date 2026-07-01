@@ -660,6 +660,10 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
+        if (!isset($input['itemtypes'])) {
+            $input['itemtypes'] = $this->fields['itemtypes'];
+        }
+
         return PluginFieldsToolbox::prepareLabel($input);
     }
 
@@ -2420,11 +2424,11 @@ HTML;
 
     public static function checkContainerName(array $container): bool
     {
-        if (empty($container['name'])) {
+        if (!isset($container['name']) || empty($container['name'])) {
             return false;
         }
 
-        if (empty($container['itemtypes'])) {
+        if (!isset($container['itemtypes']) || empty($container['itemtypes'])) {
             return true;
         }
 

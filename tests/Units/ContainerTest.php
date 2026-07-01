@@ -112,7 +112,7 @@ final class ContainerTest extends DbTestCase
      */
     public static function provideInvalidContainerName(): iterable
     {
-        yield 'wrong numeric name' => ['11753069'];
+        yield 'wrong numeric name' => ['7777777777'];
         yield 'long name' => [str_repeat('a', 256)];
     }
 
@@ -130,6 +130,17 @@ final class ContainerTest extends DbTestCase
             'entities_id'  => 0,
         ];
         $result = $container->add($input);
+        $this->assertFalse($result);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'container ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $result = $container->update(['id' => $container->getID(), 'label' => $label]);
         $this->assertFalse($result);
     }
 
@@ -160,5 +171,18 @@ final class ContainerTest extends DbTestCase
         ]);
 
         $this->assertGreaterThan(0, $container->getID());
+        $container = $this->createFieldContainer([
+            'label'        => 'testSuccessCheckContainerName',
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $update = $container->update([
+            'id'           => $container->getID(),
+            'label'        => $label . $this->getUniqueString(),
+        ]);
+        $this->assertTrue($update);
     }
 }
