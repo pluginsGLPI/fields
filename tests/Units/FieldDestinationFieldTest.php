@@ -68,6 +68,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         foreach ($container->find() as $container_fields) {
             $container->delete($container_fields, true);
         }
+
         $this->blocks[Ticket::class] = $this->createFieldContainer([
             'label'        => 'Ticket additional fields',
             'type'        => 'dom',

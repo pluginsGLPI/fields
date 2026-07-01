@@ -668,7 +668,7 @@ final class ContainerItemUpdateTest extends DbTestCase
         $this->assertFalse((bool) $result, 'Creating a second DOM container for the same itemtype must be rejected.');
 
         // message should be checked manually
-        $this->hasSessionMessages(ERROR, ['You cannot add several blocks with type \'Insertion in the form\' on same object']);
+        $this->hasSessionMessages(ERROR, ["You cannot add several blocks with type 'Insertion in the form' on same object"]);
     }
 
     // -----------------------------------------------------------------------
