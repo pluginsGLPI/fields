@@ -257,6 +257,7 @@ class PluginFieldsContainer extends CommonDBTM
 
         $container_obj = new self();
         foreach ($DB->request(['FROM' => $table]) as $container) {
+            self::generateTemplate($container);
             $container['itemtypes'] = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
             if (empty($container['itemtypes']) || self::checkContainerName($container)) {
                 continue;
