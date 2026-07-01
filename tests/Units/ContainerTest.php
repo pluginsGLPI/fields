@@ -32,6 +32,7 @@ namespace GlpiPlugin\Field\Tests\Units;
 
 use Computer;
 use Glpi\Tests\DbTestCase;
+use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
@@ -44,14 +45,14 @@ final class ContainerTest extends DbTestCase
 
     public function setUp(): void
     {
-        parent::setUp();
+        GLPITestCase::setUp();
         $this->login();
     }
 
     public function tearDown(): void
     {
         $this->tearDownFieldTest();
-        parent::tearDown();
+        GLPITestCase::tearDown();
     }
 
     public static function provideInvalidItemtypes(): iterable
