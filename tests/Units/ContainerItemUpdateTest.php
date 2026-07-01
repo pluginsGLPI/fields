@@ -58,11 +58,19 @@ final class ContainerItemUpdateTest extends DbTestCase
 {
     use FieldTestTrait;
 
+    public function setUp(): void
+    {
+        GLPITestCase::setUp();
+    }
+
     public function tearDown(): void
     {
-        $this->tearDownFieldTest();
-        parent::tearDown();
+        global $DB;
+        $DB->setMustUnsanitizeData(false); // Be sure to switch back to disabled unsanitization.
+
+        GLPITestCase::tearDown();
     }
+
 
     // -----------------------------------------------------------------------
     // Helpers
