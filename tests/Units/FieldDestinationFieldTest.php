@@ -39,6 +39,7 @@ use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Tests\AbstractDestinationFieldTest;
 use Glpi\Tests\FormBuilder;
 use Glpi\Tests\FormTesterTrait;
+use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use Group;
 use Location;
@@ -63,6 +64,10 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 
     private function initFieldTest(): void
     {
+        $container = new PluginFieldsContainer();
+        foreach ($container->find() as $container_fields) {
+            $container->delete($container_fields, true);
+        }
         $this->blocks[Ticket::class] = $this->createFieldContainer([
             'label'        => 'Ticket additional fields',
             'type'        => 'dom',
@@ -125,12 +130,12 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
     public function setUp(): void
     {
         $this->initFieldTest();
-        parent::setUp();
+        GLPITestCase::setUp();
     }
 
     public function tearDown(): void
     {
-        parent::tearDown();
+        GLPITestCase::tearDown();
         $this->tearDownFieldTest();
     }
 
@@ -238,6 +243,9 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
                 ],
             ],
         );
+
+        // delete location for another run
+        $location->delete($location->fields, true);
     }
 
     #[Override]

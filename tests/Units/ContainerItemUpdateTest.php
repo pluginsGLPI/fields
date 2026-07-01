@@ -31,6 +31,7 @@
 namespace GlpiPlugin\Field\Tests\Units;
 
 use Glpi\Tests\DbTestCase;
+use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use Ticket;
@@ -60,6 +61,7 @@ final class ContainerItemUpdateTest extends DbTestCase
 
     public function setUp(): void
     {
+
         GLPITestCase::setUp();
     }
 
@@ -68,6 +70,10 @@ final class ContainerItemUpdateTest extends DbTestCase
         global $DB;
         $DB->setMustUnsanitizeData(false); // Be sure to switch back to disabled unsanitization.
 
+        $container = new PluginFieldsContainer();
+        foreach ($container->find() as $container_fields) {
+            $container->delete($container_fields, true);
+        }
         GLPITestCase::tearDown();
     }
 
@@ -660,6 +666,9 @@ final class ContainerItemUpdateTest extends DbTestCase
         ]);
 
         $this->assertFalse((bool) $result, 'Creating a second DOM container for the same itemtype must be rejected.');
+
+        // message should be checked manually
+        $this->hasSessionMessages(ERROR, ['You cannot add several blocks with type \'Insertion in the form\' on same object']);
     }
 
     // -----------------------------------------------------------------------
