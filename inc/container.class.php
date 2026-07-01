@@ -255,6 +255,18 @@ class PluginFieldsContainer extends CommonDBTM
             }
         }
 
+        $container_obj = new self();
+        foreach ($DB->request(['FROM' => $table]) as $container) {
+            self::generateTemplate($container);
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+            if (empty($itemtypes) || self::checkContainerName($container)) {
+                continue;
+            }
+
+            $container = $container_obj->setContainerName($container);
+            $container_obj->update($container);
+        }
+
         return true;
     }
 
@@ -648,6 +660,10 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
+        if (!isset($input['itemtypes'])) {
+            $input['itemtypes'] = $this->fields['itemtypes'];
+        }
+
         return PluginFieldsToolbox::prepareLabel($input);
     }
 
@@ -703,19 +719,8 @@ class PluginFieldsContainer extends CommonDBTM
         }
 
         $input = PluginFieldsToolbox::prepareLabel($input);
-
-        //reject adding when container name is too long for mysql table name
-        foreach ($input['itemtypes'] as $itemtype) {
-            $tmp = getTableForItemType(self::getClassname($itemtype, $input['name']));
-            if (strlen($tmp) > 64) {
-                Session::AddMessageAfterRedirect(
-                    __('Container name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
-                    false,
-                    ERROR,
-                );
-
-                return false;
-            }
+        if ($input === false) {
+            return false;
         }
 
         //check for already existing container with same name
@@ -2415,5 +2420,55 @@ HTML;
             PluginFieldsLabelTranslation::class,
             PluginFieldsProfile::class,
         ];
+    }
+
+    public static function checkContainerName(array $container): bool
+    {
+        if (!isset($container['name']) || empty($container['name'])) {
+            return false;
+        }
+
+        if (!isset($container['itemtypes']) || empty($container['itemtypes'])) {
+            return true;
+        }
+
+        // Names made entirely of digits are invalid (generated prior to Fields 1.9.2).
+        if (preg_match('/^\d+$/', (string) $container['name'])) {
+            return false;
+        }
+
+        $itemtypes = $container['itemtypes'];
+        if (is_string($itemtypes)) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($itemtypes);
+        }
+
+        foreach ($itemtypes as $itemtype) {
+            if (strlen(getTableForItemType(self::getClassname($itemtype, $container['name']))) > 64) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function setContainerName(array $container): array
+    {
+        $base = empty($container['label']) ? $container['name'] : $container['label'];
+        $new_name = (new PluginFieldsToolbox())->getSystemNameFromLabel((string) $base);
+        $itemtypes = $container['itemtypes'];
+        if (is_string($itemtypes)) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($itemtypes);
+        }
+
+        foreach ($itemtypes as $itemtype) {
+            while ($new_name !== '' && strlen(getTableForItemType(self::getClassname($itemtype, $new_name))) > 64) {
+                $new_name = substr($new_name, 0, -1);
+            }
+        }
+
+        $container['name'] = $new_name;
+        $container['label'] = $new_name;
+
+        return $container;
     }
 }
