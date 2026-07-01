@@ -258,8 +258,8 @@ class PluginFieldsContainer extends CommonDBTM
         $container_obj = new self();
         foreach ($DB->request(['FROM' => $table]) as $container) {
             self::generateTemplate($container);
-            $container['itemtypes'] = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
-            if (empty($container['itemtypes']) || self::checkContainerName($container)) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+            if (empty($itemtypes) || self::checkContainerName($container)) {
                 continue;
             }
 
@@ -2433,11 +2433,12 @@ HTML;
             return false;
         }
 
-        if (!is_array($container['itemtypes'])) {
-            $container['itemtypes'] = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+        $itemtypes = $container['itemtypes'];
+        if (is_string($itemtypes)) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($itemtypes);
         }
 
-        foreach ($container['itemtypes'] as $itemtype) {
+        foreach ($itemtypes as $itemtype) {
             if (strlen(getTableForItemType(self::getClassname($itemtype, $container['name']))) > 64) {
                 return false;
             }
@@ -2450,12 +2451,12 @@ HTML;
     {
         $base = empty($container['label']) ? $container['name'] : $container['label'];
         $new_name = (new PluginFieldsToolbox())->getSystemNameFromLabel((string) $base);
-
-        if (!is_array($container['itemtypes'])) {
-            $container['itemtypes'] = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+        $itemtypes = $container['itemtypes'];
+        if (is_string($itemtypes)) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($itemtypes);
         }
 
-        foreach ($container['itemtypes'] as $itemtype) {
+        foreach ($itemtypes as $itemtype) {
             while ($new_name !== '' && strlen(getTableForItemType(self::getClassname($itemtype, $new_name))) > 64) {
                 $new_name = substr($new_name, 0, -1);
             }
