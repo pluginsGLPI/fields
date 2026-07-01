@@ -61,7 +61,6 @@ final class ContainerItemUpdateTest extends DbTestCase
 
     public function setUp(): void
     {
-
         GLPITestCase::setUp();
     }
 
@@ -74,6 +73,7 @@ final class ContainerItemUpdateTest extends DbTestCase
         foreach ($container->find() as $container_fields) {
             $container->delete($container_fields, true);
         }
+
         GLPITestCase::tearDown();
     }
 
