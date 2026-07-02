@@ -34,6 +34,7 @@ use Glpi\Controller\Form\RendererController;
 use Glpi\Form\Form;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\FormTesterTrait;
+use Glpi\Tests\GLPITestCase;
 use PluginFieldsContainer;
 use PluginFieldsField;
 use ReflectionClass;
@@ -82,13 +83,13 @@ abstract class QuestionTypeTestCase extends DbTestCase
     public function setUp(): void
     {
         $this->createFieldAndContainer();
-        parent::setUp();
+        GLPITestCase::setUp();
     }
 
     public function tearDown(): void
     {
         $this->tearDownFieldTest();
-        parent::tearDown();
+        GLPITestCase::tearDown();
     }
 
     protected function renderFormEditor(Form $form): Crawler
