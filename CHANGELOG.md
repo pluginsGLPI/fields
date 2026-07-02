@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix text area fields size and alignment
 - Optimize container loading when there are a large number of entities
 - Adding a verification in refreshContainer function for obj value which can be an empty string instead of an array
+- Fix GenericObject type dropdowns migration
 - Fix refreshContainer crash when a field is serialized both as a scalar and as an array
 - Centralized label preparation and system name generation.
 

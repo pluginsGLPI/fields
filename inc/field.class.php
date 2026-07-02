@@ -153,6 +153,44 @@ class PluginFieldsField extends CommonDBChild
             $migration->addConfig(['stable_search_options' => 'yes'], 'plugin:fields');
         }
 
+        // Update old genericobject_itemtype dropdown fields to customasset_itemtype dropdown fields
+        // Update old genericobject_itemtype dropdown fields to customasset_itemtype dropdown fields
+        $has_genericobject_fields = $DB->tableExists('glpi_plugin_genericobject_types')
+            && $DB->request([
+                'COUNT' => 'id',
+                'FROM'  => self::getTable(),
+                'WHERE' => ['type' => ['LIKE', 'dropdown-PluginGenericobject%']],
+            ])->current()['COUNT(id)'] > 0;
+        if ($has_genericobject_fields) {
+            // Get all types from PluginGenericobject
+            $migration_genericobject_itemtypes = PluginFieldsMigration::getGenericObjectTypes();
+
+            foreach ($migration_genericobject_itemtypes as $type) {
+                $itemtype = str_replace('\\\\', '\\', $type['itemtype']);
+                if (!class_exists($itemtype)) {
+                    $migration->addDebugMessage(sprintf(
+                        'The itemtype %s does not exist, please check if %s.class.php is present',
+                        $itemtype,
+                        $type['name'],
+                    ));
+                    continue;
+                }
+
+                // If corresponding customasset_itemtype exists, update field type
+                $migration->addPostQuery(
+                    $DB->buildUpdate(
+                        self::getTable(),
+                        [
+                            'type' => 'dropdown-' . $itemtype,
+                        ],
+                        [
+                            'type' => ['LIKE', 'dropdown-' . $type['genericobject_itemtype']],
+                        ],
+                    ),
+                );
+            }
+        }
+
         return true;
     }
 
