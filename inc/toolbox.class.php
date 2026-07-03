@@ -405,7 +405,7 @@ class PluginFieldsToolbox
 
         if (!PluginFieldsContainer::checkContainerName($input)) {
             Session::addMessageAfterRedirect(
-                __('Container name is too long for database', 'fields'),
+                __('Container name is invalid or too long for database', 'fields'),
                 false,
                 ERROR,
             );
