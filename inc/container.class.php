@@ -264,7 +264,7 @@ class PluginFieldsContainer extends CommonDBTM
             }
 
             $container = $container_obj->setContainerName($container);
-            $container_obj->update($container);
+            return $container_obj->update($container);
         }
 
         return true;
