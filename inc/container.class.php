@@ -2467,7 +2467,6 @@ HTML;
         }
 
         $container['name'] = $new_name;
-        $container['label'] = $new_name;
 
         return $container;
     }
