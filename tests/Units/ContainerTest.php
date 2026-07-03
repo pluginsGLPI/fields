@@ -184,5 +184,11 @@ final class ContainerTest extends DbTestCase
             'label'        => $label . $this->getUniqueString(),
         ]);
         $this->assertTrue($update);
+        // remove the container because tearsdown is only triggered when another test is run,
+        // and this test is the last one to be run
+        $delete = $container->delete([
+            'id'           => $container->getID(),
+        ], true);
+        $this->assertTrue($delete);
     }
 }
