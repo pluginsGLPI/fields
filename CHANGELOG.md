@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix search crash when two containers share a dropdown field with the same name.
+- Prevent table and file regeneration when label and/or name is updated.
 
 ## [1.24.2] - 2026-06-30
 

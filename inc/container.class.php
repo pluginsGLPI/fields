@@ -648,7 +648,10 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        return PluginFieldsToolbox::prepareLabel($input);
+        unset($input['label']);
+        unset($input['name']);
+
+        return $input;
     }
 
     public function prepareInputForAdd($input)
@@ -970,11 +973,17 @@ HTML;
         echo '<tr>';
         echo "<td width='20%'>" . __('Label') . ' : </td>';
         echo "<td width='30%'>";
+        $options = [
+            'value' => $this->fields['label'],
+        ];
+
+        if (!$this->isNewID($ID)) {
+            $options['readonly'] = true;
+        }
+
         echo Html::input(
             'label',
-            [
-                'value' => $this->fields['label'],
-            ],
+            $options,
         );
         echo '</td>';
         echo "<td width='20%'>&nbsp;</td>";
