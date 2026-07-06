@@ -336,12 +336,8 @@ class PluginFieldsContainer extends CommonDBTM
                     }
                 }
 
-                $container['name'] = $new_name;
-                $container_obj     = new PluginFieldsContainer();
-                $container_obj->update(
-                    $container,
-                    false,
-                );
+                $container_obj = new PluginFieldsContainer();
+                $container_obj->update(['id' => $container['id'], 'name' => $new_name], false);
 
                 // Rename container tables and itemtype if needed
                 foreach (PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']) as $itemtype) {
@@ -648,6 +644,10 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
+        if (!array_key_exists('label', $input)) {
+            return $input;
+        }
+
         return PluginFieldsToolbox::prepareLabel($input);
     }
 
