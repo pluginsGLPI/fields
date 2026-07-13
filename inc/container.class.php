@@ -648,7 +648,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        if (isAPI() || isset($input['form_submission']) ) {
+        if (isAPI() || isset($input['form_submission'])) {
             unset($input['label']);
             unset($input['name']);
         }
