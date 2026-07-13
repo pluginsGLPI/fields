@@ -241,6 +241,7 @@ class PluginFieldsContainer extends CommonDBTM
                     $update_data = [
                         'id'        => $container['id'],
                         'itemtypes' => $itemtypes,
+                        'label'     => $container['label'],
                     ];
                     if ($container_name !== $container['name']) {
                         $update_data['name'] = $container_name;
@@ -648,7 +649,11 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        return PluginFieldsToolbox::prepareLabel($input);
+        // if label not empty, prepare name from label
+        if (isset($input['label']) && !empty($input['label'])) {
+            $input = PluginFieldsToolbox::prepareLabel($input);
+        }
+        return $input;
     }
 
     public function prepareInputForAdd($input)
