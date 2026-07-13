@@ -36,7 +36,6 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
-use Ticket;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -152,7 +151,7 @@ final class ContainerTest extends DbTestCase
         ]);
 
         $original_name = $container->fields['name'];
-        $new_name = 'mig_' . substr($original_name, 0, 20);
+        $new_name = 'mig_' . substr((string) $original_name, 0, 20);
 
         $container->update(['id' => $container->getID(), 'name' => $new_name]);
 
