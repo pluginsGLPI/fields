@@ -650,8 +650,9 @@ class PluginFieldsContainer extends CommonDBTM
     public function prepareInputForUpdate($input)
     {
         // if label not empty, prepare name from label
+        // if label not empty, prepare name from label
         if (isset($input['label']) && !empty($input['label'])) {
-            $input = PluginFieldsToolbox::prepareLabel($input);
+            $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
         }
         return $input;
     }
