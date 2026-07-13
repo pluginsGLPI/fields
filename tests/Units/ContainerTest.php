@@ -151,12 +151,16 @@ final class ContainerTest extends DbTestCase
             'is_recursive' => 1,
         ]);
 
-        $new_name = 'migrated_' . $container->fields['name'];
+        $original_name = $container->fields['name'];
+        $new_name = 'mig_' . substr($original_name, 0, 20);
+
         $container->update(['id' => $container->getID(), 'name' => $new_name]);
 
         $refreshed = new PluginFieldsContainer();
         $refreshed->getFromDB($container->getID());
-
         $this->assertSame($new_name, $refreshed->fields['name']);
+
+        // Restore original name so teardown can locate and drop the physical table
+        $container->update(['id' => $container->getID(), 'name' => $original_name]);
     }
 }
