@@ -36,6 +36,7 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
+use Ticket;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -105,5 +106,57 @@ final class ContainerTest extends DbTestCase
         ]);
 
         $this->assertGreaterThan(0, $container->getID());
+    }
+
+    public function testPrepareInputForUpdateStripsLabelAndNameOnFormSubmission(): void
+    {
+        $container = new PluginFieldsContainer();
+        $input = [
+            'label'           => 'New Label',
+            'name'            => 'new_name',
+            'form_submission' => true,
+            'is_active'       => 1,
+        ];
+
+        $result = $container->prepareInputForUpdate($input);
+
+        $this->assertArrayNotHasKey('label', $result);
+        $this->assertArrayNotHasKey('name', $result);
+        $this->assertArrayHasKey('is_active', $result);
+    }
+
+    public function testPrepareInputForUpdatePreservesNameAndLabelForMigration(): void
+    {
+        $container = new PluginFieldsContainer();
+        $input = [
+            'name'      => 'migration_corrected_name',
+            'label'     => 'Some Label',
+            'itemtypes' => '["Computer"]',
+        ];
+
+        $result = $container->prepareInputForUpdate($input);
+
+        $this->assertSame('migration_corrected_name', $result['name']);
+        $this->assertArrayHasKey('label', $result);
+    }
+
+    public function testUpdateNameViaMigrationPathPersistsInDatabase(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'MigrationPath ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $new_name = 'migrated_' . $container->fields['name'];
+        $container->update(['id' => $container->getID(), 'name' => $new_name]);
+
+        $refreshed = new PluginFieldsContainer();
+        $refreshed->getFromDB($container->getID());
+
+        $this->assertSame($new_name, $refreshed->fields['name']);
     }
 }
