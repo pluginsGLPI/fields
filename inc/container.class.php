@@ -1970,6 +1970,15 @@ HTML;
             return true;
         }
 
+        if ($item->isNewItem() && $loc_c->fields['type'] === 'dom') {
+            $data = ['plugin_fields_containers_id' => $c_id];
+            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+                $item->input = [];
+
+                return false;
+            }
+        }
+
         return false;
     }
 
