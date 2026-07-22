@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix item creation with null value for mandatory fields
 - Fix search crash when two containers share a dropdown field with the same name.
 
 ## [1.24.2] - 2026-06-30
