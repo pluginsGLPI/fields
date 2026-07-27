@@ -35,6 +35,8 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use Ticket;
+use Entity;
+use Notification;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -392,8 +394,8 @@ final class ContainerItemUpdateTest extends DbTestCase
         $domtab_container = $this->createFieldContainer([
             'label'        => 'Mandatory Domtab Container',
             'type'         => 'domtab',
-            'subtype'      => Ticket::class . '$1',
-            'itemtypes'    => [Ticket::class],
+            'subtype'      => Notification::class . '$1',
+            'itemtypes'    => [Entity::class],
             'is_active'    => 1,
             'entities_id'  => 0,
             'is_recursive' => 1,
