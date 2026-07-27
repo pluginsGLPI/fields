@@ -311,6 +311,124 @@ final class ContainerItemUpdateTest extends DbTestCase
         $this->assertSame('created via api', $plugin_row[$field_name]);
     }
 
+    public function testCreateIsBlockedWhenMandatoryDomFieldIsMissing(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Create Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $this->simulateApiBoot();
+
+        // Creation with the mandatory field omitted must be rejected.
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Ticket without mandatory field',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+        ]);
+        $this->assertFalse($ticket_id, 'Creation must be blocked when a mandatory dom field is missing.');
+        $this->hasSessionMessageThatContains(
+            __('Some mandatory fields are empty', 'fields'),
+            ERROR,
+        );
+
+        // Creation with the mandatory field filled must succeed.
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Ticket with mandatory field',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+            $field_name   => 'filled value',
+        ]);
+        $this->assertGreaterThan(0, $ticket_id);
+
+        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
+        $this->assertNotFalse($plugin_row);
+        $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateIsNotBlockedWhenMandatoryTabOrDomtabFieldIsMissing(): void
+    {
+        $this->login();
+
+        // TAB container with a mandatory field.
+        $tab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Tab Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $tab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        // DOMTAB container with a mandatory field, attached to a specific tab.
+        $domtab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Domtab Container',
+            'type'         => 'domtab',
+            'subtype'      => Ticket::class . '$1',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Domtab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $domtab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        // Creation with no plugin field must not block the creation.
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Ticket with mandatory tab field missing',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+        ]);
+        $this->assertGreaterThan(0, $ticket_id, 'A mandatory tab field must not block creation.');
+
+        // Creation forcing the "domtab" container resolution via explicit c_id:
+        // it must not block the creation either.
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Ticket with mandatory domtab field missing',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+            'c_id'        => $domtab_container->getID(),
+        ]);
+        $this->assertGreaterThan(0, $ticket_id, 'A mandatory domtab field must not block creation.');
+    }
+
     /**
      * Update a ticket with explicit c_id through an API-like context.
      */

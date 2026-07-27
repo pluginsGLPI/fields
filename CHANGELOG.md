@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix item creation with null value for mandatory fields
+- Fix search crash when two containers share a dropdown field with the same name.
+- Fix handle native GLPI dropdown types when binding additional fields to form destination
 - Remove redundant null coalescing on container label preparation.
+
 
 ## [1.24.2] - 2026-06-30
 

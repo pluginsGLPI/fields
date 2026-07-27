@@ -359,23 +359,20 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     /** @var DBmysql $DB */
     global $DB;
 
-    $searchopt    = Search::getOptions($itemtype);
-    $table        = $searchopt[$ID]['table'];
-    $field        = $searchopt[$ID]['field'];
-    $pfields_type = $searchopt[$ID]['pfields_type'] ?? '';
+    $searchopt         = Search::getOptions($itemtype);
+    $table             = $searchopt[$ID]['table'];
+    $field             = $searchopt[$ID]['field'];
+    $pfields_fields_id = $searchopt[$ID]['pfields_fields_id'] ?? 0;
 
+    // Identify the field by its id (unique), not by its name: several containers
+    // can define a field with the same name, which would make a name-based lookup ambiguous.
     $field_field = new PluginFieldsField();
+    if (!$field_field->getFromDB($pfields_fields_id)) {
+        return null;
+    }
 
-    if (
-        $field_field->getFromDBByCrit(
-            [
-                'name'     => $field,
-                'type' => 'number',
-            ],
-        )
-        && $pfields_type == 'number'
-    ) {
-        // if 'number' field with name is found with searchtype 'equals' or 'notequals'
+    if ($field_field->fields['type'] === 'number') {
+        // if 'number' field with searchtype 'equals' or 'notequals'
         // update WHERE clause with `$table_$field.$field` because without `$table_$field.id` is used
         if ($searchtype == 'equals' || $searchtype == 'notequals') {
             $operator = ($searchtype == 'equals') ? '=' : '!=';
@@ -385,7 +382,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 
             return $link . ' CAST(' . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val);
         } else {
-            // if 'number' field with name is found with <= or >= or < or > search
+            // if 'number' field with <= or >= or < or > search
             // update WHERE clause with the correct operator
             $val = html_entity_decode((string) $val);
             if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
@@ -396,49 +393,33 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
         }
     }
 
-    // if 'multiple' field with name is found -> 'Dropdown-XXXX' case
-    // update WHERE clause with LIKE statement
-    if (
-        $field_field->getFromDBByCrit(
-            [
-                'name'     => $field,
-                'multiple' => true,
-            ],
-        )
-    ) {
-        $tablefield = $table . '_' . $field;
-        switch ($searchtype) {
-            case 'equals':
-                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field);
-            case 'notequals':
-                return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $field_field);
-        }
-    } else {
-        // if 'multiple' field with cleaned name is found -> 'dropdown' case
-        // update WHERE clause with LIKE statement
-        $cleanfield = str_replace('plugin_fields_', '', $field);
-        $cleanfield = str_replace('dropdowns_id', '', $cleanfield);
-        $tablefield = $table . '_' . $cleanfield;
-        if (
-            $field_field->getFromDBByCrit(
-                [
-                    'name'     => $cleanfield,
-                    'multiple' => true,
-                ],
-            )
-        ) {
-            switch ($searchtype) {
-                case 'equals':
-                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field);
-                case 'notequals':
-                    return PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $field_field);
-            }
-        } else {
-            return false;
-        }
+    if (!$field_field->fields['multiple']) {
+        return null;
     }
 
-    return null;
+    // 'Dropdown-XXXX' case: the searchopt field name is the plugin field name itself
+    // update WHERE clause with LIKE statement
+    if (preg_match('/^dropdown-.+$/i', (string) $field_field->fields['type'])) {
+        $tablefield = $table . '_' . $field;
+        return match ($searchtype) {
+            'equals' => PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field),
+            'notequals' => PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $field_field),
+            default => null,
+        };
+    }
+
+    // 'dropdown' case: the searchopt field name is mangled ("plugin_fields_<name>dropdowns_id"),
+    // recover the real field name to build the joined table alias
+    // update WHERE clause with LIKE statement
+    $cleanfield = str_replace('plugin_fields_', '', $field);
+    $cleanfield = str_replace('dropdowns_id', '', $cleanfield);
+
+    $tablefield = $table . '_' . $cleanfield;
+    return match ($searchtype) {
+        'equals' => PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'notequals' : 'equals', $field_field),
+        'notequals' => PluginFieldsDropdown::multipleDropdownAddWhere($link, $tablefield, $field, $val, $nott ? 'equals' : 'notequals', $field_field),
+        default => null,
+    };
 }
 
 function plugin_item_transfer_fields(array $options): void

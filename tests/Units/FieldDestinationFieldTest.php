@@ -236,7 +236,12 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             form: $form,
             config: new SimpleValueConfig(1),
             answers: [
-                "Location Field" => $location->getID(),
+                // The end user template submits dropdowns as an array
+                // containing the selected itemtype and items_id.
+                "Location Field" => [
+                    'itemtype' => Location::class,
+                    'items_id' => $location->getID(),
+                ],
             ],
             expected_field_values: [
                 Ticket::class => [
