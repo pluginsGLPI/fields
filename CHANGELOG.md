@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix a container creation bug that was allowing to link incompatible container types and object types
+
+### Fixed
+
 - Fix item creation with null value for mandatory fields
 - Fix search crash when two containers share a dropdown field with the same name.
 
