@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+### Fixed
+
+- Remove redundant null coalescing on container label preparation.
 
 ## [1.24.2] - 2026-06-30
 
