@@ -701,14 +701,12 @@ class PluginFieldsContainer extends CommonDBTM
                 }
             }
 
-            $accepted_itemtypes = self::getItemtypes(true);
+            $accepted_itemtypes = array_keys(array_merge(...array_values(self::getItemtypes(true))));
             foreach ($input['itemtypes'] as $itemtype) {
-                foreach ($accepted_itemtypes as $accepted_itemtype) {
-                    if (!in_array($itemtype, array_keys($accepted_itemtype))) {
-                        Session::AddMessageAfterRedirect(__("At least one selected object cannot be linked with type 'Insertion in the form of a specific tab'.", 'fields'), false, ERROR);
+                if (!in_array($itemtype, $accepted_itemtypes)) {
+                    Session::AddMessageAfterRedirect(__("At least one selected object cannot be linked with type 'Insertion in the form of a specific tab'.", 'fields'), false, ERROR);
 
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
