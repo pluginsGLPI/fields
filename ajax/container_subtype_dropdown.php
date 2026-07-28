@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+declare(strict_types=1);
+
 Session::checkLoginUser();
 
 PluginFieldsContainer::showFormSubtype($_REQUEST, true);

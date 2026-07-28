@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+declare(strict_types=1);
+
 Session::checkRight('config', UPDATE);
 
 $translation = new PluginFieldsLabelTranslation();
