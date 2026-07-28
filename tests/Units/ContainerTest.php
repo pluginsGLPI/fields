@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+declare(strict_types=1);
+
 namespace GlpiPlugin\Field\Tests\Units;
 
 use Computer;
