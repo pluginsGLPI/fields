@@ -248,7 +248,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
 
             $names = [];
             foreach ($answer as $items_id) {
-                $item = $itemtype::getById($items_id);
+                $item = $itemtype::getById((int) $items_id);
                 if ($item) {
                     $names[] = $item->fields['name'];
                 }

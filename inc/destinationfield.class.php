@@ -134,8 +134,8 @@ class PluginFieldsDestinationField extends AbstractConfigField
                 if ($field->fields['type'] == 'glpi_item') {
                     $input[sprintf('itemtype_%s', $field_name)] = $answer->getRawAnswer()['itemtype'];
                     $input[sprintf('items_id_%s', $field_name)] = $answer->getRawAnswer()['items_id'];
-                } elseif ($field->fields['type'] == 'dropdown') {
-                    $raw_id = (int) $answer->getRawAnswer()['items_id'];
+                } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
+                    $raw_id = (int) ($answer->getRawAnswer()['items_id'] ?? 0);
                     $input[$field_name] = ($raw_id > 0) ? $raw_id : null;
                 } else {
                     $input[$field_name] = $value ?? $answer->getRawAnswer();

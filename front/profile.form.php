@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+declare(strict_types=1);
+
 Session::checkRight('config', UPDATE);
 
 if (isset($_POST['update'])) {

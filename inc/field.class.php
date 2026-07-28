@@ -696,7 +696,7 @@ class PluginFieldsField extends CommonDBChild
                             echo Dropdown::getDropdownName($table, $this->fields['default_value']);
                         }
                     } else {
-                        echo $this->fields['default_value'];
+                        echo htmlspecialchars((string) $this->fields['default_value']);
                     }
 
                     echo '</td>';

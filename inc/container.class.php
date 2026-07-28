@@ -241,6 +241,7 @@ class PluginFieldsContainer extends CommonDBTM
                     $update_data = [
                         'id'        => $container['id'],
                         'itemtypes' => $itemtypes,
+                        'label'     => $container['label'],
                     ];
                     if ($container_name !== $container['name']) {
                         $update_data['name'] = $container_name;
@@ -648,7 +649,12 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        return PluginFieldsToolbox::prepareLabel($input);
+        // sanitize label only; name is intentionally left untouched here (see migration callers)
+        if (isset($input['label']) && !empty($input['label'])) {
+            $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) $input['label']);
+        }
+
+        return $input;
     }
 
     public function prepareInputForAdd($input)

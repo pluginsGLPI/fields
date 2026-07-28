@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../src/Plugin.php';
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;

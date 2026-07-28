@@ -109,7 +109,7 @@
 
     {% elseif type == 'url' %}
             {% set ext_link %}
-            {% if value|length %}
+            {% if value|length and value matches '/^(https?|mailto):/i' %}
                 <a target="_blank" href="{{ value }}">
                     <i class="ti ti-external-link"></i>
                     {{ __('show', 'fields') }}
