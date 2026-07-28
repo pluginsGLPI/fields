@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-Session::checkLoginUser();
+Session::checkRight('config', READ);
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_status_dropdown') {

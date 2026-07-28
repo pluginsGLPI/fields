@@ -30,7 +30,7 @@
 
 use Glpi\DBAL\QueryExpression;
 
-Session::checkLoginUser();
+Session::checkRight('config', UPDATE);
 
 if (
     !array_key_exists('container_id', $_POST)
