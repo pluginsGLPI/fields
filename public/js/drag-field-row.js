@@ -41,16 +41,16 @@ redipsInit = function () {
    rd.event.rowDroppedBefore = function (sourceTable, sourceRowIndex) {
       var pos = rd.getPosition();
 
-      var old_index = sourceRowIndex;
-      var new_index = pos[1];
-      var container = document.getElementById('plugin_fields_containers_id').value;
+      var old_ranking = sourceTable.rows[sourceRowIndex].dataset.ranking;
+      var new_ranking = sourceTable.rows[pos[1]].dataset.ranking;
+      var container   = document.getElementById('plugin_fields_containers_id').value;
 
       jQuery.ajax({
          type: "POST",
          url: "../ajax/reorder.php",
          data: {
-            old_order:     old_index,
-            new_order:     new_index,
+            old_order:     old_ranking,
+            new_order:     new_ranking,
             container_id:  container
          }
       })

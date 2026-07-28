@@ -153,6 +153,30 @@ class PluginFieldsField extends CommonDBChild
             $migration->addConfig(['stable_search_options' => 'yes'], 'plugin:fields');
         }
 
+        // Normalize rankings to be contiguous (0-based) per container
+        if (Config::getConfigurationValue('plugin:fields', 'contiguous_rankings') !== 'yes') {
+            $containers = $DB->request([
+                'SELECT'   => 'plugin_fields_containers_id',
+                'DISTINCT' => true,
+                'FROM'     => $table,
+            ]);
+            foreach ($containers as $row) {
+                $cid = $row['plugin_fields_containers_id'];
+                $fields = $DB->request([
+                    'SELECT' => 'id',
+                    'FROM'   => $table,
+                    'WHERE'  => ['plugin_fields_containers_id' => $cid],
+                    'ORDER'  => 'ranking ASC',
+                ]);
+                $rank = 0;
+                foreach ($fields as $field) {
+                    $DB->update($table, ['ranking' => $rank], ['id' => $field['id']]);
+                    $rank++;
+                }
+            }
+            $migration->addConfig(['contiguous_rankings' => 'yes'], 'plugin:fields');
+        }
+
         return true;
     }
 
@@ -654,7 +678,7 @@ class PluginFieldsField extends CommonDBChild
 
             foreach ($iterator as $data) {
                 if ($this->getFromDB($data['id'])) {
-                    echo "<tr class='tab_bg_2' style='cursor:pointer'>";
+                    echo "<tr class='tab_bg_2' style='cursor:pointer' data-ranking='" . $this->fields['ranking'] . "'>";
 
                     echo '<td>';
                     $label = empty($this->fields['label']) ? NOT_AVAILABLE : $this->fields['label'];
