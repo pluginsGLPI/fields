@@ -649,7 +649,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        // if label not empty, prepare name from label
+        // sanitize label only; name is intentionally left untouched here (see migration callers)
         if (isset($input['label']) && !empty($input['label'])) {
             $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) $input['label']);
         }
