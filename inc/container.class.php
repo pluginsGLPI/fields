@@ -675,6 +675,15 @@ class PluginFieldsContainer extends CommonDBTM
                     }
                 }
             }
+
+            $accepted_itemtypes = array_keys(array_merge(...array_values(self::getItemtypes(true))));
+            foreach ($input['itemtypes'] as $itemtype) {
+                if (!in_array($itemtype, $accepted_itemtypes)) {
+                    Session::AddMessageAfterRedirect(__("At least one selected object cannot be linked with type 'Insertion in the form of a specific tab'.", 'fields'), false, ERROR);
+
+                    return false;
+                }
+            }
         }
 
         $input = PluginFieldsToolbox::prepareLabel($input);
@@ -1015,6 +1024,7 @@ HTML;
             self::showFormItemtype([
                 'rand'    => $rand,
                 'subtype' => $this->fields['subtype'],
+                'type'    => $this->fields['type'],
             ]);
             echo '</span>';
         }

@@ -38,6 +38,7 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
+use Ticket;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -107,5 +108,20 @@ final class ContainerTest extends DbTestCase
         ]);
 
         $this->assertGreaterThan(0, $container->getID());
+    }
+
+    public function testAddDomtabWithIncompatibleItemtypeIsRejected(): void
+    {
+        $container = new PluginFieldsContainer();
+        $result = $container->add([
+            'label'        => 'Domtab with invalid item type',
+            'type'         => 'domtab',
+            'subtype'      => '',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->assertFalse($result);
     }
 }

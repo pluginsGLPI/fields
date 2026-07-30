@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix a container creation bug that was allowing to link incompatible container types and object types
 - Fix missing right checks on some ajax config endpoints and escape default value and URL field output.
 - Fix item creation with null value for mandatory fields
 - Fix search crash when two containers share a dropdown field with the same name.
