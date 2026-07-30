@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix search crash when two containers share a dropdown field with the same name.
 - Fix handle native GLPI dropdown types when binding additional fields to form destination
 - Fix container name/label corruption during GenericObject migration, which could break the migration with a MySQL identifier-length error.
+- Fix GenericObject type dropdowns migration
 
 ## [1.24.2] - 2026-06-30
 
