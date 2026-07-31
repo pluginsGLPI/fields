@@ -5,4 +5,5 @@
 .phpunit.result.cache
 tests/files/
 *.min.*
+*.cache
 var/
