@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-18 02:45+0000\n"
+"POT-Creation-Date: 2026-07-31 02:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Diego Nobre <diego@koruma.com.br>, 2023,2025\n"
 "Language-Team: Portuguese (Brazil) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_BR/)\n"
@@ -25,25 +25,9 @@ msgstr ""
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: templates/status_overrides.html.twig
-msgid "Add new status override"
-msgstr "Adicionar nova substituição de status"
-
-#: templates/status_overrides.html.twig
-msgid "Status overrides"
-msgstr "Substituições de status"
-
-#: templates/status_overrides.html.twig
-msgid "No item found"
-msgstr "Nenhum item encontrado"
-
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
 msgstr ""
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "Exibir"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -57,47 +41,39 @@ msgstr[0] "Condição para ocultar o bloco"
 msgstr[1] "Condições para ocultar o bloco"
 msgstr[2] "Condições para ocultar o bloco"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
+#: templates/status_overrides.html.twig
+msgid "Add new status override"
+msgstr "Adicionar nova substituição de status"
+
+#: templates/status_overrides.html.twig
+msgid "Status overrides"
+msgstr "Substituições de status"
+
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr "Nenhum item encontrado"
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr "Exibir"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:283
 msgid "Field"
 msgstr "Campo"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:647
-#: inc/field.class.php:826
+#: templates/forms/status_override.html.twig inc/field.class.php:684
+#: inc/field.class.php:863
 msgid "Read only"
 msgstr "Somente leitura"
 
-#: ajax/field_specific_fields.php:52
-msgid "Allowed values"
-msgstr "Valores permitidos"
-
-#: ajax/field_specific_fields.php:85
-msgid "Multiple dropdown"
-msgstr "Múltiplos menus suspensos"
-
-#: ajax/field_specific_fields.php:89
-msgid "Default value"
-msgstr "Valor padrão"
-
-#: ajax/field_specific_fields.php:122
-msgid "Default value will be configurable once field will be created."
-msgstr "O valor padrão será configurável assim que o campo for criado."
-
-#: setup.php:248 front/container.php:34 front/container.form.php:74
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50
+#: front/container.php:34 front/container.form.php:74 inc/menu.class.php:37
+#: inc/destinationfield.class.php:50 setup.php:248
 msgid "Additional fields"
 msgstr "Campos adicionais"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "Substituir por status"
-
-#: inc/labeltranslation.class.php:222
-msgid "Language"
-msgstr "Idioma"
-
-#: inc/labeltranslation.class.php:223
-msgid "Label"
-msgstr "Rótulo"
 
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
@@ -107,79 +83,32 @@ msgstr "Corrigir nomes de campos"
 msgid "Component items"
 msgstr "Itens componentes"
 
-#: inc/container.class.php:53
-msgid "Regenerate container files"
-msgstr "Regerar arquivos de contêiner"
-
-#: inc/container.class.php:54 inc/container.class.php:941
-msgid "Export to YAML"
-msgstr "Exportar para YAML"
-
-#: inc/container.class.php:292
-msgid "Regenerate containers files"
-msgstr "Regerar arquivos de contêineres"
-
-#: inc/container.class.php:313
-msgid "Fix container names"
-msgstr "Corrigir nomes de containers"
-
-#: inc/container.class.php:461
-msgid "Updating generated containers files"
-msgstr "Atualizando arquivos de contêineres gerados"
-
-#: inc/container.class.php:664
+#: inc/field.class.php:298 inc/field.class.php:325
 msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção no formulário' no mesmo objeto"
-
-#: inc/container.class.php:680
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção na forma de uma guia específica' na mesma guia de objeto"
-
-#: inc/container.class.php:697
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
+"Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "O nome do contêiner é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
+msgstr "O nome do campo é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
 
-#: inc/container.class.php:712
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Você não pode adicionar vários blocos com nome idêntico no mesmo objeto"
+#: inc/field.class.php:317
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr ""
 
-#: inc/container.class.php:929
-msgid "Block"
-msgstr "Bloco"
+#: inc/field.class.php:405
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
 
-#: inc/container.class.php:1042
-msgid "Tab"
-msgstr "Aba"
+#: inc/field.class.php:602
+msgid "Fields"
+msgstr "Campos"
 
-#: inc/container.class.php:1200
-msgid "Add tab"
-msgstr "Adicionar aba"
+#: inc/field.class.php:667
+msgid "Add a new field"
+msgstr "Adicionar um novo campo"
 
-#: inc/container.class.php:1201
-msgid "Insertion in the form (before save button)"
-msgstr "Inserção no formulário (antes do botão de salvar)"
-
-#: inc/container.class.php:1202
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
-
-#: inc/container.class.php:1735
-msgid "Some mandatory fields are empty"
-msgstr "Alguns campos obrigatórios estão vazios"
-
-#: inc/container.class.php:1740
-msgid "Some numeric fields contains non numeric values"
-msgstr "Alguns campos numéricos contém valores não numéricos"
-
-#: inc/container.class.php:1745
-msgid "Some URL fields contains invalid links"
-msgstr "Alguns campos de URL contém links inválidos"
+#: inc/field.class.php:671
+msgid "No field for this block"
+msgstr "Nenhum campo para este bloco"
 
 #: inc/containerdisplaycondition.class.php:106
 #: inc/containerdisplaycondition.class.php:138
@@ -200,20 +129,6 @@ msgstr "correspondências de expressão regular"
 #: inc/containerdisplaycondition.class.php:523
 msgid "You must specify an item type, search option and condition."
 msgstr "Você deve especificar um tipo de item, opção de pesquisa e condição."
-
-#: inc/command/regeneratefilescommand.class.php:41
-msgid "Regenerates containers files."
-msgstr "Regerar arquivos de contêineres."
-
-#: inc/command/regeneratefilescommand.class.php:43
-msgid ""
-"This command will clean up all files generated by the plugin and regenerate "
-"them."
-msgstr "Este comando limpará todos os arquivos gerados pelo plug-in e os regenerará."
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Atualizando arquivos que foram baixados"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -264,32 +179,107 @@ msgstr "-> \"%s.%s\" deve ser excluído."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Execute\"%s\" para corrigir inconsistências do banco de dados."
 
-#: inc/field.class.php:261 inc/field.class.php:288
+#: inc/container.class.php:53
+msgid "Regenerate container files"
+msgstr "Regerar arquivos de contêiner"
+
+#: inc/container.class.php:54 inc/container.class.php:940
+msgid "Export to YAML"
+msgstr "Exportar para YAML"
+
+#: inc/container.class.php:272
+msgid "Regenerate containers files"
+msgstr "Regerar arquivos de contêineres"
+
+#: inc/container.class.php:293
+msgid "Fix container names"
+msgstr "Corrigir nomes de containers"
+
+#: inc/container.class.php:441
+msgid "Updating generated containers files"
+msgstr "Atualizando arquivos de contêineres gerados"
+
+#: inc/container.class.php:655
 msgid ""
-"Field name is too long for database (digits in name are replaced by "
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção no formulário' no mesmo objeto"
+
+#: inc/container.class.php:671
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Você não pode adicionar vários blocos com o tipo 'Inserção na forma de uma guia específica' na mesma guia de objeto"
+
+#: inc/container.class.php:682
+msgid ""
+"At least one selected object cannot be linked with type 'Insertion in the "
+"form of a specific tab'."
+msgstr ""
+
+#: inc/container.class.php:696
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "O nome do campo é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
+msgstr "O nome do contêiner é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
 
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+#: inc/container.class.php:711
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Você não pode adicionar vários blocos com nome idêntico no mesmo objeto"
 
-#: inc/field.class.php:368
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+#: inc/container.class.php:928
+msgid "Block"
+msgstr "Bloco"
 
-#: inc/field.class.php:565
-msgid "Fields"
-msgstr "Campos"
+#: inc/container.class.php:1042
+msgid "Tab"
+msgstr "Aba"
 
-#: inc/field.class.php:630
-msgid "Add a new field"
-msgstr "Adicionar um novo campo"
+#: inc/container.class.php:1201
+msgid "Add tab"
+msgstr "Adicionar aba"
 
-#: inc/field.class.php:634
-msgid "No field for this block"
-msgstr "Nenhum campo para este bloco"
+#: inc/container.class.php:1202
+msgid "Insertion in the form (before save button)"
+msgstr "Inserção no formulário (antes do botão de salvar)"
+
+#: inc/container.class.php:1203
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
+
+#: inc/container.class.php:1737
+msgid "Some mandatory fields are empty"
+msgstr "Alguns campos obrigatórios estão vazios"
+
+#: inc/container.class.php:1742
+msgid "Some numeric fields contains non numeric values"
+msgstr "Alguns campos numéricos contém valores não numéricos"
+
+#: inc/container.class.php:1747
+msgid "Some URL fields contains invalid links"
+msgstr "Alguns campos de URL contém links inválidos"
+
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr "Regerar arquivos de contêineres."
+
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr "Este comando limpará todos os arquivos gerados pelo plug-in e os regenerará."
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Atualizando arquivos que foram baixados"
+
+#: inc/labeltranslation.class.php:238
+msgid "Language"
+msgstr "Idioma"
+
+#: inc/labeltranslation.class.php:239
+msgid "Label"
+msgstr "Rótulo"
 
 #: hook.php:57 hook.php:61
 msgid "MySQL tables installation"
@@ -302,3 +292,19 @@ msgstr "O plugin não pode ser desinstalado enquando o plugin estiver desabilita
 #: hook.php:127
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalação de tabelas no MySQL"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "Valores permitidos"
+
+#: ajax/field_specific_fields.php:85
+msgid "Multiple dropdown"
+msgstr "Múltiplos menus suspensos"
+
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr "Valor padrão"
+
+#: ajax/field_specific_fields.php:122
+msgid "Default value will be configurable once field will be created."
+msgstr "O valor padrão será configurável assim que o campo for criado."

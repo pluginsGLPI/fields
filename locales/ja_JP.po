@@ -4,22 +4,36 @@
 # 
 # Translators:
 # sai sai, 2019
-# INOUE Daisuke, 2023
-# INOUE Daisuke, 2023-2025
+# Daisuke INOUE, 2023
+# Daisuke INOUE, 2023-2025
 # sai sai, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-18 02:45+0000\n"
+"POT-Creation-Date: 2026-07-31 02:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: INOUE Daisuke, 2023-2025\n"
+"Last-Translator: Daisuke INOUE, 2023-2025\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr ""
+
+#: templates/container_display_conditions.html.twig
+msgid "Add condition to hide block"
+msgstr "ブロックを非表示にする条件を追加"
+
+#: templates/container_display_conditions.html.twig
+#: inc/containerdisplaycondition.class.php:157
+msgid "Condition to hide block"
+msgid_plural "Conditions to hide block"
+msgstr[0] "ブロックを非表示にする条件"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -33,65 +47,27 @@ msgstr "状態による上書き"
 msgid "No item found"
 msgstr "アイテムがありません"
 
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr ""
-
 #: templates/fields.html.twig
 msgid "show"
 msgstr "表示"
 
-#: templates/container_display_conditions.html.twig
-msgid "Add condition to hide block"
-msgstr "ブロックを非表示にする条件を追加"
-
-#: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:157
-msgid "Condition to hide block"
-msgid_plural "Conditions to hide block"
-msgstr[0] "ブロックを非表示にする条件"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:246
+#: templates/forms/status_override.html.twig inc/field.class.php:283
 msgid "Field"
 msgstr "フィールド"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:647
-#: inc/field.class.php:826
+#: templates/forms/status_override.html.twig inc/field.class.php:684
+#: inc/field.class.php:863
 msgid "Read only"
 msgstr "読取専用"
 
-#: ajax/field_specific_fields.php:52
-msgid "Allowed values"
-msgstr "利用できる値"
-
-#: ajax/field_specific_fields.php:85
-msgid "Multiple dropdown"
-msgstr "複数のドロップダウン"
-
-#: ajax/field_specific_fields.php:89
-msgid "Default value"
-msgstr "既定値"
-
-#: ajax/field_specific_fields.php:122
-msgid "Default value will be configurable once field will be created."
-msgstr "フィールドを作成した後でも、既定値は設定可能です。"
-
-#: setup.php:248 front/container.php:34 front/container.form.php:74
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50
+#: front/container.php:34 front/container.form.php:74 inc/menu.class.php:37
+#: inc/destinationfield.class.php:50 setup.php:248
 msgid "Additional fields"
 msgstr "追加フィールド"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "状態による上書き"
-
-#: inc/labeltranslation.class.php:222
-msgid "Language"
-msgstr "言語"
-
-#: inc/labeltranslation.class.php:223
-msgid "Label"
-msgstr "ラベル"
 
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
@@ -101,79 +77,32 @@ msgstr "フィールド名を修正する"
 msgid "Component items"
 msgstr "コンポーネント項目"
 
-#: inc/container.class.php:53
-msgid "Regenerate container files"
-msgstr "コンテナファイルを再生成"
-
-#: inc/container.class.php:54 inc/container.class.php:941
-msgid "Export to YAML"
-msgstr "YAML 形式でエクスポート"
-
-#: inc/container.class.php:292
-msgid "Regenerate containers files"
-msgstr "コンテナファイルを再生成"
-
-#: inc/container.class.php:313
-msgid "Fix container names"
-msgstr "コンテナ名を修正する"
-
-#: inc/container.class.php:461
-msgid "Updating generated containers files"
-msgstr "生成済みコンテナ ファイルを更新しています"
-
-#: inc/container.class.php:664
+#: inc/field.class.php:298 inc/field.class.php:325
 msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "「フォームに挿入」型のブロックを、同じオブジェクトに複数配置することはできません"
-
-#: inc/container.class.php:680
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "「フォームの特定のタブに挿入」型のブロックを、1 つのオブジェクトのタブ上に複数配置することはできません"
-
-#: inc/container.class.php:697
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
+"Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "データベースに保存するコンテナ名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
+msgstr "データベースに保存するフィールド名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
 
-#: inc/container.class.php:712
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "1 つのオブジェクトに、同じ名前のブロックを複数配置することはできません"
+#: inc/field.class.php:317
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "同じブロックに同じ「ドロップダウン」のフィールドを追加することはできません"
 
-#: inc/container.class.php:929
-msgid "Block"
-msgstr "ブロック"
+#: inc/field.class.php:405
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "「%s」フィールドはフォームの質問で利用されているため、削除できません。"
 
-#: inc/container.class.php:1042
-msgid "Tab"
-msgstr "タブ"
+#: inc/field.class.php:602
+msgid "Fields"
+msgstr "フィールド"
 
-#: inc/container.class.php:1200
-msgid "Add tab"
-msgstr "タブを追加"
+#: inc/field.class.php:667
+msgid "Add a new field"
+msgstr "新しいフィールドを追加"
 
-#: inc/container.class.php:1201
-msgid "Insertion in the form (before save button)"
-msgstr "フォームに挿入（保存ボタンの前）"
-
-#: inc/container.class.php:1202
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "フォームの特定のタブに挿入（保存ボタンの前）"
-
-#: inc/container.class.php:1735
-msgid "Some mandatory fields are empty"
-msgstr "未入力の必須項目があります"
-
-#: inc/container.class.php:1740
-msgid "Some numeric fields contains non numeric values"
-msgstr "非数値が入っている数値フィールドがあります"
-
-#: inc/container.class.php:1745
-msgid "Some URL fields contains invalid links"
-msgstr "不正なリンクを含む URL フィールドがあります"
+#: inc/field.class.php:671
+msgid "No field for this block"
+msgstr "このブロック用のフィールドがありません"
 
 #: inc/containerdisplaycondition.class.php:106
 #: inc/containerdisplaycondition.class.php:138
@@ -194,20 +123,6 @@ msgstr "正規表現での照合"
 #: inc/containerdisplaycondition.class.php:523
 msgid "You must specify an item type, search option and condition."
 msgstr "検索設定と状態では、アイテムの型を特定する必要があります。"
-
-#: inc/command/regeneratefilescommand.class.php:41
-msgid "Regenerates containers files."
-msgstr "コンテナファイルを再生成します。"
-
-#: inc/command/regeneratefilescommand.class.php:43
-msgid ""
-"This command will clean up all files generated by the plugin and regenerate "
-"them."
-msgstr "このコマンドでプラグインが生成したすべてのファイルを初期化し、再生成します。"
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "生成済みドロップダウン ファイルを更新しています"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -258,32 +173,107 @@ msgstr "-> \"%s.%s\" は削除すべきです。"
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "「%s」を実行してデータベースの不整合を修復してください。"
 
-#: inc/field.class.php:261 inc/field.class.php:288
+#: inc/container.class.php:53
+msgid "Regenerate container files"
+msgstr "コンテナファイルを再生成"
+
+#: inc/container.class.php:54 inc/container.class.php:940
+msgid "Export to YAML"
+msgstr "YAML 形式でエクスポート"
+
+#: inc/container.class.php:272
+msgid "Regenerate containers files"
+msgstr "コンテナファイルを再生成"
+
+#: inc/container.class.php:293
+msgid "Fix container names"
+msgstr "コンテナ名を修正する"
+
+#: inc/container.class.php:441
+msgid "Updating generated containers files"
+msgstr "生成済みコンテナ ファイルを更新しています"
+
+#: inc/container.class.php:655
 msgid ""
-"Field name is too long for database (digits in name are replaced by "
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "「フォームに挿入」型のブロックを、同じオブジェクトに複数配置することはできません"
+
+#: inc/container.class.php:671
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "「フォームの特定のタブに挿入」型のブロックを、1 つのオブジェクトのタブ上に複数配置することはできません"
+
+#: inc/container.class.php:682
+msgid ""
+"At least one selected object cannot be linked with type 'Insertion in the "
+"form of a specific tab'."
+msgstr ""
+
+#: inc/container.class.php:696
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "データベースに保存するフィールド名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
+msgstr "データベースに保存するコンテナ名が長すぎます（名前の数字は文字に置き換える処理を行います。数字を削除してみてください）"
 
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "同じブロックに同じ「ドロップダウン」のフィールドを追加することはできません"
+#: inc/container.class.php:711
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "1 つのオブジェクトに、同じ名前のブロックを複数配置することはできません"
 
-#: inc/field.class.php:368
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr "「%s」フィールドはフォームの質問で利用されているため、削除できません。"
+#: inc/container.class.php:928
+msgid "Block"
+msgstr "ブロック"
 
-#: inc/field.class.php:565
-msgid "Fields"
-msgstr "フィールド"
+#: inc/container.class.php:1042
+msgid "Tab"
+msgstr "タブ"
 
-#: inc/field.class.php:630
-msgid "Add a new field"
-msgstr "新しいフィールドを追加"
+#: inc/container.class.php:1201
+msgid "Add tab"
+msgstr "タブを追加"
 
-#: inc/field.class.php:634
-msgid "No field for this block"
-msgstr "このブロック用のフィールドがありません"
+#: inc/container.class.php:1202
+msgid "Insertion in the form (before save button)"
+msgstr "フォームに挿入（保存ボタンの前）"
+
+#: inc/container.class.php:1203
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "フォームの特定のタブに挿入（保存ボタンの前）"
+
+#: inc/container.class.php:1737
+msgid "Some mandatory fields are empty"
+msgstr "未入力の必須項目があります"
+
+#: inc/container.class.php:1742
+msgid "Some numeric fields contains non numeric values"
+msgstr "非数値が入っている数値フィールドがあります"
+
+#: inc/container.class.php:1747
+msgid "Some URL fields contains invalid links"
+msgstr "不正なリンクを含む URL フィールドがあります"
+
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr "コンテナファイルを再生成します。"
+
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr "このコマンドでプラグインが生成したすべてのファイルを初期化し、再生成します。"
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "生成済みドロップダウン ファイルを更新しています"
+
+#: inc/labeltranslation.class.php:238
+msgid "Language"
+msgstr "言語"
+
+#: inc/labeltranslation.class.php:239
+msgid "Label"
+msgstr "ラベル"
 
 #: hook.php:57 hook.php:61
 msgid "MySQL tables installation"
@@ -296,3 +286,19 @@ msgstr "プラグインが無効だと、プラグインをアンインストー
 #: hook.php:127
 msgid "MySQL tables uninstallation"
 msgstr "MySQL テーブルのアンインストール"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "利用できる値"
+
+#: ajax/field_specific_fields.php:85
+msgid "Multiple dropdown"
+msgstr "複数のドロップダウン"
+
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr "既定値"
+
+#: ajax/field_specific_fields.php:122
+msgid "Default value will be configurable once field will be created."
+msgstr "フィールドを作成した後でも、既定値は設定可能です。"

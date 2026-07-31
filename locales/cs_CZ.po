@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-18 02:45+0000\n"
+"POT-Creation-Date: 2026-07-31 02:10+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: David Stepan <stepand@tiscali.cz>, 2016,2025\n"
 "Language-Team: Czech (Czech Republic) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -21,25 +21,9 @@ msgstr ""
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: templates/status_overrides.html.twig
-msgid "Add new status override"
-msgstr "Přidat nové přepsání stavu"
-
-#: templates/status_overrides.html.twig
-msgid "Status overrides"
-msgstr "Přepsání stavu"
-
-#: templates/status_overrides.html.twig
-msgid "No item found"
-msgstr "Žádná položka nenalezena"
-
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
 msgstr ""
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "zobrazit"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -54,47 +38,39 @@ msgstr[1] "Podmínky pro skrytí bloku"
 msgstr[2] "Podmínek pro skrytí bloku"
 msgstr[3] "Podmínky pro skrytí bloku"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:246
+#: templates/status_overrides.html.twig
+msgid "Add new status override"
+msgstr "Přidat nové přepsání stavu"
+
+#: templates/status_overrides.html.twig
+msgid "Status overrides"
+msgstr "Přepsání stavu"
+
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr "Žádná položka nenalezena"
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr "zobrazit"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:283
 msgid "Field"
 msgstr "Kolonka"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:647
-#: inc/field.class.php:826
+#: templates/forms/status_override.html.twig inc/field.class.php:684
+#: inc/field.class.php:863
 msgid "Read only"
 msgstr "Pouze pro čtení"
 
-#: ajax/field_specific_fields.php:52
-msgid "Allowed values"
-msgstr "Povolené hodnoty"
-
-#: ajax/field_specific_fields.php:85
-msgid "Multiple dropdown"
-msgstr "Více rozbalovacích nabídek"
-
-#: ajax/field_specific_fields.php:89
-msgid "Default value"
-msgstr "Výchozí hodnota"
-
-#: ajax/field_specific_fields.php:122
-msgid "Default value will be configurable once field will be created."
-msgstr "Výchozí hodnota bude konfigurovatelná po vytvoření pole."
-
-#: setup.php:248 front/container.php:34 front/container.form.php:74
-#: inc/menu.class.php:37 inc/destinationfield.class.php:50
+#: front/container.php:34 front/container.form.php:74 inc/menu.class.php:37
+#: inc/destinationfield.class.php:50 setup.php:248
 msgid "Additional fields"
 msgstr "Další kolonky"
 
 #: inc/statusoverride.class.php:91
 msgid "Override by status"
 msgstr "Přepsat podle stavu"
-
-#: inc/labeltranslation.class.php:222
-msgid "Language"
-msgstr "Jazyk"
-
-#: inc/labeltranslation.class.php:223
-msgid "Label"
-msgstr "Štítek"
 
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
@@ -104,79 +80,32 @@ msgstr "Opravit názvy kolonek"
 msgid "Component items"
 msgstr "Položky komponent"
 
-#: inc/container.class.php:53
-msgid "Regenerate container files"
-msgstr "Znovu vytvořit kontejnerové soubory"
-
-#: inc/container.class.php:54 inc/container.class.php:941
-msgid "Export to YAML"
-msgstr "Exportovat do YAML"
-
-#: inc/container.class.php:292
-msgid "Regenerate containers files"
-msgstr "Obnovení souborů kontejnerů"
-
-#: inc/container.class.php:313
-msgid "Fix container names"
-msgstr "Opravit názvy kontejnerů"
-
-#: inc/container.class.php:461
-msgid "Updating generated containers files"
-msgstr "Aktualizují se vytvořené soubory kontejnerů"
-
-#: inc/container.class.php:664
+#: inc/field.class.php:298 inc/field.class.php:325
 msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
-
-#: inc/container.class.php:680
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "Není možné přidat několik bloků typu „Vložení ve formuláři konkrétní karty“ na té stejné kartě objektu"
-
-#: inc/container.class.php:697
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
+"Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
-msgstr "Název kontejneru je pro databázi příliš dlouhý (číslice v názvu jsou nahrazeny znaky, zkuste je odstranit)"
+msgstr "Název pole je pro databázi příliš dlouhý (číslice v názvu jsou nahrazeny znaky, zkuste je odstranit)"
 
-#: inc/container.class.php:712
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
+#: inc/field.class.php:317
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "Nelze přidat stejné pole 'rozbalovací nabídka' do stejného bloku."
 
-#: inc/container.class.php:929
-msgid "Block"
-msgstr "Blok"
+#: inc/field.class.php:405
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
 
-#: inc/container.class.php:1042
-msgid "Tab"
-msgstr "Tabulka"
+#: inc/field.class.php:602
+msgid "Fields"
+msgstr "Kolonky"
 
-#: inc/container.class.php:1200
-msgid "Add tab"
-msgstr "Přidat tabulku"
+#: inc/field.class.php:667
+msgid "Add a new field"
+msgstr "Přidat novou kolonku"
 
-#: inc/container.class.php:1201
-msgid "Insertion in the form (before save button)"
-msgstr "Vložení do formuláře (před tlačítkem uložit)"
-
-#: inc/container.class.php:1202
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
-
-#: inc/container.class.php:1735
-msgid "Some mandatory fields are empty"
-msgstr "Některá povinná pole nejsou vyplněná"
-
-#: inc/container.class.php:1740
-msgid "Some numeric fields contains non numeric values"
-msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
-
-#: inc/container.class.php:1745
-msgid "Some URL fields contains invalid links"
-msgstr "Některé URL kolonky obsahují neplatné odkazy"
+#: inc/field.class.php:671
+msgid "No field for this block"
+msgstr "Žádná kolonka pro tento blok"
 
 #: inc/containerdisplaycondition.class.php:106
 #: inc/containerdisplaycondition.class.php:138
@@ -197,20 +126,6 @@ msgstr "shody regulárních výrazů"
 #: inc/containerdisplaycondition.class.php:523
 msgid "You must specify an item type, search option and condition."
 msgstr "Musíte zadat typ položky, možnost vyhledávání a podmínku."
-
-#: inc/command/regeneratefilescommand.class.php:41
-msgid "Regenerates containers files."
-msgstr "Regeneruje soubory kontejnerů."
-
-#: inc/command/regeneratefilescommand.class.php:43
-msgid ""
-"This command will clean up all files generated by the plugin and regenerate "
-"them."
-msgstr "Tento příkaz vyčistí všechny soubory vygenerované zásuvným modulem a regeneruje je."
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -261,32 +176,107 @@ msgstr "-> „%s.%s“ by mělo být smazáno."
 msgid "Run \"%s\" to fix database inconsistencies."
 msgstr "Spuštěním příkazu \"%s\" opravíte nekonzistence v databázi."
 
-#: inc/field.class.php:261 inc/field.class.php:288
+#: inc/container.class.php:53
+msgid "Regenerate container files"
+msgstr "Znovu vytvořit kontejnerové soubory"
+
+#: inc/container.class.php:54 inc/container.class.php:940
+msgid "Export to YAML"
+msgstr "Exportovat do YAML"
+
+#: inc/container.class.php:272
+msgid "Regenerate containers files"
+msgstr "Obnovení souborů kontejnerů"
+
+#: inc/container.class.php:293
+msgid "Fix container names"
+msgstr "Opravit názvy kontejnerů"
+
+#: inc/container.class.php:441
+msgid "Updating generated containers files"
+msgstr "Aktualizují se vytvořené soubory kontejnerů"
+
+#: inc/container.class.php:655
 msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "Název pole je pro databázi příliš dlouhý (číslice v názvu jsou nahrazeny znaky, zkuste je odstranit)"
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "Není možné přidat několik bloků s typem „Vložení do formuláře“ na stejný objekt"
 
-#: inc/field.class.php:280
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr "Nelze přidat stejné pole 'rozbalovací nabídka' do stejného bloku."
+#: inc/container.class.php:671
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "Není možné přidat několik bloků typu „Vložení ve formuláři konkrétní karty“ na té stejné kartě objektu"
 
-#: inc/field.class.php:368
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+#: inc/container.class.php:682
+msgid ""
+"At least one selected object cannot be linked with type 'Insertion in the "
+"form of a specific tab'."
 msgstr ""
 
-#: inc/field.class.php:565
-msgid "Fields"
-msgstr "Kolonky"
+#: inc/container.class.php:696
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "Název kontejneru je pro databázi příliš dlouhý (číslice v názvu jsou nahrazeny znaky, zkuste je odstranit)"
 
-#: inc/field.class.php:630
-msgid "Add a new field"
-msgstr "Přidat novou kolonku"
+#: inc/container.class.php:711
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "Není možné přidat více bloků se stejným názvem do jednoho objektu"
 
-#: inc/field.class.php:634
-msgid "No field for this block"
-msgstr "Žádná kolonka pro tento blok"
+#: inc/container.class.php:928
+msgid "Block"
+msgstr "Blok"
+
+#: inc/container.class.php:1042
+msgid "Tab"
+msgstr "Tabulka"
+
+#: inc/container.class.php:1201
+msgid "Add tab"
+msgstr "Přidat tabulku"
+
+#: inc/container.class.php:1202
+msgid "Insertion in the form (before save button)"
+msgstr "Vložení do formuláře (před tlačítkem uložit)"
+
+#: inc/container.class.php:1203
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
+
+#: inc/container.class.php:1737
+msgid "Some mandatory fields are empty"
+msgstr "Některá povinná pole nejsou vyplněná"
+
+#: inc/container.class.php:1742
+msgid "Some numeric fields contains non numeric values"
+msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
+
+#: inc/container.class.php:1747
+msgid "Some URL fields contains invalid links"
+msgstr "Některé URL kolonky obsahují neplatné odkazy"
+
+#: inc/command/regeneratefilescommand.class.php:41
+msgid "Regenerates containers files."
+msgstr "Regeneruje soubory kontejnerů."
+
+#: inc/command/regeneratefilescommand.class.php:43
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr "Tento příkaz vyčistí všechny soubory vygenerované zásuvným modulem a regeneruje je."
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Aktualizují se vytvořené soubory rozbalovací nabídky"
+
+#: inc/labeltranslation.class.php:238
+msgid "Language"
+msgstr "Jazyk"
+
+#: inc/labeltranslation.class.php:239
+msgid "Label"
+msgstr "Štítek"
 
 #: hook.php:57 hook.php:61
 msgid "MySQL tables installation"
@@ -299,3 +289,19 @@ msgstr "Zásuvný modul nemůže být odinstalován protože je vypnutý."
 #: hook.php:127
 msgid "MySQL tables uninstallation"
 msgstr "Odebrání MySQL tabulek"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "Povolené hodnoty"
+
+#: ajax/field_specific_fields.php:85
+msgid "Multiple dropdown"
+msgstr "Více rozbalovacích nabídek"
+
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr "Výchozí hodnota"
+
+#: ajax/field_specific_fields.php:122
+msgid "Default value will be configurable once field will be created."
+msgstr "Výchozí hodnota bude konfigurovatelná po vytvoření pole."
