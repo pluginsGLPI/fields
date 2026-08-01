@@ -1,0 +1,25 @@
+{% import 'components/form/fields_macros.html.twig' as fields %}
+
+<div class="d-flex align-items-center gap-2 w-100">
+    {{ fields.hiddenField(
+        block_input_name,
+        selected_block_id
+    ) }}
+
+    {{ fields.dropdownArrayField(
+        field_input_name,
+        selected_field_id,
+        available_fields,
+        '',
+        {
+            'no_label': true,
+            'field_class': 'flex-grow-1',
+            'class': 'form-select form-select-sm w-100',
+            'mb': '',
+            'init': true,
+            'add_data_attributes': {
+                'af-embedded-question-config-control': ''
+            }
+        }
+    ) }}
+</div>
