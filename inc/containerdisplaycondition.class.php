@@ -275,7 +275,13 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $twig_params['is_dropdown']       = true;
-            $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
+            //No need to call for getItemForItemType if we are in the case of a custom asset
+            if ($so['table'] == 'glpi_assets_assettypes') {
+                $twig_params['dropdown_itemtype'] = $so['itemtype'];
+            } else {
+                $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
+            }
+
             $twig_params['list_conditions']   = self::getComparisonOperators(
                 true,
                 is_a($twig_params['dropdown_itemtype'], CommonTreeDropdown::class, true),
@@ -324,7 +330,13 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $raw_value = '';
 
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
-            $dropdown_itemtype = getItemTypeForTable($so['table']);
+            //No need to call for getItemForItemType if we are in the case of a custom asset
+            if ($so['table'] == 'glpi_assets_assettypes') {
+                $dropdown_itemtype = $so['itemtype'];
+            } else {
+                $dropdown_itemtype = getItemTypeForTable($so['table']);
+            }
+
             $dbu = new DbUtils();
             $dropdown = $dbu->getItemForItemtype($dropdown_itemtype);
             if ($dropdown->getFromDB($value)) {
