@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Carlos Moreno Rodríguez <carlosm.rodriguez@prodigy.net.mx>, 2022-2023
+# Edwin Elias Alvarez <elias986@yahoo.com>, 2026
 # Edwin Elias Alvarez <sistemas@cyalimentos.com>, 2026
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 02:10+0000\n"
+"POT-Creation-Date: 2026-08-04 01:56+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Edwin Elias Alvarez <sistemas@cyalimentos.com>, 2026\n"
+"Last-Translator: Edwin Elias Alvarez <elias986@yahoo.com>, 2026\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -209,7 +210,7 @@ msgstr "No se pueden agregar varios bloques con el tipo 'Inserción en el formul
 msgid ""
 "At least one selected object cannot be linked with type 'Insertion in the "
 "form of a specific tab'."
-msgstr ""
+msgstr "Al menos uno de los objetos seleccionados no puede vincularse con el tipo 'Inserción en forma de pestaña específica'."
 
 #: inc/container.class.php:696
 msgid ""
