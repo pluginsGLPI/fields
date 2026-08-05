@@ -275,12 +275,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
             $twig_params['is_dropdown']       = true;
-            //No need to call for getItemForItemType if we are in the case of a custom asset
-            if ($so['table'] == 'glpi_assets_assettypes') {
-                $twig_params['dropdown_itemtype'] = $so['itemtype'];
-            } else {
-                $twig_params['dropdown_itemtype'] = getItemTypeForTable($so['table']);
-            }
+            //No need to call getItemTypeForTable if we are in the case of a custom asset
+            $twig_params['dropdown_itemtype'] = $so['itemtype'] ?? getItemTypeForTable($so['table']);
 
             $twig_params['list_conditions']   = self::getComparisonOperators(
                 true,
