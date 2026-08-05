@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Fix a an error displaying on the UI when trying to create a bloc display condition based on "Type" or "Model" fields for custom assets
+- Fix an error displayed on the UI when trying to create a bloc display condition based on "Type" or "Model" fields for custom assets
 
 ## [1.24.3] - 2026-07-30
 
