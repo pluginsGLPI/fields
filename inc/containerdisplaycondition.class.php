@@ -326,12 +326,8 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $raw_value = '';
 
         if ($so['datatype'] == 'dropdown' || ($so['datatype'] == 'itemlink' && $so['table'] !== $itemtypetable)) {
-            //No need to call for getItemForItemType if we are in the case of a custom asset
-            if ($so['table'] == 'glpi_assets_assettypes') {
-                $dropdown_itemtype = $so['itemtype'];
-            } else {
-                $dropdown_itemtype = getItemTypeForTable($so['table']);
-            }
+            //No need to call getItemTypeForTable if we are in the case of a custom asset
+            $dropdown_itemtype = $so['itemtype'] ?? getItemTypeForTable($so['table']);
 
             $dbu = new DbUtils();
             $dropdown = $dbu->getItemForItemtype($dropdown_itemtype);
