@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Allow multiple "Insertion in the form" (dom) blocks per entity
 
+## [1.24.4] - 2026-08-06
+
+### Fixed
+
+- Fix an error displayed on the UI when trying to create a bloc display condition based on "Type" or "Model" fields for custom assets
+- Fix GenericObject dropdown fields never being migrated to CustomAsset dropdown fields
+
 ## [1.24.3] - 2026-07-30
 
 ### Fixed

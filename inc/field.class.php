@@ -155,11 +155,9 @@ class PluginFieldsField extends CommonDBChild
 
         // Update old genericobject_itemtype dropdown fields to customasset_itemtype dropdown fields
         $has_genericobject_fields = $DB->tableExists('glpi_plugin_genericobject_types')
-            && $DB->request([
-                'COUNT' => 'id',
-                'FROM'  => self::getTable(),
-                'WHERE' => ['type' => ['LIKE', 'dropdown-PluginGenericobject%']],
-            ])->current()['COUNT(id)'] > 0;
+            && countElementsInTable(self::getTable(), [
+                'type' => ['LIKE', 'dropdown-PluginGenericobject%'],
+            ]) > 0;
         if ($has_genericobject_fields) {
             // Get all types from PluginGenericobject
             $migration_genericobject_itemtypes = PluginFieldsMigration::getGenericObjectTypes();
