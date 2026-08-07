@@ -43,6 +43,10 @@ class PluginFieldsContainerTest extends TestCase
 
     protected function tearDown(): void
     {
+        // isset($_REQUEST['massiveaction']) is used as a flag by the plugin code:
+        // the key must not leak between tests, even with a falsy value
+        unset($_REQUEST['massiveaction']);
+
         $this->deleteAllContainers();
 
         // Delete all created tickets
@@ -421,7 +425,6 @@ class PluginFieldsContainerTest extends TestCase
     {
         $_SESSION['glpiactive_entity'] = 0;
         $_SESSION['glpiactiveprofile']['id'] = 4;
-        $_REQUEST['massiveaction'] = false;
 
         // add containers + fields
         $containerId1 = $this->addContainer([
@@ -491,7 +494,6 @@ class PluginFieldsContainerTest extends TestCase
     {
         $_SESSION['glpiactive_entity'] = 0;
         $_SESSION['glpiactiveprofile']['id'] = 4;
-        $_REQUEST['massiveaction'] = false;
 
         // add containers + fields
         $containerId1 = $this->addContainer([

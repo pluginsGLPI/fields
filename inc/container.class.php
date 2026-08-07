@@ -1830,7 +1830,8 @@ HTML;
         $where = [
             'is_active' => 1,
             'type'      => $type,
-            new QueryExpression("JSON_CONTAINS(itemtypes, " . $DB->quote('"' . $itemtype . '"') . ")"),
+            // json_encode() so that backslashes in namespaced itemtypes produce valid JSON
+            new QueryExpression('JSON_CONTAINS(itemtypes, ' . $DB->quote(json_encode($itemtype)) . ')'),
             'AND' => [
                 'OR' => [
                     [
@@ -1962,13 +1963,20 @@ HTML;
      */
     public static function preItem(CommonDBTM $item)
     {
-        $type = $_REQUEST['_plugin_fields_type'] ?? 'dom';
-        $subtype = ($type === 'domtab') ? ($_REQUEST['_plugin_fields_subtype'] ?? '') : '';
+        $explicit_c_id = $item->input['c_id'] ?? $_REQUEST['c_id'] ?? null;
 
-        $itemEntityId = $item->getEntityID();
-        $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
+        if ($explicit_c_id !== null) {
+            // Explicit container id (tab forms, API callers)
+            $containers = [(int) $explicit_c_id];
+        } else {
+            $type = $_REQUEST['_plugin_fields_type'] ?? 'dom';
+            $subtype = ($type === 'domtab') ? ($_REQUEST['_plugin_fields_subtype'] ?? '') : '';
 
-        $containers = self::findContainers($item->getType(), $type, $subtype, $entityId);
+            $itemEntityId = $item->getEntityID();
+            $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
+
+            $containers = self::findContainers($item->getType(), $type, $subtype, $entityId);
+        }
 
         $all_data = [];
 
@@ -1983,7 +1991,9 @@ HTML;
             }
 
             $loc_c = new self();
-            $loc_c->getFromDB($c_id);
+            if (!$loc_c->getFromDB($c_id)) {
+                continue; // unknown container (invalid explicit c_id)
+            }
 
             // need to check if container is usable on this object entity
             $entities = [$loc_c->fields['entities_id']];
@@ -2121,10 +2131,11 @@ HTML;
                 $htmlKeyNoId   = sprintf('plugin_fields_%sdropdowns_id', $base_name); // html key in POST data without id
                 $colKey = 'plugin_fields_' . $base_name . 'dropdowns_id'; // column key in DB
 
-                if (array_key_exists($htmlKeyWithId, $item->input)) {
+                // isset() (and not array_key_exists()) so that a null value is treated as "not provided"
+                if (isset($item->input[$htmlKeyWithId])) {
                     $data[$colKey] = $item->input[$htmlKeyWithId];
                     $has_fields    = true;
-                } elseif (array_key_exists($htmlKeyNoId, $item->input)) {
+                } elseif (isset($item->input[$htmlKeyNoId])) {
                     $data[$colKey] = $item->input[$htmlKeyNoId];
                     $has_fields    = true;
                 } elseif ($isMulti) {
@@ -2147,19 +2158,25 @@ HTML;
                 continue;
             }
 
-            // For fields standard, the input name is "plugin_fields_{$c_id}_{$base_name}"
+            // For fields standard, the input name is "plugin_fields_{$c_id}_{$base_name}".
+            // Legacy naming (API calls, external code) sends the bare field name.
             $htmlKeyWithId = $prefix . $base_name;
             $htmlKeyNoId   = 'plugin_fields_' . $base_name;
 
             $valuePresent = false;
             $value = null;
-            if (array_key_exists($htmlKeyWithId, $item->input)) {
-                $value        = $item->input[$htmlKeyWithId];
-                $valuePresent = true;
-            } elseif (array_key_exists($htmlKeyNoId, $item->input)) {
-                $value        = $item->input[$htmlKeyNoId];
-                $valuePresent = true;
-            } elseif ($isMulti) {
+            $matchedKey = null;
+            foreach ([$htmlKeyWithId, $htmlKeyNoId, $base_name] as $candidateKey) {
+                // isset() (and not array_key_exists()) so that a null value is treated as "not provided"
+                if (isset($item->input[$candidateKey])) {
+                    $value        = $item->input[$candidateKey];
+                    $valuePresent = true;
+                    $matchedKey   = $candidateKey;
+                    break;
+                }
+            }
+
+            if (!$valuePresent && $isMulti) {
                 //the absence of the field in the input may be due to the fact that the input allows multiple selection
                 // ex my_dom[]
                 //in these conditions, the input is never sent by the browser
@@ -2187,10 +2204,12 @@ HTML;
             $data[$base_name] = $value;
             $has_fields = true;
 
-            // If the field is a richtext
+            // If the field is a richtext, collect uploaded files companion inputs.
+            // They are posted as "_{$input_name}" but must be stored under "_{$base_name}"
+            // as expected by addRichTextFiles()/addFiles().
             if ($field['type'] === 'richtext') {
-                foreach (['_' . $htmlKeyWithId, '_prefix_' . $htmlKeyWithId, '_tag_' . $htmlKeyWithId] as $extra) {
-                    $data[$extra] = $item->input[$extra] ?? [];
+                foreach (['_%s', '_prefix_%s', '_tag_%s'] as $pattern) {
+                    $data[sprintf($pattern, $base_name)] = $item->input[sprintf($pattern, $matchedKey)] ?? [];
                 }
             }
         }

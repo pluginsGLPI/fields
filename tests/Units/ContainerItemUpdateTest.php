@@ -756,15 +756,14 @@ final class ContainerItemUpdateTest extends DbTestCase
     }
 
     /**
-     * The plugin must prevent creating two DOM containers for the same itemtype.
-     * This is an intentional design constraint.
+     * Multiple DOM containers are now allowed for the same itemtype.
      */
-    public function testOnlyOneDomContainerAllowedPerItemtype(): void
+    public function testMultipleDomContainersAllowedPerItemtype(): void
     {
         $this->login();
 
         // Create first DOM container for Ticket
-        $this->createFieldContainer([
+        $container1 = $this->createFieldContainer([
             'label'        => 'First DOM Container',
             'type'         => 'dom',
             'itemtypes'    => [Ticket::class],
@@ -773,7 +772,7 @@ final class ContainerItemUpdateTest extends DbTestCase
             'is_recursive' => 1,
         ]);
 
-        // Attempt to create a second DOM container for the same itemtype.
+        // Create a second DOM container for the same itemtype.
         // itemtypes must be passed as an array (prepareInputForAdd converts it internally).
         $container2 = new PluginFieldsContainer();
         $result = $container2->add([
@@ -785,10 +784,13 @@ final class ContainerItemUpdateTest extends DbTestCase
             'is_recursive' => 1,
         ]);
 
-        $this->assertFalse((bool) $result, 'Creating a second DOM container for the same itemtype must be rejected.');
+        $this->assertGreaterThan(0, (int) $result, 'Creating a second DOM container for the same itemtype must be allowed.');
+        $this->assertNotSame($container1->getID(), $container2->getID());
 
-        // message should be checked manually
-        $this->hasSessionMessages(ERROR, ["You cannot add several blocks with type 'Insertion in the form' on same object"]);
+        // Both containers must be found for the itemtype
+        $found = PluginFieldsContainer::findContainers(Ticket::class, 'dom');
+        $this->assertContains($container1->getID(), $found);
+        $this->assertContains($container2->getID(), $found);
     }
 
     // -----------------------------------------------------------------------
