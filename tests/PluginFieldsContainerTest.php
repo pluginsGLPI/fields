@@ -33,6 +33,7 @@ use PHPUnit\Framework\TestCase;
 class PluginFieldsContainerTest extends TestCase
 {
     private array $createdContainers    = [];
+
     private array $createdTickets       = [];
 
     protected function setUp(): void
@@ -73,8 +74,6 @@ class PluginFieldsContainerTest extends TestCase
 
     /**
      * * Add container
-     * @param array $input
-     * @return false|int
      */
     private function addContainer(array $input): false|int
     {
@@ -84,13 +83,12 @@ class PluginFieldsContainerTest extends TestCase
         if (is_int($containerId) && $containerId > 0) {
             $this->createdContainers[] = $containerId;
         }
+
         return $containerId;
     }
 
     /**
      * * Get container by ID
-     * @param int $id
-     * @return PluginFieldsContainer
      */
     private function getContainer(int $id): PluginFieldsContainer
     {
@@ -101,10 +99,6 @@ class PluginFieldsContainerTest extends TestCase
 
     /**
      * * Add field to container
-     * @param int $containerId
-     * @param string $fieldName
-     * @param string $type
-     * @return false|int
      */
     private function addFieldToContainer(int $containerId, string $fieldName, string $type = 'text', bool $multiple = false): false|int
     {
@@ -125,6 +119,7 @@ class PluginFieldsContainerTest extends TestCase
 
         $container = new PluginFieldsContainer();
         $container->getFromDB($containerId);
+
         $className = PluginFieldsContainer::getClassname('Ticket', $container->fields['name']);
         $className::addField($fieldName, $type, ['multiple' => $multiple]);
 
@@ -133,8 +128,6 @@ class PluginFieldsContainerTest extends TestCase
 
     /**
      * * Add ticket
-     * @param array $input
-     * @return Ticket|false
      */
     private function addTicket(array $input): Ticket|false
     {
@@ -145,13 +138,12 @@ class PluginFieldsContainerTest extends TestCase
         } else {
             return false;
         }
+
         return $this->getTicket($ticketId);
     }
 
     /**
      * * Get ticket by ID
-     * @param int $id
-     * @return Ticket
      */
     private function getTicket(int $id): Ticket
     {
@@ -626,15 +618,15 @@ class PluginFieldsContainerTest extends TestCase
         $ticket->fields['entities_id'] = 0;
 
         $ticket->input = [
-            "plugin_fields_{$containerId}_{$fieldName}dropdowns_id" => [$idOptA, $idOptB],
-            "_plugin_fields_{$containerId}_{$fieldName}dropdowns_id_defined" => true,
+            sprintf('plugin_fields_%s_%sdropdowns_id', $containerId, $fieldName) => [$idOptA, $idOptB],
+            sprintf('_plugin_fields_%s_%sdropdowns_id_defined', $containerId, $fieldName) => true,
         ];
 
         // call populateData
         $data = PluginFieldsContainer::populateData($containerId, $ticket);
         $this->assertIsArray($data);
 
-        $col = "plugin_fields_{$fieldName}dropdowns_id";
+        $col = sprintf('plugin_fields_%sdropdowns_id', $fieldName);
         $this->assertArrayHasKey($col, $data);
         $this->assertSame([$idOptA, $idOptB], $data[$col]);
         $this->deleteAllContainers();
@@ -682,14 +674,14 @@ class PluginFieldsContainerTest extends TestCase
 
         // check if the HTML contains both containers
         $this->assertStringContainsString(
-            'id=\'plugin_fields_container_' . $idContainer1 . '\'',
+            "id='plugin_fields_container_" . $idContainer1 . "'",
             $html,
-            "Container 1 (id=$idContainer1) not displayed",
+            sprintf('Container 1 (id=%s) not displayed', $idContainer1),
         );
         $this->assertStringContainsString(
-            'id=\'plugin_fields_container_' . $idContainer2 . '\'',
+            "id='plugin_fields_container_" . $idContainer2 . "'",
             $html,
-            "Container 2 (id=$idContainer2) not displayed",
+            sprintf('Container 2 (id=%s) not displayed', $idContainer2),
         );
         $this->deleteAllContainers();
     }

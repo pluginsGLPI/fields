@@ -969,7 +969,7 @@ class PluginFieldsField extends CommonDBChild
             $itemEntityId = $item->getEntityID();
             $entityId     = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
 
-            $container_ids = PluginFieldsContainer::findContainers(get_class($item), $type, $subtype, $entityId);
+            $container_ids = PluginFieldsContainer::findContainers($item::class, $type, $subtype, $entityId);
         }
 
         foreach ($container_ids as $container_id) {

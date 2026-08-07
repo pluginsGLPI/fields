@@ -1167,7 +1167,7 @@ HTML;
             foreach ($all_itemtypes as $section => $itemtypes) {
                 $all_itemtypes[$section] = array_filter(
                     $itemtypes,
-                    fn ($itemtype) => count(self::getSubtypes($itemtype)) > 0,
+                    fn($itemtype) => count(self::getSubtypes($itemtype)) > 0,
                     ARRAY_FILTER_USE_KEY,
                 );
             }
@@ -1864,7 +1864,8 @@ HTML;
                     $allowedEntities = array_merge($allowedEntities, $restriction['entities_id']);
                 }
             }
-            if (!empty($allowedEntities)) {
+
+            if ($allowedEntities !== []) {
                 $where['entities_id'] = $allowedEntities;
             }
         }
@@ -1885,6 +1886,7 @@ HTML;
                     continue;
                 }
             }
+
             $ids[] = $containerId;
         }
 
@@ -1946,6 +1948,7 @@ HTML;
                 }
             }
         }
+
         return true;
     }
 
@@ -2003,6 +2006,7 @@ HTML;
 
                     return false;
                 }
+
                 $all_data[] = $data;
                 continue;
             }
@@ -2089,14 +2093,14 @@ HTML;
 
         $has_fields = false;
         // Prefix for input names
-        $prefix = "plugin_fields_{$c_id}_";
+        $prefix = sprintf('plugin_fields_%d_', $c_id);
 
         foreach ($fields as $field) {
             $base_name = $field['name'];
             $isMulti = (bool) $field['multiple'];
             if ($field['type'] == 'glpi_item') {
-                $itemtype_key = "itemtype_{$base_name}";
-                $items_id_key = "items_id_{$base_name}";
+                $itemtype_key = 'itemtype_' . $base_name;
+                $items_id_key = 'items_id_' . $base_name;
 
                 if (!isset($item->input[$itemtype_key], $item->input[$items_id_key])) {
                     continue; // not a valid input
@@ -2114,7 +2118,7 @@ HTML;
             if ($field['type'] === 'dropdown') {
                 // For dropdown fields, the input name is "plugin_fields_{$c_id}_{$base_name}dropdowns_id"
                 $htmlKeyWithId = $prefix . $base_name . "dropdowns_id"; // html key in POST data with id
-                $htmlKeyNoId   = "plugin_fields_{$base_name}dropdowns_id"; // html key in POST data without id
+                $htmlKeyNoId   = sprintf('plugin_fields_%sdropdowns_id', $base_name); // html key in POST data without id
                 $colKey = 'plugin_fields_' . $base_name . 'dropdowns_id'; // column key in DB
 
                 if (array_key_exists($htmlKeyWithId, $item->input)) {
@@ -2139,12 +2143,13 @@ HTML;
                         $has_fields    = true;
                     }
                 }
+
                 continue;
             }
 
             // For fields standard, the input name is "plugin_fields_{$c_id}_{$base_name}"
             $htmlKeyWithId = $prefix . $base_name;
-            $htmlKeyNoId   = "plugin_fields_{$base_name}";
+            $htmlKeyNoId   = 'plugin_fields_' . $base_name;
 
             $valuePresent = false;
             $value = null;

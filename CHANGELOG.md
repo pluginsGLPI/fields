@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Allow multiple "Insertion in the form" (dom) blocks per entity
+
 ## [1.24.3] - 2026-07-30
 
 ### Fixed

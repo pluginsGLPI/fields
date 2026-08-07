@@ -61,13 +61,14 @@ if (isset($_POST['add'])) {
         $data = [];
         foreach ($_REQUEST as $key => $value) {
             // if key starts with plugin_fields_<containerID>_ remove the prefix
-            if (strpos($key, "plugin_fields_{$containerID}_") === 0) {
-                $new_key = substr($key, strlen("plugin_fields_{$containerID}_"));
+            if (str_starts_with((string) $key, sprintf('plugin_fields_%s_', $containerID))) {
+                $new_key = substr((string) $key, strlen(sprintf('plugin_fields_%s_', $containerID)));
                 $data[$new_key] = $value;
             } else {
                 $data[$key] = $value;
             }
         }
+
         $container->updateFieldsValues($data, $_REQUEST['itemtype'], false);
     }
 
