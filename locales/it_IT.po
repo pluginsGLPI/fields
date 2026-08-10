@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 02:10+0000\n"
+"POT-Creation-Date: 2026-08-07 02:21+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Davide <spam@habilitas.it>, 2025\n"
 "Language-Team: Italian (Italy) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/it_IT/)\n"
@@ -51,12 +51,12 @@ msgstr "Nessun oggetto trovato"
 msgid "show"
 msgstr "mostra"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:283
+#: templates/forms/status_override.html.twig inc/field.class.php:281
 msgid "Field"
 msgstr "Campo"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:684
-#: inc/field.class.php:863
+#: templates/forms/status_override.html.twig inc/field.class.php:682
+#: inc/field.class.php:861
 msgid "Read only"
 msgstr "Sola lettura"
 
@@ -77,30 +77,30 @@ msgstr "Ripara i nomi dei campi"
 msgid "Component items"
 msgstr "Oggetti componente"
 
-#: inc/field.class.php:298 inc/field.class.php:325
+#: inc/field.class.php:296 inc/field.class.php:323
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Il nome del campo è troppo lungo per il database (le cifre nel nome sono sostituite da caratteri, provare a rimuoverle)"
 
-#: inc/field.class.php:317
+#: inc/field.class.php:315
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Non è possibile aggiungere lo stesso campo \"dropdown\" sullo stesso blocco."
 
-#: inc/field.class.php:405
+#: inc/field.class.php:403
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
 msgstr "Il campo \"%s\" non può essere cancellato perché è utilizzato in una domanda del modulo."
 
-#: inc/field.class.php:602
+#: inc/field.class.php:600
 msgid "Fields"
 msgstr "Campi"
 
-#: inc/field.class.php:667
+#: inc/field.class.php:665
 msgid "Add a new field"
 msgstr "Aggiungi nuovo campo"
 
-#: inc/field.class.php:671
+#: inc/field.class.php:669
 msgid "No field for this block"
 msgstr "Nessun campo per questo blocco"
 
@@ -119,8 +119,8 @@ msgstr "non sotto"
 msgid "regular expression matches"
 msgstr "concorda con l'espressione regolare"
 
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
+#: inc/containerdisplaycondition.class.php:511
+#: inc/containerdisplaycondition.class.php:527
 msgid "You must specify an item type, search option and condition."
 msgstr "È necessario specificare un tipo di oggetto, un'opzione di ricerca e una condizione."
 

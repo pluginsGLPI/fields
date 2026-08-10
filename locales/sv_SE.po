@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 02:10+0000\n"
+"POT-Creation-Date: 2026-08-07 02:21+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Peter Rundqvist, 2025\n"
 "Language-Team: Swedish (Sweden) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/sv_SE/)\n"
@@ -49,12 +49,12 @@ msgstr "Inga objekt"
 msgid "show"
 msgstr "visa"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:283
+#: templates/forms/status_override.html.twig inc/field.class.php:281
 msgid "Field"
 msgstr "Fält"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:684
-#: inc/field.class.php:863
+#: templates/forms/status_override.html.twig inc/field.class.php:682
+#: inc/field.class.php:861
 msgid "Read only"
 msgstr "Skrivskyddat"
 
@@ -75,30 +75,30 @@ msgstr "Korrigera fältnamn"
 msgid "Component items"
 msgstr "Komponentobjekt"
 
-#: inc/field.class.php:298 inc/field.class.php:325
+#: inc/field.class.php:296 inc/field.class.php:323
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Fältnamnet är för långt för databasen (siffror i namnet ersätts med tecken). Det är rekommenderat att ta bort överskjutande tecken i fältnamnet."
 
-#: inc/field.class.php:317
+#: inc/field.class.php:315
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Du kan inte lägga till samma fält 'nedrullningsmeny' i samma block."
 
-#: inc/field.class.php:405
+#: inc/field.class.php:403
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
 msgstr "Kan inte ta bort fältet \"%s\" eftersom det används av en fråga i ett formulär."
 
-#: inc/field.class.php:602
+#: inc/field.class.php:600
 msgid "Fields"
 msgstr "Fält"
 
-#: inc/field.class.php:667
+#: inc/field.class.php:665
 msgid "Add a new field"
 msgstr "Lägg till nytt fält"
 
-#: inc/field.class.php:671
+#: inc/field.class.php:669
 msgid "No field for this block"
 msgstr "Inga fält för detta block"
 
@@ -117,8 +117,8 @@ msgstr "ej nedanför"
 msgid "regular expression matches"
 msgstr "Regex matchar"
 
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
+#: inc/containerdisplaycondition.class.php:511
+#: inc/containerdisplaycondition.class.php:527
 msgid "You must specify an item type, search option and condition."
 msgstr "Du måste ange en objekttyp, ett sökalternativ och ett villkor."
 

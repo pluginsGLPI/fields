@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 02:10+0000\n"
+"POT-Creation-Date: 2026-08-07 02:21+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020,2022-2023\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/hr_HR/)\n"
@@ -52,12 +52,12 @@ msgstr "Nijedan predmet nije pronađen"
 msgid "show"
 msgstr "prikaži"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:283
+#: templates/forms/status_override.html.twig inc/field.class.php:281
 msgid "Field"
 msgstr "Polje"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:684
-#: inc/field.class.php:863
+#: templates/forms/status_override.html.twig inc/field.class.php:682
+#: inc/field.class.php:861
 msgid "Read only"
 msgstr "Samo-za-čitanje"
 
@@ -78,30 +78,30 @@ msgstr "Ispravi imena polja"
 msgid "Component items"
 msgstr "Elementi komponente"
 
-#: inc/field.class.php:298 inc/field.class.php:325
+#: inc/field.class.php:296 inc/field.class.php:323
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Ime polja je predugačko za bazu podataka (brojke u imenu zamjenjuju se znakovima, pokušaj ih ukloniti)"
 
-#: inc/field.class.php:317
+#: inc/field.class.php:315
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr ""
 
-#: inc/field.class.php:405
+#: inc/field.class.php:403
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
 msgstr ""
 
-#: inc/field.class.php:602
+#: inc/field.class.php:600
 msgid "Fields"
 msgstr "Polja"
 
-#: inc/field.class.php:667
+#: inc/field.class.php:665
 msgid "Add a new field"
 msgstr "Dodaj novo polje"
 
-#: inc/field.class.php:671
+#: inc/field.class.php:669
 msgid "No field for this block"
 msgstr "Nema polja za ovaj blok"
 
@@ -120,8 +120,8 @@ msgstr "ne ispod"
 msgid "regular expression matches"
 msgstr "regularni izraz se podudara"
 
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
+#: inc/containerdisplaycondition.class.php:511
+#: inc/containerdisplaycondition.class.php:527
 msgid "You must specify an item type, search option and condition."
 msgstr "Moraš navesti vrstu predmeta, opciju pretraživanja i uvjet."
 
