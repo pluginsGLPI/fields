@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 02:10+0000\n"
+"POT-Creation-Date: 2026-08-07 02:21+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Gonçalo Dumas, 2024\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_PT/)\n"
@@ -50,12 +50,12 @@ msgstr "Nenhum item encontrado"
 msgid "show"
 msgstr "mostrar"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:283
+#: templates/forms/status_override.html.twig inc/field.class.php:281
 msgid "Field"
 msgstr "Campo"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:684
-#: inc/field.class.php:863
+#: templates/forms/status_override.html.twig inc/field.class.php:682
+#: inc/field.class.php:861
 msgid "Read only"
 msgstr "Somente leitura"
 
@@ -76,30 +76,30 @@ msgstr "Corrigir os nomes de campos"
 msgid "Component items"
 msgstr "Itens do componente"
 
-#: inc/field.class.php:298 inc/field.class.php:325
+#: inc/field.class.php:296 inc/field.class.php:323
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "O nome do campo é demasiado longo para a base de dados (os dígitos no nome são substituídos por caracteres; tente removê-los)"
 
-#: inc/field.class.php:317
+#: inc/field.class.php:315
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr ""
 
-#: inc/field.class.php:405
+#: inc/field.class.php:403
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
 msgstr ""
 
-#: inc/field.class.php:602
+#: inc/field.class.php:600
 msgid "Fields"
 msgstr "Campos"
 
-#: inc/field.class.php:667
+#: inc/field.class.php:665
 msgid "Add a new field"
 msgstr "Adicionar um novo campo"
 
-#: inc/field.class.php:671
+#: inc/field.class.php:669
 msgid "No field for this block"
 msgstr "Nenhum campo para este bloco"
 
@@ -118,8 +118,8 @@ msgstr "não sob"
 msgid "regular expression matches"
 msgstr "correspondências de expressão regular"
 
-#: inc/containerdisplaycondition.class.php:507
-#: inc/containerdisplaycondition.class.php:523
+#: inc/containerdisplaycondition.class.php:511
+#: inc/containerdisplaycondition.class.php:527
 msgid "You must specify an item type, search option and condition."
 msgstr "Deve especificar um tipo de item, uma opção de pesquisa e uma condição."
 
