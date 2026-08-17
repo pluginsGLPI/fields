@@ -30,7 +30,7 @@
 
 class PluginFieldsMenu extends CommonGLPI
 {
-    public static $rightname = 'entity';
+    public static string $rightname = 'entity';
 
     public static function getMenuName()
     {

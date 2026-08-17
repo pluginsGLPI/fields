@@ -30,9 +30,9 @@
 
 abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 {
-    public static $itemtype = 'itemtype';
+    public static string $itemtype = 'itemtype';
 
-    public static $items_id = 'items_id';
+    public static string $items_id = 'items_id';
 
     /**
      * This function relies on the static property `static::$plugins_forward_entity`,

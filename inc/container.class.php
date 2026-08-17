@@ -36,7 +36,7 @@ class PluginFieldsContainer extends CommonDBTM
 {
     use Clonable;
 
-    public static $rightname = 'config';
+    public static string $rightname = 'config';
 
     public static function canCreate(): bool
     {
@@ -2129,7 +2129,7 @@ HTML;
             return false;
         }
 
-        if (count($item->fields) === 0) {
+        if ($item->fields === []) {
             $item->fields = $item->input;
         }
 

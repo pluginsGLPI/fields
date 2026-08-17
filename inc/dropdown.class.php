@@ -30,9 +30,9 @@
 
 class PluginFieldsDropdown
 {
-    public static $rightname  = 'dropdown';
+    public static string $rightname  = 'dropdown';
 
-    public $can_be_translated = true;
+    public bool $can_be_translated = true;
 
     /**
      * Install or update user data.

@@ -34,9 +34,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 {
     use Clonable;
 
-    public static $itemtype = PluginFieldsContainer::class;
+    public static string $itemtype = PluginFieldsContainer::class;
 
-    public static $items_id = 'plugin_fields_containers_id';
+    public static string $items_id = 'plugin_fields_containers_id';
 
     public const SHOW_CONDITION_EQ        = 1;
 
@@ -383,7 +383,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                     $main_table == getTableForItemType($itemtype_class)
                 ) {
                     foreach ($foreignKey as $foreign_class) {
-                        if (!is_array($foreign_class) && getTableNameForForeignKeyField($foreign_class) != getTableForItemType(Location::getType())) {
+                        if (!is_array($foreign_class) && getTableNameForForeignKeyField($foreign_class) !== getTableForItemType(Location::getType())) {
                             $allowed_table[] = getTableForItemType(getItemtypeForForeignKeyField($foreign_class));
                         }
                     }

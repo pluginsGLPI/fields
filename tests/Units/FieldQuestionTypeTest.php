@@ -329,11 +329,11 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         );
 
         // Test: matching item → question is visible
-        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item1_id]]));
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id]]]));
         $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
 
         // Test: different item → question is not visible
-        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item2_id]]));
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item2_id]]]));
         $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
     }
 
@@ -346,11 +346,11 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         );
 
         // Test: same item → question is not visible
-        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item1_id]]));
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id]]]));
         $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
 
         // Test: different item → question is visible
-        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item2_id]]));
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item2_id]]]));
         $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
     }
 
@@ -384,7 +384,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $dropdown_question_id = $this->getQuestionId($form, "Dropdown question");
 
         // Test: item name contains the condition value → question is visible
-        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item_id]]]));
         $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
 
         // Test: item name does not contain the condition value → question is not visible
@@ -408,7 +408,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $question_id2 = $this->getQuestionId($form2, "Subject");
         $dropdown_question_id2 = $this->getQuestionId($form2, "Dropdown question");
 
-        $engine = new Engine($form2, new EngineInput([$dropdown_question_id2 => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $engine = new Engine($form2, new EngineInput([$dropdown_question_id2 => ['itemtype' => $itemtype, 'items_ids' => [$item_id]]]));
         $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id2));
     }
 
@@ -442,7 +442,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $dropdown_question_id = $this->getQuestionId($form, "Dropdown question");
 
         // Test: item name does not contain the value → question is visible
-        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item_id]]]));
         $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
 
         // Test: item name contains the value → question is not visible
@@ -466,7 +466,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $question_id2 = $this->getQuestionId($form2, "Subject");
         $dropdown_question_id2 = $this->getQuestionId($form2, "Dropdown question");
 
-        $engine = new Engine($form2, new EngineInput([$dropdown_question_id2 => ['itemtype' => $itemtype, 'items_id' => $item_id]]));
+        $engine = new Engine($form2, new EngineInput([$dropdown_question_id2 => ['itemtype' => $itemtype, 'items_ids' => [$item_id]]]));
         $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id2));
     }
 
@@ -490,7 +490,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $item1_id = $dropdown_item->add(['name' => 'First Option']);
         $item2_id = $dropdown_item->add(['name' => 'Second Option']);
 
-        $condition_value = ['itemtype' => $itemtype, 'items_id' => $item1_id];
+        $condition_value = ['itemtype' => $itemtype, 'items_ids' => [$item1_id]];
 
         $builder = new FormBuilder("Dropdown condition form");
         $builder->addQuestion(

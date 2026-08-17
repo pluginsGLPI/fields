@@ -42,9 +42,9 @@ class PluginFieldsField extends CommonDBChild
      */
     public const SEARCH_OPTION_STARTING_INDEX = 76665;
 
-    public static $itemtype = PluginFieldsContainer::class;
+    public static string $itemtype = PluginFieldsContainer::class;
 
-    public static $items_id = 'plugin_fields_containers_id';
+    public static string $items_id = 'plugin_fields_containers_id';
 
     public function getForbiddenStandardMassiveAction()
     {
