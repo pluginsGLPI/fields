@@ -76,7 +76,7 @@ final class QuestionTypeAjaxController extends AbstractController
         $current_container = PluginFieldsContainer::getById((int) $block_id);
         $current_field = PluginFieldsField::getById($current_field_id);
 
-        if (!$current_container || !$current_field || empty($current_field->fields)) {
+        if (!$current_container || !$current_field || $current_field->fields === []) {
             return new Response('Invalid container or field', Response::HTTP_BAD_REQUEST);
         }
 

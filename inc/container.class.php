@@ -35,7 +35,7 @@ class PluginFieldsContainer extends CommonDBTM
 {
     use Clonable;
 
-    public static $rightname = 'config';
+    public static string $rightname = 'config';
 
     public static function canCreate(): bool
     {
@@ -1935,7 +1935,7 @@ HTML;
             $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
         }
 
-        if (count($item->fields) === 0) {
+        if ($item->fields === []) {
             $item->fields = $item->input;
         }
 

@@ -51,8 +51,6 @@ use Problem;
 use Ticket;
 use User;
 
-include_once __DIR__ . '/../../../../tests/abstracts/AbstractDestinationFieldTest.php';
-
 final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 {
     use FormTesterTrait;

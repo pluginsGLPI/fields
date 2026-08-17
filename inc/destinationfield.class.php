@@ -106,7 +106,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                         continue;
                     }
 
-                    /** @var object{field_name: string} $item */
+                    /** @var CommonGLPI&object{field_name: string} $item */
                     $item = getItemForItemtype($itemtype);
                     $field = new PluginFieldsField();
                     if (!$field->getFromDBByCrit(['name' => $item->field_name])) {

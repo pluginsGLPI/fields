@@ -34,9 +34,9 @@ class PluginFieldsStatusOverride extends CommonDBChild
 {
     use Clonable;
 
-    public static $itemtype = PluginFieldsField::class;
+    public static string $itemtype = PluginFieldsField::class;
 
-    public static $items_id = 'plugin_fields_fields_id';
+    public static string $items_id = 'plugin_fields_fields_id';
 
     /**
      * Install or update plugin base data.
