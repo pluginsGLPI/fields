@@ -54,11 +54,11 @@ function plugin_fields_install()
 
     $migration = new Migration($version);
     if (isCommandLine()) {
-        echo __('MySQL tables installation', 'fields') . "\n";
+        echo __s('MySQL tables installation', 'fields') . "\n";
     } else {
         echo '<center>';
         echo "<table class='tab_cadre_fixe'>";
-        echo '<tr><th>' . __('MySQL tables installation', 'fields') . '<th></tr>';
+        echo '<tr><th>' . __s('MySQL tables installation', 'fields') . '<th></tr>';
 
         echo "<tr class='tab_bg_1'>";
         echo "<td align='center'>";
@@ -111,7 +111,7 @@ function plugin_fields_uninstall()
 {
     if (!class_exists('PluginFieldsProfile')) {
         Session::addMessageAfterRedirect(
-            __("The plugin can't be uninstalled when the plugin is disabled", 'fields'),
+            __s("The plugin can't be uninstalled when the plugin is disabled", 'fields'),
             true,
             WARNING,
             true,
@@ -124,7 +124,7 @@ function plugin_fields_uninstall()
 
     echo '<center>';
     echo "<table class='tab_cadre_fixe'>";
-    echo '<tr><th>' . __('MySQL tables uninstallation', 'fields') . '<th></tr>';
+    echo '<tr><th>' . __s('MySQL tables uninstallation', 'fields') . '<th></tr>';
 
     echo "<tr class='tab_bg_1'>";
     echo "<td align='center'>";
@@ -227,9 +227,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
             );
         }
 
-        PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
-
-        return true;
+        return PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
     }
 
     // Need to return false on non display item

@@ -2097,12 +2097,22 @@ HTML;
 
                 //managed multi GLPI item dropdown field
                 if (preg_match('/^dropdown-(?<type>.+)$/', (string) $field['type'], $match) === 1) {
+                    $defined_key = '_' . $field['name'] . '_defined';
                     //values are defined by user
                     if (isset($item->input[$field['name']])) {
                         $data[$field['name']] = $item->input[$field['name']];
                         $has_fields           = true;
-                    } else { //multi dropdown is empty or has been emptied
+                    } elseif (
+                        isset($item->input[$defined_key])
+                        && $item->input[$defined_key]
+                    ) { //multi dropdown is empty or has been emptied
                         $data[$field['name']] = [];
+                        $has_fields           = true;
+                    } elseif (isset($_REQUEST['massiveaction'])) { // called from massiveaction
+                        if (isset($_POST[$field['name']])) {
+                            $data[$field['name']] = $_POST[$field['name']];
+                            $has_fields           = true;
+                        }
                     }
                 }
             }

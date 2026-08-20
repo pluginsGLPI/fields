@@ -1361,6 +1361,14 @@ JAVASCRIPT,
             (string) $searchOption['linkfield'],
         );
 
+        // itemtype is stored in a JSON array, so entry is surrounded by double quotes
+        $search_string = json_encode($itemtype);
+        // Backslashes must be doubled in LIKE clause according to MySQL documentation
+        // But do not escape backslashes for CustomAsset, as they are alrady escaped
+        if (!str_contains($search_string, 'CustomAsset')) {
+            $search_string = str_replace('\\', '\\\\', $search_string);
+        }
+
         //find field
         $iterator = $DB->request([
             'SELECT' => [
@@ -1381,7 +1389,7 @@ JAVASCRIPT,
             ],
             'WHERE' => [
                 'fields.name'          => $cleaned_linkfield,
-                'containers.itemtypes' => ['LIKE', sprintf('%%%s%%', $itemtype)],
+                'containers.itemtypes' => ['LIKE', '%' . $DB->escape($search_string) . '%'],
             ],
         ]);
 
