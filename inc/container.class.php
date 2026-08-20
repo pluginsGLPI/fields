@@ -645,22 +645,6 @@ class PluginFieldsContainer extends CommonDBTM
             $input['itemtypes'] = [$input['itemtypes']];
         }
 
-        if ($input['type'] === 'dom') {
-            //check for already exist dom container with this itemtype
-            $found = $this->find(['type' => 'dom']);
-            if (count($found) > 0) {
-                foreach (array_column($found, 'itemtypes') as $founditemtypes) {
-                    foreach (PluginFieldsToolbox::decodeJSONItemtypes($founditemtypes) as $founditemtype) {
-                        if (in_array($founditemtype, $input['itemtypes'])) {
-                            Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", 'fields'), false, ERROR);
-
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-
         if ($input['type'] === 'domtab') {
             //check for already exist domtab container with this itemtype on this tab
             $found = $this->find(['type' => 'domtab', 'subtype' => $input['subtype']]);
@@ -1822,6 +1806,95 @@ HTML;
     }
 
     /**
+     * Find containers for a specific itemtype, type, subtype and entity id
+     *
+     * @param string  $itemtype Itemtype GLPI
+     * @param string  $type     Type of container (tab, dom, domtab)
+     * @param string  $subtype
+     * @param integer $entityId Entity ID default is 0 (root entity)
+     *
+     * @return array List of container IDs
+     */
+    public static function findContainers($itemtype, $type = 'tab', $subtype = '', $entityId = 0): array
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        if ($itemtype === '') {
+            return [];
+        }
+
+        $entitiesIds = getAncestorsOf("glpi_entities", (int) $entityId);
+        $entitiesIds[] = $entityId; // Add entity active itself to the list
+
+        $where = [
+            'is_active' => 1,
+            'type'      => $type,
+            // json_encode() so that backslashes in namespaced itemtypes produce valid JSON
+            new QueryExpression('JSON_CONTAINS(itemtypes, ' . $DB->quote(json_encode($itemtype)) . ')'),
+            'AND' => [
+                'OR' => [
+                    [
+                        'is_recursive' => 1,
+                        'entities_id' => $entitiesIds,
+                    ],
+                    [
+                        'is_recursive' => 0,
+                        'entities_id' => $entityId,
+                    ],
+                ],
+            ],
+        ];
+
+        if ($subtype !== '') {
+            if ($subtype === $itemtype . '$main') {
+                $where['type'] = 'dom';
+            } else {
+                $where['type'] = ['!=', 'dom'];
+                $where['subtype'] = $subtype;
+            }
+        } else {
+            $where['type'] = $type;
+        }
+
+        $entityRestriction = getEntitiesRestrictCriteria('', '', $entityId, true, true);
+        if (!empty($entityRestriction)) {
+            $allowedEntities = [];
+            foreach ($entityRestriction as $restriction) {
+                if (isset($restriction['entities_id']) && is_array($restriction['entities_id'])) {
+                    $allowedEntities = array_merge($allowedEntities, $restriction['entities_id']);
+                }
+            }
+
+            if ($allowedEntities !== []) {
+                $where['entities_id'] = $allowedEntities;
+            }
+        }
+
+        $iterator = $DB->request([
+            'SELECT' => 'id',
+            'FROM'   => self::getTable(),
+            'WHERE'  => $where,
+        ]);
+
+        $ids = [];
+        foreach ($iterator as $row) {
+            $containerId = (int) $row['id'];
+
+            if (isset($_SESSION['glpiactiveprofile']['id'])) {
+                $profileId = $_SESSION['glpiactiveprofile']['id'];
+                if (PluginFieldsProfile::getRightOnContainer($profileId, $containerId) < READ) {
+                    continue;
+                }
+            }
+
+            $ids[] = $containerId;
+        }
+
+        return $ids;
+    }
+
+    /**
      * Post item hook for add
      * Do store data in db
      *
@@ -1831,19 +1904,20 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
-        if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data             = $item->input['_plugin_fields_data'];
-            $data['itemtype'] = $item::class;
-            $data['items_id'] = $item->getID();
-            $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
-            //update data
-            $container = new self();
-            if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
-                return true;
-            }
+        if (array_key_exists('_plugin_fields_data_multi', $item->input)) {
+            $dataMulti = $item->input['_plugin_fields_data_multi'];
+            foreach ($dataMulti as $data) {
+                $data['itemtype'] = $item::class;
+                $data['items_id'] = $item->getID();
+                $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
+                //update data
+                $container = new self();
+                if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
+                    continue;
+                }
 
-            $item->input = [];
-            return $item;
+                $item->input = [];
+            }
         }
 
         return true;
@@ -1860,22 +1934,20 @@ HTML;
     public static function preItemUpdate(CommonDBTM $item)
     {
         self::preItem($item);
-        if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data = $item->input['_plugin_fields_data'];
-            $data['itemtype'] = $item::class;
-            $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
-            //update data
-            $container = new self();
-            if (
-                count($data) === 0
-                || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
-            ) {
-                $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
-
-                return true;
+        if (array_key_exists('_plugin_fields_data_multi', $item->input)) {
+            $dataMulti = $item->input['_plugin_fields_data_multi'];
+            foreach ($dataMulti as $data) {
+                $data['itemtype'] = $item::class;
+                $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
+                //update data
+                $container = new self();
+                if (
+                    count($data) === 0
+                    || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
+                ) {
+                    $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
+                }
             }
-
-            return false;
         }
 
         return true;
@@ -1891,87 +1963,86 @@ HTML;
      */
     public static function preItem(CommonDBTM $item)
     {
-        //find container (if not exist, do nothing)
-        if (isset($item->input['c_id'])) {
-            $c_id = $item->input['c_id'];
-        } elseif (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
+        $explicit_c_id = $item->input['c_id'] ?? $_REQUEST['c_id'] ?? null;
+
+        if ($explicit_c_id !== null) {
+            // Explicit container id (tab forms, API callers)
+            $containers = [(int) $explicit_c_id];
         } else {
-            $type = 'dom';
-            if (isset($_REQUEST['_plugin_fields_type'])) {
-                $type = $_REQUEST['_plugin_fields_type'];
-            }
+            $type = $_REQUEST['_plugin_fields_type'] ?? 'dom';
+            $subtype = ($type === 'domtab') ? ($_REQUEST['_plugin_fields_subtype'] ?? '') : '';
 
-            $subtype = '';
-            if ($type == 'domtab') {
-                $subtype = $_REQUEST['_plugin_fields_subtype'];
-            }
+            $itemEntityId = $item->getEntityID();
+            $entityId = ($itemEntityId === -1) ? ($_SESSION['glpiactive_entity'] ?? 0) : $itemEntityId;
 
-            // tries for 'tab'
-            if (false === ($c_id = self::findContainer($item::class, $type, $subtype)) && false === $c_id = self::findContainer($item::class)) {
-                return false;
-            }
+            $containers = self::findContainers($item->getType(), $type, $subtype, $entityId);
         }
 
-        $loc_c = new PluginFieldsContainer();
-        $loc_c->getFromDB($c_id);
+        $all_data = [];
 
-        // check rights on $c_id
-        // The profile check is only enforced when an active user profile is present in session.
-        // Automated contexts (cron jobs, API token sessions without profile) bypass the check
-        // so that plugin fields can still be persisted — authentication is already enforced
-        // at a higher level by the GLPI API/cron layer.
-        if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
-            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-            if (($right > READ) === false) {
-                return false;
-            }
-        }
+        foreach ($containers as $c_id) {
 
-
-        // need to check if container is usable on this object entity
-        $entities = [$loc_c->fields['entities_id']];
-        if ($loc_c->fields['is_recursive']) {
-            $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
-        }
-
-        if (count($item->fields) === 0) {
-            $item->fields = $item->input;
-        }
-
-        if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
-            return false;
-        }
-
-        if (false !== ($data = self::populateData($c_id, $item))) {
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                $item->input = [];
-
-                return false;
+            // check rights on $c_id
+            if (isset($_SESSION['glpiactiveprofile']['id'])) {
+                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+                if ($right < READ) {
+                    continue; // insufficient rights
+                }
             }
 
-            $item->input['_plugin_fields_data'] = $data;
-
-            return true;
-        }
-
-        //call validateValues() with a minimal data array to check for missing mandatory fields
-        //in case populateData() fails
-        if ($item->isNewItem() && $loc_c->fields['type'] === 'dom') {
-            $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
-            $data = ['plugin_fields_containers_id' => $c_id];
-            if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
-                $data[$status_field_name] = (int) $item->input[$status_field_name];
-            } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
-                $data[$status_field_name] = (int) $item->fields[$status_field_name];
+            $loc_c = new self();
+            if (!$loc_c->getFromDB($c_id)) {
+                continue; // unknown container (invalid explicit c_id)
             }
 
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                $item->input = [];
+            // need to check if container is usable on this object entity
+            $entities = [$loc_c->fields['entities_id']];
+            if ($loc_c->fields['is_recursive']) {
+                $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+            }
+
+            if (count($item->fields) === 0) {
+                $item->fields = $item->input;
+            }
+
+            if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
+                continue; // not the right entity
+            }
+
+            if (false !== ($data = self::populateData($c_id, $item))) {
+                if (!self::validateValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
+                    // if validation fails, we need to remove the data from the item input
+                    $item->input = [];
+
+                    return false;
+                }
+
+                $all_data[] = $data;
+                continue;
+            }
+
+            //call validateValues() with a minimal data array to check for missing mandatory fields
+            //in case populateData() fails
+            if ($item->isNewItem() && $loc_c->fields['type'] === 'dom') {
+                $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
+                $data = ['plugin_fields_containers_id' => $c_id];
+                if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
+                    $data[$status_field_name] = (int) $item->input[$status_field_name];
+                } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
+                    $data[$status_field_name] = (int) $item->fields[$status_field_name];
+                }
+
+                if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+                    $item->input = [];
+
+                    return false;
+                }
             }
         }
 
-        return false;
+        $item->input['_plugin_fields_data_multi'] = $all_data;
+
+        return true;
     }
 
     /**
@@ -1998,7 +2069,7 @@ HTML;
      *
      * @return array|false
      */
-    private static function populateData($c_id, CommonDBTM $item)
+    public static function populateData($c_id, CommonDBTM $item)
     {
         //find fields associated to found container
         $field_obj = new PluginFieldsField();
@@ -2011,7 +2082,11 @@ HTML;
         );
 
         //prepare data to update
-        $data = ['plugin_fields_containers_id' => $c_id];
+        $data = [
+            'plugin_fields_containers_id' => $c_id,
+            'itemtype'                    => $item->getType(),
+            'entities_id'                 => $item->getEntityID(),
+        ];
         if (!$item->isNewItem()) {
             //no ID yet while creating
             $data['items_id'] = $item->getID();
@@ -2027,92 +2102,119 @@ HTML;
         }
 
         $has_fields = false;
+        // Prefix for input names
+        $prefix = sprintf('plugin_fields_%d_', $c_id);
+
         foreach ($fields as $field) {
+            $base_name = $field['name'];
+            $isMulti = (bool) $field['multiple'];
             if ($field['type'] == 'glpi_item') {
-                $itemtype_key = sprintf('itemtype_%s', $field['name']);
-                $items_id_key = sprintf('items_id_%s', $field['name']);
+                $itemtype_key = 'itemtype_' . $base_name;
+                $items_id_key = 'items_id_' . $base_name;
 
                 if (!isset($item->input[$itemtype_key], $item->input[$items_id_key])) {
                     continue; // not a valid input
                 }
 
-                $has_fields          = true;
-                $data[$itemtype_key] = $item->input[$itemtype_key];
-                $data[$items_id_key] = $item->input[$items_id_key];
+                $data[$itemtype_key]    = $item->input[$itemtype_key];
+                $data[$items_id_key]    = $item->input[$items_id_key];
+                $has_fields             = true;
 
                 continue; // bypass unique field handling
             }
 
-            if (isset($item->input[$field['name']])) {
-                //standard field
-                $input = $field['name'];
-            } else {
-                //dropdown field
-                $input = 'plugin_fields_' . $field['name'] . 'dropdowns_id';
+            // For other fields, the input name to be prefixed with "plugin_fields_{$c_id}_" and the field name
+            // "plugin_fields_{$c_id}_{$base_name}"
+            if ($field['type'] === 'dropdown') {
+                // For dropdown fields, the input name is "plugin_fields_{$c_id}_{$base_name}dropdowns_id"
+                $htmlKeyWithId = $prefix . $base_name . "dropdowns_id"; // html key in POST data with id
+                $htmlKeyNoId   = sprintf('plugin_fields_%sdropdowns_id', $base_name); // html key in POST data without id
+                $colKey = 'plugin_fields_' . $base_name . 'dropdowns_id'; // column key in DB
+
+                // isset() (and not array_key_exists()) so that a null value is treated as "not provided"
+                if (isset($item->input[$htmlKeyWithId])) {
+                    $data[$colKey] = $item->input[$htmlKeyWithId];
+                    $has_fields    = true;
+                } elseif (isset($item->input[$htmlKeyNoId])) {
+                    $data[$colKey] = $item->input[$htmlKeyNoId];
+                    $has_fields    = true;
+                } elseif ($isMulti) {
+                    //the absence of the field in the input may be due to the fact that the input allows multiple selection
+                    // ex my_dom[]
+                    //in these conditions, the input is never sent by the browser
+                    $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'assign';
+
+                    $definedKeyWithId = '_' . $htmlKeyWithId . '_defined';
+                    $definedKeyNoId   = '_' . $htmlKeyNoId . '_defined';
+                    if (!empty($item->input[$definedKeyWithId]) || !empty($item->input[$definedKeyNoId])) {
+                        $data[$colKey] = [];
+                        $has_fields    = true;
+                    } elseif (isset($_REQUEST['massiveaction'], $_POST[$htmlKeyNoId])) { // called from massiveaction
+                        $data[$colKey] = $_POST[$htmlKeyNoId];
+                        $has_fields    = true;
+                    }
+                }
+
+                continue;
             }
 
-            if (isset($item->input[$input])) {
-                $has_fields = true;
-                // Before is_number check, help user to have a number correct, during a massive action of a number field
-                if ($field['type'] == 'number') {
-                    $item->input[$input] = str_replace(',', '.', $item->input[$input]);
-                }
+            // For fields standard, the input name is "plugin_fields_{$c_id}_{$base_name}".
+            // Legacy naming (API calls, external code) sends the bare field name.
+            $htmlKeyWithId = $prefix . $base_name;
+            $htmlKeyNoId   = 'plugin_fields_' . $base_name;
 
-                $data[$input] = $item->input[$input];
-                if ($field['type'] === 'richtext') {
-                    $filename_input = sprintf('_%s', $input);
-                    $prefix_input   = sprintf('_prefix_%s', $input);
-                    $tag_input      = sprintf('_tag_%s', $input);
-
-                    $data[$filename_input] = $item->input[$filename_input] ?? [];
-                    $data[$prefix_input]   = $item->input[$prefix_input]   ?? [];
-                    $data[$tag_input]      = $item->input[$tag_input]      ?? [];
+            $valuePresent = false;
+            $value = null;
+            $matchedKey = null;
+            foreach ([$htmlKeyWithId, $htmlKeyNoId, $base_name] as $candidateKey) {
+                // isset() (and not array_key_exists()) so that a null value is treated as "not provided"
+                if (isset($item->input[$candidateKey])) {
+                    $value        = $item->input[$candidateKey];
+                    $valuePresent = true;
+                    $matchedKey   = $candidateKey;
+                    break;
                 }
-            } elseif ($field['multiple']) {
+            }
+
+            if (!$valuePresent && $isMulti) {
                 //the absence of the field in the input may be due to the fact that the input allows multiple selection
                 // ex my_dom[]
                 //in these conditions, the input is never sent by the browser
                 $data['multiple_dropdown_action'] = $_POST['multiple_dropdown_action'] ?? 'assign';
-                //handle multi dropdown field
-                if ($field['type'] == 'dropdown') {
-                    $multiple_key         = sprintf('plugin_fields_%sdropdowns_id', $field['name']);
-                    $multiple_key_defined = '_' . $multiple_key . '_defined';
-                    //values are defined by user
-                    if (isset($item->input[$multiple_key])) {
-                        $data[$multiple_key] = $item->input[$multiple_key];
-                        $has_fields          = true;
-                    } elseif (
-                        isset($item->input[$multiple_key_defined])
-                        && $item->input[$multiple_key_defined]
-                    ) { //multi dropdown is empty or has been emptied
-                        $data[$multiple_key] = [];
-                        $has_fields          = true;
-                    } elseif (isset($_REQUEST['massiveaction'])) { // called from massiveaction
-                        if (isset($_POST[$multiple_key])) {
-                            $data[$multiple_key] = $_POST[$multiple_key];
-                            $has_fields          = true;
-                        }
-                    }
-                }
 
-                //managed multi GLPI item dropdown field
-                if (preg_match('/^dropdown-(?<type>.+)$/', (string) $field['type'], $match) === 1) {
-                    //values are defined by user
-                    if (isset($item->input[$field['name']])) {
-                        $data[$field['name']] = $item->input[$field['name']];
-                        $has_fields           = true;
-                    } else { //multi dropdown is empty or has been emptied
-                        $data[$field['name']] = [];
-                    }
+                $definedKeyWithId = '_' . $htmlKeyWithId . '_defined';
+                $definedKeyNoId   = '_' . $htmlKeyNoId . '_defined';
+                if (!empty($item->input[$definedKeyWithId]) || !empty($item->input[$definedKeyNoId])) {
+                    $value        = [];
+                    $valuePresent = true;
+                } elseif (preg_match('/^dropdown-(?<type>.+)$/', (string) $field['type']) === 1) {
+                    //managed multi GLPI item dropdown field: empty or has been emptied
+                    $data[$base_name] = [];
+                }
+            }
+
+            if (!$valuePresent) {
+                continue; // not a valid input
+            }
+
+            if ($field['type'] === 'number') {
+                $value = str_replace(',', '.', $value);
+            }
+
+            $data[$base_name] = $value;
+            $has_fields = true;
+
+            // If the field is a richtext, collect uploaded files companion inputs.
+            // They are posted as "_{$input_name}" but must be stored under "_{$base_name}"
+            // as expected by addRichTextFiles()/addFiles().
+            if ($field['type'] === 'richtext') {
+                foreach (['_%s', '_prefix_%s', '_tag_%s'] as $pattern) {
+                    $data[sprintf($pattern, $base_name)] = $item->input[sprintf($pattern, $matchedKey)] ?? [];
                 }
             }
         }
 
-        if ($has_fields) {
-            return $data;
-        } else {
-            return false;
-        }
+        return $has_fields ? $data : false;
     }
 
     public static function getAddSearchOptions($itemtype, $containers_id = false)
