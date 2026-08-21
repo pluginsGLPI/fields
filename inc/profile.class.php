@@ -62,7 +62,7 @@ class PluginFieldsProfile extends CommonDBRelation
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__('Installing %s'), $table));
+            $migration->displayMessage(sprintf(__s('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT {$default_key_sign} NOT NULL auto_increment,
@@ -113,7 +113,7 @@ class PluginFieldsProfile extends CommonDBRelation
         echo "<div class='spaced' id='tabsbody'>";
         echo "<table class='tab_cadre_fixe'>";
 
-        echo "<tr><th colspan='2'>" . _n('Profile', 'Profiles', 2) . '</th></tr>';
+        echo "<tr><th colspan='2'>" . _sn('Profile', 'Profiles', 2) . '</th></tr>';
         foreach ($found_profiles as $profile_item) {
             //get right for current profile
             $found = $fields_profile->find([
@@ -136,7 +136,7 @@ class PluginFieldsProfile extends CommonDBRelation
 
         echo '<ul>';
         echo "<tr><td class='tab_bg_2 center' colspan='2'>";
-        echo "<input type='hidden' name='plugin_fields_containers_id' value='" . $item->fields['id'] . "' />";
+        echo "<input type='hidden' name='plugin_fields_containers_id' value='" . htmlescape($item->fields['id']) . "' />";
         echo "<input type='submit' name='update' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
         echo '</td>';
         echo '</tr>';

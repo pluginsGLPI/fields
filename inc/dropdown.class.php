@@ -76,7 +76,7 @@ class PluginFieldsDropdown
         $migration->executeMigration();
 
         // Regenerate files and install missing tables
-        $migration->displayMessage(__('Updating generated dropdown files', 'fields'));
+        $migration->displayMessage(__s('Updating generated dropdown files', 'fields'));
 
         $obj    = new PluginFieldsField();
         $fields = $obj->find(['type' => 'dropdown']);

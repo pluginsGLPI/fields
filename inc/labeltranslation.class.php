@@ -58,7 +58,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__('Installing %s'), $table));
+            $migration->displayMessage(sprintf(__s('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                         INT          {$default_key_sign} NOT NULL auto_increment,
@@ -207,7 +207,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
             echo "<div class='center'>"
                 . "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . ($rand . "();'>")
-                . __('Add a new translation') . '</a></div><br>';
+                . __s('Add a new translation') . '</a></div><br>';
         }
 
         $obj   = new self();
@@ -228,15 +228,15 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
             echo "<div class='center'>";
             echo "<table class='tab_cadre_fixehov'><tr class='tab_bg_2'>";
-            echo "<th colspan='4'>" . __('List of translations') . '</th></tr>';
+            echo "<th colspan='4'>" . __s('List of translations') . '</th></tr>';
             if ($canedit) {
                 echo "<th width='10'>";
                 echo Html::getCheckAllAsCheckbox('mass' . self::class . $rand);
                 echo '</th>';
             }
 
-            echo '<th>' . __('Language', 'fields') . '</th>';
-            echo '<th>' . __('Label', 'fields') . '</th>';
+            echo '<th>' . __s('Language', 'fields') . '</th>';
+            echo '<th>' . __s('Label', 'fields') . '</th>';
             foreach ($found as $data) {
                 echo "<tr class='tab_bg_1' " . ($canedit ? "style='cursor:pointer'
                       onClick=\"viewEditTranslation" . $data['id'] . ($rand . '();"') : '') . '>';
@@ -278,7 +278,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             }
         } else {
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __('No translation found') . '</th></tr></table>';
+            echo "<th class='b'>" . __s('No translation found') . '</th></tr></table>';
         }
     }
 
@@ -302,9 +302,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
         $this->showFormHeader();
         echo "<tr class='tab_bg_1'>";
-        echo '<td>' . __('Language') . '&nbsp;:</td>';
+        echo '<td>' . __s('Language') . '&nbsp;:</td>';
         echo '<td>';
-        echo sprintf("<input type='hidden' name='itemtype' value='%s'>", $itemtype);
+        echo sprintf("<input type='hidden' name='itemtype' value='%s'>", htmlescape($itemtype));
         echo sprintf("<input type='hidden' name='items_id' value='%d'>", $items_id);
         if ($id > 0) {
             echo Dropdown::getLanguageName($this->fields['language']);
@@ -324,7 +324,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         echo "</td><td colspan='2'>&nbsp;</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='label'>" . __('Label') . '</label></td>';
+        echo "<td><label for='label'>" . __s('Label') . '</label></td>';
         echo "<td colspan='3'>";
         echo Html::input('label', [
             'value' => $this->fields['label'],

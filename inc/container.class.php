@@ -50,8 +50,8 @@ class PluginFieldsContainer extends CommonDBTM
     public static function titleList()
     {
         echo "<div class='center'><a class='vsubmit' href='regenerate_files.php'><i class='pointer fa fa-refresh'></i>&nbsp;"
-            . __('Regenerate container files', 'fields') . "</a>&nbsp;&nbsp;<a class='vsubmit' href='export_to_yaml.php'><i class='pointer fa fa-refresh'></i>&nbsp;"
-            . __('Export to YAML', 'fields') . '</a></div><br>';
+            . __s('Regenerate container files', 'fields') . "</a>&nbsp;&nbsp;<a class='vsubmit' href='export_to_yaml.php'><i class='pointer fa fa-refresh'></i>&nbsp;"
+            . __s('Export to YAML', 'fields') . '</a></div><br>';
     }
 
     public function getForbiddenStandardMassiveAction()
@@ -82,7 +82,7 @@ class PluginFieldsContainer extends CommonDBTM
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__('Installing %s'), $table));
+            $migration->displayMessage(sprintf(__s('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`           INT            {$default_key_sign} NOT NULL auto_increment,
@@ -269,7 +269,7 @@ class PluginFieldsContainer extends CommonDBTM
         }
 
         // Regenerate container classes to ensure they can be used
-        $migration->displayMessage(__('Regenerate containers files', 'fields'));
+        $migration->displayMessage(__s('Regenerate containers files', 'fields'));
         $obj        = new self();
         $containers = $obj->find();
         foreach ($containers as $container) {
@@ -290,7 +290,7 @@ class PluginFieldsContainer extends CommonDBTM
         );
 
         if ($bad_named_containers->count() > 0) {
-            $migration->displayMessage(__('Fix container names', 'fields'));
+            $migration->displayMessage(__s('Fix container names', 'fields'));
 
             $toolbox = new PluginFieldsToolbox();
 
@@ -438,7 +438,7 @@ class PluginFieldsContainer extends CommonDBTM
         $migration->executeMigration();
 
         // Regenerate files and install missing tables
-        $migration->displayMessage(__('Updating generated containers files', 'fields'));
+        $migration->displayMessage(__s('Updating generated containers files', 'fields'));
 
         $obj        = new self();
         $containers = $obj->find();
@@ -630,7 +630,7 @@ class PluginFieldsContainer extends CommonDBTM
     {
         if (empty($input['itemtypes'])) {
             Session::AddMessageAfterRedirect(
-                __(
+                __s(
                     'You cannot add block without associated element type',
                     'fields',
                 ),
@@ -652,7 +652,7 @@ class PluginFieldsContainer extends CommonDBTM
                 foreach (array_column($found, 'itemtypes') as $founditemtypes) {
                     foreach (PluginFieldsToolbox::decodeJSONItemtypes($founditemtypes) as $founditemtype) {
                         if (in_array($founditemtype, $input['itemtypes'])) {
-                            Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form' on same object", 'fields'), false, ERROR);
+                            Session::AddMessageAfterRedirect(__s("You cannot add several blocks with type 'Insertion in the form' on same object", 'fields'), false, ERROR);
 
                             return false;
                         }
@@ -668,7 +668,7 @@ class PluginFieldsContainer extends CommonDBTM
                 foreach (array_column($found, 'itemtypes') as $founditemtypes) {
                     foreach (PluginFieldsToolbox::decodeJSONItemtypes($founditemtypes) as $founditemtype) {
                         if (in_array($founditemtype, $input['itemtypes'])) {
-                            Session::AddMessageAfterRedirect(__("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", 'fields'), false, ERROR);
+                            Session::AddMessageAfterRedirect(__s("You cannot add several blocks with type 'Insertion in the form of a specific tab' on same object tab", 'fields'), false, ERROR);
 
                             return false;
                         }
@@ -679,7 +679,7 @@ class PluginFieldsContainer extends CommonDBTM
             $accepted_itemtypes = array_keys(array_merge(...array_values(self::getItemtypes(true))));
             foreach ($input['itemtypes'] as $itemtype) {
                 if (!in_array($itemtype, $accepted_itemtypes)) {
-                    Session::AddMessageAfterRedirect(__("At least one selected object cannot be linked with type 'Insertion in the form of a specific tab'.", 'fields'), false, ERROR);
+                    Session::AddMessageAfterRedirect(__s("At least one selected object cannot be linked with type 'Insertion in the form of a specific tab'.", 'fields'), false, ERROR);
 
                     return false;
                 }
@@ -693,7 +693,7 @@ class PluginFieldsContainer extends CommonDBTM
             $tmp = getTableForItemType(self::getClassname($itemtype, $input['name']));
             if (strlen($tmp) > 64) {
                 Session::AddMessageAfterRedirect(
-                    __('Container name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
+                    __s('Container name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
                     false,
                     ERROR,
                 );
@@ -708,7 +708,7 @@ class PluginFieldsContainer extends CommonDBTM
             foreach (array_column($found, 'itemtypes') as $founditemtypes) {
                 foreach (PluginFieldsToolbox::decodeJSONItemtypes($founditemtypes) as $founditemtype) {
                     if (in_array($founditemtype, $input['itemtypes'])) {
-                        Session::AddMessageAfterRedirect(__('You cannot add several blocs with identical name on same object', 'fields'), false, ERROR);
+                        Session::AddMessageAfterRedirect(__s('You cannot add several blocs with identical name on same object', 'fields'), false, ERROR);
 
                         return false;
                     }
@@ -952,7 +952,7 @@ HTML;
         $rand = mt_rand();
 
         echo '<tr>';
-        echo "<td width='20%'>" . __('Label') . ' : </td>';
+        echo "<td width='20%'>" . __s('Label') . ' : </td>';
         echo "<td width='30%'>";
         echo Html::input(
             'label',
@@ -966,7 +966,7 @@ HTML;
         echo '</tr>';
 
         echo '<tr>';
-        echo '<td>' . __('Type') . ' : </td>';
+        echo '<td>' . __s('Type') . ' : </td>';
         echo '<td>';
         if ($ID > 0) {
             $types = self::getTypes();
@@ -994,7 +994,7 @@ HTML;
         }
 
         echo '</td>';
-        echo '<td>' . __('Associated item type') . ' : </td>';
+        echo '<td>' . __s('Associated item type') . ' : </td>';
         echo '<td>';
         if ($ID > 0) {
             $types = PluginFieldsToolbox::decodeJSONItemtypes($this->fields['itemtypes']);
@@ -1039,7 +1039,7 @@ HTML;
 
         echo sprintf("<tr id='tab_tr' %s>", $display);
         echo "<td colspan='2'></td>";
-        echo '<td>' . __('Tab', 'fields') . ' : </td>';
+        echo '<td>' . __s('Tab', 'fields') . ' : </td>';
         echo '<td>';
         echo sprintf("&nbsp;<span id='subtype_%d'></span>", $rand);
         if ($ID > 0 && !empty($this->fields['subtype'])) {
@@ -1056,7 +1056,7 @@ HTML;
         echo '</tr>';
 
         echo '<tr>';
-        echo '<td>' . __('Active') . ' : </td>';
+        echo '<td>' . __s('Active') . ' : </td>';
         echo '<td>';
         Dropdown::showYesNo('is_active', $this->fields['is_active']);
         echo '</td>';
@@ -1198,9 +1198,9 @@ HTML;
     public static function getTypes()
     {
         return [
-            'tab'    => __('Add tab', 'fields'),
-            'dom'    => __('Insertion in the form (before save button)', 'fields'),
-            'domtab' => __('Insertion in the form of a specific tab (before save button)', 'fields'),
+            'tab'    => __s('Add tab', 'fields'),
+            'dom'    => __s('Insertion in the form (before save button)', 'fields'),
+            'domtab' => __s('Insertion in the form of a specific tab (before save button)', 'fields'),
         ];
     }
 
@@ -1734,17 +1734,17 @@ HTML;
         }
 
         if ($empty_errors !== []) {
-            Session::AddMessageAfterRedirect(__('Some mandatory fields are empty', 'fields')
+            Session::AddMessageAfterRedirect(__s('Some mandatory fields are empty', 'fields')
                                           . ' : ' . implode(', ', $empty_errors), false, ERROR);
         }
 
         if ($number_errors !== []) {
-            Session::AddMessageAfterRedirect(__('Some numeric fields contains non numeric values', 'fields')
+            Session::AddMessageAfterRedirect(__s('Some numeric fields contains non numeric values', 'fields')
                                           . ' : ' . implode(', ', $number_errors), false, ERROR);
         }
 
         if ($url_errors !== []) {
-            Session::AddMessageAfterRedirect(__('Some URL fields contains invalid links', 'fields')
+            Session::AddMessageAfterRedirect(__s('Some URL fields contains invalid links', 'fields')
                                           . ' : ' . implode(', ', $url_errors), false, ERROR);
         }
 
@@ -2349,11 +2349,11 @@ HTML;
         switch ($item::getType()) {
             case Entity::getType():
                 $tabs = [
-                    'Entity$2' => __('Address'),
-                    'Entity$3' => __('Advanced information'),
-                    'Entity$4' => __('Notifications'),
-                    'Entity$5' => __('Assistance'),
-                    'Entity$6' => __('Assets'),
+                    'Entity$2' => __s('Address'),
+                    'Entity$3' => __s('Advanced information'),
+                    'Entity$4' => __s('Notifications'),
+                    'Entity$5' => __s('Assistance'),
+                    'Entity$6' => __s('Assets'),
                 ];
                 break;
             default:
@@ -2390,10 +2390,15 @@ HTML;
      *
      * @param string $itemtype       Name of associated itemtype
      * @param string $container_name Name of container
+     *
+     * @psalm-taint-escape file (only `[A-Za-z0-9_]` characters are kept, forcing path safeness)
      */
     protected static function getSystemName(string $itemtype, string $container_name): string
     {
-        return strtolower(str_replace('\\', '', $itemtype) . preg_replace('/s$/', '', $container_name));
+        // Only keep characters valid in a PHP class name, as the result is used to build filenames.
+        $itemtype = preg_replace('/[^A-Za-z0-9_]/', '', $itemtype);
+
+        return strtolower($itemtype . preg_replace('/s$/', '', $container_name));
     }
 
     public static function getIcon()

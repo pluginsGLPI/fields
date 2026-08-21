@@ -46,5 +46,5 @@ $canedit = $_POST['id'] == -1 ? $translation->can(-1, CREATE, $_POST) : $transla
 if ($canedit) {
     $translation->showFormForItem($_POST['itemtype'], $_POST['items_id'], $_POST['id']);
 } else {
-    echo __('Access denied');
+    echo __s('Access denied');
 }

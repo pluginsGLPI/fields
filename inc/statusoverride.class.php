@@ -58,7 +58,7 @@ class PluginFieldsStatusOverride extends CommonDBChild
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__('Installing %s'), $table));
+            $migration->displayMessage(sprintf(__s('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,

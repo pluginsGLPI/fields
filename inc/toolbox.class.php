@@ -119,7 +119,7 @@ class PluginFieldsToolbox
             return;
         }
 
-        $migration->displayMessage(__('Fix fields names', 'fields'));
+        $migration->displayMessage(__s('Fix fields names', 'fields'));
 
         foreach ($bad_named_fields as $field) {
             $old_name = $field['name'];

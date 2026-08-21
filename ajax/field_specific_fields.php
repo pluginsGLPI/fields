@@ -49,7 +49,7 @@ if ($id > 0) {
 if ($type === 'glpi_item') {
     // Display "allowed values" field
     echo '<td>';
-    echo __('Allowed values', 'fields') . ' :';
+    echo __s('Allowed values', 'fields') . ' :';
     echo '</td>';
 
     echo '<td style="line-height:var(--tblr-body-line-height);">';
@@ -82,11 +82,11 @@ if ($type === 'glpi_item') {
     // Display "default value(s)" field
     echo '<td>';
     if ($is_dropdown_multi) {
-        echo __('Multiple dropdown', 'fields') . ' :';
+        echo __s('Multiple dropdown', 'fields') . ' :';
         echo '<br />';
     }
 
-    echo __('Default value', 'fields') . ' :';
+    echo __s('Default value', 'fields') . ' :';
     if (in_array($type, ['date', 'datetime'])) {
         echo '<i class="pointer fa fa-info" title="' . __s("You can use 'now' for date and datetime field") . '"></i>';
     }

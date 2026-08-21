@@ -74,7 +74,7 @@ class PluginFieldsField extends CommonDBChild
         $table = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__('Installing %s'), $table));
+            $migration->displayMessage(sprintf(__s('Installing %s'), $table));
 
             $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
@@ -293,7 +293,7 @@ class PluginFieldsField extends CommonDBChild
         //reject adding when field name is too long for mysql
         if (strlen($input['name']) > 64) {
             Session::AddMessageAfterRedirect(
-                __('Field name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
+                __s('Field name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
                 false,
                 ERROR,
             );
@@ -312,7 +312,7 @@ class PluginFieldsField extends CommonDBChild
 
             //reject adding for same dropdown on same block
             if (!empty($found)) {
-                Session::AddMessageAfterRedirect(__("You cannot add same field 'dropdown' on same block", 'fields'), false, ERROR);
+                Session::AddMessageAfterRedirect(__s("You cannot add same field 'dropdown' on same block", 'fields'), false, ERROR);
 
                 return false;
             }
@@ -320,7 +320,7 @@ class PluginFieldsField extends CommonDBChild
             //reject adding when dropdown name is too long for mysql table name
             if (strlen(getTableForItemType(PluginFieldsDropdown::getClassname($input['name']))) > 64) {
                 Session::AddMessageAfterRedirect(
-                    __('Field name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
+                    __s('Field name is too long for database (digits in name are replaced by characters, try to remove them)', 'fields'),
                     false,
                     ERROR,
                 );
@@ -662,11 +662,11 @@ class PluginFieldsField extends CommonDBChild
 
         echo "<div class='center'>"
            . sprintf("<a href='javascript:viewAddField%s%d();'>", $cID, $rand);
-        echo __('Add a new field', 'fields') . '</a></div><br>';
+        echo __s('Add a new field', 'fields') . '</a></div><br>';
 
         if (count($iterator) === 0) {
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";
-            echo "<th class='b'>" . __('No field for this block', 'fields') . '</th></tr></table>';
+            echo "<th class='b'>" . __s('No field for this block', 'fields') . '</th></tr></table>';
         } else {
             echo '<div id="drag">';
             echo Html::hidden('_plugin_fields_containers_id', ['value' => $cID,
@@ -674,12 +674,12 @@ class PluginFieldsField extends CommonDBChild
             ]);
             echo "<table class='tab_cadre_fixehov'>";
             echo '<tr>';
-            echo '<th>' . __('Label') . '</th>';
-            echo '<th>' . __('Type') . '</th>';
-            echo '<th>' . __('Default values') . '</th>';
-            echo '<th>' . __('Mandatory field') . '</th>';
-            echo '<th>' . __('Active') . '</th>';
-            echo '<th>' . __('Read only', 'fields') . '</th>';
+            echo '<th>' . __s('Label') . '</th>';
+            echo '<th>' . __s('Type') . '</th>';
+            echo '<th>' . __s('Default values') . '</th>';
+            echo '<th>' . __s('Mandatory field') . '</th>';
+            echo '<th>' . __s('Active') . '</th>';
+            echo '<th>' . __s('Read only', 'fields') . '</th>';
             echo "<th width='16'>&nbsp;</th>";
             echo '</tr>';
 
@@ -738,8 +738,8 @@ class PluginFieldsField extends CommonDBChild
                     echo "<td align='center'>" . Dropdown::getYesNo($this->fields['mandatory']) . '</td>';
                     echo "<td align='center'>";
                     echo ($this->isActive())
-                     ? __('Yes')
-                     : '<b class="red">' . __('No') . '</b>';
+                     ? __s('Yes')
+                     : '<b class="red">' . __s('No') . '</b>';
                     echo '</td>';
 
                     echo '<td>';
@@ -748,7 +748,7 @@ class PluginFieldsField extends CommonDBChild
 
                     echo '<td class="rowhandler control center">';
                     echo '<div class="drag row" style="cursor:move; border: 0;">';
-                    echo '<i class="ti ti-grip-horizontal" title="' . __('Move') . '">';
+                    echo '<i class="ti ti-grip-horizontal" title="' . __s('Move') . '">';
                     echo '</div>';
                     echo '</td>';
                     echo '</tr>';
@@ -791,7 +791,7 @@ class PluginFieldsField extends CommonDBChild
         $this->showFormHeader($options);
 
         echo '<tr>';
-        echo '<td>' . __('Label') . ' : </td>';
+        echo '<td>' . __s('Label') . ' : </td>';
         echo "<td colspan='3'>";
         echo Html::hidden('plugin_fields_containers_id', ['value' => $container->getField('id')]);
         echo Html::input(
@@ -804,7 +804,7 @@ class PluginFieldsField extends CommonDBChild
 
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Type') . ' : </td>';
+        echo '<td>' . __s('Type') . ' : </td>';
         echo "<td colspan='3'>";
         if ($edit) {
             echo self::getTypes(true)[$this->fields['type']];
@@ -847,18 +847,18 @@ class PluginFieldsField extends CommonDBChild
         echo '</tr>';
 
         echo '<tr>';
-        echo '<td>' . __('Active') . ' :</td>';
+        echo '<td>' . __s('Active') . ' :</td>';
         echo '<td>';
         Dropdown::showYesNo('is_active', $this->fields['is_active']);
         echo '</td>';
-        echo '<td>' . __('Mandatory field') . ' : </td>';
+        echo '<td>' . __s('Mandatory field') . ' : </td>';
         echo '<td>';
         Dropdown::showYesNo('mandatory', $this->fields['mandatory']);
         echo '</td>';
         echo '</tr>';
 
         echo '<tr>';
-        echo '<td>' . __('Read only', 'fields') . ' :</td>';
+        echo '<td>' . __s('Read only', 'fields') . ' :</td>';
         echo "<td colspan='3'>";
         Dropdown::showYesNo('is_readonly', $this->fields['is_readonly']);
         echo '</td>';
@@ -1435,21 +1435,21 @@ JAVASCRIPT,
     public static function getTypes(bool $flat_list = true)
     {
         $common_types = [
-            'header'    => __('Header', 'fields'),
-            'text'      => __('Text (single line)', 'fields'),
-            'textarea'  => __('Text (multiples lines)', 'fields'),
-            'richtext'  => __('Rich Text', 'fields'),
-            'number'    => __('Number', 'fields'),
-            'url'       => __('URL', 'fields'),
-            'dropdown'  => __('Dropdown', 'fields'),
-            'yesno'     => __('Yes/No', 'fields'),
-            'date'      => __('Date', 'fields'),
-            'datetime'  => __('Date & time', 'fields'),
-            'glpi_item' => __('GLPI item', 'fields'),
+            'header'    => __s('Header', 'fields'),
+            'text'      => __s('Text (single line)', 'fields'),
+            'textarea'  => __s('Text (multiples lines)', 'fields'),
+            'richtext'  => __s('Rich Text', 'fields'),
+            'number'    => __s('Number', 'fields'),
+            'url'       => __s('URL', 'fields'),
+            'dropdown'  => __s('Dropdown', 'fields'),
+            'yesno'     => __s('Yes/No', 'fields'),
+            'date'      => __s('Date', 'fields'),
+            'datetime'  => __s('Date & time', 'fields'),
+            'glpi_item' => __s('GLPI item', 'fields'),
         ];
 
         $all_types = [
-            __('Common') => $common_types,
+            __s('Common') => $common_types,
         ];
 
         foreach (PluginFieldsToolbox::getGlpiItemtypes() as $section => $itemtypes) {

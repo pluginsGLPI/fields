@@ -70,7 +70,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         $table             = self::getTable();
 
         if (!$DB->tableExists($table)) {
-            $migration->displayMessage(sprintf(__('Installing %s'), $table));
+            $migration->displayMessage(sprintf(__s('Installing %s'), $table));
             $query = "CREATE TABLE IF NOT EXISTS `{$table}` (
                   `id`                                INT            {$default_key_sign} NOT NULL auto_increment,
                   `plugin_fields_containers_id`       INT            {$default_key_sign} NOT NULL DEFAULT '0',
@@ -132,13 +132,13 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                 echo '>';
                 break;
             case self::SHOW_CONDITION_REGEX:
-                echo __('regular expression matches', 'fields');
+                echo __s('regular expression matches', 'fields');
                 break;
             case self::SHOW_CONDITION_UNDER:
-                echo __('under', 'fields');
+                echo __s('under', 'fields');
                 break;
             case self::SHOW_CONDITION_NOT_UNDER:
-                echo __('not under', 'fields');
+                echo __s('not under', 'fields');
                 break;
         }
     }
@@ -359,7 +359,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             $raw_value = $value;
         }
 
-        echo $raw_value;
+        echo htmlescape($raw_value);
     }
 
     public static function removeBlackListedOption($array, $itemtype_class)
@@ -508,7 +508,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         // itemtype, search_option, condition, value must all be set
         if (!isset($input['itemtype'], $input['search_option'], $input['condition'])) {
             Session::addMessageAfterRedirect(
-                __('You must specify an item type, search option and condition.', 'fields'),
+                __s('You must specify an item type, search option and condition.', 'fields'),
                 true,
                 ERROR,
             );
@@ -524,7 +524,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         // itemtype, search_option, condition, value must all be set
         if (!isset($input['itemtype'], $input['search_option'], $input['condition'])) {
             Session::addMessageAfterRedirect(
-                __('You must specify an item type, search option and condition.', 'fields'),
+                __s('You must specify an item type, search option and condition.', 'fields'),
                 true,
                 ERROR,
             );
