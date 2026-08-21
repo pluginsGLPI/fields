@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Added
+
+- Add psalm
+
 ### Fixed
 
 - Fix massive action update on CustomAssets
