@@ -113,7 +113,7 @@ final class MigrationTest extends DbTestCase
 
     public function testCheckContainerTablesConsistencyDetectsOrphanedTable(): void
     {
-        $orphan_table = 'glpi_plugin_fields_' . strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $this->getUniqueString())) . 'orphan';
+        $orphan_table = 'glpi_plugin_fields_' . strtolower((string) preg_replace('/[^a-zA-Z0-9]/', '', (string) $this->getUniqueString())) . 'orphan';
 
         /** @var DBmysql $DB */
         global $DB;
