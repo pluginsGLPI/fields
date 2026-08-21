@@ -154,7 +154,7 @@ class PluginFieldsMigration extends Migration
      *
      * @param int $container_id Id of the container
      */
-    private static function getValidFieldsForContainer(int $container_id): array
+    public static function getValidFieldsForContainer(int $container_id): array
     {
         $valid_fields = [];
 
@@ -193,12 +193,75 @@ class PluginFieldsMigration extends Migration
             'items_id',
             'itemtype',
             'plugin_fields_containers_id',
+            'entities_id',
         ];
 
         return array_filter(
             $fields,
             fn(string $field) => !in_array($field, $basic_fields, true),
         );
+    }
+
+    /**
+     * Compare container/itemtype pairs against actual database tables.
+     *
+     * @return array{missing: array<int, array{container_id: int, itemtype: string, table: string}>, orphaned: string[]}
+     */
+    public static function checkContainerTablesConsistency(): array
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $expected_tables    = [];
+        $entries_by_table   = [];
+        $containers         = (new PluginFieldsContainer())->find([]);
+        foreach ($containers as $row) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes((string) $row['itemtypes']);
+            if (!is_array($itemtypes)) {
+                continue;
+            }
+
+            foreach ($itemtypes as $itemtype) {
+                $table                         = getTableForItemType(PluginFieldsContainer::getClassname($itemtype, $row['name']));
+                $expected_tables[$table]       = true;
+                $entries_by_table[$table][]    = ['container_id' => (int) $row['id'], 'itemtype' => $itemtype, 'table' => $table];
+            }
+        }
+
+        $missing = [];
+        foreach ($entries_by_table as $table => $entries) {
+            if (!$DB->tableExists($table)) {
+                array_push($missing, ...$entries);
+            }
+        }
+
+        // Tables that never map to a container/itemtype pair.
+        $system_tables = [
+            PluginFieldsContainer::getTable(),
+            PluginFieldsField::getTable(),
+            PluginFieldsProfile::getTable(),
+            PluginFieldsLabelTranslation::getTable(),
+            PluginFieldsContainerDisplayCondition::getTable(),
+            PluginFieldsStatusOverride::getTable(),
+        ];
+
+        // Dropdown fields have their own dedicated table, unrelated to any container/itemtype pair.
+        $dropdown_fields = (new PluginFieldsField())->find(['type' => 'dropdown']);
+        foreach ($dropdown_fields as $field) {
+            $system_tables[] = getTableForItemType(PluginFieldsDropdown::getClassname($field['name']));
+        }
+
+        $orphaned = [];
+        foreach ($DB->listTables('glpi_plugin_fields_%') as $row) {
+            $table = $row['TABLE_NAME'];
+            if (in_array($table, $system_tables, true) || isset($expected_tables[$table])) {
+                continue;
+            }
+
+            $orphaned[] = $table;
+        }
+
+        return ['missing' => $missing, 'orphaned' => $orphaned];
     }
 
     public static function getGenericObjectTypes(): array
