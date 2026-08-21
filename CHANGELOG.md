@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
+- `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
+
 ## [1.24.4] - 2026-08-06
 
 ### Fixed
