@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix a field's default value not being applied to existing items and not being shown in search results for items with no dedicated row in the container table
 - Fix mandatory fields blocking automated item creation
 - Fix unclear mandatory field error when a GLPI form creating a ticket does not provide the field.
+- Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
+- `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
 
 ## [1.24.5] - 2026-09-11
 
