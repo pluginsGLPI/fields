@@ -1364,8 +1364,8 @@ JAVASCRIPT,
         // itemtype is stored in a JSON array, so entry is surrounded by double quotes
         $search_string = json_encode($itemtype);
         // Backslashes must be doubled in LIKE clause according to MySQL documentation
-        // But do not escape backslashes for CustomAsset, as they are alrady escaped
-        if (!str_contains($search_string, 'CustomAsset')) {
+        // But do not escape backslashes for namespaced itemtypes, as they are already escaped
+        if (!str_contains((string) $itemtype, '\\')) {
             $search_string = str_replace('\\', '\\\\', $search_string);
         }
 

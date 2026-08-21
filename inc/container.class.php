@@ -2108,11 +2108,12 @@ HTML;
                     ) { //multi dropdown is empty or has been emptied
                         $data[$field['name']] = [];
                         $has_fields           = true;
-                    } elseif (isset($_REQUEST['massiveaction'])) { // called from massiveaction
-                        if (isset($_POST[$field['name']])) {
-                            $data[$field['name']] = $_POST[$field['name']];
-                            $has_fields           = true;
-                        }
+                    } elseif (
+                        isset($_REQUEST['massiveaction'])
+                        && isset($_POST[$field['name']])
+                    ) { // called from massiveaction
+                        $data[$field['name']] = $_POST[$field['name']];
+                        $has_fields           = true;
                     }
                 }
             }
