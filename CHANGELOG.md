@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix administrators losing access to a block's configuration after setting a profile to "no access" on that block.
 - Fix dependency conflict with GLPI core by no longer vendoring symfony/deprecation-contracts and symfony/polyfill-ctype.
 - Fix default field values not being applied when fields are empty on creation
+- Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
+- `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
 
 ## [1.24.5] - 2026-09-11
 
