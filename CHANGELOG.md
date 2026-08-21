@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix a block's associated item types, type and tab being changeable after creation.
 - Remove obsolete FusionInventory integration.
 - CI: declare a unique composer autoloader suffix
+- Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
+- `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
 
 ### Changed
 
