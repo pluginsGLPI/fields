@@ -227,9 +227,7 @@ function plugin_fields_MassiveActionsFieldsDisplay($options = [])
             );
         }
 
-        PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
-
-        return true;
+        return PluginFieldsField::showSingle($options['itemtype'], $options['options'], true);
     }
 
     // Need to return false on non display item
