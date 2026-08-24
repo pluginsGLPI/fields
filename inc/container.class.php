@@ -995,16 +995,30 @@ class PluginFieldsContainer extends CommonDBTM
             return false;
         }
 
-        $new_name = preg_replace('/[^\da-zA-Z]/', '', $new_name) ?? '';
-        if ($new_name === '') {
-            Session::AddMessageAfterRedirect(__('Invalid name.', 'fields'), false, ERROR);
+        $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']);
+        if (!is_array($itemtypes) || $itemtypes === []) {
+            Session::AddMessageAfterRedirect(__('No associated item type.', 'fields'), false, ERROR);
 
             return false;
         }
 
-        $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']);
-        if (!is_array($itemtypes) || $itemtypes === []) {
-            Session::AddMessageAfterRedirect(__('No associated item type.', 'fields'), false, ERROR);
+        $is_oversized = false;
+        foreach ($itemtypes as $itemtype) {
+            if (strlen(getTableForItemType(self::getClassname($itemtype, $container->fields['name']))) > 64) {
+                $is_oversized = true;
+                break;
+            }
+        }
+
+        if (!$is_oversized) {
+            Session::AddMessageAfterRedirect(__('Container is not oversized.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        $new_name = preg_replace('/[^\da-zA-Z]/', '', $new_name) ?? '';
+        if ($new_name === '') {
+            Session::AddMessageAfterRedirect(__('Invalid name.', 'fields'), false, ERROR);
 
             return false;
         }

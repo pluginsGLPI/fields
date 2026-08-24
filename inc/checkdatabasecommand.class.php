@@ -114,7 +114,7 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
             );
             foreach ($tables_consistency['missing'] as $entry) {
                 $output->writeln(sprintf(
-                    '-> container #%d (%s): expected table "%s" not found',
+                    __('-> container #%d (%s): expected table "%s" not found', 'fields'),
                     $entry['container_id'],
                     $entry['itemtype'],
                     $entry['table'],
