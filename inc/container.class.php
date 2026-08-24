@@ -241,6 +241,15 @@ class PluginFieldsContainer extends CommonDBTM
         /** @var DBmysql $DB */
         global $DB;
 
+        // Quarantine generated class files: hides stale ones from the autoloader, purged once migration succeeds.
+        foreach (glob(PLUGINFIELDS_CLASS_PATH . '/*.class.php') ?: [] as $existing_file) {
+            if (str_ends_with($existing_file, 'dropdown.class.php')) {
+                continue;
+            }
+
+            rename($existing_file, $existing_file . '.bak');
+        }
+
         // Disable oversized-table containers instead of crashing.
         $obj               = new self();
         $active_containers = $obj->find(['is_active' => 1]);
@@ -493,6 +502,11 @@ class PluginFieldsContainer extends CommonDBTM
             }
 
             self::create($container);
+        }
+
+        // Migration succeeded: remaining quarantined files are stale for good.
+        foreach (glob(PLUGINFIELDS_CLASS_PATH . '/*.class.php.bak') ?: [] as $stale_file) {
+            unlink($stale_file);
         }
 
         return true;
