@@ -1164,6 +1164,21 @@ JAVASCRIPT,
             return false;
         }
 
+        //remove fields that must be hidden for this item, based on the
+        //"conditions to hide field" configured on the container
+        $displayCondition = new PluginFieldsFieldDisplayCondition();
+        $fields = array_filter($fields, static function ($field) use ($displayCondition, $item) {
+            return $displayCondition->computeDisplayField(
+                $item,
+                $field['plugin_fields_containers_id'],
+                $field['id'],
+            );
+        });
+
+        if (empty($fields)) {
+            return false;
+        }
+
         // check if current profile can edit fields
         $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $container_obj->getID());
         if ($right < READ) {
