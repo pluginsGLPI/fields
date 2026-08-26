@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Add a "Conditions to hide field" tab on containers, to hide a single field of a block based on a condition on the main object, instead of hiding the whole block.
+
 ## [1.24.4] - 2026-08-06
 
 ### Fixed
