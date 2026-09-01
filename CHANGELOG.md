@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+
+### Fixed
+
+- Fix default field values not being applied when fields are empty on creation
+
 ## [1.24.4] - 2026-08-06
 
 ### Fixed
