@@ -2092,6 +2092,13 @@ HTML;
                             $data[$multiple_key] = $_POST[$multiple_key];
                             $has_fields          = true;
                         }
+                    } elseif ($item->isNewItem()) {
+                        $default = PluginFieldsField::getDefaultValue($field);
+                        $decoded = json_decode((string) $default, true);
+                        if (is_array($decoded) && $decoded !== []) {
+                            $data[$multiple_key] = $decoded;
+                            $has_fields          = true;
+                        }
                     }
                 }
 
@@ -2104,6 +2111,15 @@ HTML;
                     } else { //multi dropdown is empty or has been emptied
                         $data[$field['name']] = [];
                     }
+                }
+            } elseif ($item->isNewItem()) {
+                $default = PluginFieldsField::getDefaultValue($field);
+                if ($default !== null) {
+                    $default_key = $field['type'] === 'dropdown'
+                        ? 'plugin_fields_' . $field['name'] . 'dropdowns_id'
+                        : $field['name'];
+                    $data[$default_key] = $default;
+                    $has_fields         = true;
                 }
             }
         }
