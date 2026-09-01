@@ -1144,6 +1144,32 @@ JAVASCRIPT,
         );
     }
 
+    /**
+     * Retrieves the default value of a field
+     *
+     * @return mixed
+     */
+    public static function getDefaultValue(array $field)
+    {
+        $value = null;
+
+        if (in_array($field['type'], ['dropdown', 'yesno']) && $field['default_value'] === '') {
+            $value = 0;
+        } elseif ($field['default_value'] !== '') {
+            $value = $field['default_value'];
+
+            // shortcut for date/datetime
+            if (
+                in_array($field['type'], ['date', 'datetime'])
+                && $value == 'now'
+            ) {
+                $value = $_SESSION['glpi_currenttime'];
+            }
+        }
+
+        return $value;
+    }
+
     public static function prepareHtmlFields(
         $fields,
         $item,
@@ -1295,19 +1321,7 @@ JAVASCRIPT,
 
             //get default value
             if ($value === null) {
-                if (in_array($field['type'], ['dropdown', 'yesno']) && $field['default_value'] === '') {
-                    $value = 0;
-                } elseif ($field['default_value'] !== '') {
-                    $value = $field['default_value'];
-
-                    // shortcut for date/datetime
-                    if (
-                        in_array($field['type'], ['date', 'datetime'])
-                        && $value == 'now'
-                    ) {
-                        $value = $_SESSION['glpi_currenttime'];
-                    }
-                }
+                $value = self::getDefaultValue($field);
             }
 
             if ($field['multiple'] && !is_array($value)) {
