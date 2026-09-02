@@ -287,7 +287,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             if ($twig_params['dropdown_itemtype'] == User::class) {
                 $twig_params['dropdown_option'] = ['right' => 'all'];
             }
-        } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
+        } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::class) {
             $twig_params['list_conditions'] = self::getComparisonOperators(true);
             $twig_params['is_specific']     = true;
             switch ($so['field']) {
@@ -334,7 +334,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             if ($dropdown->getFromDB($value)) {
                 $raw_value = $dropdown->fields['name'];
             }
-        } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::getType()) {
+        } elseif ($so['datatype'] == 'specific' && get_parent_class($itemtype) == CommonITILObject::class) {
             switch ($so['field']) {
                 case 'status':
                     $raw_value = $itemtype::getStatus($value);
@@ -383,7 +383,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
                     $main_table == getTableForItemType($itemtype_class)
                 ) {
                     foreach ($foreignKey as $foreign_class) {
-                        if (!is_array($foreign_class) && getTableNameForForeignKeyField($foreign_class) !== getTableForItemType(Location::getType())) {
+                        if (!is_array($foreign_class) && getTableNameForForeignKeyField($foreign_class) !== getTableForItemType(Location::class)) {
                             $allowed_table[] = getTableForItemType(getItemtypeForForeignKeyField($foreign_class));
                         }
                     }
@@ -392,7 +392,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         }
 
         if ($itemtype_object->isEntityAssign()) {
-            $allowed_table[] = getTableForItemType(Entity::getType());
+            $allowed_table[] = getTableForItemType(Entity::class);
         }
 
         //allow specific datatype

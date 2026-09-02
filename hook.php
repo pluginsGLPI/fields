@@ -198,7 +198,7 @@ function plugin_fields_getDropdown()
     $field_obj = new PluginFieldsField();
     $fields    = $field_obj->find(['type' => 'dropdown']);
     foreach ($fields as $field) {
-        $field['itemtype']                                                = PluginFieldsField::getType();
+        $field['itemtype']                                                = PluginFieldsField::class;
         $label                                                            = PluginFieldsLabelTranslation::getLabelFor($field);
         $dropdowns['PluginFields' . ucfirst((string) $field['name']) . 'Dropdown'] = $label;
     }
@@ -307,7 +307,7 @@ function plugin_fields_rule_matched($params = [])
                             $field                        => $value,
                             'items_id'                    => $agent->fields['computers_id'],
                         ],
-                        Computer::getType(),
+                        Computer::class,
                     );
                 }
             }

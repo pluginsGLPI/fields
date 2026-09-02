@@ -32,7 +32,7 @@ declare(strict_types=1);
 
 include(__DIR__ . '/../hook.php');
 
-Session::checkRight('config', READ);
+Session::checkRight(Config::$rightname, READ);
 
 plugin_fields_checkFiles();
 

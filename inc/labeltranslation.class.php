@@ -131,7 +131,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         $translation = new PluginFieldsLabelTranslation();
 
         $translation->add([
-            'itemtype' => $item::getType(),
+            'itemtype' => $item::class,
             'items_id' => $item->getID(),
             'language' => $_SESSION['glpilanguage'],
             'label'    => $item->fields['label'],
@@ -149,7 +149,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         $nb = countElementsInTable(
             self::getTable(),
             [
-                'itemtype' => $item::getType(),
+                'itemtype' => $item::class,
                 'items_id' => $item->getID(),
             ],
         );
@@ -192,7 +192,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
             $ajax_params = [
                 'type'     => self::class,
-                'itemtype' => $item::getType(),
+                'itemtype' => $item::class,
                 'items_id' => $item->fields['id'],
                 'id'       => -1,
             ];
@@ -213,7 +213,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         $obj   = new self();
         $found = $obj->find(
             [
-                'itemtype' => $item::getType(),
+                'itemtype' => $item::class,
                 'items_id' => $item->getID(),
             ],
             'language ASC',
@@ -250,7 +250,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 if ($canedit) {
                     $ajax_params = [
                         'type'     => self::class,
-                        'itemtype' => $item::getType(),
+                        'itemtype' => $item::class,
                         'items_id' => $item->getID(),
                         'id'       => $data['id'],
                     ];

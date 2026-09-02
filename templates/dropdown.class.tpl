@@ -6,7 +6,7 @@ class %%CLASSNAME%% extends CommonTreeDropdown {
 
    static function getTypeName($nb=0) {
       $item = [
-         "itemtype" => PluginFieldsField::getType(),
+         "itemtype" => PluginFieldsField::class,
          "id"       => %%FIELDID%%,
          "label"    => %%LABEL%%
       ];

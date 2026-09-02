@@ -42,21 +42,21 @@ class PluginFieldsInventory extends CommonDBTM
                     $items_id = 0;
                     //retrieve items id switch itemtype
                     switch ($itemtype) {
-                        case Computer::getType():
+                        case Computer::class:
                             $items_id = $params['computers_id'];
                             break;
 
-                        case NetworkEquipment::getType():
+                        case NetworkEquipment::class:
                             $items_id = $params['networkequipments_id'];
                             break;
 
-                        case Printer::getType():
+                        case Printer::class:
                             $items_id = $params['printers_id'];
                             break;
                     }
 
                     if (class_exists('PluginFusioninventoryInventoryComputerComputer')) {
-                        if ($itemtype == Computer::getType()) {
+                        if ($itemtype == Computer::class) {
                             //load inventory from DB because
                             //FI not update XML file if computer is not update
                             $db_info = new PluginFusioninventoryInventoryComputerComputer();

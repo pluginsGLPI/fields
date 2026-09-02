@@ -168,7 +168,7 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
             // add entry to configuration menu (only if user has read access to config)
-            if (Session::haveRight('config', READ)) {
+            if (Session::haveRight(Config::$rightname, READ)) {
                 $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => PluginFieldsMenu::class];
             }
 
@@ -337,7 +337,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
             foreach ($itemtypes as $itemtype) {
                 $fields_obj = new PluginFieldsField();
                 // to get translation
-                $container['itemtype']                                      = PluginFieldsContainer::getType();
+                $container['itemtype']                                      = PluginFieldsContainer::class;
                 $yaml_conf['container'][$container['id'] . '-' . $itemtype] = [
                     'id'       => (int) $container['id'],
                     'name'     => PluginFieldsLabelTranslation::getLabelFor($container),
@@ -356,7 +356,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                         $tmp_field['id'] = (int) $field['id'];
 
                         //to get translation
-                        $field['itemtype']           = PluginFieldsField::getType();
+                        $field['itemtype']           = PluginFieldsField::class;
                         $tmp_field['label']          = PluginFieldsLabelTranslation::getLabelFor($field);
                         $tmp_field['xml_node']       = strtoupper((string) $field['name']);
                         $tmp_field['type']           = $field['type'];

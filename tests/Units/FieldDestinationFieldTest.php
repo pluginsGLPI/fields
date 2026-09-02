@@ -272,7 +272,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         $destinations = $form->getDestinations();
         foreach ($destinations as $destination) {
             $this->updateItem(
-                $destination::getType(),
+                $destination::class,
                 $destination->getId(),
                 ['config' => [PluginFieldsDestinationField::getKey() => $config->jsonSerialize()]],
                 ["config"],

@@ -324,10 +324,10 @@ class PluginFieldsContainer extends CommonDBTM
         }
 
         //Computer OS tab is no longer part of computer object. Moving to main
-        $ostab = self::findContainer(Computer::getType(), 'domtab', Computer::getType() . '$1');
+        $ostab = self::findContainer(Computer::class, 'domtab', Computer::class . '$1');
         if ($ostab) {
             //check if we already have a container on Computer main tab
-            $comptab = self::findContainer(Computer::getType(), 'dom');
+            $comptab = self::findContainer(Computer::class, 'dom');
             if ($comptab) {
                 $oscontainer = new PluginFieldsContainer();
                 $oscontainer->getFromDB($ostab);
@@ -338,10 +338,10 @@ class PluginFieldsContainer extends CommonDBTM
                 $fields = new PluginFieldsField();
                 $fieldsdata = $fields->find(['plugin_fields_containers_id' => $ostab]);
 
-                $classname = self::getClassname(Computer::getType(), $oscontainer->fields['name']);
+                $classname = self::getClassname(Computer::class, $oscontainer->fields['name']);
                 $dbu = new DbUtils();
                 $osdata    = $dbu->getItemForItemtype($classname);
-                $classname = self::getClassname(Computer::getType(), $compcontainer->fields['name']);
+                $classname = self::getClassname(Computer::class, $compcontainer->fields['name']);
                 $compdata  = $dbu->getItemForItemtype($classname);
 
                 $fieldnames = [];
@@ -488,7 +488,7 @@ class PluginFieldsContainer extends CommonDBTM
             'field'         => 'name',
             'name'          => __('Name'),
             'datatype'      => 'itemlink',
-            'itemlink_type' => self::getType(),
+            'itemlink_type' => static::class,
             'massiveaction' => false,
         ], [
             'id'            => 2,
@@ -496,7 +496,7 @@ class PluginFieldsContainer extends CommonDBTM
             'field'         => 'label',
             'name'          => __('Label'),
             'datatype'      => 'itemlink',
-            'itemlink_type' => self::getType(),
+            'itemlink_type' => static::class,
             'massiveaction' => false,
             'autocomplete'  => true,
         ], [
@@ -877,7 +877,7 @@ class PluginFieldsContainer extends CommonDBTM
             //delete label translations
             $translation_obj = new PluginFieldsLabelTranslation();
             $translation_obj->deleteByCriteria([
-                'itemtype' => self::getType(),
+                'itemtype' => static::class,
                 'items_id' => $this->fields['id'],
             ]);
 
@@ -1255,7 +1255,7 @@ HTML;
             foreach ($jsonitemtypes as $v) {
                 if ($full) {
                     //check for translation
-                    $item['itemtype']             = self::getType();
+                    $item['itemtype']             = static::class;
                     $label                        = PluginFieldsLabelTranslation::getLabelFor($item);
                     $itemtypes[$v][$item['name']] = $label;
                 } else {
@@ -1307,10 +1307,10 @@ HTML;
         }
 
         $itemtypes = self::getEntries('tab', true);
-        if (isset($itemtypes[$item->getType()]) && $item instanceof CommonDBTM) {
+        if (isset($itemtypes[$item::class]) && $item instanceof CommonDBTM) {
             $tabs_entries = [];
             $container    = new self();
-            foreach ($itemtypes[$item->getType()] as $tab_name => $tab_label) {
+            foreach ($itemtypes[$item::class] as $tab_name => $tab_label) {
                 // needs to check if entity of item is in hierachy of $tab_name
                 foreach ($container->find(['is_active' => 1, 'name' => $tab_name]) as $data) {
                     $dataitemtypes = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
@@ -1707,7 +1707,7 @@ HTML;
             }
 
             //translate label
-            $field['itemtype'] = PluginFieldsField::getType();
+            $field['itemtype'] = PluginFieldsField::class;
             $field['label']    = PluginFieldsLabelTranslation::getLabelFor($field);
 
             // Check mandatory fields
@@ -1838,7 +1838,7 @@ HTML;
             $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
             //update data
             $container = new self();
-            if ($container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))) {
+            if ($container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
                 return true;
             }
 
@@ -1868,7 +1868,7 @@ HTML;
             $container = new self();
             if (
                 count($data) === 0
-                || $container->updateFieldsValues($data, $item->getType(), isset($_REQUEST['massiveaction']))
+                || $container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))
             ) {
                 $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
 
@@ -1944,7 +1944,7 @@ HTML;
         }
 
         if (false !== ($data = self::populateData($c_id, $item))) {
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            if (self::validateValues($data, $item::class, isset($_REQUEST['massiveaction'])) === false) {
                 $item->input = [];
 
                 return false;
@@ -1958,7 +1958,7 @@ HTML;
         //call validateValues() with a minimal data array to check for missing mandatory fields
         //in case populateData() fails
         if ($item->isNewItem() && $loc_c->fields['type'] === 'dom') {
-            $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
+            $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::class);
             $data = ['plugin_fields_containers_id' => $c_id];
             if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
                 $data[$status_field_name] = (int) $item->input[$status_field_name];
@@ -1966,7 +1966,7 @@ HTML;
                 $data[$status_field_name] = (int) $item->fields[$status_field_name];
             }
 
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            if (self::validateValues($data, $item::class, isset($_REQUEST['massiveaction'])) === false) {
                 $item->input = [];
             }
         }
@@ -2018,7 +2018,7 @@ HTML;
         }
 
         // Add status so it can be used with status overrides
-        $status_field_name        = PluginFieldsStatusOverride::getStatusFieldName($item->getType());
+        $status_field_name        = PluginFieldsStatusOverride::getStatusFieldName($item::class);
         $data[$status_field_name] = null;
         if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
             $data[$status_field_name] = (int) $item->input[$status_field_name];
@@ -2195,14 +2195,14 @@ HTML;
 
             //get translations
             $container = [
-                'itemtype' => PluginFieldsContainer::getType(),
+                'itemtype' => PluginFieldsContainer::class,
                 'id'       => $data['container_id'],
                 'label'    => $data['container_label'],
             ];
             $data['container_label'] = PluginFieldsLabelTranslation::getLabelFor($container);
 
             $field = [
-                'itemtype' => PluginFieldsField::getType(),
+                'itemtype' => PluginFieldsField::class,
                 'id'       => $data['field_id'],
                 'label'    => $data['field_label'],
             ];
@@ -2335,8 +2335,8 @@ HTML;
     private static function getSubtypes($item)
     {
         $tabs = [];
-        switch ($item::getType()) {
-            case Entity::getType():
+        switch ($item::class) {
+            case Entity::class:
                 $tabs = [
                     'Entity$2' => __('Address'),
                     'Entity$3' => __('Advanced information'),
