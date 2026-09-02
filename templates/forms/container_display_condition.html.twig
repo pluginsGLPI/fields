@@ -41,7 +41,7 @@
                      [
                         'dropdown_itemtype' ~ rand,
                         'results_fields',
-                        get_plugin_web_dir('fields') ~ '/ajax/container_display_condition.php',
+                        path('/plugins/fields/ajax/container_display_condition.php'),
                         {
                            'itemtype': '__VALUE__',
                            'action'  : 'get_itemtype_so',
@@ -54,7 +54,7 @@
                            [
                               'dropdown_search_option' ~ rand,
                               'results_condition',
-                              get_plugin_web_dir('fields') ~ '/ajax/container_display_condition.php',
+                              path('/plugins/fields/ajax/container_display_condition.php'),
                               {
                                  'search_option_id'  : '__VALUE__',
                                  'itemtype'  : container_display_condition.fields['itemtype'],
