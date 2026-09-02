@@ -382,6 +382,7 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
 
             return $link . ' CAST(' . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val);
         }
+
         // if 'number' field with <= or >= or < or > search
         // update WHERE clause with the correct operator
         $val = html_entity_decode((string) $val);
