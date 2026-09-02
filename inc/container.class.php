@@ -1178,10 +1178,15 @@ HTML;
 
         if ($is_domtab) {
             // Filter items that do not have tab handled
+            $dbu = new DbUtils();
             foreach ($all_itemtypes as $section => $itemtypes) {
                 $all_itemtypes[$section] = array_filter(
                     $itemtypes,
-                    fn($itemtype) => count(self::getSubtypes($itemtype)) > 0,
+                    function ($itemtype) use ($dbu) {
+                        $item = $dbu->getItemForItemtype($itemtype);
+                        $item->getEmpty();
+                        return count(self::getSubtypes($item)) > 0;
+                    },
                     ARRAY_FILTER_USE_KEY,
                 );
             }
