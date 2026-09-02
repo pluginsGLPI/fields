@@ -136,10 +136,7 @@ function plugin_init_fields()
     plugin_fields_register_plugin_types();
 
     if (Session::getLoginUserID() || isCommandLine()) {
-        // Init hook about itemtype(s) for plugin fields
-        if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
-            $PLUGIN_HOOKS['plugin_fields'] = [];
-        }
+        $PLUGIN_HOOKS['plugin_fields'] ??= [];
 
         // When a Category is changed during ticket creation
         if (

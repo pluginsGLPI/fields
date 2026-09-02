@@ -65,7 +65,7 @@ final class QuestionTypeAjaxController extends AbstractController
         if ($field_id && is_numeric($field_id) && isset($available_fields[$field_id])) {
             $current_field_id = (int) $field_id;
         } else {
-            $current_field_id = $available_fields === [] ? null : (int) current(array_keys($available_fields));
+            $current_field_id = $available_fields === [] ? null : (int) array_key_first($available_fields);
         }
 
         if ($current_field_id === null) {

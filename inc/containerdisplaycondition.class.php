@@ -430,10 +430,9 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
             }
 
             return $display;
-        } else {
-            //no condition found -> display container
-            return true;
         }
+        //no condition found -> display container
+        return true;
     }
 
     public function checkCondition($item)

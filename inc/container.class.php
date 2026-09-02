@@ -1141,9 +1141,7 @@ HTML;
                         }
                     }
 
-                    if (!isset($params['subtype'])) {
-                        $params['subtype'] = null;
-                    }
+                    $params['subtype'] ??= null;
 
                     $out .= Dropdown::showFromArray(
                         'subtype',
@@ -1160,9 +1158,8 @@ HTML;
 
         if ($display === false) {
             return $out;
-        } else {
-            echo $out;
         }
+        echo $out;
 
         return null;
     }
@@ -2110,9 +2107,8 @@ HTML;
 
         if ($has_fields) {
             return $data;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static function getAddSearchOptions($itemtype, $containers_id = false)
