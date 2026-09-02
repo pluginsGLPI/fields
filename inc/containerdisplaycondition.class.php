@@ -431,6 +431,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
 
             return $display;
         }
+
         //no condition found -> display container
         return true;
     }

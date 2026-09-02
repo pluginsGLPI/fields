@@ -1190,6 +1190,7 @@ HTML;
         if ($display === false) {
             return $out;
         }
+
         echo $out;
 
         return null;
@@ -2417,6 +2418,7 @@ HTML;
         if ($has_fields) {
             return $data;
         }
+
         return false;
     }
 

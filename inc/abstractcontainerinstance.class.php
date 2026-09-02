@@ -91,12 +91,15 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                 if (!is_a($itemtype, CommonDBTM::class, true)) {
                     return ''; // Itemtype not exists (maybe a deactivated plugin)
                 }
+
                 $display_with = [];
                 if ($itemtype === User::class) {
                     $display_with = ['realname', 'firstname'];
                 }
+
                 return Dropdown::show($itemtype, ['displaywith' => $display_with, 'name' => $name, 'display' => false]);
             }
+
             if ($field_specs->fields['type'] === 'dropdown'
             && $field_specs->fields['multiple']) {
                 $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
@@ -130,10 +133,12 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                 if (empty($values[$field])) {
                     return ''; // Value not defined
                 }
+
                 $values = json_decode((string) $values[$field]);
                 if (!is_array($values)) {
                     return ''; // Invalid value
                 }
+
                 $names = [];
                 foreach ($values as $id) {
                     $item = new $itemtype();
@@ -141,8 +146,10 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                         $names[] = $item->getName();
                     }
                 }
+
                 return implode($options['separator'] ?? '<br />', $names);
             }
+
             if ($field_specs->fields['type'] === 'dropdown'
             && $field_specs->fields['multiple']) {
                 $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
@@ -153,10 +160,12 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                         return ''; // Value not defined
                     }
                 }
+
                 $values = json_decode((string) $values[$field]);
                 if (!is_array($values)) {
                     return ''; // Invalid value
                 }
+
                 return implode(
                     $options['separator'] ?? '<br />',
                     Dropdown::getDropdownArrayNames($itemtype::getTable(), $values),
