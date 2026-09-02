@@ -32,6 +32,8 @@ namespace PluginFieldsCommand;
 
 use Glpi\Console\AbstractCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class RegenerateFilesCommand extends AbstractCommand
 {
@@ -44,7 +46,7 @@ class RegenerateFilesCommand extends AbstractCommand
         );
     }
 
-    protected function execute($input, $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         plugin_fields_checkFiles();
 

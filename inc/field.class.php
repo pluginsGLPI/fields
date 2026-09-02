@@ -42,9 +42,9 @@ class PluginFieldsField extends CommonDBChild
      */
     public const SEARCH_OPTION_STARTING_INDEX = 76665;
 
-    public static $itemtype = PluginFieldsContainer::class;
+    public static string $itemtype = PluginFieldsContainer::class;
 
-    public static $items_id = 'plugin_fields_containers_id';
+    public static string $items_id = 'plugin_fields_containers_id';
 
     public function getForbiddenStandardMassiveAction()
     {
@@ -447,7 +447,7 @@ class PluginFieldsField extends CommonDBChild
         //delete label translations
         $translation_obj = new PluginFieldsLabelTranslation();
         $translation_obj->deleteByCriteria([
-            'itemtype' => self::getType(),
+            'itemtype' => static::class,
             'items_id' => $this->fields['id'],
         ]);
 
@@ -588,7 +588,7 @@ class PluginFieldsField extends CommonDBChild
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (!$withtemplate && $item->getType() === self::class) {
+        if (!$withtemplate && $item::class === self::class) {
             return static::getTypeName(1);
         }
 
@@ -1207,7 +1207,7 @@ JAVASCRIPT,
 
         //show all fields
         foreach ($fields as &$field) {
-            $field['itemtype'] = self::getType();
+            $field['itemtype'] = static::class;
             $field['label']    = PluginFieldsLabelTranslation::getLabelFor($field);
 
             $field['allowed_values'] = empty($field['allowed_values']) ? [] : json_decode((string) $field['allowed_values']);

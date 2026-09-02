@@ -33,7 +33,7 @@
 
 header('Content-Type: text/html; charset=UTF-8');
 Html::header_nocache();
-Session::checkRight('config', READ);
+Session::checkRight(Config::$rightname, READ);
 
 $id   = $_POST['id'];
 $type = $_POST['type'];
@@ -129,9 +129,7 @@ if ($type === 'glpi_item') {
             $itemtype = $type == 'dropdown'
                 ? PluginFieldsDropdown::getClassname($field->fields['name'])
                 : $dropdown_matches['class'];
-            if ($field->fields['default_value'] === null) {
-                $field->fields['default_value'] = '';
-            }
+            $field->fields['default_value'] ??= '';
 
             $default_value = $multiple ? json_decode((string) $field->fields['default_value']) : $field->fields['default_value'];
             Dropdown::show(

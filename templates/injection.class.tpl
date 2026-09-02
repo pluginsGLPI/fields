@@ -2,7 +2,7 @@
 
 class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectionInjectionInterface
 {
-    static $rightname = 'plugin_datainjection_model';
+    public static string $rightname = 'plugin_datainjection_model';
 
     /**
      * Return the table used to store this object

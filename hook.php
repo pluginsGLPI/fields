@@ -198,7 +198,7 @@ function plugin_fields_getDropdown()
     $field_obj = new PluginFieldsField();
     $fields    = $field_obj->find(['type' => 'dropdown']);
     foreach ($fields as $field) {
-        $field['itemtype']                                                = PluginFieldsField::getType();
+        $field['itemtype']                                                = PluginFieldsField::class;
         $label                                                            = PluginFieldsLabelTranslation::getLabelFor($field);
         $dropdowns['PluginFields' . ucfirst((string) $field['name']) . 'Dropdown'] = $label;
     }
@@ -307,7 +307,7 @@ function plugin_fields_rule_matched($params = [])
                             $field                        => $value,
                             'items_id'                    => $agent->fields['computers_id'],
                         ],
-                        Computer::getType(),
+                        Computer::class,
                     );
                 }
             }
@@ -381,15 +381,15 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
             }
 
             return $link . ' CAST(' . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val);
-        } else {
-            // if 'number' field with <= or >= or < or > search
-            // update WHERE clause with the correct operator
-            $val = html_entity_decode((string) $val);
-            if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
-                $operator = $matches[1];
-                $val = trim(str_replace($operator, '', $val));
-                return $link . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
-            }
+        }
+
+        // if 'number' field with <= or >= or < or > search
+        // update WHERE clause with the correct operator
+        $val = html_entity_decode((string) $val);
+        if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
+            $operator = $matches[1];
+            $val = trim(str_replace($operator, '', $val));
+            return $link . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
         }
     }
 

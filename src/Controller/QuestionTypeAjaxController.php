@@ -65,7 +65,7 @@ final class QuestionTypeAjaxController extends AbstractController
         if ($field_id && is_numeric($field_id) && isset($available_fields[$field_id])) {
             $current_field_id = (int) $field_id;
         } else {
-            $current_field_id = $available_fields === [] ? null : (int) current(array_keys($available_fields));
+            $current_field_id = $available_fields === [] ? null : (int) array_key_first($available_fields);
         }
 
         if ($current_field_id === null) {
@@ -76,7 +76,7 @@ final class QuestionTypeAjaxController extends AbstractController
         $current_container = PluginFieldsContainer::getById((int) $block_id);
         $current_field = PluginFieldsField::getById($current_field_id);
 
-        if (!$current_container || !$current_field || empty($current_field->fields)) {
+        if (!$current_container || !$current_field || $current_field->fields === []) {
             return new Response('Invalid container or field', Response::HTTP_BAD_REQUEST);
         }
 

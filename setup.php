@@ -34,9 +34,9 @@ global $CFG_GLPI;
 define('PLUGIN_FIELDS_VERSION', '1.24.4');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_FIELDS_MIN_GLPI', '11.0.2');
+define('PLUGIN_FIELDS_MIN_GLPI', '12.0.0');
 // Maximum GLPI version, exclusive
-define('PLUGIN_FIELDS_MAX_GLPI', '11.0.99');
+define('PLUGIN_FIELDS_MAX_GLPI', '12.0.99');
 
 if (!defined('PLUGINFIELDS_DIR')) {
     define('PLUGINFIELDS_DIR', Plugin::getPhpDir('fields'));
@@ -136,10 +136,7 @@ function plugin_init_fields()
     plugin_fields_register_plugin_types();
 
     if (Session::getLoginUserID() || isCommandLine()) {
-        // Init hook about itemtype(s) for plugin fields
-        if (!isset($PLUGIN_HOOKS['plugin_fields'])) {
-            $PLUGIN_HOOKS['plugin_fields'] = [];
-        }
+        $PLUGIN_HOOKS['plugin_fields'] ??= [];
 
         // When a Category is changed during ticket creation
         if (
@@ -168,7 +165,7 @@ function plugin_init_fields()
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
 
             // add entry to configuration menu (only if user has read access to config)
-            if (Session::haveRight('config', READ)) {
+            if (Session::haveRight(Config::$rightname, READ)) {
                 $PLUGIN_HOOKS['menu_toadd']['fields'] = ['config' => PluginFieldsMenu::class];
             }
 
@@ -337,7 +334,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
             foreach ($itemtypes as $itemtype) {
                 $fields_obj = new PluginFieldsField();
                 // to get translation
-                $container['itemtype']                                      = PluginFieldsContainer::getType();
+                $container['itemtype']                                      = PluginFieldsContainer::class;
                 $yaml_conf['container'][$container['id'] . '-' . $itemtype] = [
                     'id'       => (int) $container['id'],
                     'name'     => PluginFieldsLabelTranslation::getLabelFor($container),
@@ -356,7 +353,7 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
                         $tmp_field['id'] = (int) $field['id'];
 
                         //to get translation
-                        $field['itemtype']           = PluginFieldsField::getType();
+                        $field['itemtype']           = PluginFieldsField::class;
                         $tmp_field['label']          = PluginFieldsLabelTranslation::getLabelFor($field);
                         $tmp_field['xml_node']       = strtoupper((string) $field['name']);
                         $tmp_field['type']           = $field['type'];

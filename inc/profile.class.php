@@ -34,13 +34,13 @@ class PluginFieldsProfile extends CommonDBRelation
 {
     use Clonable;
 
-    public static $itemtype_1 = PluginFieldsContainer::class;
+    public static ?string $itemtype_1 = PluginFieldsContainer::class;
 
-    public static $items_id_1 = 'plugin_fields_containers_id';
+    public static ?string $items_id_1 = 'plugin_fields_containers_id';
 
-    public static $itemtype_2 = Profile::class;
+    public static ?string $itemtype_2 = Profile::class;
 
-    public static $items_id_2 = 'profiles_id';
+    public static ?string $items_id_2 = 'profiles_id';
 
     /**
      * Install or update plugin base data.

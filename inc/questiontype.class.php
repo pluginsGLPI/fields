@@ -114,17 +114,13 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     {
         // Get the block_id from the question's extra data or use the first available block
         $block_id = $this->getDefaultValueBlockId($question);
-        if ($block_id === null) {
-            $block_id = current(array_keys($this->getAvailableBlocks()));
-        }
+        $block_id ??= array_key_first($this->getAvailableBlocks());
 
         $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
         $current_field_id = $this->getDefaultValueFieldId($question);
-        if ($current_field_id === null) {
-            $current_field_id = current(array_keys($available_fields));
-        }
+        $current_field_id ??= array_key_first($available_fields);
 
         $current_field = PluginFieldsField::getById($current_field_id);
 
@@ -150,17 +146,13 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     {
         // Get the block_id from the question's extra data or use the first available block
         $block_id = $this->getDefaultValueBlockId($question);
-        if ($block_id === null) {
-            $block_id = current(array_keys($this->getAvailableBlocks()));
-        }
+        $block_id ??= array_key_first($this->getAvailableBlocks());
 
         $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
         $current_field_id = $this->getDefaultValueFieldId($question);
-        if ($current_field_id === null) {
-            $current_field_id = current(array_keys($available_fields));
-        }
+        $current_field_id ??= array_key_first($available_fields);
 
         $current_field = PluginFieldsField::getById($current_field_id);
 
