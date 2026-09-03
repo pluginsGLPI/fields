@@ -28,8 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Exception\Http\AccessDeniedHttpException;
-
 Session::checkLoginUser();
 
 if (empty($_GET['id'])) {
@@ -63,12 +61,9 @@ if (isset($_POST['add'])) {
     Html::back();
 } else {
 
-    if ((int) $_GET['id'] > 0) {
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
-        if ($right < READ) {
-            throw new AccessDeniedHttpException();
-        }
-    }
+    // Admin config screen: gate with the standard "config" right, not the per-profile
+    // block-visibility right (which would let an admin lock himself out of the config).
+    $container->check((int) $_GET['id'] > 0 ? (int) $_GET['id'] : -1, READ);
 
     Html::header(
         __('Additional fields', 'fields'),
