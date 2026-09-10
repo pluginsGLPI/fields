@@ -54,6 +54,10 @@ if (isset($_POST['add'])) {
     $container->update($_POST);
     Html::back();
 } elseif (isset($_POST['update_fields_values'])) {
+    if (!PluginFieldsContainer::canUpdateTargetItem($_REQUEST['itemtype'] ?? '', (int) ($_REQUEST['items_id'] ?? 0))) {
+        Html::displayRightError("User is missing the " . UPDATE . " ('update') right on the target item");
+    }
+
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_POST['plugin_fields_containers_id']);
     if ($right > READ) {
         $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
