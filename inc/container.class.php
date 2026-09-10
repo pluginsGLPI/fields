@@ -1363,9 +1363,25 @@ HTML;
      */
     public static function canUpdateTargetItem(string $itemtype, int $items_id): bool
     {
+        return self::canTargetItem($itemtype, $items_id, UPDATE);
+    }
+
+    /**
+     * Check that current user is allowed to read the item the fields values are attached to
+     *
+     * @param string  $itemtype Item type
+     * @param integer $items_id Item id
+     */
+    public static function canReadTargetItem(string $itemtype, int $items_id): bool
+    {
+        return self::canTargetItem($itemtype, $items_id, READ);
+    }
+
+    private static function canTargetItem(string $itemtype, int $items_id, int $right): bool
+    {
         $item = (new DbUtils())->getItemForItemtype($itemtype);
 
-        return $item instanceof CommonDBTM && $item->can($items_id, UPDATE);
+        return $item instanceof CommonDBTM && $item->can($items_id, $right);
     }
 
     /**
