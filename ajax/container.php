@@ -49,8 +49,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
 
     $dbu = new DbUtils();
     $item = $dbu->getItemForItemtype($itemtype);
-    if ($items_id > 0 && !$item->getFromDB($items_id)) {
-        throw new NotFoundHttpException();
+    if ($items_id > 0) {
+        if (!$item->getFromDB($items_id)) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$item->can($items_id, READ)) {
+            throw new AccessDeniedHttpException();
+        }
     }
 
     $item->input = $input;
