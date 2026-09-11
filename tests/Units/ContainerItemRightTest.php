@@ -35,10 +35,30 @@ namespace GlpiPlugin\Field\Tests\Units;
 use Computer;
 use Entity;
 use Glpi\Tests\DbTestCase;
+use Glpi\Tests\GLPITestCase;
+use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
+use PluginFieldsField;
+use PluginFieldsProfile;
+
+require_once __DIR__ . '/../FieldTestCase.php';
 
 final class ContainerItemRightTest extends DbTestCase
 {
+    use FieldTestTrait;
+
+    public function setUp(): void
+    {
+        GLPITestCase::setUp();
+        $this->login();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownFieldTest();
+        GLPITestCase::tearDown();
+    }
+
     public function testCanUpdateTargetItemFollowsRightOnItem(): void
     {
         $this->login();
@@ -62,5 +82,97 @@ final class ContainerItemRightTest extends DbTestCase
         $this->login();
 
         $this->assertFalse(PluginFieldsContainer::canUpdateTargetItem('', 1));
+    }
+
+    public function testCanReadTargetItemFollowsRightOnItem(): void
+    {
+        $this->login();
+        $root_entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $child_entity = $this->createItem(Entity::class, [
+            'name'         => 'Entity ' . $this->getUniqueString(),
+            'entities_id'  => $root_entity_id,
+        ]);
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer ' . $this->getUniqueString(),
+            'entities_id' => $child_entity->getID(),
+        ]);
+
+        $this->assertTrue(PluginFieldsContainer::canReadTargetItem(Computer::class, $computer->getID()));
+
+        $this->setEntity($root_entity_id, false);
+
+        $this->assertFalse(PluginFieldsContainer::canReadTargetItem(Computer::class, $computer->getID()));
+    }
+
+    public function testCanReadTargetItemRejectsUnknownItem(): void
+    {
+        $this->login();
+
+        $this->assertFalse(PluginFieldsContainer::canReadTargetItem('', 1));
+        $this->assertFalse(PluginFieldsContainer::canReadTargetItem(Computer::class, 999999));
+    }
+
+    public function testShowDomContainerRendersReadOnlyFieldsWithoutUpdateRight(): void
+    {
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Dom container ' . $this->getUniqueString(),
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Dom field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer ' . $this->getUniqueString(),
+            'entities_id' => $entity_id,
+        ]);
+
+        $this->assertStringNotContainsString(
+            'readonly',
+            $this->renderDomContainer($container->getID(), $computer),
+        );
+
+        $this->setRightOnContainer($container->getID(), READ);
+
+        $this->assertStringContainsString(
+            'readonly',
+            $this->renderDomContainer($container->getID(), $computer),
+        );
+
+        $this->setRightOnContainer($container->getID(), 0);
+
+        $this->assertStringNotContainsString(
+            $field->fields['name'],
+            $this->renderDomContainer($container->getID(), $computer),
+        );
+    }
+
+    private function renderDomContainer(int $containers_id, Computer $computer): string
+    {
+        ob_start();
+        PluginFieldsField::showDomContainer($containers_id, $computer);
+
+        return (string) ob_get_clean();
+    }
+
+    private function setRightOnContainer(int $containers_id, int $right): void
+    {
+        $profile_right = new PluginFieldsProfile();
+        $this->assertTrue($profile_right->getFromDBByCrit([
+            'profiles_id'                 => $_SESSION['glpiactiveprofile']['id'],
+            'plugin_fields_containers_id' => $containers_id,
+        ]));
+        $this->updateItem(PluginFieldsProfile::class, $profile_right->getID(), ['right' => $right]);
     }
 }

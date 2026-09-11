@@ -45,18 +45,25 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     $items_id      = (int) $_GET['items_id'];
     $type          = $_GET['type'];
     $subtype       = $_GET['subtype'];
-    $input         = $_GET['input'];
+    $input         = is_array($_GET['input'] ?? null) ? $_GET['input'] : [];
+
+    if ($items_id > 0 && !PluginFieldsContainer::canReadTargetItem($itemtype, $items_id)) {
+        throw new AccessDeniedHttpException();
+    }
 
     $dbu = new DbUtils();
     $item = $dbu->getItemForItemtype($itemtype);
-    if ($items_id > 0) {
-        if (!$item->getFromDB($items_id)) {
-            throw new NotFoundHttpException();
-        }
 
+    if (!$item instanceof CommonDBTM) {
+        throw new NotFoundHttpException();
+    }
+
+    if ($items_id > 0) {
         if (!$item->can($items_id, READ)) {
             throw new AccessDeniedHttpException();
         }
+    } elseif (!$item->can(0, CREATE, $input)) {
+        throw new AccessDeniedHttpException();
     }
 
     $item->input = $input;
