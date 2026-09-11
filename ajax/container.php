@@ -49,8 +49,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     $input         = $_GET['input'];
 
     $item = new $itemtype();
-    if ($items_id > 0 && !$item->getFromDB($items_id)) {
-        Response::sendError(404, 'Not Found');
+    if ($items_id > 0) {
+        if (!$item->getFromDB($items_id)) {
+            Response::sendError(404, 'Not Found');
+        }
+
+        if (!$item->can($items_id, READ)) {
+            Response::sendError(403, 'Forbidden');
+            return;
+        }
     }
     $item->input = $input;
 

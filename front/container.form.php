@@ -60,6 +60,12 @@ if (isset($_POST['add'])) {
 
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_POST['plugin_fields_containers_id']);
     if ($right > READ) {
+        $dbu  = new DbUtils();
+        $item = $dbu->getItemForItemtype($_REQUEST['itemtype']);
+        if ($item === false || !$item->can((int) $_REQUEST['items_id'], UPDATE)) {
+            Html::displayRightError();
+        }
+
         $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
     }
     Html::back();
