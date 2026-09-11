@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 01:21+0000\n"
+"POT-Creation-Date: 2026-09-11 02:31+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Diego Nobre <diego@koruma.com.br>, 2023,2025\n"
 "Language-Team: Portuguese (Brazil) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_BR/)\n"
@@ -24,35 +24,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
-
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr ""
-
-#: templates/forms/status_override.html.twig inc/field.class.php:281
-msgid "Field"
-msgstr "Campo"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:682
-#: inc/field.class.php:861
-msgid "Read only"
-msgstr "Somente leitura"
-
-#: templates/container_display_conditions.html.twig
-msgid "Add condition to hide block"
-msgstr "Adicionar condição para ocultar o bloco"
-
-#: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:157
-msgid "Condition to hide block"
-msgid_plural "Conditions to hide block"
-msgstr[0] "Condição para ocultar o bloco"
-msgstr[1] "Condições para ocultar o bloco"
-msgstr[2] "Condições para ocultar o bloco"
-
-#: templates/fields.html.twig
-msgid "show"
-msgstr "Exibir"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -66,7 +37,36 @@ msgstr "Substituições de status"
 msgid "No item found"
 msgstr "Nenhum item encontrado"
 
-#: front/container.php:34 front/container.form.php:74 setup.php:248
+#: templates/forms/status_override.html.twig inc/field.class.php:281
+msgid "Field"
+msgstr "Campo"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:695
+#: inc/field.class.php:874
+msgid "Read only"
+msgstr "Somente leitura"
+
+#: templates/fields.html.twig
+msgid "show"
+msgstr "Exibir"
+
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr ""
+
+#: templates/container_display_conditions.html.twig
+msgid "Add condition to hide block"
+msgstr "Adicionar condição para ocultar o bloco"
+
+#: templates/container_display_conditions.html.twig
+#: inc/containerdisplaycondition.class.php:157
+msgid "Condition to hide block"
+msgid_plural "Conditions to hide block"
+msgstr[0] "Condição para ocultar o bloco"
+msgstr[1] "Condições para ocultar o bloco"
+msgstr[2] "Condições para ocultar o bloco"
+
+#: setup.php:248 front/container.php:34 front/container.form.php:78
 #: inc/destinationfield.class.php:50 inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "Campos adicionais"
@@ -83,86 +83,6 @@ msgstr "O plugin não pode ser desinstalado enquando o plugin estiver desabilita
 msgid "MySQL tables uninstallation"
 msgstr "Desinstalação de tabelas no MySQL"
 
-#: inc/field.class.php:296 inc/field.class.php:323
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr "O nome do campo é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
-
-#: inc/field.class.php:315
-msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
-
-#: inc/field.class.php:403
-#, php-format
-msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
-
-#: inc/field.class.php:600
-msgid "Fields"
-msgstr "Campos"
-
-#: inc/field.class.php:665
-msgid "Add a new field"
-msgstr "Adicionar um novo campo"
-
-#: inc/field.class.php:669
-msgid "No field for this block"
-msgstr "Nenhum campo para este bloco"
-
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr "Verifique o banco de dados para detectar inconsistências."
-
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr "Este comando verificará o banco de dados para detectar as seguintes inconsistências:"
-
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr "- alguns campos excluídos ainda podem estar presentes no banco de dados (erro introduzido na versão %s e corrigido na versão %s)"
-
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr "Use esta opção para corrigir o banco de dados"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr "Tudo está em ordem - nenhuma ação necessária."
-
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr "O banco de dados continha dados órfãos de %s campo(s) excluído(s) indevidamente."
-
-#: inc/checkdatabasecommand.class.php:81
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr "O banco de dados contém dados órfãos de %s campo(s) excluído(s) indevidamente."
-
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr "-> \"%s.%s\" foi deletado."
-
-#: inc/checkdatabasecommand.class.php:88
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr "-> \"%s.%s\" deve ser excluído."
-
-#: inc/checkdatabasecommand.class.php:97
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr "Execute\"%s\" para corrigir inconsistências do banco de dados."
-
-#: inc/statusoverride.class.php:91
-msgid "Override by status"
-msgstr "Substituir por status"
-
 #: inc/command/regeneratefilescommand.class.php:41
 msgid "Regenerates containers files."
 msgstr "Regerar arquivos de contêineres."
@@ -173,17 +93,9 @@ msgid ""
 "them."
 msgstr "Este comando limpará todos os arquivos gerados pelo plug-in e os regenerará."
 
-#: inc/labeltranslation.class.php:238
-msgid "Language"
-msgstr "Idioma"
-
-#: inc/labeltranslation.class.php:239
-msgid "Label"
-msgstr "Rótulo"
-
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Atualizando arquivos que foram baixados"
+#: inc/statusoverride.class.php:91
+msgid "Override by status"
+msgstr "Substituir por status"
 
 #: inc/container.class.php:53
 msgid "Regenerate container files"
@@ -253,17 +165,29 @@ msgstr "Inserção no formulário (antes do botão de salvar)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserção no formulário de uma guia específica (antes do botão de salvar)"
 
-#: inc/container.class.php:1737
+#: inc/container.class.php:1750
 msgid "Some mandatory fields are empty"
 msgstr "Alguns campos obrigatórios estão vazios"
 
-#: inc/container.class.php:1742
+#: inc/container.class.php:1755
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alguns campos numéricos contém valores não numéricos"
 
-#: inc/container.class.php:1747
+#: inc/container.class.php:1760
 msgid "Some URL fields contains invalid links"
 msgstr "Alguns campos de URL contém links inválidos"
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Atualizando arquivos que foram baixados"
+
+#: inc/labeltranslation.class.php:238
+msgid "Language"
+msgstr "Idioma"
+
+#: inc/labeltranslation.class.php:239
+msgid "Label"
+msgstr "Rótulo"
 
 #: inc/toolbox.class.php:122
 msgid "Fix fields names"
@@ -272,6 +196,55 @@ msgstr "Corrigir nomes de campos"
 #: inc/toolbox.class.php:331
 msgid "Component items"
 msgstr "Itens componentes"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "Verifique o banco de dados para detectar inconsistências."
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "Este comando verificará o banco de dados para detectar as seguintes inconsistências:"
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "- alguns campos excluídos ainda podem estar presentes no banco de dados (erro introduzido na versão %s e corrigido na versão %s)"
+
+#: inc/checkdatabasecommand.class.php:57
+msgid "Use this option to actually fix database"
+msgstr "Use esta opção para corrigir o banco de dados"
+
+#: inc/checkdatabasecommand.class.php:72
+msgid "Everything is in order - no action needed."
+msgstr "Tudo está em ordem - nenhuma ação necessária."
+
+#: inc/checkdatabasecommand.class.php:80
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "O banco de dados continha dados órfãos de %s campo(s) excluído(s) indevidamente."
+
+#: inc/checkdatabasecommand.class.php:81
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "O banco de dados contém dados órfãos de %s campo(s) excluído(s) indevidamente."
+
+#: inc/checkdatabasecommand.class.php:87
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> \"%s.%s\" foi deletado."
+
+#: inc/checkdatabasecommand.class.php:88
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> \"%s.%s\" deve ser excluído."
+
+#: inc/checkdatabasecommand.class.php:97
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "Execute\"%s\" para corrigir inconsistências do banco de dados."
 
 #: inc/containerdisplaycondition.class.php:106
 #: inc/containerdisplaycondition.class.php:138
@@ -292,6 +265,33 @@ msgstr "correspondências de expressão regular"
 #: inc/containerdisplaycondition.class.php:527
 msgid "You must specify an item type, search option and condition."
 msgstr "Você deve especificar um tipo de item, opção de pesquisa e condição."
+
+#: inc/field.class.php:296 inc/field.class.php:323
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "O nome do campo é muito longo para o banco de dados (os dígitos do nome foram substituídos por caracteres, tente removê-los)"
+
+#: inc/field.class.php:315
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr ""
+
+#: inc/field.class.php:407
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr ""
+
+#: inc/field.class.php:613
+msgid "Fields"
+msgstr "Campos"
+
+#: inc/field.class.php:678
+msgid "Add a new field"
+msgstr "Adicionar um novo campo"
+
+#: inc/field.class.php:682
+msgid "No field for this block"
+msgstr "Nenhum campo para este bloco"
 
 #: ajax/field_specific_fields.php:52
 msgid "Allowed values"
