@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.21.30] 2026-09-11
 
 - Fix additional fields being saved on an item the user is not allowed to update.
 - Fix additional fields being displayed for an item the user is not allowed to read
