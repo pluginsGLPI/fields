@@ -46,18 +46,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_fields_html') {
     $items_id      = (int) $_GET['items_id'];
     $type          = $_GET['type'];
     $subtype       = $_GET['subtype'];
-    $input         = $_GET['input'];
+    $input         = is_array($_GET['input'] ?? null) ? $_GET['input'] : [];
 
-    $item = new $itemtype();
+    if ($items_id > 0 && !PluginFieldsContainer::canReadTargetItem($itemtype, $items_id)) {
+        Response::sendError(403, 'Forbidden');
+        return;
+    }
+
+    $item = (new DbUtils())->getItemForItemtype($itemtype);
+
+    if (!$item instanceof CommonDBTM) {
+        Response::sendError(404, 'Not Found');
+        return;
+    }
+
     if ($items_id > 0) {
-        if (!$item->getFromDB($items_id)) {
-            Response::sendError(404, 'Not Found');
-        }
-
         if (!$item->can($items_id, READ)) {
             Response::sendError(403, 'Forbidden');
             return;
         }
+    } elseif (!$item->can(0, CREATE, $input)) {
+        Response::sendError(403, 'Forbidden');
+        return;
     }
     $item->input = $input;
 

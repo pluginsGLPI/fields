@@ -2,3 +2,5 @@ dist/
 vendor/
 .gh_token
 *.min.*
+tests/files/
+.phpunit.result.cache

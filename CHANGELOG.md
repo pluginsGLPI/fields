@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 - Fix additional fields being saved on an item the user is not allowed to update.
+- Fix additional fields being displayed for an item the user is not allowed to read
 - Fix invalid characters being kept in the generated field name.
 - Fix missing right checks on the target item when displaying or saving additional fields values
 
