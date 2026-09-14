@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - GLPI 12 compatibility
+- Add multiple-select support for "Field" dropdown questions in forms
 
 ## [1.24.4] - 2026-08-06
 
