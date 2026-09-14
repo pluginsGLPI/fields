@@ -241,6 +241,54 @@ class PluginFieldsContainer extends CommonDBTM
         /** @var DBmysql $DB */
         global $DB;
 
+        // Quarantine generated class files: hides stale ones from the autoloader, purged once migration succeeds.
+        foreach (glob(PLUGINFIELDS_CLASS_PATH . '/*.class.php') ?: [] as $existing_file) {
+            if (str_ends_with($existing_file, 'dropdown.class.php')) {
+                continue;
+            }
+
+            rename($existing_file, $existing_file . '.bak');
+        }
+
+        // Disable oversized-table containers instead of crashing.
+        $obj               = new self();
+        $active_containers = $obj->find(['is_active' => 1]);
+        foreach ($active_containers as $container) {
+            if (empty($container['itemtypes'])) {
+                continue;
+            }
+
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+            if (!is_array($itemtypes)) {
+                continue;
+            }
+
+            $too_long = false;
+            foreach ($itemtypes as $itemtype) {
+                $table = getTableForItemType(self::getClassname($itemtype, $container['name']));
+                if (strlen($table) > 64) {
+                    $too_long = true;
+                    break;
+                }
+            }
+
+            if (!$too_long) {
+                continue;
+            }
+
+            $DB->update(
+                self::getTable(),
+                ['is_active' => 0],
+                ['id' => $container['id']],
+            );
+
+            $migration->addWarningMessage(sprintf(
+                __('Container #%1$d (%2$s) disabled: table name too long. Rename it from its edit form to reactivate it.', 'fields'),
+                $container['id'],
+                $container['name'],
+            ));
+        }
+
         // -> 0.90-1.3: generated class moved
         // Drop them, they will be regenerated
         $obj        = new self();
@@ -443,7 +491,22 @@ class PluginFieldsContainer extends CommonDBTM
         $obj        = new self();
         $containers = $obj->find();
         foreach ($containers as $container) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+            if (is_array($itemtypes)) {
+                foreach ($itemtypes as $itemtype) {
+                    if (strlen(getTableForItemType(self::getClassname($itemtype, $container['name']))) > 64) {
+                        // Table name still too long: the container was just disabled above, skip it.
+                        continue 2;
+                    }
+                }
+            }
+
             self::create($container);
+        }
+
+        // Migration succeeded: remaining quarantined files are stale for good.
+        foreach (glob(PLUGINFIELDS_CLASS_PATH . '/*.class.php.bak') ?: [] as $stale_file) {
+            unlink($stale_file);
         }
 
         return true;
@@ -928,6 +991,189 @@ class PluginFieldsContainer extends CommonDBTM
         return __('Block', 'fields');
     }
 
+    /**
+     * Rename an oversized-table container, then reactivate it.
+     *
+     * @param int    $id       Container ID.
+     * @param string $new_name New internal name.
+     */
+    public static function renameOversizedContainer(int $id, string $new_name): bool
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $container = new self();
+        if (!$container->getFromDB($id)) {
+            Session::AddMessageAfterRedirect(sprintf(__('Unknown container #%d.', 'fields'), $id), false, ERROR);
+
+            return false;
+        }
+
+        $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']);
+        if (!is_array($itemtypes) || $itemtypes === []) {
+            Session::AddMessageAfterRedirect(__('No associated item type.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        $is_oversized = false;
+        foreach ($itemtypes as $itemtype) {
+            if (strlen(getTableForItemType(self::getClassname($itemtype, $container->fields['name']))) > 64) {
+                $is_oversized = true;
+                break;
+            }
+        }
+
+        if (!$is_oversized) {
+            Session::AddMessageAfterRedirect(__('Container is not oversized.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        $new_name = preg_replace('/[^\da-zA-Z]/', '', $new_name) ?? '';
+        if ($new_name === '') {
+            Session::AddMessageAfterRedirect(__('Invalid name.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        $too_long_tables = [];
+        foreach ($itemtypes as $itemtype) {
+            $table = getTableForItemType(self::getClassname($itemtype, $new_name));
+            if (strlen($table) > 64) {
+                $too_long_tables[] = $table;
+            }
+        }
+
+        if ($too_long_tables !== []) {
+            Session::AddMessageAfterRedirect(sprintf(
+                __('Still too long: %s.', 'fields'),
+                implode(', ', $too_long_tables),
+            ), false, ERROR);
+
+            return false;
+        }
+
+        $found = $container->find(['name' => $new_name]);
+        foreach ($found as $other) {
+            if ((int) $other['id'] === $id) {
+                continue;
+            }
+
+            $other_itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($other['itemtypes']);
+            if (is_array($other_itemtypes) && array_intersect($itemtypes, $other_itemtypes) !== []) {
+                Session::AddMessageAfterRedirect(__('Name already used for this item type.', 'fields'), false, ERROR);
+
+                return false;
+            }
+        }
+
+        $plugin = new Plugin();
+        $plugin->getFromDBbyDir('fields');
+
+        $migration = new Migration((string) ($plugin->fields['version'] ?? ''));
+
+        $old_name        = $container->fields['name'];
+        $claimed_orphans = [];
+        $data_preserved  = false;
+        foreach ($itemtypes as $itemtype) {
+            $new_table = getTableForItemType(self::getClassname($itemtype, $new_name));
+
+            $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
+            if (!$DB->tableExists($old_table)) {
+                $old_table = self::findOrphanTableForContainer($id, $claimed_orphans);
+            }
+
+            if ($old_table === null || !$DB->tableExists($old_table)) {
+                continue;
+            }
+
+            $claimed_orphans[] = $old_table;
+
+            if (countElementsInTable($old_table) > 0) {
+                $migration->renameTable($old_table, $new_table);
+                $data_preserved = true;
+            } else {
+                // Empty leftover table: drop it, a fresh one is created below.
+                $migration->dropTable($old_table);
+            }
+        }
+
+        $DB->clearSchemaCache();
+
+        $migration->executeMigration();
+
+        $container->update([
+            'id'        => $id,
+            'name'      => $new_name,
+            'is_active' => 1,
+        ]);
+
+        $container->getFromDB($id);
+        self::create($container->fields);
+
+        $message = $data_preserved
+            ? sprintf(__('Renamed to "%s" and reactivated, existing data preserved.', 'fields'), $new_name)
+            : sprintf(__('Renamed to "%s" and reactivated, no existing data found.', 'fields'), $new_name);
+        Session::AddMessageAfterRedirect($message, false, INFO);
+
+        return true;
+    }
+
+    /**
+     * Find an orphaned table belonging to this container.
+     *
+     * @param int      $container_id     Container ID.
+     * @param string[] $already_claimed  Orphan tables already assigned to another itemtype in this call.
+     */
+    private static function findOrphanTableForContainer(int $container_id, array $already_claimed): ?string
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $orphaned = array_diff(
+            PluginFieldsMigration::checkContainerTablesConsistency()['orphaned'],
+            $already_claimed,
+        );
+
+        // Primary match: `plugin_fields_containers_id` is DEFAULTed to the container's own id
+        // at table creation time, a link that survives any later name corruption.
+        $by_default = [];
+        foreach ($orphaned as $table) {
+            foreach ($DB->listFields($table) as $column) {
+                if ($column['Field'] === 'plugin_fields_containers_id' && (int) $column['Default'] === $container_id) {
+                    $by_default[] = $table;
+                    break;
+                }
+            }
+        }
+
+        if (count($by_default) === 1) {
+            return $by_default[0];
+        }
+
+        // Fallback for tables predating that default: match by custom field columns.
+        $expected_columns = PluginFieldsMigration::getValidFieldsForContainer($container_id);
+        if ($expected_columns === []) {
+            return null;
+        }
+
+        sort($expected_columns);
+
+        $base_columns = ['id', 'items_id', 'itemtype', 'plugin_fields_containers_id', 'entities_id'];
+        $candidates   = [];
+        foreach (array_diff($orphaned, $by_default) as $table) {
+            $columns = array_diff(array_column($DB->listFields($table), 'Field'), $base_columns);
+            sort($columns);
+
+            if ($columns === $expected_columns) {
+                $candidates[] = $table;
+            }
+        }
+
+        return count($candidates) === 1 ? $candidates[0] : null;
+    }
+
     public function showForm($ID, $options = [])
     {
         /** @var array $CFG_GLPI */
@@ -1061,6 +1307,34 @@ HTML;
         Dropdown::showYesNo('is_active', $this->fields['is_active']);
         echo '</td>';
         echo '</tr>';
+
+        if (!$this->isNewID($ID) && (int) $this->fields['is_active'] === 0) {
+            $oversized_table = null;
+            $itemtypes       = PluginFieldsToolbox::decodeJSONItemtypes($this->fields['itemtypes']);
+            if (is_array($itemtypes)) {
+                foreach ($itemtypes as $itemtype) {
+                    $table = getTableForItemType(self::getClassname($itemtype, $this->fields['name']));
+                    if (strlen($table) > 64) {
+                        $oversized_table = $table;
+                        break;
+                    }
+                }
+            }
+
+            if ($oversized_table !== null) {
+                echo '<tr class="tab_bg_2">';
+                echo '<td colspan="2">';
+                echo sprintf(__('Table name too long (%s):', 'fields'), $oversized_table);
+                echo '</td>';
+                echo '<td>';
+                echo Html::input('new_name', ['placeholder' => __('New name', 'fields')]);
+                echo '</td>';
+                echo '<td>';
+                echo '<button type="submit" name="rename_oversized" class="btn btn-primary">' . __('Rename and reactivate', 'fields') . '</button>';
+                echo '</td>';
+                echo '</tr>';
+            }
+        }
 
         $this->showFormButtons($options);
 
