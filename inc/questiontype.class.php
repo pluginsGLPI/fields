@@ -203,10 +203,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             case 'date':
                 return (string) $answer;
             case 'dropdown':
-                $answer = $answer['items_id'];
-                if (is_string($answer) || is_numeric($answer)) {
-                    $answer = [$answer];
-                }
+                $answer = self::extractDropdownAnswerIds($answer);
 
                 $itemtype = PluginFieldsDropdown::getClassname($current_field->fields['name']);
                 return implode(', ', array_map(fn($opt_id) => $itemtype::getById($opt_id)?->fields['name'] ?? '', $answer));
@@ -234,9 +231,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 return '';
             }
 
-            if (!is_array($answer)) {
-                $answer = [$answer];
-            }
+            $answer = self::extractDropdownAnswerIds($answer);
 
             $names = [];
             foreach ($answer as $items_id) {
@@ -250,6 +245,20 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         }
 
         return (string) $answer;
+    }
+
+    /**
+     * Extract the selected item id(s) from a dropdown-type question's raw answer.
+     *
+     * @return array<int, mixed>
+     */
+    public static function extractDropdownAnswerIds(mixed $answer): array
+    {
+        if (is_array($answer) && array_key_exists('itemtype', $answer)) {
+            $answer = $answer['items_ids'] ?? $answer['items_id'] ?? [];
+        }
+
+        return is_array($answer) ? $answer : [$answer];
     }
 
     #[Override]
@@ -315,12 +324,18 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 $itemtype = $dropdown_matches['class'];
             }
 
+            $is_multiple = (bool) $field->fields['multiple'];
+
             $condition_handlers = array_merge(
                 $condition_handlers,
-                [
-                    new ItemConditionHandler($itemtype),
-                    new ItemAsTextConditionHandler($itemtype),
-                ],
+                $is_multiple
+                    ? [
+                        new ItemConditionHandler($itemtype, true),
+                    ]
+                    : [
+                        new ItemConditionHandler($itemtype, false),
+                        new ItemAsTextConditionHandler($itemtype),
+                    ],
             );
         }
 

@@ -38,11 +38,13 @@ use Glpi\Form\Condition\LogicOperator;
 use Glpi\Form\Condition\Type;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Form\QuestionType\QuestionTypesManager;
 use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
 use LogicException;
+use Location;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
 use PluginFieldsField;
@@ -158,18 +160,13 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $this->assertNotEmpty($crawler->filter('[data-glpi-form-renderer-fields-question-type-specific-container]'));
     }
 
+
     public function testFieldsQuestionSubmitEmptyDropdown(): void
     {
         $this->login();
 
-        /** @var CommonDBTM $dropdown_item */
-        $dropdown_item = getItemForItemtype(PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']));
-        $dropdown_ids = [];
-        for ($i = 1; $i <= 3; $i++) {
-            $dropdown_ids[] = $dropdown_item->add([
-                'name' => 'Option ' . $i,
-            ]);
-        }
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $this->createItemsWithNames($itemtype, ['Option 1', 'Option 2', 'Option 3']);
 
         // Arrange: create form with Field question
         $builder = new FormBuilder("My form");
@@ -183,9 +180,122 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         // Act: submit form
         $this->sendFormAndGetCreatedTicket($form, [
             "Dropdown field question" => [
-                'items_id' => '0',
+                'itemtype'  => $itemtype,
+                'items_ids' => '0',
             ],
         ]);
+    }
+
+    public function testFormatRawAnswerSupportsLegacyItemsIdKey(): void
+    {
+        $this->login();
+
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $item = $this->createItem($itemtype, ['name' => 'Legacy Option']);
+
+        $builder = new FormBuilder("Legacy answer format form");
+        $builder->addQuestion(
+            "Dropdown field question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $form = $this->createForm($builder);
+
+        $question = new Question();
+        $this->assertTrue($question->getFromDB($this->getQuestionId($form, "Dropdown field question")));
+
+        $question_type = new PluginFieldsQuestionType();
+
+        // Answers submitted before the 'items_ids' rename are stored with a singular 'items_id' key
+        $legacy_answer = ['itemtype' => $itemtype, 'items_id' => $item->getID()];
+        $current_answer = ['itemtype' => $itemtype, 'items_ids' => $item->getID()];
+
+        $this->assertSame('Legacy Option', $question_type->formatRawAnswer($legacy_answer, $question));
+        $this->assertSame(
+            $question_type->formatRawAnswer($current_answer, $question),
+            $question_type->formatRawAnswer($legacy_answer, $question),
+        );
+
+        // Answers submitted before dropdown values were wrapped with their itemtype (plugin < 1.24.0)
+        // are stored as a bare scalar id
+        $pre_wrapping_answer = (string) $item->getID();
+        $this->assertSame('Legacy Option', $question_type->formatRawAnswer($pre_wrapping_answer, $question));
+    }
+
+    public function testFormatRawAnswerForNativeItemtypeDropdown(): void
+    {
+        $this->login();
+
+        $location = $this->createItem(Location::class, [
+            'name'        => 'Native Dropdown Location',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        $builder = new FormBuilder("Native dropdown form");
+        $builder->addQuestion(
+            "Location dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown_location')),
+        );
+        $form = $this->createForm($builder);
+
+        $question = new Question();
+        $this->assertTrue($question->getFromDB($this->getQuestionId($form, "Location dropdown question")));
+
+        $question_type = new PluginFieldsQuestionType();
+
+        // Current format
+        $answer = ['itemtype' => Location::class, 'items_ids' => $location->getID()];
+        $this->assertSame('Native Dropdown Location', $question_type->formatRawAnswer($answer, $question));
+
+        // Answers submitted before the 'items_ids' rename are stored with a singular 'items_id' key
+        $legacy_answer = ['itemtype' => Location::class, 'items_id' => $location->getID()];
+        $this->assertSame('Native Dropdown Location', $question_type->formatRawAnswer($legacy_answer, $question));
+
+        // Answers submitted before dropdown values were wrapped with their itemtype (plugin < 1.24.0)
+        // are stored as a bare scalar id
+        $pre_wrapping_answer = (string) $location->getID();
+        $this->assertSame('Native Dropdown Location', $question_type->formatRawAnswer($pre_wrapping_answer, $question));
+
+        $location->delete($location->fields, true);
+    }
+
+    public function testFormatRawAnswerForNativeItemtypeMultipleDropdown(): void
+    {
+        $this->login();
+
+        $location1 = $this->createItem(Location::class, [
+            'name'        => 'Location Alpha',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => 'Location Beta',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        $builder = new FormBuilder("Native multiple dropdown form");
+        $builder->addQuestion(
+            "Location dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown_location_multiple')),
+        );
+        $form = $this->createForm($builder);
+
+        $question = new Question();
+        $this->assertTrue($question->getFromDB($this->getQuestionId($form, "Location dropdown question")));
+
+        $question_type = new PluginFieldsQuestionType();
+        $answer = ['itemtype' => Location::class, 'items_ids' => [$location1->getID(), $location2->getID()]];
+
+        $this->assertSame('Location Alpha, Location Beta', $question_type->formatRawAnswer($answer, $question));
+
+        // Answers submitted before dropdown values were wrapped with their itemtype (plugin < 1.24.0)
+        // are stored as a flat array of ids, with no wrapper at all
+        $pre_wrapping_answer = [$location1->getID(), $location2->getID()];
+        $this->assertSame('Location Alpha, Location Beta', $question_type->formatRawAnswer($pre_wrapping_answer, $question));
+
+        $location1->delete($location1->fields, true);
+        $location2->delete($location2->fields, true);
     }
 
     public function testFieldDeletionWhenUsedInForm(): void
@@ -305,8 +415,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $this->login();
 
         $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
-        $dropdown_item = getItemForItemtype($itemtype);
-        $item_id = $dropdown_item->add(['name' => 'Alpha Option']);
+        $item_id = $this->createItem($itemtype, ['name' => 'Alpha Option'])->getID();
 
         $builder = new FormBuilder("Dropdown contains test form");
         $builder->addQuestion(
@@ -363,8 +472,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $this->login();
 
         $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
-        $dropdown_item = getItemForItemtype($itemtype);
-        $item_id = $dropdown_item->add(['name' => 'Beta Option']);
+        $item_id = $this->createItem($itemtype, ['name' => 'Beta Option'])->getID();
 
         $builder = new FormBuilder("Dropdown not contains test form");
         $builder->addQuestion(
@@ -416,6 +524,91 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id2));
     }
 
+    public function testGetConditionHandlersForMultipleDropdownFieldExcludesItemAsTextHandler(): void
+    {
+        $question_type = new PluginFieldsQuestionType();
+        $config = $this->getFieldExtraDataConfig('dropdown_multiple');
+
+        $handlers = $question_type->getConditionHandlers($config);
+        $handler_classes = array_map(fn($h) => $h::class, $handlers);
+
+        $this->assertContains(ItemConditionHandler::class, $handler_classes);
+        $this->assertNotContains(ItemAsTextConditionHandler::class, $handler_classes);
+
+        /** @var ItemConditionHandler $item_handler */
+        $item_handler = current(array_filter($handlers, fn($h) => $h instanceof ItemConditionHandler));
+        $this->assertContains(ValueOperator::CONTAINS, $item_handler->getSupportedValueOperators());
+        $this->assertContains(ValueOperator::NOT_CONTAINS, $item_handler->getSupportedValueOperators());
+    }
+
+    public function testMultipleDropdownConditionHandlerEqualsOperatorIsOrderIndependent(): void
+    {
+        $this->login();
+
+        [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id] = $this->createMultipleDropdownConditionForm(
+            ValueOperator::EQUALS,
+        );
+
+        // Test: same selection (single item, matches condition value) → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id]]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: additional item selected → question is not visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id, $item2_id]]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
+    }
+
+    public function testMultipleDropdownConditionHandlerNotEqualsOperatorIsOrderIndependent(): void
+    {
+        $this->login();
+
+        [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id] = $this->createMultipleDropdownConditionForm(
+            ValueOperator::NOT_EQUALS,
+        );
+
+        // Test: same selection (single item, matches condition value) → question is not visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id]]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: additional item selected → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id, $item2_id]]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+    }
+
+    public function testMultipleDropdownConditionHandlerContainsOperator(): void
+    {
+        $this->login();
+
+        [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id] = $this->createMultipleDropdownConditionForm(
+            ValueOperator::CONTAINS,
+        );
+
+        // Test: selection includes the required item among others → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id, $item2_id]]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: selection does not include the required item → question is not visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item2_id]]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
+    }
+
+    public function testMultipleDropdownConditionHandlerNotContainsOperator(): void
+    {
+        $this->login();
+
+        [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id] = $this->createMultipleDropdownConditionForm(
+            ValueOperator::NOT_CONTAINS,
+        );
+
+        // Test: selection does not include the excluded item → question is visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item2_id]]]));
+        $this->assertTrue($engine->computeVisibility()->isQuestionVisible($question_id));
+
+        // Test: selection includes the excluded item → question is not visible
+        $engine = new Engine($form, new EngineInput([$dropdown_question_id => ['itemtype' => $itemtype, 'items_ids' => [$item1_id, $item2_id]]]));
+        $this->assertFalse($engine->computeVisibility()->isQuestionVisible($question_id));
+    }
+
     private function getFieldExtraDataConfig(string $field_name): PluginFieldsQuestionTypeExtraDataConfig
     {
         if (!$this->block instanceof PluginFieldsContainer || !$this->fields[$field_name] instanceof PluginFieldsField) {
@@ -432,9 +625,9 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
     private function createDropdownConditionForm(ValueOperator $operator): array
     {
         $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
-        $dropdown_item = getItemForItemtype($itemtype);
-        $item1_id = $dropdown_item->add(['name' => 'First Option']);
-        $item2_id = $dropdown_item->add(['name' => 'Second Option']);
+        [$item1, $item2] = $this->createItemsWithNames($itemtype, ['First Option', 'Second Option']);
+        $item1_id = $item1->getID();
+        $item2_id = $item2->getID();
 
         $condition_value = ['itemtype' => $itemtype, 'items_ids' => [$item1_id]];
 
@@ -443,6 +636,43 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
             "Dropdown question",
             PluginFieldsQuestionType::class,
             extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $builder->addQuestion("Subject", QuestionTypeShortText::class);
+        $builder->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [
+            [
+                'logic_operator' => LogicOperator::AND,
+                'item_name'      => "Dropdown question",
+                'item_type'      => Type::QUESTION,
+                'value_operator' => $operator,
+                'value'          => $condition_value,
+            ],
+        ]);
+        $form = $this->createForm($builder);
+
+        $question_id = $this->getQuestionId($form, "Subject");
+        $dropdown_question_id = $this->getQuestionId($form, "Dropdown question");
+
+        return [$form, $question_id, $dropdown_question_id, $itemtype, $item1_id, $item2_id];
+    }
+
+    /**
+     * Helper to create a form with a "multiple" dropdown question and a condition on it.
+     * Returns [form, question_id, dropdown_question_id, itemtype, item1_id, item2_id].
+     */
+    private function createMultipleDropdownConditionForm(ValueOperator $operator): array
+    {
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown_multiple']->fields['name']);
+        [$item1, $item2] = $this->createItemsWithNames($itemtype, ['First Option', 'Second Option']);
+        $item1_id = $item1->getID();
+        $item2_id = $item2->getID();
+
+        $condition_value = ['itemtype' => $itemtype, 'items_ids' => [$item1_id]];
+
+        $builder = new FormBuilder("Multiple dropdown condition form");
+        $builder->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown_multiple')),
         );
         $builder->addQuestion("Subject", QuestionTypeShortText::class);
         $builder->setQuestionVisibility("Subject", VisibilityStrategy::VISIBLE_IF, [

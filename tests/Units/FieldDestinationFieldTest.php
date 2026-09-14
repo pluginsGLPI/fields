@@ -124,6 +124,15 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
         ]);
+        $this->fields[] = $this->createField([
+            'label'                                     => 'Location Field Multiple',
+            'type'                                      => 'dropdown-Location',
+            'multiple'                                  => 1,
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 4,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
     }
 
     public function setUp(): void
@@ -230,26 +239,85 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             'entities_id' => $this->getTestRootEntity(true),
         ]);
 
+        $expected_field_values = [
+            Ticket::class => [
+                $this->fields[4]->fields['name'] => $location->getID(),
+            ],
+        ];
+
+        // The end user template submits dropdowns as an array containing the selected itemtype and items_ids.
         $this->sendFormAndAssertITILObjectAdditionalFields(
             form: $form,
             config: new SimpleValueConfig(1),
             answers: [
-                // The end user template submits dropdowns as an array
-                // containing the selected itemtype and items_id.
+                "Location Field" => [
+                    'itemtype'  => Location::class,
+                    'items_ids' => $location->getID(),
+                ],
+            ],
+            expected_field_values: $expected_field_values,
+        );
+
+        // Answers submitted before the 'items_ids' rename are stored with a singular 'items_id' key
+        $this->sendFormAndAssertITILObjectAdditionalFields(
+            form: $form,
+            config: new SimpleValueConfig(1),
+            answers: [
                 "Location Field" => [
                     'itemtype' => Location::class,
                     'items_id' => $location->getID(),
                 ],
             ],
-            expected_field_values: [
-                Ticket::class => [
-                    $this->fields[4]->fields['name'] => $location->getID(),
-                ],
-            ],
+            expected_field_values: $expected_field_values,
         );
 
         // delete location for another run
         $location->delete($location->fields, true);
+    }
+
+    public function testDestinationWithMultipleLocationAdditionalFields(): void
+    {
+        $this->login();
+        $form = $this->createForm((new FormBuilder())->addQuestion(
+            "Location Field Multiple",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode([
+                'block_id' => $this->blocks[Ticket::class]->getID(),
+                'field_id' => $this->fields[5]->getID(),
+            ]),
+        ));
+
+        // Arrange: Create two locations to select
+        $location1 = $this->createItem(Location::class, [
+            'name'        => 'Location Alpha',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => 'Location Beta',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        $this->sendFormAndAssertITILObjectAdditionalFields(
+            form: $form,
+            config: new SimpleValueConfig(1),
+            answers: [
+                // This is the shape a real multi-select submission produces:
+                // items_ids as an array of the selected ids
+                "Location Field Multiple" => [
+                    'itemtype'  => Location::class,
+                    'items_ids' => [$location1->getID(), $location2->getID()],
+                ],
+            ],
+            expected_field_values: [
+                Ticket::class => [
+                    // 'multiple' fields are stored as a JSON-encoded array of all selected ids
+                    $this->fields[5]->fields['name'] => json_encode([$location1->getID(), $location2->getID()]),
+                ],
+            ],
+        );
+
+        $location1->delete($location1->fields, true);
+        $location2->delete($location2->fields, true);
     }
 
     #[Override]

@@ -135,8 +135,16 @@ class PluginFieldsDestinationField extends AbstractConfigField
                     $input[sprintf('itemtype_%s', $field_name)] = $answer->getRawAnswer()['itemtype'];
                     $input[sprintf('items_id_%s', $field_name)] = $answer->getRawAnswer()['items_id'];
                 } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
-                    $raw_id = (int) ($answer->getRawAnswer()['items_id'] ?? 0);
-                    $input[$field_name] = ($raw_id > 0) ? $raw_id : null;
+                    $ids = array_values(array_filter(
+                        array_map(intval(...), PluginFieldsQuestionType::extractDropdownAnswerIds($answer->getRawAnswer())),
+                        static fn($id) => $id > 0,
+                    ));
+
+                    if ($field->fields['multiple']) {
+                        $input[$field_name] = $ids;
+                    } else {
+                        $input[$field_name] = (int) (reset($ids) ?: 0);
+                    }
                 } else {
                     $input[$field_name] = $value ?? $answer->getRawAnswer();
                 }
