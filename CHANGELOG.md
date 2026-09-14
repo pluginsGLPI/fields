@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Display translated fields names in fields' tab
 - GLPI 12 compatibility
+- Add multiple-select support for "Field" dropdown questions in forms
 
 ### Fixed
 
