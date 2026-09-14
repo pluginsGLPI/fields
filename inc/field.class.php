@@ -1355,7 +1355,7 @@ JAVASCRIPT,
                 $value = array_values(array_filter(
                     array_merge(...array_map(
                         static fn($v) => is_array($v) ? array_values($v) : [$v],
-                        $value,
+                        array_values($value),
                     )),
                     is_scalar(...),
                 ));
