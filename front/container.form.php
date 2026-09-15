@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
+
 Session::checkLoginUser();
 
 if (empty($_GET['id'])) {
