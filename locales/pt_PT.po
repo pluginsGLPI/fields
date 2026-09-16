@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 02:31+0000\n"
+"POT-Creation-Date: 2026-09-16 02:51+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Gonçalo Dumas, 2024\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/pt_PT/)\n"
@@ -45,7 +45,7 @@ msgstr "mostrar"
 
 #: templates/destinationfield.html.twig
 msgid "Bind additional fields to the destination"
-msgstr ""
+msgstr "Bind additional campos to the destination"
 
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
@@ -59,7 +59,7 @@ msgstr[0] "Condição para ocultar bloco"
 msgstr[1] "Condições para ocultar bloco"
 msgstr[2] "Condição para ocultar bloco"
 
-#: setup.php:248 front/container.php:34 front/container.form.php:78
+#: setup.php:248 front/container.php:34 front/container.form.php:84
 #: inc/destinationfield.class.php:50 inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "Campos adicionais"
@@ -126,7 +126,7 @@ msgstr "Não pode adicionar vários blocos com o tipo 'Inserção no formulário
 msgid ""
 "At least one selected object cannot be linked with type 'Insertion in the "
 "form of a specific tab'."
-msgstr ""
+msgstr "Pelo menos um objeto selecionado não pode ser vinculado com o tipo 'Ins"
 
 #: inc/container.class.php:696
 msgid ""
@@ -158,15 +158,15 @@ msgstr "Inserir no formulário (antes de gravar)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Inserção no formulário de um separador específico (antes do botão de guardar)"
 
-#: inc/container.class.php:1750
+#: inc/container.class.php:1766
 msgid "Some mandatory fields are empty"
 msgstr "Alguns campos obrigatórios estão vazios"
 
-#: inc/container.class.php:1755
+#: inc/container.class.php:1771
 msgid "Some numeric fields contains non numeric values"
 msgstr "Alguns campos numéricos contêm valores não numéricos"
 
-#: inc/container.class.php:1760
+#: inc/container.class.php:1776
 msgid "Some URL fields contains invalid links"
 msgstr "Alguns campos de URL contêm links inválidos"
 
@@ -267,12 +267,12 @@ msgstr "O nome do campo é demasiado longo para a base de dados (os dígitos no 
 
 #: inc/field.class.php:315
 msgid "You cannot add same field 'dropdown' on same block"
-msgstr ""
+msgstr "Não pode adicionar o mesmo campo 'dropdown' no mesmo bloco"
 
 #: inc/field.class.php:407
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
-msgstr ""
+msgstr "O campo \"%s\" não pode ser eliminado porque é utilizado num for"
 
 #: inc/field.class.php:613
 msgid "Fields"
