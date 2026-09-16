@@ -359,6 +359,10 @@ class PluginFieldsField extends CommonDBChild
 
     public function prepareInputForUpdate($input)
     {
+        if (array_key_exists('name', $input)) {
+            unset($input['name']); // system name is immutable after creation
+        }
+
         if (
             array_key_exists('default_value', $input)
             && $this->fields['multiple']
@@ -498,6 +502,12 @@ class PluginFieldsField extends CommonDBChild
         );
     }
 
+    // name is used as a column name, it must not contain anything else than SQL identifier safe chars
+    private function sanitizeSystemName(string $name): string
+    {
+        return (string) preg_replace('/[^a-z0-9_]/i', '', $name);
+    }
+
     /**
      * parse name for avoid non alphanumeric char in it and conflict with other fields
      * @param  array $input the field form input
@@ -508,8 +518,11 @@ class PluginFieldsField extends CommonDBChild
         $toolbox = new PluginFieldsToolbox();
 
         //contruct field name by processing label (remove non alphanumeric char)
-        if (empty($input['name'])) {
-            $input['name'] = $toolbox->getSystemNameFromLabel($input['label']) . 'field';
+        $input['name'] = $this->sanitizeSystemName($input['name'] ?? '');
+
+        // an empty name cannot be used as a column name
+        if ($input['name'] === '') {
+            $input['name'] = $toolbox->getSystemNameFromLabel($input['label'] ?? '') . 'field';
         }
 
         //for dropdown, if already exists, link to it
@@ -523,7 +536,7 @@ class PluginFieldsField extends CommonDBChild
         // for dropdowns like dropdown-User, dropdown-Computer, etc...
         $match = [];
         if (isset($input['type']) && preg_match('/^dropdown-(?<type>.+)$/', $input['type'], $match) === 1) {
-            $input['name'] = getForeignKeyFieldForItemType($match['type']) . '_' . $input['name'];
+            $input['name'] = $this->sanitizeSystemName(getForeignKeyFieldForItemType($match['type']) . '_' . $input['name']);
         }
 
         //check if field name not already exist and not in conflict with itemtype fields name
