@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 02:31+0000\n"
+"POT-Creation-Date: 2026-09-14 02:54+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Daisuke INOUE, 2023-2025\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/ja_JP/)\n"
@@ -60,7 +60,7 @@ msgid "Condition to hide block"
 msgid_plural "Conditions to hide block"
 msgstr[0] "ブロックを非表示にする条件"
 
-#: setup.php:248 front/container.php:34 front/container.form.php:78
+#: setup.php:248 front/container.php:34 front/container.form.php:84
 #: inc/destinationfield.class.php:50 inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "追加フィールド"
@@ -159,15 +159,15 @@ msgstr "フォームに挿入（保存ボタンの前）"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "フォームの特定のタブに挿入（保存ボタンの前）"
 
-#: inc/container.class.php:1750
+#: inc/container.class.php:1766
 msgid "Some mandatory fields are empty"
 msgstr "未入力の必須項目があります"
 
-#: inc/container.class.php:1755
+#: inc/container.class.php:1771
 msgid "Some numeric fields contains non numeric values"
 msgstr "非数値が入っている数値フィールドがあります"
 
-#: inc/container.class.php:1760
+#: inc/container.class.php:1776
 msgid "Some URL fields contains invalid links"
 msgstr "不正なリンクを含む URL フィールドがあります"
 

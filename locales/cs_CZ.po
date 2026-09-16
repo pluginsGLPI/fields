@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 02:31+0000\n"
+"POT-Creation-Date: 2026-09-14 02:54+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: David Štěpán <stepand@tiscali.cz>, 2016,2025\n"
 "Language-Team: Czech (Czech Republic) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/cs_CZ/)\n"
@@ -63,7 +63,7 @@ msgstr[1] "Podmínky pro skrytí bloku"
 msgstr[2] "Podmínek pro skrytí bloku"
 msgstr[3] "Podmínky pro skrytí bloku"
 
-#: setup.php:248 front/container.php:34 front/container.form.php:78
+#: setup.php:248 front/container.php:34 front/container.form.php:84
 #: inc/destinationfield.class.php:50 inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "Další kolonky"
@@ -162,15 +162,15 @@ msgstr "Vložení do formuláře (před tlačítkem uložit)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Vložení do formuláře konkrétního panelu (před tlačítkem uložit)"
 
-#: inc/container.class.php:1750
+#: inc/container.class.php:1766
 msgid "Some mandatory fields are empty"
 msgstr "Některá povinná pole nejsou vyplněná"
 
-#: inc/container.class.php:1755
+#: inc/container.class.php:1771
 msgid "Some numeric fields contains non numeric values"
 msgstr "Některé číselné kolonky obsahují nečíselné hodnoty"
 
-#: inc/container.class.php:1760
+#: inc/container.class.php:1776
 msgid "Some URL fields contains invalid links"
 msgstr "Některé URL kolonky obsahují neplatné odkazy"
 

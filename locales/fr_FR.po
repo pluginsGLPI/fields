@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 02:31+0000\n"
+"POT-Creation-Date: 2026-09-14 02:54+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: EpicIT33, 2025-2026\n"
 "Language-Team: French (France) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/fr_FR/)\n"
@@ -66,7 +66,7 @@ msgstr[0] "Condition pour masquer le bloc"
 msgstr[1] "Conditions pour masquer le bloc"
 msgstr[2] "Conditions pour masquer le bloc"
 
-#: setup.php:248 front/container.php:34 front/container.form.php:78
+#: setup.php:248 front/container.php:34 front/container.form.php:84
 #: inc/destinationfield.class.php:50 inc/menu.class.php:37
 msgid "Additional fields"
 msgstr "Champs supplémentaires"
@@ -165,15 +165,15 @@ msgstr "Insertion dans le formulaire (avant le bouton sauvegarder)"
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Insertion dans le formulaire d'un onglet spécifique (avant le bouton sauvegarder)"
 
-#: inc/container.class.php:1750
+#: inc/container.class.php:1766
 msgid "Some mandatory fields are empty"
 msgstr "Des champs obligatoires sont vides"
 
-#: inc/container.class.php:1755
+#: inc/container.class.php:1771
 msgid "Some numeric fields contains non numeric values"
 msgstr "Des champs numériques contiennent des données non numériques"
 
-#: inc/container.class.php:1760
+#: inc/container.class.php:1776
 msgid "Some URL fields contains invalid links"
 msgstr "Des champs URL contiennent des liens invalides"
 
