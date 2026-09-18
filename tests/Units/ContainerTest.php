@@ -141,6 +141,8 @@ final class ContainerTest extends DbTestCase
         yield 'datetime' => ['type' => 'datetime', 'default_value' => '2024-01-01 10:00:00', 'expected_value' => '2024-01-01 10:00:00'];
         yield 'dropdown'          => ['type' => 'dropdown', 'default_value' => null, 'expected_value' => null, 'multiple' => false];
         yield 'dropdown multiple' => ['type' => 'dropdown', 'default_value' => null, 'expected_value' => null, 'multiple' => true];
+        yield 'dropdown itemtype computer'          => ['type' => 'dropdown-Computer', 'default_value' => null, 'expected_value' => null, 'multiple' => false];
+        yield 'dropdown itemtype computer multiple' => ['type' => 'dropdown-Computer', 'default_value' => null, 'expected_value' => null, 'multiple' => true];
     }
 
     #[DataProvider('provideMandatoryFieldTypes')]
@@ -153,7 +155,7 @@ final class ContainerTest extends DbTestCase
         $this->login();
 
         $container = $this->createFieldContainer([
-            'label'        => 'Mail Collector ' . $type . ($multiple ? ' Multi' : '') . ' Container',
+            'label'        => 'Mail Collector Container',
             'type'         => 'dom',
             'itemtypes'    => [Ticket::class],
             'is_active'    => 1,
@@ -162,7 +164,7 @@ final class ContainerTest extends DbTestCase
         ]);
 
         $field_input = [
-            'label'                                      => 'Mandatory ' . $type . ($multiple ? ' multiple' : ''),
+            'label'                                      => 'Mandatory Field',
             'type'                                        => $type,
             'multiple'                                    => $multiple ? 1 : 0,
             PluginFieldsContainer::getForeignKeyField()  => $container->getID(),
@@ -195,6 +197,20 @@ final class ContainerTest extends DbTestCase
             } else {
                 $option_id = $this->createItem($dropdown_classname, ['name' => 'Default option'])->getID();
                 $default_value  = (string) $option_id;
+                $expected_value = $option_id;
+            }
+        } elseif ($type === 'dropdown-Computer') {
+            if ($multiple) {
+                $option_ids = [
+                    $this->createItem(Computer::class, ['name' => 'Default option 1', 'entities_id' => 0])->getID(),
+                    $this->createItem(Computer::class, ['name' => 'Default option 2', 'entities_id' => 0])->getID(),
+                ];
+
+                $default_value  = $option_ids;
+                $expected_value = $option_ids;
+            } else {
+                $option_id = $this->createItem(Computer::class, ['name' => 'Default option', 'entities_id' => 0])->getID();
+                $default_value  = $option_id;
                 $expected_value = $option_id;
             }
         }

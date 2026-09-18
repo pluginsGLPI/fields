@@ -2137,6 +2137,15 @@ HTML;
                     if (isset($item->input[$field['name']])) {
                         $data[$field['name']] = $item->input[$field['name']];
                         $has_fields           = true;
+                    } elseif ($item->isNewItem()) {
+                        $default = PluginFieldsField::getDefaultValue($field);
+                        $decoded = json_decode((string) $default, true);
+                        if (is_array($decoded) && $decoded !== []) {
+                            $data[$field['name']] = $decoded;
+                            $has_fields           = true;
+                        } else {
+                            $data[$field['name']] = [];
+                        }
                     } else { //multi dropdown is empty or has been emptied
                         $data[$field['name']] = [];
                     }
