@@ -1746,6 +1746,7 @@ HTML;
                     empty($value)
                     || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', (string) $field['type'])) && $value == 0)
                     || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
+                    || ($field['multiple'] && is_string($value) && json_decode($value, true) === [])
                 )
             ) {
                 $empty_errors[] = $field['label'];
@@ -1984,20 +1985,32 @@ HTML;
             return true;
         }
 
-        //call validateValues() with a minimal data array to check for missing mandatory fields
-        //in case populateData() fails
-        if ($item->isNewItem() && $loc_c->fields['type'] === 'dom') {
-            $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
-            $data = ['plugin_fields_containers_id' => $c_id];
-            if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
-                $data[$status_field_name] = (int) $item->input[$status_field_name];
-            } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
-                $data[$status_field_name] = (int) $item->fields[$status_field_name];
-            }
+        //fallback check when populateData() found nothing submitted (e.g. untouched Tab)
+        //tab containers can't be filled before the item exists, so skip on creation
+        if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
+            return false;
+        }
 
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                $item->input = [];
+        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
+        $data = ['plugin_fields_containers_id' => $c_id];
+        if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
+            $data[$status_field_name] = (int) $item->input[$status_field_name];
+        } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
+            $data[$status_field_name] = (int) $item->fields[$status_field_name];
+        }
+
+        if (!$item->isNewItem()) {
+            // merge already persisted values to avoid false positives
+            $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
+            $dbu       = new DbUtils();
+            $obj       = $dbu->getItemForItemtype($classname);
+            if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {
+                $data += $obj->fields;
             }
+        }
+
+        if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            $item->input = [];
         }
 
         return false;
