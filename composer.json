@@ -3,8 +3,9 @@
         "php": ">=8.2",
         "symfony/yaml": "^7.4"
     },
-    "require-dev": {
-        "glpi-project/tools": "^0.8.3"
+    "provide": {
+        "symfony/deprecation-contracts": "^3.0",
+        "symfony/polyfill-ctype": "^1.33"
     },
     "config": {
         "optimize-autoloader": true,
