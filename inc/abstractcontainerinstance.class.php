@@ -133,6 +133,10 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                     return ''; // Itemtype not exists (maybe a deactivated plugin)
                 }
 
+                if (empty($values[$field]) && !empty($field_specs->fields['default_value'])) {
+                    $values[$field] = $field_specs->fields['default_value'];
+                }
+
                 if (empty($values[$field])) {
                     return ''; // Value not defined
                 }

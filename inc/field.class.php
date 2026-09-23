@@ -1500,6 +1500,67 @@ JAVASCRIPT,
         if (!isset($this->input['clone']) || !$this->input['clone']) {
             PluginFieldsLabelTranslation::createForItem($this);
         }
+
+        $this->applyDefaultValueToExistingItems();
+    }
+
+    /**
+     * Fill existing items with the default value of this field if it is set.
+     */
+    private function applyDefaultValueToExistingItems(): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        if ($this->fields['type'] === 'header') {
+            return;
+        }
+
+        if ($this->fields['multiple']) {
+            $decoded = json_decode((string) $this->fields['default_value'], true);
+            if (!is_array($decoded) || $decoded === []) {
+                return;
+            }
+        } elseif ((string) $this->fields['default_value'] === '') {
+            return;
+        }
+
+        $value = self::getDefaultValue($this->fields);
+        if ($value === null) {
+            return;
+        }
+
+        $sql_fields = PluginFieldsMigration::getSQLFields(
+            $this->fields['name'],
+            $this->fields['type'],
+            ['multiple' => (bool) $this->fields['multiple']],
+        );
+
+        if (count($sql_fields) !== 1) {
+            return;
+        }
+
+        $column = array_key_first($sql_fields);
+
+        $container = new PluginFieldsContainer();
+        if (!$container->getFromDB($this->fields['plugin_fields_containers_id'])) {
+            return;
+        }
+
+        foreach (PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']) as $itemtype) {
+            if (!class_exists($itemtype)) {
+                continue;
+            }
+
+            $classname = PluginFieldsContainer::getClassname($itemtype, $container->fields['name']);
+            $table     = $classname::getTable();
+
+            if (!$DB->tableExists($table)) {
+                continue;
+            }
+
+            $DB->update($table, [$column => $value], [1]);
+        }
     }
 
     public function rawSearchOptions()
