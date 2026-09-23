@@ -29,6 +29,7 @@
  */
 
 use Glpi\DBAL\QueryExpression;
+use Glpi\DBAL\QueryFunction;
 use Glpi\Features\Clonable;
 
 class PluginFieldsContainer extends CommonDBTM
@@ -2256,6 +2257,7 @@ HTML;
                 'glpi_plugin_fields_fields.is_readonly',
                 'glpi_plugin_fields_fields.allowed_values',
                 'glpi_plugin_fields_fields.multiple',
+                'glpi_plugin_fields_fields.default_value',
                 'glpi_plugin_fields_containers.id AS container_id',
                 'glpi_plugin_fields_containers.name AS container_name',
                 'glpi_plugin_fields_containers.label AS container_label',
@@ -2363,6 +2365,21 @@ HTML;
                     $opt[$i]['datatype'] = 'string';
             }
 
+            if (
+                (string) $data['default_value'] !== ''
+                && !in_array($data['type'], ['dropdown', 'glpi_item'], true)
+                && !preg_match('/^dropdown-.+$/i', (string) $data['type'])
+            ) {
+                $default_expression = in_array($data['type'], ['date', 'datetime'], true) && $data['default_value'] === 'now'
+                    ? QueryFunction::now()
+                    : new QueryExpression($DB::quoteValue($data['default_value']));
+
+                $opt[$i]['computation'] = QueryFunction::coalesce([
+                    'TABLE.' . $data['field_name'],
+                    $default_expression,
+                ]);
+            }
+
             $dropdown_matches = [];
             if ($data['type'] === 'dropdown') {
                 $field_name = 'plugin_fields_' . $data['field_name'] . 'dropdowns_id';
@@ -2383,6 +2400,8 @@ HTML;
                     $opt[$i]['joinparams']['jointype']                             = '';
                     $opt[$i]['joinparams']['beforejoin']['table']                  = $tablename;
                     $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = 'itemtype_item';
+
+                    self::addDropdownDefaultValueComputation($opt[$i], (string) $data['default_value']);
                 }
             } elseif (
                 preg_match('/^dropdown-(?<class>.+)$/i', (string) $data['type'], $dropdown_matches)
@@ -2405,6 +2424,8 @@ HTML;
                     $opt[$i]['joinparams']['jointype']                             = '';
                     $opt[$i]['joinparams']['beforejoin']['table']                  = $tablename;
                     $opt[$i]['joinparams']['beforejoin']['joinparams']['jointype'] = 'itemtype_item';
+
+                    self::addDropdownDefaultValueComputation($opt[$i], (string) $data['default_value']);
                 }
             } elseif ($data['type'] === 'glpi_item') {
                 $itemtype_field = sprintf('itemtype_%s', $data['field_name']);
@@ -2434,6 +2455,29 @@ HTML;
         }
 
         return $opt;
+    }
+
+    /**
+     * Add a computation to the search option for a dropdown field to use a default value if the field is null.
+     */
+    private static function addDropdownDefaultValueComputation(array &$searchoption, string $default_value): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        if ($default_value === '') {
+            return;
+        }
+
+        $default_name = Dropdown::getDropdownName($searchoption['table'], (int) $default_value);
+        if ($default_name === '') {
+            return;
+        }
+
+        $searchoption['computation'] = QueryFunction::coalesce([
+            'TABLE.' . $searchoption['field'],
+            new QueryExpression($DB::quoteValue($default_name)),
+        ]);
     }
 
     /**
