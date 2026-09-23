@@ -37,6 +37,7 @@ use PluginFieldsContainer;
 use Ticket;
 use Entity;
 use Notification;
+use Problem;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -429,6 +430,108 @@ final class ContainerItemUpdateTest extends DbTestCase
             'c_id'        => $domtab_container->getID(),
         ]);
         $this->assertGreaterThan(0, $ticket_id, 'A mandatory domtab field must not block creation.');
+    }
+
+    /**
+     * A mandatory TAB field left empty must block a later update, even when
+     * that update never touches the Tab (e.g. a plain status change on the
+     * main form). Regression test for GH issue #1268.
+     */
+    public function testUpdateIsBlockedWhenMandatoryTabFieldWasNeverFilled(): void
+    {
+        $this->login();
+
+        // Problem is used here (not Ticket) since it has no pre-existing "dom"
+        // container in this environment, which would otherwise take priority
+        // over the "tab" container when no explicit c_id is given.
+        $tab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Tab Update Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Problem::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $tab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $problem = $this->createItem(Problem::class, [
+            'name'        => 'Problem with mandatory tab field missing',
+            'content'     => 'Test',
+            'entities_id' => 0,
+        ]);
+
+        // Update the main form only, without ever opening the Tab.
+        $updated = $problem->update([
+            'id'   => $problem->getID(),
+            'name' => 'Renamed while tab field still empty',
+        ]);
+        $this->assertFalse($updated, 'Update must be blocked while a mandatory tab field is empty.');
+        $this->hasSessionMessageThatContains(
+            __('Some mandatory fields are empty', 'fields'),
+            ERROR,
+        );
+
+        $problem->getFromDB($problem->getID());
+        $this->assertNotSame('Renamed while tab field still empty', $problem->fields['name']);
+    }
+
+    /**
+     * Once a mandatory TAB field has been filled, later updates that don't
+     * touch the Tab must not be wrongly blocked.
+     */
+    public function testUpdateIsNotBlockedWhenMandatoryTabFieldIsAlreadyFilled(): void
+    {
+        $this->login();
+
+        $tab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Tab Filled Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Problem::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $tab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $problem = $this->createItem(Problem::class, [
+            'name'        => 'Problem with mandatory tab field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+        ]);
+
+        // Fill the mandatory tab field through its own container update.
+        $this->updateItem(Problem::class, $problem->getID(), [
+            'id'        => $problem->getID(),
+            'c_id'      => $tab_container->getID(),
+            $field_name => 'filled value',
+        ], [$field_name, 'c_id']);
+
+        // A later update that doesn't touch the tab must succeed.
+        $updated = $problem->update([
+            'id'   => $problem->getID(),
+            'name' => 'Renamed after tab field was filled',
+        ]);
+        $this->assertTrue($updated, 'Update must not be blocked once the mandatory tab field is filled.');
+
+        $problem->getFromDB($problem->getID());
+        $this->assertSame('Renamed after tab field was filled', $problem->fields['name']);
     }
 
     /**

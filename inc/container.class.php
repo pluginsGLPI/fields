@@ -1746,6 +1746,7 @@ HTML;
                     empty($value)
                     || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', (string) $field['type'])) && $value == 0)
                     || (in_array($field['type'], ['date', 'datetime']) && $value == 'NULL')
+                    || ($field['multiple'] && is_string($value) && json_decode($value, true) === [])
                 )
             ) {
                 $empty_errors[] = $field['label'];
@@ -1920,87 +1921,134 @@ HTML;
      */
     public static function preItem(CommonDBTM $item)
     {
-        //find container (if not exist, do nothing)
+        //find container(s) (if none exist, do nothing)
         if (isset($item->input['c_id'])) {
-            $c_id = $item->input['c_id'];
+            $c_ids = [$item->input['c_id']];
         } elseif (isset($_REQUEST['c_id'])) {
-            $c_id = $_REQUEST['c_id'];
+            $c_ids = [$_REQUEST['c_id']];
+        } elseif (isset($_REQUEST['_plugin_fields_type'])) {
+            // an explicit context is targeted (e.g. a domtab's own subtab form)
+            $type    = $_REQUEST['_plugin_fields_type'];
+            $subtype = $type === 'domtab' ? $_REQUEST['_plugin_fields_subtype'] : '';
+            $c_id    = self::findContainer($item::class, $type, $subtype);
+            $c_ids   = $c_id === false ? [] : [$c_id];
         } else {
-            $type = 'dom';
-            if (isset($_REQUEST['_plugin_fields_type'])) {
-                $type = $_REQUEST['_plugin_fields_type'];
-            }
-
-            $subtype = '';
-            if ($type == 'domtab') {
-                $subtype = $_REQUEST['_plugin_fields_subtype'];
-            }
-
-            // tries for 'tab'
-            if (false === ($c_id = self::findContainer($item::class, $type, $subtype)) && false === $c_id = self::findContainer($item::class)) {
-                return false;
-            }
+            // generic add/update: both the "dom" and "tab" containers can carry
+            // mandatory fields that must be enforced, even though only "dom"
+            // fields are actually submitted inline with the main form
+            $c_ids = array_filter(
+                [self::findContainer($item::class, 'dom'), self::findContainer($item::class, 'tab')],
+                static fn($id) => $id !== false,
+            );
         }
 
-        $loc_c = new PluginFieldsContainer();
-        $loc_c->getFromDB($c_id);
-
-        // check rights on $c_id
-        // The profile check is only enforced when an active user profile is present in session.
-        // Automated contexts (cron jobs, API token sessions without profile) bypass the check
-        // so that plugin fields can still be persisted — authentication is already enforced
-        // at a higher level by the GLPI API/cron layer.
-        if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
-            $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
-            if (($right > READ) === false) {
-                return false;
-            }
-        }
-
-
-        // need to check if container is usable on this object entity
-        $entities = [$loc_c->fields['entities_id']];
-        if ($loc_c->fields['is_recursive']) {
-            $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+        if ($c_ids === []) {
+            return false;
         }
 
         if (count($item->fields) === 0) {
             $item->fields = $item->input;
         }
 
-        if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
-            return false;
-        }
+        $submitted_data = null;
+        foreach ($c_ids as $c_id) {
+            $loc_c = new PluginFieldsContainer();
+            $loc_c->getFromDB($c_id);
 
-        if (false !== ($data = self::populateData($c_id, $item))) {
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            // check rights on $c_id
+            // The profile check is only enforced when an active user profile is present in session.
+            // Automated contexts (cron jobs, API token sessions without profile) bypass the check
+            // so that plugin fields can still be persisted — authentication is already enforced
+            // at a higher level by the GLPI API/cron layer.
+            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $c_id > 0) {
+                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $c_id);
+                if (($right > READ) === false) {
+                    continue;
+                }
+            }
+
+            // need to check if container is usable on this object entity
+            $entities = [$loc_c->fields['entities_id']];
+            if ($loc_c->fields['is_recursive']) {
+                $entities = getSonsOf(getTableForItemType('Entity'), $loc_c->fields['entities_id']);
+            }
+
+            if ($item->isEntityAssign() && !in_array($item->getEntityID(), $entities)) {
+                continue;
+            }
+
+            $result = self::checkContainerMandatory($item, $loc_c);
+            if ($result === false) {
                 $item->input = [];
 
                 return false;
             }
 
-            $item->input['_plugin_fields_data'] = $data;
+            if ($result !== []) {
+                $submitted_data = $result;
+            }
+        }
+
+        if ($submitted_data !== null) {
+            $item->input['_plugin_fields_data'] = $submitted_data;
 
             return true;
         }
 
-        //call validateValues() with a minimal data array to check for missing mandatory fields
-        //in case populateData() fails
-        if ($item->isNewItem() && $loc_c->fields['type'] === 'dom') {
-            $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
-            $data = ['plugin_fields_containers_id' => $c_id];
-            if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
-                $data[$status_field_name] = (int) $item->input[$status_field_name];
-            } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
-                $data[$status_field_name] = (int) $item->fields[$status_field_name];
+        return false;
+    }
+
+    /**
+     * Validate a single container's mandatory fields for the given item, using
+     * either the values submitted in this request or, if none were submitted
+     * for this container, the item's already persisted values.
+     *
+     * @return array|false The data to persist, an empty array if nothing was
+     *                      submitted but validation passed, or false if a
+     *                      mandatory field is missing (an error message has
+     *                      then been queued by validateValues()).
+     */
+    private static function checkContainerMandatory(CommonDBTM $item, PluginFieldsContainer $loc_c): array|false
+    {
+        $c_id = $loc_c->getID();
+
+        if (false !== ($data = self::populateData($c_id, $item))) {
+            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+                return false;
             }
 
-            if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
-                $item->input = [];
+            return $data;
+        }
+
+        //nothing submitted for this container in this request (e.g. untouched Tab)
+        //tab containers can't be filled before the item exists, so skip on creation
+        if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
+            return [];
+        }
+
+        $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
+        $data = ['plugin_fields_containers_id' => $c_id];
+        if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
+            $data[$status_field_name] = (int) $item->input[$status_field_name];
+        } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
+            $data[$status_field_name] = (int) $item->fields[$status_field_name];
+        }
+
+        if (!$item->isNewItem()) {
+            // merge already persisted values to avoid false positives
+            $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
+            $dbu       = new DbUtils();
+            $obj       = $dbu->getItemForItemtype($classname);
+            if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {
+                $data += $obj->fields;
             }
         }
 
-        return false;
+        if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction'])) === false) {
+            return false;
+        }
+
+        return [];
     }
 
     /**
