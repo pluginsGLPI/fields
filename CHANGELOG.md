@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Display translated fields names in fields' tab
+
 ### Fixed
 
 - Fix administrators losing access to a block's configuration after setting a profile to "no access" on that block.
