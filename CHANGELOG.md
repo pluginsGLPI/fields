@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
+## [Unreleased]
 
 ### Fixed
 
 - Fix massive action update on CustomAssets
+- Fix mandatory fields on a Tab block not being enforced when updating an item.
+- Fix administrators losing access to a block's configuration after setting a profile to "no access" on that block.
+- Fix dependency conflict with GLPI core by no longer vendoring symfony/deprecation-contracts and symfony/polyfill-ctype.
+- Fix default field values not being applied when fields are empty on creation
 
 ## [1.24.5] - 2026-09-11
 
