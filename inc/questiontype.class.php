@@ -37,11 +37,14 @@ use Glpi\Form\Migration\FormQuestionDataConverterInterface;
 use Glpi\Form\Question;
 use Glpi\Form\QuestionType\AbstractQuestionType;
 use Glpi\Form\QuestionType\QuestionTypeCategoryInterface;
+use Glpi\Form\QuestionType\QuestionTypeEmbeddableInterface;
 
 use function Safe\json_decode;
 use function Safe\json_encode;
 
-final class PluginFieldsQuestionType extends AbstractQuestionType implements FormQuestionDataConverterInterface
+final class PluginFieldsQuestionType extends AbstractQuestionType implements
+    FormQuestionDataConverterInterface,
+    QuestionTypeEmbeddableInterface
 {
     #[Override]
     public function getCategory(): QuestionTypeCategoryInterface
@@ -112,6 +115,48 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     #[Override]
     public function renderAdministrationTemplate(?Question $question): string
     {
+        return $this->renderAdministrationTemplateWithInputNames(
+            $question,
+            field_id_input_name: 'field_id',
+            default_value_input_name: 'default_value',
+            embedded: false,
+        );
+    }
+
+    /** Render the complete Fields configuration inside another question type. */
+    public function renderEmbeddedAdministrationTemplate(
+        ?Question $question,
+        string $extra_data_input_prefix,
+    ): string {
+        $block_id = $this->getDefaultValueBlockId($question);
+        $available_blocks = $this->getAvailableBlocks();
+        if ($block_id === null) {
+            $block_id = current(array_keys($available_blocks));
+        }
+
+        $available_fields = self::getFieldsFromBlock($block_id);
+        $current_field_id = $this->getDefaultValueFieldId($question);
+        if ($current_field_id === null || !isset($available_fields[$current_field_id])) {
+            $current_field_id = current(array_keys($available_fields));
+        }
+
+        return TemplateRenderer::getInstance()->render('@fields/question_type_embedded_administration.html.twig', [
+            'block_input_name'  => $extra_data_input_prefix . '[block_id]',
+            'field_input_name'  => $extra_data_input_prefix . '[field_id]',
+            'selected_block_id' => $block_id,
+            'selected_field_id' => $current_field_id,
+            'available_blocks'  => $available_blocks,
+            'available_fields'  => $available_fields,
+        ]);
+    }
+
+    private function renderAdministrationTemplateWithInputNames(
+
+        ?Question $question,
+        string $field_id_input_name,
+        string $default_value_input_name,
+        bool $embedded,
+    ): string {
         // Get the block_id from the question's extra data or use the first available block
         $block_id = $this->getDefaultValueBlockId($question);
         if ($block_id === null) {
@@ -127,6 +172,9 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         }
 
         $current_field = PluginFieldsField::getById($current_field_id);
+        if (!$current_field) {
+            return '';
+        }
 
         // Compute default value for the field
         $default_value = null;
@@ -136,33 +184,75 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
 
         $twig = TemplateRenderer::getInstance();
         return $twig->render('@fields/question_type_administration.html.twig', [
-            'question'          => $question,
-            'default_value'     => $default_value,
-            'selected_field_id' => $current_field_id,
-            'available_fields'  => $available_fields,
-            'item'              => new Form(),
-            'field'             => $current_field->fields,
+            'question'                 => $question,
+            'default_value'            => $default_value,
+            'selected_field_id'        => $current_field_id,
+            'available_fields'         => $available_fields,
+            'item'                     => new Form(),
+            'field'                    => $current_field->fields,
+            'field_id_input_name'      => $field_id_input_name,
+            'default_value_input_name' => $default_value_input_name,
+            'embedded'                 => $embedded,
         ]);
     }
 
     #[Override]
     public function renderEndUserTemplate(Question $question): string
     {
-        // Get the block_id from the question's extra data or use the first available block
+        return $this->renderEndUserTemplateWithInputName(
+            $question,
+            $question->getEndUserInputName(),
+            false,
+        );
+    }
+
+    /** Render the end-user control with an input name supplied by an embedding question type. */
+    public function renderEmbeddedEndUserTemplate(Question $question, string $input_name): string
+    {
+        return $this->renderEndUserTemplateWithInputName($question, $input_name, true);
+    }
+
+    private function renderEndUserTemplateWithInputName(
+        Question $question,
+        string $input_name,
+        bool $embedded,
+    ): string
+    {
+        // Resolve a valid block. Embedded table questions may contain an empty,
+        // stale or no longer accessible block_id.
+        $available_blocks = $this->getAvailableBlocks();
+        if ($available_blocks === []) {
+            return '';
+        }
+
         $block_id = $this->getDefaultValueBlockId($question);
-        if ($block_id === null) {
-            $block_id = current(array_keys($this->getAvailableBlocks()));
+        if (
+            $block_id === null
+            || !array_key_exists($block_id, $available_blocks)
+        ) {
+            $block_id = array_key_first($available_blocks);
         }
 
         $available_fields = self::getFieldsFromBlock($block_id);
+        if ($available_fields === []) {
+            return '';
+        }
 
-        // Retrieve current field
+        // Resolve a valid field for the selected block. This also handles
+        // deleted fields and configurations created before automatic block
+        // selection was added.
         $current_field_id = $this->getDefaultValueFieldId($question);
-        if ($current_field_id === null) {
-            $current_field_id = current(array_keys($available_fields));
+        if (
+            $current_field_id === null
+            || !array_key_exists($current_field_id, $available_fields)
+        ) {
+            $current_field_id = array_key_first($available_fields);
         }
 
         $current_field = PluginFieldsField::getById($current_field_id);
+        if (!$current_field instanceof PluginFieldsField) {
+            return '';
+        }
 
         // Compute default value for the field
         $default_value = null;
@@ -188,6 +278,8 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             'default_value' => $default_value,
             'item'          => new Form(),
             'itemtype'      => $itemtype,
+            'input_name'    => $input_name,
+            'embedded'      => $embedded,
         ]);
     }
 
