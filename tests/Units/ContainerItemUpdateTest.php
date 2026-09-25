@@ -340,6 +340,8 @@ final class ContainerItemUpdateTest extends DbTestCase
 
         $this->simulateApiBoot();
 
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+
         // Creation with the mandatory field omitted must be rejected.
         $ticket = new Ticket();
         $ticket_id = $ticket->add([
@@ -352,6 +354,8 @@ final class ContainerItemUpdateTest extends DbTestCase
             __('Some mandatory fields are empty', 'fields'),
             ERROR,
         );
+
+        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
 
         // Creation with the mandatory field filled must succeed.
         $ticket = new Ticket();
@@ -468,11 +472,16 @@ final class ContainerItemUpdateTest extends DbTestCase
             'entities_id' => 0,
         ]);
 
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+
         // Update the main form only, without ever opening the Tab.
         $updated = $problem->update([
             'id'   => $problem->getID(),
             'name' => 'Renamed while tab field still empty',
         ]);
+
+        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+
         $this->assertFalse($updated, 'Update must be blocked while a mandatory tab field is empty.');
         $this->hasSessionMessageThatContains(
             __('Some mandatory fields are empty', 'fields'),
