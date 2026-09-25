@@ -973,7 +973,7 @@ class PluginFieldsContainer extends CommonDBTM
     {
         $itemtype           = $item::class;
         $containers         = new self();
-        $founded_containers = $containers->find();
+        $founded_containers = $containers->find(['is_active' => 1]);
         foreach ($founded_containers as $container) {
             $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
             if (in_array($itemtype, $itemtypes)) {
@@ -1030,7 +1030,8 @@ class PluginFieldsContainer extends CommonDBTM
             return false;
         }
 
-        $new_name = preg_replace('/[^\da-zA-Z]/', '', $new_name) ?? '';
+        $toolbox  = new PluginFieldsToolbox();
+        $new_name = $toolbox->getSystemNameFromLabel($new_name);
         if ($new_name === '') {
             Session::AddMessageAfterRedirect(__('Invalid name.', 'fields'), false, ERROR);
 
@@ -1081,7 +1082,7 @@ class PluginFieldsContainer extends CommonDBTM
 
             $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
             if (!$DB->tableExists($old_table)) {
-                $old_table = self::findOrphanTableForContainer($id, $claimed_orphans);
+                $old_table = self::findOrphanTableForContainer($id, $itemtype, $claimed_orphans);
             }
 
             if ($old_table === null || !$DB->tableExists($old_table)) {
@@ -1124,9 +1125,10 @@ class PluginFieldsContainer extends CommonDBTM
      * Find an orphaned table belonging to this container.
      *
      * @param int      $container_id     Container ID.
+     * @param string   $itemtype         Item type the orphan table must have been generated for.
      * @param string[] $already_claimed  Orphan tables already assigned to another itemtype in this call.
      */
-    private static function findOrphanTableForContainer(int $container_id, array $already_claimed): ?string
+    private static function findOrphanTableForContainer(int $container_id, string $itemtype, array $already_claimed): ?string
     {
         /** @var DBmysql $DB */
         global $DB;
@@ -1136,15 +1138,26 @@ class PluginFieldsContainer extends CommonDBTM
             $already_claimed,
         );
 
-        // Primary match: `plugin_fields_containers_id` is DEFAULTed to the container's own id
-        // at table creation time, a link that survives any later name corruption.
+        // Primary match: `plugin_fields_containers_id` and `itemtype` are both DEFAULTed
+        // at table creation time, a link that survives any later name corruption. Matching
+        // on both is required when a container spans several item types, since every one
+        // of its orphan tables shares the same `plugin_fields_containers_id` default.
         $by_default = [];
         foreach ($orphaned as $table) {
+            $matches_container = false;
+            $matches_itemtype  = false;
             foreach ($DB->listFields($table) as $column) {
                 if ($column['Field'] === 'plugin_fields_containers_id' && (int) $column['Default'] === $container_id) {
-                    $by_default[] = $table;
-                    break;
+                    $matches_container = true;
                 }
+
+                if ($column['Field'] === 'itemtype' && $column['Default'] === $itemtype) {
+                    $matches_itemtype = true;
+                }
+            }
+
+            if ($matches_container && $matches_itemtype) {
+                $by_default[] = $table;
             }
         }
 
