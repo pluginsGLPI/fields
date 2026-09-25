@@ -44,6 +44,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
 use PluginFieldsField;
+use PluginFieldsToolbox;
 use Search;
 use Session;
 use Ticket;
@@ -584,17 +585,18 @@ final class ContainerTest extends DbTestCase
         global $DB;
         $DB->update(PluginFieldsContainer::getTable(), ['name' => str_repeat('a', 100)], ['id' => $container->getID()]);
 
-        $new_name = 'Renamed' . str_replace('-', '', $this->getUniqueString());
+        $new_name          = 'Renamed' . str_replace('-', '', $this->getUniqueString());
+        $expected_new_name = (new PluginFieldsToolbox())->getSystemNameFromLabel($new_name);
 
         $result = PluginFieldsContainer::renameOversizedContainer($container->getID(), $new_name);
         $this->assertTrue($result);
 
         $reloaded = new PluginFieldsContainer();
         $this->assertTrue($reloaded->getFromDB($container->getID()));
-        $this->assertSame($new_name, $reloaded->fields['name']);
+        $this->assertSame($expected_new_name, $reloaded->fields['name']);
         $this->assertSame(1, (int) $reloaded->fields['is_active']);
 
-        $table = getTableForItemType(PluginFieldsContainer::getClassname(Computer::class, $new_name));
+        $table = getTableForItemType(PluginFieldsContainer::getClassname(Computer::class, $expected_new_name));
         $this->assertTrue($DB->tableExists($table));
 
         // The reactivated container must be genuinely usable, not just flagged active.
@@ -906,7 +908,11 @@ final class ContainerTest extends DbTestCase
             'entities_id'  => 0,
             'is_recursive' => 1,
         ]);
-        $original_name = $container->fields['name'];
+        $short_name = $container->fields['name'];
+
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => str_repeat('a', 100)], ['id' => $container->getID()]);
 
         $result = PluginFieldsContainer::renameOversizedContainer($container->getID(), str_repeat('a', 100));
 
@@ -914,8 +920,12 @@ final class ContainerTest extends DbTestCase
 
         $reloaded = new PluginFieldsContainer();
         $this->assertTrue($reloaded->getFromDB($container->getID()));
-        $this->assertSame($original_name, $reloaded->fields['name']);
+        $this->assertSame(str_repeat('a', 100), $reloaded->fields['name']);
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
+
+        // Restore a table-name-safe value so the deletion done in tearDown does not
+        // itself attempt a DROP TABLE with an over-64-char identifier.
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => $short_name], ['id' => $container->getID()]);
     }
 
     public function testRenameOversizedContainerFailsOnNameCollision(): void
@@ -937,6 +947,11 @@ final class ContainerTest extends DbTestCase
             'entities_id'  => 0,
             'is_recursive' => 1,
         ]);
+        $short_name = $container->fields['name'];
+
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => str_repeat('a', 100)], ['id' => $container->getID()]);
 
         $result = PluginFieldsContainer::renameOversizedContainer($container->getID(), $existing->fields['name']);
 
@@ -945,5 +960,9 @@ final class ContainerTest extends DbTestCase
         $reloaded = new PluginFieldsContainer();
         $this->assertTrue($reloaded->getFromDB($container->getID()));
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
+
+        // Restore a table-name-safe value so the deletion done in tearDown does not
+        // itself attempt a DROP TABLE with an over-64-char identifier.
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => $short_name], ['id' => $container->getID()]);
     }
 }
