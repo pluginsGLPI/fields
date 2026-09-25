@@ -705,7 +705,8 @@ class PluginFieldsField extends CommonDBChild
                     echo "<tr class='tab_bg_2' style='cursor:pointer'>";
 
                     echo '<td>';
-                    $label = empty($this->fields['label']) ? NOT_AVAILABLE : $this->fields['label'];
+                    $label = PluginFieldsLabelTranslation::getLabelFor(['itemtype' => self::class] + $data);
+                    $label = empty($label) ? NOT_AVAILABLE : htmlspecialchars($label);
                     echo "<a href='" . $CFG_GLPI['root_doc'] . sprintf("/plugins/fields/front/field.form.php?id=%d'>%s</a>", $this->getID(), $label);
                     echo '</td>';
                     echo '<td>' . $fields_type[$this->fields['type']] . '</td>';
