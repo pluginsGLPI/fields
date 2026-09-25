@@ -1739,9 +1739,9 @@ HTML;
             $field['itemtype'] = PluginFieldsField::getType();
             $field['label']    = PluginFieldsLabelTranslation::getLabelFor($field);
 
-            // Check mandatory fields
             if (
-                $field['mandatory'] == 1
+                !isCommandLine() && !Session::isCron() && !($data['_auto_import'] ?? false)
+                && $field['mandatory'] == 1
                 && (
                     empty($value)
                     || (($field['type'] === 'dropdown' || preg_match('/^dropdown-.+/i', (string) $field['type'])) && $value == 0)
@@ -2028,6 +2028,10 @@ HTML;
 
         $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::getType());
         $data = ['plugin_fields_containers_id' => $c_id];
+        if ($item->input['_auto_import'] ?? false) {
+            $data['_auto_import'] = true;
+        }
+
         if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
             $data[$status_field_name] = (int) $item->input[$status_field_name];
         } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
@@ -2092,6 +2096,12 @@ HTML;
         if (!$item->isNewItem()) {
             //no ID yet while creating
             $data['items_id'] = $item->getID();
+        }
+
+        // Carry over the "automated import" marker so mandatory fields can be relaxed
+        // for items created without a human filling a form.
+        if ($item->input['_auto_import'] ?? false) {
+            $data['_auto_import'] = true;
         }
 
         // Add status so it can be used with status overrides
