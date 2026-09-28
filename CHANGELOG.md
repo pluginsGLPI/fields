@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix dependency conflict with GLPI core by no longer vendoring symfony/deprecation-contracts and symfony/polyfill-ctype.
 - Fix default field values not being applied when fields are empty on creation
 - Fix mandatory fields blocking automated item creation
+- Fix unclear mandatory field error when a GLPI form creating a ticket does not provide the field.
 
 ## [1.24.5] - 2026-09-11
 
