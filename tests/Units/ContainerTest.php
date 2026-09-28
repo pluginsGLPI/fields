@@ -56,10 +56,14 @@ final class ContainerTest extends DbTestCase
     {
         GLPITestCase::setUp();
         $this->login();
+
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
     }
 
     public function tearDown(): void
     {
+        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+
         $this->tearDownFieldTest();
         GLPITestCase::tearDown();
     }
@@ -245,13 +249,9 @@ final class ContainerTest extends DbTestCase
             'content' => 'This is a test email imported via the mail collector.',
         ]);
 
-        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
-
         $tkt = $collector->buildTicket(1, $message, ['mailgates_id' => $collector->getID(), 'play_rules' => false]);
         $tkt['entities_id'] = 0;
         $this->createItem(Ticket::class, $tkt, ['users_id', 'itemtype']);
-
-        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
 
         $this->updateItem(
             PluginFieldsField::class,

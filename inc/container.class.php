@@ -1653,6 +1653,15 @@ HTML;
         }
     }
 
+    private static function isMandatoryCheckBypassed(array $data): bool
+    {
+        return isCommandLine()
+            || Session::isCron()
+            || isAPI()
+            || !empty($data['_auto_import'])
+            || !empty($data['is_dynamic']);
+    }
+
     /**
      * check data inserted
      * display a message when not ok
@@ -1740,7 +1749,7 @@ HTML;
             $field['label']    = PluginFieldsLabelTranslation::getLabelFor($field);
 
             if (
-                !isCommandLine() && !Session::isCron() && !($data['_auto_import'] ?? false)
+                !self::isMandatoryCheckBypassed($data)
                 && $field['mandatory'] == 1
                 && (
                     empty($value)
@@ -2032,6 +2041,10 @@ HTML;
             $data['_auto_import'] = true;
         }
 
+        if (!empty($item->input['is_dynamic'])) {
+            $data['is_dynamic'] = true;
+        }
+
         if (array_key_exists($status_field_name, $item->input) && $item->input[$status_field_name] !== '') {
             $data[$status_field_name] = (int) $item->input[$status_field_name];
         } elseif (array_key_exists($status_field_name, $item->fields) && $item->fields[$status_field_name] !== '') {
@@ -2098,10 +2111,14 @@ HTML;
             $data['items_id'] = $item->getID();
         }
 
-        // Carry over the "automated import" marker so mandatory fields can be relaxed
+        // Carry over the "automated import" markers so mandatory fields can be relaxed
         // for items created without a human filling a form.
-        if ($item->input['_auto_import'] ?? false) {
+        if (!empty($item->input['_auto_import'])) {
             $data['_auto_import'] = true;
+        }
+
+        if (!empty($item->input['is_dynamic'])) {
+            $data['is_dynamic'] = true;
         }
 
         // Add status so it can be used with status overrides
