@@ -355,6 +355,10 @@ final class ContainerItemUpdateTest extends DbTestCase
             __('Some mandatory fields are empty', 'fields'),
             ERROR,
         );
+        $this->hasSessionMessageThatContains(
+            __('The form or source creating this item does not provide the mandatory fields above: map them to it, or make them optional.', 'fields'),
+            ERROR,
+        );
 
         // Creation with the mandatory field filled must succeed.
         $ticket = new Ticket();

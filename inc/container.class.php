@@ -2069,7 +2069,7 @@ HTML;
             }
         }
 
-        if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction']), true) === false) {
+        if (self::validateValues($data, $item::getType(), isset($_REQUEST['massiveaction']), $item->isNewItem()) === false) {
             return false;
         }
 
