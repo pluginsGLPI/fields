@@ -69,12 +69,10 @@
 {% set current_textarea_options = textarea_display_options[display_context] %}
 
 {# Rich text fields use the full row width #}
-{% set current_richtext_options = display_context == 'default'
-    ? current_textarea_options|merge({
+{% set current_richtext_options = display_context == 'default' ? current_textarea_options|merge({
         'field_class': 'col-12 col-sm-12',
         'input_class': 'col-xxl-12',
-    })
-    : current_textarea_options %}
+    }) : current_textarea_options %}
 
 {% if not already_wrapped and not dropdown_item%}
 
