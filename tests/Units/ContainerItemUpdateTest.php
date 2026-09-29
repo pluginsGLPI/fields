@@ -30,6 +30,7 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Computer;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
@@ -304,18 +305,16 @@ final class ContainerItemUpdateTest extends DbTestCase
 
         $this->simulateApiBoot();
 
-        $ticket = new Ticket();
-        $ticket_id = $ticket->add([
-            'name'        => 'API created ticket',
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket created via API',
             'content'     => 'Test creation',
             'entities_id' => 0,
-            $field_name   => 'created via api',
-        ]);
-        $this->assertGreaterThan(0, $ticket_id);
+            $field_name   => 'api create value',
+        ], [$field_name]);
 
-        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
+        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket->getID(), $container->getID());
         $this->assertNotFalse($plugin_row, 'Plugin fields row must exist after API-like creation.');
-        $this->assertSame('created via api', $plugin_row[$field_name]);
+        $this->assertSame('api create value', $plugin_row[$field_name]);
     }
 
     public function testCreateIsBlockedWhenMandatoryDomFieldIsMissing(): void
@@ -370,6 +369,69 @@ final class ContainerItemUpdateTest extends DbTestCase
         $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
         $this->assertNotFalse($plugin_row);
         $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateIsNotBlockedForInventoryCreatedItem(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Inventory Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $this->createItem(Computer::class, [
+            'name'        => 'Computer created by the inventory agent',
+            'entities_id' => 0,
+            'is_dynamic'  => 1,
+        ], ['is_dynamic']);
+    }
+
+    public function testCreateIsNotBlockedInApiContext(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Api Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $this->simulateApiBoot();
+
+        $_SERVER['REQUEST_URI']     = '/apirest.php/Ticket';
+        $this->assertTrue(isAPI());
+
+        $this->createItem(Ticket::class, [
+            'name'        => 'Ticket created via the REST API',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+        ]);
     }
 
     public function testCreateIsNotBlockedWhenMandatoryTabOrDomtabFieldIsMissing(): void
