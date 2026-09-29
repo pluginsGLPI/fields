@@ -143,10 +143,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                         fn(int $id) => $id > 0,
                     ));
                 } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
-                    $ids = array_values(array_filter(
-                        array_map(intval(...), PluginFieldsQuestionType::extractDropdownAnswerIds($answer->getRawAnswer())),
-                        static fn($id) => $id > 0,
-                    ));
+                    $ids = array_map(intval(...), PluginFieldsQuestionType::extractDropdownAnswerIds($answer->getRawAnswer()));
 
                     if ($field->fields['multiple']) {
                         $input[$field_name] = $ids;
