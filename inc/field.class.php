@@ -891,7 +891,7 @@ class PluginFieldsField extends CommonDBChild
             return null;
         }
 
-        $canedit = $right > READ;
+        $canedit = $right > READ && ($item->isNewItem() || $item->canUpdateItem());
 
         //get fields for this container
         $field_obj = new self();
@@ -1210,7 +1210,7 @@ JAVASCRIPT,
             return null;
         }
 
-        $canedit = $right > READ;
+        $canedit = $right > READ && ($item->isNewItem() || $item->canUpdateItem());
 
         // Fill status overrides if needed
         if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
