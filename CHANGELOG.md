@@ -22,6 +22,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix a field's default value not being applied to existing items and not being shown in search results for items with no dedicated row in the container table
 - Fix mandatory fields blocking automated item creation
 - Fix unclear mandatory field error when a GLPI form creating a ticket does not provide the field.
+- Fix blocks export, block deletion, read-only fields, item fields and form editor field selection not applying the expected checks.
+- Fix read-only status overrides being resolved from the previous status instead of the submitted one.
+- Fix read-only fields of an "Insertion in form" block being overwritable from the item form.
+- Remove obsolete FusionInventory inventory hook.
+
+### Changed
+
+- A "GLPI item" field now rejects a new reference to an item the current user cannot read, instead of silently clearing it. Automated writes (CLI, cron, inventory) are not affected.
 
 ## [1.24.5] - 2026-09-11
 
