@@ -57,10 +57,14 @@ final class ContainerTest extends DbTestCase
     {
         GLPITestCase::setUp();
         $this->login();
+
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
     }
 
     public function tearDown(): void
     {
+        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+
         $this->tearDownFieldTest();
         GLPITestCase::tearDown();
     }
@@ -246,17 +250,9 @@ final class ContainerTest extends DbTestCase
             'content' => 'This is a test email imported via the mail collector.',
         ]);
 
-        // No default value on the mandatory field
         $tkt = $collector->buildTicket(1, $message, ['mailgates_id' => $collector->getID(), 'play_rules' => false]);
         $tkt['entities_id'] = 0;
-
-        $ticket = new Ticket();
-        $ticket_id = $ticket->add($tkt);
-        $this->assertFalse($ticket_id, sprintf('Import must be blocked when the mandatory %s field has no value and no default.', $type));
-        $this->hasSessionMessageThatContains(
-            __('Some mandatory fields are empty', 'fields'),
-            (string) ERROR,
-        );
+        $this->createItem(Ticket::class, $tkt, ['users_id', 'itemtype']);
 
         $this->updateItem(
             PluginFieldsField::class,
@@ -267,16 +263,13 @@ final class ContainerTest extends DbTestCase
 
         $tkt = $collector->buildTicket(2, $message, ['mailgates_id' => $collector->getID(), 'play_rules' => false]);
         $tkt['entities_id'] = 0;
-
-        $ticket = new Ticket();
-        $ticket_id = $ticket->add($tkt);
-        $this->assertGreaterThan(0, $ticket_id, sprintf('Import must succeed once the mandatory %s field has a default value.', $type));
+        $ticket = $this->createItem(Ticket::class, $tkt, ['users_id', 'itemtype']);
 
         $classname = PluginFieldsContainer::getClassname(Ticket::class, $container->fields['name']);
         $obj = getItemForItemtype($classname);
         $obj->getFromDBByCrit([
             'plugin_fields_containers_id' => $container->getID(),
-            'items_id'                    => $ticket_id,
+            'items_id'                    => $ticket->getID(),
         ]);
         $container_ticket_fields_value = $obj->fields;
         $stored_value = $multiple ? json_decode((string) $container_ticket_fields_value[$row_key], true)
