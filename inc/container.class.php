@@ -1913,8 +1913,10 @@ HTML;
             // Automated contexts (cron jobs, API without active profile) bypass this check.
             if (
                 isset($_SESSION['glpiactiveprofile']['id'])
-                && $_SESSION['glpiactiveprofile']['id'] !== null
-                && !$item->canUpdateItem()
+                && $_SESSION['glpiactiveprofile']['id'] != null
+                && $item instanceof CommonITILObject
+                && Session::getCurrentInterface() === 'helpdesk'
+                && !$item->canRequesterUpdateItem()
             ) {
                 unset($item->input['_plugin_fields_data']);
                 return true;
