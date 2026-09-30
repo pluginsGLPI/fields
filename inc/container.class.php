@@ -1669,11 +1669,11 @@ HTML;
      * @param array   $data          Data send by form
      * @param string  $itemtype      Item type
      * @param boolean $massiveaction ?
-     * @param boolean $not_submitted True when the source submitted none of the fields
+     * @param boolean $is_creation   True when validating a new item with nothing submitted
      *
      * @return boolean
      */
-    public static function validateValues($data, $itemtype, $massiveaction, $not_submitted = false)
+    public static function validateValues($data, $itemtype, $massiveaction, $is_creation = false)
     {
         /** @var DBmysql $DB */
         global $DB;
@@ -1776,7 +1776,7 @@ HTML;
         if ($empty_errors !== []) {
             Session::AddMessageAfterRedirect(__('Some mandatory fields are empty', 'fields')
                                           . ' : ' . implode(', ', $empty_errors), false, ERROR);
-            if ($not_submitted) {
+            if ($is_creation) {
                 Session::AddMessageAfterRedirect(
                     __('The form or source creating this item does not provide the mandatory fields above: map them to it, or make them optional.', 'fields'),
                     false,
