@@ -972,14 +972,22 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function preItemPurge($item)
     {
+        /** @var DBmysql $DB */
+        global $DB;
+
         $itemtype           = $item::class;
         $containers         = new self();
-        $founded_containers = $containers->find(['is_active' => 1]);
+        $founded_containers = $containers->find();
         foreach ($founded_containers as $container) {
             $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
             if (in_array($itemtype, $itemtypes)) {
                 $classname = self::getClassname($itemtype, $container['name']);
-                $fields    = new $classname();
+                if (!$DB->tableExists($classname::getTable())) {
+                    // Disabled oversized container: no table to purge from.
+                    continue;
+                }
+
+                $fields = new $classname();
                 $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
             }
         }
@@ -1075,7 +1083,19 @@ class PluginFieldsContainer extends CommonDBTM
 
         $migration = new Migration((string) ($plugin->fields['version'] ?? ''));
 
-        $old_name        = $container->fields['name'];
+        $old_name = $container->fields['name'];
+
+        foreach ($itemtypes as $itemtype) {
+            $new_table = getTableForItemType(self::getClassname($itemtype, $new_name));
+            $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
+
+            if ($new_table !== $old_table && $DB->tableExists($new_table)) {
+                Session::AddMessageAfterRedirect(sprintf(__('Table %s already exists.', 'fields'), $new_table), false, ERROR);
+
+                return false;
+            }
+        }
+
         $claimed_orphans = [];
         $data_preserved  = false;
         foreach ($itemtypes as $itemtype) {
