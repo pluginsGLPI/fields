@@ -32,6 +32,12 @@ declare(strict_types=1);
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Ticket;
+use Profile;
+use User;
+use Ticket_User;
+use CommonITILActor;
+use CommonDBTM;
 use Computer;
 use Entity;
 use Glpi\Tests\DbTestCase;
@@ -183,34 +189,34 @@ final class ContainerItemRightTest extends DbTestCase
     public function testDomContainerRenderReadOnlyForHelpdeskObserver(): void
     {
         $this->login();
-        $entity_id = getItemByTypeName(\Entity::class, '_test_root_entity', true);
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
         $this->setEntity($entity_id, true);
 
         $container = $this->createFieldContainer([
             'label'        => 'Observer Readonly Container',
             'type'         => 'dom',
-            'itemtypes'    => [\Ticket::class],
+            'itemtypes'    => [Ticket::class],
             'is_active'    => 1,
             'entities_id'  => $entity_id,
             'is_recursive' => 1,
         ]);
-        $field = $this->createField([
+        $this->createField([
             'label'                                     => 'Observer Test Field',
             'type'                                      => 'text',
-            \PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
             'ranking'                                   => 1,
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
         ]);
 
-        $ticket = $this->createItem(\Ticket::class, [
+        $ticket = $this->createItem(Ticket::class, [
             'name'        => 'Ticket for observer test',
             'content'     => 'Test',
             'entities_id' => $entity_id,
         ]);
 
         // Create a helpdesk observer role
-        $observer_profile = $this->createItem(\Profile::class, [
+        $observer_profile = $this->createItem(Profile::class, [
             'name'      => 'Helpdesk_Observer_' . $this->getUniqueString(),
             'interface' => 'helpdesk',
         ]);
@@ -219,7 +225,7 @@ final class ContainerItemRightTest extends DbTestCase
 
         // Create observer user (not requester)
         $observer_username = 'observer_' . $this->getUniqueString();
-        $this->createItem(\User::class, [
+        $this->createItem(User::class, [
             'name'          => $observer_username,
             'password'      => 'Test1234!',
             'password2'     => 'Test1234!',
@@ -230,10 +236,10 @@ final class ContainerItemRightTest extends DbTestCase
         ], ['password', 'password2']);
 
         // Add observer to ticket
-        $this->createItem(\Ticket_User::class, [
+        $this->createItem(Ticket_User::class, [
             'tickets_id' => $ticket->getID(),
-            'users_id'   => getItemByTypeName(\User::class, $observer_username, true),
-            'type'       => \CommonITILActor::OBSERVER,
+            'users_id'   => getItemByTypeName(User::class, $observer_username, true),
+            'type'       => CommonITILActor::OBSERVER,
         ]);
 
         // Login as observer and render
@@ -246,7 +252,7 @@ final class ContainerItemRightTest extends DbTestCase
         $this->assertStringContainsString(
             'readonly',
             $html,
-            'Fields must be rendered as readonly for helpdesk observers.'
+            'Fields must be rendered as readonly for helpdesk observers.',
         );
     }
 
@@ -257,28 +263,28 @@ final class ContainerItemRightTest extends DbTestCase
     public function testDomContainerRenderEditableOnNewTicketCreation(): void
     {
         $this->login();
-        $entity_id = getItemByTypeName(\Entity::class, '_test_root_entity', true);
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
         $this->setEntity($entity_id, true);
 
         $container = $this->createFieldContainer([
             'label'        => 'New Ticket Container',
             'type'         => 'dom',
-            'itemtypes'    => [\Ticket::class],
+            'itemtypes'    => [Ticket::class],
             'is_active'    => 1,
             'entities_id'  => $entity_id,
             'is_recursive' => 1,
         ]);
-        $field = $this->createField([
+        $this->createField([
             'label'                                     => 'New Ticket Field',
             'type'                                      => 'text',
-            \PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
             'ranking'                                   => 1,
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
         ]);
 
         // Create new (non-existent) ticket for rendering
-        $new_ticket = new \Ticket();
+        $new_ticket = new Ticket();
         $new_ticket->fields['entities_id'] = $entity_id;
 
         $html = $this->renderDomContainerForAny($container->getID(), $new_ticket);
@@ -287,11 +293,11 @@ final class ContainerItemRightTest extends DbTestCase
         $this->assertStringNotContainsString(
             'readonly',
             $html,
-            'Fields must remain editable when creating a new ticket.'
+            'Fields must remain editable when creating a new ticket.',
         );
     }
 
-    private function renderDomContainerForAny(int $containers_id, \CommonDBTM $item): string
+    private function renderDomContainerForAny(int $containers_id, CommonDBTM $item): string
     {
         ob_start();
         PluginFieldsField::showDomContainer($containers_id, $item);
