@@ -1914,9 +1914,14 @@ HTML;
             if (
                 isset($_SESSION['glpiactiveprofile']['id'])
                 && $_SESSION['glpiactiveprofile']['id'] != null
-                && $item instanceof CommonITILObject
-                && Session::getCurrentInterface() === 'helpdesk'
-                && !$item->canRequesterUpdateItem()
+                && (
+                    // Central interface: no UPDATE right on this item type
+                    !$item::canUpdate()
+                    // Helpdesk interface: UPDATE right exists but user is not the requester (observer)
+                    || ($item instanceof CommonITILObject
+                        && Session::getCurrentInterface() === 'helpdesk'
+                        && !$item->canRequesterUpdateItem())
+                )
             ) {
                 unset($item->input['_plugin_fields_data']);
                 return true;
