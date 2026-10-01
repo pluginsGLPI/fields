@@ -46,6 +46,7 @@ use Location;
 use Override;
 use PluginFieldsContainer;
 use PluginFieldsDestinationField;
+use PluginFieldsDropdown;
 use PluginFieldsQuestionType;
 use Problem;
 use Ticket;
@@ -120,12 +121,32 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         ]);
         $this->fields[] = $this->createField([
             'label'                                     => 'Location Field',
-            'type'                                      => 'dropdown-Location',
+            'type'                                      => 'dropdown-' . Location::class,
             PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
             'ranking'                                   => 3,
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
         ]);
+        $this->fields[] = $this->createField([
+            'label'                                     => 'Multiple dropdown',
+            'type'                                      => 'dropdown',
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 4,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ], ['default_value']);
+        $this->fields[] = $this->createField([
+            'label'                                     => 'Multiple locations',
+            'type'                                      => 'dropdown-' . Location::class,
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 5,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ], ['default_value']);
     }
 
     public function setUp(): void
@@ -252,6 +273,68 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 
         // delete location for another run
         $location->delete($location->fields, true);
+    }
+
+    public function testDestinationWithMultipleDropdownAdditionalFields(): void
+    {
+        $this->login();
+
+        $dropdown_field  = $this->fields[5];
+        $locations_field = $this->fields[6];
+
+        $form = $this->createForm(
+            (new FormBuilder())
+                ->addQuestion("Multiple dropdown", PluginFieldsQuestionType::class, extra_data: json_encode([
+                    'block_id' => $this->blocks[Ticket::class]->getID(),
+                    'field_id' => $dropdown_field->getID(),
+                ]))
+                ->addQuestion("Multiple locations", PluginFieldsQuestionType::class, extra_data: json_encode([
+                    'block_id' => $this->blocks[Ticket::class]->getID(),
+                    'field_id' => $locations_field->getID(),
+                ])),
+        );
+
+        $dropdown_class = PluginFieldsDropdown::getClassname($dropdown_field->fields['name']);
+        $value1 = $this->createItem($dropdown_class, ['name' => 'Value 1', 'entities_id' => 0]);
+        $value2 = $this->createItem($dropdown_class, ['name' => 'Value 2', 'entities_id' => 0]);
+
+        $location1 = $this->createItem(Location::class, [
+            'name'        => 'Location 1',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => 'Location 2',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        try {
+            $this->sendFormAndAssertITILObjectAdditionalFields(
+                form: $form,
+                config: new SimpleValueConfig(1),
+                answers: [
+                    // Multiple dropdowns are submitted as an array of ids
+                    "Multiple dropdown" => [
+                        'itemtype' => $dropdown_class,
+                        'items_id' => [(string) $value1->getID(), (string) $value2->getID()],
+                    ],
+                    "Multiple locations" => [
+                        'itemtype' => Location::class,
+                        'items_id' => [(string) $location1->getID(), (string) $location2->getID()],
+                    ],
+                ],
+                expected_field_values: [
+                    Ticket::class => [
+                        'plugin_fields_' . $dropdown_field->fields['name'] . 'dropdowns_id' => json_encode([$value1->getID(), $value2->getID()]),
+                        $locations_field->fields['name'] => json_encode([$location1->getID(), $location2->getID()]),
+                    ],
+                ],
+            );
+        } finally {
+            // delete created items for another run
+            foreach ([$value1, $value2, $location1, $location2] as $item) {
+                $item->delete($item->fields, true);
+            }
+        }
     }
 
     #[Override]

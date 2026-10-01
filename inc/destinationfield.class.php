@@ -93,6 +93,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
             ]);
 
             foreach ($answers as $answer) {
+                $value = null;
                 $question = Question::getById($answer->getQuestionId());
                 $block_id = PluginFieldsContainer::findContainer($this->itil_destination->getTarget()::class, 'dom');
                 if (!$block_id) {
@@ -134,6 +135,13 @@ class PluginFieldsDestinationField extends AbstractConfigField
                 if ($field->fields['type'] == 'glpi_item') {
                     $input[sprintf('itemtype_%s', $field_name)] = $answer->getRawAnswer()['itemtype'];
                     $input[sprintf('items_id_%s', $field_name)] = $answer->getRawAnswer()['items_id'];
+                } elseif (str_starts_with((string) $field->fields['type'], 'dropdown') && $field->fields['multiple']) {
+                    // Multiple dropdowns are submitted as an array of ids
+                    $raw_ids = (array) ($answer->getRawAnswer()['items_id'] ?? []);
+                    $input[$field_name] = array_values(array_filter(
+                        array_map(intval(...), $raw_ids),
+                        fn(int $id) => $id > 0,
+                    ));
                 } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
                     $raw_id = (int) ($answer->getRawAnswer()['items_id'] ?? 0);
                     $input[$field_name] = ($raw_id > 0) ? $raw_id : null;

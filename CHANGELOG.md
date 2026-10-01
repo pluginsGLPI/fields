@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix value mapping between a multiple dropdown field and its destination in a form
 - Fix display width for rich text fields
 - Fix massive action update on CustomAssets
 - Fix mandatory fields on a Tab block not being enforced when updating an item.
