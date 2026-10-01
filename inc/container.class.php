@@ -1909,6 +1909,24 @@ HTML;
     {
         self::preItem($item);
         if (array_key_exists('_plugin_fields_data', $item->input)) {
+            // Only save plugin fields if the user can update this specific item.
+            // Automated contexts (cron jobs, API without active profile) bypass this check.
+            if (
+                isset($_SESSION['glpiactiveprofile']['id'])
+                && $_SESSION['glpiactiveprofile']['id'] != null
+                && (
+                    // Central interface: no UPDATE right on this item type
+                    !$item::canUpdate()
+                    // Helpdesk interface: UPDATE right exists but user is not the requester (observer)
+                    || ($item instanceof CommonITILObject
+                        && Session::getCurrentInterface() === 'helpdesk'
+                        && !$item->canRequesterUpdateItem())
+                )
+            ) {
+                unset($item->input['_plugin_fields_data']);
+                return true;
+            }
+
             $data = $item->input['_plugin_fields_data'];
             $data['itemtype'] = $item::class;
             $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;

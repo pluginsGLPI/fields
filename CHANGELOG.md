@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix a field's default value not being applied to existing items and not being shown in search results for items with no dedicated row in the container table
 - Fix mandatory fields blocking automated item creation
 - Fix unclear mandatory field error when a GLPI form creating a ticket does not provide the field.
+- Fix ticket observers being able to edit and save additional fields they are not allowed to modify
 
 ## [1.24.5] - 2026-09-11
 

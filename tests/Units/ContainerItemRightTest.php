@@ -32,6 +32,12 @@ declare(strict_types=1);
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Ticket;
+use Profile;
+use User;
+use Ticket_User;
+use CommonITILActor;
+use CommonDBTM;
 use Computer;
 use Entity;
 use Glpi\Tests\DbTestCase;
@@ -174,5 +180,138 @@ final class ContainerItemRightTest extends DbTestCase
             'plugin_fields_containers_id' => $containers_id,
         ]));
         $this->updateItem(PluginFieldsProfile::class, $profile_right->getID(), ['right' => $right]);
+    }
+
+    /**
+     * Test rendering: helpdesk observer cannot edit fields
+     * An observer on a ticket should see fields rendered as readonly.
+     */
+    public function testDomContainerRenderReadOnlyForHelpdeskObserver(): void
+    {
+        $this->login();
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Observer Readonly Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Observer Test Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket for observer test',
+            'content'     => 'Test',
+            'entities_id' => $entity_id,
+        ]);
+
+        // Create a helpdesk observer role
+        $observer_profile = $this->createItem(Profile::class, [
+            'name'      => 'Helpdesk_Observer_' . $this->getUniqueString(),
+            'interface' => 'helpdesk',
+        ]);
+        // Grant write access on container
+        $this->setRightOnContainerForProfile($observer_profile->getID(), $container->getID(), READ);
+
+        // Create observer user (not requester)
+        $observer_username = 'observer_' . $this->getUniqueString();
+        $this->createItem(User::class, [
+            'name'          => $observer_username,
+            'password'      => 'Test1234!',
+            'password2'     => 'Test1234!',
+            'profiles_id'   => $observer_profile->getID(),
+            '_profiles_id'  => $observer_profile->getID(),
+            '_entities_id'  => $entity_id,
+            '_is_recursive' => true,
+        ], ['password', 'password2']);
+
+        // Add observer to ticket
+        $this->createItem(Ticket_User::class, [
+            'tickets_id' => $ticket->getID(),
+            'users_id'   => getItemByTypeName(User::class, $observer_username, true),
+            'type'       => CommonITILActor::OBSERVER,
+        ]);
+
+        // Login as observer and render
+        $this->login($observer_username, 'Test1234!');
+        $this->setEntity($entity_id, true);
+
+        $html = $this->renderDomContainerForAny($container->getID(), $ticket);
+
+        // Assert: field must be rendered with readonly attribute
+        $this->assertStringContainsString(
+            'readonly',
+            $html,
+            'Fields must be rendered as readonly for helpdesk observers.',
+        );
+    }
+
+    /**
+     * Test rendering: new item creation allows editing even for limited profiles
+     * When creating a new ticket, fields should remain editable regardless of observer role.
+     */
+    public function testDomContainerRenderEditableOnNewTicketCreation(): void
+    {
+        $this->login();
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'New Ticket Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'New Ticket Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+
+        // Create new (non-existent) ticket for rendering
+        $new_ticket = new Ticket();
+        $new_ticket->fields['entities_id'] = $entity_id;
+
+        $html = $this->renderDomContainerForAny($container->getID(), $new_ticket);
+
+        // Assert: field must NOT be readonly when creating a new ticket
+        $this->assertStringNotContainsString(
+            'readonly',
+            $html,
+            'Fields must remain editable when creating a new ticket.',
+        );
+    }
+
+    private function renderDomContainerForAny(int $containers_id, CommonDBTM $item): string
+    {
+        ob_start();
+        PluginFieldsField::showDomContainer($containers_id, $item);
+        return (string) ob_get_clean();
+    }
+
+    private function setRightOnContainerForProfile(int $profile_id, int $containers_id, int $right): void
+    {
+        $profile_right = new PluginFieldsProfile();
+        if ($profile_right->getFromDBByCrit([
+            'profiles_id'                 => $profile_id,
+            'plugin_fields_containers_id' => $containers_id,
+        ])) {
+            $this->updateItem(PluginFieldsProfile::class, $profile_right->getID(), ['right' => $right]);
+        }
     }
 }
