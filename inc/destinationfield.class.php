@@ -93,6 +93,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
             ]);
 
             foreach ($answers as $answer) {
+                $value = null;
                 $question = Question::getById($answer->getQuestionId());
                 $block_id = PluginFieldsContainer::findContainer($this->itil_destination->getTarget()::class, 'dom');
                 if (!$block_id) {
