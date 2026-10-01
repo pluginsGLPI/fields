@@ -1012,7 +1012,7 @@ class PluginFieldsContainer extends CommonDBTM
             $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
             if (in_array($itemtype, $itemtypes)) {
                 $classname = self::getClassname($itemtype, $container['name']);
-                if (!$DB->tableExists($classname::getTable())) {
+                if (!$DB->tableExists(getTableForItemType($classname))) {
                     // Disabled oversized container: no table to purge from.
                     continue;
                 }
