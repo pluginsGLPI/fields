@@ -854,20 +854,6 @@ class PluginFieldsContainer extends CommonDBTM
     public function showForm($ID, $options = [])
     {
         $this->initForm($ID, $options);
-
-        if (!$this->isNewID($ID)) {
-            $btn_url    = Plugin::getWebDir('fields') . '/front/export_to_yaml.php?id=' . $ID;
-            $btn_label  = __('Export to YAML', 'fields');
-            $export_btn = <<<HTML
-                <a href="{$btn_url}" class="btn btn-ghost-secondary"
-                   title="{$btn_label}"
-                   data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <i class="fas fa-file-export fa-lg"></i>
-                </a>
-HTML;
-            $options['header_toolbar'] = [$export_btn];
-        }
-
         $this->showFormHeader($options);
         $rand = mt_rand();
 
