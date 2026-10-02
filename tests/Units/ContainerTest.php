@@ -38,6 +38,7 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use Laminas\Mail\Storage\Message;
 use MailCollector;
+use Monitor;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
@@ -130,6 +131,54 @@ final class ContainerTest extends DbTestCase
 
         $this->assertFalse($result);
         $this->hasSessionMessages(ERROR, ['At least one selected object is not a valid element type']);
+    }
+
+    #[DataProvider('provideMalformedItemtypes')]
+    public function testUpdateWithMalformedItemtypeIsRejected(string $itemtype): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'UpdMalformed ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $original_itemtypes = $container->fields['itemtypes'];
+
+        $result = $container->update([
+            'id'        => $container->getID(),
+            'itemtypes' => json_encode([$itemtype]),
+        ]);
+
+        $this->assertFalse($result);
+        $this->hasSessionMessages(ERROR, ['At least one selected object is not a valid element type']);
+        $container->getFromDB($container->getID());
+        $this->assertSame($original_itemtypes, $container->fields['itemtypes']);
+    }
+
+    public function testUpdateWithValidItemtypesReencodesThem(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'UpdValid ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $result = $container->update([
+            'id'        => $container->getID(),
+            'itemtypes' => json_encode([Computer::class, Monitor::class]),
+        ]);
+
+        $this->assertTrue($result);
+        $container->getFromDB($container->getID());
+        $this->assertSame(
+            [Computer::class, Monitor::class],
+            PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']),
+        );
     }
 
     public function testAddWithNamespacedItemtypeSucceeds(): void

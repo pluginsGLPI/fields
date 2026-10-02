@@ -52,6 +52,8 @@ if (isset($_POST['add'])) {
     Html::redirect(PLUGINFIELDS_WEB_DIR . '/front/container.php');
 } elseif (isset($_POST['update'])) {
     $container->check($_POST['id'], UPDATE);
+    // structural fields drive generated classes and tables; only migrations may change them
+    unset($_POST['itemtypes'], $_POST['type'], $_POST['subtype']);
     $container->update($_POST);
     Html::back();
 } elseif (isset($_POST['update_fields_values'])) {

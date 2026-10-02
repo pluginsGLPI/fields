@@ -624,7 +624,31 @@ class PluginFieldsContainer extends CommonDBTM
             $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) $input['label']);
         }
 
+        if (isset($input['itemtypes'])) {
+            $itemtypes = is_array($input['itemtypes'])
+                ? $input['itemtypes']
+                : PluginFieldsToolbox::decodeJSONItemtypes((string) $input['itemtypes']);
+            if (!is_array($itemtypes) || $itemtypes === [] || !$this->areValidItemtypeNames($itemtypes)) {
+                Session::AddMessageAfterRedirect(__('At least one selected object is not a valid element type', 'fields'), false, ERROR);
+
+                return false;
+            }
+
+            $input['itemtypes'] = json_encode(array_values($itemtypes));
+        }
+
         return $input;
+    }
+
+    private function areValidItemtypeNames(array $itemtypes): bool
+    {
+        foreach ($itemtypes as $itemtype) {
+            if (!is_string($itemtype) || preg_match('/^[A-Za-z_][A-Za-z0-9_\\\\]*$/', $itemtype) !== 1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function prepareInputForAdd($input)
@@ -646,12 +670,10 @@ class PluginFieldsContainer extends CommonDBTM
             $input['itemtypes'] = [$input['itemtypes']];
         }
 
-        foreach ($input['itemtypes'] as $itemtype) {
-            if (!is_string($itemtype) || preg_match('/^[A-Za-z_][A-Za-z0-9_\\\\]*$/', $itemtype) !== 1) {
-                Session::AddMessageAfterRedirect(__('At least one selected object is not a valid element type', 'fields'), false, ERROR);
+        if (!$this->areValidItemtypeNames($input['itemtypes'])) {
+            Session::AddMessageAfterRedirect(__('At least one selected object is not a valid element type', 'fields'), false, ERROR);
 
-                return false;
-            }
+            return false;
         }
 
         if ($input['type'] === 'dom') {
