@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Fix blocks export, block deletion and read-only fields not applying expected checks.
+- Fix read-only status overrides being resolved with the previous status instead of the submitted one.
+- Fix read-only fields of "Insertion in form" blocks being overwritable from the item form.
+- Fix block's associated item types and type being changeable after creation.
+- Remove obsolete FusionInventory integration.
+
+### Changed
+
+- "GLPI item" field now rejects a new reference to an item the current user cannot read, instead of silently clearing it. Automated writes (CLI, cron, inventory) are not affected.
+
 ## [1.21.30] 2026-09-11
 
 - Fix additional fields being saved on an item the user is not allowed to update.
