@@ -38,10 +38,12 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use Laminas\Mail\Storage\Message;
 use MailCollector;
+use Monitor;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
 use PluginFieldsField;
+use PluginFieldsToolbox;
 use Search;
 use Session;
 use Ticket;
@@ -105,6 +107,95 @@ final class ContainerTest extends DbTestCase
         $result = $container->add($input);
 
         $this->assertFalse($result);
+    }
+
+    public static function provideMalformedItemtypes(): iterable
+    {
+        yield 'path separator' => ['itemtype' => '../Computer'];
+        yield 'leading digit' => ['itemtype' => '1Computer'];
+        yield 'whitespace' => ['itemtype' => 'Computer Model'];
+    }
+
+    #[DataProvider('provideMalformedItemtypes')]
+    public function testAddWithMalformedItemtypeIsRejected(string $itemtype): void
+    {
+        $container = new PluginFieldsContainer();
+        $result = $container->add([
+            'label'        => 'Malformed itemtype',
+            'type'         => 'tab',
+            'itemtypes'    => [$itemtype],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $this->assertFalse($result);
+        $this->hasSessionMessages(ERROR, ['At least one selected object is not a valid element type']);
+    }
+
+    #[DataProvider('provideMalformedItemtypes')]
+    public function testUpdateWithMalformedItemtypeIsRejected(string $itemtype): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'UpdMalformed ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $original_itemtypes = $container->fields['itemtypes'];
+
+        $result = $container->update([
+            'id'        => $container->getID(),
+            'itemtypes' => json_encode([$itemtype]),
+        ]);
+
+        $this->assertFalse($result);
+        $this->hasSessionMessages(ERROR, ['At least one selected object is not a valid element type']);
+        $container->getFromDB($container->getID());
+        $this->assertSame($original_itemtypes, $container->fields['itemtypes']);
+    }
+
+    public function testUpdateWithValidItemtypesReencodesThem(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'UpdValid ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $result = $container->update([
+            'id'        => $container->getID(),
+            'itemtypes' => json_encode([Computer::class, Monitor::class]),
+        ]);
+
+        $this->assertTrue($result);
+        $container->getFromDB($container->getID());
+        $this->assertSame(
+            [Computer::class, Monitor::class],
+            PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']),
+        );
+    }
+
+    public function testAddWithNamespacedItemtypeSucceeds(): void
+    {
+        $definition  = $this->initAssetDefinition('ns' . substr((string) $this->getUniqueString(), 0, 6));
+        $asset_class = $definition->getAssetClassName();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Ns ' . substr((string) $this->getUniqueString(), 0, 4),
+            'type'         => 'tab',
+            'itemtypes'    => [$asset_class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $this->assertContains($asset_class, PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']));
     }
 
     public function testAddWithValidItemtypesSucceeds(): void

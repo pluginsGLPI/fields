@@ -154,15 +154,6 @@ function plugin_init_fields()
             }
         }
 
-        if (Plugin::isPluginActive('fusioninventory')) {
-            $PLUGIN_HOOKS['fusioninventory_inventory']['fields']
-            = ['PluginFieldsInventory', 'updateInventory'];
-        }
-
-        // complete rule engine
-        $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];
-        $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
-
         if (isset($_SESSION['glpiactiveentities'])) {
             // add link in plugin page
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';
@@ -330,6 +321,13 @@ function plugin_fields_exportBlockAsYaml($container_id = null)
         $container_obj = new PluginFieldsContainer();
         $containers    = $container_obj->find($where);
         foreach ($containers as $container) {
+            if (
+                !Session::haveAccessToEntity((int) $container['entities_id'], (bool) $container['is_recursive'])
+                || PluginFieldsProfile::getRightOnContainer((int) ($_SESSION['glpiactiveprofile']['id'] ?? 0), (int) $container['id']) < READ
+            ) {
+                continue;
+            }
+
             $itemtypes = ((string) $container['itemtypes'] !== '')
                 ? PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes'], true)
                 : [];

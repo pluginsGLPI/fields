@@ -31,10 +31,14 @@
 namespace GlpiPlugin\Fields\Controller;
 
 use Glpi\Controller\AbstractController;
+use Glpi\Exception\Http\AccessDeniedHttpException;
+use Glpi\Exception\Http\NotFoundHttpException;
 use Glpi\Form\Form;
 use PluginFieldsContainer;
 use PluginFieldsField;
+use PluginFieldsProfile;
 use PluginFieldsQuestionType;
+use Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -57,6 +61,22 @@ final class QuestionTypeAjaxController extends AbstractController
             return new Response('Invalid block_id', Response::HTTP_BAD_REQUEST);
         }
 
+        if (!Form::canUpdate()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $block = PluginFieldsContainer::getById((int) $block_id);
+        if ($block === false) {
+            throw new NotFoundHttpException();
+        }
+
+        if (
+            !Session::haveAccessToEntity($block->fields['entities_id'], (bool) $block->fields['is_recursive'])
+            || PluginFieldsProfile::getRightOnContainer((int) ($_SESSION['glpiactiveprofile']['id'] ?? 0), $block->getID()) < READ
+        ) {
+            throw new AccessDeniedHttpException();
+        }
+
         // Get available fields for the selected block
         $available_fields = PluginFieldsQuestionType::getFieldsFromBlock((int) $block_id);
 
@@ -73,7 +93,7 @@ final class QuestionTypeAjaxController extends AbstractController
         }
 
         // Get the container and field details
-        $current_container = PluginFieldsContainer::getById((int) $block_id);
+        $current_container = $block;
         $current_field = PluginFieldsField::getById($current_field_id);
 
         if (!$current_container || !$current_field || empty($current_field->fields)) {
