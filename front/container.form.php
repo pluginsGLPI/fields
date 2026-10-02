@@ -55,20 +55,27 @@ if (isset($_POST['add'])) {
     $container->update($_POST);
     Html::back();
 } elseif (isset($_POST['update_fields_values'])) {
+    if (!PluginFieldsContainer::canUpdateTargetItem($_REQUEST['itemtype'] ?? '', (int) ($_REQUEST['items_id'] ?? 0))) {
+        throw new AccessDeniedHttpException();
+    }
+
     $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_POST['plugin_fields_containers_id']);
     if ($right > READ) {
+        $dbu  = new DbUtils();
+        $item = $dbu->getItemForItemtype($_REQUEST['itemtype']);
+        if ($item === false || !$item->can((int) $_REQUEST['items_id'], UPDATE)) {
+            throw new AccessDeniedHttpException();
+        }
+
         $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
     }
 
     Html::back();
 } else {
 
-    if ((int) $_GET['id'] > 0) {
-        $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $_GET['id']);
-        if ($right < READ) {
-            throw new AccessDeniedHttpException();
-        }
-    }
+    // Admin config screen: gate with the standard "config" right, not the per-profile
+    // block-visibility right (which would let an admin lock himself out of the config).
+    $container->check((int) $_GET['id'] > 0 ? (int) $_GET['id'] : -1, READ);
 
     Html::header(
         __('Additional fields', 'fields'),

@@ -242,6 +242,10 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 return '';
             }
 
+            if (is_array($answer) && array_key_exists('items_id', $answer)) {
+                $answer = $answer['items_id'];
+            }
+
             if (!is_array($answer)) {
                 $answer = [$answer];
             }

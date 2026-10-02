@@ -30,6 +30,7 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Computer;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
@@ -37,6 +38,7 @@ use PluginFieldsContainer;
 use Ticket;
 use Entity;
 use Notification;
+use Problem;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -64,10 +66,14 @@ final class ContainerItemUpdateTest extends DbTestCase
     public function setUp(): void
     {
         GLPITestCase::setUp();
+
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
     }
 
     public function tearDown(): void
     {
+        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+
         global $DB;
         $DB->setMustUnsanitizeData(false); // Be sure to switch back to disabled unsanitization.
 
@@ -299,18 +305,16 @@ final class ContainerItemUpdateTest extends DbTestCase
 
         $this->simulateApiBoot();
 
-        $ticket = new Ticket();
-        $ticket_id = $ticket->add([
-            'name'        => 'API created ticket',
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket created via API',
             'content'     => 'Test creation',
             'entities_id' => 0,
-            $field_name   => 'created via api',
-        ]);
-        $this->assertGreaterThan(0, $ticket_id);
+            $field_name   => 'api create value',
+        ], [$field_name]);
 
-        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
+        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket->getID(), $container->getID());
         $this->assertNotFalse($plugin_row, 'Plugin fields row must exist after API-like creation.');
-        $this->assertSame('created via api', $plugin_row[$field_name]);
+        $this->assertSame('api create value', $plugin_row[$field_name]);
     }
 
     public function testCreateIsBlockedWhenMandatoryDomFieldIsMissing(): void
@@ -351,6 +355,10 @@ final class ContainerItemUpdateTest extends DbTestCase
             __('Some mandatory fields are empty', 'fields'),
             ERROR,
         );
+        $this->hasSessionMessageThatContains(
+            __('The form or source creating this item does not provide the mandatory fields above: map them to it, or make them optional.', 'fields'),
+            ERROR,
+        );
 
         // Creation with the mandatory field filled must succeed.
         $ticket = new Ticket();
@@ -365,6 +373,69 @@ final class ContainerItemUpdateTest extends DbTestCase
         $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
         $this->assertNotFalse($plugin_row);
         $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateIsNotBlockedForInventoryCreatedItem(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Inventory Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $this->createItem(Computer::class, [
+            'name'        => 'Computer created by the inventory agent',
+            'entities_id' => 0,
+            'is_dynamic'  => 1,
+        ], ['is_dynamic']);
+    }
+
+    public function testCreateIsNotBlockedInApiContext(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Api Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $this->simulateApiBoot();
+
+        $_SERVER['REQUEST_URI']     = '/apirest.php/Ticket';
+        $this->assertTrue(isAPI());
+
+        $this->createItem(Ticket::class, [
+            'name'        => 'Ticket created via the REST API',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+        ]);
     }
 
     public function testCreateIsNotBlockedWhenMandatoryTabOrDomtabFieldIsMissing(): void
@@ -429,6 +500,109 @@ final class ContainerItemUpdateTest extends DbTestCase
             'c_id'        => $domtab_container->getID(),
         ]);
         $this->assertGreaterThan(0, $ticket_id, 'A mandatory domtab field must not block creation.');
+    }
+
+    /**
+     * A mandatory TAB field left empty must block a later update, even when
+     * that update never touches the Tab (e.g. a plain status change on the
+     * main form). Regression test for GH issue #1268.
+     */
+    public function testUpdateIsBlockedWhenMandatoryTabFieldWasNeverFilled(): void
+    {
+        $this->login();
+
+        // Problem is used here (not Ticket) since it has no pre-existing "dom"
+        // container in this environment, which would otherwise take priority
+        // over the "tab" container when no explicit c_id is given.
+        $tab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Tab Update Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Problem::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $tab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $problem = $this->createItem(Problem::class, [
+            'name'        => 'Problem with mandatory tab field missing',
+            'content'     => 'Test',
+            'entities_id' => 0,
+        ]);
+
+        // Update the main form only, without ever opening the Tab.
+        $updated = $problem->update([
+            'id'   => $problem->getID(),
+            'name' => 'Renamed while tab field still empty',
+        ]);
+
+        $this->assertFalse($updated, 'Update must be blocked while a mandatory tab field is empty.');
+        $this->hasSessionMessageThatContains(
+            __('Some mandatory fields are empty', 'fields'),
+            ERROR,
+        );
+
+        $problem->getFromDB($problem->getID());
+        $this->assertNotSame('Renamed while tab field still empty', $problem->fields['name']);
+    }
+
+    /**
+     * Once a mandatory TAB field has been filled, later updates that don't
+     * touch the Tab must not be wrongly blocked.
+     */
+    public function testUpdateIsNotBlockedWhenMandatoryTabFieldIsAlreadyFilled(): void
+    {
+        $this->login();
+
+        $tab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Tab Filled Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Problem::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $tab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $problem = $this->createItem(Problem::class, [
+            'name'        => 'Problem with mandatory tab field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+        ]);
+
+        // Fill the mandatory tab field through its own container update.
+        $this->updateItem(Problem::class, $problem->getID(), [
+            'id'        => $problem->getID(),
+            'c_id'      => $tab_container->getID(),
+            $field_name => 'filled value',
+        ], [$field_name, 'c_id']);
+
+        // A later update that doesn't touch the tab must succeed.
+        $updated = $problem->update([
+            'id'   => $problem->getID(),
+            'name' => 'Renamed after tab field was filled',
+        ]);
+        $this->assertTrue($updated, 'Update must not be blocked once the mandatory tab field is filled.');
+
+        $problem->getFromDB($problem->getID());
+        $this->assertSame('Renamed after tab field was filled', $problem->fields['name']);
     }
 
     /**

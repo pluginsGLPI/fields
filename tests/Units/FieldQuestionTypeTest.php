@@ -38,10 +38,12 @@ use Glpi\Form\Condition\LogicOperator;
 use Glpi\Form\Condition\Type;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Form\QuestionType\QuestionTypesManager;
 use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
+use Location;
 use LogicException;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
@@ -186,6 +188,58 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
                 'items_id' => '0',
             ],
         ]);
+    }
+
+    public function testFormatRawAnswerForMultipleGlpiItemDropdown(): void
+    {
+        $this->login();
+
+        // Arrange: create a multiple "dropdown-Location" field
+        $this->fields['locations'] = $this->createField([
+            'label'                                     => 'Locations',
+            'type'                                      => 'dropdown-' . Location::class,
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ], ['default_value']);
+
+        $location1 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 1',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 2',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Locations question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('locations')),
+        );
+        $form = $this->createForm($builder);
+        $question = Question::getById($this->getQuestionId($form, "Locations question"));
+
+        try {
+            // Act: format the answer as submitted by the end user template
+            $formatted = (new PluginFieldsQuestionType())->formatRawAnswer([
+                'itemtype' => Location::class,
+                'items_id' => [(string) $location1->getID(), (string) $location2->getID()],
+            ], $question);
+
+            // Assert: both location names are displayed
+            $this->assertEquals(
+                $location1->fields['name'] . ', ' . $location2->fields['name'],
+                $formatted,
+            );
+        } finally {
+            // delete locations for another run
+            $location1->delete($location1->fields, true);
+            $location2->delete($location2->fields, true);
+        }
     }
 
     public function testFieldDeletionWhenUsedInForm(): void

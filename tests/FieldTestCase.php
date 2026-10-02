@@ -93,12 +93,12 @@ trait FieldTestTrait
         return $container;
     }
 
-    public function createField(array $inputs): PluginFieldsField
+    public function createField(array $inputs, array $skip_fields = []): PluginFieldsField
     {
         // Re-login to ensure we are logged in
         $this->login();
 
-        $field = $this->createItem(PluginFieldsField::class, $inputs, ['allowed_values', 'question_types']);
+        $field = $this->createItem(PluginFieldsField::class, $inputs, array_merge(['allowed_values', 'question_types'], $skip_fields));
         self::$createdFields[] = $field;
 
         // Re-initialize fields plugin to register new field logic

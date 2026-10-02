@@ -10,6 +10,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Add a "Conditions to hide field" tab on containers, to hide a single field of a block based on a condition on the main object, instead of hiding the whole block.
+- Display translated fields names in fields' tab
+
+### Fixed
+
+- Fix value mapping between a multiple dropdown field and its destination in a form
+- Fix display width for rich text fields
+- Fix massive action update on CustomAssets
+- Fix mandatory fields on a Tab block not being enforced when updating an item.
+- Fix administrators losing access to a block's configuration after setting a profile to "no access" on that block.
+- Fix dependency conflict with GLPI core by no longer vendoring symfony/deprecation-contracts and symfony/polyfill-ctype.
+- Fix default field values not being applied when fields are empty on creation
+- Fix a field's default value not being applied to existing items and not being shown in search results for items with no dedicated row in the container table
+- Fix mandatory fields blocking automated item creation
+- Fix unclear mandatory field error when a GLPI form creating a ticket does not provide the field.
+
+## [1.24.5] - 2026-09-11
+
+### Fixed
+
+- Fix additional fields being saved on an item the user is not allowed to update
+- Fix additional fields being displayed for an item the user is not allowed to read
+- Fix invalid characters being kept in the generated field name
+- Fix missing right checks on the target item when displaying or saving additional fields values
 
 ## [1.24.4] - 2026-08-06
 
