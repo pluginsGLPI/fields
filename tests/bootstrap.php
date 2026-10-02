@@ -39,6 +39,10 @@ define('TU_USER', 'glpi');
 define('TU_PASS', 'glpi');
 define('GLPI_LOG_LVL', 'DEBUG');
 
+if (!is_dir(GLPI_LOG_DIR)) {
+    mkdir(GLPI_LOG_DIR, 0755, true);
+}
+
 require GLPI_ROOT . '/inc/includes.php';
 
 Plugin::load('fields', true);

@@ -45,12 +45,14 @@ if (isset($_POST['add'])) {
     $container->check($_POST['id'], DELETE);
     $ok = $container->delete($_POST);
     Html::redirect(PLUGINFIELDS_WEB_DIR . '/front/container.php');
-} elseif (isset($_REQUEST['purge'])) {
-    $container->check($_REQUEST['id'], PURGE);
-    $container->delete($_REQUEST, true);
+} elseif (isset($_POST['purge'])) {
+    $container->check($_POST['id'], PURGE);
+    $container->delete($_POST, true);
     Html::redirect(PLUGINFIELDS_WEB_DIR . '/front/container.php');
 } elseif (isset($_POST['update'])) {
     $container->check($_POST['id'], UPDATE);
+    // structural fields drive generated classes and tables; only migrations may change them
+    unset($_POST['itemtypes'], $_POST['type'], $_POST['subtype']);
     $container->update($_POST);
     Html::back();
 } elseif (isset($_POST['update_fields_values'])) {
@@ -66,7 +68,7 @@ if (isset($_POST['add'])) {
             Html::displayRightError();
         }
 
-        $container->updateFieldsValues($_REQUEST, $_REQUEST['itemtype'], false);
+        $container->updateFieldsValues(PluginFieldsContainer::removeReadonlyValues($_REQUEST, $item), $_REQUEST['itemtype'], false);
     }
     Html::back();
 } else {
