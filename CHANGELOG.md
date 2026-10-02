@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix read-only status overrides being resolved from the previous status instead of the submitted one.
 - Fix read-only fields of an "Insertion in form" block being overwritable from the item form.
 - Fix a block's associated item types, type and tab being changeable after creation.
-- Remove obsolete FusionInventory inventory hook.
+- Remove obsolete FusionInventory integration.
 
 ### Changed
 

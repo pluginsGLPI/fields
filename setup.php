@@ -154,10 +154,6 @@ function plugin_init_fields()
             }
         }
 
-        // complete rule engine
-        $PLUGIN_HOOKS['use_rules']['fields']    = ['PluginFusioninventoryTaskpostactionRule'];
-        $PLUGIN_HOOKS['rule_matched']['fields'] = 'plugin_fields_rule_matched';
-
         if (isset($_SESSION['glpiactiveentities'])) {
             // add link in plugin page
             $PLUGIN_HOOKS['config_page']['fields'] = 'front/container.php';

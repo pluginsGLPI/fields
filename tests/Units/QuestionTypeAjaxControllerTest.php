@@ -37,6 +37,7 @@ use Glpi\Exception\Http\AccessDeniedHttpException;
 use Glpi\Exception\Http\NotFoundHttpException;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
 use GlpiPlugin\Fields\Controller\QuestionTypeAjaxController;
+use PluginFieldsProfile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -67,6 +68,22 @@ final class QuestionTypeAjaxControllerTest extends QuestionTypeTestCase
     {
         $this->login();
         $this->setEntity(getItemByTypeName(Entity::class, '_test_child_1', true), false);
+
+        $this->expectException(AccessDeniedHttpException::class);
+        $this->invokeController();
+    }
+
+    public function testBlockWithoutProfileReadRightIsDenied(): void
+    {
+        $this->login();
+        $this->setEntity($this->getTestRootEntity(true), true);
+
+        $profile_right = new PluginFieldsProfile();
+        $this->assertTrue($profile_right->getFromDBByCrit([
+            'profiles_id'                 => $_SESSION['glpiactiveprofile']['id'],
+            'plugin_fields_containers_id' => $this->block->getID(),
+        ]));
+        $this->updateItem(PluginFieldsProfile::class, $profile_right->getID(), ['right' => 0]);
 
         $this->expectException(AccessDeniedHttpException::class);
         $this->invokeController();

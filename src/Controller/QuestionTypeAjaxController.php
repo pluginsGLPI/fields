@@ -36,6 +36,7 @@ use Glpi\Exception\Http\NotFoundHttpException;
 use Glpi\Form\Form;
 use PluginFieldsContainer;
 use PluginFieldsField;
+use PluginFieldsProfile;
 use PluginFieldsQuestionType;
 use Session;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +70,10 @@ final class QuestionTypeAjaxController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        if (!Session::haveAccessToEntity($block->fields['entities_id'], (bool) $block->fields['is_recursive'])) {
+        if (
+            !Session::haveAccessToEntity($block->fields['entities_id'], (bool) $block->fields['is_recursive'])
+            || PluginFieldsProfile::getRightOnContainer((int) ($_SESSION['glpiactiveprofile']['id'] ?? 0), $block->getID()) < READ
+        ) {
             throw new AccessDeniedHttpException();
         }
 
