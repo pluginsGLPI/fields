@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-Session::checkRight(\Config::$rightname, READ);
+Session::checkRight(Config::$rightname, READ);
 
 $status_override = new PluginFieldsStatusOverride();
 if (isset($_POST['add'])) {

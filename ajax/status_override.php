@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-Session::checkRight(\Config::$rightname, READ);
+Session::checkRight(Config::$rightname, READ);
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_status_dropdown') {

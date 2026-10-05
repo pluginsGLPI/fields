@@ -42,7 +42,7 @@ class PluginFieldsMenu extends CommonGLPI
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-        if (!Session::haveRight(\Entity::$rightname, READ)) {
+        if (!Session::haveRight(Entity::$rightname, READ)) {
             return false;
         }
 

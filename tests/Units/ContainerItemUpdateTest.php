@@ -68,11 +68,14 @@ final class ContainerItemUpdateTest extends DbTestCase
         GLPITestCase::setUp();
 
         $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+        // A real web request always carries a client IP; without it SessionTracker::recordNewSession()
+        // would try to insert a NULL ip_address when login() is called under the faked web context.
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
     }
 
     public function tearDown(): void
     {
-        unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+        unset($GLOBALS['GLPI_IS_COMMAND_LINE'], $_SERVER['REMOTE_ADDR']);
 
         global $DB;
         $DB->setMustUnsanitizeData(false); // Be sure to switch back to disabled unsanitization.

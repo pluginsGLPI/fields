@@ -1569,7 +1569,7 @@ JAVASCRIPT,
                 continue;
             }
 
-            $DB->update($table, [$column => $value], [1]);
+            $DB->update($table, [$column => $value], [new QueryExpression('1')]);
         }
     }
 

@@ -38,7 +38,7 @@ Html::header(
     'fieldscontainer',
 );
 
-Session::checkRight(\Config::$rightname, READ);
+Session::checkRight(Config::$rightname, READ);
 
 PluginFieldsContainer::titleList();
 Search::show('PluginFieldsContainer');

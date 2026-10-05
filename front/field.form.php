@@ -33,7 +33,7 @@ if (empty($_GET['id'])) {
     $_GET['id'] = '';
 }
 
-Session::checkRight(\Config::$rightname, READ);
+Session::checkRight(Config::$rightname, READ);
 
 $field = new PluginFieldsField();
 
