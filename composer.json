@@ -9,6 +9,7 @@
     },
     "config": {
         "optimize-autoloader": true,
+        "autoloader-suffix": "PluginFields",
         "platform": {
             "php": "8.2.99"
         },
