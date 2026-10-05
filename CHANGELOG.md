@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix read-only fields of an "Insertion in form" block being overwritable from the item form.
 - Fix a block's associated item types, type and tab being changeable after creation.
 - Remove obsolete FusionInventory integration.
+- CI: declare a unique composer autoloader suffix
 
 ### Changed
 
