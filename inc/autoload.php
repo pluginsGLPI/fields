@@ -61,9 +61,8 @@ class PluginFieldsAutoloader
 
         if (count($matches) < 3) {
             return false;
-        } else {
-            return $matches;
         }
+        return $matches;
     }
 
     public function autoload($classname)
