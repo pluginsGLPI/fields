@@ -998,6 +998,9 @@ class PluginFieldsField extends CommonDBChild
         //JS to trigger any change and check if container need to be display or not
         $ajax_url = Plugin::getWebDir('fields') . '/ajax/container.php';
         $items_id = !$item->isNewItem() ? $item->getID() : 0;
+        $js_itemtype = json_encode($item::getType(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        $js_type     = json_encode($type, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        $js_subtype  = json_encode($subtype, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
         echo Html::scriptBlock(
             <<<JAVASCRIPT
             function refreshContainer() {
@@ -1025,10 +1028,10 @@ class PluginFieldsField extends CommonDBChild
                         data: {
                             action:   'get_fields_html',
                             id:       {$c_id},
-                            itemtype: '{$item::getType()}',
+                            itemtype: {$js_itemtype},
                             items_id: {$items_id},
-                            type:     '{$type}',
-                            subtype:  '{$subtype}',
+                            type:     {$js_type},
+                            subtype:  {$js_subtype},
                             input:    data
                         },
                         success: function(data) {
@@ -1084,6 +1087,27 @@ class PluginFieldsField extends CommonDBChild
             );
 JAVASCRIPT
         );
+    }
+
+    public static function getDefaultValue(array $field)
+    {
+        $value = null;
+
+        if (in_array($field['type'], ['dropdown', 'yesno']) && $field['default_value'] === '') {
+            $value = 0;
+        } elseif ($field['default_value'] !== '') {
+            $value = $field['default_value'];
+
+            // shortcut for date/datetime
+            if (
+                in_array($field['type'], ['date', 'datetime'])
+                && $value == 'now'
+            ) {
+                $value = $_SESSION['glpi_currenttime'];
+            }
+        }
+
+        return $value;
     }
 
     public static function prepareHtmlFields(
@@ -1228,19 +1252,7 @@ JAVASCRIPT
 
             //get default value
             if ($value === null) {
-                if (in_array($field['type'], ['dropdown', 'yesno']) && $field['default_value'] === '') {
-                    $value = 0;
-                } elseif ($field['default_value'] !== '') {
-                    $value = $field['default_value'];
-
-                    // shortcut for date/datetime
-                    if (
-                        in_array($field['type'], ['date', 'datetime'])
-                        && $value == 'now'
-                    ) {
-                        $value = $_SESSION['glpi_currenttime'];
-                    }
-                }
+                $value = self::getDefaultValue($field);
             }
 
             if ($field['multiple']) {

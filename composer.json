@@ -1,12 +1,12 @@
 {
     "require": {
-        "php": ">=7.4",
-        "symfony/yaml": "^5.4"
+        "php": ">=7.4"
     },
     "require-dev": {
         "glpi-project/tools": "^0.8"
     },
     "config": {
+        "autoloader-suffix": "PluginFields",
         "optimize-autoloader": true,
         "platform": {
             "php": "7.4.0"

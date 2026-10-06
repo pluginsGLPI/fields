@@ -87,7 +87,7 @@ trait FieldTestTrait
         // Re-login to ensure we are logged in
         $this->login();
 
-        $field = $this->createItem(PluginFieldsField::class, $inputs, ['allowed_values']);
+        $field = $this->createItem(PluginFieldsField::class, $inputs, ['allowed_values', 'default_value']);
         self::$createdFields[] = $field;
 
         // Re-initialize fields plugin to register new field logic
