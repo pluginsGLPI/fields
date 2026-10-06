@@ -289,11 +289,11 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 
         // Arrange: Create two locations to select
         $location1 = $this->createItem(Location::class, [
-            'name'        => 'Location Alpha',
+            'name'        => 'Destination Location Alpha',
             'entities_id' => $this->getTestRootEntity(true),
         ]);
         $location2 = $this->createItem(Location::class, [
-            'name'        => 'Location Beta',
+            'name'        => 'Destination Location Beta',
             'entities_id' => $this->getTestRootEntity(true),
         ]);
 

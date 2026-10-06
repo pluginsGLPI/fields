@@ -135,20 +135,16 @@ class PluginFieldsDestinationField extends AbstractConfigField
                 if ($field->fields['type'] == 'glpi_item') {
                     $input[sprintf('itemtype_%s', $field_name)] = $answer->getRawAnswer()['itemtype'];
                     $input[sprintf('items_id_%s', $field_name)] = $answer->getRawAnswer()['items_id'];
-                } elseif (str_starts_with((string) $field->fields['type'], 'dropdown') && $field->fields['multiple']) {
-                    // Multiple dropdowns are submitted as an array of ids
-                    $raw_ids = (array) ($answer->getRawAnswer()['items_id'] ?? []);
-                    $input[$field_name] = array_values(array_filter(
-                        array_map(intval(...), $raw_ids),
+                } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
+                    $ids = array_values(array_filter(
+                        array_map(intval(...), PluginFieldsQuestionType::extractDropdownAnswerIds($answer->getRawAnswer())),
                         fn(int $id) => $id > 0,
                     ));
-                } elseif (str_starts_with((string) $field->fields['type'], 'dropdown')) {
-                    $ids = array_map(intval(...), PluginFieldsQuestionType::extractDropdownAnswerIds($answer->getRawAnswer()));
 
                     if ($field->fields['multiple']) {
                         $input[$field_name] = $ids;
                     } else {
-                        $input[$field_name] = (int) (reset($ids) ?: 0);
+                        $input[$field_name] = $ids[0] ?? null;
                     }
                 } else {
                     $input[$field_name] = $value ?? $answer->getRawAnswer();
