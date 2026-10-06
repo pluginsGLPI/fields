@@ -56,6 +56,10 @@ if (isset($_POST['add'])) {
     unset($_POST['itemtypes'], $_POST['type'], $_POST['subtype']);
     $container->update($_POST);
     Html::back();
+} elseif (isset($_POST['rename_oversized'])) {
+    $container->check($_POST['id'], UPDATE);
+    PluginFieldsContainer::renameOversizedContainer((int) $_POST['id'], (string) ($_POST['new_name'] ?? ''));
+    Html::back();
 } elseif (isset($_POST['update_fields_values'])) {
     if (!PluginFieldsContainer::canUpdateTargetItem($_REQUEST['itemtype'] ?? '', (int) ($_REQUEST['items_id'] ?? 0))) {
         throw new AccessDeniedHttpException();
