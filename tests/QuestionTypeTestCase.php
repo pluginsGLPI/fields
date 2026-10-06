@@ -35,6 +35,7 @@ use Glpi\Form\Form;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\FormTesterTrait;
 use Glpi\Tests\GLPITestCase;
+use Location;
 use PluginFieldsContainer;
 use PluginFieldsField;
 use ReflectionClass;
@@ -74,6 +75,32 @@ abstract class QuestionTypeTestCase extends DbTestCase
         $this->fields['dropdown'] = $this->createField([
             'label'                                     => 'Dropdown',
             'type'                                      => 'dropdown',
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+        ]);
+
+        $this->fields['dropdown_multiple'] = $this->createField([
+            'label'                                     => 'Dropdown multiple',
+            'type'                                      => 'dropdown',
+            'multiple'                                  => 1,
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+        ]);
+
+        $this->fields['dropdown_location'] = $this->createField([
+            'label'                                     => 'Dropdown location',
+            'type'                                      => 'dropdown-' . Location::class,
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+        ]);
+
+        $this->fields['dropdown_location_multiple'] = $this->createField([
+            'label'                                     => 'Dropdown location multiple',
+            'type'                                      => 'dropdown-' . Location::class,
+            'multiple'                                  => 1,
             PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
             'ranking'                                   => 1,
             'is_active'                                 => 1,
