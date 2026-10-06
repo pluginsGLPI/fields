@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+- Add a "Conditions to hide field" tab on containers, to hide a single field of a block based on a condition on the main object, instead of hiding the whole block.
 - Display translated fields names in fields' tab
 - GLPI 12 compatibility
 - Add multiple-select support for "Field" dropdown questions in forms
