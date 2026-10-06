@@ -1091,6 +1091,22 @@ HTML;
         echo '<td>';
         Dropdown::showYesNo('is_active', $this->fields['is_active']);
         echo '</td>';
+        echo '<td>' . __('Entity') . ' : </td>';
+        echo '<td>';
+        Entity::dropdown(
+            [
+                'name'  => 'entities_id',
+                'value' => $this->fields['entities_id'],
+            ],
+        );
+        echo '</td>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<td>' . __('Child entities') . ' : </td>';
+        echo '<td>';
+        Dropdown::showYesNo('is_recursive', $this->fields['is_recursive']);
+        echo '</td>';
         echo '</tr>';
 
         $this->showFormButtons($options);
@@ -2499,6 +2515,13 @@ HTML;
         if (!Session::isCron()) {
             $request['WHERE'][] = ['glpi_plugin_fields_profiles.profiles_id' => (int) $_SESSION['glpiactiveprofile']['id']];
         }
+        $request['WHERE'][] = getEntitiesRestrictCriteria(
+            'glpi_plugin_fields_containers',
+            '',
+            $_SESSION['glpiactiveentities'] ?? 0,
+            true,
+            true,
+        );
 
         $iterator = $DB->request($request);
         foreach ($iterator as $data) {
