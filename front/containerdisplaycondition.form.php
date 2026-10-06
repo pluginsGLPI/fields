@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-Session::checkRight('config', READ);
+Session::checkRight(Config::$rightname, READ);
 
 $status_override = new PluginFieldsContainerDisplayCondition();
 if (isset($_POST['add'])) {

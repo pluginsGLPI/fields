@@ -52,8 +52,6 @@ use Problem;
 use Ticket;
 use User;
 
-include_once __DIR__ . '/../../../../tests/abstracts/AbstractDestinationFieldTest.php';
-
 final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 {
     use FormTesterTrait;
@@ -357,7 +355,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         $destinations = $form->getDestinations();
         foreach ($destinations as $destination) {
             $this->updateItem(
-                $destination::getType(),
+                $destination::class,
                 $destination->getId(),
                 ['config' => [PluginFieldsDestinationField::getKey() => $config->jsonSerialize()]],
                 ["config"],

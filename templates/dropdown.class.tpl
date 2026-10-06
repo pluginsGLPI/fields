@@ -2,11 +2,11 @@
 
 class %%CLASSNAME%% extends CommonTreeDropdown {
    public $field_name      = %%FIELDNAME%%;
-   public $can_be_translated = true;
+   public bool $can_be_translated = true;
 
    static function getTypeName($nb=0) {
       $item = [
-         "itemtype" => PluginFieldsField::getType(),
+         "itemtype" => PluginFieldsField::class,
          "id"       => %%FIELDID%%,
          "label"    => %%LABEL%%
       ];

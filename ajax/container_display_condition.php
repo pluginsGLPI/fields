@@ -27,7 +27,7 @@
  * @link      https://github.com/pluginsGLPI/fields
  * -------------------------------------------------------------------------
  */
-Session::checkRight('config', READ);
+Session::checkRight(Config::$rightname, READ);
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] === 'get_add_form') {

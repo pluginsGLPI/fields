@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Display translated fields names in fields' tab
+- GLPI 12 compatibility
 
 ### Fixed
 

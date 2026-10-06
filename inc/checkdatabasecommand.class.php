@@ -58,7 +58,7 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Read option
         $fix = $input->getOption('fix');

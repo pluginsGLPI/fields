@@ -42,7 +42,6 @@
                     {{ html_fields|raw }}
 
                     {% if canedit %}
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}" />
                             <div class="card-body mt-3 mx-n2 border-top d-flex flex-row-reverse align-items-start flex-wrap">
                                 <button class="btn btn-primary me-2" type="submit" name="update_fields_values" value="1">
                                     <i class="ti ti-device-floppy"></i>
