@@ -46,7 +46,6 @@ use Location;
 use Override;
 use PluginFieldsContainer;
 use PluginFieldsDestinationField;
-use PluginFieldsDropdown;
 use PluginFieldsQuestionType;
 use Problem;
 use Ticket;

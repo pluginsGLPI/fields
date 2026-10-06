@@ -43,7 +43,6 @@ use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Form\QuestionType\QuestionTypesManager;
 use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
-use Location;
 use LogicException;
 use Location;
 use PluginFieldsContainer;
