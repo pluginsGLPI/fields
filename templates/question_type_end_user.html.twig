@@ -28,12 +28,13 @@
 
 {% import 'components/form/fields_macros.html.twig' as fields %}
 
+{% set is_dropdown = field.type starts with 'dropdown' %}
+
 {% set field = field|merge({
-    'default_value': default_value.items_id ?? default_value ?? field.default_value
+    'default_value': is_dropdown ? (default_value.items_ids ?? default_value.items_id ?? default_value ?? field.default_value) : (default_value ?? field.default_value)
 }) %}
 
-{% set is_dropdown = field.type starts with 'dropdown' %}
-{% set name_suffix = is_dropdown ? '[items_id]' : '' %}
+{% set name_suffix = is_dropdown ? '[items_ids]' : '' %}
 
 {{ fields.hiddenField(
     question.getEndUserInputName() ~ '[itemtype]',

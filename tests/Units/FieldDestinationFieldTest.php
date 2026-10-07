@@ -46,13 +46,10 @@ use Location;
 use Override;
 use PluginFieldsContainer;
 use PluginFieldsDestinationField;
-use PluginFieldsDropdown;
 use PluginFieldsQuestionType;
 use Problem;
 use Ticket;
 use User;
-
-include_once __DIR__ . '/../../../../tests/abstracts/AbstractDestinationFieldTest.php';
 
 final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 {
@@ -128,25 +125,14 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             'is_readonly'                               => 0,
         ]);
         $this->fields[] = $this->createField([
-            'label'                                     => 'Multiple dropdown',
-            'type'                                      => 'dropdown',
+            'label'                                     => 'Location Field Multiple',
+            'type'                                      => 'dropdown-Location',
             'multiple'                                  => 1,
-            'default_value'                             => [],
             PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
             'ranking'                                   => 4,
             'is_active'                                 => 1,
             'is_readonly'                               => 0,
-        ], ['default_value']);
-        $this->fields[] = $this->createField([
-            'label'                                     => 'Multiple locations',
-            'type'                                      => 'dropdown-' . Location::class,
-            'multiple'                                  => 1,
-            'default_value'                             => [],
-            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
-            'ranking'                                   => 5,
-            'is_active'                                 => 1,
-            'is_readonly'                               => 0,
-        ], ['default_value']);
+        ]);
     }
 
     public function setUp(): void
@@ -253,88 +239,85 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             'entities_id' => $this->getTestRootEntity(true),
         ]);
 
+        $expected_field_values = [
+            Ticket::class => [
+                $this->fields[4]->fields['name'] => $location->getID(),
+            ],
+        ];
+
+        // The end user template submits dropdowns as an array containing the selected itemtype and items_ids.
         $this->sendFormAndAssertITILObjectAdditionalFields(
             form: $form,
             config: new SimpleValueConfig(1),
             answers: [
-                // The end user template submits dropdowns as an array
-                // containing the selected itemtype and items_id.
+                "Location Field" => [
+                    'itemtype'  => Location::class,
+                    'items_ids' => $location->getID(),
+                ],
+            ],
+            expected_field_values: $expected_field_values,
+        );
+
+        // Answers submitted before the 'items_ids' rename are stored with a singular 'items_id' key
+        $this->sendFormAndAssertITILObjectAdditionalFields(
+            form: $form,
+            config: new SimpleValueConfig(1),
+            answers: [
                 "Location Field" => [
                     'itemtype' => Location::class,
                     'items_id' => $location->getID(),
                 ],
             ],
-            expected_field_values: [
-                Ticket::class => [
-                    $this->fields[4]->fields['name'] => $location->getID(),
-                ],
-            ],
+            expected_field_values: $expected_field_values,
         );
 
         // delete location for another run
         $location->delete($location->fields, true);
     }
 
-    public function testDestinationWithMultipleDropdownAdditionalFields(): void
+    public function testDestinationWithMultipleLocationAdditionalFields(): void
     {
         $this->login();
+        $form = $this->createForm((new FormBuilder())->addQuestion(
+            "Location Field Multiple",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode([
+                'block_id' => $this->blocks[Ticket::class]->getID(),
+                'field_id' => $this->fields[5]->getID(),
+            ]),
+        ));
 
-        $dropdown_field  = $this->fields[5];
-        $locations_field = $this->fields[6];
-
-        $form = $this->createForm(
-            (new FormBuilder())
-                ->addQuestion("Multiple dropdown", PluginFieldsQuestionType::class, extra_data: json_encode([
-                    'block_id' => $this->blocks[Ticket::class]->getID(),
-                    'field_id' => $dropdown_field->getID(),
-                ]))
-                ->addQuestion("Multiple locations", PluginFieldsQuestionType::class, extra_data: json_encode([
-                    'block_id' => $this->blocks[Ticket::class]->getID(),
-                    'field_id' => $locations_field->getID(),
-                ])),
-        );
-
-        $dropdown_class = PluginFieldsDropdown::getClassname($dropdown_field->fields['name']);
-        $value1 = $this->createItem($dropdown_class, ['name' => 'Value 1', 'entities_id' => 0]);
-        $value2 = $this->createItem($dropdown_class, ['name' => 'Value 2', 'entities_id' => 0]);
-
+        // Arrange: Create two locations to select
         $location1 = $this->createItem(Location::class, [
-            'name'        => 'Location 1',
+            'name'        => 'Destination Location Alpha',
             'entities_id' => $this->getTestRootEntity(true),
         ]);
         $location2 = $this->createItem(Location::class, [
-            'name'        => 'Location 2',
+            'name'        => 'Destination Location Beta',
             'entities_id' => $this->getTestRootEntity(true),
         ]);
 
-        try {
-            $this->sendFormAndAssertITILObjectAdditionalFields(
-                form: $form,
-                config: new SimpleValueConfig(1),
-                answers: [
-                    // Multiple dropdowns are submitted as an array of ids
-                    "Multiple dropdown" => [
-                        'itemtype' => $dropdown_class,
-                        'items_id' => [(string) $value1->getID(), (string) $value2->getID()],
-                    ],
-                    "Multiple locations" => [
-                        'itemtype' => Location::class,
-                        'items_id' => [(string) $location1->getID(), (string) $location2->getID()],
-                    ],
+        $this->sendFormAndAssertITILObjectAdditionalFields(
+            form: $form,
+            config: new SimpleValueConfig(1),
+            answers: [
+                // This is the shape a real multi-select submission produces:
+                // items_ids as an array of the selected ids
+                "Location Field Multiple" => [
+                    'itemtype'  => Location::class,
+                    'items_ids' => [$location1->getID(), $location2->getID()],
                 ],
-                expected_field_values: [
-                    Ticket::class => [
-                        'plugin_fields_' . $dropdown_field->fields['name'] . 'dropdowns_id' => json_encode([$value1->getID(), $value2->getID()]),
-                        $locations_field->fields['name'] => json_encode([$location1->getID(), $location2->getID()]),
-                    ],
+            ],
+            expected_field_values: [
+                Ticket::class => [
+                    // 'multiple' fields are stored as a JSON-encoded array of all selected ids
+                    $this->fields[5]->fields['name'] => json_encode([$location1->getID(), $location2->getID()]),
                 ],
-            );
-        } finally {
-            // delete created items for another run
-            foreach ([$value1, $value2, $location1, $location2] as $item) {
-                $item->delete($item->fields, true);
-            }
-        }
+            ],
+        );
+
+        $location1->delete($location1->fields, true);
+        $location2->delete($location2->fields, true);
     }
 
     #[Override]
@@ -357,7 +340,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         $destinations = $form->getDestinations();
         foreach ($destinations as $destination) {
             $this->updateItem(
-                $destination::getType(),
+                $destination::class,
                 $destination->getId(),
                 ['config' => [PluginFieldsDestinationField::getKey() => $config->jsonSerialize()]],
                 ["config"],

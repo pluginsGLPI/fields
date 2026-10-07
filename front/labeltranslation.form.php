@@ -30,7 +30,7 @@
 
 declare(strict_types=1);
 
-Session::checkRight('config', UPDATE);
+Session::checkRight(Config::$rightname, UPDATE);
 
 $translation = new PluginFieldsLabelTranslation();
 if (isset($_POST['add'])) {

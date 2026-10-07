@@ -30,7 +30,7 @@
 
 class PluginFieldsMenu extends CommonGLPI
 {
-    public static $rightname = 'entity';
+    public static string $rightname = 'entity';
 
     public static function getMenuName()
     {
@@ -42,7 +42,7 @@ class PluginFieldsMenu extends CommonGLPI
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-        if (!Session::haveRight('entity', READ)) {
+        if (!Session::haveRight(Entity::$rightname, READ)) {
             return false;
         }
 

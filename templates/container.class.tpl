@@ -4,7 +4,7 @@ use Glpi\DBAL\QueryParam;
 
 class %%CLASSNAME%% extends PluginFieldsAbstractContainerInstance
 {
-   static $rightname = %%ITEMTYPE_RIGHT%%;
+   public static string $rightname = %%ITEMTYPE_RIGHT%%;
 
    static function install() {
       global $DB;

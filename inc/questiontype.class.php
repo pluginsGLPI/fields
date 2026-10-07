@@ -114,17 +114,13 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     {
         // Get the block_id from the question's extra data or use the first available block
         $block_id = $this->getDefaultValueBlockId($question);
-        if ($block_id === null) {
-            $block_id = current(array_keys($this->getAvailableBlocks()));
-        }
+        $block_id ??= array_key_first($this->getAvailableBlocks());
 
         $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
         $current_field_id = $this->getDefaultValueFieldId($question);
-        if ($current_field_id === null) {
-            $current_field_id = current(array_keys($available_fields));
-        }
+        $current_field_id ??= array_key_first($available_fields);
 
         $current_field = PluginFieldsField::getById($current_field_id);
 
@@ -150,17 +146,13 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     {
         // Get the block_id from the question's extra data or use the first available block
         $block_id = $this->getDefaultValueBlockId($question);
-        if ($block_id === null) {
-            $block_id = current(array_keys($this->getAvailableBlocks()));
-        }
+        $block_id ??= array_key_first($this->getAvailableBlocks());
 
         $available_fields = self::getFieldsFromBlock($block_id);
 
         // Retrieve current field
         $current_field_id = $this->getDefaultValueFieldId($question);
-        if ($current_field_id === null) {
-            $current_field_id = current(array_keys($available_fields));
-        }
+        $current_field_id ??= array_key_first($available_fields);
 
         $current_field = PluginFieldsField::getById($current_field_id);
 
@@ -211,10 +203,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             case 'date':
                 return (string) $answer;
             case 'dropdown':
-                $answer = $answer['items_id'];
-                if (is_string($answer) || is_numeric($answer)) {
-                    $answer = [$answer];
-                }
+                $answer = self::extractDropdownAnswerIds($answer);
 
                 $itemtype = PluginFieldsDropdown::getClassname($current_field->fields['name']);
                 return implode(', ', array_map(fn($opt_id) => $itemtype::getById($opt_id)?->fields['name'] ?? '', $answer));
@@ -242,13 +231,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 return '';
             }
 
-            if (is_array($answer) && array_key_exists('items_id', $answer)) {
-                $answer = $answer['items_id'];
-            }
-
-            if (!is_array($answer)) {
-                $answer = [$answer];
-            }
+            $answer = self::extractDropdownAnswerIds($answer);
 
             $names = [];
             foreach ($answer as $items_id) {
@@ -262,6 +245,20 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         }
 
         return (string) $answer;
+    }
+
+    /**
+     * Extract the selected item id(s) from a dropdown-type question's raw answer.
+     *
+     * @return array<int, mixed>
+     */
+    public static function extractDropdownAnswerIds(mixed $answer): array
+    {
+        if (is_array($answer) && array_key_exists('itemtype', $answer)) {
+            $answer = $answer['items_ids'] ?? $answer['items_id'] ?? [];
+        }
+
+        return is_array($answer) ? $answer : [$answer];
     }
 
     #[Override]
@@ -327,12 +324,18 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
                 $itemtype = $dropdown_matches['class'];
             }
 
+            $is_multiple = (bool) $field->fields['multiple'];
+
             $condition_handlers = array_merge(
                 $condition_handlers,
-                [
-                    new ItemConditionHandler($itemtype),
-                    new ItemAsTextConditionHandler($itemtype),
-                ],
+                $is_multiple
+                    ? [
+                        new ItemConditionHandler($itemtype, true),
+                    ]
+                    : [
+                        new ItemConditionHandler($itemtype, false),
+                        new ItemAsTextConditionHandler($itemtype),
+                    ],
             );
         }
 
