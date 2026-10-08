@@ -1684,13 +1684,24 @@ HTML;
         }
     }
 
+    /** @var array<class-string<CommonDBTM>, array<int, true>> Items created by a form destination in this request */
+    private static array $form_destination_items = [];
+
+    // Also true for the updates the destination does right after the creation (e.g. link to the form)
+    private static function isCreatedByFormDestination(CommonDBTM $item): bool
+    {
+        return PluginFieldsDestinationField::hasValidMarker($item->input)
+            || isset(self::$form_destination_items[$item::class][$item->getID()]);
+    }
+
     private static function isMandatoryCheckBypassed(array $data): bool
     {
         return isCommandLine()
             || Session::isCron()
             || isAPI()
             || !empty($data['_auto_import'])
-            || !empty($data['is_dynamic']);
+            || !empty($data['is_dynamic'])
+            || PluginFieldsDestinationField::hasValidMarker($data);
     }
 
     /**
@@ -2044,6 +2055,10 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
+        if (PluginFieldsDestinationField::hasValidMarker($item->input)) {
+            self::$form_destination_items[$item::class][$item->getID()] = true;
+        }
+
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $data             = $item->input['_plugin_fields_data'];
             $data['itemtype'] = $item::class;
@@ -2222,6 +2237,10 @@ HTML;
             $data['is_dynamic'] = true;
         }
 
+        if (self::isCreatedByFormDestination($item)) {
+            $data[PluginFieldsDestinationField::INPUT_MARKER] = PluginFieldsDestinationField::getMarkerToken();
+        }
+
         if (($status_value = self::getStatusValue($item)) !== null) {
             $data[$status_field_name] = $status_value;
         }
@@ -2294,6 +2313,10 @@ HTML;
 
         if (!empty($item->input['is_dynamic'])) {
             $data['is_dynamic'] = true;
+        }
+
+        if (self::isCreatedByFormDestination($item)) {
+            $data[PluginFieldsDestinationField::INPUT_MARKER] = PluginFieldsDestinationField::getMarkerToken();
         }
 
         // Add status so it can be used with status overrides

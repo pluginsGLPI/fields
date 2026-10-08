@@ -42,6 +42,24 @@ use Glpi\Form\QuestionType\QuestionTypeItemDropdown;
 
 class PluginFieldsDestinationField extends AbstractConfigField
 {
+    // Input key flagging an item as created by a form destination
+    public const INPUT_MARKER = '_plugin_fields_form_destination';
+
+    private static ?string $marker_token = null;
+
+    // Random per-request value: the marker cannot be forged from a submitted form
+    public static function getMarkerToken(): string
+    {
+        return self::$marker_token ??= bin2hex(random_bytes(16));
+    }
+
+    public static function hasValidMarker(array $input): bool
+    {
+        $marker = $input[self::INPUT_MARKER] ?? null;
+
+        return is_string($marker) && hash_equals(self::getMarkerToken(), $marker);
+    }
+
     public function __construct(private readonly AbstractCommonITILFormDestination $itil_destination) {}
 
     #[Override]
@@ -85,6 +103,8 @@ class PluginFieldsDestinationField extends AbstractConfigField
         if (!$config instanceof SimpleValueConfig) {
             throw new InvalidArgumentException("Unexpected config class");
         }
+
+        $input[self::INPUT_MARKER] = self::getMarkerToken();
 
         if ((bool) $config->getValue()) {
             $answers = $answers_set->getAnswersByTypes([
