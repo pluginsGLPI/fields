@@ -235,6 +235,58 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         );
     }
 
+    public function testDestinationIsNotBlockedByMandatoryFieldNotProvidedByForm(): void
+    {
+        $this->login();
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+
+        $mandatory_field = $this->createField([
+            'label'                                     => 'Mandatory text',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 4,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $builder = (new FormBuilder())->addQuestion("Short text", QuestionTypeShortText::class);
+        $form = $this->createForm($builder);
+
+        try {
+            foreach ([new SimpleValueConfig(1), new SimpleValueConfig(false)] as $config) {
+                $this->sendFormAndAssertITILObjectAdditionalFields(
+                    form: $form,
+                    config: $config,
+                    answers: [
+                        "Short text" => "Test value",
+                    ],
+                    expected_field_values: [Ticket::class => []],
+                );
+            }
+
+            // The field is still mandatory outside of a form destination, even with a forged marker
+            $ticket = new Ticket();
+            $this->assertFalse($ticket->add([
+                'name'                                     => 'Ticket created from the ticket form',
+                'content'                                  => 'Test creation',
+                'entities_id'                              => $this->getTestRootEntity(true),
+                PluginFieldsDestinationField::INPUT_MARKER => '1',
+            ]));
+            $this->hasSessionMessageThatContains(
+                __('Some mandatory fields are empty', 'fields'),
+                ERROR,
+            );
+            $this->hasSessionMessageThatContains(
+                __('The form or source creating this item does not provide the mandatory fields above: map them to it, or make them optional.', 'fields'),
+                ERROR,
+            );
+        } finally {
+            unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+            $mandatory_field->delete($mandatory_field->fields, true);
+        }
+    }
+
     public function testDestinationWithLocationAdditonalFields(): void
     {
         $this->login();
