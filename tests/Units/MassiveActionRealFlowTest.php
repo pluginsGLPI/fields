@@ -62,7 +62,7 @@ final class MassiveActionRealFlowTest extends DbTestCase
 
     public function tearDown(): void
     {
-        unset($_REQUEST['massiveaction'], $_POST);
+        unset($_REQUEST['massiveaction']);
         $this->tearDownFieldTest();
         GLPITestCase::tearDown();
     }
