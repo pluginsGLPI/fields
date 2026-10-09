@@ -443,7 +443,7 @@ final class ContainerItemRightTest extends DbTestCase
         $this->setEntity($entity_id, true);
 
         $container = $this->createFieldContainer([
-            'label'        => 'Helpdesk Actor Container ' . $this->getUniqueString(),
+            'label'        => 'Helpdesk Actor Container',
             'type'         => 'tab',
             'itemtypes'    => [Ticket::class],
             'is_active'    => 1,
