@@ -1349,7 +1349,7 @@ JAVASCRIPT,
                 $value = is_array($decoded) ? $decoded : [];
             }
 
-            if ($field['multiple'] && is_array($value)) {
+            if ($field['multiple']) {
                 // Flatten any nested arrays caused by corrupted DB data (double-encoded values)
                 // so that Dropdown::show() always receives a flat list of scalars.
                 $value = array_values(array_filter(

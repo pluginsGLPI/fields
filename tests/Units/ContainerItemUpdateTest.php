@@ -30,6 +30,7 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Auth;
 use Computer;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
@@ -71,6 +72,15 @@ final class ContainerItemUpdateTest extends DbTestCase
         // A real web request always carries a client IP; without it SessionTracker::recordNewSession()
         // would try to insert a NULL ip_address when login() is called under the faked web context.
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+    }
+
+    protected function login(string $user_name = TU_USER, string $user_pass = ""): Auth
+    {
+        $auth = parent::login($user_name, $user_pass);
+        // Items are created in the root entity: make it active so that canUpdateItem() passes its entity check.
+        $this->setEntity(0, true);
+
+        return $auth;
     }
 
     public function tearDown(): void
@@ -171,7 +181,7 @@ final class ContainerItemUpdateTest extends DbTestCase
 
         $this->createFieldContainer([
             'label'        => 'Hook Guard Container',
-            'type'         => 'dom',
+            'type'         => 'tab',
             'itemtypes'    => [Ticket::class],
             'is_active'    => 1,
             'entities_id'  => 0,

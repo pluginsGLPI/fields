@@ -2081,14 +2081,13 @@ HTML;
             // Automated contexts (cron jobs, API without active profile) bypass this check.
             if (
                 isset($_SESSION['glpiactiveprofile']['id'])
-                && $_SESSION['glpiactiveprofile']['id'] !== null
                 && !$item->canUpdateItem()
             ) {
                 unset($item->input['_plugin_fields_data']);
                 Session::addMessageAfterRedirect(
                     __('You do not have the right to modify the fields of this item', 'fields'),
                     false,
-                    WARNING
+                    WARNING,
                 );
                 return true;
             }
