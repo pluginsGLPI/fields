@@ -54,6 +54,15 @@ final class MassiveActionRealFlowTest extends DbTestCase
 {
     use FieldTestTrait;
 
+    protected function login(string $user_name = TU_USER, string $user_pass = ""): \Auth
+    {
+        $auth = parent::login($user_name, $user_pass);
+        // Items are created in the root entity: make it active so that canUpdateItem() passes its entity check.
+        $this->setEntity(0, true);
+
+        return $auth;
+    }
+
     public function setUp(): void
     {
         GLPITestCase::setUp();
