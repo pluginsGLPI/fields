@@ -31,6 +31,7 @@
 namespace GlpiPlugin\Field\Tests\Units;
 
 use CommonITILObject;
+use Exception;
 use Glpi\Form\AnswersHandler\AnswersHandler;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\FormDestinationProblem;
@@ -255,7 +256,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 
         try {
             foreach ([new SimpleValueConfig(1), new SimpleValueConfig(false)] as $config) {
-                $this->sendFormAndAssertITILObjectAdditionalFields(
+                $created_items = $this->sendFormAndAssertITILObjectAdditionalFields(
                     form: $form,
                     config: $config,
                     answers: [
@@ -263,15 +264,25 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
                     ],
                     expected_field_values: [Ticket::class => []],
                 );
+
+                // Once the destination is done, the field is mandatory again on the created ticket
+                $created_ticket = current($created_items);
+                $this->assertFalse($created_ticket->update([
+                    'id'   => $created_ticket->getID(),
+                    'name' => 'Updated after the form submission',
+                ]));
+                $this->hasSessionMessageThatContains(
+                    __('Some mandatory fields are empty', 'fields'),
+                    ERROR,
+                );
             }
 
-            // The field is still mandatory outside of a form destination, even with a forged marker
+            // The field is still mandatory outside of a form destination
             $ticket = new Ticket();
             $this->assertFalse($ticket->add([
-                'name'                                     => 'Ticket created from the ticket form',
-                'content'                                  => 'Test creation',
-                'entities_id'                              => $this->getTestRootEntity(true),
-                PluginFieldsDestinationField::INPUT_MARKER => '1',
+                'name'        => 'Ticket created from the ticket form',
+                'content'     => 'Test creation',
+                'entities_id' => $this->getTestRootEntity(true),
             ]));
             $this->hasSessionMessageThatContains(
                 __('Some mandatory fields are empty', 'fields'),
@@ -284,6 +295,68 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         } finally {
             unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
             $mandatory_field->delete($mandatory_field->fields, true);
+        }
+    }
+
+    public function testDestinationIsBlockedByMandatoryFieldLeftEmptyInForm(): void
+    {
+        $this->login();
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+
+        $mandatory_field = $this->createField([
+            'label'                                     => 'Mandatory text',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 4,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $form = $this->createForm((new FormBuilder())->addQuestion(
+            "Mandatory text",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode([
+                'block_id' => $this->blocks[Ticket::class]->getID(),
+                'field_id' => $mandatory_field->getID(),
+            ]),
+        ));
+
+        try {
+            $this->sendFormAndAssertITILObjectAdditionalFields(
+                form: $form,
+                config: new SimpleValueConfig(1),
+                answers: [
+                    "Mandatory text" => "Test value",
+                ],
+                expected_field_values: [
+                    Ticket::class => [
+                        $mandatory_field->fields['name'] => "Test value",
+                    ],
+                ],
+            );
+
+            // The form provides the field: an empty answer is not exempted
+            try {
+                $this->sendFormAndAssertITILObjectAdditionalFields(
+                    form: $form,
+                    config: new SimpleValueConfig(1),
+                    answers: [
+                        "Mandatory text" => "",
+                    ],
+                    expected_field_values: [Ticket::class => []],
+                );
+                $this->fail('The ticket must not be created with an empty mandatory field provided by the form.');
+            } catch (Exception $e) {
+                $this->assertStringContainsString('Failed to create', $e->getMessage());
+            }
+
+            $this->hasSessionMessageThatContains(
+                __('Some mandatory fields are empty', 'fields'),
+                ERROR,
+            );
+        } finally {
+            unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
         }
     }
 
@@ -404,7 +477,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         SimpleValueConfig $config,
         array $answers,
         array $expected_field_values,
-    ): void {
+    ): array {
         // Insert config
         $destinations = $form->getDestinations();
         foreach ($destinations as $destination) {
@@ -455,7 +528,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
 
             if ($values === false) {
                 $this->assertEmpty($expected_fields);
-                return;
+                return $created_items;
             }
 
             foreach ($expected_fields as $field_name => $expected_value) {
@@ -467,6 +540,8 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
                 );
             }
         }
+
+        return $created_items;
     }
 
     private function createAndGetFormWithMultipleFieldQuestions(): Form

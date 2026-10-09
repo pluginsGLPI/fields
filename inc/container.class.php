@@ -1684,24 +1684,13 @@ HTML;
         }
     }
 
-    /** @var array<class-string<CommonDBTM>, array<int, true>> Items created by a form destination in this request */
-    private static array $form_destination_items = [];
-
-    // Also true for the updates the destination does right after the creation (e.g. link to the form)
-    private static function isCreatedByFormDestination(CommonDBTM $item): bool
-    {
-        return PluginFieldsDestinationField::hasValidMarker($item->input)
-            || isset(self::$form_destination_items[$item::class][$item->getID()]);
-    }
-
     private static function isMandatoryCheckBypassed(array $data): bool
     {
         return isCommandLine()
             || Session::isCron()
             || isAPI()
             || !empty($data['_auto_import'])
-            || !empty($data['is_dynamic'])
-            || PluginFieldsDestinationField::hasValidMarker($data);
+            || !empty($data['is_dynamic']);
     }
 
     /**
@@ -1758,6 +1747,9 @@ HTML;
 
         $stored_values = self::getStoredValues($container, $itemtype, (int) ($data['items_id'] ?? 0));
 
+        // Set while a form destination creates the item: only the fields the form provides are then mandatory
+        $form_fields = PluginFieldsDestinationField::getFieldsProvidedByForm($itemtype, (int) ($data['items_id'] ?? 0));
+
         foreach ($fields as $field) {
             if (!$field['is_active']) {
                 continue;
@@ -1802,6 +1794,7 @@ HTML;
 
             if (
                 !self::isMandatoryCheckBypassed($data)
+                && ($form_fields === null || in_array((int) $field['id'], $form_fields, true))
                 && $field['mandatory'] == 1
                 && (
                     empty($value)
@@ -2055,9 +2048,7 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
-        if (PluginFieldsDestinationField::hasValidMarker($item->input)) {
-            self::$form_destination_items[$item::class][$item->getID()] = true;
-        }
+        PluginFieldsDestinationField::registerCreatedItem($item);
 
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $data             = $item->input['_plugin_fields_data'];
@@ -2237,15 +2228,13 @@ HTML;
             $data['is_dynamic'] = true;
         }
 
-        if (self::isCreatedByFormDestination($item)) {
-            $data[PluginFieldsDestinationField::INPUT_MARKER] = PluginFieldsDestinationField::getMarkerToken();
-        }
-
         if (($status_value = self::getStatusValue($item)) !== null) {
             $data[$status_field_name] = $status_value;
         }
 
         if (!$item->isNewItem()) {
+            $data['items_id'] = $item->getID();
+
             // merge already persisted values to avoid false positives
             $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
             $dbu       = new DbUtils();
@@ -2313,10 +2302,6 @@ HTML;
 
         if (!empty($item->input['is_dynamic'])) {
             $data['is_dynamic'] = true;
-        }
-
-        if (self::isCreatedByFormDestination($item)) {
-            $data[PluginFieldsDestinationField::INPUT_MARKER] = PluginFieldsDestinationField::getMarkerToken();
         }
 
         // Add status so it can be used with status overrides

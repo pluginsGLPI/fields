@@ -42,22 +42,30 @@ use Glpi\Form\QuestionType\QuestionTypeItemDropdown;
 
 class PluginFieldsDestinationField extends AbstractConfigField
 {
-    // Input key flagging an item as created by a form destination
-    public const INPUT_MARKER = '_plugin_fields_form_destination';
+    /** @var array{itemtype: class-string<CommonDBTM>, fields: list<int>}|null Item a destination is about to create */
+    private static ?array $pending_item = null;
 
-    private static ?string $marker_token = null;
+    /** @var array<class-string<CommonDBTM>, array<int, list<int>>> Fields provided by the form, per item being created */
+    private static array $created_items = [];
 
-    // Random per-request value: the marker cannot be forged from a submitted form
-    public static function getMarkerToken(): string
+    /** @return list<int>|null Fields provided by the form, null when no destination is creating the item */
+    public static function getFieldsProvidedByForm(string $itemtype, int $items_id): ?array
     {
-        return self::$marker_token ??= bin2hex(random_bytes(16));
+        if ($items_id > 0) {
+            return self::$created_items[$itemtype][$items_id] ?? null;
+        }
+
+        return (self::$pending_item['itemtype'] ?? null) === $itemtype ? self::$pending_item['fields'] : null;
     }
 
-    public static function hasValidMarker(array $input): bool
+    public static function registerCreatedItem(CommonDBTM $item): void
     {
-        $marker = $input[self::INPUT_MARKER] ?? null;
+        if ((self::$pending_item['itemtype'] ?? null) !== $item::class) {
+            return;
+        }
 
-        return is_string($marker) && hash_equals(self::getMarkerToken(), $marker);
+        self::$created_items[$item::class][$item->getID()] = self::$pending_item['fields'];
+        self::$pending_item = null;
     }
 
     public function __construct(private readonly AbstractCommonITILFormDestination $itil_destination) {}
@@ -104,7 +112,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
             throw new InvalidArgumentException("Unexpected config class");
         }
 
-        $input[self::INPUT_MARKER] = self::getMarkerToken();
+        $provided_fields = [];
 
         if ((bool) $config->getValue()) {
             $answers = $answers_set->getAnswersByTypes([
@@ -146,6 +154,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                 }
 
                 $input['c_id'] = $block_id;
+                $provided_fields[] = $field->getID();
                 if ($field->fields['type'] == 'dropdown') {
                     $field_name = 'plugin_fields_' . $field->fields['name'] . 'dropdowns_id';
                 } else {
@@ -171,7 +180,27 @@ class PluginFieldsDestinationField extends AbstractConfigField
             }
         }
 
+        // Mandatory fields the form does not provide must not block the creation
+        self::$pending_item = [
+            'itemtype' => $this->itil_destination->getTarget()::class,
+            'fields'   => $provided_fields,
+        ];
+
         return $input;
+    }
+
+    #[Override]
+    public function applyConfiguratedValueAfterDestinationCreation(
+        FormDestination $destination,
+        JsonFieldInterface $config,
+        AnswersSet $answers_set,
+        array $created_objects,
+    ): void {
+        // The destination is done: its items are validated like any other from now on
+        self::$pending_item = null;
+        foreach ($created_objects[$destination->getID()] ?? [] as $item) {
+            unset(self::$created_items[$item::class][$item->getID()]);
+        }
     }
 
     #[Override]
