@@ -2066,31 +2066,6 @@ HTML;
     }
 
     /**
-     * Check whether the current user is allowed to modify plugin fields on a given item.
-     *
-     * canUpdateItem() cannot be used here because it includes an entity-context check
-     * ($item->checkEntity()) that compares the item's entity against the currently active
-     * entities in the session. In programmatic contexts (API calls, automated jobs) the
-     * active entity set may not include the item's entity even when the user genuinely
-     * has the profile right to update that item type.
-     *
-     * For ITIL objects in the helpdesk interface we additionally verify that the user is
-     * the requester, because helpdesk observers hold a CREATE right (sufficient for
-     * canUpdate()) but must not be allowed to edit fields on tickets they did not open.
-     */
-    private static function userCanUpdateItemFields(CommonDBTM $item): bool
-    {
-        if ($item instanceof CommonITILObject) {
-            if (Session::getCurrentInterface() === 'helpdesk') {
-                return $item->canRequesterUpdateItem();
-            }
-            return Session::haveRight($item::$rightname, UPDATE);
-        }
-
-        return $item::canUpdate();
-    }
-
-    /**
      * Pre item hook for update
      * Do store data in db
      *
@@ -2106,8 +2081,8 @@ HTML;
             // Automated contexts (cron jobs, API without active profile) bypass this check.
             if (
                 isset($_SESSION['glpiactiveprofile']['id'])
-                && $_SESSION['glpiactiveprofile']['id'] != null
-                && !self::userCanUpdateItemFields($item)
+                && $_SESSION['glpiactiveprofile']['id'] !== null
+                && !$item->canUpdateItem()
             ) {
                 unset($item->input['_plugin_fields_data']);
                 Session::addMessageAfterRedirect(

@@ -35,6 +35,8 @@ namespace GlpiPlugin\Field\Tests\Units;
 use Problem;
 use Problem_User;
 use Profile;
+use Ticket;
+use Ticket_User;
 use User;
 use CommonITILActor;
 use CommonDBTM;
@@ -392,6 +394,104 @@ final class ContainerItemRightTest extends DbTestCase
             $computer->input,
             'preItemUpdate must drop _plugin_fields_data when a central user cannot update the item.',
         );
+    }
+
+    public function testPreItemUpdateDropsPluginFieldsDataForHelpdeskObserver(): void
+    {
+        [$ticket, $container, $field_name] = $this->createTicketWithHelpdeskActor(CommonITILActor::OBSERVER);
+
+        $ticket->input = [
+            'id'                  => $ticket->getID(),
+            '_plugin_fields_data' => [
+                'plugin_fields_containers_id' => $container->getID(),
+                'items_id'                    => $ticket->getID(),
+                $field_name                   => 'new value',
+            ],
+        ];
+
+        PluginFieldsContainer::preItemUpdate($ticket);
+
+        $this->assertArrayNotHasKey('_plugin_fields_data', $ticket->input);
+    }
+
+    public function testPreItemUpdateKeepsPluginFieldsDataForHelpdeskRequester(): void
+    {
+        [$ticket, $container, $field_name] = $this->createTicketWithHelpdeskActor(CommonITILActor::REQUESTER);
+
+        $ticket->input = [
+            'id'                  => $ticket->getID(),
+            '_plugin_fields_data' => [
+                'plugin_fields_containers_id' => $container->getID(),
+                'items_id'                    => $ticket->getID(),
+                $field_name                   => 'new value',
+            ],
+        ];
+
+        $this->assertTrue(PluginFieldsContainer::preItemUpdate($ticket));
+        $this->assertArrayHasKey('_plugin_fields_data', $ticket->input);
+    }
+
+    /**
+     * Create a ticket with a helpdesk user as given actor, then log in as that user.
+     *
+     * @return array{0: Ticket, 1: PluginFieldsContainer, 2: string}
+     */
+    private function createTicketWithHelpdeskActor(int $actor_type): array
+    {
+        $this->login();
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Helpdesk Actor Container ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Helpdesk Actor Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+
+        $profile = $this->createItem(Profile::class, [
+            'name'      => 'Helpdesk_Actor_' . $this->getUniqueString(),
+            'interface' => 'helpdesk',
+        ]);
+        $this->setRightOnContainerForProfile($profile->getID(), $container->getID(), READ | UPDATE);
+
+        $username = 'helpdesk_actor_' . $this->getUniqueString();
+        $user = $this->createItem(User::class, [
+            'name'          => $username,
+            'password'      => 'Test1234!',
+            'password2'     => 'Test1234!',
+            'profiles_id'   => $profile->getID(),
+            '_profiles_id'  => $profile->getID(),
+            '_entities_id'  => $entity_id,
+            '_is_recursive' => true,
+        ], ['password', 'password2']);
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket for helpdesk actor test',
+            'content'     => 'Test',
+            'entities_id' => $entity_id,
+        ]);
+        $this->createItem(Ticket_User::class, [
+            'tickets_id' => $ticket->getID(),
+            'users_id'   => $user->getID(),
+            'type'       => $actor_type,
+        ]);
+
+        $this->login($username, 'Test1234!');
+        $this->setEntity($entity_id, true);
+        $ticket->getFromDB($ticket->getID());
+
+        return [$ticket, $container, $field->fields['name']];
     }
 
     private function renderDomContainerForAny(int $containers_id, CommonDBTM $item): string
