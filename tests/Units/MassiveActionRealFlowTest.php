@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Auth;
 use PluginFieldsField;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
@@ -54,6 +55,15 @@ final class MassiveActionRealFlowTest extends DbTestCase
 {
     use FieldTestTrait;
 
+    protected function login(string $user_name = TU_USER, string $user_pass = ""): Auth
+    {
+        $auth = parent::login($user_name, $user_pass);
+        // Items are created in the root entity: make it active so that canUpdateItem() passes its entity check.
+        $this->setEntity(0, true);
+
+        return $auth;
+    }
+
     public function setUp(): void
     {
         GLPITestCase::setUp();
@@ -62,7 +72,8 @@ final class MassiveActionRealFlowTest extends DbTestCase
 
     public function tearDown(): void
     {
-        unset($_REQUEST['massiveaction'], $_POST);
+        unset($_REQUEST['massiveaction']);
+        $_POST = [];
         $this->tearDownFieldTest();
         GLPITestCase::tearDown();
     }

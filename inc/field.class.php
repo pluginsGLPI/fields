@@ -891,7 +891,7 @@ class PluginFieldsField extends CommonDBChild
             return null;
         }
 
-        $canedit = $right > READ;
+        $canedit = $right > READ && ($item->isNewItem() || $item->canUpdateItem());
 
         //get fields for this container
         $field_obj = new self();
@@ -1213,7 +1213,7 @@ JAVASCRIPT,
             return null;
         }
 
-        $canedit = $right > READ;
+        $canedit = $right > READ && ($item->isNewItem() || $item->canUpdateItem());
 
         // Fill status overrides if needed
         if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
@@ -1349,7 +1349,7 @@ JAVASCRIPT,
                 $value = is_array($decoded) ? $decoded : [];
             }
 
-            if ($field['multiple'] && is_array($value)) {
+            if ($field['multiple']) {
                 // Flatten any nested arrays caused by corrupted DB data (double-encoded values)
                 // so that Dropdown::show() always receives a flat list of scalars.
                 $value = array_values(array_filter(
