@@ -37,6 +37,7 @@ use Entity;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
+use Location;
 use PluginFieldsContainer;
 use PluginFieldsField;
 use PluginFieldsProfile;
@@ -155,6 +156,43 @@ final class ContainerItemRightTest extends DbTestCase
         $this->assertStringNotContainsString(
             $field->fields['name'],
             $this->renderDomContainer($container->getID(), $computer),
+        );
+    }
+
+    public function testShowDomContainerRendersEmptyOptionForMandatoryDropdowns(): void
+    {
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Dom container ' . $this->getUniqueString(),
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        foreach (['dropdown', 'dropdown-' . Location::class] as $ranking => $type) {
+            $this->createField([
+                'label'                                     => 'Mandatory ' . $type,
+                'type'                                      => $type,
+                PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+                'ranking'                                   => $ranking + 1,
+                'is_active'                                 => 1,
+                'is_readonly'                               => 0,
+                'mandatory'                                 => 1,
+            ]);
+        }
+
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer ' . $this->getUniqueString(),
+            'entities_id' => $entity_id,
+        ]);
+
+        // Without its empty option, a mandatory dropdown without value makes the save a silent no-op
+        $this->assertSame(
+            2,
+            substr_count($this->renderDomContainer($container->getID(), $computer), '<option value="0">'),
         );
     }
 

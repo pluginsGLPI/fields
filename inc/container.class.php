@@ -1747,6 +1747,9 @@ HTML;
 
         $stored_values = self::getStoredValues($container, $itemtype, (int) ($data['items_id'] ?? 0));
 
+        // Set while a form destination creates the item: only the fields the form provides are then mandatory
+        $form_fields = PluginFieldsDestinationField::getFieldsProvidedByForm($itemtype, (int) ($data['items_id'] ?? 0));
+
         foreach ($fields as $field) {
             if (!$field['is_active']) {
                 continue;
@@ -1791,6 +1794,7 @@ HTML;
 
             if (
                 !self::isMandatoryCheckBypassed($data)
+                && ($form_fields === null || in_array((int) $field['id'], $form_fields, true))
                 && $field['mandatory'] == 1
                 && (
                     empty($value)
@@ -2044,6 +2048,8 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
+        PluginFieldsDestinationField::registerCreatedItem($item);
+
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $data             = $item->input['_plugin_fields_data'];
             $data['itemtype'] = $item::class;
@@ -2227,6 +2233,8 @@ HTML;
         }
 
         if (!$item->isNewItem()) {
+            $data['items_id'] = $item->getID();
+
             // merge already persisted values to avoid false positives
             $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
             $dbu       = new DbUtils();
