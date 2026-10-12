@@ -2215,6 +2215,12 @@ HTML;
             return [];
         }
 
+        //container hidden by its display conditions: its fields can't be filled
+        $display_condition = new PluginFieldsContainerDisplayCondition();
+        if (!$display_condition->computeDisplayContainer($item, $c_id)) {
+            return [];
+        }
+
         $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::class);
         $data = ['plugin_fields_containers_id' => $c_id];
         if ($item->input['_auto_import'] ?? false) {
