@@ -72,6 +72,17 @@ final class ContainerTest extends DbTestCase
     {
         unset($GLOBALS['GLPI_IS_COMMAND_LINE'], $_SERVER['REMOTE_ADDR']);
 
+        // A purge with an oversized name fails on DROP TABLE and leaks the container, even when the test failed before restoring it
+        /** @var DBmysql $DB */
+        global $DB;
+        foreach (self::$createdContainers as $container) {
+            $DB->update(
+                PluginFieldsContainer::getTable(),
+                ['name' => $container->fields['name']],
+                ['id' => $container->getID(), 'name' => str_repeat('a', 100)],
+            );
+        }
+
         $this->tearDownFieldTest();
         GLPITestCase::tearDown();
     }
@@ -789,7 +800,6 @@ final class ContainerTest extends DbTestCase
             'entities_id'  => 0,
             'is_recursive' => 1,
         ]);
-        $short_name = $container->fields['name'];
 
         /** @var DBmysql $DB */
         global $DB;
@@ -803,10 +813,6 @@ final class ContainerTest extends DbTestCase
         $this->assertTrue($reloaded->getFromDB($container->getID()));
         $this->assertSame(str_repeat('a', 100), $reloaded->fields['name']);
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
-
-        // Restore a table-name-safe value so the deletion done in tearDown does not
-        // itself attempt a DROP TABLE with an over-64-char identifier.
-        $DB->update(PluginFieldsContainer::getTable(), ['name' => $short_name], ['id' => $container->getID()]);
     }
 
     public function testRenameOversizedContainerFailsOnNameCollision(): void
@@ -828,7 +834,6 @@ final class ContainerTest extends DbTestCase
             'entities_id'  => 0,
             'is_recursive' => 1,
         ]);
-        $short_name = $container->fields['name'];
 
         /** @var DBmysql $DB */
         global $DB;
@@ -841,9 +846,5 @@ final class ContainerTest extends DbTestCase
         $reloaded = new PluginFieldsContainer();
         $this->assertTrue($reloaded->getFromDB($container->getID()));
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
-
-        // Restore a table-name-safe value so the deletion done in tearDown does not
-        // itself attempt a DROP TABLE with an over-64-char identifier.
-        $DB->update(PluginFieldsContainer::getTable(), ['name' => $short_name], ['id' => $container->getID()]);
     }
 }
