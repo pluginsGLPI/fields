@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix mandatory fields of a block hidden by its display conditions blocking the save of an item
+- Fix ticket observers being able to edit and save additional fields they are not allowed to modify
 
 ## [1.25.0] - 2026-10-06
 
