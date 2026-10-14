@@ -158,6 +158,53 @@ final class ContainerItemRightTest extends DbTestCase
         );
     }
 
+    public function testContainerValuesCanOnlyBeWrittenThroughContainer(): void
+    {
+        $this->login();
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Tab container ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Tab field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer ' . $this->getUniqueString(),
+            'entities_id' => $entity_id,
+        ]);
+
+        $this->assertTrue($container->updateFieldsValues([
+            'plugin_fields_containers_id' => $container->getID(),
+            'itemtype'                    => Computer::class,
+            'items_id'                    => $computer->getID(),
+            $field->fields['name']        => 'value',
+        ], Computer::class, false));
+
+        $classname = PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']);
+        $values    = new $classname();
+        $this->assertTrue($values->getFromDBByCrit(['items_id' => $computer->getID()]));
+        $this->assertSame('value', $values->fields[$field->fields['name']]);
+
+        $this->assertTrue($values->can($values->getID(), READ));
+        $this->assertFalse($values->can($values->getID(), UPDATE));
+        $this->assertFalse($values->can($values->getID(), DELETE));
+        $this->assertFalse($values->can($values->getID(), PURGE));
+        $input = ['itemtype' => Computer::class, 'items_id' => $computer->getID()];
+        $this->assertFalse($values->can(-1, CREATE, $input));
+    }
+
     private function renderDomContainer(int $containers_id, Computer $computer): string
     {
         ob_start();
