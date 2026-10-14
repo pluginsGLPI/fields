@@ -82,6 +82,11 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     #[Override]
     public function formatDefaultValueForDB(mixed $value): string
     {
+        // For cloned questions, the value may already be encoded, do not re-encode it.
+        if (is_string($value) && is_array(\json_decode($value, true))) {
+            return $value;
+        }
+
         return json_encode($value);
     }
 
@@ -130,8 +135,8 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
 
         // Compute default value for the field
         $default_value = null;
-        if ($question instanceof Question && !empty($question->fields['default_value'])) {
-            $default_value = json_decode($question->fields['default_value'], true);
+        if ($question instanceof Question) {
+            $default_value = $this->decodeDefaultValue($question);
         }
 
         $twig = TemplateRenderer::getInstance();
@@ -143,6 +148,27 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             'item'              => new Form(),
             'field'             => $current_field->fields,
         ]);
+    }
+
+    /**
+     * Decode the question default value.
+     * Handles values that were JSON encoded twice by previous form clones.
+     */
+    private function decodeDefaultValue(Question $question): mixed
+    {
+        if (empty($question->fields['default_value'])) {
+            return null;
+        }
+
+        $default_value = json_decode($question->fields['default_value'], true);
+        if (is_string($default_value)) {
+            $decoded = \json_decode($default_value, true);
+            if (is_array($decoded)) {
+                $default_value = $decoded;
+            }
+        }
+
+        return $default_value;
     }
 
     #[Override]
@@ -165,10 +191,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         $current_field = PluginFieldsField::getById($current_field_id);
 
         // Compute default value for the field
-        $default_value = null;
-        if (!empty($question->fields['default_value'])) {
-            $default_value = json_decode($question->fields['default_value'], true);
-        }
+        $default_value = $this->decodeDefaultValue($question);
 
         $itemtype = null;
         if (str_starts_with((string) $current_field->fields['type'], 'dropdown')) {
