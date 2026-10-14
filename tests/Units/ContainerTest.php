@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Auth;
 use Computer;
 use DBmysql;
 use Glpi\Tests\DbTestCase;
@@ -56,6 +57,15 @@ require_once __DIR__ . '/../FieldTestCase.php';
 final class ContainerTest extends DbTestCase
 {
     use FieldTestTrait;
+
+    protected function login(string $user_name = TU_USER, string $user_pass = ""): Auth
+    {
+        $auth = parent::login($user_name, $user_pass);
+        // Items are created in the root entity: make it active so that canUpdateItem() passes its entity check.
+        $this->setEntity(0, true);
+
+        return $auth;
+    }
 
     public function setUp(): void
     {
