@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix item creation failing when a Yes/No field has a non boolean default value
+- Fix mandatory fields of a block hidden by its display conditions blocking the save of an item
+- Fix fields values updates not applying the expected checks in some cases
 
 ## [1.24.6] - 2026-10-06
 
