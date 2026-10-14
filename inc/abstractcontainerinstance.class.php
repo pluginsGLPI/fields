@@ -34,6 +34,27 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 
     public static $items_id = 'items_id';
 
+    // Values are only written through the parent item or the container form
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canUpdate(): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(): bool
+    {
+        return false;
+    }
+
+    public static function canPurge(): bool
+    {
+        return false;
+    }
+
     /**
      * This function relies on the static property `static::$plugins_forward_entity`,
      * which should be populated using the following method (from setup):
