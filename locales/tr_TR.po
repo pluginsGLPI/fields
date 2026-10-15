@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 03:49+0000\n"
+"POT-Creation-Date: 2026-10-15 02:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2026\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -259,6 +259,10 @@ msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 #: inc/container.class.php:1842
 msgid "Some item fields reference an invalid item"
 msgstr "Bazı öge alanları geçersiz bir ögeye başvuruyor"
+
+#: inc/container.class.php:2088
+msgid "You do not have the right to modify the fields of this item"
+msgstr "Bu ögenin alanlarını değiştirme izniniz yok"
 
 #: inc/field.class.php:296 inc/field.class.php:323
 msgid ""
