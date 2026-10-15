@@ -37,6 +37,7 @@ use Glpi\Form\Migration\FormQuestionDataConverterInterface;
 use Glpi\Form\Question;
 use Glpi\Form\QuestionType\AbstractQuestionType;
 use Glpi\Form\QuestionType\QuestionTypeCategoryInterface;
+use Safe\Exceptions\JsonException;
 
 use function Safe\json_decode;
 use function Safe\json_encode;
@@ -82,12 +83,83 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     #[Override]
     public function formatDefaultValueForDB(mixed $value): string
     {
-        // For cloned questions, the value may already be encoded, do not re-encode it.
-        if (is_string($value) && is_array(\json_decode($value, true))) {
-            return $value;
+        return json_encode($value);
+    }
+
+    /**
+     * Decode the stored default value of a cloned question, as it is passed
+     * again to `formatDefaultValueForDB()` when the clone is added.
+     */
+    public static function preQuestionAdd(Question $question): void
+    {
+        if (
+            !($question->input['clone'] ?? false)
+            || ($question->input['type'] ?? null) !== self::class
+            || !is_string($question->input['default_value'] ?? null)
+        ) {
+            return;
         }
 
-        return json_encode($value);
+        try {
+            $question->input['default_value'] = json_decode($question->input['default_value'], true);
+        } catch (JsonException) {
+            // Not a JSON value, keep it as is
+        }
+    }
+
+    /**
+     * Repair default values that were JSON encoded several times by previous form clones.
+     */
+    public static function installBaseData(Migration $migration, $version): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $question_table = Question::getTable();
+        if (!$DB->tableExists($question_table)) {
+            return;
+        }
+
+        $migration->displayMessage(__('Repair default values of cloned form questions', 'fields'));
+
+        $questions = $DB->request([
+            'SELECT' => ['id', 'default_value', 'extra_data'],
+            'FROM'   => $question_table,
+            'WHERE'  => ['type' => self::class],
+        ]);
+        foreach ($questions as $question) {
+            if (!is_string($question['default_value']) || !is_string($question['extra_data'])) {
+                continue;
+            }
+
+            $extra_data = \json_decode($question['extra_data'], true);
+            $field      = new PluginFieldsField();
+            if (!is_array($extra_data) || !$field->getFromDB((int) ($extra_data['field_id'] ?? 0))) {
+                continue;
+            }
+
+            // Dropdowns and GLPI items store an array, other fields store a scalar value
+            $is_array_value = $field->fields['type'] === 'glpi_item'
+                || str_starts_with((string) $field->fields['type'], 'dropdown');
+
+            $default_value = $question['default_value'];
+            while (is_string($decoded = \json_decode($default_value, true))) {
+                // Unwrap while the value is still a JSON encoded string (or array for array values)
+                $inner = \json_decode($decoded, true);
+                if (!is_string($inner) && !($is_array_value && is_array($inner))) {
+                    break;
+                }
+                $default_value = $decoded;
+            }
+
+            if ($default_value !== $question['default_value']) {
+                $DB->update(
+                    $question_table,
+                    ['default_value' => $default_value],
+                    ['id' => $question['id']],
+                );
+            }
+        }
     }
 
     #[Override]
@@ -150,25 +222,13 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         ]);
     }
 
-    /**
-     * Decode the question default value.
-     * Handles values that were JSON encoded twice by previous form clones.
-     */
     private function decodeDefaultValue(Question $question): mixed
     {
         if (empty($question->fields['default_value'])) {
             return null;
         }
 
-        $default_value = json_decode($question->fields['default_value'], true);
-        if (is_string($default_value)) {
-            $decoded = \json_decode($default_value, true);
-            if (is_array($decoded)) {
-                $default_value = $decoded;
-            }
-        }
-
-        return $default_value;
+        return json_decode($question->fields['default_value'], true);
     }
 
     #[Override]
