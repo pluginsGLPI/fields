@@ -96,6 +96,8 @@
     {% set value    = item.input[name]|default(field['value']) %}
     {% set readonly = field['is_readonly'] %}
     {% set rand = random() %}
+    {# On an item form, a single dropdown without value must still render its empty option #}
+    {% set dropdown_value = field['multiple'] or massiveaction or in_form_builder ? value : value|default(0) %}
 
     {% set field_options = field_options|merge({
         'readonly': readonly or not canedit,
@@ -161,7 +163,7 @@
         {% if input_name == name %}
             {% set name_fk = call("getForeignKeyFieldForItemType", [dropdown_itemtype]) %}
         {% endif %}
-        {{ macros.dropdownField(dropdown_itemtype, name_fk ?? input_name, value, label, field_options|merge(dropdown_options|default({}))) }}
+        {{ macros.dropdownField(dropdown_itemtype, name_fk ?? input_name, dropdown_value, label, field_options|merge(dropdown_options|default({}))) }}
 
     {% elseif type matches '/^dropdown-.+/i' %}
         {% set dropdown_options = {'entity': item.getEntityID()} %}
@@ -176,7 +178,7 @@
         {% if field['multiple'] %}
             {% set dropdown_options = dropdown_options|merge({'multiple': true}) %}
         {% endif %}
-        {{ macros.dropdownField(field['dropdown_class'], input_name, value, label, field_options|merge(dropdown_options|default({}))) }}
+        {{ macros.dropdownField(field['dropdown_class'], input_name, dropdown_value, label, field_options|merge(dropdown_options|default({}))) }}
 
     {% elseif type == 'glpi_item' %}
         {% if not massiveaction %}
