@@ -146,9 +146,10 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             while (is_string($decoded = \json_decode($default_value, true))) {
                 // Unwrap while the value is still a JSON encoded string (or array for array values)
                 $inner = \json_decode($decoded, true);
-                if (!is_string($inner) && !($is_array_value && is_array($inner))) {
+                if (!is_string($inner) && (!$is_array_value || !is_array($inner))) {
                     break;
                 }
+
                 $default_value = $decoded;
             }
 

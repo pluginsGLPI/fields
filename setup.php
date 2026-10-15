@@ -135,10 +135,7 @@ function plugin_init_fields()
 
     // Register fields question type
     plugin_fields_register_plugin_types();
-    $PLUGIN_HOOKS['pre_item_add']['fields'][Question::class] = [
-        PluginFieldsQuestionType::class,
-        'preQuestionAdd',
-    ];
+    $PLUGIN_HOOKS['pre_item_add']['fields'][Question::class] = PluginFieldsQuestionType::preQuestionAdd(...);
 
     if (Session::getLoginUserID() || isCommandLine()) {
         // Init hook about itemtype(s) for plugin fields

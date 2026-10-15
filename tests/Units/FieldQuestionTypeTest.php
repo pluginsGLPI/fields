@@ -354,6 +354,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
                 extra_data: json_encode($this->getFieldExtraDataConfig($field_name)),
             );
         }
+
         $form = $this->createForm($builder);
         foreach ($cases as $name => [, $stored_value]) {
             $DB->update(
