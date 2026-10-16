@@ -498,6 +498,52 @@ final class ContainerTest extends DbTestCase
         $this->assertEquals($updated_default, $readValue($ticket3));
     }
 
+    public function testYesNoDefaultValueIsNormalized(): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'YesNo Default Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField(
+            [
+                'label'                                     => 'YesNo Field',
+                'type'                                      => 'yesno',
+                PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+                'ranking'                                   => 1,
+                'is_active'                                 => 1,
+                'is_readonly'                               => 0,
+                'default_value'                             => 'yes',
+            ],
+            ['default_value'],
+        );
+        $this->assertSame('1', $field->fields['default_value']);
+
+        $this->updateItem(PluginFieldsField::class, $field->getID(), ['default_value' => 'Non'], ['default_value']);
+        $this->assertTrue($field->getFromDB($field->getID()));
+        $this->assertSame('0', $field->fields['default_value']);
+
+        // Legacy data: default value typed as free text before the Yes/No selector was used
+        $DB->update(PluginFieldsField::getTable(), ['default_value' => 'Non'], ['id' => $field->getID()]);
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'YesNo ticket ' . $this->getUniqueString(),
+            'content'     => 'Test',
+            'entities_id' => 0,
+        ]);
+
+        $this->assertEquals(0, $this->getDefaultValueStored($ticket, $container, $field->fields['name']));
+    }
+
     public static function provideFieldTypesForSearchDefaultValue(): iterable
     {
         yield 'text'     => ['type' => 'text',     'default_value' => 'search default text'];
