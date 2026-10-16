@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 03:06+0000\n"
-"PO-Revision-Date: 2026-10-14 03:06+0000\n"
+"POT-Creation-Date: 2026-10-16 02:43+0000\n"
+"PO-Revision-Date: 2026-10-16 02:43+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -273,6 +273,10 @@ msgstr "Some URL fields contains invalid links"
 #: inc/container.class.php:1842
 msgid "Some item fields reference an invalid item"
 msgstr "Some item fields reference an invalid item"
+
+#: inc/container.class.php:2088
+msgid "You do not have the right to modify the fields of this item"
+msgstr "You do not have the right to modify the fields of this item"
 
 #: inc/field.class.php:296 inc/field.class.php:323
 msgid ""

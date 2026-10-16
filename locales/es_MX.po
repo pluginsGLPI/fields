@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 03:49+0000\n"
+"POT-Creation-Date: 2026-10-15 02:46+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: Edwin Elias Alvarez <sistemas@cyalimentos.com>, 2026\n"
+"Last-Translator: Edwin Elias Alvarez <elias986@yahoo.com>, 2026\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -262,6 +262,10 @@ msgstr "Algunos campos de URL contienen vínculos no válidos"
 #: inc/container.class.php:1842
 msgid "Some item fields reference an invalid item"
 msgstr "Algunos campos del elemento hacen referencia a un elemento inválido"
+
+#: inc/container.class.php:2088
+msgid "You do not have the right to modify the fields of this item"
+msgstr "No tienes derecho a modificar los campos de este elemento."
 
 #: inc/field.class.php:296 inc/field.class.php:323
 msgid ""
