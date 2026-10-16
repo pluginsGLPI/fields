@@ -623,8 +623,60 @@ final class ContainerTest extends DbTestCase
                 '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/',
                 (string) $row['raw']['ITEM_Ticket_' . $so_id],
             );
+        } elseif ($type === 'yesno') {
+            $this->assertSame((int) $default_value, $row['raw']['ITEM_Ticket_' . $so_id]);
         } else {
             $this->assertSame($default_value, $row['raw']['ITEM_Ticket_' . $so_id]);
         }
+    }
+
+    public function testSearchoptionsKeepsYesnoStoredValueAsInteger(): void
+    {
+        $this->login();
+        $entities_id = $_SESSION['glpiactive_entity'];
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Search Yesno Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => $entities_id,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => 'Search Yesno Field',
+            'type'                                      => 'yesno',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'default_value'                             => '0',
+        ]);
+
+        // Ticket created after the field, so its row stores the default value
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Search yesno ticket ' . $this->getUniqueString(),
+            'content'     => 'Test',
+            'entities_id' => $entities_id,
+        ]);
+        $this->assertSame(0, $this->getDefaultValueStored($ticket, $container, $field->fields['name']));
+
+        $so_id = PluginFieldsField::SEARCH_OPTION_STARTING_INDEX + $field->getID();
+        $data = Search::getDatas(
+            Ticket::class,
+            [
+                'is_deleted' => 0,
+                'start'      => 0,
+                'criteria'   => [
+                    ['field' => 'view', 'searchtype' => 'contains', 'value' => $ticket->fields['name']],
+                ],
+            ],
+            [$so_id],
+        );
+
+        $this->assertSame(1, $data['data']['totalcount']);
+        $row = current($data['data']['rows']);
+        $this->assertSame(0, $row['raw']['ITEM_Ticket_' . $so_id]);
     }
 }
