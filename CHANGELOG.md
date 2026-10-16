@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix mandatory fields of a block hidden by its display conditions blocking the save of an item
+- Fix rendering error `unknown named parameters` for duplicated form
 - Fix fields values updates not applying the expected checks in some cases
 - Fix `Yes/No` field values returned as strings instead of integers in search results
 

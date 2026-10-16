@@ -30,6 +30,7 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use DBmysql;
 use Glpi\Form\Condition\ConditionHandler\ItemAsTextConditionHandler;
 use Glpi\Form\Condition\ConditionHandler\ItemConditionHandler;
 use Glpi\Form\Condition\Engine;
@@ -38,6 +39,7 @@ use Glpi\Form\Condition\LogicOperator;
 use Glpi\Form\Condition\Type;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Form;
 use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Form\QuestionType\QuestionTypesManager;
@@ -45,6 +47,8 @@ use Glpi\Tests\FormBuilder;
 use GlpiPlugin\Field\Tests\QuestionTypeTestCase;
 use Location;
 use LogicException;
+use Migration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
 use PluginFieldsField;
@@ -52,6 +56,7 @@ use PluginFieldsQuestionType;
 use PluginFieldsQuestionTypeCategory;
 use PluginFieldsQuestionTypeExtraDataConfig;
 
+use function Safe\json_decode;
 use function Safe\json_encode;
 
 final class FieldQuestionTypeTest extends QuestionTypeTestCase
@@ -239,6 +244,135 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
             // delete locations for another run
             $location1->delete($location1->fields, true);
             $location2->delete($location2->fields, true);
+        }
+    }
+
+    public static function cloneDefaultValueProvider(): iterable
+    {
+        yield 'text'     => ['text', 'hello'];
+        yield 'textarea' => ['textarea', "first line\nsecond line"];
+        yield 'number'   => ['number', '42'];
+        yield 'url'      => ['url', 'https://glpi-project.org'];
+        yield 'date'     => ['date', '2026-10-15'];
+        yield 'json-like text' => ['text', '[1,2]'];
+    }
+
+    #[DataProvider('cloneDefaultValueProvider')]
+    public function testCloneKeepsScalarDefaultValue(string $type, string $default_value): void
+    {
+        $this->login();
+
+        // Arrange: create a form with a question using a scalar field
+        $this->fields['scalar'] = $this->createField([
+            'label'                                     => 'Scalar field',
+            'type'                                      => $type,
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ]);
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Scalar question",
+            PluginFieldsQuestionType::class,
+            default_value: $default_value,
+            extra_data: json_encode($this->getFieldExtraDataConfig('scalar')),
+        );
+        $form = $this->createForm($builder);
+
+        // Act: clone the form, then clone the clone
+        $clone = Form::getById($form->clone());
+        $clone_of_clone = Form::getById($clone->clone());
+
+        // Assert: the default value is encoded only once in each form
+        foreach ([$form, $clone, $clone_of_clone] as $current_form) {
+            $question = Question::getById($this->getQuestionId($current_form, "Scalar question"));
+            $this->assertSame(json_encode($default_value), $question->fields['default_value']);
+        }
+    }
+
+    public function testCloneKeepsDropdownDefaultValue(): void
+    {
+        $this->login();
+
+        // Arrange: create a form with a dropdown question having a default value
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $option = $this->createItem($itemtype, ['name' => 'Default option']);
+        $default_value = ['itemtype' => $itemtype, 'items_id' => $option->getID()];
+
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Dropdown question",
+            PluginFieldsQuestionType::class,
+            default_value: $default_value,
+            extra_data: json_encode($this->getFieldExtraDataConfig('dropdown')),
+        );
+        $form = $this->createForm($builder);
+
+        // Act: clone the form, then clone the clone
+        $clone = Form::getById($form->clone());
+        $clone_of_clone = Form::getById($clone->clone());
+
+        // Assert: the default value is kept as an array in each form
+        foreach ([$form, $clone, $clone_of_clone] as $current_form) {
+            $question = Question::getById($this->getQuestionId($current_form, "Dropdown question"));
+            $this->assertSame($default_value, json_decode($question->fields['default_value'], true));
+        }
+    }
+
+    public function testInstallRepairsDefaultValuesEncodedByClones(): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $this->login();
+
+        // Arrange: create questions whose default values were encoded by successive clones
+        $this->fields['text'] = $this->createField([
+            'label'                                     => 'Text field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ]);
+        $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
+        $dropdown_value = ['itemtype' => $itemtype, 'items_id' => 1];
+
+        $cases = [
+            // question name => [field, stored default value, expected default value]
+            'Text cloned twice'     => ['text', json_encode(json_encode(json_encode('hello'))), json_encode('hello')],
+            'Text not cloned'       => ['text', json_encode('hello'), json_encode('hello')],
+            'JSON-like text'        => ['text', json_encode('[1,2]'), json_encode('[1,2]')],
+            'Dropdown cloned twice' => ['dropdown', json_encode(json_encode(json_encode($dropdown_value))), json_encode($dropdown_value)],
+            'Dropdown not cloned'   => ['dropdown', json_encode($dropdown_value), json_encode($dropdown_value)],
+        ];
+
+        $builder = new FormBuilder("My form");
+        foreach ($cases as $name => [$field_name]) {
+            $builder->addQuestion(
+                $name,
+                PluginFieldsQuestionType::class,
+                extra_data: json_encode($this->getFieldExtraDataConfig($field_name)),
+            );
+        }
+
+        $form = $this->createForm($builder);
+        foreach ($cases as $name => [, $stored_value]) {
+            $DB->update(
+                Question::getTable(),
+                ['default_value' => $stored_value],
+                ['id' => $this->getQuestionId($form, $name)],
+            );
+        }
+
+        // Act: run the plugin migration
+        ob_start();
+        PluginFieldsQuestionType::installBaseData(new Migration(PLUGIN_FIELDS_VERSION), PLUGIN_FIELDS_VERSION);
+        ob_end_clean();
+
+        // Assert: default values are encoded only once
+        foreach ($cases as $name => [, , $expected_value]) {
+            $question = Question::getById($this->getQuestionId($form, $name));
+            $this->assertSame($expected_value, $question->fields['default_value'], $name);
         }
     }
 
