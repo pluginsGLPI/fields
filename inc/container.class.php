@@ -621,7 +621,7 @@ class PluginFieldsContainer extends CommonDBTM
     {
         // sanitize label only; name is intentionally left untouched here (see migration callers)
         if (isset($input['label']) && !empty($input['label'])) {
-            $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) $input['label']);
+            $input['label'] = trim((string) $input['label']);
         }
 
         if (isset($input['itemtypes'])) {
@@ -799,7 +799,7 @@ class PluginFieldsContainer extends CommonDBTM
 
         $fields['name'] = PluginFieldsToolbox::sanitizeLabel((string) $fields['name']);
         $fields['id'] = (int) PluginFieldsToolbox::sanitizeLabel((string) $fields['id']);
-        $fields['label'] = PluginFieldsToolbox::sanitizeLabel((string) $fields['label']);
+        $fields['label'] = (string) $fields['label'];
 
         foreach ($itemtypes as $itemtype) {
             $sysname   = self::getSystemName($itemtype, $fields['name']);
