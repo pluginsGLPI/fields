@@ -2589,9 +2589,12 @@ HTML;
                 && !in_array($data['type'], ['dropdown', 'glpi_item'], true)
                 && !preg_match('/^dropdown-.+$/i', (string) $data['type'])
             ) {
-                $default_expression = in_array($data['type'], ['date', 'datetime'], true) && $data['default_value'] === 'now'
-                    ? QueryFunction::now()
-                    : new QueryExpression($DB::quoteValue($data['default_value']));
+                $default_expression = match (true) {
+                    in_array($data['type'], ['date', 'datetime'], true) && $data['default_value'] === 'now' => QueryFunction::now(),
+                    // a quoted default would make COALESCE return a string instead of the INT column type
+                    $data['type'] === 'yesno' => new QueryExpression((string) (int) $data['default_value']),
+                    default => new QueryExpression($DB::quoteValue($data['default_value'])),
+                };
 
                 $opt[$i]['computation'] = QueryFunction::coalesce([
                     'TABLE.' . $data['field_name'],
