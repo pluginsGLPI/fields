@@ -56,7 +56,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
         }
 
         // Also covers updates made by post_addItem(), before the "item_add" hook registers the item
-        return (self::$pending_item['itemtype'] ?? null) === $itemtype ? self::$pending_item['fields'] : null;
+        return self::$created_items[$itemtype][$items_id] ?? ((self::$pending_item['itemtype'] ?? null) === $itemtype ? self::$pending_item['fields'] : null);
     }
 
     public static function registerCreatedItem(CommonDBTM $item): void
