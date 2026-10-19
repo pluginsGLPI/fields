@@ -51,10 +51,6 @@ class PluginFieldsDestinationField extends AbstractConfigField
     /** @return list<int>|null Fields provided by the form, null when no destination is creating the item */
     public static function getFieldsProvidedByForm(string $itemtype, int $items_id): ?array
     {
-        if (isset(self::$created_items[$itemtype][$items_id])) {
-            return self::$created_items[$itemtype][$items_id];
-        }
-
         // Also covers updates made by post_addItem(), before the "item_add" hook registers the item
         return self::$created_items[$itemtype][$items_id] ?? ((self::$pending_item['itemtype'] ?? null) === $itemtype ? self::$pending_item['fields'] : null);
     }
