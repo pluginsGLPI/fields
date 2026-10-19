@@ -33,7 +33,14 @@ namespace GlpiPlugin\Field\Tests\Units;
 use CommonITILObject;
 use Exception;
 use Glpi\Form\AnswersHandler\AnswersHandler;
+use Glpi\Form\Destination\CommonITILField\AssigneeField;
+use Glpi\Form\Destination\CommonITILField\AssigneeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\ITILActorFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
+use Glpi\Form\Destination\CommonITILField\ValidationField;
+use Glpi\Form\Destination\CommonITILField\ValidationFieldConfig;
+use Glpi\Form\Destination\CommonITILField\ValidationFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\ValidationFieldStrategyConfig;
 use Glpi\Form\Destination\FormDestinationProblem;
 use Glpi\Form\Form;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
@@ -51,6 +58,7 @@ use PluginFieldsDropdown;
 use PluginFieldsQuestionType;
 use Problem;
 use Ticket;
+use TicketValidation;
 use User;
 
 include_once __DIR__ . '/../../../../tests/abstracts/AbstractDestinationFieldTest.php';
@@ -298,6 +306,101 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         }
     }
 
+    public function testDestinationWithValidationIsNotBlockedByMandatoryFieldNotProvidedByForm(): void
+    {
+        $this->login();
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+
+        $mandatory_field = $this->createField([
+            'label'                                     => 'Mandatory text',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 4,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $form = $this->createForm((new FormBuilder())->addQuestion("Short text", QuestionTypeShortText::class));
+
+        // The approval request updates the ticket before the "item_add" hook is called
+        $validation_config = new ValidationFieldConfig([
+            new ValidationFieldStrategyConfig(
+                strategy: ValidationFieldStrategy::SPECIFIC_ACTORS,
+                specific_actors: [User::class => [getItemByTypeName(User::class, 'glpi', true)]],
+            ),
+        ]);
+
+        try {
+            $created_items = $this->sendFormAndAssertITILObjectAdditionalFields(
+                form: $form,
+                config: new SimpleValueConfig(1),
+                answers: [
+                    "Short text" => "Test value",
+                ],
+                expected_field_values: [Ticket::class => []],
+                extra_config: [ValidationField::getKey() => $validation_config->jsonSerialize()],
+            );
+
+            $this->hasNoSessionMessage(ERROR);
+
+            $created_ticket = current($created_items);
+            $this->assertSame(1, countElementsInTable(TicketValidation::getTable(), [
+                'tickets_id' => $created_ticket->getID(),
+            ]));
+            $this->assertTrue($created_ticket->getFromDB($created_ticket->getID()));
+            $this->assertEquals(TicketValidation::WAITING, $created_ticket->fields['global_validation']);
+        } finally {
+            unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+            $mandatory_field->delete($mandatory_field->fields, true);
+        }
+    }
+
+    public function testDestinationWithAssigneeIsNotBlockedByMandatoryFieldNotProvidedByForm(): void
+    {
+        $this->login();
+        $GLOBALS['GLPI_IS_COMMAND_LINE'] = false;
+
+        $mandatory_field = $this->createField([
+            'label'                                     => 'Mandatory text',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $this->blocks[Ticket::class]->getID(),
+            'ranking'                                   => 4,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $form = $this->createForm((new FormBuilder())->addQuestion("Short text", QuestionTypeShortText::class));
+
+        // Assigning a technician updates the ticket status before the "item_add" hook is called
+        $assignee_config = new AssigneeFieldConfig(
+            strategies: [ITILActorFieldStrategy::SPECIFIC_VALUES],
+            specific_itilactors_ids: [User::getForeignKeyField() . '-' . getItemByTypeName(User::class, 'tech', true)],
+        );
+
+        try {
+            $created_items = $this->sendFormAndAssertITILObjectAdditionalFields(
+                form: $form,
+                config: new SimpleValueConfig(1),
+                answers: [
+                    "Short text" => "Test value",
+                ],
+                expected_field_values: [Ticket::class => []],
+                extra_config: [AssigneeField::getKey() => $assignee_config->jsonSerialize()],
+            );
+
+            $this->hasNoSessionMessage(ERROR);
+
+            $created_ticket = current($created_items);
+            $this->assertTrue($created_ticket->getFromDB($created_ticket->getID()));
+            $this->assertEquals(CommonITILObject::ASSIGNED, $created_ticket->fields['status']);
+        } finally {
+            unset($GLOBALS['GLPI_IS_COMMAND_LINE']);
+            $mandatory_field->delete($mandatory_field->fields, true);
+        }
+    }
+
     public function testDestinationIsBlockedByMandatoryFieldLeftEmptyInForm(): void
     {
         $this->login();
@@ -477,6 +580,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
         SimpleValueConfig $config,
         array $answers,
         array $expected_field_values,
+        array $extra_config = [],
     ): array {
         // Insert config
         $destinations = $form->getDestinations();
@@ -484,7 +588,7 @@ final class FieldDestinationFieldTest extends AbstractDestinationFieldTest
             $this->updateItem(
                 $destination::getType(),
                 $destination->getId(),
-                ['config' => [PluginFieldsDestinationField::getKey() => $config->jsonSerialize()]],
+                ['config' => [PluginFieldsDestinationField::getKey() => $config->jsonSerialize()] + $extra_config],
                 ["config"],
             );
         }
