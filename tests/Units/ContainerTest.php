@@ -878,6 +878,33 @@ final class ContainerTest extends DbTestCase
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
     }
 
+    public function testUpdateCannotReactivateOversizedContainer(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'NoReactivate ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 0,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => str_repeat('a', 100)], ['id' => $container->getID()]);
+
+        $updater = new PluginFieldsContainer();
+        $this->assertFalse($updater->update([
+            'id'        => $container->getID(),
+            'is_active' => 1,
+        ]));
+        $this->hasSessionMessages(ERROR, ['Table name too long: rename the container to reactivate it.']);
+
+        $reloaded = new PluginFieldsContainer();
+        $this->assertTrue($reloaded->getFromDB($container->getID()));
+        $this->assertSame(0, (int) $reloaded->fields['is_active']);
+    }
+
     public function testRenameOversizedContainerFailsOnNameCollision(): void
     {
         $existing = $this->createFieldContainer([

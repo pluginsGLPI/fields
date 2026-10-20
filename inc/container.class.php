@@ -700,7 +700,39 @@ class PluginFieldsContainer extends CommonDBTM
             $input['itemtypes'] = json_encode(array_values($itemtypes));
         }
 
+        if (
+            (int) ($input['is_active'] ?? 0) === 1
+            && $this->getOversizedTable($input['name'] ?? null) !== null
+        ) {
+            Session::AddMessageAfterRedirect(__('Table name too long: rename the container to reactivate it.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
         return $input;
+    }
+
+    /**
+     * Get the first generated table name exceeding the MySQL 64 chars limit.
+     *
+     * @param string|null $name Container name to check, defaults to the current one.
+     */
+    private function getOversizedTable(?string $name = null): ?string
+    {
+        $name ??= $this->fields['name'];
+        $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($this->fields['itemtypes'] ?? '');
+        if (!is_array($itemtypes)) {
+            return null;
+        }
+
+        foreach ($itemtypes as $itemtype) {
+            $table = getTableForItemType(self::getClassname($itemtype, $name));
+            if (strlen($table) > 64) {
+                return $table;
+            }
+        }
+
+        return null;
     }
 
     private function areValidItemtypeNames(array $itemtypes): bool
@@ -1055,15 +1087,7 @@ class PluginFieldsContainer extends CommonDBTM
             return false;
         }
 
-        $is_oversized = false;
-        foreach ($itemtypes as $itemtype) {
-            if (strlen(getTableForItemType(self::getClassname($itemtype, $container->fields['name']))) > 64) {
-                $is_oversized = true;
-                break;
-            }
-        }
-
-        if (!$is_oversized) {
+        if ($container->getOversizedTable() === null) {
             Session::AddMessageAfterRedirect(__('Container is not oversized.', 'fields'), false, ERROR);
 
             return false;
@@ -1368,36 +1392,29 @@ HTML;
         echo '<tr>';
         echo '<td>' . __('Active') . ' : </td>';
         echo '<td>';
-        Dropdown::showYesNo('is_active', $this->fields['is_active']);
+        $oversized_table = $this->isNewID($ID) ? null : $this->getOversizedTable();
+        if ($oversized_table !== null) {
+            // Reactivation goes through the rename form below.
+            echo Dropdown::getYesNo(0);
+        } else {
+            Dropdown::showYesNo('is_active', $this->fields['is_active']);
+        }
+
         echo '</td>';
         echo '</tr>';
 
-        if (!$this->isNewID($ID) && (int) $this->fields['is_active'] === 0) {
-            $oversized_table = null;
-            $itemtypes       = PluginFieldsToolbox::decodeJSONItemtypes($this->fields['itemtypes']);
-            if (is_array($itemtypes)) {
-                foreach ($itemtypes as $itemtype) {
-                    $table = getTableForItemType(self::getClassname($itemtype, $this->fields['name']));
-                    if (strlen($table) > 64) {
-                        $oversized_table = $table;
-                        break;
-                    }
-                }
-            }
-
-            if ($oversized_table !== null) {
-                echo '<tr class="tab_bg_2">';
-                echo '<td colspan="2">';
-                echo sprintf(__('Table name too long (%s):', 'fields'), $oversized_table);
-                echo '</td>';
-                echo '<td>';
-                echo Html::input('new_name', ['placeholder' => __('New name', 'fields')]);
-                echo '</td>';
-                echo '<td>';
-                echo '<button type="submit" name="rename_oversized" class="btn btn-primary">' . __('Rename and reactivate', 'fields') . '</button>';
-                echo '</td>';
-                echo '</tr>';
-            }
+        if ($oversized_table !== null) {
+            echo '<tr class="tab_bg_2">';
+            echo '<td colspan="2">';
+            echo sprintf(__('Table name too long (%s):', 'fields'), $oversized_table);
+            echo '</td>';
+            echo '<td>';
+            echo Html::input('new_name', ['placeholder' => __('New name', 'fields')]);
+            echo '</td>';
+            echo '<td>';
+            echo '<button type="submit" name="rename_oversized" class="btn btn-primary">' . __('Rename and reactivate', 'fields') . '</button>';
+            echo '</td>';
+            echo '</tr>';
         }
 
         $this->showFormButtons($options);
