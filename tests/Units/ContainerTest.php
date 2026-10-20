@@ -509,6 +509,7 @@ final class ContainerTest extends DbTestCase
         yield 'url'      => ['type' => 'url',      'default_value' => 'https://example.org/search-default'];
         yield 'number'   => ['type' => 'number',   'default_value' => '42'];
         yield 'yesno'    => ['type' => 'yesno',    'default_value' => '1'];
+        yield 'yesno no' => ['type' => 'yesno',    'default_value' => '0'];
         yield 'date'     => ['type' => 'date',     'default_value' => '2024-01-01'];
         yield 'date now' => ['type' => 'date',     'default_value' => 'now'];
         yield 'datetime' => ['type' => 'datetime', 'default_value' => '2024-01-01 10:00:00'];
