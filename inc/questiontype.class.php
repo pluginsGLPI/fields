@@ -116,7 +116,7 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
         global $DB;
 
         $question_table = Question::getTable();
-        if (!$DB->tableExists($question_table)) {
+        if (version_compare($version, '1.24.6', '>') || !$DB->tableExists($question_table)) {
             return;
         }
 
