@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix fields values updates not applying the expected checks in some cases
 - Fix ticket observers being able to edit and save additional fields they are not allowed to modify
 - Fix `Yes/No` field values returned as strings instead of integers in search results
+- Fix fatal error during plugin update caused by outdated generated dropdown classes
 
 ## [1.25.0] - 2026-10-06
 
