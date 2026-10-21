@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Fix slow display and save of items with additional fields when the values tables are large
+
 ## [1.24.7] - 2026-10-28
 
 ### Fixed
