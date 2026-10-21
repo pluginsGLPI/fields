@@ -71,6 +71,7 @@ function plugin_fields_install()
         PluginFieldsField::class,
         PluginFieldsLabelTranslation::class,
         PluginFieldsProfile::class,
+        PluginFieldsQuestionType::class,
         PluginFieldsStatusOverride::class,
     ];
 
