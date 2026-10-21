@@ -1581,6 +1581,11 @@ JAVASCRIPT,
             return;
         }
 
+        // Yes/No columns already default to 0, no need to update existing items
+        if ($this->fields['type'] === 'yesno' && $value === 0) {
+            return;
+        }
+
         $sql_fields = PluginFieldsMigration::getSQLFields(
             $this->fields['name'],
             $this->fields['type'],
