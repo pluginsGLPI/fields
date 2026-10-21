@@ -247,6 +247,65 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         }
     }
 
+    public function testFieldsQuestionEditorRenderingForMultipleDropdownWithStringKeyedDefaultValue(): void
+    {
+        $this->login();
+
+        // Arrange: create a multiple "dropdown-Location" field
+        $this->fields['locations'] = $this->createField([
+            'label'                                     => 'Locations',
+            'type'                                      => 'dropdown-' . Location::class,
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ], ['default_value']);
+
+        $location1 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 1',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 2',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        // Default value with string keys, as they would be passed as named parameters if not reindexed
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Locations question",
+            PluginFieldsQuestionType::class,
+            default_value: [
+                'itemtype' => Location::class,
+                'items_id' => [
+                    'first'  => $location1->getID(),
+                    'second' => $location2->getID(),
+                ],
+            ],
+            extra_data: json_encode($this->getFieldExtraDataConfig('locations')),
+        );
+        $form = $this->createForm($builder);
+
+        try {
+            // Act: render form editor
+            $crawler = $this->renderFormEditor($form);
+
+            // Assert: both locations are rendered as the default value
+            $selected_values = $crawler
+                ->filter('.form-editor-container [data-glpi-form-editor-question] input[name^="default_value[items_id]"]')
+                ->each(fn($input) => (int) $input->attr('value'));
+            $this->assertEqualsCanonicalizing(
+                [$location1->getID(), $location2->getID()],
+                $selected_values,
+            );
+        } finally {
+            // delete locations for another run
+            $location1->delete($location1->fields, true);
+            $location2->delete($location2->fields, true);
+        }
+    }
+
     public static function cloneDefaultValueProvider(): iterable
     {
         yield 'text'     => ['text', 'hello'];
