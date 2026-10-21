@@ -565,6 +565,7 @@ final class ContainerTest extends DbTestCase
             // legacy default value => expected default value
             'Non' => '0',
             'yes' => '1',
+            'Oui' => '1',
             ''    => '0',
             '0'   => '0',
             '1'   => '1',

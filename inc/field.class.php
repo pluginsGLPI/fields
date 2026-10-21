@@ -1223,7 +1223,13 @@ JAVASCRIPT,
      */
     public static function normalizeYesNoValue(mixed $value): int
     {
-        return filter_var($value, FILTER_VALIDATE_BOOL) ? 1 : 0;
+        if (filter_var($value, FILTER_VALIDATE_BOOL)) {
+            return 1;
+        }
+
+        // Free text values may also contain a localized "Yes" label
+        $value = mb_strtolower(trim((string) $value));
+        return in_array($value, ['oui', mb_strtolower(__('Yes'))], true) ? 1 : 0;
     }
 
     public static function prepareHtmlFields(
