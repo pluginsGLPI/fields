@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `Yes/No` field values returned as strings instead of integers in search results
 - Fix ticket observers being able to edit and save additional fields they are not allowed to modify
 - Fix mandatory fields blocking ticket creation from a GLPI form.
+- Fix slow display and save of items with additional fields when the values tables are large
 
 ## [1.24.6] - 2026-10-06
 
