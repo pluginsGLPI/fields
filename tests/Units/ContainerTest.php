@@ -43,6 +43,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
 use PluginFieldsField;
+use PluginFieldsMigration;
 use PluginFieldsToolbox;
 use Search;
 use Session;
@@ -496,6 +497,104 @@ final class ContainerTest extends DbTestCase
             'entities_id' => 0,
         ]);
         $this->assertEquals($updated_default, $readValue($ticket3));
+    }
+
+    public function testYesNoDefaultValueIsNormalized(): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'YesNo Default Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField(
+            [
+                'label'                                     => 'YesNo Field',
+                'type'                                      => 'yesno',
+                PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+                'ranking'                                   => 1,
+                'is_active'                                 => 1,
+                'is_readonly'                               => 0,
+                'default_value'                             => 'yes',
+            ],
+            ['default_value'],
+        );
+        $this->assertSame('1', $field->fields['default_value']);
+
+        $this->updateItem(PluginFieldsField::class, $field->getID(), ['default_value' => 'Non'], ['default_value']);
+        $this->assertTrue($field->getFromDB($field->getID()));
+        $this->assertSame('0', $field->fields['default_value']);
+
+        // Legacy data: default value typed as free text before the Yes/No selector was used
+        $DB->update(PluginFieldsField::getTable(), ['default_value' => 'Non'], ['id' => $field->getID()]);
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'YesNo ticket ' . $this->getUniqueString(),
+            'content'     => 'Test',
+            'entities_id' => 0,
+        ]);
+
+        $this->assertEquals(0, $this->getDefaultValueStored($ticket, $container, $field->fields['name']));
+    }
+
+    public function testMigrationNormalizesYesNoDefaultValues(): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'YesNo Migration Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $cases = [
+            // legacy default value => expected default value
+            'Non' => '0',
+            'yes' => '1',
+            'Oui' => '1',
+            ''    => '0',
+            '0'   => '0',
+            '1'   => '1',
+        ];
+
+        $fields_ids = [];
+        foreach (array_keys($cases) as $i => $legacy_value) {
+            $field = $this->createField([
+                'label'                                     => 'YesNo Migration Field ' . $i,
+                'type'                                      => 'yesno',
+                PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+                'ranking'                                   => $i + 1,
+                'is_active'                                 => 1,
+                'is_readonly'                               => 0,
+            ]);
+
+            // Legacy data: default value typed as free text before the Yes/No selector was used
+            $DB->update(PluginFieldsField::getTable(), ['default_value' => (string) $legacy_value], ['id' => $field->getID()]);
+            $fields_ids[$legacy_value] = $field->getID();
+        }
+
+        $migration = new PluginFieldsMigration('0');
+        PluginFieldsField::installBaseData($migration, '0');
+        $migration->executeMigration();
+
+        foreach ($cases as $legacy_value => $expected_value) {
+            $field = PluginFieldsField::getById($fields_ids[$legacy_value]);
+            $this->assertSame($expected_value, $field->fields['default_value'], (string) $legacy_value);
+        }
     }
 
     public static function provideFieldTypesForSearchDefaultValue(): iterable
