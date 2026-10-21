@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix ticket observers being able to edit and save additional fields they are not allowed to modify
 - Fix mandatory fields blocking ticket creation from a GLPI form.
 - Fix massive update of fields of a tab block not saved when the item has several tab blocks
+- Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
+- `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
 
 ## [1.24.6] - 2026-10-06
 
