@@ -204,7 +204,7 @@ class PluginFieldsContainerDisplayCondition extends CommonDBChild
         return $conditions;
     }
 
-    private function getItemtypesForContainer(int $container_id): array
+    public function getItemtypesForContainer(int $container_id): array
     {
         /** @var DBmysql $DB */
         global $DB;
