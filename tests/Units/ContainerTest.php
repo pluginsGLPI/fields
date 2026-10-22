@@ -878,6 +878,39 @@ final class ContainerTest extends DbTestCase
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
     }
 
+    public static function invalidRenameNameProvider(): iterable
+    {
+        yield 'empty' => [''];
+        yield 'blank' => ['   '];
+        yield 'non alphanumeric' => ['!!!'];
+    }
+
+    #[DataProvider('invalidRenameNameProvider')]
+    public function testRenameOversizedContainerFailsWithInvalidName(string $new_name): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'InvalidName ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 0,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => str_repeat('a', 100)], ['id' => $container->getID()]);
+
+        $result = PluginFieldsContainer::renameOversizedContainer($container->getID(), $new_name);
+
+        $this->assertFalse($result);
+
+        $reloaded = new PluginFieldsContainer();
+        $this->assertTrue($reloaded->getFromDB($container->getID()));
+        $this->assertSame(str_repeat('a', 100), $reloaded->fields['name']);
+        $this->assertSame(0, (int) $reloaded->fields['is_active']);
+    }
+
     public function testUpdateCannotReactivateOversizedContainer(): void
     {
         $container = $this->createFieldContainer([
