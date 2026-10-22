@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Fix item creation failing when a Yes/No field has a non boolean default value
 - Fix mandatory fields of a block hidden by its display conditions blocking the save of an item
+- Fix rendering error `unknown named parameters` for duplicated form
 - Fix fields values updates not applying the expected checks in some cases
 - Fix `Yes/No` field values returned as strings instead of integers in search results
+- Fix ticket observers being able to edit and save additional fields they are not allowed to modify
+- Fix mandatory fields blocking ticket creation from a GLPI form.
 - Fix massive update of fields of a tab block not saved when the item has several tab blocks
 
 ## [1.24.6] - 2026-10-06

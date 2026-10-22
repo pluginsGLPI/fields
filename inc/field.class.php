@@ -127,6 +127,25 @@ class PluginFieldsField extends CommonDBChild
         // change default_value from varchar to longtext
         $migration->changeField($table, 'default_value', 'default_value', 'longtext');
 
+        // Yes/No default values were typed as free text, normalize them to 0/1
+        $yesno_fields = $DB->request([
+            'SELECT' => ['id', 'default_value'],
+            'FROM'   => $table,
+            'WHERE'  => [
+                'type' => 'yesno',
+                'NOT'  => ['default_value' => ['0', '1']],
+            ],
+        ]);
+        foreach ($yesno_fields as $yesno_field) {
+            $migration->addPostQuery(
+                $DB->buildUpdate(
+                    $table,
+                    ['default_value' => (string) self::normalizeYesNoValue($yesno_field['default_value'])],
+                    ['id' => $yesno_field['id']],
+                ),
+            );
+        }
+
         $toolbox = new PluginFieldsToolbox();
         $toolbox->fixFieldsNames($migration, ['NOT' => ['type' => 'dropdown']]);
 
@@ -288,6 +307,8 @@ class PluginFieldsField extends CommonDBChild
 
         if ($input['multiple'] ?? false) {
             $input['default_value'] = json_encode($input['default_value'] ?: []);
+        } elseif (($input['type'] ?? '') === 'yesno' && array_key_exists('default_value', $input)) {
+            $input['default_value'] = (string) self::normalizeYesNoValue($input['default_value']);
         }
 
         //reject adding when field name is too long for mysql
@@ -368,6 +389,11 @@ class PluginFieldsField extends CommonDBChild
             && $this->fields['multiple']
         ) {
             $input['default_value'] = json_encode($input['default_value'] ?: []);
+        } elseif (
+            array_key_exists('default_value', $input)
+            && $this->fields['type'] === 'yesno'
+        ) {
+            $input['default_value'] = (string) self::normalizeYesNoValue($input['default_value']);
         }
 
         return $input;
@@ -744,6 +770,8 @@ class PluginFieldsField extends CommonDBChild
                         } else {
                             echo Dropdown::getDropdownName($table, $this->fields['default_value']);
                         }
+                    } elseif ($this->fields['type'] === 'yesno') {
+                        echo Dropdown::getYesNo(self::getDefaultValue($this->fields));
                     } else {
                         echo htmlspecialchars((string) $this->fields['default_value']);
                     }
@@ -891,7 +919,7 @@ class PluginFieldsField extends CommonDBChild
             return null;
         }
 
-        $canedit = $right > READ;
+        $canedit = $right > READ && ($item->isNewItem() || $item->canUpdateItem());
 
         //get fields for this container
         $field_obj = new self();
@@ -1170,7 +1198,10 @@ JAVASCRIPT,
     {
         $value = null;
 
-        if (in_array($field['type'], ['dropdown', 'yesno']) && $field['default_value'] === '') {
+        if ($field['type'] === 'yesno') {
+            // Yes/No values are stored in an integer column, ignore any non boolean default value
+            $value = self::normalizeYesNoValue($field['default_value']);
+        } elseif ($field['type'] === 'dropdown' && $field['default_value'] === '') {
             $value = 0;
         } elseif ($field['default_value'] !== '') {
             $value = $field['default_value'];
@@ -1185,6 +1216,20 @@ JAVASCRIPT,
         }
 
         return $value;
+    }
+
+    /**
+     * Normalize a Yes/No value to 0 or 1.
+     */
+    public static function normalizeYesNoValue(mixed $value): int
+    {
+        if (filter_var($value, FILTER_VALIDATE_BOOL)) {
+            return 1;
+        }
+
+        // Free text values may also contain a localized "Yes" label
+        $value = mb_strtolower(trim((string) $value));
+        return in_array($value, ['oui', mb_strtolower(__('Yes'))], true) ? 1 : 0;
     }
 
     public static function prepareHtmlFields(
@@ -1213,7 +1258,7 @@ JAVASCRIPT,
             return null;
         }
 
-        $canedit = $right > READ;
+        $canedit = $right > READ && ($item->isNewItem() || $item->canUpdateItem());
 
         // Fill status overrides if needed
         if (in_array($item->getType(), PluginFieldsStatusOverride::getStatusItemtypes())) {
@@ -1357,7 +1402,7 @@ JAVASCRIPT,
                 $value = array_values(array_filter(
                     array_merge(...array_map(
                         static fn($v) => is_array($v) ? array_values($v) : [$v],
-                        $value,
+                        array_values($value),
                     )),
                     is_scalar(...),
                 ));
@@ -1539,6 +1584,11 @@ JAVASCRIPT,
 
         $value = self::getDefaultValue($this->fields);
         if ($value === null) {
+            return;
+        }
+
+        // Yes/No columns already default to 0, no need to update existing items
+        if ($this->fields['type'] === 'yesno' && $value === 0) {
             return;
         }
 
