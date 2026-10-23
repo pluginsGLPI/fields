@@ -2008,6 +2008,51 @@ HTML;
         return $id;
     }
 
+    /**
+     * Find the active tab containers of the item's type having at least one field submitted in the item input
+     *
+     * @param CommonDBTM $item Item instance
+     *
+     * @return int[]
+     */
+    private static function findSubmittedTabContainers(CommonDBTM $item): array
+    {
+        $container  = new self();
+        $containers = $container->find([
+            'is_active' => 1,
+            'type'      => ['!=', 'dom'],
+        ]);
+
+        $c_ids = [];
+        foreach ($containers as $data) {
+            if (
+                !in_array($item::class, PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']))
+                || !Session::haveAccessToEntity($data['entities_id'], $data['is_recursive'])
+            ) {
+                continue;
+            }
+
+            $fields = (new PluginFieldsField())->find([
+                'plugin_fields_containers_id' => $data['id'],
+                'is_active'                   => 1,
+                'type'                        => ['!=', 'header'],
+            ]);
+            foreach ($fields as $field) {
+                $input_keys = [
+                    $field['name'],
+                    sprintf('plugin_fields_%sdropdowns_id', $field['name']),
+                    sprintf('items_id_%s', $field['name']),
+                ];
+                if (array_intersect($input_keys, array_keys($item->input)) !== []) {
+                    $c_ids[] = (int) $data['id'];
+                    break;
+                }
+            }
+        }
+
+        return $c_ids;
+    }
+
     public static function findAllContainers($itemtype)
     {
         $condition = ['is_active' => 1];
@@ -2141,6 +2186,10 @@ HTML;
                 [self::findContainer($item::class, 'dom'), self::findContainer($item::class, 'tab')],
                 static fn($id) => $id !== false,
             );
+
+            // other tab containers whose fields are submitted (ex: massive action on a GLPI item
+            // dropdown field for which the core never displays the plugin field nor its c_id input)
+            $c_ids = array_values(array_unique(array_merge($c_ids, self::findSubmittedTabContainers($item))));
         }
 
         if ($c_ids === []) {

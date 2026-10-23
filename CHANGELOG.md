@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix ticket observers being able to edit and save additional fields they are not allowed to modify
 - Fix `Yes/No` field values returned as strings instead of integers in search results
 - Fix fatal error during plugin update caused by outdated generated dropdown classes
+- Fix massive update of fields of a tab block not saved when the item has several tab blocks
 
 ## [1.25.0] - 2026-10-06
 
