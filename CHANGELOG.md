@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Add Transifex translations link to README
+
 ### Fixed
 
 - Fix mandatory fields of a block hidden by its display conditions blocking the save of an item

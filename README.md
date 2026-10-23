@@ -294,3 +294,7 @@ Obtain a personalized service experience, associated with benefits and opportuni
 ## Copying
 
 * **Code**: you can redistribute it and/or modify it under the terms of the GNU General Public License ([GPL-2.0](https://www.gnu.org/licenses/gpl-2.0.en.html)).
+
+## Additional resources
+
+* [Translations on Transifex](https://explore.transifex.com/teclib/glpi-plugin-plugin-fields/)
