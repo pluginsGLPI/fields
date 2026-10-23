@@ -147,7 +147,7 @@ class PluginFieldsDestinationField extends AbstractConfigField
                         $input[$field_name] = $ids[0] ?? null;
                     }
                 } else {
-                    $input[$field_name] = $value ?? $answer->getRawAnswer();
+                    $input[$field_name] = $answer->getRawAnswer();
                 }
             }
         }
