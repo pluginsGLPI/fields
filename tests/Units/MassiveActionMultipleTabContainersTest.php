@@ -287,4 +287,27 @@ final class MassiveActionMultipleTabContainersTest extends DbTestCase
             $this->assertNull($this->getStoredValues($container_key, $computer), sprintf('Unexpected values stored in "%s" container', $container_key));
         }
     }
+
+    public function testUpdateOfTwoTabContainersFields(): void
+    {
+        $this->createContainers();
+
+        $entities_id = $this->getTestRootEntity(true);
+        $computer    = $this->createItem(Computer::class, ['name' => 'PC', 'entities_id' => $entities_id]);
+        $ticket      = $this->createItem(Ticket::class, ['name' => 'Lot', 'content' => 'Lot', 'entities_id' => $entities_id]);
+        $first_name  = $this->fields['first_tab_text']->fields['name'];
+        $last_name   = $this->fields['last_tab_ticket']->fields['name'];
+
+        $this->updateItem(
+            Computer::class,
+            $computer->getID(),
+            [$first_name => 'Atelier', $last_name => $ticket->getID()],
+            [$first_name, $last_name],
+        );
+
+        // both tab containers are saved
+        $this->assertSame('Atelier', $this->getStoredValues('first_tab', $computer)[$first_name] ?? null);
+        $this->assertEquals($ticket->getID(), $this->getStoredValues('last_tab', $computer)[$last_name] ?? null);
+        $this->assertNull($this->getStoredValues('dom', $computer));
+    }
 }
