@@ -1093,13 +1093,15 @@ class PluginFieldsContainer extends CommonDBTM
             return false;
         }
 
-        $toolbox  = new PluginFieldsToolbox();
-        $new_name = $toolbox->getSystemNameFromLabel($new_name);
-        if ($new_name === '') {
+        // getSystemNameFromLabel() falls back to a random name when no alphanumeric char remains
+        if (preg_match('/[\da-z]/i', $new_name) !== 1) {
             Session::AddMessageAfterRedirect(__('Invalid name.', 'fields'), false, ERROR);
 
             return false;
         }
+
+        $toolbox  = new PluginFieldsToolbox();
+        $new_name = $toolbox->getSystemNameFromLabel($new_name);
 
         $too_long_tables = [];
         foreach ($itemtypes as $itemtype) {

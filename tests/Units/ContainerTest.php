@@ -887,6 +887,31 @@ final class ContainerTest extends DbTestCase
         $this->assertSame('real value', $rows->current()[$field_name]);
     }
 
+    public function testRenameOversizedContainerRejectsNameWithoutAlphanumeric(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'BlankRename ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 0,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        /** @var DBmysql $DB */
+        global $DB;
+        $oversized_name = str_repeat('a', 100);
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => $oversized_name], ['id' => $container->getID()]);
+
+        $this->assertFalse(PluginFieldsContainer::renameOversizedContainer($container->getID(), ' -_ '));
+        $this->hasSessionMessages(ERROR, ['Invalid name.']);
+
+        $reloaded = new PluginFieldsContainer();
+        $this->assertTrue($reloaded->getFromDB($container->getID()));
+        $this->assertSame($oversized_name, $reloaded->fields['name']);
+        $this->assertSame(0, (int) $reloaded->fields['is_active']);
+    }
+
     public function testRenameOversizedContainerRecoversDataFromOrphanTable(): void
     {
         // Simulate a container that had a real, working table on an older GLPI/plugin
