@@ -1168,13 +1168,12 @@ class PluginFieldsContainer extends CommonDBTM
 
             $claimed_orphans[] = $old_table;
 
+            // Rename even when empty: install() only creates base columns, not the custom field ones.
             if (countElementsInTable($old_table) > 0) {
-                $migration->renameTable($old_table, $new_table);
                 $data_preserved = true;
-            } else {
-                // Empty leftover table: drop it, a fresh one is created below.
-                $migration->dropTable($old_table);
             }
+
+            $migration->renameTable($old_table, $new_table);
         }
 
         $DB->clearSchemaCache();
