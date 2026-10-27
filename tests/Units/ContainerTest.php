@@ -966,6 +966,57 @@ final class ContainerTest extends DbTestCase
         $this->assertSame('data from an older version', $rows->current()[$field_name]);
     }
 
+    public function testRenameOversizedContainerKeepsFieldColumnsOfEmptyOrphanTable(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'EmptyData ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                      => 'Serial extra ' . str_replace('-', '', $this->getUniqueString()),
+            'type'                                        => 'text',
+            PluginFieldsContainer::getForeignKeyField()   => $container->getID(),
+            'ranking'                                     => 1,
+            'is_active'                                   => 1,
+            'is_readonly'                                 => 0,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $old_table = getTableForItemType(PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']));
+
+        /** @var DBmysql $DB */
+        global $DB;
+        $this->assertSame(0, countElementsInTable($old_table));
+        $DB->update(PluginFieldsContainer::getTable(), ['name' => str_repeat('a', 100)], ['id' => $container->getID()]);
+
+        $new_name = 'EmptyRecovered' . str_replace('-', '', $this->getUniqueString());
+
+        $this->assertTrue(PluginFieldsContainer::renameOversizedContainer($container->getID(), $new_name));
+
+        $new_table = getTableForItemType(PluginFieldsContainer::getClassname(Computer::class, $new_name));
+        $this->assertFalse($DB->tableExists($old_table));
+        $this->assertTrue($DB->fieldExists($new_table, $field_name));
+
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer after empty rename',
+            'entities_id' => 0,
+        ]);
+        $computer_item = new Computer();
+        $this->assertTrue($computer_item->update([
+            'id'        => $computer->getID(),
+            $field_name => 'saved after rename',
+        ]));
+
+        $rows = $DB->request(['FROM' => $new_table, 'WHERE' => ['items_id' => $computer->getID()]]);
+        $this->assertCount(1, $rows);
+        $this->assertSame('saved after rename', $rows->current()[$field_name]);
+    }
+
     public function testRenameOversizedContainerFailsForUnknownContainer(): void
     {
         $result = PluginFieldsContainer::renameOversizedContainer(999999999, 'whatever');
