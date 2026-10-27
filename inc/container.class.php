@@ -2008,6 +2008,56 @@ HTML;
         return $id;
     }
 
+    /**
+     * Find the active tab containers of the item's type having at least one field submitted in the item input
+     *
+     * @param CommonDBTM $item Item instance
+     *
+     * @return int[]
+     */
+    private static function findSubmittedTabContainers(CommonDBTM $item): array
+    {
+        $container  = new self();
+        $containers = $container->find([
+            'is_active' => 1,
+            'type'      => ['!=', 'dom'],
+        ]);
+
+        $c_ids = [];
+        foreach ($containers as $data) {
+            if (
+                in_array($item::class, PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']))
+                && Session::haveAccessToEntity($data['entities_id'], $data['is_recursive'])
+            ) {
+                $c_ids[] = (int) $data['id'];
+            }
+        }
+
+        if ($c_ids === []) {
+            return [];
+        }
+
+        $fields = (new PluginFieldsField())->find([
+            'plugin_fields_containers_id' => $c_ids,
+            'is_active'                   => 1,
+            'type'                        => ['!=', 'header'],
+        ], 'plugin_fields_containers_id');
+
+        $submitted = [];
+        foreach ($fields as $field) {
+            $input_keys = [
+                $field['name'],
+                sprintf('plugin_fields_%sdropdowns_id', $field['name']),
+                sprintf('items_id_%s', $field['name']),
+            ];
+            if (array_intersect($input_keys, array_keys($item->input)) !== []) {
+                $submitted[] = (int) $field['plugin_fields_containers_id'];
+            }
+        }
+
+        return array_values(array_unique($submitted));
+    }
+
     public static function findAllContainers($itemtype)
     {
         $condition = ['is_active' => 1];
@@ -2048,18 +2098,19 @@ HTML;
     public static function postItemAdd(CommonDBTM $item)
     {
         if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data             = $item->input['_plugin_fields_data'];
-            $data['itemtype'] = $item::class;
-            $data['items_id'] = $item->getID();
-            $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
-            //update data
             $container = new self();
-            if ($container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
-                return true;
+            foreach (self::getSubmittedContainersData($item) as $data) {
+                $data['itemtype'] = $item::class;
+                $data['items_id'] = $item->getID();
+                $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
+                //update data
+                if (!$container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
+                    $item->input = [];
+                    return $item;
+                }
             }
 
-            $item->input = [];
-            return $item;
+            return true;
         }
 
         return true;
@@ -2092,24 +2143,41 @@ HTML;
                 return true;
             }
 
-            $data = $item->input['_plugin_fields_data'];
-            $data['itemtype'] = $item::class;
-            $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
-            //update data
             $container = new self();
-            if (
-                count($data) === 0
-                || $container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))
-            ) {
-                $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
-
-                return true;
+            foreach (self::getSubmittedContainersData($item) as $data) {
+                $data['itemtype'] = $item::class;
+                $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
+                //update data
+                if (!$container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
+                    return false;
+                }
             }
 
-            return false;
+            $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
+
+            return true;
         }
 
         return true;
+    }
+
+    /**
+     * Get the data to store for each submitted container
+     *
+     * @param CommonDBTM $item Item instance
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private static function getSubmittedContainersData(CommonDBTM $item): array
+    {
+        $data = $item->input['_plugin_fields_data'];
+
+        // data of a single container
+        if (array_key_exists('plugin_fields_containers_id', $data)) {
+            return [$data];
+        }
+
+        return $data;
     }
 
     /**
@@ -2137,10 +2205,16 @@ HTML;
             // generic add/update: both the "dom" and "tab" containers can carry
             // mandatory fields that must be enforced, even though only "dom"
             // fields are actually submitted inline with the main form
-            $c_ids = array_filter(
-                [self::findContainer($item::class, 'dom'), self::findContainer($item::class, 'tab')],
+            // other tab containers whose fields are submitted (ex: massive action on a GLPI item
+            // dropdown field for which the core never displays the plugin field nor its c_id input)
+            $c_ids = array_values(array_unique(array_filter(
+                [
+                    self::findContainer($item::class, 'dom'),
+                    ...self::findSubmittedTabContainers($item),
+                    self::findContainer($item::class, 'tab'),
+                ],
                 static fn($id) => $id !== false,
-            );
+            )));
         }
 
         if ($c_ids === []) {
@@ -2151,7 +2225,7 @@ HTML;
             $item->fields = $item->input;
         }
 
-        $submitted_data = null;
+        $submitted_data = [];
         foreach ($c_ids as $c_id) {
             $loc_c = new PluginFieldsContainer();
             $loc_c->getFromDB($c_id);
@@ -2186,11 +2260,11 @@ HTML;
             }
 
             if ($result !== []) {
-                $submitted_data = $result;
+                $submitted_data[] = $result;
             }
         }
 
-        if ($submitted_data !== null) {
+        if ($submitted_data !== []) {
             $item->input['_plugin_fields_data'] = $submitted_data;
 
             return true;
