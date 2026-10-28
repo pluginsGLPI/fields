@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix massive update of fields of a tab block not saved when the item has several tab blocks
 - Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
 - `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
+- Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
 
 ## [1.24.6] - 2026-10-06
 
