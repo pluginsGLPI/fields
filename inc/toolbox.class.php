@@ -400,7 +400,7 @@ class PluginFieldsToolbox
      */
     public static function prepareLabel(array $input): array
     {
-        $input['label'] = self::sanitizeLabel((string) ($input['label'] ?? ''));
+        $input['label'] = trim((string) ($input['label'] ?? ''));
         $input['name']  = (new self())->getSystemNameFromLabel($input['label']);
 
         return $input;

@@ -113,14 +113,14 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
     public function prepareInputForUpdate($input)
     {
-        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
+        $input['label'] = trim((string) $input['label']);
 
         return $input;
     }
 
     public function prepareInputForAdd($input)
     {
-        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
+        $input['label'] = trim((string) $input['label']);
 
         return $input;
     }

@@ -116,7 +116,7 @@ class PluginFieldsDropdown
         // Safe inputs
         $input['name'] = PluginFieldsToolbox::sanitizeLabel((string) $input['name']);
         $input['id'] = (int) PluginFieldsToolbox::sanitizeLabel((string) $input['id']);
-        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) $input['label']);
+        $input['label'] = (string) $input['label'];
 
         $classname = self::getClassname($input['name']);
 
