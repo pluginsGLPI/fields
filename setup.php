@@ -31,7 +31,7 @@
 /** @var array $CFG_GLPI */
 global $CFG_GLPI;
 
-define('PLUGIN_FIELDS_VERSION', '1.25.0');
+define('PLUGIN_FIELDS_VERSION', '1.25.1');
 
 // Minimal GLPI version, inclusive
 define('PLUGIN_FIELDS_MIN_GLPI', '12.0.0');
