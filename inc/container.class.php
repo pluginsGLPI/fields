@@ -1050,7 +1050,7 @@ class PluginFieldsContainer extends CommonDBTM
                 }
 
                 $fields = new $classname();
-                $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
+                $fields->deleteByCriteria(['itemtype' => $itemtype, 'items_id' => $item->fields['id']], true);
             }
         }
 
@@ -1767,7 +1767,7 @@ HTML;
 
         $obj = new $classname();
 
-        $exist = $obj->getFromDBByCrit(['items_id' => $items_id]);
+        $exist = $obj->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id]);
 
         // Convert "multiple" values into a JSON string
         $multiple_fields_iterator = $DB->request([
@@ -1812,7 +1812,7 @@ HTML;
         $obj = $dbu->getItemForItemtype($classname);
 
         if ($obj !== false) {
-            if ($obj->getFromDBByCrit(['items_id' => $items_id]) === false) {
+            if ($obj->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id]) === false) {
                 // add fields data
                 $obj->add($data);
             } else {
@@ -2266,7 +2266,7 @@ HTML;
         }
 
         $values_obj = (new DbUtils())->getItemForItemtype(self::getClassname($itemtype, $container->fields['name']));
-        if ($values_obj === false || !$values_obj->getFromDBByCrit(['items_id' => $items_id])) {
+        if ($values_obj === false || !$values_obj->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id])) {
             return [];
         }
 
@@ -2659,7 +2659,7 @@ HTML;
             $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
             $dbu       = new DbUtils();
             $obj       = $dbu->getItemForItemtype($classname);
-            if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {
+            if ($obj !== false && $obj->getFromDBByCrit(['itemtype' => $item::getType(), 'items_id' => $item->getID()])) {
                 $data += $obj->fields;
             }
         }
