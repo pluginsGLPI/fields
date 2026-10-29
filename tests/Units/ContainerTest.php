@@ -1159,6 +1159,7 @@ final class ContainerTest extends DbTestCase
         foreach ($DB->request(['FROM' => $table, 'WHERE' => ['items_id' => $computer->getID()]]) as $row) {
             $values[$row['itemtype']] = $row[$field_name];
         }
+
         $this->assertSame([Computer::class => 'updated computer value', Monitor::class => 'monitor value'], $values);
 
         $this->assertTrue((new Computer())->delete(['id' => $computer->getID()], true));
