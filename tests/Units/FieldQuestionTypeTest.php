@@ -425,7 +425,7 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
 
         // Act: run the plugin migration
         ob_start();
-        PluginFieldsQuestionType::installBaseData(new Migration(PLUGIN_FIELDS_VERSION), PLUGIN_FIELDS_VERSION);
+        PluginFieldsQuestionType::installBaseData(new Migration('1.24.6'), '1.24.6');
         ob_end_clean();
 
         // Assert: default values are encoded only once
