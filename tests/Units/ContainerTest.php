@@ -1108,4 +1108,63 @@ final class ContainerTest extends DbTestCase
         $this->assertTrue($reloaded->getFromDB($container->getID()));
         $this->assertSame(0, (int) $reloaded->fields['is_active']);
     }
+
+    public function testValuesAreReadAndPurgedForTheirItemtypeOnly(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'Itemtype values ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => 'Itemtype text ' . str_replace('-', '', $this->getUniqueString()),
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer with itemtype values',
+            'entities_id' => 0,
+        ]);
+        $this->assertTrue((new Computer())->update([
+            'id'        => $computer->getID(),
+            $field_name => 'computer value',
+        ]));
+
+        // Values row of another itemtype sharing the same items_id
+        /** @var DBmysql $DB */
+        global $DB;
+        $table = getTableForItemType(PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']));
+        $DB->insert($table, [
+            'items_id'                                  => $computer->getID(),
+            'itemtype'                                  => Monitor::class,
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            $field_name                                 => 'monitor value',
+        ]);
+
+        $this->assertTrue((new Computer())->update([
+            'id'        => $computer->getID(),
+            $field_name => 'updated computer value',
+        ]));
+
+        $values = [];
+        foreach ($DB->request(['FROM' => $table, 'WHERE' => ['items_id' => $computer->getID()]]) as $row) {
+            $values[$row['itemtype']] = $row[$field_name];
+        }
+        $this->assertSame([Computer::class => 'updated computer value', Monitor::class => 'monitor value'], $values);
+
+        $this->assertTrue((new Computer())->delete(['id' => $computer->getID()], true));
+
+        $rows = $DB->request(['FROM' => $table, 'WHERE' => ['items_id' => $computer->getID()]]);
+        $this->assertCount(1, $rows);
+        $this->assertSame(Monitor::class, $rows->current()['itemtype']);
+    }
 }
