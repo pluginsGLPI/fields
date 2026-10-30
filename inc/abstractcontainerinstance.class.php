@@ -120,14 +120,23 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                     $display_with = ['realname', 'firstname'];
                 }
 
-                return Dropdown::show($itemtype, ['displaywith' => $display_with, 'name' => $name, 'display' => false]);
+                return Dropdown::show($itemtype, [
+                    'displaywith' => $display_with,
+                    'name'        => $name,
+                    'value'       => $values[$field] ?? 0,
+                    'display'     => false,
+                ]);
             } elseif (
                 $field_specs->fields['type'] === 'dropdown'
                 && $field_specs->fields['multiple']
             ) {
                 $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
 
-                return Dropdown::show($itemtype, ['name' => $name, 'display' => false]);
+                return Dropdown::show($itemtype, [
+                    'name'    => $name,
+                    'value'   => $values[$field] ?? 0,
+                    'display' => false,
+                ]);
             }
         }
 
