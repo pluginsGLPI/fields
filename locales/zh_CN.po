@@ -4,13 +4,14 @@
 # 
 # Translators:
 # liAnGjiA <liangjia@qq.com>, 2018
+# DWXXX, 2026
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-04 14:23+0000\n"
+"POT-Creation-Date: 2026-10-30 03:57+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
+"Last-Translator: DWXXX, 2026\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,313 +19,432 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: inc/checkdatabasecommand.class.php:47
-#, php-format
-msgid ""
-"- some deleted fields may still be present in database (bug introduced in "
-"version %s and fixed in version %s)"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:86
-#, php-format
-msgid "-> \"%s.%s\" has been deleted."
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:87
-#, php-format
-msgid "-> \"%s.%s\" should be deleted."
-msgstr ""
-
-#: inc/field.class.php:573
-msgid "Add a new field"
-msgstr "添加新字段"
-
-#: templates/container_display_conditions.html.twig
-msgid "Add condition to hide block"
-msgstr ""
-
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
-msgstr ""
-
-#: inc/container.class.php:994
-msgid "Add tab"
-msgstr "添加标签"
-
-#: inc/menu.class.php:37 front/container.php:34 front/container.form.php:63
-#: setup.php:200
-msgid "Additional fields"
-msgstr "附加字段"
-
-#: ajax/field_specific_fields.php:53
-msgid "Allowed values"
-msgstr ""
-
-#: inc/container.class.php:742
-msgid "Block"
-msgstr "区域"
-
-#: inc/checkdatabasecommand.class.php:42
-msgid "Check database to detect inconsistencies."
-msgstr ""
-
-#: inc/toolbox.class.php:316
-msgid "Component items"
-msgstr ""
-
-#: templates/container_display_conditions.html.twig
-#: inc/containerdisplaycondition.class.php:153
-msgid "Condition to hide block"
-msgid_plural "Conditions to hide block"
-msgstr[0] ""
-
-#: inc/container.class.php:565
-msgid ""
-"Container name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:80
-#, php-format
-msgid "Database contains orphaned data from %s improperly deleted field(s)."
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:79
-#, php-format
-msgid ""
-"Database was containing orphaned data from %s improperly deleted field(s)."
-msgstr ""
-
-#: inc/field.class.php:1309
-msgid "Date"
-msgstr "日期"
-
-#: inc/field.class.php:1310
-msgid "Date & time"
-msgstr "时间&日期"
-
-#: ajax/field_specific_fields.php:89
-msgid "Default value"
-msgstr ""
-
-#: ajax/field_specific_fields.php:116
-msgid "Default value will be configurable once field will be created."
-msgstr ""
-
-#: inc/field.class.php:1307
-msgid "Dropdown"
-msgstr "拖动"
-
-#: inc/checkdatabasecommand.class.php:72
-msgid "Everything is in order - no action needed."
-msgstr ""
-
-#: inc/container.class.php:53 inc/container.class.php:752
-msgid "Export to YAML"
-msgstr ""
-
-#: templates/forms/status_override.html.twig inc/field.class.php:241
-msgid "Field"
-msgstr "字段"
-
-#: inc/field.class.php:257 inc/field.class.php:282
-msgid ""
-"Field name is too long for database (digits in name are replaced by "
-"characters, try to remove them)"
-msgstr ""
-
-#: inc/field.class.php:515
-msgid "Fields"
-msgstr "字段"
-
-#: inc/container.class.php:208
-msgid "Fix container names"
-msgstr ""
-
-#: inc/toolbox.class.php:122
-msgid "Fix fields names"
-msgstr ""
-
-#: inc/field.class.php:1311
-msgid "GLPI item"
-msgstr ""
-
-#: inc/field.class.php:1301
-msgid "Header"
-msgstr "头部"
-
-#: inc/container.class.php:995
-msgid "Insertion in the form (before save button)"
-msgstr "在窗体中插入(保存按钮前)"
-
-#: inc/container.class.php:996
-msgid "Insertion in the form of a specific tab (before save button)"
-msgstr "以特定选项卡的形式插入(保存按钮之前)"
-
-#: inc/labeltranslation.class.php:192
-msgid "Label"
-msgstr "标签"
-
-#: inc/labeltranslation.class.php:191
-msgid "Language"
-msgstr "语言"
-
-#: ajax/field_specific_fields.php:86
-msgid "Multiple dropdown"
-msgstr ""
-
-#: hook.php:55 hook.php:59
-msgid "MySQL tables installation"
-msgstr "安装MySQL数据表"
-
-#: hook.php:121
-msgid "MySQL tables uninstallation"
-msgstr "卸载MySQL数据表"
-
-#: inc/field.class.php:577
-msgid "No field for this block"
-msgstr "此区域无字段"
-
-#: templates/status_overrides.html.twig
-msgid "No item found"
-msgstr ""
-
-#: inc/field.class.php:1305
-msgid "Number"
-msgstr "整数"
-
-#: inc/statusoverride.class.php:88
-msgid "Override by status"
-msgstr ""
-
-#: templates/forms/status_override.html.twig inc/field.class.php:590
-#: inc/field.class.php:770
-msgid "Read only"
-msgstr "只读"
-
-#: inc/container.class.php:52
-msgid "Regenerate container files"
-msgstr "生成容器文件"
-
-#: inc/container.class.php:187
-msgid "Regenerate containers files"
-msgstr ""
-
-#: inc/command/regeneratefilescommand.class.php:41
-msgid "Regenerates containers files."
-msgstr ""
-
-#: inc/field.class.php:1304
-msgid "Rich Text"
-msgstr ""
-
-#: inc/checkdatabasecommand.class.php:96
-#, php-format
-msgid "Run \"%s\" to fix database inconsistencies."
-msgstr ""
-
-#: inc/container.class.php:1504
-msgid "Some URL fields contains invalid links"
-msgstr "有些URL字段包含无效链接"
-
-#: inc/container.class.php:1494
-msgid "Some mandatory fields are empty"
-msgstr "一些强制字段是空的。"
-
-#: inc/container.class.php:1499
-msgid "Some numeric fields contains non numeric values"
-msgstr "一些数值字段包含非数值"
+msgstr "创建新状态覆盖"
 
 #: templates/status_overrides.html.twig
 msgid "Status overrides"
-msgstr ""
+msgstr "状态覆盖"
 
-#: inc/container.class.php:846
-msgid "Tab"
-msgstr "标签"
+#: templates/status_overrides.html.twig
+msgid "No item found"
+msgstr "未发现项"
 
-#: inc/field.class.php:1303
-msgid "Text (multiples lines)"
-msgstr "文本（多行）"
+#: templates/forms/status_override.html.twig inc/field.class.php:281
+msgid "Field"
+msgstr "字段"
 
-#: inc/field.class.php:1302
-msgid "Text (single line)"
-msgstr "文本（单行）"
+#: templates/forms/status_override.html.twig inc/field.class.php:695
+#: inc/field.class.php:875
+msgid "Read only"
+msgstr "只读"
 
-#: hook.php:109
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "插件处于禁用状态时无法卸载"
+#: templates/container_display_conditions.html.twig
+msgid "Add condition to hide block"
+msgstr "增加条件以隐藏区块"
 
-#: inc/checkdatabasecommand.class.php:44
-msgid "This command will check database to detect following inconsistencies:"
-msgstr ""
+#: templates/container_display_conditions.html.twig
+#: inc/containerdisplaycondition.class.php:157
+msgid "Condition to hide block"
+msgid_plural "Conditions to hide block"
+msgstr[0] "隐藏区块条件"
 
-#: inc/command/regeneratefilescommand.class.php:43
-msgid ""
-"This command will clean up all files generated by the plugin and regenerate "
-"them."
-msgstr ""
-
-#: inc/field.class.php:1306
-msgid "URL"
-msgstr "网址"
-
-#: inc/container.class.php:328
-msgid "Updating generated containers files"
-msgstr "刷新生成容器文件"
-
-#: inc/dropdown.class.php:78
-msgid "Updating generated dropdown files"
-msgstr "更新生成下拉文件"
-
-#: inc/checkdatabasecommand.class.php:57
-msgid "Use this option to actually fix database"
-msgstr ""
-
-#: inc/field.class.php:1308
-msgid "Yes/No"
-msgstr "是/否"
-
-#: inc/container.class.php:514
-msgid "You cannot add block without associated element type"
-msgstr "您不能添加没有关联元素类型的块"
-
-#: inc/container.class.php:549
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form of a specific"
-" tab' on same object tab"
-msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“表单中插入特殊标签”类型添加几个块"
-
-#: inc/container.class.php:534
-msgid ""
-"You cannot add several blocks with type 'Insertion in the form' on same "
-"object"
-msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的块"
-
-#: inc/container.class.php:579
-msgid "You cannot add several blocs with identical name on same object"
-msgstr "不能在同一对象上添加名称相同的多个块"
-
-#: inc/containerdisplaycondition.class.php:493
-#: inc/containerdisplaycondition.class.php:508
-msgid "You must specify an item type, search option and condition."
-msgstr ""
-
-#: inc/containerdisplaycondition.class.php:103
-#: inc/containerdisplaycondition.class.php:137
-msgid "not under"
-msgstr ""
-
-#: inc/containerdisplaycondition.class.php:109
-#: inc/containerdisplaycondition.class.php:131
-msgid "regular expression matches"
-msgstr ""
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr "绑定附加字段到目标"
 
 #: templates/fields.html.twig
 msgid "show"
 msgstr "显示"
 
-#: inc/containerdisplaycondition.class.php:102
-#: inc/containerdisplaycondition.class.php:134
+#: setup.php:237 front/container.form.php:87 front/container.php:34
+#: inc/menu.class.php:37 inc/destinationfield.class.php:50
+msgid "Additional fields"
+msgstr "附加字段"
+
+#: inc/command/regeneratefilescommand.class.php:43
+msgid "Regenerates containers files."
+msgstr "重新生成容器文件。"
+
+#: inc/command/regeneratefilescommand.class.php:45
+msgid ""
+"This command will clean up all files generated by the plugin and regenerate "
+"them."
+msgstr "此命令会清除此插件生成的所有文件并重新生成他们。"
+
+#: inc/labeltranslation.class.php:238
+msgid "Language"
+msgstr "语言"
+
+#: inc/labeltranslation.class.php:239
+msgid "Label"
+msgstr "标签"
+
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
 msgid "under"
-msgstr ""
+msgstr "之下"
+
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
+msgid "not under"
+msgstr "下在之下"
+
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
+msgid "regular expression matches"
+msgstr "正则表达式匹配"
+
+#: inc/containerdisplaycondition.class.php:511
+#: inc/containerdisplaycondition.class.php:527
+msgid "You must specify an item type, search option and condition."
+msgstr "你必须指定一个品类，查询选项和条件。"
+
+#: inc/toolbox.class.php:122
+msgid "Fix fields names"
+msgstr "修复字段名称"
+
+#: inc/toolbox.class.php:331
+msgid "Component items"
+msgstr "组件项"
+
+#: inc/container.class.php:54
+msgid "Regenerate container files"
+msgstr "生成容器文件"
+
+#: inc/container.class.php:55 inc/container.class.php:1275
+msgid "Export to YAML"
+msgstr "导出为 YAML"
+
+#: inc/container.class.php:287
+#, php-format
+msgid ""
+"Container #%1$d (%2$s) disabled: table name too long. Rename it from its "
+"edit form to reactivate it."
+msgstr "容器 #%1$d (%2$s) 已禁用: 表名太长。从它的编辑表单来重命名并激活它。"
+
+#: inc/container.class.php:321
+msgid "Regenerate containers files"
+msgstr "重新生成容器文件"
+
+#: inc/container.class.php:342
+msgid "Fix container names"
+msgstr "修复容器名称"
+
+#: inc/container.class.php:490
+msgid "Updating generated containers files"
+msgstr "刷新生成容器文件"
+
+#: inc/container.class.php:695 inc/container.class.php:769
+msgid "At least one selected object is not a valid element type"
+msgstr "至少一个选择对象不是有效的元素类型"
+
+#: inc/container.class.php:707
+msgid "Table name too long: rename the container to reactivate it."
+msgstr "表名太长：重命名容器以激活它。"
+
+#: inc/container.class.php:781
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form' on same "
+"object"
+msgstr "不能在同一个对象上添加几个带有'表单中插入'类型的块"
+
+#: inc/container.class.php:797
+msgid ""
+"You cannot add several blocks with type 'Insertion in the form of a specific"
+" tab' on same object tab"
+msgstr "不能在同一个对象选项卡上以特定选项卡的形式使用“表单中插入特殊标签”类型添加几个块"
+
+#: inc/container.class.php:808
+msgid ""
+"At least one selected object cannot be linked with type 'Insertion in the "
+"form of a specific tab'."
+msgstr "至少一个选择的对象无法连接到类型'插入到一个特定的表单'。"
+
+#: inc/container.class.php:822
+msgid ""
+"Container name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "容器名称对于数据库太长(名称中的数字被字符替换，尝试移除他们)"
+
+#: inc/container.class.php:837
+msgid "You cannot add several blocs with identical name on same object"
+msgstr "不能在同一对象上添加名称相同的多个块"
+
+#: inc/container.class.php:1062
+msgid "Block"
+msgstr "区域"
+
+#: inc/container.class.php:1078
+#, php-format
+msgid "Unknown container #%d."
+msgstr "未知容器 #%d."
+
+#: inc/container.class.php:1085
+msgid "No associated item type."
+msgstr "无关联的品类。"
+
+#: inc/container.class.php:1091
+msgid "Container is not oversized."
+msgstr "无过大的容器。"
+
+#: inc/container.class.php:1098
+msgid "Invalid name."
+msgstr "无效的名称。"
+
+#: inc/container.class.php:1116
+#, php-format
+msgid "Still too long: %s."
+msgstr "仍然太长： %s。"
+
+#: inc/container.class.php:1131
+msgid "Name already used for this item type."
+msgstr "名称已经被用于此品类。"
+
+#: inc/container.class.php:1149
+#, php-format
+msgid "Table %s already exists."
+msgstr "表 %s 已存在。"
+
+#: inc/container.class.php:1193
+#, php-format
+msgid "Renamed to \"%s\" and reactivated, existing data preserved."
+msgstr "重命名为 \"%s\" 并激活，已有数据被保留。"
+
+#: inc/container.class.php:1194
+#, php-format
+msgid "Renamed to \"%s\" and reactivated, no existing data found."
+msgstr "重命名为 \"%s\" 并激活，未发现数据。"
+
+#: inc/container.class.php:1377
+msgid "Tab"
+msgstr "标签"
+
+#: inc/container.class.php:1410
+#, php-format
+msgid "Table name too long (%s):"
+msgstr "表名太长 (%s):"
+
+#: inc/container.class.php:1413
+msgid "New name"
+msgstr "新名称"
+
+#: inc/container.class.php:1416
+msgid "Rename and reactivate"
+msgstr "重命名并激活"
+
+#: inc/container.class.php:1560
+msgid "Add tab"
+msgstr "添加标签"
+
+#: inc/container.class.php:1561
+msgid "Insertion in the form (before save button)"
+msgstr "在窗体中插入(保存按钮前)"
+
+#: inc/container.class.php:1562
+msgid "Insertion in the form of a specific tab (before save button)"
+msgstr "以特定选项卡的形式插入(保存按钮之前)"
+
+#: inc/container.class.php:2145
+msgid "Some mandatory fields are empty"
+msgstr "一些强制字段是空的。"
+
+#: inc/container.class.php:2149
+msgid ""
+"The form or source creating this item does not provide the mandatory fields "
+"above: map them to it, or make them optional."
+msgstr "表单等源创建的项不包含必填字段：映射他们或设置他们为可选。"
+
+#: inc/container.class.php:2157
+msgid "Some numeric fields contains non numeric values"
+msgstr "一些数值字段包含非数值"
+
+#: inc/container.class.php:2162
+msgid "Some URL fields contains invalid links"
+msgstr "有些URL字段包含无效链接"
+
+#: inc/container.class.php:2167
+msgid "Some item fields reference an invalid item"
+msgstr "一此字段指向了无效的项"
+
+#: inc/container.class.php:2464
+msgid "You do not have the right to modify the fields of this item"
+msgstr "你无权修改此项的字段"
+
+#: inc/statusoverride.class.php:91
+msgid "Override by status"
+msgstr "按照状态覆盖"
+
+#: inc/field.class.php:296 inc/field.class.php:323
+msgid ""
+"Field name is too long for database (digits in name are replaced by "
+"characters, try to remove them)"
+msgstr "字段名称对于数据库太长(名称中的数字被字符替换，尝试移除他们)"
+
+#: inc/field.class.php:315
+msgid "You cannot add same field 'dropdown' on same block"
+msgstr "你无法在相同块增加相同字段“下拉”"
+
+#: inc/field.class.php:407
+#, php-format
+msgid "The field \"%s\" cannot be deleted because it is used in a form question"
+msgstr "字段 \"%s\" 无法被删除，因其被用于一个表单问题"
+
+#: inc/field.class.php:613
+msgid "Fields"
+msgstr "字段"
+
+#: inc/field.class.php:678
+msgid "Add a new field"
+msgstr "添加新字段"
+
+#: inc/field.class.php:682
+msgid "No field for this block"
+msgstr "此区域无字段"
+
+#: inc/field.class.php:1467
+msgid "Header"
+msgstr "头"
+
+#: inc/field.class.php:1468
+msgid "Text (single line)"
+msgstr "文本(单行)"
+
+#: inc/field.class.php:1469
+msgid "Text (multiples lines)"
+msgstr "文本(多行)"
+
+#: inc/field.class.php:1470
+msgid "Rich Text"
+msgstr "富文本"
+
+#: inc/field.class.php:1471
+msgid "Number"
+msgstr "数字"
+
+#: inc/field.class.php:1472
+msgid "URL"
+msgstr "URL"
+
+#: inc/field.class.php:1473
+msgid "Dropdown"
+msgstr "下拉菜单"
+
+#: inc/field.class.php:1474
+msgid "Yes/No"
+msgstr "是/否"
+
+#: inc/field.class.php:1475
+msgid "Date"
+msgstr "日期"
+
+#: inc/field.class.php:1476
+msgid "Date & time"
+msgstr "日期&时间"
+
+#: inc/field.class.php:1477
+msgid "GLPI item"
+msgstr "GLPI项"
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "更新生成下拉文件"
+
+#: inc/checkdatabasecommand.class.php:42
+msgid "Check database to detect inconsistencies."
+msgstr "检查数据库以检测不一致。"
+
+#: inc/checkdatabasecommand.class.php:44
+msgid "This command will check database to detect following inconsistencies:"
+msgstr "此命令将检查数据库以检查以下的不一致："
+
+#: inc/checkdatabasecommand.class.php:47
+#, php-format
+msgid ""
+"- some deleted fields may still be present in database (bug introduced in "
+"version %s and fixed in version %s)"
+msgstr "- 一些删除的字段可能依然在数据库中显示 (缺陷说明在版本 %s 中并修复于版本 %s)"
+
+#: inc/checkdatabasecommand.class.php:52
+msgid ""
+"- container/item type pairs with no matching table, or tables with no "
+"matching container/item type pair"
+msgstr "-容器/项类型无匹配的表，或表无法匹配容器/项的类型"
+
+#: inc/checkdatabasecommand.class.php:59
+msgid "Use this option to actually fix database"
+msgstr "使用此项来修复数据库"
+
+#: inc/checkdatabasecommand.class.php:75
+msgid "Everything is in order - no action needed."
+msgstr "一切井然有序 - 无需介入。"
+
+#: inc/checkdatabasecommand.class.php:83
+#, php-format
+msgid ""
+"Database was containing orphaned data from %s improperly deleted field(s)."
+msgstr "数据库包含孤立数据，来自于 %s 不正确的删除字段。"
+
+#: inc/checkdatabasecommand.class.php:84
+#, php-format
+msgid "Database contains orphaned data from %s improperly deleted field(s)."
+msgstr "数据库包含孤立数据，来自于%s 不正确的删除字段。"
+
+#: inc/checkdatabasecommand.class.php:90
+#, php-format
+msgid "-> \"%s.%s\" has been deleted."
+msgstr "-> \"%s.%s\" 已经被删除。"
+
+#: inc/checkdatabasecommand.class.php:91
+#, php-format
+msgid "-> \"%s.%s\" should be deleted."
+msgstr "-> \"%s.%s\"  应该被删除。"
+
+#: inc/checkdatabasecommand.class.php:100
+#, php-format
+msgid "Run \"%s\" to fix database inconsistencies."
+msgstr "运行 \"%s\" 以修复数据库的不一致。"
+
+#: inc/checkdatabasecommand.class.php:112
+#, php-format
+msgid "%d container/item type pair(s) have no matching table."
+msgstr "%d 容器/项类型无匹配表。"
+
+#: inc/checkdatabasecommand.class.php:117
+#, php-format
+msgid "-> container #%d (%s): expected table \"%s\" not found"
+msgstr "-> 容器#%d (%s): 期望的表 \"%s\" 未发现"
+
+#: inc/checkdatabasecommand.class.php:127
+#, php-format
+msgid "%d table(s) do not match any container/item type pair."
+msgstr "%d 表不匹配任何窗口/项类型。"
+
+#: hook.php:61 hook.php:65
+msgid "MySQL tables installation"
+msgstr "安装MySQL数据表"
+
+#: hook.php:118
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "插件处于禁用状态时无法卸载"
+
+#: hook.php:131
+msgid "MySQL tables uninstallation"
+msgstr "卸载MySQL数据表"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "允许的值"
+
+#: ajax/field_specific_fields.php:85
+msgid "Multiple dropdown"
+msgstr "多选下拉菜单"
+
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr "默认值"
+
+#: ajax/field_specific_fields.php:122
+msgid "Default value will be configurable once field will be created."
+msgstr "一旦字段被创建默认值可被配置。"
