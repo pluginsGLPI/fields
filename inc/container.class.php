@@ -38,6 +38,11 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static $rightname = 'config';
 
+    /**
+     * Values of the items being added, not stored yet
+     */
+    private static ?WeakMap $pending_values = null;
+
     public static function canCreate(): bool
     {
         return self::canUpdate();
@@ -2424,6 +2429,7 @@ HTML;
     public static function postItemAdd(CommonDBTM $item)
     {
         PluginFieldsDestinationField::registerCreatedItem($item);
+        self::$pending_values?->offsetUnset($item);
 
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $container = new self();
@@ -2592,6 +2598,16 @@ HTML;
             }
         }
 
+        if ($item->isNewItem()) {
+            $values_by_container = [];
+            foreach ($submitted_data as $data) {
+                $values_by_container[(int) $data['plugin_fields_containers_id']] = $data;
+            }
+
+            self::$pending_values ??= new WeakMap();
+            self::$pending_values[$item] = $values_by_container;
+        }
+
         if ($submitted_data !== []) {
             $item->input['_plugin_fields_data'] = $submitted_data;
 
@@ -2599,6 +2615,26 @@ HTML;
         }
 
         return false;
+    }
+
+    /**
+     * Container values of an item being added, not stored yet
+     *
+     * @return array<string, mixed>
+     */
+    private static function getPendingValues(CommonDBTM $item, int $c_id): array
+    {
+        if (self::$pending_values === null || $item->isNewItem()) {
+            return [];
+        }
+
+        foreach (self::$pending_values as $added_item => $values) {
+            if ($added_item::class === $item::class && $added_item->getID() === $item->getID()) {
+                return $values[$c_id] ?? [];
+            }
+        }
+
+        return [];
     }
 
     /**
@@ -2655,12 +2691,15 @@ HTML;
         if (!$item->isNewItem()) {
             $data['items_id'] = $item->getID();
 
-            // merge already persisted values to avoid false positives
+            // merge already persisted values to avoid false positives,
+            // or the values still to be stored when the item is being added
             $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
             $dbu       = new DbUtils();
             $obj       = $dbu->getItemForItemtype($classname);
             if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {
                 $data += $obj->fields;
+            } else {
+                $data += self::getPendingValues($item, $c_id);
             }
         }
 
