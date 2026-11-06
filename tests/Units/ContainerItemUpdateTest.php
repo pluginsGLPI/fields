@@ -41,6 +41,7 @@ use Ticket;
 use Entity;
 use Notification;
 use Problem;
+use User;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -382,6 +383,51 @@ final class ContainerItemUpdateTest extends DbTestCase
         $this->assertGreaterThan(0, $ticket_id);
 
         $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
+        $this->assertNotFalse($plugin_row);
+        $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateWithAssignedTechnicianAndMandatoryDomField(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Assign Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $this->simulateApiBoot();
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket with mandatory field and technician',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+            '_actors'     => [
+                'assign' => [
+                    ['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)],
+                ],
+            ],
+            $field_name   => 'filled value',
+        ], [$field_name]);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertSame(Ticket::ASSIGNED, $ticket->fields['status']);
+
+        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket->getID(), $container->getID());
         $this->assertNotFalse($plugin_row);
         $this->assertSame('filled value', $plugin_row[$field_name]);
     }
