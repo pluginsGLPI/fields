@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller
+- Fix Data Injection models mapping additional fields becoming inaccessible with a "You don't have permission" error
 
 ## [1.25.1] - 2026-10-28
 
