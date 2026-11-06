@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
+- Fix Data Injection models mapping additional fields becoming inaccessible with a "You don't have permission" error
 
 ## [1.24.7] - 2026-10-28
 
