@@ -17,9 +17,11 @@ jobs:
       contents: "read"
     # Pull requests opened by bots (dependabot, translations updates, ...) are handled on each branch separately,
     # except the forward-port pull requests, so that a fix goes up the whole branches chain.
+    # Release pull requests (`release/*` branches) are specific to their branch.
     if: |
       github.event.pull_request.merged
       && (github.event.pull_request.user.type != 'Bot' || startsWith(github.event.pull_request.head.ref, 'forward-port/'))
+      && !startsWith(github.event.pull_request.head.ref, 'release/')
       && !contains(github.event.pull_request.labels.*.name, 'no forward-port')
     steps:
       # The branches chain is made of the protected `<version>/bugfixes` branches, sorted by version,
