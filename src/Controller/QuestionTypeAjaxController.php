@@ -79,9 +79,6 @@ final class QuestionTypeAjaxController extends AbstractController
 
         // Get available fields for the selected block
         $available_fields = PluginFieldsQuestionType::getFieldsFromBlock((int) $block_id);
-
-        // If field_id is not provided or invalid, use the first available field
-        $current_field_id = null;
         if ($field_id && is_numeric($field_id) && isset($available_fields[$field_id])) {
             $current_field_id = (int) $field_id;
         } else {
