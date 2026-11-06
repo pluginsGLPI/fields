@@ -37,7 +37,6 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use PluginFieldsContainerDisplayCondition;
-use PluginFieldsField;
 use Ticket;
 use Entity;
 use Notification;
