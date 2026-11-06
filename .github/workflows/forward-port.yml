@@ -1,0 +1,106 @@
+name: "Forward-port"
+
+# `pull_request_target` workflows always run from the default branch, whatever the base branch of the pull request:
+# this file only has to be present on the default branch.
+
+on:
+  pull_request_target:
+    types:
+      - "closed"
+
+jobs:
+  forward-port:
+    name: "Forward-port"
+    runs-on: "ubuntu-latest"
+    # Write operations use the app token: `GITHUB_TOKEN` only lists the protected branches.
+    permissions:
+      contents: "read"
+    # Pull requests opened by bots (dependabot, translations updates, ...) are handled on each branch separately,
+    # except the forward-port pull requests, so that a fix goes up the whole branches chain.
+    if: |
+      github.event.pull_request.merged
+      && (github.event.pull_request.user.type != 'Bot' || startsWith(github.event.pull_request.head.ref, 'forward-port/'))
+      && !contains(github.event.pull_request.labels.*.name, 'no forward-port')
+    steps:
+      # The branches chain is made of the protected `<version>/bugfixes` branches, sorted by version,
+      # followed by the default branch: a pull request is forward-ported to the next branch of the chain.
+      - name: "Find target branch"
+        id: "target"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # Fetched in its own assignment, so that an API failure fails the job instead of being swallowed.
+          PROTECTED_BRANCHES=$(gh api --paginate "repos/${REPOSITORY}/branches?protected=true&per_page=100" --jq '.[].name')
+          BRANCHES=$(
+            echo "${PROTECTED_BRANCHES}" | grep -E '^[0-9]+(\.[0-9]+)*/bugfixes$' | sort -V
+            echo "${DEFAULT_BRANCH}"
+          )
+          TARGET_BRANCH=$(echo "${BRANCHES}" | awk -v base="${BASE_BRANCH}" 'found { print; exit } $0 == base { found = 1 }')
+          if [[ -z "${TARGET_BRANCH}" ]]; then
+            echo "No branch to forward-port \`${BASE_BRANCH}\` to."
+          else
+            echo "Forward-port from \`${BASE_BRANCH}\` to \`${TARGET_BRANCH}\`."
+          fi
+          echo "branch=${TARGET_BRANCH}" >> "$GITHUB_OUTPUT"
+
+          # Do not stack the `[<branch>]` prefixes when a forward-port pull request is itself forward-ported.
+          TITLE="${PR_TITLE}"
+          if [[ "${HEAD_BRANCH}" == forward-port/* ]]; then
+            TITLE="${TITLE#\[*\] }"
+          fi
+          # Random delimiter, so that no pull request title can end the block early.
+          DELIMITER=$(openssl rand -hex 16)
+          {
+            echo "title<<${DELIMITER}"
+            echo "${TITLE}"
+            echo "${DELIMITER}"
+          } >> "$GITHUB_OUTPUT"
+
+      # Pull requests opened with the workflow `GITHUB_TOKEN` do not trigger the CI: the org bot app is used instead.
+      # No `workflows` permission, to keep workflow files writable only by humans:
+      # pull requests changing `.github/workflows/` fail to be pushed and must be forward-ported manually.
+      - name: "Generate app token"
+        if: steps.target.outputs.branch != ''
+        id: "app-token"
+        uses: "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510" # v3.3.0
+        with:
+          client-id: "${{ vars.GLPI_PROJECT_BOT_CLIENT_ID }}"
+          private-key: "${{ secrets.GLPI_PROJECT_BOT_PRIVATE_KEY }}"
+          permission-contents: "write"
+          permission-pull-requests: "write"
+
+      # Only the default branch is checked out: the PR code is cherry-picked, never executed.
+      - name: "Checkout"
+        if: steps.target.outputs.branch != ''
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: "Create forward-port pull request"
+        if: steps.target.outputs.branch != ''
+        uses: "korthout/backport-action@8560fb503c275d433c56f05a2f64850093baa9f7" # v4.7.0
+        with:
+          github_token: "${{ steps.app-token.outputs.token }}"
+          target_branches: ${{ steps.target.outputs.branch }}
+          label_pattern: ""
+          branch_name: "forward-port/${pull_number}-to-${target_branch}"
+          pull_title: "[${target_branch}] ${{ steps.target.outputs.title }}"
+          pull_description: |-
+            Forward-port of #${pull_number} to `${target_branch}`.
+
+            ${pull_description}
+          # The author of a forward-port pull request is the bot: its assignees (the original author) are kept instead.
+          add_author_as_assignee: ${{ !startsWith(github.event.pull_request.head.ref, 'forward-port/') }}
+          copy_assignees: true
+          comment_style: "summary"
+          merge_commits: "skip"
+          # On conflict, open a draft PR containing the conflict, to be resolved by the PR author.
+          experimental: >
+            {
+              "conflict_resolution": "draft_commit_conflicts"
+            }

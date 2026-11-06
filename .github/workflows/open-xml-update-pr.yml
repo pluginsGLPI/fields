@@ -1,0 +1,157 @@
+name: "Open plugin XML update PR"
+
+# Synced files only reach the default branch, where workflow_run workflows are read from, unlike tag pushes from X.Y/bugfixes
+on:
+  workflow_run:
+    workflows:
+      - "Automatically tag new version"
+    types:
+      - "completed"
+
+# The pull request is opened with the bot token
+permissions:
+  contents: "read"
+
+jobs:
+  open-xml-update-pr:
+    if: github.repository == 'pluginsGLPI/fields' && github.event.workflow_run.conclusion == 'success'
+    name: "Open plugin XML update PR"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Generate bot token"
+        id: "bot-app-token"
+        uses: "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510" # v3.3.0
+        with:
+          client-id: "${{ vars.GLPI_PROJECT_BOT_CLIENT_ID }}"
+          private-key: "${{ secrets.GLPI_PROJECT_BOT_PRIVATE_KEY }}"
+          permission-contents: "write"
+          permission-pull-requests: "write"
+      - name: "Copy the tag version block to the default branch XML"
+        uses: "actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3" # v9.0.0
+        env:
+          HEAD_SHA: "${{ github.event.workflow_run.head_sha }}"
+          DEFAULT_BRANCH: "${{ github.event.repository.default_branch }}"
+        with:
+          github-token: "${{ steps.bot-app-token.outputs.token }}"
+          script: |
+            const { owner, repo } = context.repo;
+            const base = process.env.DEFAULT_BRANCH
+              || (await github.rest.repos.get({ owner, repo })).data.default_branch;
+
+            const readFile = async (path, ref) => {
+              try {
+                const { data } = await github.rest.repos.getContent({ owner, repo, path, ref });
+                return Buffer.from(data.content, 'base64').toString('utf8');
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+                return undefined;
+              }
+            };
+
+            // Same version extraction as the auto tag workflow, whose tag is named after it
+            const tag = (await readFile('setup.php', process.env.HEAD_SHA))?.match(/define\s*\(\s*['"]PLUGIN_[A-Z]+_VERSION['"]\s*,\s*['"]([^'"]+)['"]\s*\)/)?.[1];
+            if (tag === undefined) {
+              core.info('No plugin version found in setup.php, skipping update.');
+              return;
+            }
+            const tagRef = `refs/tags/${tag}`;
+            let ref;
+            try {
+              ({ data: ref } = await github.rest.git.getRef({ owner, repo, ref: `tags/${tag}` }));
+            } catch (error) {
+              if (error.status !== 404) {
+                throw error;
+              }
+              core.info(`No ${tag} tag, skipping update.`);
+              return;
+            }
+            // Any setup.php push succeeds the auto tag run, only a tag on the triggering commit is a fresh one
+            const tagSha = ref.object.type === 'tag'
+              ? (await github.rest.git.getTag({ owner, repo, tag_sha: ref.object.sha })).data.object.sha
+              : ref.object.sha;
+            if (tagSha !== process.env.HEAD_SHA) {
+              core.info(`${tag} was not created by this run, skipping update.`);
+              return;
+            }
+
+            let xmlPath = 'plugin.xml';
+            let tagXml = await readFile(xmlPath, tagRef);
+            if (tagXml === undefined) {
+              const pluginKey = (await readFile('setup.php', tagRef))?.match(/function plugin_version_([a-z0-9_]+)/)?.[1];
+              if (pluginKey !== undefined) {
+                xmlPath = `${pluginKey}.xml`;
+                tagXml = await readFile(xmlPath, tagRef);
+              }
+            }
+            if (tagXml === undefined) {
+              core.info('No plugin XML file found in the tag, skipping update.');
+              return;
+            }
+
+            const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const existingRe = new RegExp(`[ \\t]*<version>\\s*<num>\\s*${escapedTag}\\s*</num>[\\s\\S]*?</version>`);
+            const block = tagXml.match(existingRe)?.[0];
+            if (block === undefined) {
+              core.info(`No <version> block for ${tag} in the tag's ${xmlPath}, skipping update.`);
+              return;
+            }
+
+            const xml = await readFile(xmlPath, base);
+            if (xml === undefined) {
+              core.info(`No ${xmlPath} on ${base}, skipping update.`);
+              return;
+            }
+
+            let updated;
+            if (existingRe.test(xml)) {
+              updated = xml.replace(existingRe, () => block);
+            } else if (/<versions>[ \t]*\r?\n/.test(xml)) {
+              // Newest first: the block goes right after <versions>.
+              updated = xml.replace(/<versions>[ \t]*(\r?\n)/, (match, eol) => `${match}${block}${eol}`);
+            } else {
+              core.warning(`No <versions> element found in ${xmlPath} on ${base}, skipping update.`);
+              return;
+            }
+            if (updated === xml) {
+              core.info(`${xmlPath} on ${base} already contains version ${tag}.`);
+              return;
+            }
+
+            const branch = `release-xml/${tag}`;
+            const baseSha = (await github.rest.git.getRef({ owner, repo, ref: `heads/${base}` })).data.object.sha;
+            try {
+              await github.rest.git.createRef({ owner, repo, ref: `refs/heads/${branch}`, sha: baseSha });
+            } catch (error) {
+              // 422: branch left by a previous run, reset it onto the default branch.
+              if (error.status !== 422) {
+                throw error;
+              }
+              await github.rest.git.updateRef({ owner, repo, ref: `heads/${branch}`, sha: baseSha, force: true });
+            }
+            const { data: file } = await github.rest.repos.getContent({ owner, repo, path: xmlPath, ref: branch });
+            await github.rest.repos.createOrUpdateFileContents({
+              owner,
+              repo,
+              path: xmlPath,
+              branch,
+              sha: file.sha,
+              message: `Add version ${tag} to ${xmlPath}`,
+              content: Buffer.from(updated, 'utf8').toString('base64'),
+            });
+
+            const { data: openPulls } = await github.rest.pulls.list({ owner, repo, head: `${owner}:${branch}`, base, state: 'open' });
+            if (openPulls.length > 0) {
+              core.info(`Updated existing PR: ${openPulls[0].html_url}`);
+              return;
+            }
+            const { data: pull } = await github.rest.pulls.create({
+              owner,
+              repo,
+              head: branch,
+              base,
+              title: `Add version ${tag} to ${xmlPath}`,
+              body: `Copies the \`${tag}\` version block from the tag's \`${xmlPath}\` to \`${base}\`, so that the plugins catalog lists it.`,
+            });
+            core.info(`Opened PR: ${pull.html_url}`);

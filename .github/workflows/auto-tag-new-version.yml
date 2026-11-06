@@ -8,9 +8,15 @@ on:
     paths:
       - "setup.php"
 
+# Tags are pushed with AUTOTAG_TOKEN
+permissions:
+  contents: "read"
+
 jobs:
   auto-tag-new-version:
     name: "Automatically tag new version"
     uses: "glpi-project/plugin-release-workflows/.github/workflows/auto-tag-new-version.yml@v1"
+    with:
+      bot-client-id: "${{ vars.GLPI_PROJECT_BOT_CLIENT_ID }}"
     secrets:
-      github-token: "${{ secrets.AUTOTAG_TOKEN }}"
+      bot-private-key: "${{ secrets.GLPI_PROJECT_BOT_PRIVATE_KEY }}"
