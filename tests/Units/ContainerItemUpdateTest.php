@@ -31,16 +31,19 @@
 namespace GlpiPlugin\Field\Tests\Units;
 
 use Auth;
+use CommonITILObject;
 use Computer;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use PluginFieldsContainerDisplayCondition;
+use PluginFieldsStatusOverride;
 use Ticket;
 use Entity;
 use Notification;
 use Problem;
+use User;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -1116,5 +1119,164 @@ final class ContainerItemUpdateTest extends DbTestCase
             __('Some mandatory fields are empty', 'fields'),
             ERROR,
         );
+    }
+
+    public function testCreateWithAssigneeIsNotBlockedByFilledMandatoryField(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Dom Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        // The assignment updates the ticket status before the "item_add" hook stores the field value
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Ticket with filled mandatory field and assignee',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            'c_id'        => $container->getID(),
+            $field_name   => 'filled value',
+            '_actors'     => [
+                'assign' => [
+                    ['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)],
+                ],
+            ],
+        ]);
+
+        $this->assertGreaterThan(0, $ticket_id);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertTrue($ticket->getFromDB($ticket_id));
+        $this->assertEquals(CommonITILObject::ASSIGNED, $ticket->fields['status']);
+
+        $values = getItemForItemtype(PluginFieldsContainer::getClassname(Ticket::class, $container->fields['name']));
+        $this->assertTrue($values->getFromDBByCrit(['items_id' => $ticket_id]));
+        $this->assertSame('filled value', $values->fields[$field_name]);
+
+        // Once created, the stored values are checked again on updates
+        $this->assertTrue($ticket->update(['id' => $ticket_id, 'name' => 'Renamed']));
+    }
+
+    public function testCreateWithAssigneeChecksStatusOverrideAgainstSubmittedValues(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Status Override Dom Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory When Assigned',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 0,
+        ]);
+        $field_name = $field->fields['name'];
+        $this->createItem(PluginFieldsStatusOverride::class, [
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'plugin_fields_fields_id'                   => $field->getID(),
+            'itemtype'                                  => Ticket::class,
+            'states'                                    => [CommonITILObject::ASSIGNED],
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ], ['states', PluginFieldsContainer::getForeignKeyField()]);
+
+        $assign = ['assign' => [['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)]]];
+
+        // Filled on creation: the ticket can be assigned
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Filled field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            'c_id'        => $container->getID(),
+            $field_name   => 'filled value',
+            '_actors'     => $assign,
+        ]);
+        $this->assertGreaterThan(0, $ticket_id);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertTrue($ticket->getFromDB($ticket_id));
+        $this->assertEquals(CommonITILObject::ASSIGNED, $ticket->fields['status']);
+
+        // Left empty: the ticket is created but can't move to the status requiring the field
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Empty field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            'c_id'        => $container->getID(),
+            $field_name   => '',
+            '_actors'     => $assign,
+        ]);
+        $this->assertGreaterThan(0, $ticket_id);
+        $this->hasSessionMessageThatContains(__('Some mandatory fields are empty', 'fields'), ERROR);
+        $this->assertTrue($ticket->getFromDB($ticket_id));
+        $this->assertEquals(CommonITILObject::INCOMING, $ticket->fields['status']);
+    }
+
+    public function testCreateWithAssigneeIsNotBlockedByMandatoryTabField(): void
+    {
+        $this->login();
+
+        $tab_container = $this->createFieldContainer([
+            'label'        => 'Mandatory Tab Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $tab_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        // A tab can't be filled before the item exists, including by the updates made during its creation
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Ticket with mandatory tab field and assignee',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            '_actors'     => [
+                'assign' => [
+                    ['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)],
+                ],
+            ],
+        ]);
+        $this->assertGreaterThan(0, $ticket_id);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertTrue($ticket->getFromDB($ticket_id));
+        $this->assertEquals(CommonITILObject::ASSIGNED, $ticket->fields['status']);
+
+        // Once created, the empty tab field blocks updates again
+        $this->assertFalse((new Ticket())->update(['id' => $ticket_id, 'name' => 'Renamed']));
+        $this->hasSessionMessageThatContains(__('Some mandatory fields are empty', 'fields'), ERROR);
     }
 }

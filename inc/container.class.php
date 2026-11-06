@@ -38,6 +38,9 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static $rightname = 'config';
 
+    /** @var WeakMap<CommonDBTM, true>|null Items being added whose values are not stored yet ("item_add" hook not called) */
+    private static ?WeakMap $items_being_added = null;
+
     public static function canCreate(): bool
     {
         return self::canUpdate();
@@ -2424,6 +2427,7 @@ HTML;
     public static function postItemAdd(CommonDBTM $item)
     {
         PluginFieldsDestinationField::registerCreatedItem($item);
+        unset(self::$items_being_added[$item]);
 
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $container = new self();
@@ -2549,6 +2553,11 @@ HTML;
             return false;
         }
 
+        if ($item->isNewItem()) {
+            self::$items_being_added ??= new WeakMap();
+            self::$items_being_added[$item] = true;
+        }
+
         if (count($item->fields) === 0) {
             $item->fields = $item->input;
         }
@@ -2601,6 +2610,30 @@ HTML;
         return false;
     }
 
+    /** @return array|null Values submitted on the add of this item for the container, null when the item is not being added */
+    private static function getValuesSubmittedOnAdd(CommonDBTM $item, int $c_id): ?array
+    {
+        foreach (self::$items_being_added ?? [] as $added_item => $_) {
+            if ($added_item::class !== $item::class || (int) $added_item->getID() !== (int) $item->getID()) {
+                continue;
+            }
+
+            if (!isset($added_item->input['_plugin_fields_data'])) {
+                return [];
+            }
+
+            foreach (self::getSubmittedContainersData($added_item) as $data) {
+                if ((int) $data['plugin_fields_containers_id'] === $c_id) {
+                    return $data;
+                }
+            }
+
+            return [];
+        }
+
+        return null;
+    }
+
     /**
      * Validate a single container's mandatory fields for the given item, using
      * either the values submitted in this request or, if none were submitted
@@ -2626,9 +2659,13 @@ HTML;
             return $data;
         }
 
+        // Update made while the item is being added (ex: status set on assignment): the "item_add" hook
+        // has not stored the values yet, so the ones submitted on the add are checked instead
+        $added_values = $item->isNewItem() ? null : self::getValuesSubmittedOnAdd($item, (int) $c_id);
+
         //nothing submitted for this container in this request (e.g. untouched Tab)
         //tab containers can't be filled before the item exists, so skip on creation
-        if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
+        if (($item->isNewItem() || $added_values !== null) && $loc_c->fields['type'] !== 'dom') {
             return [];
         }
 
@@ -2652,7 +2689,10 @@ HTML;
             $data[$status_field_name] = $status_value;
         }
 
-        if (!$item->isNewItem()) {
+        if ($added_values !== null) {
+            $data['items_id'] = $item->getID();
+            $data += $added_values;
+        } elseif (!$item->isNewItem()) {
             $data['items_id'] = $item->getID();
 
             // merge already persisted values to avoid false positives
