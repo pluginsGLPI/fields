@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller
+- Fix false "mandatory fields are empty" error and status not set to assigned when creating an item with an assignee and filled mandatory fields
 
 ## [1.25.1] - 2026-10-28
 
