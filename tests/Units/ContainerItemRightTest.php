@@ -88,7 +88,7 @@ final class ContainerItemRightTest extends DbTestCase
     public function testInjectionClassFollowsParentItemtypeUpdateRight(): void
     {
         if (!interface_exists('PluginDatainjectionInjectionInterface')) {
-            $this->markTestSkipped('Datainjection plugin is not available.');
+            require_once __DIR__ . '/../fixtures/datainjection_stubs.php';
         }
 
         $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
