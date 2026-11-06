@@ -2624,7 +2624,7 @@ HTML;
      */
     private static function getPendingValues(CommonDBTM $item, int $c_id): array
     {
-        if (self::$pending_values === null || $item->isNewItem()) {
+        if (!self::$pending_values instanceof WeakMap || $item->isNewItem()) {
             return [];
         }
 
