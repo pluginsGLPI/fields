@@ -86,6 +86,43 @@ final class ContainerItemRightTest extends DbTestCase
         $this->assertFalse(PluginFieldsContainer::canUpdateTargetItem(Computer::class, $computer->getID()));
     }
 
+    public function testInjectionClassFollowsParentItemtypeUpdateRight(): void
+    {
+        if (!interface_exists('PluginDatainjectionInjectionInterface')) {
+            require_once __DIR__ . '/../fixtures/datainjection_stubs.php';
+        }
+
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Injection container ' . $this->getUniqueString(),
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $classname = PluginFieldsContainer::getClassname(Computer::class, $container->fields['name'], 'Injection');
+
+        // Datainjection requires these rights to display and run a model mapping the container
+        $this->assertTrue($classname::canCreate());
+        $this->assertTrue($classname::canUpdate());
+
+        // A read-only container must not be writable through injection
+        PluginFieldsProfile::updateProfile([
+            'plugin_fields_containers_id' => $container->getID(),
+            'rights'                      => [$_SESSION['glpiactiveprofile']['id'] => READ],
+        ]);
+        $this->assertFalse($classname::canCreate());
+        $this->assertFalse($classname::canUpdate());
+
+        $this->login('post-only', 'postonly');
+
+        $this->assertFalse($classname::canCreate());
+        $this->assertFalse($classname::canUpdate());
+    }
+
     public function testCanUpdateTargetItemRejectsInvalidItemtype(): void
     {
         $this->login();

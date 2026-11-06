@@ -22,6 +22,24 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
     }
 
     /**
+     * Injecting fields values means updating the parent item, so the same rules
+     * as the item form apply: update right on the itemtype and write right on the container.
+     * The update right on the targeted item itself is checked by CommonDBChild.
+     */
+    static function canCreate(): bool {
+        $itemtype = %%ITEMTYPE%%;
+        return $itemtype::canUpdate()
+            && PluginFieldsProfile::getRightOnContainer(
+                (int) ($_SESSION['glpiactiveprofile']['id'] ?? 0),
+                (int) %%CONTAINER_ID%%
+            ) > READ;
+    }
+
+    static function canUpdate(): bool {
+        return static::canCreate();
+    }
+
+    /**
      * Tells datainjection if the type is a primary type or not
      *
      * @return boolean
