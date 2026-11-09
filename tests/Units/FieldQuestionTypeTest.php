@@ -190,6 +190,206 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
     {
         $this->login();
 
+<<<<<<< HEAD
+=======
+        // Arrange: create a multiple "dropdown-Location" field
+        $this->fields['locations'] = $this->createField([
+            'label'                                     => 'Locations',
+            'type'                                      => 'dropdown-' . Location::class,
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ], ['default_value']);
+
+        $location1 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 1',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 2',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Locations question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('locations')),
+        );
+        $form = $this->createForm($builder);
+        $question = Question::getById($this->getQuestionId($form, "Locations question"));
+
+        try {
+            // Act: format the answer as submitted by the end user template
+            $formatted = (new PluginFieldsQuestionType())->formatRawAnswer([
+                'itemtype' => Location::class,
+                'items_id' => [(string) $location1->getID(), (string) $location2->getID()],
+            ], $question);
+
+            // Assert: both location names are displayed
+            $this->assertEquals(
+                $location1->fields['name'] . ', ' . $location2->fields['name'],
+                $formatted,
+            );
+        } finally {
+            // delete locations for another run
+            $location1->delete($location1->fields, true);
+            $location2->delete($location2->fields, true);
+        }
+    }
+
+    public function testFormatRawAnswerForMultipleDropdown(): void
+    {
+        $this->login();
+
+        // Arrange: create a multiple plugin dropdown field
+        $this->fields['multiple_dropdown'] = $this->createField([
+            'label'                                     => 'Multiple dropdown',
+            'type'                                      => 'dropdown',
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ], ['default_value']);
+
+        $dropdown_class = PluginFieldsDropdown::getClassname($this->fields['multiple_dropdown']->fields['name']);
+        $value1 = $this->createItem($dropdown_class, ['name' => 'Value 1', 'entities_id' => 0]);
+        $value2 = $this->createItem($dropdown_class, ['name' => 'Value 2', 'entities_id' => 0]);
+
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Multiple dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('multiple_dropdown')),
+        );
+        $form = $this->createForm($builder);
+        $question = Question::getById($this->getQuestionId($form, "Multiple dropdown question"));
+        $question_type = new PluginFieldsQuestionType();
+
+        // Act & Assert: an empty selection is submitted as an empty string
+        $this->assertEquals('', $question_type->formatRawAnswer([
+            'itemtype' => $dropdown_class,
+            'items_id' => '',
+        ], $question));
+
+        // Act & Assert: selected values are displayed
+        $this->assertEquals('Value 1, Value 2', $question_type->formatRawAnswer([
+            'itemtype' => $dropdown_class,
+            'items_id' => [(string) $value1->getID(), (string) $value2->getID()],
+        ], $question));
+    }
+
+    public function testFieldsQuestionEditorRenderingForMultipleDropdownWithStringKeyedDefaultValue(): void
+    {
+        $this->login();
+
+        // Arrange: create a multiple "dropdown-Location" field
+        $this->fields['locations'] = $this->createField([
+            'label'                                     => 'Locations',
+            'type'                                      => 'dropdown-' . Location::class,
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ], ['default_value']);
+
+        $location1 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 1',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+        $location2 = $this->createItem(Location::class, [
+            'name'        => __FUNCTION__ . ' 2',
+            'entities_id' => $this->getTestRootEntity(true),
+        ]);
+
+        // Default value with string keys, as they would be passed as named parameters if not reindexed
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Locations question",
+            PluginFieldsQuestionType::class,
+            default_value: [
+                'itemtype' => Location::class,
+                'items_id' => [
+                    'first'  => $location1->getID(),
+                    'second' => $location2->getID(),
+                ],
+            ],
+            extra_data: json_encode($this->getFieldExtraDataConfig('locations')),
+        );
+        $form = $this->createForm($builder);
+
+        try {
+            // Act: render form editor
+            $crawler = $this->renderFormEditor($form);
+
+            // Assert: both locations are rendered as the default value
+            $selected_values = $crawler
+                ->filter('.form-editor-container [data-glpi-form-editor-question] input[name^="default_value[items_id]"]')
+                ->each(fn($input) => (int) $input->attr('value'));
+            $this->assertEqualsCanonicalizing(
+                [$location1->getID(), $location2->getID()],
+                $selected_values,
+            );
+        } finally {
+            // delete locations for another run
+            $location1->delete($location1->fields, true);
+            $location2->delete($location2->fields, true);
+        }
+    }
+
+    public static function cloneDefaultValueProvider(): iterable
+    {
+        yield 'text'     => ['text', 'hello'];
+        yield 'textarea' => ['textarea', "first line\nsecond line"];
+        yield 'number'   => ['number', '42'];
+        yield 'url'      => ['url', 'https://glpi-project.org'];
+        yield 'date'     => ['date', '2026-10-15'];
+        yield 'json-like text' => ['text', '[1,2]'];
+    }
+
+    #[DataProvider('cloneDefaultValueProvider')]
+    public function testCloneKeepsScalarDefaultValue(string $type, string $default_value): void
+    {
+        $this->login();
+
+        // Arrange: create a form with a question using a scalar field
+        $this->fields['scalar'] = $this->createField([
+            'label'                                     => 'Scalar field',
+            'type'                                      => $type,
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ]);
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Scalar question",
+            PluginFieldsQuestionType::class,
+            default_value: $default_value,
+            extra_data: json_encode($this->getFieldExtraDataConfig('scalar')),
+        );
+        $form = $this->createForm($builder);
+
+        // Act: clone the form, then clone the clone
+        $clone = Form::getById($form->clone());
+        $clone_of_clone = Form::getById($clone->clone());
+
+        // Assert: the default value is encoded only once in each form
+        foreach ([$form, $clone, $clone_of_clone] as $current_form) {
+            $question = Question::getById($this->getQuestionId($current_form, "Scalar question"));
+            $this->assertSame(json_encode($default_value), $question->fields['default_value']);
+        }
+    }
+
+    public function testCloneKeepsDropdownDefaultValue(): void
+    {
+        $this->login();
+
+        // Arrange: create a form with a dropdown question having a default value
+>>>>>>> be73dd9 (Fix form submission error when a multiple dropdown field question is empty (#1323))
         $itemtype = PluginFieldsDropdown::getClassname($this->fields['dropdown']->fields['name']);
         $item = $this->createItem($itemtype, ['name' => 'Legacy Option']);
 

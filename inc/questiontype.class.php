@@ -203,10 +203,18 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
             case 'date':
                 return (string) $answer;
             case 'dropdown':
+<<<<<<< HEAD
                 $answer = self::extractDropdownAnswerIds($answer);
+=======
+                // An empty multiple dropdown is submitted as an empty string
+                $ids = array_filter(
+                    array_map(intval(...), (array) ($answer['items_id'] ?? [])),
+                    fn(int $id) => $id > 0,
+                );
+>>>>>>> be73dd9 (Fix form submission error when a multiple dropdown field question is empty (#1323))
 
                 $itemtype = PluginFieldsDropdown::getClassname($current_field->fields['name']);
-                return implode(', ', array_map(fn($opt_id) => $itemtype::getById($opt_id)?->fields['name'] ?? '', $answer));
+                return implode(', ', array_map(fn(int $opt_id) => $itemtype::getById($opt_id)?->fields['name'] ?? '', $ids));
             case 'yesno':
                 return $answer ? __('Yes') : __('No');
             case 'datetime':
