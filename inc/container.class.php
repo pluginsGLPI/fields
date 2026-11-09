@@ -2618,23 +2618,42 @@ HTML;
     }
 
     /**
+     * Values by container of an item being added
+     * or null if the item is not being added
+     *
+     * @return array<int, array<string, mixed>>|null
+     */
+    private static function getPendingEntry(CommonDBTM $item): ?array
+    {
+        if (!self::$pending_values instanceof WeakMap || $item->isNewItem()) {
+            return null;
+        }
+
+        foreach (self::$pending_values as $added_item => $values) {
+            if ($added_item::class === $item::class && (int) $added_item->getID() === (int) $item->getID()) {
+                return $values;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether the item is being added
+     */
+    private static function isBeingAdded(CommonDBTM $item): bool
+    {
+        return self::getPendingEntry($item) !== null;
+    }
+
+    /**
      * Container values of an item being added, not stored yet
      *
      * @return array<string, mixed>
      */
     private static function getPendingValues(CommonDBTM $item, int $c_id): array
     {
-        if (!self::$pending_values instanceof WeakMap || $item->isNewItem()) {
-            return [];
-        }
-
-        foreach (self::$pending_values as $added_item => $values) {
-            if ($added_item::class === $item::class && $added_item->getID() === $item->getID()) {
-                return $values[$c_id] ?? [];
-            }
-        }
-
-        return [];
+        return self::getPendingEntry($item)[$c_id] ?? [];
     }
 
     /**
@@ -2664,7 +2683,8 @@ HTML;
 
         //nothing submitted for this container in this request (e.g. untouched Tab)
         //tab containers can't be filled before the item exists, so skip on creation
-        if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
+        //(including the updates triggered while the item is being added)
+        if (($item->isNewItem() || self::isBeingAdded($item)) && $loc_c->fields['type'] !== 'dom') {
             return [];
         }
 
