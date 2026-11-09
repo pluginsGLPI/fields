@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [UNRELEASED]
 
 ### Fixed
 
+- Fix form submission error when a multiple dropdown field question is left empty
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
 
 ## [1.24.7] - 2026-10-28
