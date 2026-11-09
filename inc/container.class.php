@@ -38,6 +38,11 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static $rightname = 'config';
 
+    /**
+     * Values of the items being added, not stored yet
+     */
+    private static ?WeakMap $pending_values = null;
+
     public static function canCreate(): bool
     {
         return self::canUpdate();
@@ -2424,6 +2429,7 @@ HTML;
     public static function postItemAdd(CommonDBTM $item)
     {
         PluginFieldsDestinationField::registerCreatedItem($item);
+        self::$pending_values?->offsetUnset($item);
 
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $container = new self();
@@ -2592,6 +2598,16 @@ HTML;
             }
         }
 
+        if ($item->isNewItem()) {
+            $values_by_container = [];
+            foreach ($submitted_data as $data) {
+                $values_by_container[(int) $data['plugin_fields_containers_id']] = $data;
+            }
+
+            self::$pending_values ??= new WeakMap();
+            self::$pending_values[$item] = $values_by_container;
+        }
+
         if ($submitted_data !== []) {
             $item->input['_plugin_fields_data'] = $submitted_data;
 
@@ -2599,6 +2615,45 @@ HTML;
         }
 
         return false;
+    }
+
+    /**
+     * Values by container of an item being added
+     * or null if the item is not being added
+     *
+     * @return array<int, array<string, mixed>>|null
+     */
+    private static function getPendingEntry(CommonDBTM $item): ?array
+    {
+        if (!self::$pending_values instanceof WeakMap || $item->isNewItem()) {
+            return null;
+        }
+
+        foreach (self::$pending_values as $added_item => $values) {
+            if ($added_item::class === $item::class && (int) $added_item->getID() === (int) $item->getID()) {
+                return $values;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether the item is being added
+     */
+    private static function isBeingAdded(CommonDBTM $item): bool
+    {
+        return self::getPendingEntry($item) !== null;
+    }
+
+    /**
+     * Container values of an item being added, not stored yet
+     *
+     * @return array<string, mixed>
+     */
+    private static function getPendingValues(CommonDBTM $item, int $c_id): array
+    {
+        return self::getPendingEntry($item)[$c_id] ?? [];
     }
 
     /**
@@ -2628,7 +2683,8 @@ HTML;
 
         //nothing submitted for this container in this request (e.g. untouched Tab)
         //tab containers can't be filled before the item exists, so skip on creation
-        if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
+        //(including the updates triggered while the item is being added)
+        if (($item->isNewItem() || self::isBeingAdded($item)) && $loc_c->fields['type'] !== 'dom') {
             return [];
         }
 
@@ -2655,12 +2711,15 @@ HTML;
         if (!$item->isNewItem()) {
             $data['items_id'] = $item->getID();
 
-            // merge already persisted values to avoid false positives
+            // merge already persisted values to avoid false positives,
+            // or the values still to be stored when the item is being added
             $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
             $dbu       = new DbUtils();
             $obj       = $dbu->getItemForItemtype($classname);
             if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {
                 $data += $obj->fields;
+            } else {
+                $data += self::getPendingValues($item, $c_id);
             }
         }
 

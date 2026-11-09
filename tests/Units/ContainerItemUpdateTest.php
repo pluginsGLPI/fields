@@ -41,6 +41,7 @@ use Ticket;
 use Entity;
 use Notification;
 use Problem;
+use User;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -384,6 +385,141 @@ final class ContainerItemUpdateTest extends DbTestCase
         $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket_id, $container->getID());
         $this->assertNotFalse($plugin_row);
         $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateWithAssignedTechnicianAndMandatoryDomField(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Assign Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $this->simulateApiBoot();
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket with mandatory field and technician',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+            '_actors'     => [
+                'assign' => [
+                    ['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)],
+                ],
+            ],
+            $field_name   => 'filled value',
+        ], [$field_name]);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertSame(Ticket::ASSIGNED, $ticket->fields['status']);
+
+        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket->getID(), $container->getID());
+        $this->assertNotFalse($plugin_row);
+        $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateFromFormWithAssignedTechnicianAndMandatoryDomField(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Assign Form Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name = $field->fields['name'];
+
+        $this->simulateApiBoot();
+
+        // the ticket form submits the dom container id
+        $_REQUEST['c_id'] = $container->getID();
+
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket from form with mandatory field and technician',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+            '_actors'     => [
+                'assign' => [
+                    ['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)],
+                ],
+            ],
+            $field_name   => 'filled value',
+        ], [$field_name]);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertSame(Ticket::ASSIGNED, $ticket->fields['status']);
+
+        $plugin_row = $this->getPluginFieldValues(Ticket::class, $ticket->getID(), $container->getID());
+        $this->assertNotFalse($plugin_row);
+        $this->assertSame('filled value', $plugin_row[$field_name]);
+    }
+
+    public function testCreateWithAssignedTechnicianAndMandatoryTabField(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory Assign Tab Container',
+            'type'         => 'tab',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $this->createField([
+            'label'                                     => 'Mandatory Tab Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        $this->simulateApiBoot();
+
+        // tab fields can't be filled before the item exists: the status update
+        // triggered by the assigned technician must not be blocked by them
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Ticket with mandatory tab field and technician',
+            'content'     => 'Test creation',
+            'entities_id' => 0,
+            '_actors'     => [
+                'assign' => [
+                    ['itemtype' => User::class, 'items_id' => getItemByTypeName(User::class, 'tech', true)],
+                ],
+            ],
+        ]);
+        $this->hasNoSessionMessage(ERROR);
+        $this->assertSame(Ticket::ASSIGNED, $ticket->fields['status']);
+        $this->assertFalse($this->getPluginFieldValues(Ticket::class, $ticket->getID(), $container->getID()));
     }
 
     public function testCreateIsNotBlockedForInventoryCreatedItem(): void
