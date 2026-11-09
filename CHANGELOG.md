@@ -5,11 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+<<<<<<< HEAD
 ## [Unreleased]
 
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller
+=======
+## [UNRELEASED]
+
+### Fixed
+
+- Fix form submission error when a multiple dropdown field question is left empty
+- Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
+>>>>>>> be73dd9 (Fix form submission error when a multiple dropdown field question is empty (#1323))
 
 ## [1.25.1] - 2026-10-28
 
