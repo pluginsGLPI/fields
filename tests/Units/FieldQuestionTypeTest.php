@@ -247,6 +247,48 @@ final class FieldQuestionTypeTest extends QuestionTypeTestCase
         }
     }
 
+    public function testFormatRawAnswerForMultipleDropdown(): void
+    {
+        $this->login();
+
+        // Arrange: create a multiple plugin dropdown field
+        $this->fields['multiple_dropdown'] = $this->createField([
+            'label'                                     => 'Multiple dropdown',
+            'type'                                      => 'dropdown',
+            'multiple'                                  => 1,
+            'default_value'                             => [],
+            PluginFieldsContainer::getForeignKeyField() => $this->block->getID(),
+            'ranking'                                   => 2,
+            'is_active'                                 => 1,
+        ], ['default_value']);
+
+        $dropdown_class = PluginFieldsDropdown::getClassname($this->fields['multiple_dropdown']->fields['name']);
+        $value1 = $this->createItem($dropdown_class, ['name' => 'Value 1', 'entities_id' => 0]);
+        $value2 = $this->createItem($dropdown_class, ['name' => 'Value 2', 'entities_id' => 0]);
+
+        $builder = new FormBuilder("My form");
+        $builder->addQuestion(
+            "Multiple dropdown question",
+            PluginFieldsQuestionType::class,
+            extra_data: json_encode($this->getFieldExtraDataConfig('multiple_dropdown')),
+        );
+        $form = $this->createForm($builder);
+        $question = Question::getById($this->getQuestionId($form, "Multiple dropdown question"));
+        $question_type = new PluginFieldsQuestionType();
+
+        // Act & Assert: an empty selection is submitted as an empty string
+        $this->assertEquals('', $question_type->formatRawAnswer([
+            'itemtype' => $dropdown_class,
+            'items_id' => '',
+        ], $question));
+
+        // Act & Assert: selected values are displayed
+        $this->assertEquals('Value 1, Value 2', $question_type->formatRawAnswer([
+            'itemtype' => $dropdown_class,
+            'items_id' => [(string) $value1->getID(), (string) $value2->getID()],
+        ], $question));
+    }
+
     public function testFieldsQuestionEditorRenderingForMultipleDropdownWithStringKeyedDefaultValue(): void
     {
         $this->login();
