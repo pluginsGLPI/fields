@@ -4,6 +4,25 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
 {
     static $rightname = 'plugin_datainjection_model';
 
+    // Datainjection writes the values on behalf of the parent item: unlock the container instance rights
+    // for users allowed to update the parent itemtype and to write in container
+    // Per item checks are still done on the parent item by CommonDBChild
+    public static function canCreate(): bool {
+        return self::canWriteValues();
+    }
+
+    public static function canUpdate(): bool {
+        return self::canWriteValues();
+    }
+
+    private static function canWriteValues(): bool {
+        $itemtype = %%ITEMTYPE%%;
+        $profiles_id = (int) ($_SESSION['glpiactiveprofile']['id'] ?? 0);
+
+        return $itemtype::canUpdate()
+            && PluginFieldsProfile::getRightOnContainer($profiles_id, (int) %%CONTAINER_ID%%) > READ;
+    }
+
     /**
      * Return the table used to store this object
      *

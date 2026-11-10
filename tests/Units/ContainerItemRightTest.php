@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Plugin;
 use Problem;
 use Problem_User;
 use Profile;
@@ -212,6 +213,49 @@ final class ContainerItemRightTest extends DbTestCase
         $this->assertFalse($values->can($values->getID(), PURGE));
         $input = ['itemtype' => Computer::class, 'items_id' => $computer->getID()];
         $this->assertFalse($values->can(-1, CREATE, $input));
+    }
+
+    public function testContainerValuesCanBeWrittenThroughDatainjection(): void
+    {
+        if (!Plugin::isPluginActive('datainjection')) {
+            $this->markTestSkipped('Plugin datainjection is not active in the test database');
+        }
+
+        $this->login();
+        $entity_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $this->setEntity($entity_id, true);
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Tab container ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => $entity_id,
+            'is_recursive' => 1,
+        ]);
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer ' . $this->getUniqueString(),
+            'entities_id' => $entity_id,
+        ]);
+
+        $injection = PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']) . 'Injection';
+        $values    = new $injection();
+        $input     = ['itemtype' => Computer::class, 'items_id' => $computer->getID()];
+
+        $this->assertTrue($injection::canCreate());
+        $this->assertTrue($injection::canUpdate());
+        $this->assertTrue($values->can(-1, CREATE, $input));
+
+        // Read only right on the container
+        $this->setRightOnContainer($container->getID(), READ);
+        $this->assertFalse($injection::canCreate());
+        $this->assertFalse($injection::canUpdate());
+
+        // Write right on the container but no update right on the parent itemtype
+        $this->setRightOnContainer($container->getID(), CREATE);
+        $_SESSION['glpiactiveprofile'][Computer::$rightname] = READ;
+        $this->assertFalse($injection::canCreate());
+        $this->assertFalse($injection::canUpdate());
     }
 
     public function testShowDomContainerRendersEmptyOptionForMandatoryDropdowns(): void
