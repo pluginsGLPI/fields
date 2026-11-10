@@ -2615,6 +2615,12 @@ HTML;
         if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
             return [];
         }
+
+        //container hidden by its display conditions: its fields can't be filled
+        $display_condition = new PluginFieldsContainerDisplayCondition();
+        if (!$display_condition->computeDisplayContainer($item, $c_id)) {
+            return [];
+        }
         
         $c_id = $loc_c->getID();
 
@@ -2627,12 +2633,6 @@ HTML;
             }
 
             return $data;
-        }
-
-        //container hidden by its display conditions: its fields can't be filled
-        $display_condition = new PluginFieldsContainerDisplayCondition();
-        if (!$display_condition->computeDisplayContainer($item, $c_id)) {
-            return [];
         }
 
         $status_field_name = PluginFieldsStatusOverride::getStatusFieldName($item::class);
