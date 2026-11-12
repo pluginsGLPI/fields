@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
 - Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
+- Fix slow page loads when many entities are active: the containers available to the user were computed with one query per container on every request
 
 ## [1.24.7] - 2026-10-28
 
