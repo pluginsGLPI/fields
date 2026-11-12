@@ -1579,30 +1579,48 @@ HTML;
         $itemtypes = [];
         $container = new self();
         $found     = $container->find($condition, 'label');
+
+        // First pass: entity restriction. Visibility is computed once per entity instead of
+        // once per container, as getSonsOf() of a high level entity can be thousands of rows.
+        $visible           = [];
+        $active_entities   = null;
+        $visible_by_entity = [];
         foreach ($found as $item) {
-            //entities restriction
-            if (!in_array($item['entities_id'], $_SESSION['glpiactiveentities'])) {
+            $active_entities ??= array_flip($_SESSION['glpiactiveentities']);
+            if (!isset($active_entities[(int) $item['entities_id']])) {
                 if ($item['is_recursive'] == 1) {
-                    $entities = getSonsOf('glpi_entities', $item['entities_id']);
-                    if (array_intersect($entities, $_SESSION['glpiactiveentities']) === []) {
+                    $visible_by_entity[$item['entities_id']] ??= array_intersect_key(
+                        array_flip(getSonsOf('glpi_entities', $item['entities_id'])),
+                        $active_entities,
+                    ) !== [];
+                    if (!$visible_by_entity[$item['entities_id']]) {
                         continue;
                     }
                 } else {
                     continue;
                 }
             }
+            $visible[$item['id']] = $item;
+        }
 
-            if (Session::isCron() || !isset($_SESSION['glpiactiveprofile']['id'])) {
-                continue;
-            }
+        if (
+            $visible === []
+            || Session::isCron()
+            || !isset($_SESSION['glpiactiveprofile']['id'])
+            || $_SESSION['glpiactiveprofile']['id'] == null
+        ) {
+            return $itemtypes;
+        }
 
+        // Rights of the active profile on all visible containers, in a single query.
+        $rights = PluginFieldsProfile::getRightsOnContainers(
+            (int) $_SESSION['glpiactiveprofile']['id'],
+            array_keys($visible),
+        );
+
+        foreach ($visible as $item) {
             //profiles restriction
-            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $item['id'] > 0) {
-                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $item['id']);
-                if ($right < READ) {
-                    continue;
-                }
-            } else {
+            if (($rights[$item['id']] ?? 0) < READ) {
                 continue;
             }
 

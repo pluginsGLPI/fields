@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fix form submission error when a multiple dropdown field question is left empty
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
+- Fix slow page loads when many entities are active: the containers available to the user were computed with one query per container on every request
 
 ## [1.24.7] - 2026-10-28
 
