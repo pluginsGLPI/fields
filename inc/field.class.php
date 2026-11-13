@@ -1280,6 +1280,7 @@ JAVASCRIPT,
             if ($obj instanceof CommonDBTM) {
                 $found_values = $obj->find(
                     [
+                        'itemtype'                    => $item::getType(),
                         'plugin_fields_containers_id' => $first_field['plugin_fields_containers_id'],
                         'items_id'                    => $item->getID(),
                     ],
