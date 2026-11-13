@@ -101,6 +101,7 @@ final class FieldGenericObjectMigrationTest extends DbTestCase
             $this->fail('Expected RuntimeException was not thrown.');
         } catch (RuntimeException $runtimeException) {
             $this->assertStringContainsString('GenericObject plugin cannot be migrated', $runtimeException->getMessage());
+            $this->assertStringContainsString('version 3.0.x is required', $runtimeException->getMessage());
         }
 
         $this->hasPhpLogRecordThatContains(
