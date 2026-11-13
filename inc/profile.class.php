@@ -226,9 +226,7 @@ class PluginFieldsProfile extends CommonDBRelation
     /**
      * Get rights of a profile on several containers, in a single query.
      *
-     * @param int   $profile_id
      * @param int[] $container_ids
-     *
      * @return array<int, int> rights indexed by container id, containers without right are absent
      */
     public static function getRightsOnContainers(int $profile_id, array $container_ids): array

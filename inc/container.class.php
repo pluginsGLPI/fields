@@ -1580,13 +1580,21 @@ HTML;
         $container = new self();
         $found     = $container->find($condition, 'label');
 
+        if (
+            $found === []
+            || Session::isCron()
+            || !isset($_SESSION['glpiactiveprofile']['id'])
+            || $_SESSION['glpiactiveprofile']['id'] == null
+        ) {
+            return $itemtypes;
+        }
+
         // First pass: entity restriction. Visibility is computed once per entity instead of
         // once per container, as getSonsOf() of a high level entity can be thousands of rows.
         $visible           = [];
-        $active_entities   = null;
+        $active_entities   = array_flip($_SESSION['glpiactiveentities']);
         $visible_by_entity = [];
         foreach ($found as $item) {
-            $active_entities ??= array_flip($_SESSION['glpiactiveentities']);
             if (!isset($active_entities[(int) $item['entities_id']])) {
                 if ($item['is_recursive'] == 1) {
                     $visible_by_entity[$item['entities_id']] ??= array_intersect_key(
@@ -1600,16 +1608,8 @@ HTML;
                     continue;
                 }
             }
-            $visible[$item['id']] = $item;
-        }
 
-        if (
-            $visible === []
-            || Session::isCron()
-            || !isset($_SESSION['glpiactiveprofile']['id'])
-            || $_SESSION['glpiactiveprofile']['id'] == null
-        ) {
-            return $itemtypes;
+            $visible[$item['id']] = $item;
         }
 
         // Rights of the active profile on all visible containers, in a single query.

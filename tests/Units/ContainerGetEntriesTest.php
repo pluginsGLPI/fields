@@ -129,6 +129,7 @@ final class ContainerGetEntriesTest extends DbTestCase
         foreach ($ids as $id) {
             $this->assertSame(PluginFieldsProfile::getRightOnContainer($profile_id, $id), $rights[$id] ?? 0);
         }
+
         $this->assertSame([0, READ, CREATE], array_map(static fn($id) => $rights[$id] ?? 0, $ids));
         $this->assertSame([], PluginFieldsProfile::getRightsOnContainers($profile_id, []));
         $this->assertSame(0, PluginFieldsProfile::getRightOnContainer($profile_id, 999999));
