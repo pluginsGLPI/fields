@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 - Fix item clone failing when a mandatory dropdown field has an empty default value
+- Fix GenericObject migration error message to name the required 3.0.x version
 
 ## [1.24.7] - 2026-10-28
 
