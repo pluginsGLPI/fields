@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix item clone failing when a mandatory dropdown field has an empty default value
 - Fix search on number fields: `is` / `is not` ignoring values from 1000, `<` / `>` comparing values as text, and `is not` excluding items without value
 - Fix `Some mandatory fields are empty` error on a filled dropdown field when its block table contains a leftover column with the same name
+- Fix GenericObject migration error message to name the required 3.0.x version
 
 ## [1.24.7] - 2026-10-28
 
