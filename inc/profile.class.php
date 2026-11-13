@@ -220,20 +220,38 @@ class PluginFieldsProfile extends CommonDBRelation
 
     public static function getRightOnContainer(int $profile_id, int $container_id): int
     {
+        return self::getRightsOnContainers($profile_id, [$container_id])[$container_id] ?? 0;
+    }
+
+    /**
+     * Get rights of a profile on several containers, in a single query.
+     *
+     * @param int[] $container_ids
+     * @return array<int, int> rights indexed by container id, containers without right are absent
+     */
+    public static function getRightsOnContainers(int $profile_id, array $container_ids): array
+    {
         /** @var DBmysql $DB */
         global $DB;
 
-        $container_profile = $DB->request(
-            [
-                'SELECT' => ['MAX' => 'right AS right'],
-                'FROM'   => self::getTable(),
-                'WHERE'  => [
-                    'profiles_id'                 => $profile_id,
-                    'plugin_fields_containers_id' => $container_id,
-                ],
-            ],
-        );
+        if ($container_ids === []) {
+            return [];
+        }
 
-        return (int) $container_profile->current()['right'];
+        $rights   = [];
+        $iterator = $DB->request([
+            'SELECT'  => ['plugin_fields_containers_id', 'MAX' => 'right AS right'],
+            'FROM'    => self::getTable(),
+            'WHERE'   => [
+                'profiles_id'                 => $profile_id,
+                'plugin_fields_containers_id' => $container_ids,
+            ],
+            'GROUPBY' => 'plugin_fields_containers_id',
+        ]);
+        foreach ($iterator as $row) {
+            $rights[(int) $row['plugin_fields_containers_id']] = (int) $row['right'];
+        }
+
+        return $rights;
     }
 }
