@@ -232,4 +232,40 @@ final class LabelSpecialCharsTest extends DbTestCase
         $this->assertTrue(class_exists($classname));
         $this->assertSame($label, $classname::getTypeName());
     }
+
+    public function testTranslationPartialUpdateKeepsLabel(): void
+    {
+        $container = $this->createFieldContainer([
+            'label'        => 'Label partial update ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+
+        $field = $this->createField([
+            'label'                                     => "N° d'inventaire",
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+        ]);
+
+        $translations = (new PluginFieldsLabelTranslation())->find([
+            'itemtype' => PluginFieldsField::class,
+            'items_id' => $field->getID(),
+        ]);
+        $this->assertCount(1, $translations);
+
+        // Update without 'label' key (e.g. language only, API partial update)
+        $translation = new PluginFieldsLabelTranslation();
+        $this->assertTrue($translation->update([
+            'id'       => array_key_first($translations),
+            'language' => 'fr_FR',
+        ]));
+
+        $this->assertTrue($translation->getFromDB(array_key_first($translations)));
+        $this->assertSame("N° d'inventaire", $translation->fields['label']);
+    }
 }

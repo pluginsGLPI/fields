@@ -619,7 +619,7 @@ class PluginFieldsContainer extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        // sanitize label only; name is intentionally left untouched here (see migration callers)
+        // trim label only (free text, escaped on output); name is intentionally left untouched here (see migration callers)
         if (isset($input['label']) && !empty($input['label'])) {
             $input['label'] = trim((string) $input['label']);
         }

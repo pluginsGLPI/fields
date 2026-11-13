@@ -392,11 +392,13 @@ class PluginFieldsToolbox
     }
 
     /**
-     * Sanitize the label in $input and derive the system name from it.
+     * Trim the label in $input and derive the system name from it.
+     * Labels are free text (escaped on output); only the derived system name
+     * is restricted to identifier safe characters.
      * Centralises the prepare-label pattern used in prepareInputForAdd/Update.
      *
      * @param array $input Input array with at least a 'label' key.
-     * @return array Updated input with sanitized 'label' and derived 'name'.
+     * @return array Updated input with trimmed 'label' and derived 'name'.
      */
     public static function prepareLabel(array $input): array
     {
