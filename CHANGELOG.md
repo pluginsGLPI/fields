@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fix form submission error when a multiple dropdown field question is left empty
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
+- Fix GenericObject migration error message to name the required 3.0.x version
 
 ## [1.24.7] - 2026-10-28
 
