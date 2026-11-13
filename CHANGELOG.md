@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Remove redundant variable initialization in the question type AJAX controller
+
+## [1.25.1] - 2026-10-28
+
+### Added
+
+- Add Transifex translations link to README
+
+### Fixed
+
+- Fix mandatory fields of a block hidden by its display conditions blocking the save of an item
+- Fix fields values updates not applying the expected checks in some cases
+- Fix ticket observers being able to edit and save additional fields they are not allowed to modify
+- Fix `Yes/No` field values returned as strings instead of integers in search results
+- Fix fatal error during plugin update caused by outdated generated dropdown classes
+- Fix massive update of fields of a tab block not saved when the item has several tab blocks
+
 ## [1.25.0] - 2026-10-06
 
 ### Added
@@ -31,6 +52,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix a block's associated item types, type and tab being changeable after creation.
 - Remove obsolete FusionInventory integration.
 - CI: declare a unique composer autoloader suffix
+- Disable containers whose table name exceeds MySQL's 64-character limit instead of crashing; rename them from their edit form to reactivate, recovering existing data when a matching table is found.
+- `plugins:fields:check_database` now also reports container/item type pairs with no matching table, and tables with no matching container/item type pair.
 
 ### Changed
 

@@ -47,7 +47,9 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
                 __('- some deleted fields may still be present in database (bug introduced in version %s and fixed in version %s)', 'fields'),
                 '1.15.0',
                 '1.15.3',
-            ),
+            )
+            . "\n"
+            . __('- container/item type pairs with no matching table, or tables with no matching container/item type pair', 'fields'),
         );
 
         $this->addOption(
@@ -66,8 +68,9 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
         $dead_fields       = PluginFieldsMigration::checkDeadFields($fix);
         $dead_fields_count = count($dead_fields, COUNT_RECURSIVE) - count($dead_fields);
 
-        // No invalid fields found
-        if ($dead_fields_count === 0) {
+        $tables_consistency = PluginFieldsMigration::checkContainerTablesConsistency();
+
+        if ($dead_fields_count === 0 && $tables_consistency['missing'] === [] && $tables_consistency['orphaned'] === []) {
             $output->writeln(
                 '<info>' . __('Everything is in order - no action needed.', 'fields') . '</info>',
             );
@@ -75,32 +78,58 @@ class PluginFieldsCheckDatabaseCommand extends AbstractCommand
             return Command::SUCCESS;
         }
 
-        // Indicate which fields will have been or must be deleted
-        $error = $fix
-            ? sprintf(__('Database was containing orphaned data from %s improperly deleted field(s).', 'fields'), $dead_fields_count)
-            : sprintf(__('Database contains orphaned data from %s improperly deleted field(s).', 'fields'), $dead_fields_count);
-        $output->writeln('<error>' . $error . '</error>', OutputInterface::VERBOSITY_QUIET);
+        if ($dead_fields_count > 0) {
+            $error = $fix
+                ? sprintf(__('Database was containing orphaned data from %s improperly deleted field(s).', 'fields'), $dead_fields_count)
+                : sprintf(__('Database contains orphaned data from %s improperly deleted field(s).', 'fields'), $dead_fields_count);
+            $output->writeln('<error>' . $error . '</error>', OutputInterface::VERBOSITY_QUIET);
 
-        foreach ($dead_fields as $table => $fields) {
-            foreach ($fields as $field) {
-                $info = $fix
-                    ? sprintf(__('-> "%s.%s" has been deleted.', 'fields'), $table, $field)
-                    : sprintf(__('-> "%s.%s" should be deleted.', 'fields'), $table, $field);
-                $output->writeln($info);
+            foreach ($dead_fields as $table => $fields) {
+                foreach ($fields as $field) {
+                    $info = $fix
+                        ? sprintf(__('-> "%s.%s" has been deleted.', 'fields'), $table, $field)
+                        : sprintf(__('-> "%s.%s" should be deleted.', 'fields'), $table, $field);
+                    $output->writeln($info);
+                }
+            }
+
+            // Show extra info in dry-run mode
+            if (!$fix) {
+                // Print command to do the actual deletion
+                $next_command = sprintf(
+                    __('Run "%s" to fix database inconsistencies.', 'fields'),
+                    sprintf('php bin/console %s --fix', $this->getName()),
+                );
+                $output->writeln(
+                    '<comment>' . $next_command . '</comment>',
+                    OutputInterface::VERBOSITY_QUIET,
+                );
             }
         }
 
-        // Show extra info in dry-run mode
-        if (!$fix) {
-            // Print command to do the actual deletion
-            $next_command = sprintf(
-                __('Run "%s" to fix database inconsistencies.', 'fields'),
-                sprintf('php bin/console %s --fix', $this->getName()),
-            );
+        if ($tables_consistency['missing'] !== []) {
             $output->writeln(
-                '<comment>' . $next_command . '</comment>',
+                '<error>' . sprintf(__('%d container/item type pair(s) have no matching table.', 'fields'), count($tables_consistency['missing'])) . '</error>',
                 OutputInterface::VERBOSITY_QUIET,
             );
+            foreach ($tables_consistency['missing'] as $entry) {
+                $output->writeln(sprintf(
+                    __('-> container #%d (%s): expected table "%s" not found', 'fields'),
+                    $entry['container_id'],
+                    $entry['itemtype'],
+                    $entry['table'],
+                ));
+            }
+        }
+
+        if ($tables_consistency['orphaned'] !== []) {
+            $output->writeln(
+                '<error>' . sprintf(__('%d table(s) do not match any container/item type pair.', 'fields'), count($tables_consistency['orphaned'])) . '</error>',
+                OutputInterface::VERBOSITY_QUIET,
+            );
+            foreach ($tables_consistency['orphaned'] as $table) {
+                $output->writeln(sprintf('-> "%s"', $table));
+            }
         }
 
         return Command::SUCCESS;

@@ -15,6 +15,11 @@ concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 
+# The changelog and plugin manifest checks read the pull request files
+permissions:
+  contents: "read"
+  pull-requests: "read"
+
 jobs:
   generate-ci-matrix:
     name: "Generate CI matrix"

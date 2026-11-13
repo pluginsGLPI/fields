@@ -242,6 +242,54 @@ class PluginFieldsContainer extends CommonDBTM
         /** @var DBmysql $DB */
         global $DB;
 
+        // Quarantine generated class files: hides stale ones from the autoloader, purged once migration succeeds.
+        foreach (glob(PLUGINFIELDS_CLASS_PATH . '/*.class.php') ?: [] as $existing_file) {
+            if (str_ends_with($existing_file, 'dropdown.class.php')) {
+                continue;
+            }
+
+            rename($existing_file, $existing_file . '.bak');
+        }
+
+        // Disable oversized-table containers instead of crashing.
+        $obj               = new self();
+        $active_containers = $obj->find(['is_active' => 1]);
+        foreach ($active_containers as $container) {
+            if (empty($container['itemtypes'])) {
+                continue;
+            }
+
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+            if (!is_array($itemtypes)) {
+                continue;
+            }
+
+            $too_long = false;
+            foreach ($itemtypes as $itemtype) {
+                $table = getTableForItemType(self::getClassname($itemtype, $container['name']));
+                if (strlen($table) > 64) {
+                    $too_long = true;
+                    break;
+                }
+            }
+
+            if (!$too_long) {
+                continue;
+            }
+
+            $DB->update(
+                self::getTable(),
+                ['is_active' => 0],
+                ['id' => $container['id']],
+            );
+
+            $migration->addWarningMessage(sprintf(
+                __('Container #%1$d (%2$s) disabled: table name too long. Rename it from its edit form to reactivate it.', 'fields'),
+                $container['id'],
+                $container['name'],
+            ));
+        }
+
         // -> 0.90-1.3: generated class moved
         // Drop them, they will be regenerated
         $obj        = new self();
@@ -444,7 +492,22 @@ class PluginFieldsContainer extends CommonDBTM
         $obj        = new self();
         $containers = $obj->find();
         foreach ($containers as $container) {
+            $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
+            if (is_array($itemtypes)) {
+                foreach ($itemtypes as $itemtype) {
+                    if (strlen(getTableForItemType(self::getClassname($itemtype, $container['name']))) > 64) {
+                        // Table name still too long: the container was just disabled above, skip it.
+                        continue 2;
+                    }
+                }
+            }
+
             self::create($container);
+        }
+
+        // Migration succeeded: remaining quarantined files are stale for good.
+        foreach (glob(PLUGINFIELDS_CLASS_PATH . '/*.class.php.bak') ?: [] as $stale_file) {
+            unlink($stale_file);
         }
 
         return true;
@@ -637,7 +700,39 @@ class PluginFieldsContainer extends CommonDBTM
             $input['itemtypes'] = json_encode(array_values($itemtypes));
         }
 
+        if (
+            (int) ($input['is_active'] ?? 0) === 1
+            && $this->getOversizedTable($input['name'] ?? null) !== null
+        ) {
+            Session::AddMessageAfterRedirect(__('Table name too long: rename the container to reactivate it.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
         return $input;
+    }
+
+    /**
+     * Get the first generated table name exceeding the MySQL 64 chars limit.
+     *
+     * @param string|null $name Container name to check, defaults to the current one.
+     */
+    private function getOversizedTable(?string $name = null): ?string
+    {
+        $name ??= $this->fields['name'];
+        $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($this->fields['itemtypes'] ?? '');
+        if (!is_array($itemtypes)) {
+            return null;
+        }
+
+        foreach ($itemtypes as $itemtype) {
+            $table = getTableForItemType(self::getClassname($itemtype, $name));
+            if (strlen($table) > 64) {
+                return $table;
+            }
+        }
+
+        return null;
     }
 
     private function areValidItemtypeNames(array $itemtypes): bool
@@ -939,6 +1034,9 @@ class PluginFieldsContainer extends CommonDBTM
 
     public static function preItemPurge($item)
     {
+        /** @var DBmysql $DB */
+        global $DB;
+
         $itemtype           = $item::class;
         $containers         = new self();
         $founded_containers = $containers->find();
@@ -946,7 +1044,12 @@ class PluginFieldsContainer extends CommonDBTM
             $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container['itemtypes']);
             if (in_array($itemtype, $itemtypes)) {
                 $classname = self::getClassname($itemtype, $container['name']);
-                $fields    = new $classname();
+                if (!$DB->tableExists(getTableForItemType($classname))) {
+                    // Disabled oversized container: no table to purge from.
+                    continue;
+                }
+
+                $fields = new $classname();
                 $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
             }
         }
@@ -957,6 +1060,207 @@ class PluginFieldsContainer extends CommonDBTM
     public static function getTypeName($nb = 0)
     {
         return __('Block', 'fields');
+    }
+
+    /**
+     * Rename an oversized-table container, then reactivate it.
+     *
+     * @param int    $id       Container ID.
+     * @param string $new_name New internal name.
+     */
+    public static function renameOversizedContainer(int $id, string $new_name): bool
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $container = new self();
+        if (!$container->getFromDB($id)) {
+            Session::AddMessageAfterRedirect(sprintf(__('Unknown container #%d.', 'fields'), $id), false, ERROR);
+
+            return false;
+        }
+
+        $itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($container->fields['itemtypes']);
+        if (!is_array($itemtypes) || $itemtypes === []) {
+            Session::AddMessageAfterRedirect(__('No associated item type.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        if ($container->getOversizedTable() === null) {
+            Session::AddMessageAfterRedirect(__('Container is not oversized.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        // getSystemNameFromLabel() falls back to a random name when no alphanumeric char remains
+        if (preg_match('/[\da-z]/i', $new_name) !== 1) {
+            Session::AddMessageAfterRedirect(__('Invalid name.', 'fields'), false, ERROR);
+
+            return false;
+        }
+
+        $toolbox  = new PluginFieldsToolbox();
+        $new_name = $toolbox->getSystemNameFromLabel($new_name);
+
+        $too_long_tables = [];
+        foreach ($itemtypes as $itemtype) {
+            $table = getTableForItemType(self::getClassname($itemtype, $new_name));
+            if (strlen($table) > 64) {
+                $too_long_tables[] = $table;
+            }
+        }
+
+        if ($too_long_tables !== []) {
+            Session::AddMessageAfterRedirect(sprintf(
+                __('Still too long: %s.', 'fields'),
+                implode(', ', $too_long_tables),
+            ), false, ERROR);
+
+            return false;
+        }
+
+        $found = $container->find(['name' => $new_name]);
+        foreach ($found as $other) {
+            if ((int) $other['id'] === $id) {
+                continue;
+            }
+
+            $other_itemtypes = PluginFieldsToolbox::decodeJSONItemtypes($other['itemtypes']);
+            if (is_array($other_itemtypes) && array_intersect($itemtypes, $other_itemtypes) !== []) {
+                Session::AddMessageAfterRedirect(__('Name already used for this item type.', 'fields'), false, ERROR);
+
+                return false;
+            }
+        }
+
+        $plugin = new Plugin();
+        $plugin->getFromDBbyDir('fields');
+
+        $migration = new Migration((string) ($plugin->fields['version'] ?? ''));
+
+        $old_name = $container->fields['name'];
+
+        foreach ($itemtypes as $itemtype) {
+            $new_table = getTableForItemType(self::getClassname($itemtype, $new_name));
+            $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
+
+            if ($new_table !== $old_table && $DB->tableExists($new_table)) {
+                Session::AddMessageAfterRedirect(sprintf(__('Table %s already exists.', 'fields'), $new_table), false, ERROR);
+
+                return false;
+            }
+        }
+
+        $claimed_orphans = [];
+        $data_preserved  = false;
+        foreach ($itemtypes as $itemtype) {
+            $new_table = getTableForItemType(self::getClassname($itemtype, $new_name));
+
+            $old_table = getTableForItemType(self::getClassname($itemtype, $old_name));
+            if (!$DB->tableExists($old_table)) {
+                $old_table = self::findOrphanTableForContainer($id, $itemtype, $claimed_orphans);
+            }
+
+            if ($old_table === null || !$DB->tableExists($old_table)) {
+                continue;
+            }
+
+            $claimed_orphans[] = $old_table;
+
+            // Rename even when empty: install() only creates base columns, not the custom field ones.
+            if (countElementsInTable($old_table) > 0) {
+                $data_preserved = true;
+            }
+
+            $migration->renameTable($old_table, $new_table);
+        }
+
+        $DB->clearSchemaCache();
+
+        $migration->executeMigration();
+
+        $container->update([
+            'id'        => $id,
+            'name'      => $new_name,
+            'is_active' => 1,
+        ]);
+
+        $container->getFromDB($id);
+        self::create($container->fields);
+
+        $message = $data_preserved
+            ? sprintf(__('Renamed to "%s" and reactivated, existing data preserved.', 'fields'), $new_name)
+            : sprintf(__('Renamed to "%s" and reactivated, no existing data found.', 'fields'), $new_name);
+        Session::AddMessageAfterRedirect($message, false, INFO);
+
+        return true;
+    }
+
+    /**
+     * Find an orphaned table belonging to this container.
+     *
+     * @param int      $container_id     Container ID.
+     * @param string   $itemtype         Item type the orphan table must have been generated for.
+     * @param string[] $already_claimed  Orphan tables already assigned to another itemtype in this call.
+     */
+    private static function findOrphanTableForContainer(int $container_id, string $itemtype, array $already_claimed): ?string
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $orphaned = array_diff(
+            PluginFieldsMigration::checkContainerTablesConsistency()['orphaned'],
+            $already_claimed,
+        );
+
+        // Primary match: `plugin_fields_containers_id` and `itemtype` are both DEFAULTed
+        // at table creation time, a link that survives any later name corruption. Matching
+        // on both is required when a container spans several item types, since every one
+        // of its orphan tables shares the same `plugin_fields_containers_id` default.
+        $by_default = [];
+        foreach ($orphaned as $table) {
+            $matches_container = false;
+            $matches_itemtype  = false;
+            foreach ($DB->listFields($table) as $column) {
+                if ($column['Field'] === 'plugin_fields_containers_id' && (int) $column['Default'] === $container_id) {
+                    $matches_container = true;
+                }
+
+                if ($column['Field'] === 'itemtype' && $column['Default'] === $itemtype) {
+                    $matches_itemtype = true;
+                }
+            }
+
+            if ($matches_container && $matches_itemtype) {
+                $by_default[] = $table;
+            }
+        }
+
+        if (count($by_default) === 1) {
+            return $by_default[0];
+        }
+
+        // Fallback for tables predating that default: match by custom field columns.
+        $expected_columns = PluginFieldsMigration::getValidFieldsForContainer($container_id);
+        if ($expected_columns === []) {
+            return null;
+        }
+
+        sort($expected_columns);
+
+        $base_columns = ['id', 'items_id', 'itemtype', 'plugin_fields_containers_id', 'entities_id'];
+        $candidates   = [];
+        foreach (array_diff($orphaned, $by_default) as $table) {
+            $columns = array_diff(array_column($DB->listFields($table), 'Field'), $base_columns);
+            sort($columns);
+
+            if ($columns === $expected_columns) {
+                $candidates[] = $table;
+            }
+        }
+
+        return count($candidates) === 1 ? $candidates[0] : null;
     }
 
     public function showForm($ID, $options = [])
@@ -1089,9 +1393,30 @@ HTML;
         echo '<tr>';
         echo '<td>' . __('Active') . ' : </td>';
         echo '<td>';
-        Dropdown::showYesNo('is_active', $this->fields['is_active']);
+        $oversized_table = $this->isNewID($ID) ? null : $this->getOversizedTable();
+        if ($oversized_table !== null) {
+            // Reactivation goes through the rename form below.
+            echo Dropdown::getYesNo(0);
+        } else {
+            Dropdown::showYesNo('is_active', $this->fields['is_active']);
+        }
+
         echo '</td>';
         echo '</tr>';
+
+        if ($oversized_table !== null) {
+            echo '<tr class="tab_bg_2">';
+            echo '<td colspan="2">';
+            echo sprintf(__('Table name too long (%s):', 'fields'), $oversized_table);
+            echo '</td>';
+            echo '<td>';
+            echo Html::input('new_name', ['placeholder' => __('New name', 'fields')]);
+            echo '</td>';
+            echo '<td>';
+            echo '<button type="submit" name="rename_oversized" class="btn btn-primary">' . __('Rename and reactivate', 'fields') . '</button>';
+            echo '</td>';
+            echo '</tr>';
+        }
 
         $this->showFormButtons($options);
 
@@ -2008,6 +2333,56 @@ HTML;
         return $id;
     }
 
+    /**
+     * Find the active tab containers of the item's type having at least one field submitted in the item input
+     *
+     * @param CommonDBTM $item Item instance
+     *
+     * @return int[]
+     */
+    private static function findSubmittedTabContainers(CommonDBTM $item): array
+    {
+        $container  = new self();
+        $containers = $container->find([
+            'is_active' => 1,
+            'type'      => ['!=', 'dom'],
+        ]);
+
+        $c_ids = [];
+        foreach ($containers as $data) {
+            if (
+                in_array($item::class, PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']))
+                && Session::haveAccessToEntity($data['entities_id'], $data['is_recursive'])
+            ) {
+                $c_ids[] = (int) $data['id'];
+            }
+        }
+
+        if ($c_ids === []) {
+            return [];
+        }
+
+        $fields = (new PluginFieldsField())->find([
+            'plugin_fields_containers_id' => $c_ids,
+            'is_active'                   => 1,
+            'type'                        => ['!=', 'header'],
+        ], 'plugin_fields_containers_id');
+
+        $submitted = [];
+        foreach ($fields as $field) {
+            $input_keys = [
+                $field['name'],
+                sprintf('plugin_fields_%sdropdowns_id', $field['name']),
+                sprintf('items_id_%s', $field['name']),
+            ];
+            if (array_intersect($input_keys, array_keys($item->input)) !== []) {
+                $submitted[] = (int) $field['plugin_fields_containers_id'];
+            }
+        }
+
+        return array_values(array_unique($submitted));
+    }
+
     public static function findAllContainers($itemtype)
     {
         $condition = ['is_active' => 1];
@@ -2048,18 +2423,19 @@ HTML;
     public static function postItemAdd(CommonDBTM $item)
     {
         if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data             = $item->input['_plugin_fields_data'];
-            $data['itemtype'] = $item::class;
-            $data['items_id'] = $item->getID();
-            $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
-            //update data
             $container = new self();
-            if ($container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
-                return true;
+            foreach (self::getSubmittedContainersData($item) as $data) {
+                $data['itemtype'] = $item::class;
+                $data['items_id'] = $item->getID();
+                $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
+                //update data
+                if (!$container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
+                    $item->input = [];
+                    return $item;
+                }
             }
 
-            $item->input = [];
-            return $item;
+            return true;
         }
 
         return true;
@@ -2077,24 +2453,56 @@ HTML;
     {
         self::preItem($item);
         if (array_key_exists('_plugin_fields_data', $item->input)) {
-            $data = $item->input['_plugin_fields_data'];
-            $data['itemtype'] = $item::class;
-            $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
-            //update data
-            $container = new self();
+            // Only save plugin fields if the user can update this specific item.
+            // Automated contexts (cron jobs, API without active profile) bypass this check.
             if (
-                count($data) === 0
-                || $container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))
+                isset($_SESSION['glpiactiveprofile']['id'])
+                && !$item->canUpdateItem()
             ) {
-                $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
-
+                unset($item->input['_plugin_fields_data']);
+                Session::addMessageAfterRedirect(
+                    __('You do not have the right to modify the fields of this item', 'fields'),
+                    false,
+                    WARNING,
+                );
                 return true;
             }
 
-            return false;
+            $container = new self();
+            foreach (self::getSubmittedContainersData($item) as $data) {
+                $data['itemtype'] = $item::class;
+                $data['entities_id'] = $item->isEntityAssign() ? $item->getEntityID() : 0;
+                //update data
+                if (!$container->updateFieldsValues($data, $item::class, isset($_REQUEST['massiveaction']))) {
+                    return false;
+                }
+            }
+
+            $item->input['date_mod'] = $_SESSION['glpi_currenttime'];
+
+            return true;
         }
 
         return true;
+    }
+
+    /**
+     * Get the data to store for each submitted container
+     *
+     * @param CommonDBTM $item Item instance
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private static function getSubmittedContainersData(CommonDBTM $item): array
+    {
+        $data = $item->input['_plugin_fields_data'];
+
+        // data of a single container
+        if (array_key_exists('plugin_fields_containers_id', $data)) {
+            return [$data];
+        }
+
+        return $data;
     }
 
     /**
@@ -2122,10 +2530,16 @@ HTML;
             // generic add/update: both the "dom" and "tab" containers can carry
             // mandatory fields that must be enforced, even though only "dom"
             // fields are actually submitted inline with the main form
-            $c_ids = array_filter(
-                [self::findContainer($item::class, 'dom'), self::findContainer($item::class, 'tab')],
+            // other tab containers whose fields are submitted (ex: massive action on a GLPI item
+            // dropdown field for which the core never displays the plugin field nor its c_id input)
+            $c_ids = array_values(array_unique(array_filter(
+                [
+                    self::findContainer($item::class, 'dom'),
+                    ...self::findSubmittedTabContainers($item),
+                    self::findContainer($item::class, 'tab'),
+                ],
                 static fn($id) => $id !== false,
-            );
+            )));
         }
 
         if ($c_ids === []) {
@@ -2136,7 +2550,7 @@ HTML;
             $item->fields = $item->input;
         }
 
-        $submitted_data = null;
+        $submitted_data = [];
         foreach ($c_ids as $c_id) {
             $loc_c = new PluginFieldsContainer();
             $loc_c->getFromDB($c_id);
@@ -2171,11 +2585,11 @@ HTML;
             }
 
             if ($result !== []) {
-                $submitted_data = $result;
+                $submitted_data[] = $result;
             }
         }
 
-        if ($submitted_data !== null) {
+        if ($submitted_data !== []) {
             $item->input['_plugin_fields_data'] = $submitted_data;
 
             return true;
@@ -2212,6 +2626,12 @@ HTML;
         //nothing submitted for this container in this request (e.g. untouched Tab)
         //tab containers can't be filled before the item exists, so skip on creation
         if ($item->isNewItem() && $loc_c->fields['type'] !== 'dom') {
+            return [];
+        }
+
+        //container hidden by its display conditions: its fields can't be filled
+        $display_condition = new PluginFieldsContainerDisplayCondition();
+        if (!$display_condition->computeDisplayContainer($item, $c_id)) {
             return [];
         }
 
@@ -2568,9 +2988,12 @@ HTML;
                 && !in_array($data['type'], ['dropdown', 'glpi_item'], true)
                 && !preg_match('/^dropdown-.+$/i', (string) $data['type'])
             ) {
-                $default_expression = in_array($data['type'], ['date', 'datetime'], true) && $data['default_value'] === 'now'
-                    ? QueryFunction::now()
-                    : new QueryExpression($DB::quoteValue($data['default_value']));
+                $default_expression = match (true) {
+                    in_array($data['type'], ['date', 'datetime'], true) && $data['default_value'] === 'now' => QueryFunction::now(),
+                    // a quoted default would make COALESCE return a string instead of the INT column type
+                    $data['type'] === 'yesno' => new QueryExpression((string) (int) $data['default_value']),
+                    default => new QueryExpression($DB::quoteValue($data['default_value'])),
+                };
 
                 $opt[$i]['computation'] = QueryFunction::coalesce([
                     'TABLE.' . $data['field_name'],

@@ -18,3 +18,24 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: "development"
+
+  # Ensure GitHub Actions are used in their latest version (11.0/bugfixes)
+  - package-ecosystem: "github-actions"
+    target-branch: "11.0/bugfixes"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+  # Strategy for composer dependencies (11.0/bugfixes)
+  - package-ecosystem: "composer"
+    target-branch: "11.0/bugfixes"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    allow:
+      - dependency-type: "direct"
+    open-pull-requests-limit: 100
+    versioning-strategy: "increase"
+    groups:
+      dev-dependencies:
+        dependency-type: "development"

@@ -30,11 +30,13 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use Auth;
 use Computer;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
+use PluginFieldsContainerDisplayCondition;
 use Ticket;
 use Entity;
 use Notification;
@@ -71,6 +73,15 @@ final class ContainerItemUpdateTest extends DbTestCase
         // A real web request always carries a client IP; without it SessionTracker::recordNewSession()
         // would try to insert a NULL ip_address when login() is called under the faked web context.
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+    }
+
+    protected function login(string $user_name = TU_USER, string $user_pass = ""): Auth
+    {
+        $auth = parent::login($user_name, $user_pass);
+        // Items are created in the root entity: make it active so that canUpdateItem() passes its entity check.
+        $this->setEntity(0, true);
+
+        return $auth;
     }
 
     public function tearDown(): void
@@ -171,7 +182,7 @@ final class ContainerItemUpdateTest extends DbTestCase
 
         $this->createFieldContainer([
             'label'        => 'Hook Guard Container',
-            'type'         => 'dom',
+            'type'         => 'tab',
             'itemtypes'    => [Ticket::class],
             'is_active'    => 1,
             'entities_id'  => 0,
@@ -1035,6 +1046,78 @@ final class ContainerItemUpdateTest extends DbTestCase
             'second value',
             $row[$field_name],
             'Plugin value must not be erased by a native-only update.',
+        );
+    }
+
+    /**
+     * A mandatory DOM field must not block creation/update when its container is
+     * hidden by a display condition.
+     */
+    public function testNotBlockedWhenMandatoryDomContainerIsHidden(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Hidden Mandatory Dom Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Ticket::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $this->createField([
+            'label'                                     => 'Mandatory Field',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+
+        // Hide the container for incidents.
+        $this->createItem(PluginFieldsContainerDisplayCondition::class, [
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'itemtype'                                  => Ticket::class,
+            'search_option'                             => 14, // type
+            'condition'                                 => PluginFieldsContainerDisplayCondition::SHOW_CONDITION_EQ,
+            'value'                                     => Ticket::INCIDENT_TYPE,
+        ]);
+
+        // The container is visible for requests
+        $ticket = new Ticket();
+        $ticket_id = $ticket->add([
+            'name'        => 'Request with visible mandatory field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            'type'        => Ticket::DEMAND_TYPE,
+        ]);
+        $this->assertFalse($ticket_id, 'A mandatory field in a visible container must block creation.');
+        $this->hasSessionMessageThatContains(
+            __('Some mandatory fields are empty', 'fields'),
+            ERROR,
+        );
+        $this->hasSessionMessageThatContains(
+            __('The form or source creating this item does not provide the mandatory fields above: map them to it, or make them optional.', 'fields'),
+            ERROR,
+        );
+
+        $ticket = new Ticket();
+        $ticket = $this->createItem(Ticket::class, [
+            'name'        => 'Incident with hidden mandatory field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            'type'        => Ticket::INCIDENT_TYPE,
+        ]);
+
+        $is_updated = $ticket->update([
+            'id'   => $ticket->getID(),
+            'type' => Ticket::DEMAND_TYPE,
+        ]);
+        $this->assertFalse($is_updated);
+        $this->hasSessionMessageThatContains(
+            __('Some mandatory fields are empty', 'fields'),
+            ERROR,
         );
     }
 }
