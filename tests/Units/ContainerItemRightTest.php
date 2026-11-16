@@ -246,6 +246,15 @@ final class ContainerItemRightTest extends DbTestCase
         $this->assertTrue($injection::canUpdate());
         $this->assertTrue($values->can(-1, CREATE, $input));
 
+        // Values cannot be written directly through the injection class, bypassing the container checks
+        $this->assertFalse($values->add($input));
+
+        $classname = PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']);
+        $stored    = new $classname();
+        $this->assertGreaterThan(0, $stored->add($input));
+        $this->assertTrue($values->getFromDB($stored->getID()));
+        $this->assertFalse($values->update(['id' => $stored->getID()] + $input));
+
         // Read only right on the container
         $this->setRightOnContainer($container->getID(), READ);
         $this->assertFalse($injection::canCreate());

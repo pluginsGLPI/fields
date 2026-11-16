@@ -23,6 +23,16 @@ class %%CLASSNAME%%Injection extends %%CLASSNAME%% implements PluginDatainjectio
             && PluginFieldsProfile::getRightOnContainer($profiles_id, (int) %%CONTAINER_ID%%) > READ;
     }
 
+    // Rights are only unlocked for the datainjection checks: values are written by datainjection
+    // through the container class, never directly through this class
+    public function prepareInputForAdd($input) {
+        return false;
+    }
+
+    public function prepareInputForUpdate($input) {
+        return false;
+    }
+
     /**
      * Return the table used to store this object
      *
