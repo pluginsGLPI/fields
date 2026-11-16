@@ -156,6 +156,11 @@ if ($type === 'glpi_item') {
                 'rand'     => $rand,
             ],
         );
+    } elseif ($type === 'yesno') {
+        Dropdown::showYesNo(
+            'default_value',
+            PluginFieldsField::normalizeYesNoValue($field->fields['default_value']),
+        );
     } else {
         echo Html::input(
             'default_value',
