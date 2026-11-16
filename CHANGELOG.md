@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fix form submission error when a multiple dropdown field question is left empty
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
+- Fix fields values not injectable with DataInjection, and models using them being no longer accessible
+- Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
 
 ## [1.24.7] - 2026-10-28
 
