@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller
+- Fix item creation failing when a Yes/No field has a non boolean default value
 
 ## [1.25.1] - 2026-10-28
 
