@@ -2091,6 +2091,11 @@ HTML;
                 $itemtype_key = sprintf('itemtype_%s', $name);
                 $items_id_key = sprintf('items_id_%s', $name);
 
+                // not submitted during a massive action (ex: clone) as for the other field types
+                if ($massiveaction && !isset($data[$items_id_key])) {
+                    continue;
+                }
+
                 $is_unchanged_reference = isset($stored_values[$itemtype_key], $stored_values[$items_id_key], $data[$itemtype_key], $data[$items_id_key])
                     && $stored_values[$itemtype_key] === $data[$itemtype_key]
                     && (int) $stored_values[$items_id_key] === (int) $data[$items_id_key];
