@@ -41,6 +41,7 @@ use Ticket;
 use Entity;
 use Notification;
 use Problem;
+use Supplier;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
@@ -1119,5 +1120,52 @@ final class ContainerItemUpdateTest extends DbTestCase
             __('Some mandatory fields are empty', 'fields'),
             ERROR,
         );
+    }
+
+    public function testCloneThroughMassiveActionIsNotBlockedByMandatoryGlpiItemField(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory GLPI item Clone Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory GLPI item',
+            'type'                                      => 'glpi_item',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+            'allowed_values'                            => [Supplier::class],
+        ]);
+        $itemtype_key = 'itemtype_' . $field->fields['name'];
+        $items_id_key = 'items_id_' . $field->fields['name'];
+
+        $supplier = $this->createItem(Supplier::class, [
+            'name'        => 'Supplier for clone',
+            'entities_id' => 0,
+        ]);
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer with mandatory GLPI item',
+            'entities_id' => 0,
+            $itemtype_key => Supplier::class,
+            $items_id_key => $supplier->getID(),
+        ], [$itemtype_key, $items_id_key]);
+
+        // The "Clone" massive action, also used from the item form, does not submit the plugin fields
+        $_REQUEST['massiveaction'] = 1;
+        try {
+            $clone_id = $computer->clone();
+        } finally {
+            unset($_REQUEST['massiveaction']);
+        }
+
+        $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory GLPI item field.');
     }
 }
