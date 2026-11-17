@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+<<<<<<< HEAD
 ## [Unreleased]
+=======
+## [UNRELEASED]
+
+### Fixed
+
+- Fix form submission error when a multiple dropdown field question is left empty
+- Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
+- Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
+
+## [1.24.7] - 2026-10-28
+>>>>>>> 9101db6 (Fix/clone mandatory glpi item field (#1354))
 
 ### Fixed
 
