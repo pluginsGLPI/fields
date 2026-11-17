@@ -12,7 +12,7 @@ jobs:
       pull-requests: "write" # for actions/stale to close stale pull requests
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/stale@v11"
+      - uses: "actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93" # v11.0.0
         with:
           stale-issue-message: >-
             There has been no activity on this issue for 60 days and therefore it is considered stale
@@ -28,9 +28,25 @@ jobs:
           days-before-issue-stale: 60
           days-before-pr-stale: 90
           days-before-close: 14
-          exempt-issue-labels: "bug,enhancement,question,security" # Issues with "bug", "enhancement", "question" or "security" labels will not be marked as stale
+          exempt-issue-labels: "bug,enhancement,question,security,need feedback" # Issues with "bug", "enhancement", "question" or "security" labels will not be marked as stale, "need feedback" ones are handled by the next step
           exempt-pr-labels: "security" # PR with "security" label will not be marked as stale
           exempt-draft-pr: true # Draft PR are work in progress.
           exempt-all-milestones: true # Do not check issues/PR with defined milestone.
           ascending: true # First check older issues/PR.
           operations-per-run: 750 # Max API calls per run.
+      # Shares the "_state" cache of the step above, harmless as long as each run processes every issue
+      - uses: "actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93" # v11.0.0
+        with:
+          only-labels: "need feedback"
+          stale-issue-message: >-
+            The requested information has not been provided for 30 days,
+            this issue will be closed automatically in 14 days.
+          close-issue-message: >-
+            This issue has been closed because the requested information has not been provided.
+            Feel free to reopen it with the requested information.
+          days-before-issue-stale: 30
+          days-before-issue-close: 14
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+          ascending: true
+          operations-per-run: 750
