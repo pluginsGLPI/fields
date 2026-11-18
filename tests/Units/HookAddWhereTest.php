@@ -30,6 +30,7 @@
 
 namespace GlpiPlugin\Field\Tests\Units;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Computer;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
@@ -124,5 +125,117 @@ final class HookAddWhereTest extends DbTestCase
         $result = plugin_fields_addWhere('', false, Computer::class, $so_id, '1', 'equals');
 
         $this->assertNotFalse($result);
+    }
+
+    public static function numberSearchProvider(): iterable
+    {
+        $all = ['999', '1000', '1000.0', '1500', '12345', '12.50', '-5', '0', 'cleared', 'unsaved'];
+        $without = static fn(string ...$excluded): array => array_values(array_diff($all, $excluded));
+
+        yield 'is 999' => ['equals', '999', false, ['999']];
+        yield 'is 1000' => ['equals', '1000', false, ['1000', '1000.0']];
+        yield 'is 12345' => ['equals', '12345', false, ['12345']];
+        yield 'is 12.5' => ['equals', '12.5', false, ['12.50']];
+        yield 'is 12,5' => ['equals', '12,5', false, ['12.50']];
+        yield 'is -5' => ['equals', '-5', false, ['-5']];
+        yield 'is 1e3' => ['equals', '1e3', false, ['1000', '1000.0']];
+        yield 'is 1e999' => ['equals', '1e999', false, []];
+        // Like core, items without value match an equality search on 0
+        yield 'is 0' => ['equals', '0', false, ['0', 'cleared', 'unsaved']];
+        yield 'is not 0' => ['notequals', '0', false, $without('0', 'cleared', 'unsaved')];
+        yield 'is not 1000' => ['notequals', '1000', false, $without('1000', '1000.0')];
+        yield 'is not 999' => ['notequals', '999', false, $without('999')];
+        yield 'AND NOT is 1000' => ['equals', '1000', true, $without('1000', '1000.0')];
+        yield 'AND NOT is not 1000' => ['notequals', '1000', true, ['1000', '1000.0']];
+        yield 'contains > 900' => ['contains', '>900', false, ['999', '1000', '1000.0', '1500', '12345']];
+        yield 'contains > 1000' => ['contains', '>1000', false, ['1500', '12345']];
+        yield 'contains >= 1500' => ['contains', '>= 1500', false, ['1500', '12345']];
+        yield 'contains < 1000' => ['contains', '<1000', false, ['999', '12.50', '-5', '0']];
+        yield 'contains <= 1000' => ['contains', '<=1000', false, ['999', '1000', '1000.0', '12.50', '-5', '0']];
+        yield 'contains < 2000' => ['contains', '<2000', false, ['999', '1000', '1000.0', '1500', '12.50', '-5', '0']];
+        yield 'contains &lt; 2000' => ['contains', '&lt;2000', false, ['999', '1000', '1000.0', '1500', '12.50', '-5', '0']];
+        yield 'contains < 0' => ['contains', '<0', false, ['-5']];
+        yield 'not contains < 2000' => ['notcontains', '<2000', false, ['12345', 'cleared', 'unsaved']];
+        yield 'contains 100 (no operator)' => ['contains', '100', false, ['1000', '1000.0']];
+        // Casting a non numeric value would raise a SQL warning, which fails the test
+        yield 'is abc' => ['equals', 'abc', false, []];
+        yield 'is not abc' => ['notequals', 'abc', false, $all];
+        yield 'contains < abc' => ['contains', '<abc', false, []];
+    }
+
+    /**
+     * Number values are stored as VARCHAR: "is" / "is not" used to cast them to DECIMAL(10,7),
+     * which overflows from 1000, and <, > compared them as strings.
+     */
+    #[DataProvider('numberSearchProvider')]
+    public function testNumberFieldSearch(string $searchtype, string $value, bool $not, array $expected): void
+    {
+        $found = $this->searchNumberField($searchtype, $value, $not);
+        sort($expected);
+        $this->assertSame($expected, $found);
+    }
+
+    /**
+     * Search computers on a number field, among items storing a predefined set of values.
+     *
+     * @return list<string> Sorted names (without prefix) of the found items
+     */
+    private function searchNumberField(string $searchtype, string $value, bool $not): array
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Number search ' . $this->getUniqueString(),
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Number',
+            'type'                                      => 'number',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+
+        $entities_id = $this->getTestRootEntity(true);
+        $prefix = 'Number search ' . $this->getUniqueString() . ' ';
+        $container_class = PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']);
+        $stored_values = ['999', '1000', '1000.0', '1500', '12345', '12.50', '-5', '0', 'cleared' => ''];
+        foreach ($stored_values as $name => $stored_value) {
+            $name = is_int($name) ? $stored_value : $name;
+            $computer = $this->createItem(Computer::class, ['name' => $prefix . $name, 'entities_id' => $entities_id]);
+            $this->createItem($container_class, [
+                'items_id'                    => $computer->getID(),
+                'itemtype'                    => Computer::class,
+                'plugin_fields_containers_id' => $container->getID(),
+                $field->fields['name']        => $stored_value,
+            ]);
+        }
+
+        // Item for which the container was never saved: no row, NULL through the LEFT JOIN
+        $this->createItem(Computer::class, ['name' => $prefix . 'unsaved', 'entities_id' => $entities_id]);
+
+        $so_id = PluginFieldsField::SEARCH_OPTION_STARTING_INDEX + $field->getID();
+        $data = Search::getDatas(Computer::class, [
+            'is_deleted' => 0,
+            'start'      => 0,
+            'list_limit' => 100,
+            'criteria'   => [
+                ['field' => 1, 'searchtype' => 'contains', 'value' => '^' . $prefix],
+                ['link' => $not ? 'AND NOT' : 'AND', 'field' => $so_id, 'searchtype' => $searchtype, 'value' => $value],
+            ],
+        ], [1]);
+
+        $found = array_map(
+            static fn(array $row): string => substr((string) $row['raw']['ITEM_Computer_1'], strlen($prefix)),
+            $data['data']['rows'],
+        );
+        sort($found);
+
+        return $found;
     }
 }
