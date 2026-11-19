@@ -2899,7 +2899,9 @@ HTML;
                 }
             } elseif ($item->isNewItem()) {
                 $default = PluginFieldsField::getDefaultValue($field);
-                if ($default !== null) {
+                // an empty dropdown default (0) is not a value, submitting it would fail a mandatory check (ex: clone)
+                $is_dropdown = $field['type'] === 'dropdown' || str_starts_with((string) $field['type'], 'dropdown-');
+                if ($default !== null && (!$is_dropdown || (int) $default !== 0)) {
                     $default_key = $field['type'] === 'dropdown'
                         ? 'plugin_fields_' . $field['name'] . 'dropdowns_id'
                         : $field['name'];

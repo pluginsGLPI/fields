@@ -37,8 +37,10 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use PluginFieldsContainerDisplayCondition;
+use PluginFieldsDropdown;
 use Ticket;
 use Entity;
+use Location;
 use Notification;
 use Problem;
 use Supplier;
@@ -1300,5 +1302,88 @@ final class ContainerItemUpdateTest extends DbTestCase
         }
 
         $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory GLPI item field.');
+    }
+
+    public function testCloneThroughMassiveActionIsNotBlockedByMandatoryDropdownWithEmptyDefault(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory dropdown Clone Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory dropdown',
+            'type'                                      => 'dropdown',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+            'default_value'                             => '0',
+        ]);
+        $dropdown_key = 'plugin_fields_' . $field->fields['name'] . 'dropdowns_id';
+        $option       = $this->createItem(PluginFieldsDropdown::getClassname($field->fields['name']), ['name' => 'Option']);
+
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer with mandatory dropdown',
+            'entities_id' => 0,
+            $dropdown_key => $option->getID(),
+        ], [$dropdown_key]);
+
+        // The "Clone" massive action, also used from the item form, does not submit the plugin fields
+        $_REQUEST['massiveaction'] = 1;
+        try {
+            $clone_id = $computer->clone();
+        } finally {
+            unset($_REQUEST['massiveaction']);
+        }
+
+        $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory dropdown field with an empty default value.');
+    }
+
+    public function testCloneThroughMassiveActionIsNotBlockedByMandatoryItemtypeDropdownWithEmptyDefault(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Itemtype dropdown Clone',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory itemtype dropdown',
+            'type'                                      => 'dropdown-' . Location::class,
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+            'default_value'                             => '0',
+        ]);
+        $location = $this->createItem(Location::class, ['name' => 'Location for clone ' . random_int(1, PHP_INT_MAX), 'entities_id' => 0]);
+
+        $computer = $this->createItem(Computer::class, [
+            'name'                  => 'Computer with mandatory itemtype dropdown',
+            'entities_id'           => 0,
+            $field->fields['name']  => $location->getID(),
+        ], [$field->fields['name']]);
+
+        // The "Clone" massive action, also used from the item form, does not submit the plugin fields
+        $_REQUEST['massiveaction'] = 1;
+        try {
+            $clone_id = $computer->clone();
+        } finally {
+            unset($_REQUEST['massiveaction']);
+        }
+
+        $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory itemtype dropdown field with an empty default value.');
     }
 }
