@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
 - Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
+- Fix `Some mandatory fields are empty` error on a filled dropdown field when its block table contains a leftover column with the same name
 
 ## [1.24.7] - 2026-10-28
 
