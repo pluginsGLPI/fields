@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\ContentTemplates\Parameters\ParametersTypes\AttributeParameter;
+
 /**
  * Plugin install process
  *
@@ -361,4 +363,26 @@ function plugin_item_transfer_fields(array $options): void
         ];
         $container->updateFieldsValues($data, $itemtype, true);
     }
+}
+
+/**
+ * Fields variables listed in the documentation of the template variables
+ *
+ * @return AttributeParameter[]
+ */
+function plugin_fields_get_content_template_parameter(?string $node_name): array
+{
+    return PluginFieldsNotificationTag::getTemplateParameters($node_name);
+}
+
+/**
+ * Fields values of the item on which a followup, task or solution template is used
+ *
+ * @param array{node_name: string, id: int} $params
+ *
+ * @return array{fields?: array<string, array<string, string>>}
+ */
+function plugin_fields_get_content_template_value(array $params): array
+{
+    return PluginFieldsNotificationTag::getTemplateValues($params['node_name'], (int) $params['id']);
 }

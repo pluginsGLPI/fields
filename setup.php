@@ -130,6 +130,11 @@ function plugin_init_fields()
         }
     }
 
+    // Notifications are also sent by the cron, without session
+    if ($itemtypes !== false) {
+        PluginFieldsNotificationTag::registerHooks($itemtypes);
+    }
+
     $PLUGIN_HOOKS[Hooks::ITEM_TRANSFER]['fields'] = 'plugin_item_transfer_fields';
 
     // Register fields question type
