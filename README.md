@@ -274,7 +274,7 @@ The fields of tickets, changes and problems can also be used in followup, task a
 {% for asset in ticket.assets %}{{ asset.name }}: {{ asset.fields.<block>.<field> }}{% endfor %}
 ```
 
-They are listed in the documentation of the template variables, with the filter to use for multiple lines text (`nl2br`) and rich text (`raw`). The values are rendered whatever the rights of the user applying the template, who may be the requester when the template is applied by a form: the template author chooses the values it shows, and whether the followup is private.
+They are listed in the documentation of the template variables, with the filter to use for multiple lines text (`nl2br`) and rich text (`raw`). As in the item form, a value is only rendered if the profile of the user applying the template can read the block. When the template is applied by a form (the ticket is created without right checks) or by the cron (followups and reminders of pending reasons, sent to the requester), every value is rendered: this allows a form submitted by a requester to add a private followup with technical data for the technicians.
 
 ## Download
 

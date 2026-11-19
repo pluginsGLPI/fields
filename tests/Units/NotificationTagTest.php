@@ -32,26 +32,28 @@ declare(strict_types=1);
 
 namespace GlpiPlugin\Field\Tests\Units;
 
-use PluginFieldsField;
 use Change;
 use Computer;
+use DBmysql;
 use Dropdown;
 use Entity;
-use Glpi\Tests\DbTestCase;
-use Glpi\Tests\GLPITestCase;
 use Glpi\ContentTemplates\ParametersPreset;
 use Glpi\ContentTemplates\TemplateManager;
+use Glpi\Tests\DbTestCase;
+use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
+use ITILFollowup;
 use ITILFollowupTemplate;
-use DBmysql;
 use NotificationEventMailing;
 use NotificationTarget;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
+use PluginFieldsField;
 use PluginFieldsLabelTranslation;
 use PluginFieldsProfile;
 use Profile;
 use Profile_User;
+use Session;
 use Ticket;
 use User;
 
@@ -368,16 +370,113 @@ final class NotificationTagTest extends DbTestCase
             $template->getRenderedContent($change),
         );
 
-        // values chosen by the template author: not filtered on the rights of the current profile
+        // the current profile cannot read the container: empty values, as in the item form
+        /** @var DBmysql $DB */
         global $DB;
         $DB->update(PluginFieldsProfile::getTable(), ['right' => 0], [
             'profiles_id'                 => $_SESSION['glpiactiveprofile']['id'],
             'plugin_fields_containers_id' => $this->container->getID(),
         ]);
+        $this->assertSame('<p> / </p>', $template->getRenderedContent($change));
+
+        // without right checks, as when a form creates the ticket: all the values
         $this->assertSame(
             '<p>Some &lt;text&gt; / Alpha</p><p>Rich <strong>text</strong></p>',
-            $template->getRenderedContent($change),
+            Session::callAsSystem(fn() => $template->getRenderedContent($change)),
         );
+    }
+
+    public function testTemplateRenderedForARequesterOnlyShowsReadableContainers(): void
+    {
+        $profiles_id = getItemByTypeName(Profile::class, 'Self-Service', true);
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->update(PluginFieldsProfile::getTable(), ['right' => 0], [
+            'profiles_id'                 => $profiles_id,
+            'plugin_fields_containers_id' => $this->container->getID(),
+        ]);
+
+        $change = $this->createChange();
+        $this->assertTrue($this->container->updateFieldsValues([
+            'plugin_fields_containers_id' => $this->container->getID(),
+            'itemtype'                    => Change::class,
+            'items_id'                    => $change->getID(),
+            $this->names['text']          => 'Technical data',
+        ], Change::class));
+
+        $template = $this->createItem(ITILFollowupTemplate::class, [
+            'name'    => 'Template ' . $this->getUniqueString(),
+            'content' => sprintf('<p>{{ change.fields.%s.%s }}</p>', $this->container->fields['name'], $this->names['text']),
+        ]);
+
+        // as rendered by ajax/itilfollowup.php for a requester, who can read the change but not the container
+        $this->login('post-only', 'postonly');
+        $this->assertSame('Self-Service', $_SESSION['glpiactiveprofile']['name']);
+        $this->assertSame('<p></p>', $template->getRenderedContent($change));
+    }
+
+    public function testFollowupTemplateAppliedOnTicketCreationWithoutRightChecks(): void
+    {
+        $computer_container = $this->createFieldContainer([
+            'label'        => 'Admin',
+            'type'         => 'tab',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $ip_field = $this->createField([
+            'label'                                     => 'IP Admin',
+            'type'                                      => 'text',
+            PluginFieldsContainer::getForeignKeyField() => $computer_container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+        ]);
+
+        $entities_id = getItemByTypeName(Entity::class, '_test_root_entity', true);
+        $computer    = $this->createItem(Computer::class, ['name' => 'Server', 'entities_id' => $entities_id]);
+        $this->assertTrue($computer_container->updateFieldsValues([
+            'plugin_fields_containers_id' => $computer_container->getID(),
+            'itemtype'                    => Computer::class,
+            'items_id'                    => $computer->getID(),
+            $ip_field->fields['name']     => '192.0.2.10',
+        ], Computer::class));
+
+        $template = $this->createItem(ITILFollowupTemplate::class, [
+            'name'       => 'Template ' . $this->getUniqueString(),
+            'is_private' => 1,
+            'content'    => sprintf(
+                '{%% for asset in ticket.assets %%}<p>{{ asset.fields.%s.%s }}</p>{%% endfor %%}',
+                $computer_container->fields['name'],
+                $ip_field->fields['name'],
+            ),
+        ]);
+
+        // the current profile (a requester) cannot read the container
+        $profiles_id = getItemByTypeName(Profile::class, 'Self-Service', true);
+        /** @var DBmysql $DB */
+        global $DB;
+        $DB->update(PluginFieldsProfile::getTable(), ['right' => 0], [
+            'profiles_id'                 => $profiles_id,
+            'plugin_fields_containers_id' => $computer_container->getID(),
+        ]);
+        $this->login('post-only', 'postonly');
+        $this->setEntity($entities_id, true);
+
+        // as Glpi\Form\Destination\AbstractCommonITILFormDestination::createDestinationItems() does
+        $tickets_id = Session::callAsSystem(fn() => (new Ticket())->add([
+            'name'                      => 'Ticket ' . $this->getUniqueString(),
+            'content'                   => 'Content',
+            'entities_id'               => $entities_id,
+            'items_id'                  => [Computer::class => [$computer->getID()]],
+            '_itilfollowuptemplates_id' => [$template->getID()],
+        ]));
+        $this->assertGreaterThan(0, $tickets_id);
+
+        $followup = new ITILFollowup();
+        $this->assertTrue($followup->getFromDBByCrit(['itemtype' => Ticket::class, 'items_id' => $tickets_id]));
+        $this->assertSame('<p>192.0.2.10</p>', $followup->fields['content']);
     }
 
     public function testFollowupTemplateRendersFieldsOfLinkedAssets(): void

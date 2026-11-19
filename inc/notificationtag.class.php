@@ -202,9 +202,12 @@ final class PluginFieldsNotificationTag
      * Values of the template variables for the item on which the template is used.
      * See plugin_fields_get_content_template_value()
      *
-     * Values are not filtered on the rights of the current profile: the template is written by an
-     * administrator, who chooses the values it shows, and may be applied by a form submitted
-     * by a requester (to help the technicians handle the ticket).
+     * A template can be rendered for any user who can read the item (ajax/itilfollowup.php only
+     * checks this right), so the values of a container are only rendered if the current profile
+     * can read it, as in the item form. Without right checks (template applied by a form, which
+     * creates the ticket with Session::callAsSystem()) or by the cron (followups and reminders of
+     * pending reasons, sent to the requester), every value is rendered: the administrator chooses
+     * the template.
      *
      * @return array{fields?: array<string, array<string, string>>, assets?: array<int, array<string, mixed>>}
      */
@@ -218,18 +221,27 @@ final class PluginFieldsNotificationTag
             return [];
         }
 
+        $has_fields = self::getFields($itemtype) !== [];
+        $assets_with_fields = $item instanceof Ticket
+            ? array_filter(
+                $CFG_GLPI['asset_types'],
+                fn(string $asset_itemtype): bool => self::getFields($asset_itemtype) !== [],
+            )
+            : [];
+        if (!$has_fields && $assets_with_fields === []) {
+            return [];
+        }
+
+        $readable_containers = self::getContainersReadableInTemplates();
+
         $values = [];
-        if (self::getFields($itemtype) !== []) {
-            $values['fields'] = self::getVariables($item);
+        if ($has_fields) {
+            $values['fields'] = self::getVariables($item, $readable_containers);
         }
 
         // The values of a plugin replace the ones of GLPI: the linked assets are built as GLPI does
         // (see TicketParameters::defineValues()), with their fields in addition.
-        $assets_with_fields = array_filter(
-            $CFG_GLPI['asset_types'],
-            fn(string $asset_itemtype): bool => self::getFields($asset_itemtype) !== [],
-        );
-        if ($item instanceof Ticket && $assets_with_fields !== []) {
+        if ($assets_with_fields !== []) {
             $assets = [];
             foreach (Item_Ticket::getItemsAssociatedTo(Ticket::class, $item->getID()) as $item_ticket) {
                 $asset_itemtype = $item_ticket->fields['itemtype'];
@@ -243,7 +255,7 @@ final class PluginFieldsNotificationTag
 
                 $asset_values = (new AssetParameters())->getValues($asset);
                 if (in_array($asset_itemtype, $assets_with_fields, true)) {
-                    $asset_values['fields'] = self::getVariables($asset);
+                    $asset_values['fields'] = self::getVariables($asset, $readable_containers);
                 }
 
                 $assets[] = $asset_values;
@@ -256,16 +268,36 @@ final class PluginFieldsNotificationTag
     }
 
     /**
+     * Containers whose values are rendered in the templates, null for all of them
+     *
+     * @return int[]|null
+     */
+    private static function getContainersReadableInTemplates(): ?array
+    {
+        if (Session::isRightChecksDisabled() || Session::isCron()) {
+            return null;
+        }
+
+        return isset($_SESSION['glpiactiveprofile']['id'])
+            ? self::getReadableContainersForProfiles([(int) $_SESSION['glpiactiveprofile']['id']])
+            : [];
+    }
+
+    /**
+     * @param int[]|null $readable_containers Containers whose values are rendered, null for all of them
+     *
      * @return array<string, array<string, string>> Displayed values by container and field name
      */
-    private static function getVariables(CommonDBTM $item): array
+    private static function getVariables(CommonDBTM $item, ?array $readable_containers): array
     {
         $values = [];
         $variables = [];
         foreach (self::getFields($item::class) as $field) {
             $container_id = (int) $field['plugin_fields_containers_id'];
             if (!array_key_exists($container_id, $values)) {
-                $values[$container_id] = self::getValues($item, $field);
+                $values[$container_id] = $readable_containers === null || in_array($container_id, $readable_containers, true)
+                    ? self::getValues($item, $field)
+                    : null;
             }
 
             $variables[$field['container_name']][$field['name']] = $values[$container_id] === null
@@ -291,9 +323,6 @@ final class PluginFieldsNotificationTag
      */
     private static function getReadableContainers(int $users_id, int $entities_id): array
     {
-        /** @var DBmysql $DB */
-        global $DB;
-
         if ($users_id <= 0) {
             return [];
         }
@@ -302,6 +331,19 @@ final class PluginFieldsNotificationTag
             $users_id,
             getEntitiesRestrictCriteria(Profile_User::getTable(), 'entities_id', $entities_id, true),
         );
+
+        return self::getReadableContainersForProfiles(array_values($profiles));
+    }
+
+    /**
+     * @param int[] $profiles
+     *
+     * @return int[]
+     */
+    private static function getReadableContainersForProfiles(array $profiles): array
+    {
+        /** @var DBmysql $DB */
+        global $DB;
 
         if ($profiles === []) {
             return [];
@@ -313,7 +355,7 @@ final class PluginFieldsNotificationTag
             'DISTINCT' => true,
             'FROM'     => PluginFieldsProfile::getTable(),
             'WHERE'    => [
-                'profiles_id' => array_values($profiles),
+                'profiles_id' => $profiles,
                 'right'       => ['>=', READ],
             ],
         ]);
