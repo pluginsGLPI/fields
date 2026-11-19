@@ -41,11 +41,7 @@ use Ticket;
 use Entity;
 use Notification;
 use Problem;
-<<<<<<< HEAD
-=======
-use Supplier;
 use User;
->>>>>>> 1ce0087 (fix(core): Fix mandatory fields error when creating an item with an assigned technician (#1332))
 
 require_once __DIR__ . '/../FieldTestCase.php';
 

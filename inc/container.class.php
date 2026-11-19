@@ -2427,12 +2427,8 @@ HTML;
      */
     public static function postItemAdd(CommonDBTM $item)
     {
-<<<<<<< HEAD
-=======
-        PluginFieldsDestinationField::registerCreatedItem($item);
         self::$pending_values?->offsetUnset($item);
 
->>>>>>> 1ce0087 (fix(core): Fix mandatory fields error when creating an item with an assigned technician (#1332))
         if (array_key_exists('_plugin_fields_data', $item->input)) {
             $container = new self();
             foreach (self::getSubmittedContainersData($item) as $data) {
@@ -2711,16 +2707,9 @@ HTML;
         }
 
         if (!$item->isNewItem()) {
-<<<<<<< HEAD
-            // merge already persisted values to avoid false positives
-            $classname = self::getClassname($item::class, $loc_c->fields['name']);
-=======
-            $data['items_id'] = $item->getID();
-
             // merge already persisted values to avoid false positives,
             // or the values still to be stored when the item is being added
-            $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
->>>>>>> 1ce0087 (fix(core): Fix mandatory fields error when creating an item with an assigned technician (#1332))
+            $classname = self::getClassname($item::class, $loc_c->fields['name']);
             $dbu       = new DbUtils();
             $obj       = $dbu->getItemForItemtype($classname);
             if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {

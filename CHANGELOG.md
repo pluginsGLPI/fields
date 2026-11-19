@@ -5,9 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-<<<<<<< HEAD
-## [Unreleased]
-=======
 ## [UNRELEASED]
 
 ### Fixed
@@ -18,7 +15,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 
 ## [1.24.7] - 2026-10-28
->>>>>>> 1ce0087 (fix(core): Fix mandatory fields error when creating an item with an assigned technician (#1332))
 
 ### Fixed
 
