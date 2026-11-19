@@ -2133,12 +2133,14 @@ HTML;
                         continue;
                     }
                 }
-            } elseif (isset($data[$name])) {
-                $value = $data[$name];
-            } elseif (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
-                $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } elseif ($massiveaction) {
-                continue;
+            } else {
+                // Key chosen from the field type: a leftover column named after the field must not hide a dropdown value
+                $value_key = $field['type'] === 'dropdown' ? sprintf('plugin_fields_%sdropdowns_id', $name) : $name;
+                if (isset($data[$value_key])) {
+                    $value = $data[$value_key];
+                } elseif ($massiveaction) {
+                    continue;
+                }
             }
 
             //translate label
