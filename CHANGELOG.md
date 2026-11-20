@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [UNRELEASED]
 
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller
+- Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 - Fix item creation failing when a Yes/No field has a non boolean default value
 
 ## [1.25.1] - 2026-10-28
