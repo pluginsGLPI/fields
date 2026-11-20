@@ -292,24 +292,38 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     }
 
     if ($field_field->fields['type'] === 'number') {
-        // if 'number' field with searchtype 'equals' or 'notequals'
-        // update WHERE clause with `$table_$field.$field` because without `$table_$field.id` is used
-        if ($searchtype == 'equals' || $searchtype == 'notequals') {
-            $operator = ($searchtype == 'equals') ? '=' : '!=';
-            if ($nott) {
-                $link .= ' NOT ';
+        // Number values are stored in a VARCHAR column: compare them as DOUBLE (`+ 0`), whose range covers any stored value unlike DECIMAL.
+        // The predicate is never NULL, so its negation also matches items without value.
+        $column = $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field);
+        $number_predicate = static function (string $operator, string $value) use ($DB, $column): string {
+            $value = str_replace(',', '.', trim($value));
+            if (!is_numeric($value) || !is_finite((float) $value)) {
+                // No number can match, and casting it would raise a SQL warning
+                return '(1 = 0)';
             }
 
-            return $link . ' CAST(' . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . ' AS DECIMAL(10,7))' . $operator . ' ' . $DB->quoteValue($val);
-        } else {
-            // if 'number' field with <= or >= or < or > search
-            // update WHERE clause with the correct operator
-            $val = html_entity_decode((string) $val);
-            if (preg_match('/(<=|>=|>|<)/', $val, $matches)) {
-                $operator = $matches[1];
-                $val = trim(str_replace($operator, '', $val));
-                return $link . $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field) . $operator . ' ' . $DB->quoteValue($val);
-            }
+            // Like core, items without value match an equality search on 0
+            $format = $operator === '=' && (float) $value == 0
+                ? '(%1$s IS NULL OR %1$s = \'\' OR %1$s + 0 %2$s %3$s + 0)'
+                : '(%1$s IS NOT NULL AND %1$s <> \'\' AND %1$s + 0 %2$s %3$s + 0)';
+
+            return sprintf(
+                $format,
+                $column,
+                $operator,
+                $DB->quoteValue($value),
+            );
+        };
+
+        if ($searchtype == 'equals' || $searchtype == 'notequals') {
+            $negate = (bool) $nott !== ($searchtype === 'notequals');
+            return $link . ($negate ? ' NOT ' : ' ') . $number_predicate('=', (string) $val);
+        }
+
+        // 'contains' search with a <=, >=, < or > prefix
+        $val = html_entity_decode((string) $val);
+        if (preg_match('/^\s*(<=|>=|>|<)(.*)$/', $val, $matches)) {
+            return $link . ($nott ? ' NOT ' : ' ') . $number_predicate($matches[1], $matches[2]);
         }
     }
 
