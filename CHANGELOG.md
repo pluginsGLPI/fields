@@ -9,16 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Fix form submission error when a multiple dropdown field question is left empty
-- Fix search criterion value on multiple dropdown fields being reset after a search, which emptied the criterion when sorting or paging results
-- Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
-- Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
-
-## [1.24.7] - 2026-10-28
-
-### Fixed
-
 - Remove redundant variable initialization in the question type AJAX controller
+- Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 - Fix item creation failing when a Yes/No field has a non boolean default value
 
 ## [1.25.1] - 2026-10-28
