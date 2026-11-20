@@ -129,7 +129,7 @@ final class HookAddWhereTest extends DbTestCase
 
     public static function numberSearchProvider(): iterable
     {
-        $all = ['999', '1000', '1000.0', '1500', '12345', '12.50', '-5', '0', 'cleared', 'unsaved'];
+        $all = ['999', '1000', '1000.0', '1500', '12345', '1e40', '12.50', '-5', '0', 'cleared', 'unsaved'];
         $without = static fn(string ...$excluded): array => array_values(array_diff($all, $excluded));
 
         yield 'is 999' => ['equals', '999', false, ['999']];
@@ -139,6 +139,7 @@ final class HookAddWhereTest extends DbTestCase
         yield 'is 12,5' => ['equals', '12,5', false, ['12.50']];
         yield 'is -5' => ['equals', '-5', false, ['-5']];
         yield 'is 1e3' => ['equals', '1e3', false, ['1000', '1000.0']];
+        yield 'is 1e40' => ['equals', '1e40', false, ['1e40']];
         yield 'is 1e999' => ['equals', '1e999', false, []];
         // Like core, items without value match an equality search on 0
         yield 'is 0' => ['equals', '0', false, ['0', 'cleared', 'unsaved']];
@@ -147,15 +148,15 @@ final class HookAddWhereTest extends DbTestCase
         yield 'is not 999' => ['notequals', '999', false, $without('999')];
         yield 'AND NOT is 1000' => ['equals', '1000', true, $without('1000', '1000.0')];
         yield 'AND NOT is not 1000' => ['notequals', '1000', true, ['1000', '1000.0']];
-        yield 'contains > 900' => ['contains', '>900', false, ['999', '1000', '1000.0', '1500', '12345']];
-        yield 'contains > 1000' => ['contains', '>1000', false, ['1500', '12345']];
-        yield 'contains >= 1500' => ['contains', '>= 1500', false, ['1500', '12345']];
+        yield 'contains > 900' => ['contains', '>900', false, ['999', '1000', '1000.0', '1500', '12345', '1e40']];
+        yield 'contains > 1000' => ['contains', '>1000', false, ['1500', '12345', '1e40']];
+        yield 'contains >= 1500' => ['contains', '>= 1500', false, ['1500', '12345', '1e40']];
         yield 'contains < 1000' => ['contains', '<1000', false, ['999', '12.50', '-5', '0']];
         yield 'contains <= 1000' => ['contains', '<=1000', false, ['999', '1000', '1000.0', '12.50', '-5', '0']];
         yield 'contains < 2000' => ['contains', '<2000', false, ['999', '1000', '1000.0', '1500', '12.50', '-5', '0']];
         yield 'contains &lt; 2000' => ['contains', '&lt;2000', false, ['999', '1000', '1000.0', '1500', '12.50', '-5', '0']];
         yield 'contains < 0' => ['contains', '<0', false, ['-5']];
-        yield 'not contains < 2000' => ['notcontains', '<2000', false, ['12345', 'cleared', 'unsaved']];
+        yield 'not contains < 2000' => ['notcontains', '<2000', false, ['12345', '1e40', 'cleared', 'unsaved']];
         yield 'contains 100 (no operator)' => ['contains', '100', false, ['1000', '1000.0']];
         // Casting a non numeric value would raise a SQL warning, which fails the test
         yield 'is abc' => ['equals', 'abc', false, []];
@@ -204,7 +205,7 @@ final class HookAddWhereTest extends DbTestCase
         $entities_id = $this->getTestRootEntity(true);
         $prefix = 'Number search ' . $this->getUniqueString() . ' ';
         $container_class = PluginFieldsContainer::getClassname(Computer::class, $container->fields['name']);
-        $stored_values = ['999', '1000', '1000.0', '1500', '12345', '12.50', '-5', '0', 'cleared' => ''];
+        $stored_values = ['999', '1000', '1000.0', '1500', '12345', '1e40', '12.50', '-5', '0', 'cleared' => ''];
         foreach ($stored_values as $name => $stored_value) {
             $name = is_int($name) ? $stored_value : $name;
             $computer = $this->createItem(Computer::class, ['name' => $prefix . $name, 'entities_id' => $entities_id]);

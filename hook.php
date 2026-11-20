@@ -292,20 +292,20 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     }
 
     if ($field_field->fields['type'] === 'number') {
-        // Number values are stored in a VARCHAR column: compare them numerically.
+        // Number values are stored in a VARCHAR column: compare them as DOUBLE (`+ 0`), whose range covers any stored value unlike DECIMAL.
         // The predicate is never NULL, so its negation also matches items without value.
         $column = $DB->quoteName($table . '_' . $field) . '.' . $DB->quoteName($field);
         $number_predicate = static function (string $operator, string $value) use ($DB, $column): string {
             $value = str_replace(',', '.', trim($value));
-            if (!is_numeric($value) || abs((float) $value) >= 1e35) {
-                // No number can match (DECIMAL(65,30) range), and casting it would raise a SQL warning
+            if (!is_numeric($value) || !is_finite((float) $value)) {
+                // No number can match, and casting it would raise a SQL warning
                 return '(1 = 0)';
             }
 
             // Like core, items without value match an equality search on 0
             $format = $operator === '=' && (float) $value == 0
-                ? '(%1$s IS NULL OR %1$s = \'\' OR CAST(%1$s AS DECIMAL(65,30)) %2$s CAST(%3$s AS DECIMAL(65,30)))'
-                : '(%1$s IS NOT NULL AND %1$s <> \'\' AND CAST(%1$s AS DECIMAL(65,30)) %2$s CAST(%3$s AS DECIMAL(65,30)))';
+                ? '(%1$s IS NULL OR %1$s = \'\' OR %1$s + 0 %2$s %3$s + 0)'
+                : '(%1$s IS NOT NULL AND %1$s <> \'\' AND %1$s + 0 %2$s %3$s + 0)';
 
             return sprintf(
                 $format,
