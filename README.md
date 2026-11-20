@@ -261,6 +261,21 @@ Fields options (mandatory / read only) can be overridden for some item statuses.
 
 ![Screenshot](./docs/screenshots/override_by_status.png)
 
+Fields can be used in notification templates of the items having notifications (tickets, changes, problems, projects, etc.), they are listed in the "Tags" tab of the templates:
+
+ * `##fields.<block>.<field>##`: value of the field, as displayed in the form (dropdown label, Yes / No, date in the recipient format, etc.)
+ * `##lang.fields.<block>.<field>##`: label of the field, translated in the recipient language
+
+`<block>` and `<field>` are the system names, they do not change when a label is renamed. A value is only sent to the recipients whose profile can read the block in the entity of the item; it is empty for a recipient without GLPI account.
+
+The fields of tickets, changes and problems can also be used in followup, task and solution templates, as `{{ ticket.fields.<block>.<field> }}` (or `change.`, `problem.`), as well as the fields of the assets linked to a ticket:
+
+```twig
+{% for asset in ticket.assets %}{{ asset.name }}: {{ asset.fields.<block>.<field> }}{% endfor %}
+```
+
+They are listed in the documentation of the template variables, with the filter to use for multiple lines text (`nl2br`) and rich text (`raw`). As in the item form, a value is only rendered if the profile of the user applying the template can read the block. When the template is applied by a form (the ticket is created without right checks) or by the cron (followups and reminders of pending reasons, sent to the requester), every value is rendered: this allows a form submitted by a requester to add a private followup with technical data for the technicians.
+
 ## Download
 
 Releases can be donwloaded on [GitHub](https://github.com/PluginsGLPI/fields/releases).
