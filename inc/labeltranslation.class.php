@@ -196,6 +196,10 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 'items_id' => $item->fields['id'],
                 'id'       => -1,
             ];
+            echo "<div class='center'>"
+                . "<a class='vsubmit' href='#' id='add_translation" . $item->getID() . $rand . "'>"
+                . __('Add a new translation') . '</a></div><br>';
+
             echo Html::scriptBlock('
                 addTranslation' . $item->getID() . $rand . ' = function() {
                     $("#viewtranslation' . $item->getID() . $rand . '").load(
@@ -203,11 +207,11 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                         ' . json_encode($ajax_params) . '
                     );
                 };
+                $("#add_translation' . $item->getID() . $rand . '").on("click", function(e) {
+                    e.preventDefault();
+                    addTranslation' . $item->getID() . $rand . '();
+                });
             ');
-
-            echo "<div class='center'>"
-                . "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . ($rand . "();'>")
-                . __('Add a new translation') . '</a></div><br>';
         }
 
         $obj   = new self();
@@ -238,8 +242,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             echo '<th>' . __('Language', 'fields') . '</th>';
             echo '<th>' . __('Label', 'fields') . '</th>';
             foreach ($found as $data) {
-                echo "<tr class='tab_bg_1' " . ($canedit ? "style='cursor:pointer'
-                      onClick=\"viewEditTranslation" . $data['id'] . ($rand . '();"') : '') . '>';
+                echo "<tr class='tab_bg_1' " . ($canedit ? "style='cursor:pointer' id='translation_row" . $data['id'] . $rand . "'" : '') . '>';
                 if ($canedit) {
                     echo "<td class='center'>";
                     Html::showMassiveActionCheckBox(self::class, $data['id']);
@@ -261,6 +264,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                                 ' . json_encode($ajax_params) . '
                             );
                         };
+                        $("#translation_row' . $data['id'] . $rand . '").on("click", function() {
+                            viewEditTranslation' . $data['id'] . $rand . '();
+                        });
                     ');
                 }
 

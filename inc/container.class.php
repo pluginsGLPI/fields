@@ -1476,7 +1476,7 @@ HTML;
      */
     public static function showFormSubtype($params, $display = false)
     {
-        $out = "<script type='text/javascript'>jQuery('#tab_tr').hide();</script>";
+        $out = Html::scriptBlock("jQuery('#tab_tr').hide();");
         if (isset($params['type']) && $params['type'] == 'domtab' && class_exists($params['itemtype'])) {
             $dbu = new DbUtils();
             $item = $dbu->getItemForItemtype($params['itemtype']);
@@ -1514,7 +1514,7 @@ HTML;
                             'display' => false,
                         ],
                     );
-                    $out .= "<script type='text/javascript'>jQuery('#tab_tr').show();</script>";
+                    $out .= Html::scriptBlock("jQuery('#tab_tr').show();");
                 }
             }
         }

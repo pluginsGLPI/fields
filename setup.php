@@ -238,12 +238,13 @@ function plugin_fields_script_endswith($scriptname)
 function plugin_version_fields()
 {
     return [
-        'name'         => __('Additional fields', 'fields'),
-        'version'      => PLUGIN_FIELDS_VERSION,
-        'author'       => "Teclib', Olivier Moron",
-        'homepage'     => 'https://github.com/pluginsGLPI/fields',
-        'license'      => 'GPLv2+',
-        'requirements' => [
+        'name'          => __('Additional fields', 'fields'),
+        'version'       => PLUGIN_FIELDS_VERSION,
+        'author'        => "Teclib', Olivier Moron",
+        'homepage'      => 'https://github.com/pluginsGLPI/fields',
+        'license'       => 'GPLv2+',
+        'csp_compliant' => true,
+        'requirements'  => [
             'glpi' => [
                 'min' => PLUGIN_FIELDS_MIN_GLPI,
                 'max' => PLUGIN_FIELDS_MAX_GLPI,
