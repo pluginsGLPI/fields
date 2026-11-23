@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Remove redundant variable initialization in the question type AJAX controller
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 - Fix item creation failing when a Yes/No field has a non boolean default value
+- Fix search on number fields: `is` / `is not` ignoring values from 1000, `<` / `>` comparing values as text, and `is not` excluding items without value
 
 ## [1.25.1] - 2026-10-28
 
