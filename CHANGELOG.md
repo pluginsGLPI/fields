@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 - Fix slow page loads when many entities are active: the containers available to the user were computed with one query per container on every request
 - Fix item clone failing when a mandatory dropdown field has an empty default value
+- Fix search on number fields: `is` / `is not` ignoring values from 1000, `<` / `>` comparing values as text, and `is not` excluding items without value
 
 ## [1.24.7] - 2026-10-28
 
