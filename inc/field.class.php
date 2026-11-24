@@ -691,21 +691,14 @@ class PluginFieldsField extends CommonDBChild
             'id'                          => -1,
         ];
         echo "<div class='center'>"
-           . sprintf("<a href='#' id='add_field%s%d'>", $cID, $rand);
+           . sprintf(
+               "<a href='#' data-fields-load-target='#viewField%s%d' data-fields-load-url='%s' data-fields-load-params='%s'>",
+               $cID,
+               $rand,
+               htmlescape($CFG_GLPI['root_doc'] . '/ajax/viewsubitem.php'),
+               htmlescape(json_encode($ajax_params)),
+           );
         echo __('Add a new field', 'fields') . '</a></div><br>';
-
-        echo Html::scriptBlock('
-            viewAddField' . $cID . $rand . ' = function() {
-                $("#viewField' . $cID . $rand . '").load(
-                    "' . $CFG_GLPI['root_doc'] . '/ajax/viewsubitem.php",
-                    ' . json_encode($ajax_params) . '
-                );
-            };
-            $("#add_field' . $cID . $rand . '").on("click", function(e) {
-                e.preventDefault();
-                viewAddField' . $cID . $rand . '();
-            });
-        ');
 
         if (count($iterator) === 0) {
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2'>";

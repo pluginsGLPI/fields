@@ -186,6 +186,8 @@ function plugin_init_fields()
             // Add/delete profiles to automaticaly to container
             $PLUGIN_HOOKS['item_add']['fields']['Profile']       = ['PluginFieldsProfile', 'addNewProfile'];
             $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ['PluginFieldsProfile', 'deleteProfile'];
+            // Event handlers for the subitem loaders and the display conditions and status overrides lists
+            $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/fields.js';
 
             //load drag and drop javascript library on Package Interface
 
