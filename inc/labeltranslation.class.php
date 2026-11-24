@@ -113,18 +113,23 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
     public function prepareInputForUpdate($input)
     {
-        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
+        // Labels are free text, stored as data and escaped on output: only trim them.
+        if (isset($input['label'])) {
+            $input['label'] = trim((string) $input['label']);
+        }
 
         return $input;
     }
 
     public function prepareInputForAdd($input)
     {
-        $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
+        // Labels are free text, stored as data and escaped on output: only trim them.
+        if (isset($input['label'])) {
+            $input['label'] = trim((string) $input['label']);
+        }
 
         return $input;
     }
-
 
     public static function createForItem(CommonDBTM $item)
     {
