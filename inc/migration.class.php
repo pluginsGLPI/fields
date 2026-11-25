@@ -272,8 +272,9 @@ class PluginFieldsMigration extends Migration
         // Check GenericObject version
         $genericobject_info = Plugin::getInfo('genericobject');
         if (version_compare($genericobject_info['version'] ?? '0', '3.0.0', '<')) {
+            // GitHub "latest" release is the GLPI 10 branch (2.14.x), so 3.0.x must be named explicitly.
             throw new RuntimeException(
-                'GenericObject plugin cannot be migrated. Please update it to the latest version.',
+                'GenericObject plugin cannot be migrated: version 3.0.x is required. Please install the latest 3.0.x release.',
             );
         }
 
