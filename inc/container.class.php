@@ -43,6 +43,9 @@ class PluginFieldsContainer extends CommonDBTM
      */
     private static ?WeakMap $pending_values = null;
 
+    /** @var array<int, array<string, mixed>>|null */
+    private static ?array $containers = null;
+
     public static function canCreate(): bool
     {
         return self::canUpdate();
@@ -855,6 +858,8 @@ class PluginFieldsContainer extends CommonDBTM
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function post_addItem()
     {
+        self::$containers = null;
+
         if (!isset($this->input['clone']) || !$this->input['clone']) {
             //create profiles associated to this container
             PluginFieldsProfile::createForContainer($this);
@@ -971,6 +976,20 @@ class PluginFieldsContainer extends CommonDBTM
         }
 
         return true;
+    }
+
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function post_updateItem($history = true)
+    {
+        parent::post_updateItem($history);
+        self::$containers = null;
+    }
+
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function post_purgeItem()
+    {
+        parent::post_purgeItem();
+        self::$containers = null;
     }
 
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
@@ -1570,20 +1589,15 @@ HTML;
         /** @var DBmysql $DB */
         global $DB;
 
-        $condition = [
-            'is_active' => 1,
-        ];
-        if ($type !== 'all') {
-            $condition[] = ['type' => $type];
-        }
-
         if (!$DB->tableExists(self::getTable())) {
             return [];
         }
 
         $itemtypes = [];
-        $container = new self();
-        $found     = $container->find($condition, 'label');
+        $found     = array_filter(
+            self::getContainers(),
+            fn(array $container): bool => $container['is_active'] == 1 && ($type === 'all' || $container['type'] === $type),
+        );
 
         if (
             $found === []
@@ -1648,34 +1662,29 @@ HTML;
 
     public static function getUsedItemtypes($type = 'all', $must_be_active = false)
     {
-        /** @var DBmysql $DB */
-        global $DB;
         $itemtypes = [];
-        $where     = [];
+        $containers = array_filter(
+            self::getContainers(),
+            fn(array $container): bool => ($type === 'all' || $container['type'] === $type)
+                && (!$must_be_active || $container['is_active'] == 1),
+        );
 
-        if ($type !== 'all') {
-            $where['type'] = $type;
-        }
-
-        if ($must_be_active) {
-            $where['is_active'] = 1;
-        }
-
-        $iterator = $DB->request([
-            'SELECT'   => 'itemtypes',
-            'DISTINCT' => true,
-            'FROM'     => self::getTable(),
-            'WHERE'    => $where,
-        ]);
-
-        foreach ($iterator as $data) {
-            $jsonitemtype = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
+        foreach (array_unique(array_column($containers, 'itemtypes')) as $json_itemtypes) {
+            $jsonitemtype = PluginFieldsToolbox::decodeJSONItemtypes($json_itemtypes);
             if (is_array($jsonitemtype)) {
                 $itemtypes = array_merge($itemtypes, $jsonitemtype);
             }
         }
 
         return $itemtypes;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private static function getContainers(): array
+    {
+        return self::$containers ??= (new self())->find([], 'label');
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
