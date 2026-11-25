@@ -521,13 +521,14 @@ final class PluginFieldsQuestionType extends AbstractQuestionType implements For
     public static function hasAvailableFields(): bool
     {
         $blocks = (new self())->getAvailableBlocks();
-        foreach (array_keys($blocks) as $block_id) {
-            $fields = (new self())->getFieldsFromBlock($block_id);
-            if ($fields !== []) {
-                return true;
-            }
+        if ($blocks === []) {
+            return false;
         }
 
-        return false;
+        return countElementsInTable(PluginFieldsField::getTable(), [
+            'is_active'                   => 1,
+            'plugin_fields_containers_id' => array_keys($blocks),
+            'NOT'                         => ['type' => 'header'],
+        ]) > 0;
     }
 }

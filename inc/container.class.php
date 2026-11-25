@@ -43,6 +43,9 @@ class PluginFieldsContainer extends CommonDBTM
      */
     private static ?WeakMap $pending_values = null;
 
+    /** @var array<int, array<string, mixed>>|null */
+    private static ?array $containers = null;
+
     public static function canCreate(): bool
     {
         return self::canUpdate();
@@ -855,6 +858,8 @@ class PluginFieldsContainer extends CommonDBTM
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function post_addItem()
     {
+        self::$containers = null;
+
         if (!isset($this->input['clone']) || !$this->input['clone']) {
             //create profiles associated to this container
             PluginFieldsProfile::createForContainer($this);
@@ -974,6 +979,20 @@ class PluginFieldsContainer extends CommonDBTM
     }
 
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function post_updateItem($history = true)
+    {
+        parent::post_updateItem($history);
+        self::$containers = null;
+    }
+
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function post_purgeItem()
+    {
+        parent::post_purgeItem();
+        self::$containers = null;
+    }
+
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function pre_deleteItem()
     {
         /** @var DBmysql $DB */
@@ -1055,7 +1074,7 @@ class PluginFieldsContainer extends CommonDBTM
                 }
 
                 $fields = new $classname();
-                $fields->deleteByCriteria(['items_id' => $item->fields['id']], true);
+                $fields->deleteByCriteria(['itemtype' => $itemtype, 'items_id' => $item->fields['id']], true);
             }
         }
 
@@ -1570,20 +1589,15 @@ HTML;
         /** @var DBmysql $DB */
         global $DB;
 
-        $condition = [
-            'is_active' => 1,
-        ];
-        if ($type !== 'all') {
-            $condition[] = ['type' => $type];
-        }
-
         if (!$DB->tableExists(self::getTable())) {
             return [];
         }
 
         $itemtypes = [];
-        $container = new self();
-        $found     = $container->find($condition, 'label');
+        $found     = array_filter(
+            self::getContainers(),
+            fn(array $container): bool => $container['is_active'] == 1 && ($type === 'all' || $container['type'] === $type),
+        );
 
         if (
             $found === []
@@ -1648,34 +1662,29 @@ HTML;
 
     public static function getUsedItemtypes($type = 'all', $must_be_active = false)
     {
-        /** @var DBmysql $DB */
-        global $DB;
         $itemtypes = [];
-        $where     = [];
+        $containers = array_filter(
+            self::getContainers(),
+            fn(array $container): bool => ($type === 'all' || $container['type'] === $type)
+                && (!$must_be_active || $container['is_active'] == 1),
+        );
 
-        if ($type !== 'all') {
-            $where['type'] = $type;
-        }
-
-        if ($must_be_active) {
-            $where['is_active'] = 1;
-        }
-
-        $iterator = $DB->request([
-            'SELECT'   => 'itemtypes',
-            'DISTINCT' => true,
-            'FROM'     => self::getTable(),
-            'WHERE'    => $where,
-        ]);
-
-        foreach ($iterator as $data) {
-            $jsonitemtype = PluginFieldsToolbox::decodeJSONItemtypes($data['itemtypes']);
+        foreach (array_unique(array_column($containers, 'itemtypes')) as $json_itemtypes) {
+            $jsonitemtype = PluginFieldsToolbox::decodeJSONItemtypes($json_itemtypes);
             if (is_array($jsonitemtype)) {
                 $itemtypes = array_merge($itemtypes, $jsonitemtype);
             }
         }
 
         return $itemtypes;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private static function getContainers(): array
+    {
+        return self::$containers ??= (new self())->find([], 'label');
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
@@ -1790,7 +1799,7 @@ HTML;
 
         $obj = new $classname();
 
-        $exist = $obj->getFromDBByCrit(['items_id' => $items_id]);
+        $exist = $obj->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id]);
 
         // Convert "multiple" values into a JSON string
         $multiple_fields_iterator = $DB->request([
@@ -1835,7 +1844,7 @@ HTML;
         $obj = $dbu->getItemForItemtype($classname);
 
         if ($obj !== false) {
-            if ($obj->getFromDBByCrit(['items_id' => $items_id]) === false) {
+            if ($obj->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id]) === false) {
                 // add fields data
                 $obj->add($data);
             } else {
@@ -2296,7 +2305,7 @@ HTML;
         }
 
         $values_obj = (new DbUtils())->getItemForItemtype(self::getClassname($itemtype, $container->fields['name']));
-        if ($values_obj === false || !$values_obj->getFromDBByCrit(['items_id' => $items_id])) {
+        if ($values_obj === false || !$values_obj->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id])) {
             return [];
         }
 
@@ -2741,7 +2750,7 @@ HTML;
             $classname = self::getClassname($item::getType(), $loc_c->fields['name']);
             $dbu       = new DbUtils();
             $obj       = $dbu->getItemForItemtype($classname);
-            if ($obj !== false && $obj->getFromDBByCrit(['items_id' => $item->getID()])) {
+            if ($obj !== false && $obj->getFromDBByCrit(['itemtype' => $item::getType(), 'items_id' => $item->getID()])) {
                 $data += $obj->fields;
             } else {
                 $data += self::getPendingValues($item, $c_id);

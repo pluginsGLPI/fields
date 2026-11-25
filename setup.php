@@ -101,7 +101,8 @@ function plugin_init_fields()
     $pluginfields_autoloader = new PluginFieldsAutoloader([PLUGINFIELDS_CLASS_PATH]);
     $pluginfields_autoloader->register();
 
-    if (!Plugin::isPluginActive('fields')) {
+    // Activated plugins are listed at boot; isPluginActive() queries the DB until init is over.
+    if (!in_array('fields', Plugin::getPlugins(), true)) {
         return;
     }
 
@@ -202,7 +203,7 @@ function plugin_init_fields()
         }
 
         // Add Fields to Datainjection
-        if (Plugin::isPluginActive('datainjection')) {
+        if (in_array('datainjection', Plugin::getPlugins(), true)) {
             $PLUGIN_HOOKS['plugin_datainjection_populate']['fields'] = 'plugin_datainjection_populate_fields';
         }
 

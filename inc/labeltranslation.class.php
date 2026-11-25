@@ -38,6 +38,9 @@ class PluginFieldsLabelTranslation extends CommonDBChild
 
     public static $items_id = 'items_id';
 
+    /** @var array<string, array<string, array<int, string>>> */
+    private static array $labels_by_language = [];
+
     /**
      * Install or update plugin base data.
      *
@@ -123,6 +126,24 @@ class PluginFieldsLabelTranslation extends CommonDBChild
         $input['label'] = PluginFieldsToolbox::sanitizeLabel((string) ($input['label'] ?? ''));
 
         return $input;
+    }
+
+    public function post_addItem()
+    {
+        parent::post_addItem();
+        self::$labels_by_language = [];
+    }
+
+    public function post_updateItem($history = true)
+    {
+        parent::post_updateItem($history);
+        self::$labels_by_language = [];
+    }
+
+    public function post_purgeItem()
+    {
+        parent::post_purgeItem();
+        self::$labels_by_language = [];
     }
 
 
@@ -374,16 +395,30 @@ class PluginFieldsLabelTranslation extends CommonDBChild
      */
     public static function getLabelFor(array $item)
     {
-        $obj   = new self();
-        $found = $obj->find(['itemtype' => $item['itemtype'],
-            'items_id'                  => $item['id'],
-            'language'                  => $_SESSION['glpilanguage'],
-        ]);
+        $language = $_SESSION['glpilanguage'];
+        self::$labels_by_language[$language] ??= self::loadLabels($language);
 
-        if (count($found) > 0) {
-            return array_values($found)[0]['label'];
+        return self::$labels_by_language[$language][$item['itemtype']][(int) $item['id']] ?? $item['label'] ?? '';
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    private static function loadLabels(string $language): array
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $labels = [];
+        $iterator = $DB->request([
+            'SELECT' => ['itemtype', 'items_id', 'label'],
+            'FROM'   => self::getTable(),
+            'WHERE'  => ['language' => $language],
+        ]);
+        foreach ($iterator as $row) {
+            $labels[$row['itemtype']][(int) $row['items_id']] = (string) $row['label'];
         }
 
-        return $item['label'] ?? '';
+        return $labels;
     }
 }

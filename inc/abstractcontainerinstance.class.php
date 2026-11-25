@@ -103,12 +103,12 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 
         $field_id = $options['searchopt']['pfields_fields_id'] ?? null;
 
-        $field_specs = new PluginFieldsField();
-        if ($field_id !== null && $field_specs->getFromDB($field_id)) {
+        $field_specs = $field_id !== null ? self::getFieldSpecs((int) $field_id) : null;
+        if ($field_specs !== null) {
             $dropdown_matches = [];
             if (
-                preg_match('/^dropdown-(?<class>.+)$/i', (string) $field_specs->fields['type'], $dropdown_matches) === 1
-                && $field_specs->fields['multiple']
+                preg_match('/^dropdown-(?<class>.+)$/i', (string) $field_specs['type'], $dropdown_matches) === 1
+                && $field_specs['multiple']
             ) {
                 $itemtype = $dropdown_matches['class'];
                 if (!is_a($itemtype, CommonDBTM::class, true)) {
@@ -127,10 +127,10 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
                     'display'     => false,
                 ]);
             } elseif (
-                $field_specs->fields['type'] === 'dropdown'
-                && $field_specs->fields['multiple']
+                $field_specs['type'] === 'dropdown'
+                && $field_specs['multiple']
             ) {
-                $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
+                $itemtype = PluginFieldsDropdown::getClassname($field_specs['name']);
 
                 return Dropdown::show($itemtype, [
                     'name'    => $name,
@@ -151,20 +151,20 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 
         $field_id = $options['searchopt']['pfields_fields_id'] ?? null;
 
-        $field_specs = new PluginFieldsField();
-        if ($field_id !== null && $field_specs->getFromDB($field_id)) {
+        $field_specs = $field_id !== null ? self::getFieldSpecs((int) $field_id) : null;
+        if ($field_specs !== null) {
             $dropdown_matches = [];
             if (
-                preg_match('/^dropdown-(?<class>.+)$/i', (string) $field_specs->fields['type'], $dropdown_matches) === 1
-                && $field_specs->fields['multiple']
+                preg_match('/^dropdown-(?<class>.+)$/i', (string) $field_specs['type'], $dropdown_matches) === 1
+                && $field_specs['multiple']
             ) {
                 $itemtype = $dropdown_matches['class'];
                 if (!is_a($itemtype, CommonDBTM::class, true)) {
                     return ''; // Itemtype not exists (maybe a deactivated plugin)
                 }
 
-                if (empty($values[$field]) && !empty($field_specs->fields['default_value'])) {
-                    $values[$field] = $field_specs->fields['default_value'];
+                if (empty($values[$field]) && !empty($field_specs['default_value'])) {
+                    $values[$field] = $field_specs['default_value'];
                 }
 
                 if (empty($values[$field])) {
@@ -186,13 +186,13 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
 
                 return implode($options['separator'] ?? '<br />', $names);
             } elseif (
-                $field_specs->fields['type'] === 'dropdown'
-                && $field_specs->fields['multiple']
+                $field_specs['type'] === 'dropdown'
+                && $field_specs['multiple']
             ) {
-                $itemtype = PluginFieldsDropdown::getClassname($field_specs->fields['name']);
+                $itemtype = PluginFieldsDropdown::getClassname($field_specs['name']);
                 if (empty($values[$field])) {
-                    if (!empty($field_specs->fields["default_value"])) {
-                        $values[$field] = $field_specs->fields['default_value'];
+                    if (!empty($field_specs["default_value"])) {
+                        $values[$field] = $field_specs['default_value'];
                     } else {
                         return ''; // Value not defined
                     }
@@ -211,6 +211,19 @@ abstract class PluginFieldsAbstractContainerInstance extends CommonDBChild
         }
 
         return parent::getSpecificValueToDisplay($field, $values, $options);
+    }
+
+    private static function getFieldSpecs(int $field_id): ?array
+    {
+        /** @var array<int, array<string, mixed>|null> $specs */
+        static $specs = [];
+
+        if (!array_key_exists($field_id, $specs)) {
+            $field = new PluginFieldsField();
+            $specs[$field_id] = $field->getFromDB($field_id) ? $field->fields : null;
+        }
+
+        return $specs[$field_id];
     }
 
     public static function addField($fieldname, $type, array $options = [])
