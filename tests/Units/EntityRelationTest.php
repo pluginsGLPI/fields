@@ -37,7 +37,6 @@ use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use PluginFieldsDropdown;
-use PluginFieldsField;
 
 require_once __DIR__ . '/../FieldTestCase.php';
 
