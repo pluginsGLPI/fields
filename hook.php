@@ -209,6 +209,36 @@ function plugin_fields_getDropdown()
     return $dropdowns;
 }
 
+/**
+ * Declare foreign keys to core tables, so that core usage checks and replacements take them into account.
+ * Values tables are not declared: their entity is a copy of the parent item one, kept in sync by the transfer hook.
+ *
+ * @return array
+ */
+function plugin_fields_getDatabaseRelations()
+{
+    /** @var DBmysql $DB */
+    global $DB;
+
+    if (!$DB->tableExists(PluginFieldsField::getTable())) {
+        return [];
+    }
+
+    $entity_relations = [
+        PluginFieldsContainer::getTable() => 'entities_id',
+    ];
+    foreach ((new PluginFieldsField())->find(['type' => 'dropdown']) as $field) {
+        // Core warns on every relations lookup when a declared table has no loadable class
+        $dropdown_class = PluginFieldsDropdown::getClassname($field['name']);
+        $dropdown_table = getTableForItemType($dropdown_class);
+        if (class_exists($dropdown_class) && $DB->tableExists($dropdown_table)) {
+            $entity_relations[$dropdown_table] = 'entities_id';
+        }
+    }
+
+    return ['glpi_entities' => $entity_relations];
+}
+
 
 /**** MASSIVE ACTIONS ****/
 
