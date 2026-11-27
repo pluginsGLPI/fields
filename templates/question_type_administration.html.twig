@@ -75,31 +75,7 @@
     }
 ) }}
 
-{% if not is_ajax_reload %}
-    <script>
-        import(CFG_GLPI.root_doc + GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
-            const questionField = new m.GlpiPluginFieldsQuestionTypeField();
-
-            {% if question is not null %}
-                questionField.initExistingQuestion('{{ rand }}');
-            {% else %}
-                questionField.initEventHandlers();
-            {% endif %}
-
-            questionField.lockMandatoryInput(
-                $('[data-glpi-form-editor-question-type-fields-field-id-selector="{{ rand }}"]').closest('[data-glpi-form-editor-question-details]'),
-                {{ field.mandatory ? '1' : '0' }}
-            );
-        });
-    </script>
-{% else %}
-    <script>
-        import(CFG_GLPI.root_doc + GLPI_PLUGINS_PATH.fields + "/js/modules/QuestionField.js").then((m) => {
-            const questionField = new m.GlpiPluginFieldsQuestionTypeField();
-            questionField.lockMandatoryInput(
-                $('[data-glpi-form-editor-question-type-fields-field-id-selector="{{ rand }}"]').closest('[data-glpi-form-editor-question-details]'),
-                {{ field.mandatory ? '1' : '0' }}
-            );
-        });
-    </script>
-{% endif %}
+<div hidden data-fields-question-type="{{ rand }}"
+     data-fields-question-type-init="{{ is_ajax_reload ? 'none' : (question is not null ? 'existing' : 'new') }}"
+     data-fields-mandatory="{{ field.mandatory ? '1' : '0' }}"></div>
+{{ call('Html::script', ['/plugins/fields/js/question_type.js', {}, false])|raw }}

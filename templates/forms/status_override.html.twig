@@ -29,7 +29,7 @@
 {% import 'components/form/fields_macros.html.twig' as fields %}
 {% set rand = random() %}
 
-<form id="form{{ rand }}" method="post" action="{{ 'PluginFieldsStatusOverride'|itemtype_form_path }}" enctype="multipart/form-data" data-submit-once>
+<form id="form{{ rand }}" method="post" action="{{ 'PluginFieldsStatusOverride'|itemtype_form_path }}" enctype="multipart/form-data" data-submit-once data-fields-status-override="{{ rand }}">
    <input type="hidden" name="container_id" value="{{ container_id }}" />
    <div class="card-body pe-1 d-flex flex-wrap">
       <div class="col-12 flex-column">
@@ -70,24 +70,3 @@
       </div>
    </div> {# .card-body #}
 </form>
-<script>
-   $(document).ready(() => {
-      const refresh_status_dropdown = () => {
-         const itemtype = $('#form{{ rand }}').find('select[name="itemtype"]').val();
-         $.ajax({
-            url: CFG_GLPI.root_doc + '/plugins/fields/ajax/status_override.php',
-            method: 'GET',
-            data: {
-                action: 'get_status_dropdown',
-                itemtype: itemtype
-            }
-         }).then((result) => {
-            $('#status_inner_container{{ rand }}').html(result);
-         });
-      }
-
-      $('#form{{ rand }}').on('change', 'select[name="itemtype"]', () => {
-         refresh_status_dropdown();
-      });
-   });
-</script>

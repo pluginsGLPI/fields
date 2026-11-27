@@ -29,7 +29,7 @@
 {% import 'components/form/fields_macros.html.twig' as fields %}
 {% set rand = random() %}
 
-<div id="container{{ rand }}" class="asset">
+<div id="container{{ rand }}" class="asset" data-fields-conditions>
    <div class="flash-messages">
       <div class="alert alert-info">
          {{ __('The engine is used for hide block when main object meets condition') }}
@@ -102,46 +102,4 @@
          </div> {# .flex-row #}
       </div>
    </div> {# .card-body #}
-   <script>
-      $(document).ready(() => {
-         $('#container{{ rand }}').on('click', 'button[name="edit"]', (e) => {
-            const button = $(e.currentTarget);
-            const row = button.closest('tr');
-            const id = row.find('input[name="id"]').val();
-            const container_id = row.find('input[name="plugin_fields_containers_id"]').val();
-
-            glpi_ajax_dialog(
-               {
-                  title: __('Edit condition to hide block', 'fields'),
-                  url: CFG_GLPI.root_doc + '/plugins/fields/ajax/container_display_condition.php',
-                  method: 'get',
-                  params: {
-                      action: 'get_edit_form',
-                      id: id,
-                      plugin_fields_containers_id: container_id
-                  },
-                  dialogclass: 'modal-xl'
-               }
-            );
-         });
-
-         $('#container{{ rand }}').on('click', 'button[name="switch_add"]', (e) => {
-            const button = $(e.currentTarget);
-            const container_id = button.attr('data-container-id');
-
-            glpi_ajax_dialog(
-               {
-                  title: __('Add condition to hide block', 'fields'),
-                  url: CFG_GLPI.root_doc + '/plugins/fields/ajax/container_display_condition.php',
-                  method: 'get',
-                  params: {
-                     action: 'get_add_form',
-                     plugin_fields_containers_id: container_id
-                  },
-                  dialogclass: 'modal-xl'
-               }
-            );
-         });
-      });
-   </script>
 </div>
