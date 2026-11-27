@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `Some mandatory fields are empty` error on a filled dropdown field when its block table contains a leftover column with the same name
 - Fix GenericObject migration error message to name the required 3.0.x version
 - Fix sort on number fields: values were sorted as text (`1000`, `12345`, `1500`, `999`)
+- Fix blocks and dropdown values left in a deleted entity: declare their entity relation so it is checked and replaced on entity deletion
 
 ## [1.24.7] - 2026-10-28
 
