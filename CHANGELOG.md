@@ -11,7 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Remove redundant variable initialization in the question type AJAX controller
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
+<<<<<<< HEAD
 - Fix item creation failing when a Yes/No field has a non boolean default value
+=======
+- Fix slow display and save of items with additional fields when the values tables are large
+- Fix slow page loads when many entities are active: the containers available to the user were computed with one query per container on every request
+- Fix item clone failing when a mandatory dropdown field has an empty default value
+>>>>>>> 449f576 (Fix: use itemtype in values lookups (#1312))
 - Fix search on number fields: `is` / `is not` ignoring values from 1000, `<` / `>` comparing values as text, and `is not` excluding items without value
 - Fix GenericObject migration error message to name the required 3.0.x version
 
