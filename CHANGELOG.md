@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Changed
+
+- Make the plugin compatible with the Content Security Policy
+
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller

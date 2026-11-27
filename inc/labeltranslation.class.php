@@ -196,17 +196,8 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 'items_id' => $item->fields['id'],
                 'id'       => -1,
             ];
-            echo Html::scriptBlock('
-                addTranslation' . $item->getID() . $rand . ' = function() {
-                    $("#viewtranslation' . $item->getID() . $rand . '").load(
-                        "' . $CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php",
-                        ' . json_encode($ajax_params) . '
-                    );
-                };
-            ');
-
             echo "<div class='center'>"
-                . "<a class='vsubmit' href='javascript:addTranslation" . $item->getID() . ($rand . "();'>")
+                . "<a class='vsubmit' href='#' data-fields-load-target='#viewtranslation" . $item->getID() . $rand . "' data-fields-load-url='" . htmlescape($CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php') . "' data-fields-load-params='" . htmlescape(json_encode($ajax_params)) . "'>"
                 . __('Add a new translation') . '</a></div><br>';
         }
 
@@ -238,8 +229,13 @@ class PluginFieldsLabelTranslation extends CommonDBChild
             echo '<th>' . __('Language', 'fields') . '</th>';
             echo '<th>' . __('Label', 'fields') . '</th>';
             foreach ($found as $data) {
-                echo "<tr class='tab_bg_1' " . ($canedit ? "style='cursor:pointer'
-                      onClick=\"viewEditTranslation" . $data['id'] . ($rand . '();"') : '') . '>';
+                $row_params = htmlescape(json_encode([
+                    'type'     => self::class,
+                    'itemtype' => $item::getType(),
+                    'items_id' => $item->getID(),
+                    'id'       => $data['id'],
+                ]));
+                echo "<tr class='tab_bg_1' " . ($canedit ? "style='cursor:pointer' data-fields-load-target='#viewtranslation" . $item->getID() . $rand . "' data-fields-load-url='" . htmlescape($CFG_GLPI['root_doc'] . '/plugins/fields/ajax/viewtranslations.php') . "' data-fields-load-params='" . $row_params . "'" : '') . '>';
                 if ($canedit) {
                     echo "<td class='center'>";
                     Html::showMassiveActionCheckBox(self::class, $data['id']);
@@ -247,6 +243,7 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                 }
 
                 echo '<td>';
+<<<<<<< HEAD
                 if ($canedit) {
                     $ajax_params = [
                         'type'     => self::class,
@@ -264,6 +261,8 @@ class PluginFieldsLabelTranslation extends CommonDBChild
                     ');
                 }
 
+=======
+>>>>>>> 8a6ae60 (feat: make plugin CSP compliant (#1350))
                 echo Dropdown::getLanguageName($data['language']);
                 echo '</td><td>';
                 echo htmlspecialchars((string) $data['label'], ENT_QUOTES);

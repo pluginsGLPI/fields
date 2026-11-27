@@ -182,6 +182,8 @@ function plugin_init_fields()
             // Add/delete profiles to automaticaly to container
             $PLUGIN_HOOKS['item_add']['fields']['Profile']       = ['PluginFieldsProfile', 'addNewProfile'];
             $PLUGIN_HOOKS['pre_item_purge']['fields']['Profile'] = ['PluginFieldsProfile', 'deleteProfile'];
+            // Event handlers for the subitem loaders and the display conditions and status overrides lists
+            $PLUGIN_HOOKS['add_javascript']['fields'][] = 'js/fields.js';
 
             //load drag and drop javascript library on Package Interface
 
@@ -234,12 +236,13 @@ function plugin_fields_script_endswith($scriptname)
 function plugin_version_fields()
 {
     return [
-        'name'         => __('Additional fields', 'fields'),
-        'version'      => PLUGIN_FIELDS_VERSION,
-        'author'       => "Teclib', Olivier Moron",
-        'homepage'     => 'https://github.com/pluginsGLPI/fields',
-        'license'      => 'GPLv2+',
-        'requirements' => [
+        'name'          => __('Additional fields', 'fields'),
+        'version'       => PLUGIN_FIELDS_VERSION,
+        'author'        => "Teclib', Olivier Moron",
+        'homepage'      => 'https://github.com/pluginsGLPI/fields',
+        'license'       => 'GPLv2+',
+        'csp_compliant' => true,
+        'requirements'  => [
             'glpi' => [
                 'min' => PLUGIN_FIELDS_MIN_GLPI,
                 'max' => PLUGIN_FIELDS_MAX_GLPI,
