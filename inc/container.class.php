@@ -1584,12 +1584,29 @@ HTML;
         $itemtypes = [];
         $container = new self();
         $found     = $container->find($condition, 'label');
+
+        if (
+            $found === []
+            || Session::isCron()
+            || !isset($_SESSION['glpiactiveprofile']['id'])
+            || $_SESSION['glpiactiveprofile']['id'] == null
+        ) {
+            return $itemtypes;
+        }
+
+        // First pass: entity restriction. Visibility is computed once per entity instead of
+        // once per container, as getSonsOf() of a high level entity can be thousands of rows.
+        $visible           = [];
+        $active_entities   = array_flip($_SESSION['glpiactiveentities']);
+        $visible_by_entity = [];
         foreach ($found as $item) {
-            //entities restriction
-            if (!in_array($item['entities_id'], $_SESSION['glpiactiveentities'])) {
+            if (!isset($active_entities[(int) $item['entities_id']])) {
                 if ($item['is_recursive'] == 1) {
-                    $entities = getSonsOf('glpi_entities', $item['entities_id']);
-                    if (array_intersect($entities, $_SESSION['glpiactiveentities']) === []) {
+                    $visible_by_entity[$item['entities_id']] ??= array_intersect_key(
+                        array_flip(getSonsOf('glpi_entities', $item['entities_id'])),
+                        $active_entities,
+                    ) !== [];
+                    if (!$visible_by_entity[$item['entities_id']]) {
                         continue;
                     }
                 } else {
@@ -1597,17 +1614,18 @@ HTML;
                 }
             }
 
-            if (Session::isCron() || !isset($_SESSION['glpiactiveprofile']['id'])) {
-                continue;
-            }
+            $visible[$item['id']] = $item;
+        }
 
+        // Rights of the active profile on all visible containers, in a single query.
+        $rights = PluginFieldsProfile::getRightsOnContainers(
+            (int) $_SESSION['glpiactiveprofile']['id'],
+            array_keys($visible),
+        );
+
+        foreach ($visible as $item) {
             //profiles restriction
-            if (isset($_SESSION['glpiactiveprofile']['id']) && $_SESSION['glpiactiveprofile']['id'] != null && $item['id'] > 0) {
-                $right = PluginFieldsProfile::getRightOnContainer($_SESSION['glpiactiveprofile']['id'], $item['id']);
-                if ($right < READ) {
-                    continue;
-                }
-            } else {
+            if (($rights[$item['id']] ?? 0) < READ) {
                 continue;
             }
 
@@ -2115,12 +2133,14 @@ HTML;
                         continue;
                     }
                 }
-            } elseif (isset($data[$name])) {
-                $value = $data[$name];
-            } elseif (isset($data['plugin_fields_' . $name . 'dropdowns_id'])) {
-                $value = $data['plugin_fields_' . $name . 'dropdowns_id'];
-            } elseif ($massiveaction) {
-                continue;
+            } else {
+                // Key chosen from the field type: a leftover column named after the field must not hide a dropdown value
+                $value_key = $field['type'] === 'dropdown' ? sprintf('plugin_fields_%sdropdowns_id', $name) : $name;
+                if (isset($data[$value_key])) {
+                    $value = $data[$value_key];
+                } elseif ($massiveaction) {
+                    continue;
+                }
             }
 
             //translate label
@@ -2899,7 +2919,9 @@ HTML;
                 }
             } elseif ($item->isNewItem()) {
                 $default = PluginFieldsField::getDefaultValue($field);
-                if ($default !== null) {
+                // an empty dropdown default (0) is not a value, submitting it would fail a mandatory check (ex: clone)
+                $is_dropdown = $field['type'] === 'dropdown' || str_starts_with((string) $field['type'], 'dropdown-');
+                if ($default !== null && (!$is_dropdown || (int) $default !== 0)) {
                     $default_key = $field['type'] === 'dropdown'
                         ? 'plugin_fields_' . $field['name'] . 'dropdowns_id'
                         : $field['name'];

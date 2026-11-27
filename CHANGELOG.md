@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix item clone failing when a mandatory GLPI item field is in an "Insert in form" block
 - Fix `Some mandatory fields are empty` error displayed when creating an item with an assigned technician
 - Fix slow display and save of items with additional fields when the values tables are large
+- Fix slow page loads when many entities are active: the containers available to the user were computed with one query per container on every request
+- Fix item clone failing when a mandatory dropdown field has an empty default value
+- Fix search on number fields: `is` / `is not` ignoring values from 1000, `<` / `>` comparing values as text, and `is not` excluding items without value
+- Fix `Some mandatory fields are empty` error on a filled dropdown field when its block table contains a leftover column with the same name
+- Fix GenericObject migration error message to name the required 3.0.x version
+- Fix sort on number fields: values were sorted as text (`1000`, `12345`, `1500`, `999`)
 
 ## [1.24.7] - 2026-10-28
 

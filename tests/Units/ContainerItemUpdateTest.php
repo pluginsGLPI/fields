@@ -31,14 +31,18 @@
 namespace GlpiPlugin\Field\Tests\Units;
 
 use Auth;
+use Change;
 use Computer;
+use DBmysql;
 use Glpi\Tests\DbTestCase;
 use Glpi\Tests\GLPITestCase;
 use GlpiPlugin\Field\Tests\FieldTestTrait;
 use PluginFieldsContainer;
 use PluginFieldsContainerDisplayCondition;
+use PluginFieldsDropdown;
 use Ticket;
 use Entity;
+use Location;
 use Notification;
 use Problem;
 use Supplier;
@@ -754,6 +758,61 @@ final class ContainerItemUpdateTest extends DbTestCase
     }
 
     /**
+     * A leftover column named after a dropdown field (ex: field recreated with another type)
+     * must not hide the stored dropdown value when an update is checked against stored values.
+     */
+    public function testUpdateIsNotBlockedByLeftoverColumnNamedAfterMandatoryDropdownField(): void
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Dropdown Leftover Column Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Change::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Environment',
+            'type'                                      => 'dropdown',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+        ]);
+        $field_name   = $field->fields['name'];
+        $dropdown_key = sprintf('plugin_fields_%sdropdowns_id', $field_name);
+        $value        = $this->createItem(PluginFieldsDropdown::getClassname($field_name), ['name' => 'Production']);
+
+        $change = $this->createItem(Change::class, [
+            'name'        => 'Change with a mandatory dropdown field',
+            'content'     => 'Test',
+            'entities_id' => 0,
+            'c_id'        => $container->getID(),
+            $dropdown_key => $value->getID(),
+        ], ['c_id', $dropdown_key]);
+
+        $table = getTableForItemType(PluginFieldsContainer::getClassname(Change::class, $container->fields['name']));
+        $DB->doQuery(sprintf('ALTER TABLE %s ADD %s INT NOT NULL DEFAULT 0', $DB->quoteName($table), $DB->quoteName($field_name)));
+
+        // Update without submitted plugin values (ex: closing on solution approval)
+        $updated = $change->update([
+            'id'   => $change->getID(),
+            'name' => 'Renamed with the leftover column',
+        ]);
+
+        $this->assertTrue($updated);
+        $this->assertEmpty($_SESSION['MESSAGE_AFTER_REDIRECT'][ERROR] ?? []);
+        $change->getFromDB($change->getID());
+        $this->assertSame('Renamed with the leftover column', $change->fields['name']);
+    }
+
+    /**
      * Update a ticket with explicit c_id through an API-like context.
      */
     public function testUpdateTicketWithExplicitCidInApiLikeContext(): void
@@ -1300,5 +1359,88 @@ final class ContainerItemUpdateTest extends DbTestCase
         }
 
         $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory GLPI item field.');
+    }
+
+    public function testCloneThroughMassiveActionIsNotBlockedByMandatoryDropdownWithEmptyDefault(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Mandatory dropdown Clone Container',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory dropdown',
+            'type'                                      => 'dropdown',
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+            'default_value'                             => '0',
+        ]);
+        $dropdown_key = 'plugin_fields_' . $field->fields['name'] . 'dropdowns_id';
+        $option       = $this->createItem(PluginFieldsDropdown::getClassname($field->fields['name']), ['name' => 'Option']);
+
+        $computer = $this->createItem(Computer::class, [
+            'name'        => 'Computer with mandatory dropdown',
+            'entities_id' => 0,
+            $dropdown_key => $option->getID(),
+        ], [$dropdown_key]);
+
+        // The "Clone" massive action, also used from the item form, does not submit the plugin fields
+        $_REQUEST['massiveaction'] = 1;
+        try {
+            $clone_id = $computer->clone();
+        } finally {
+            unset($_REQUEST['massiveaction']);
+        }
+
+        $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory dropdown field with an empty default value.');
+    }
+
+    public function testCloneThroughMassiveActionIsNotBlockedByMandatoryItemtypeDropdownWithEmptyDefault(): void
+    {
+        $this->login();
+
+        $container = $this->createFieldContainer([
+            'label'        => 'Itemtype dropdown Clone',
+            'type'         => 'dom',
+            'itemtypes'    => [Computer::class],
+            'is_active'    => 1,
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+        ]);
+        $field = $this->createField([
+            'label'                                     => 'Mandatory itemtype dropdown',
+            'type'                                      => 'dropdown-' . Location::class,
+            PluginFieldsContainer::getForeignKeyField() => $container->getID(),
+            'ranking'                                   => 1,
+            'is_active'                                 => 1,
+            'is_readonly'                               => 0,
+            'mandatory'                                 => 1,
+            'default_value'                             => '0',
+        ]);
+        $location = $this->createItem(Location::class, ['name' => 'Location for clone ' . random_int(1, PHP_INT_MAX), 'entities_id' => 0]);
+
+        $computer = $this->createItem(Computer::class, [
+            'name'                  => 'Computer with mandatory itemtype dropdown',
+            'entities_id'           => 0,
+            $field->fields['name']  => $location->getID(),
+        ], [$field->fields['name']]);
+
+        // The "Clone" massive action, also used from the item form, does not submit the plugin fields
+        $_REQUEST['massiveaction'] = 1;
+        try {
+            $clone_id = $computer->clone();
+        } finally {
+            unset($_REQUEST['massiveaction']);
+        }
+
+        $this->assertGreaterThan(0, $clone_id, 'Clone must not be blocked by a mandatory itemtype dropdown field with an empty default value.');
     }
 }
