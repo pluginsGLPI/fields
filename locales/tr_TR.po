@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 04:42+0000\n"
+"POT-Creation-Date: 2026-11-27 06:13+0000\n"
 "PO-Revision-Date: 2015-09-18 09:34+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015-2026\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-plugin-fields/language/tr_TR/)\n"
@@ -18,13 +18,18 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: templates/destinationfield.html.twig
-msgid "Bind additional fields to the destination"
-msgstr "Ek alanları hedefe bağla"
-
 #: templates/fields.html.twig
 msgid "show"
 msgstr "görüntüle"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:300
+msgid "Field"
+msgstr "Alan"
+
+#: templates/forms/status_override.html.twig inc/field.class.php:721
+#: inc/field.class.php:903
+msgid "Read only"
+msgstr "Salt okunur"
 
 #: templates/status_overrides.html.twig
 msgid "Add new status override"
@@ -38,15 +43,6 @@ msgstr "Durum değişiklikleri"
 msgid "No item found"
 msgstr "Herhangi bir öge bulunamadı"
 
-#: templates/forms/status_override.html.twig inc/field.class.php:281
-msgid "Field"
-msgstr "Alan"
-
-#: templates/forms/status_override.html.twig inc/field.class.php:695
-#: inc/field.class.php:875
-msgid "Read only"
-msgstr "Salt okunur"
-
 #: templates/container_display_conditions.html.twig
 msgid "Add condition to hide block"
 msgstr "Bloğu gizleyecek bir koşul ekle"
@@ -58,38 +54,9 @@ msgid_plural "Conditions to hide block"
 msgstr[0] "Bloğu gizleyecek koşul"
 msgstr[1] "Bloğu gizleyecek koşullar"
 
-#: front/container.php:34 front/container.form.php:87 setup.php:237
-#: inc/destinationfield.class.php:50 inc/menu.class.php:37
-msgid "Additional fields"
-msgstr "Ek alanlar"
-
-#: ajax/field_specific_fields.php:52
-msgid "Allowed values"
-msgstr "İzin verilen değerler"
-
-#: ajax/field_specific_fields.php:85
-msgid "Multiple dropdown"
-msgstr "Çok seçimli açılan kutu"
-
-#: ajax/field_specific_fields.php:89
-msgid "Default value"
-msgstr "Varsayılan değer"
-
-#: ajax/field_specific_fields.php:122
-msgid "Default value will be configurable once field will be created."
-msgstr "Alan eklendikten sonra varsayılan değer yapılandırılabilir."
-
-#: hook.php:61 hook.php:65
-msgid "MySQL tables installation"
-msgstr "MySQL tabloları yükleme"
-
-#: hook.php:118
-msgid "The plugin can't be uninstalled when the plugin is disabled"
-msgstr "Bu uygulama eklenti kullanımdan kaldırılmışken kaldırılamaz"
-
-#: hook.php:131
-msgid "MySQL tables uninstallation"
-msgstr "MySQL tabloları kaldırma"
+#: templates/destinationfield.html.twig
+msgid "Bind additional fields to the destination"
+msgstr "Ek alanları hedefe bağla"
 
 #: inc/labeltranslation.class.php:238
 msgid "Language"
@@ -99,96 +66,97 @@ msgstr "Dil"
 msgid "Label"
 msgstr "Etiket"
 
-#: inc/containerdisplaycondition.class.php:106
-#: inc/containerdisplaycondition.class.php:138
-msgid "under"
-msgstr "şunun altında olan"
+#: inc/toolbox.class.php:122
+msgid "Fix fields names"
+msgstr "Alan adlarını düzelt"
 
-#: inc/containerdisplaycondition.class.php:107
-#: inc/containerdisplaycondition.class.php:141
-msgid "not under"
-msgstr "şunun altında olmayan"
+#: inc/toolbox.class.php:331
+msgid "Component items"
+msgstr "Bileşen ögeleri"
 
-#: inc/containerdisplaycondition.class.php:113
-#: inc/containerdisplaycondition.class.php:135
-msgid "regular expression matches"
-msgstr "kurallı ifade eşleşmeleri"
+#: inc/statusoverride.class.php:91
+msgid "Override by status"
+msgstr "Duruma göre değiştir"
 
-#: inc/containerdisplaycondition.class.php:511
-#: inc/containerdisplaycondition.class.php:527
-msgid "You must specify an item type, search option and condition."
-msgstr "Bir öge türü, arama seçeneği ve koşulu belirtmelisiniz."
+#: inc/destinationfield.class.php:50 inc/menu.class.php:37 setup.php:237
+#: front/container.php:34 front/container.form.php:87
+msgid "Additional fields"
+msgstr "Ek alanlar"
 
-#: inc/field.class.php:296 inc/field.class.php:323
+#: inc/field.class.php:317 inc/field.class.php:344
 msgid ""
 "Field name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Alan adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/field.class.php:315
+#: inc/field.class.php:336
 msgid "You cannot add same field 'dropdown' on same block"
 msgstr "Aynı blok içine aynı 'açılan kutu' alanı eklenemez"
 
-#: inc/field.class.php:407
+#: inc/field.class.php:433
 #, php-format
 msgid "The field \"%s\" cannot be deleted because it is used in a form question"
 msgstr "\"%s\" alanı bir form sorusunda kullanıldığı için silinemez"
 
-#: inc/field.class.php:613
+#: inc/field.class.php:639
 msgid "Fields"
 msgstr "Alanlar"
 
-#: inc/field.class.php:678
+#: inc/field.class.php:704
 msgid "Add a new field"
 msgstr "Alan ekle"
 
-#: inc/field.class.php:682
+#: inc/field.class.php:708
 msgid "No field for this block"
 msgstr "Bu blokta henüz bir alan yok"
 
-#: inc/field.class.php:1467
+#: inc/field.class.php:1512
 msgid "Header"
 msgstr "Başlık"
 
-#: inc/field.class.php:1468
+#: inc/field.class.php:1513
 msgid "Text (single line)"
 msgstr "Yazı (tek satırlı)"
 
-#: inc/field.class.php:1469
+#: inc/field.class.php:1514
 msgid "Text (multiples lines)"
 msgstr "Yazı (çok satırlı)"
 
-#: inc/field.class.php:1470
+#: inc/field.class.php:1515
 msgid "Rich Text"
 msgstr "Zengin yazı"
 
-#: inc/field.class.php:1471
+#: inc/field.class.php:1516
 msgid "Number"
 msgstr "Sayı"
 
-#: inc/field.class.php:1472
+#: inc/field.class.php:1517
 msgid "URL"
 msgstr "Adres"
 
-#: inc/field.class.php:1473
+#: inc/field.class.php:1518
 msgid "Dropdown"
 msgstr "Açılan kutu"
 
-#: inc/field.class.php:1474
+#: inc/field.class.php:1519
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
-#: inc/field.class.php:1475
+#: inc/field.class.php:1520
 msgid "Date"
 msgstr "Tarih"
 
-#: inc/field.class.php:1476
+#: inc/field.class.php:1521
 msgid "Date & time"
 msgstr "Tarih ve saat"
 
-#: inc/field.class.php:1477
+#: inc/field.class.php:1522
 msgid "GLPI item"
 msgstr "GLP ögesi"
+
+#: inc/dropdown.class.php:79
+msgid "Updating generated dropdown files"
+msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
 
 #: inc/checkdatabasecommand.class.php:42
 msgid "Check database to detect inconsistencies."
@@ -260,10 +228,6 @@ msgstr "-> #%d (%s) kapsayıcısı: Beklenen \"%s\" tablosu bulunamadı"
 msgid "%d table(s) do not match any container/item type pair."
 msgstr "%d tablo herhangi bir kapsayıcı/öge türü çifti ile eşleşmiyor."
 
-#: inc/statusoverride.class.php:91
-msgid "Override by status"
-msgstr "Duruma göre değiştir"
-
 #: inc/command/regeneratefilescommand.class.php:43
 msgid "Regenerates containers files."
 msgstr "Kapsayıcı dosyaları yeniden oluşturur."
@@ -274,177 +238,213 @@ msgid ""
 "them."
 msgstr "Bu komut eklenti tarafından oluşturulmuş tüm dosyaları siler ve yeniden oluşturur."
 
-#: inc/container.class.php:54
+#: inc/containerdisplaycondition.class.php:106
+#: inc/containerdisplaycondition.class.php:138
+msgid "under"
+msgstr "şunun altında olan"
+
+#: inc/containerdisplaycondition.class.php:107
+#: inc/containerdisplaycondition.class.php:141
+msgid "not under"
+msgstr "şunun altında olmayan"
+
+#: inc/containerdisplaycondition.class.php:113
+#: inc/containerdisplaycondition.class.php:135
+msgid "regular expression matches"
+msgstr "kurallı ifade eşleşmeleri"
+
+#: inc/containerdisplaycondition.class.php:511
+#: inc/containerdisplaycondition.class.php:527
+msgid "You must specify an item type, search option and condition."
+msgstr "Bir öge türü, arama seçeneği ve koşulu belirtmelisiniz."
+
+#: inc/container.class.php:59
 msgid "Regenerate container files"
 msgstr "Kapsayıcı dosyalar yeniden oluşturulsun"
 
-#: inc/container.class.php:55 inc/container.class.php:1275
+#: inc/container.class.php:60 inc/container.class.php:1280
 msgid "Export to YAML"
 msgstr "YAML olarak dışa aktar"
 
-#: inc/container.class.php:287
+#: inc/container.class.php:292
 #, php-format
 msgid ""
 "Container #%1$d (%2$s) disabled: table name too long. Rename it from its "
 "edit form to reactivate it."
 msgstr "#%1$d (%2$s) kapsayıcısı etkisizleştirildi: Tablo adı çok uzun. Yeniden etkinleştirmek için düzenleme formundan yeniden adlandırın."
 
-#: inc/container.class.php:321
+#: inc/container.class.php:326
 msgid "Regenerate containers files"
 msgstr "Kapsayıcıların dosyaları yeniden oluşturulsun"
 
-#: inc/container.class.php:342
+#: inc/container.class.php:347
 msgid "Fix container names"
 msgstr "Kapsayıcı adlarını düzelt"
 
-#: inc/container.class.php:490
+#: inc/container.class.php:495
 msgid "Updating generated containers files"
 msgstr "Oluşturulmuş kapsayıcı dosyaları güncelleniyor"
 
-#: inc/container.class.php:695 inc/container.class.php:769
+#: inc/container.class.php:700 inc/container.class.php:774
 msgid "At least one selected object is not a valid element type"
 msgstr "Seçilmiş en az bir nesnenin öge türü geçerli değil"
 
-#: inc/container.class.php:707
+#: inc/container.class.php:712
 msgid "Table name too long: rename the container to reactivate it."
 msgstr "Tablo adı çok uzun: Yeniden etkinleştirmek için kapsayıcıyı yeniden adlandırın."
 
-#: inc/container.class.php:781
+#: inc/container.class.php:786
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form' on same "
 "object"
 msgstr "Aynı nesne üzerine 'Forma eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:797
+#: inc/container.class.php:802
 msgid ""
 "You cannot add several blocks with type 'Insertion in the form of a specific"
 " tab' on same object tab"
 msgstr "Aynı nesne sekmesi üzerine 'Forma sekme olarak eklensin' türünde bir kaç blok eklenemez"
 
-#: inc/container.class.php:808
+#: inc/container.class.php:813
 msgid ""
 "At least one selected object cannot be linked with type 'Insertion in the "
 "form of a specific tab'."
 msgstr "Seçilmiş en az bir nesne 'Forma sekme olarak eklensin' türüyle ilişkilendirilemedi."
 
-#: inc/container.class.php:822
+#: inc/container.class.php:827
 msgid ""
 "Container name is too long for database (digits in name are replaced by "
 "characters, try to remove them)"
 msgstr "Kapsayıcı adı veri tabanı için çok uzun (ad içindeki rakamlar karakterler ile değiştirildi, onları kaldırmayı deneyin)"
 
-#: inc/container.class.php:837
+#: inc/container.class.php:842
 msgid "You cannot add several blocs with identical name on same object"
 msgstr "Aynı nesne üzerine aynı adla birden fazla blok eklenemez"
 
-#: inc/container.class.php:1062
+#: inc/container.class.php:1067
 msgid "Block"
 msgstr "Blok"
 
-#: inc/container.class.php:1078
+#: inc/container.class.php:1083
 #, php-format
 msgid "Unknown container #%d."
 msgstr "#%d kapsayıcısı bilinmiyor."
 
-#: inc/container.class.php:1085
+#: inc/container.class.php:1090
 msgid "No associated item type."
 msgstr "İlişkilendirilmiş bir öge türü yok."
 
-#: inc/container.class.php:1091
+#: inc/container.class.php:1096
 msgid "Container is not oversized."
 msgstr "Kapsayıcı boyutu aşılmamış."
 
-#: inc/container.class.php:1098
+#: inc/container.class.php:1103
 msgid "Invalid name."
 msgstr "Ad geçersiz."
 
-#: inc/container.class.php:1116
+#: inc/container.class.php:1121
 #, php-format
 msgid "Still too long: %s."
 msgstr "Hala çok uzun: %s."
 
-#: inc/container.class.php:1131
+#: inc/container.class.php:1136
 msgid "Name already used for this item type."
 msgstr "Bu öge türü için bu ad zaten kullanılmış."
 
-#: inc/container.class.php:1149
+#: inc/container.class.php:1154
 #, php-format
 msgid "Table %s already exists."
 msgstr "%s tablosu zaten var."
 
-#: inc/container.class.php:1193
+#: inc/container.class.php:1198
 #, php-format
 msgid "Renamed to \"%s\" and reactivated, existing data preserved."
 msgstr "\"%s\" olarak yeniden adlandırıldı ve yeniden etkinleştirildi. Var olan veriler korundu."
 
-#: inc/container.class.php:1194
+#: inc/container.class.php:1199
 #, php-format
 msgid "Renamed to \"%s\" and reactivated, no existing data found."
 msgstr "\"%s\" olarak yeniden adlandırıldı ve yeniden etkinleştirildi. Var olan bir veri bulunamadı."
 
-#: inc/container.class.php:1377
+#: inc/container.class.php:1382
 msgid "Tab"
 msgstr "Sekme"
 
-#: inc/container.class.php:1410
+#: inc/container.class.php:1415
 #, php-format
 msgid "Table name too long (%s):"
 msgstr "Tablo adı çok uzun (%s):"
 
-#: inc/container.class.php:1413
+#: inc/container.class.php:1418
 msgid "New name"
 msgstr "Yeni ad"
 
-#: inc/container.class.php:1416
+#: inc/container.class.php:1421
 msgid "Rename and reactivate"
 msgstr "Yeniden adlandır ve yeniden etkinleştir"
 
-#: inc/container.class.php:1560
+#: inc/container.class.php:1565
 msgid "Add tab"
 msgstr "Sekme ekle"
 
-#: inc/container.class.php:1561
+#: inc/container.class.php:1566
 msgid "Insertion in the form (before save button)"
 msgstr "Forma eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:1562
+#: inc/container.class.php:1567
 msgid "Insertion in the form of a specific tab (before save button)"
 msgstr "Forma sekme olarak eklensin (kaydet düğmesinden önce)"
 
-#: inc/container.class.php:2145
+#: inc/container.class.php:2150
 msgid "Some mandatory fields are empty"
 msgstr "Bazı zorunlu alanlar boş"
 
-#: inc/container.class.php:2149
+#: inc/container.class.php:2154
 msgid ""
 "The form or source creating this item does not provide the mandatory fields "
 "above: map them to it, or make them optional."
 msgstr "Bu ögeyi oluşturan form veya kaynak yukarıdaki zorunlu alanları sağlamıyor: Bunları onunla eşleştirin ya da isteğe bağlı olarak değiştirin."
 
-#: inc/container.class.php:2157
+#: inc/container.class.php:2162
 msgid "Some numeric fields contains non numeric values"
 msgstr "Bazı sayısal alanlarda sayısal olmayan değerler var"
 
-#: inc/container.class.php:2162
+#: inc/container.class.php:2167
 msgid "Some URL fields contains invalid links"
 msgstr "Bazı adres alanlarında geçersiz bağlantılar var"
 
-#: inc/container.class.php:2167
+#: inc/container.class.php:2172
 msgid "Some item fields reference an invalid item"
 msgstr "Bazı öge alanları geçersiz bir ögeye başvuruyor"
 
-#: inc/container.class.php:2464
+#: inc/container.class.php:2471
 msgid "You do not have the right to modify the fields of this item"
 msgstr "Bu ögenin alanlarını değiştirme izniniz yok"
 
-#: inc/toolbox.class.php:122
-msgid "Fix fields names"
-msgstr "Alan adlarını düzelt"
+#: hook.php:61 hook.php:65
+msgid "MySQL tables installation"
+msgstr "MySQL tabloları yükleme"
 
-#: inc/toolbox.class.php:331
-msgid "Component items"
-msgstr "Bileşen ögeleri"
+#: hook.php:118
+msgid "The plugin can't be uninstalled when the plugin is disabled"
+msgstr "Bu uygulama eklenti kullanımdan kaldırılmışken kaldırılamaz"
 
-#: inc/dropdown.class.php:79
-msgid "Updating generated dropdown files"
-msgstr "Oluşturulmuş açılan kutu dosyaları güncelleniyor"
+#: hook.php:131
+msgid "MySQL tables uninstallation"
+msgstr "MySQL tabloları kaldırma"
+
+#: ajax/field_specific_fields.php:52
+msgid "Allowed values"
+msgstr "İzin verilen değerler"
+
+#: ajax/field_specific_fields.php:85
+msgid "Multiple dropdown"
+msgstr "Çok seçimli açılan kutu"
+
+#: ajax/field_specific_fields.php:89
+msgid "Default value"
+msgstr "Varsayılan değer"
+
+#: ajax/field_specific_fields.php:122
+msgid "Default value will be configurable once field will be created."
+msgstr "Alan eklendikten sonra varsayılan değer yapılandırılabilir."
