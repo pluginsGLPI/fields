@@ -370,7 +370,7 @@ function plugin_fields_addOrderBy($itemtype, $ID, $order, $key)
     // Empty values become NULL, sorted first in ascending order like core does.
     $column = $DB->quoteName($searchopt['table'] . '_' . $searchopt['field']) . '.' . $DB->quoteName($searchopt['field']);
 
-    return "NULLIF($column, '') + 0 $order";
+    return sprintf("NULLIF(%s, '') + 0 %s", $column, $order);
 }
 
 function plugin_item_transfer_fields(array $options): void
