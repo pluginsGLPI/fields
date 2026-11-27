@@ -183,6 +183,77 @@ final class HookAddWhereTest extends DbTestCase
      */
     private function searchNumberField(string $searchtype, string $value, bool $not): array
     {
+        $found = $this->searchNumberFieldItems(static fn(int $so_id): array => [
+            'criteria' => [
+                ['link' => $not ? 'AND NOT' : 'AND', 'field' => $so_id, 'searchtype' => $searchtype, 'value' => $value],
+            ],
+        ]);
+        sort($found);
+
+        return $found;
+    }
+
+    public static function numberSortProvider(): iterable
+    {
+        // Items without value are NULL, sorted first in ascending order
+        $asc = [null, null, -5.0, 0.0, 12.5, 999.0, 1000.0, 1000.0, 1500.0, 12345.0, 1e40];
+        yield 'ASC' => ['ASC', $asc];
+        yield 'DESC' => ['DESC', array_reverse($asc)];
+    }
+
+    /**
+     * Number values are stored as VARCHAR and used to be sorted as strings (1000, 12345, 1500, 999).
+     */
+    #[DataProvider('numberSortProvider')]
+    public function testNumberFieldSort(string $order, array $expected): void
+    {
+        $found = $this->searchNumberFieldItems(static fn(int $so_id): array => [
+            'sort'  => [$so_id],
+            'order' => [$order],
+        ]);
+
+        // Compare values, not names: the order of equal values (1000 and 1000.0, empty values) is not defined
+        $sorted = array_map(
+            static fn(string $name): ?float => in_array($name, ['cleared', 'unsaved'], true) ? null : (float) $name,
+            $found,
+        );
+        $this->assertSame($expected, $sorted);
+    }
+
+    /**
+     * Search computers among items storing a predefined set of values in a number field.
+     *
+     * @param callable(int): array $params Search parameters to add, given the search option id of the number field
+     *
+     * @return list<string> Names (without prefix) of the found items, in result order
+     */
+    private function searchNumberFieldItems(callable $params): array
+    {
+        [$so_id, $prefix] = $this->createNumberFieldItems();
+        $params = $params($so_id);
+        $data = Search::getDatas(Computer::class, [
+            'is_deleted' => 0,
+            'start'      => 0,
+            'list_limit' => 100,
+            'criteria'   => [
+                ['field' => 1, 'searchtype' => 'contains', 'value' => '^' . $prefix],
+                ...($params['criteria'] ?? []),
+            ],
+        ] + $params, [1]);
+
+        return array_map(
+            static fn(array $row): string => substr((string) $row['raw']['ITEM_Computer_1'], strlen($prefix)),
+            $data['data']['rows'],
+        );
+    }
+
+    /**
+     * Create a number field and computers storing a predefined set of values in it.
+     *
+     * @return array{int, string} Search option id of the field, prefix of the created computers names
+     */
+    private function createNumberFieldItems(): array
+    {
         $this->login();
 
         $container = $this->createFieldContainer([
@@ -220,23 +291,6 @@ final class HookAddWhereTest extends DbTestCase
         // Item for which the container was never saved: no row, NULL through the LEFT JOIN
         $this->createItem(Computer::class, ['name' => $prefix . 'unsaved', 'entities_id' => $entities_id]);
 
-        $so_id = PluginFieldsField::SEARCH_OPTION_STARTING_INDEX + $field->getID();
-        $data = Search::getDatas(Computer::class, [
-            'is_deleted' => 0,
-            'start'      => 0,
-            'list_limit' => 100,
-            'criteria'   => [
-                ['field' => 1, 'searchtype' => 'contains', 'value' => '^' . $prefix],
-                ['link' => $not ? 'AND NOT' : 'AND', 'field' => $so_id, 'searchtype' => $searchtype, 'value' => $value],
-            ],
-        ], [1]);
-
-        $found = array_map(
-            static fn(array $row): string => substr((string) $row['raw']['ITEM_Computer_1'], strlen($prefix)),
-            $data['data']['rows'],
-        );
-        sort($found);
-
-        return $found;
+        return [PluginFieldsField::SEARCH_OPTION_STARTING_INDEX + $field->getID(), $prefix];
     }
 }
