@@ -359,6 +359,23 @@ function plugin_fields_addWhere($link, $nott, $itemtype, $ID, $val, $searchtype)
     };
 }
 
+function plugin_fields_addOrderBy($itemtype, $ID, $order, $key)
+{
+    /** @var DBmysql $DB */
+    global $DB;
+
+    $searchopt = Search::getOptions($itemtype)[$ID] ?? [];
+    if (($searchopt['pfields_type'] ?? null) !== 'number') {
+        return null;
+    }
+
+    // Number values are stored in a VARCHAR column: sort them as DOUBLE (`+ 0`), whose range covers any stored value unlike DECIMAL.
+    // Empty values become NULL, sorted first in ascending order like core does.
+    $column = $DB->quoteName($searchopt['table'] . '_' . $searchopt['field']) . '.' . $DB->quoteName($searchopt['field']);
+
+    return sprintf("NULLIF(%s, '') + 0 %s", $column, $order);
+}
+
 function plugin_item_transfer_fields(array $options): void
 {
     $itemtype = $options['type'] ?? null;
