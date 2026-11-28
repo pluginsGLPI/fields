@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [UNRELEASED]
 
+### Added
+
+- Add notification tags for the fields of the notified item: `##fields.<block>.<field>##` for the value, `##lang.fields.<block>.<field>##` for the label. A value is only sent to the recipients whose profile can read the block
+- Add the fields of tickets, changes and problems, and of the assets linked to a ticket, to the variables of the followup, task and solution templates: `{{ ticket.fields.<block>.<field> }}`, `{{ asset.fields.<block>.<field> }}`
+
 ### Fixed
 
 - Remove redundant variable initialization in the question type AJAX controller
